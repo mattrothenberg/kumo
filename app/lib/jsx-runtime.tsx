@@ -94,47 +94,49 @@ function executeCode(
   compiledCode: string,
   componentScope: Record<string, any>
 ): { success: boolean; component?: React.ComponentType; error?: string } {
-  try {
-    const context = createExecutionContext(componentScope);
+  // try {
+  //   const context = createExecutionContext(componentScope);
     
-    // Wrap the code to return the result
-    // The code should either be an IIFE that returns JSX, or just JSX
-    const wrappedCode = `
-      (function(${Object.keys(context).join(", ")}) {
-        "use strict";
-        return ${compiledCode};
-      })
-    `;
+  //   // Wrap the code to return the result
+  //   // The code should either be an IIFE that returns JSX, or just JSX
+  //   const wrappedCode = `
+  //     (function(${Object.keys(context).join(", ")}) {
+  //       "use strict";
+  //       return ${compiledCode};
+  //     })
+  //   `;
 
-    // Execute the code
-    const func = eval(wrappedCode);
-    const result = func(...Object.values(context));
+  //   // Execute the code
+  //   const func = eval(wrappedCode);
+  //   const result = func(...Object.values(context));
 
-    // If result is a valid React element, wrap it in a component
-    if (React.isValidElement(result)) {
-      const Component = () => result;
-      return { success: true, component: Component };
-    }
+  //   // If result is a valid React element, wrap it in a component
+  //   if (React.isValidElement(result)) {
+  //     const Component = () => result;
+  //     return { success: true, component: Component };
+  //   }
 
-    // If result is a function, it might be a component
-    if (typeof result === "function") {
-      // Try calling it to see if it returns a React element
-      try {
-        const testResult = result();
-        if (React.isValidElement(testResult)) {
-          return { success: true, component: result };
-        }
-      } catch {
-        // If it fails, just return it as-is
-        return { success: true, component: result };
-      }
-    }
+  //   // If result is a function, it might be a component
+  //   if (typeof result === "function") {
+  //     // Try calling it to see if it returns a React element
+  //     try {
+  //       const testResult = result();
+  //       if (React.isValidElement(testResult)) {
+  //         return { success: true, component: result };
+  //       }
+  //     } catch {
+  //       // If it fails, just return it as-is
+  //       return { success: true, component: result };
+  //     }
+  //   }
 
-    return { success: false, error: "Code did not return a valid React component or element" };
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    return { success: false, error: `Runtime error: ${message}` };
-  }
+  //   return { success: false, error: "Code did not return a valid React component or element" };
+  // } catch (error) {
+  //   const message = error instanceof Error ? error.message : String(error);
+  //   return { success: false, error: `Runtime error: ${message}` };
+  // }
+
+  return { success: false, error: `Runtime error` }
 }
 
 /**
