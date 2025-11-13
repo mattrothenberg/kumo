@@ -22,6 +22,7 @@ export default [
   route("components/skeleton-line", "routes/components.skeleton-line.tsx"),
   route("components/clipboard-text", "routes/components.clipboard-text.tsx"),
   route("components/surface", "routes/components.surface.tsx"),
+  route("components/text", "routes/components.text.tsx"),
   route("components/code", "routes/components.code.tsx"),
   route("components/layer-card", "routes/components.layer-card.tsx"),
   route("components/menubar", "routes/components.menubar.tsx"),
