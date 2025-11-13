@@ -51,7 +51,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 // -translate-x-2 
 const LI_STYLE = `block rounded-lg font-medium !text-neutral-600 dark:text-neutral-200 text-surface hover:text-neutral-800 dark:hover:text-white hover:bg-neutral-200/30 dark:hover:bg-neutral-800/50 p-2 my-[.05rem] cursor-pointer transition-colors no-underline relative z-10`;
-const LI_ACTIVE_STYLE = `text-neutral-800 dark:text-white`;
+const LI_ACTIVE_STYLE = `text-neutral-800 dark:text-white bg-neutral-200/50 dark:bg-neutral-800`;
 
 export default function App() {
   const location = useLocation();
@@ -61,11 +61,7 @@ export default function App() {
   const [componentsOpen, setComponentsOpen] = useState(true);
   const [blocksOpen, setBlocksOpen] = useState(true);
   const [layoutsOpen, setLayoutsOpen] = useState(true);
-  const [activeIndicator, setActiveIndicator] = useState<{ top: number; height: number } | null>(null);
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
-  const navRef = React.useRef<HTMLDivElement>(null);
   const contentRef = React.useRef<HTMLDivElement>(null);
-  const [shouldHideIndicator, setShouldHideIndicator] = useState(false);
   
   useEffect(() => {
     // Check if dark mode is enabled
@@ -73,51 +69,6 @@ export default function App() {
     setIsDark(isDarkMode);
   }, []);
 
-  useEffect(() => {
-    if (!navRef.current) return;
-
-    const updateIndicator = () => {
-      const navEl = navRef.current;
-      const activeLink = navEl?.querySelector(
-        `[href="${location.pathname}"]`
-      ) as HTMLElement | null;
-
-      if (navEl && activeLink) {
-        const navRect = navEl.getBoundingClientRect();
-        const linkRect = activeLink.getBoundingClientRect();
-        const navStyles = getComputedStyle(navEl);
-        const paddingTop = parseFloat(navStyles.paddingTop || "0");
-        const offsetAdjustment = navEl.clientTop + paddingTop;
-
-        const isComponentsPath = location.pathname.startsWith("/components/");
-        const isBlocksPath = location.pathname.startsWith("/blocks/");
-        const isLayoutsPath = location.pathname.startsWith("/layouts/");
-        const isCollapsedSection =
-          (isComponentsPath && !componentsOpen) ||
-          (isBlocksPath && !blocksOpen) ||
-          (isLayoutsPath && !layoutsOpen);
-
-        setActiveIndicator({
-          top: linkRect.top - navRect.top + navEl.scrollTop - offsetAdjustment,
-          height: linkRect.height,
-        });
-        setShouldHideIndicator(isCollapsedSection);
-      } else {
-        setActiveIndicator(null);
-        setShouldHideIndicator(false);
-      }
-    };
-
-    // Use requestAnimationFrame to avoid layout shift
-    if (isInitialLoad) {
-      requestAnimationFrame(() => {
-        updateIndicator();
-        setIsInitialLoad(false);
-      });
-    } else {
-      updateIndicator();
-    }
-  }, [location.pathname, componentsOpen, blocksOpen, layoutsOpen, isInitialLoad]);
 
   useEffect(() => {
     if (contentRef.current) {
@@ -201,23 +152,9 @@ export default function App() {
           {/* Sidebar */}
         </div>
         <div
-          ref={navRef}
-          className="p-4 text-sm text-neutral-600 overflow-y-auto overscroll-contain grow min-h-0 relative"
+          className="p-4 text-sm text-neutral-600 overflow-y-auto overscroll-contain grow min-h-0"
         >
-          <div className="relative">
-            {/* Animated background indicator */}
-            {activeIndicator && !shouldHideIndicator && (
-              <div
-                className={cn(
-                  "absolute left-0 right-4 bg-neutral-200/50 dark:bg-neutral-800 rounded-lg pointer-events-none",
-                  !isInitialLoad && "transition-all duration-300 ease-out"
-                )}
-                style={{
-                  top: `${activeIndicator.top}px`,
-                  height: `${activeIndicator.height}px`,
-                }}
-              />
-            )}
+          <div>
             <ul className="flex flex-col">
               <li>
                 <Link 
