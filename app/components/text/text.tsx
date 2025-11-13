@@ -31,11 +31,17 @@ type TextProps<Variant extends TextVariant = "body"> = BaseTextProps &
         bold?: boolean;
         size?: TextSize;
       }
-    : {
-        variant?: Variant;
-        bold?: never;
-        size?: never;
-      });
+    : Variant extends Monospace
+      ? {
+          variant?: Variant;
+          bold?: never;
+          size?: "lg";
+        }
+      : {
+          variant?: Variant;
+          bold?: never;
+          size?: never;
+        });
 
 // Variant-specific styles
 const variantStyles: Record<TextVariant, string> = {
@@ -77,6 +83,7 @@ function _Text<Variant extends TextVariant = "body">(
   ref: ForwardedRef<HTMLHeadingElement>
 ) {
   const isCopy = ["body", "secondary", "success", "error"].includes(variant);
+  const isMono = ["mono", "mono-secondary"].includes(variant);
 
   const Component = useMemo(() => {
     if (as) return as;
@@ -92,7 +99,9 @@ function _Text<Variant extends TextVariant = "body">(
       className={cn(
         variantStyles[variant],
         isCopy ? sizeStyles[size] : "",
-        isCopy && bold ? "font-bold" : "",
+        isCopy && bold ? "font-medium" : "",
+        // Monospace fonts need to be 1pt smaller than body text to optically match
+        isMono && (size === "lg" ? sizeStyles.base : sizeStyles.sm),
         DANGEROUS_className
       )}
       style={DANGEROUS_style}
