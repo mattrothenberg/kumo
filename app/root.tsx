@@ -49,7 +49,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-// -translate-x-2 
+// -translate-x-2
 const LI_STYLE = `block rounded-lg font-medium !text-neutral-600 dark:text-neutral-200 text-surface hover:text-neutral-800 dark:hover:text-white hover:bg-neutral-200/30 dark:hover:bg-neutral-800/50 p-2 my-[.05rem] cursor-pointer transition-colors no-underline relative z-10`;
 const LI_ACTIVE_STYLE = `text-neutral-800 dark:text-white bg-neutral-200/50 dark:bg-neutral-800`;
 
@@ -65,7 +65,7 @@ export default function App() {
   
   useEffect(() => {
     // Check if dark mode is enabled
-    const isDarkMode = document.documentElement.classList.contains('dark-mode');
+    const isDarkMode = document.documentElement.classList.contains("dark-mode");
     setIsDark(isDarkMode);
   }, []);
 
@@ -83,13 +83,13 @@ export default function App() {
   const toggleTheme = () => {
     const newIsDark = !isDark;
     setIsDark(newIsDark);
-    
+
     if (newIsDark) {
-      document.documentElement.classList.add('dark-mode');
-      localStorage.setItem('theme', 'dark');
+      document.documentElement.classList.add("dark-mode");
+      localStorage.setItem("theme", "dark");
     } else {
-      document.documentElement.classList.remove('dark-mode');
-      localStorage.setItem('theme', 'light');
+      document.documentElement.classList.remove("dark-mode");
+      localStorage.setItem("theme", "light");
     }
   };
 
@@ -148,7 +148,12 @@ export default function App() {
         )}
       >
         {/* Panel header */}
-        <div className={cn("h-[49px] px-4 flex items-center font-medium flex-none", "border-b border-neutral-200 dark:border-neutral-800")}>        
+        <div
+          className={cn(
+            "h-[49px] px-4 flex items-center font-medium flex-none",
+            "border-b border-neutral-200 dark:border-neutral-800"
+          )}
+        >
           {/* Sidebar */}
         </div>
         <div
@@ -157,37 +162,49 @@ export default function App() {
           <div>
             <ul className="flex flex-col">
               <li>
-                <Link 
-                  to="/" 
+                <Link
+                  to="/"
                   prefetch="intent"
-                  className={cn(LI_STYLE, location.pathname === "/" && LI_ACTIVE_STYLE)}
+                  className={cn(
+                    LI_STYLE,
+                    location.pathname === "/" && LI_ACTIVE_STYLE
+                  )}
                 >
                   Home
                 </Link>
               </li>
               <li>
-                <Link 
-                  to="/installation" 
+                <Link
+                  to="/installation"
                   prefetch="intent"
-                  className={cn(LI_STYLE, location.pathname === "/installation" && LI_ACTIVE_STYLE)}
+                  className={cn(
+                    LI_STYLE,
+                    location.pathname === "/installation" && LI_ACTIVE_STYLE
+                  )}
                 >
                   Installation
                 </Link>
               </li>
               <li>
-                <Link 
-                  to="/accessibility" 
+                <Link
+                  to="/accessibility"
                   prefetch="intent"
-                  className={cn(LI_STYLE, location.pathname === "/accessibility" && LI_ACTIVE_STYLE)}
+                  className={cn(
+                    LI_STYLE,
+                    location.pathname === "/accessibility" && LI_ACTIVE_STYLE
+                  )}
                 >
                   Accessibility
                 </Link>
               </li>
               <li>
-                <Link 
-                  to="/figma" 
+                <Link
+                  to="/figma"
                   prefetch="intent"
-                  className={cn(LI_STYLE, location.pathname === "/figma" && LI_ACTIVE_STYLE)}
+                  className={cn(
+                    LI_STYLE,
+                    location.pathname === "/figma" && LI_ACTIVE_STYLE
+                  )}
                 >
                   Figma Resources
                 </Link>
@@ -196,30 +213,48 @@ export default function App() {
           </div>
 
           <div className="mb-6">
-            <h4 
+            <h4
               className="text-xs mt-4 mb-2 ml-2 font-medium uppercase text-neutral-400 flex items-center justify-between cursor-pointer select-none hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors"
               onClick={() => setComponentsOpen(!componentsOpen)}
             >
               <span>Components</span>
-              <CaretDownIcon 
-                size={12} 
+              <CaretDownIcon
+                size={12}
                 weight="bold"
-                className={cn("transition-transform duration-200", componentsOpen && "rotate-180")} 
+                className={cn(
+                  "transition-transform duration-200",
+                  componentsOpen && "rotate-180"
+                )}
               />
             </h4>
             <ul
               className={cn(
                 "flex flex-col overflow-hidden transition-all duration-300 ease-in-out",
-                componentsOpen ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
+                componentsOpen
+                  ? "max-h-[2000px] opacity-100"
+                  : "max-h-0 opacity-0"
               )}
             >
+              <li>
+                <Link
+                  to="/components/text"
+                  prefetch="intent"
+                  className={cn(
+                    LI_STYLE,
+                    location.pathname === "/components/text" && LI_ACTIVE_STYLE
+                  )}
+                >
+                  Text
+                </Link>
+              </li>
               <li>
                 <Link
                   to="/components/button"
                   prefetch="intent"
                   className={cn(
                     LI_STYLE,
-                    location.pathname === "/components/button" && LI_ACTIVE_STYLE
+                    location.pathname === "/components/button" &&
+                      LI_ACTIVE_STYLE
                   )}
                 >
                   Button
@@ -231,7 +266,8 @@ export default function App() {
                   prefetch="intent"
                   className={cn(
                     LI_STYLE,
-                    location.pathname === "/components/checkbox" && LI_ACTIVE_STYLE
+                    location.pathname === "/components/checkbox" &&
+                      LI_ACTIVE_STYLE
                   )}
                 >
                   Checkbox
@@ -268,7 +304,8 @@ export default function App() {
                   prefetch="intent"
                   className={cn(
                     LI_STYLE,
-                    location.pathname === "/components/combobox" && LI_ACTIVE_STYLE
+                    location.pathname === "/components/combobox" &&
+                      LI_ACTIVE_STYLE
                   )}
                 >
                   Combobox
@@ -280,7 +317,8 @@ export default function App() {
                   prefetch="intent"
                   className={cn(
                     LI_STYLE,
-                    location.pathname === "/components/dialog" && LI_ACTIVE_STYLE
+                    location.pathname === "/components/dialog" &&
+                      LI_ACTIVE_STYLE
                   )}
                 >
                   Dialog
@@ -292,7 +330,8 @@ export default function App() {
                   prefetch="intent"
                   className={cn(
                     LI_STYLE,
-                    location.pathname === "/components/dropdown" && LI_ACTIVE_STYLE
+                    location.pathname === "/components/dropdown" &&
+                      LI_ACTIVE_STYLE
                   )}
                 >
                   Dropdown
@@ -304,7 +343,8 @@ export default function App() {
                   prefetch="intent"
                   className={cn(
                     LI_STYLE,
-                    location.pathname === "/components/expandable" && LI_ACTIVE_STYLE
+                    location.pathname === "/components/expandable" &&
+                      LI_ACTIVE_STYLE
                   )}
                 >
                   Expandable
@@ -340,7 +380,8 @@ export default function App() {
                   prefetch="intent"
                   className={cn(
                     LI_STYLE,
-                    location.pathname === "/components/layer-card" && LI_ACTIVE_STYLE
+                    location.pathname === "/components/layer-card" &&
+                      LI_ACTIVE_STYLE
                   )}
                 >
                   Layer Card
@@ -352,7 +393,8 @@ export default function App() {
                   prefetch="intent"
                   className={cn(
                     LI_STYLE,
-                    location.pathname === "/components/loader" && LI_ACTIVE_STYLE
+                    location.pathname === "/components/loader" &&
+                      LI_ACTIVE_STYLE
                   )}
                 >
                   Loader
@@ -376,7 +418,8 @@ export default function App() {
                   prefetch="intent"
                   className={cn(
                     LI_STYLE,
-                    location.pathname === "/components/select" && LI_ACTIVE_STYLE
+                    location.pathname === "/components/select" &&
+                      LI_ACTIVE_STYLE
                   )}
                 >
                   Select
@@ -401,7 +444,8 @@ export default function App() {
                   prefetch="intent"
                   className={cn(
                     LI_STYLE,
-                    location.pathname === "/components/surface" && LI_ACTIVE_STYLE
+                    location.pathname === "/components/surface" &&
+                      LI_ACTIVE_STYLE
                   )}
                 >
                   Surface
@@ -413,7 +457,8 @@ export default function App() {
                   prefetch="intent"
                   className={cn(
                     LI_STYLE,
-                    location.pathname === "/components/switch" && LI_ACTIVE_STYLE
+                    location.pathname === "/components/switch" &&
+                      LI_ACTIVE_STYLE
                   )}
                 >
                   Switch
@@ -425,76 +470,102 @@ export default function App() {
                   prefetch="intent"
                   className={cn(
                     LI_STYLE,
-                    location.pathname === "/components/tooltip" && LI_ACTIVE_STYLE
+                    location.pathname === "/components/tooltip" &&
+                      LI_ACTIVE_STYLE
                   )}
                 >
                   Tooltip
                 </Link>
               </li>
             </ul>
-            <h4 
+            <h4
               className="text-xs mt-4 mb-2 ml-2 font-medium uppercase text-neutral-400 flex items-center justify-between cursor-pointer select-none hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors"
               onClick={() => setBlocksOpen(!blocksOpen)}
             >
               <span>Blocks</span>
-              <CaretDownIcon 
-                size={12} 
+              <CaretDownIcon
+                size={12}
                 weight="bold"
-                className={cn("transition-transform duration-200", blocksOpen && "rotate-180")} 
+                className={cn(
+                  "transition-transform duration-200",
+                  blocksOpen && "rotate-180"
+                )}
               />
             </h4>
-            <ul className={cn(
-              "flex flex-col overflow-hidden transition-all duration-300 ease-in-out",
-              blocksOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
-            )}>
+            <ul
+              className={cn(
+                "flex flex-col overflow-hidden transition-all duration-300 ease-in-out",
+                blocksOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+              )}
+            >
               <li>
-                <Link 
-                  to="/blocks/breadcrumbs" 
+                <Link
+                  to="/blocks/breadcrumbs"
                   prefetch="intent"
-                  className={cn(LI_STYLE, location.pathname === "/blocks/breadcrumbs" && LI_ACTIVE_STYLE)}
+                  className={cn(
+                    LI_STYLE,
+                    location.pathname === "/blocks/breadcrumbs" &&
+                      LI_ACTIVE_STYLE
+                  )}
                 >
                   Breadcrumbs
                 </Link>
               </li>
               <li>
-                <Link 
-                  to="/blocks/empty" 
+                <Link
+                  to="/blocks/empty"
                   prefetch="intent"
-                  className={cn(LI_STYLE, location.pathname === "/blocks/empty" && LI_ACTIVE_STYLE)}
+                  className={cn(
+                    LI_STYLE,
+                    location.pathname === "/blocks/empty" && LI_ACTIVE_STYLE
+                  )}
                 >
                   Empty State
                 </Link>
               </li>
               <li>
-                <Link 
-                  to="/blocks/page-header" 
+                <Link
+                  to="/blocks/page-header"
                   prefetch="intent"
-                  className={cn(LI_STYLE, location.pathname === "/blocks/page-header" && LI_ACTIVE_STYLE)}
+                  className={cn(
+                    LI_STYLE,
+                    location.pathname === "/blocks/page-header" &&
+                      LI_ACTIVE_STYLE
+                  )}
                 >
                   Page Header
                 </Link>
               </li>
             </ul>
-            <h4 
+            <h4
               className="text-xs mt-4 mb-2 ml-2 font-medium uppercase text-neutral-400 flex items-center justify-between cursor-pointer select-none hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors"
               onClick={() => setLayoutsOpen(!layoutsOpen)}
             >
               <span>Layouts</span>
-              <CaretDownIcon 
-                size={12} 
+              <CaretDownIcon
+                size={12}
                 weight="bold"
-                className={cn("transition-transform duration-200", layoutsOpen && "rotate-180")} 
+                className={cn(
+                  "transition-transform duration-200",
+                  layoutsOpen && "rotate-180"
+                )}
               />
             </h4>
-            <ul className={cn(
-              "flex flex-col overflow-hidden transition-all duration-300 ease-in-out",
-              layoutsOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
-            )}>
+            <ul
+              className={cn(
+                "flex flex-col overflow-hidden transition-all duration-300 ease-in-out",
+                layoutsOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+              )}
+            >
               <li>
-                <Link 
-                  to="/layouts/resource-list" 
+                <Link
+                  to="/layouts/resource-list"
                   prefetch="intent"
-                  className={cn(LI_STYLE, location.pathname === "/layouts/resource-list" && LI_ACTIVE_STYLE)}
+                  className={cn(
+                    LI_STYLE,
+                    location.pathname === "/layouts/resource-list" &&
+                      LI_ACTIVE_STYLE
+                  )}
                 >
                   Resource List
                 </Link>
