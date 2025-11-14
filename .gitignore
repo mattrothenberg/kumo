@@ -1,5 +1,32 @@
 .DS_Store
 node_modules
 
+# pnpm
+.pnpm-store/
+
+# environment variables and secrets
+.env
+
+# Compiled output
 .wrangler/
-.react-router/
+storybook-static
+dist/
+build/
+
+# Generated files
+artifacts
+pipeline-artifacts
+worker-configuration.d.ts
+
+# generated types for react router https://reactrouter.com/explanation/type-safety
+.react-router
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

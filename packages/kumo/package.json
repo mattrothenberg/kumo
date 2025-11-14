@@ -1,0 +1,31 @@
+{
+	"name": "@cloudflare/kumo",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"description": "Cloudflare's component library for building modern web applications",
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		},
+		"./styles": "./dist/styles/kumo.css"
+	},
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "echo 'Build not yet configured - see KUMO-003'",
+		"typecheck": "tsc --noEmit"
+	},
+	"peerDependencies": {
+		"react": "^18.0.0 || ^19.0.0",
+		"react-dom": "^18.0.0 || ^19.0.0"
+	},
+	"devDependencies": {
+		"typescript": "^5.9.2"
+	}
+}
