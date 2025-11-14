@@ -5,10 +5,11 @@ import {
   type ForwardedRef,
   forwardRef,
   useMemo,
+  type ElementType,
 } from "react";
 import { cn } from "../utils";
 
-type Heading = "h1" | "h2" | "h3";
+type Heading = "heading1" | "heading2" | "heading3";
 type Copy = "body" | "secondary" | "success" | "error";
 type Monospace = "mono" | "mono-secondary";
 
@@ -21,7 +22,7 @@ type BaseTextProps = Omit<
 > & {
   DANGEROUS_className?: string;
   DANGEROUS_style?: CSSProperties;
-  as?: "span";
+  as?: ElementType;
 };
 
 type TextProps<Variant extends TextVariant = "body"> = BaseTextProps &
@@ -46,9 +47,9 @@ type TextProps<Variant extends TextVariant = "body"> = BaseTextProps &
 // Variant-specific styles
 const variantStyles: Record<TextVariant, string> = {
   // Headings
-  h1: "text-3xl font-semibold",
-  h2: "text-2xl font-semibold",
-  h3: "text-lg font-semibold",
+  heading1: "text-3xl font-semibold",
+  heading2: "text-2xl font-semibold",
+  heading3: "text-lg font-semibold",
 
   // Copy variants
   body: "",
@@ -87,7 +88,7 @@ function _Text<Variant extends TextVariant = "body">(
 
   const Component = useMemo(() => {
     if (as) return as;
-    if (["h1", "h2", "h3"].includes(variant))
+    if (["heading1", "heading2", "heading3"].includes(variant))
       return variant as "h1" | "h2" | "h3";
     if (["mono", "mono-secondary"].includes(variant)) return "span";
     return "p";
