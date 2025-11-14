@@ -38,9 +38,9 @@ export default function TextDoc() {
         >
           <div className="flex xl:gap-10 items-start">
             <div>
-              <Text variant="h1">Heading 1</Text>
-              <Text variant="h2">Heading 2</Text>
-              <Text variant="h3">Heading 3</Text>
+              <Text variant="heading1">Heading 1</Text>
+              <Text variant="heading2">Heading 2</Text>
+              <Text variant="heading3">Heading 3</Text>
             </div>
             <div className="grid">
               <Text>Body</Text>
@@ -84,7 +84,7 @@ export default function Example() {
 }`}
         />
         <section className="mt-8 space-y-4 [&_code]:text-sm">
-          <Text variant="h3">Restrictions</Text>
+          <Text variant="heading3">Restrictions</Text>
           <Text>
             The <code>bold</code> and <code>size</code> props are intentionally
             restricted to the <code>base</code>, <code>secondary</code>,{" "}
