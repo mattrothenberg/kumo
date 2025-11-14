@@ -6,36 +6,84 @@ Kumo is Cloudflare's component library for building modern web applications. It 
 
 The library includes buttons, inputs, dialogs, menus, and other common interface elements. Each component handles keyboard navigation, focus management, and ARIA attributes. This means you can build accessible applications without thinking through every detail.
 
-Kumo is built on Base UI. Meaning we get a lot of primitives and niceties for free.
+Kumo is built on [Base UI](https://base-ui.com/). Meaning we get a lot of primitives and niceties for free.
+
+## Workspace Structure
+
+This repository uses **pnpm workspaces** for monorepo management:
+
+```
+kumo/
+├── packages/
+│   ├── kumo/                      # Component library package (future)
+│   └── kumo-docs/                 # Documentation site
+│       ├── app/                   # React Router application
+│       ├── workers/               # Cloudflare Workers
+│       ├── public/                # Static assets
+│       └── package.json
+├── _docs/                         # Migration documentation
+├── pnpm-workspace.yaml
+└── package.json                   # Workspace root
+```
 
 ## Getting started
+
+### Prerequisites
+
+Install pnpm globally if you haven't already:
+
+```bash
+npm install -g pnpm
+```
+
+### Installation
 
 Install the dependencies:
 
 ```bash
-npm install
+pnpm install
 ```
 
 Start the development server:
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 Your application runs at `http://localhost:5173`.
+
+### Working with Workspaces
+
+```bash
+# Install dependencies for all packages
+pnpm install
+
+# Run commands in all packages
+pnpm -r build
+
+# Run command in specific package
+pnpm --filter @cloudflare/kumo build
+pnpm --filter @cloudflare/kumo-docs dev
+
+# Add dependency to specific package
+pnpm --filter @cloudflare/kumo add react
+
+# List all workspace packages
+pnpm -r list --depth 0
+```
 
 ## Building and deploying
 
 Create a production build:
 
 ```bash
-npm run build
+pnpm build
 ```
 
 Deploy to production:
 
 ```bash
-npm run deploy
+pnpm deploy
 ```
 
 Deploy a preview version:

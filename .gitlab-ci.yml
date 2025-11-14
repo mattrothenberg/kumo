@@ -1,0 +1,7 @@
+# Dummy job to prevent empty pipeline errors
+no-op:
+  stage: .pre
+  script:
+    - echo "No-op job to prevent empty pipelines"
+  rules:
+    - when: always
