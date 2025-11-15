@@ -1,5 +1,5 @@
 import type { FC, PropsWithChildren } from "react";
-import { cn } from "../utils";
+import { cn } from "@cloudflare/kumo";
 
 type LayerCardProps = PropsWithChildren<{ className?: string }>;
 

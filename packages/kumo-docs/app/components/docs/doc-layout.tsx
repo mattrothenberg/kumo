@@ -1,5 +1,5 @@
 import React from "react";
-import { cn } from "../utils";
+import { cn } from "@cloudflare/kumo";
 
 interface DocLayoutProps {
   title: string;

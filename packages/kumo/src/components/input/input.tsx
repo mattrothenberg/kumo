@@ -1,4 +1,4 @@
-import { cn } from "../utils";
+import { cn } from "../../utils/cn";
 import { forwardRef, type ComponentPropsWithoutRef, useId } from "react";
 import { Input as BaseInput } from "@base-ui-components/react/input";
 

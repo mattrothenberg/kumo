@@ -1,4 +1,4 @@
-import { Input } from "~/components/input/input";
+import { Input } from "@cloudflare/kumo";
 import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";
@@ -23,8 +23,8 @@ export default function InputDoc() {
       <ComponentSection>
         <h2 className="text-2xl font-bold mb-4">Installation</h2>
         <CodeBlock
-          lang="tsx"
-          code={`import { Input } from "~/components/input/input";`}
+          lang="bash"
+          code={`npm install @cloudflare/kumo`}
         />
       </ComponentSection>
 
@@ -33,7 +33,7 @@ export default function InputDoc() {
         <h2 className="text-2xl font-bold mb-4">Usage</h2>
         <CodeBlock
           lang="tsx"
-          code={`import { Input } from "~/components/input/input";
+          code={`import { Input } from "@cloudflare/kumo";
 
 export default function Example() {
   return <Input placeholder="Enter text..." />;

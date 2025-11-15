@@ -1,8 +1,6 @@
 import { CheckIcon, ClipboardIcon } from "@phosphor-icons/react";
-import { Button } from "../button/button";
-import { cn } from "../utils";
+import { Button, cn, inputVariants } from "@cloudflare/kumo";
 import { useCallback, useEffect, useState } from "react";
-import { inputVariants } from "../input/input";
 
 export function ClipboardText({ text, className }: ClipboardTextProps) {
   const [copied, setCopied] = useState(false);

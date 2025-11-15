@@ -1,7 +1,6 @@
 import type { CSSProperties, FC, ReactNode } from "react";
 import { Dialog as DialogBase } from "@base-ui-components/react";
-import { Surface } from "../surface/surface";
-import { cn } from "../utils";
+import { Surface, cn } from "@cloudflare/kumo";
 
 type DialogProps = {
   className?: string;

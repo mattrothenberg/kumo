@@ -9,8 +9,7 @@ import {
   useLocation,
 } from "react-router";
 import React, { useEffect, useState } from "react";
-import { cn } from "~/components/utils";
-import { Button } from "~/components/button/button";
+import { cn, Button } from "@cloudflare/kumo";
 import { KumoMenuIcon } from "~/components/kumo-menu-icon";
 import { ThemeToggle } from "~/components/theme-toggle";
 import { CaretDownIcon } from "@phosphor-icons/react";

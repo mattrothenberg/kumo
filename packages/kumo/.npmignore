@@ -1,0 +1,23 @@
+# Source files
+src/
+scripts/
+
+# Config files
+*.config.ts
+*.config.js
+tsconfig.json
+
+# Development files
+node_modules/
+*.log
+.DS_Store
+
+# Test files
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+
+# Story files
+**/*.stories.tsx
+**/*.stories.ts

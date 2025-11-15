@@ -1,6 +1,6 @@
 import { type PropsWithChildren, useContext } from 'react';
 import * as React from 'react';
-import { cn } from '../utils';
+import { cn } from '../../utils/cn';
 import { Input as InputExternal, type InputProps, inputVariants } from './input';
 import { type ButtonProps, Button as ButtonExternal } from '../button/button';
 

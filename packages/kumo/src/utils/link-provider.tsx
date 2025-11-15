@@ -46,4 +46,3 @@ export function LinkProvider({
 }
 
 export type { LinkComponentProps };
-

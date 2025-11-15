@@ -1,4 +1,4 @@
-import { cn } from "~/components/utils";
+import { cn } from "@cloudflare/kumo";
 
 export function ResourceListPage({ title, description, icon, usage, additionalContent, children }: { title?: string; description?: string; icon?: React.ReactNode; usage?: React.ReactNode; additionalContent?: React.ReactNode; children: React.ReactNode }) {
     return (

@@ -1,0 +1,107 @@
+@layer base {
+  /* Light mode color scheme */
+  :root {
+    /* Main background color and its contrasting text color */
+    --kumo-surface: #fff;
+    --kumo-surface-foreground: #000;
+
+    --kumo-surface-secondary: var(--color-neutral-50);
+    --kumo-surface-active: var(--color-neutral-100);
+
+    /* Primary interactive elements like buttons, links, and focus states */
+    --kumo-primary: #056dff;
+    --kumo-primary-foreground: var(--color-white);
+
+    /* Secondary interactive elements, alternative to primary */
+    --kumo-secondary: var(--color-white);
+    --kumo-secondary-foreground: var(--color-neutral-900);
+    --kumo-secondary-hover: var(--color-neutral-50);
+
+    --kumo-accent: var(--color-neutral-150);
+
+    /* Destructive actions like delete, remove, or error states */
+    --kumo-destructive: var(--color-red-600);
+    --kumo-destructive-foreground: var(--color-neutral-50);
+
+    /* Less prominent elements like disabled states or placeholders */
+    --kumo-muted: var(--color-neutral-100);
+    --kumo-muted-foreground: var(--color-neutral-500);
+
+    --kumo-input: var(--color-neutral-50);
+
+    /* Border color for UI elements like inputs, cards, and dividers */
+    --kumo-border: var(--color-neutral-200);
+    --kumo-border-hover: var(--color-neutral-300);
+    --kumo-border-active: var(--color-neutral-400);
+
+    /* Other text color */
+    --kumo-text-error: var(--color-red-600);
+  }
+
+  /* Dark mode color scheme */
+  .dark-mode {
+    /* Dark mode background and text colors */
+    --kumo-surface: var(--color-black);
+    --kumo-surface-foreground: var(--color-neutral-50);
+
+    --kumo-surface-secondary: var(--kumo-surface);
+    --kumo-surface-active: var(--color-neutral-800);
+
+    /* Primary elements in dark mode with appropriate contrast */
+    --kumo-primary: #056dff;
+    --kumo-primary-foreground: var(--color-white);
+
+    /* Secondary elements in dark mode */
+    --kumo-secondary: var(--color-neutral-900);
+    --kumo-secondary-foreground: var(--color-neutral-50);
+    --kumo-secondary-hover: var(--color-neutral-800);
+
+    --kumo-accent: var(--color-neutral-850);
+
+    /* Destructive actions in dark mode with adjusted visibility */
+    --kumo-destructive: var(--color-red-600);
+    --kumo-destructive-foreground: var(--color-neutral-50);
+
+    /* Muted elements in dark mode with proper contrast */
+    --kumo-muted: var(--color-neutral-500);
+    --kumo-muted-foreground: var(--color-neutral-50);
+
+    --kumo-input: var(--color-neutral-900);
+
+    /* Border color adjusted for dark mode visibility */
+    --kumo-border: var(--color-neutral-800);
+    --kumo-border-hover: var(--color-neutral-750);
+    --kumo-border-active: var(--color-neutral-600);
+
+    /* Other text color */
+    --kumo-text-error: var(--color-red-600);
+  }
+}
+
+/*
+ * Color Bindings
+ * These variables connect our custom color system to Tailwind's theming layer.
+ * This allows us to use our semantic color variables throughout the application
+ * while maintaining compatibility with Tailwind's utility classes.
+ */
+@theme {
+  --color-surface: var(--kumo-surface);
+  --color-surface-secondary: var(--kumo-surface-secondary);
+  --color-surface-active: var(--kumo-surface-active);
+  --color-primary: var(--kumo-primary);
+  --color-primary-foreground: var(--kumo-primary-foreground);
+  --color-secondary: var(--kumo-secondary);
+  --color-secondary-foreground: var(--kumo-secondary-foreground);
+  --color-secondary-hover: var(--kumo-secondary-hover);
+  --color-accent: var(--kumo-accent);
+  --color-destructive: var(--kumo-destructive);
+  --color-destructive-foreground: var(--kumo-destructive-foreground);
+  --color-muted: var(--kumo-muted);
+  --color-muted-foreground: var(--kumo-muted-foreground);
+  --color-input: var(--kumo-input);
+  --color-border: var(--kumo-border);
+  --color-border-hover: var(--kumo-border-hover);
+  --color-border-active: var(--kumo-border-active);
+  --color-text-error: var(--kumo-text-error);
+  --color-active: #056dff;
+}

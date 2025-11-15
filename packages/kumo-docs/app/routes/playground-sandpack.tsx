@@ -11,7 +11,7 @@ import {
   SandpackCodeEditor,
   SandpackPreview,
 } from "@codesandbox/sandpack-react";
-import { Button } from "~/components/button/button";
+import { Button } from "@cloudflare/kumo";
 import { getSandpackFiles } from "~/lib/sandpack-files";
 import { 
   SparkleIcon, 
@@ -20,7 +20,7 @@ import {
   ArrowsClockwiseIcon,
   CheckIcon,
 } from "@phosphor-icons/react";
-import { cn } from "~/components/utils";
+import { cn } from "@cloudflare/kumo";
 
 export function meta() {
   return [

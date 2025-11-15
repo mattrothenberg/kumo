@@ -1,5 +1,5 @@
 import { PlusIcon, ArrowRightIcon } from "@phosphor-icons/react";
-import { Button } from "~/components/button/button";
+import { Button } from "@cloudflare/kumo";
 import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";
@@ -28,12 +28,9 @@ export default function ButtonDoc() {
       {/* Installation */}
       <ComponentSection>
         <h2 className="text-2xl font-bold mb-4">Installation</h2>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
-          Copy and paste the following code into your project.
-        </p>
         <CodeBlock
-          lang="tsx"
-          code={`import { Button } from "~/components/button/button";`}
+          lang="bash"
+          code={`npm install @cloudflare/kumo`}
         />
       </ComponentSection>
 
@@ -42,7 +39,7 @@ export default function ButtonDoc() {
         <h2 className="text-2xl font-bold mb-4">Usage</h2>
         <CodeBlock
           lang="tsx"
-          code={`import { Button } from "~/components/button/button";
+          code={`import { Button } from "@cloudflare/kumo";
 
 export default function Example() {
   return <Button variant="secondary">Click me</Button>;

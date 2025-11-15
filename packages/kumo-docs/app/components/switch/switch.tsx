@@ -1,6 +1,6 @@
 import { Switch as BaseSwitch } from "@base-ui-components/react/switch";
 import { type ButtonHTMLAttributes, type Ref, useId } from "react";
-import { cn } from "../utils";
+import { cn } from "@cloudflare/kumo";
 
 type SwitchProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick" | "type"> & {
   onClick: () => void;

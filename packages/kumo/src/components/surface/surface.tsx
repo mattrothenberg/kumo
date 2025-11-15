@@ -5,7 +5,7 @@ import {
   type PropsWithChildren,
   type ForwardedRef,
 } from "react";
-import { cn } from "../utils";
+import { cn } from "../../utils/cn";
 
 type PolymorphicAsProp<E extends ElementType> = {
   as?: E;

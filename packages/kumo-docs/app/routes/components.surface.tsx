@@ -1,4 +1,4 @@
-import { Surface } from "~/components/surface/surface";
+import { Surface } from "@cloudflare/kumo";
 import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";
@@ -27,8 +27,8 @@ export default function SurfaceDoc() {
       <ComponentSection>
         <h2 className="text-2xl font-bold mb-4">Installation</h2>
         <CodeBlock
-          lang="tsx"
-          code={`import { Surface } from "~/components/surface/surface";`}
+          lang="bash"
+          code={`npm install @cloudflare/kumo`}
         />
       </ComponentSection>
 
@@ -37,7 +37,7 @@ export default function SurfaceDoc() {
         <h2 className="text-2xl font-bold mb-4">Usage</h2>
         <CodeBlock
           lang="tsx"
-          code={`import { Surface } from "~/components/surface/surface";
+          code={`import { Surface } from "@cloudflare/kumo";
 
 export default function Example() {
   return (

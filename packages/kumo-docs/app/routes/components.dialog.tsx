@@ -1,5 +1,5 @@
 import { Dialog } from "~/components/dialog/dialog";
-import { Button } from "~/components/button/button";
+import { Button } from "@cloudflare/kumo";
 import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";
@@ -51,7 +51,7 @@ export default function DialogDoc() {
         <CodeBlock
           lang="tsx"
           code={`import { Dialog } from "~/components/dialog/dialog";
-import { Button } from "~/components/button/button";
+import { Button } from "@cloudflare/kumo";
 
 export default function Example() {
   return (
