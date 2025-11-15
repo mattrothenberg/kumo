@@ -1,8 +1,8 @@
 import React from "react";
 import { ArrowsClockwiseIcon, type Icon } from "@phosphor-icons/react";
 import { Loader } from "../loader/loader";
-import { cn } from "../utils";
-import { useLinkComponent } from "../link-provider";
+import { cn } from "../../utils/cn";
+import { useLinkComponent } from "../../utils/link-provider";
 
 interface KumoButtonVariantsProps {
   shape?: "base" | "square" | "circle";

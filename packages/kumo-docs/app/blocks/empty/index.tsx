@@ -1,6 +1,6 @@
 import { CheckIcon, CopyIcon } from "@phosphor-icons/react";
 import { useState } from "react";
-import { Button } from "~/components/button/button";
+import { Button } from "@cloudflare/kumo";
 
 export function Empty({
     icon,

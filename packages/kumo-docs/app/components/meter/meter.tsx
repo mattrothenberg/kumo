@@ -1,6 +1,6 @@
 import { Meter as BaseMeter } from "@base-ui-components/react/meter";
 import { type ComponentPropsWithoutRef } from "react";
-import { cn } from "../utils";
+import { cn } from "@cloudflare/kumo";
 
 type RootProps = ComponentPropsWithoutRef<typeof BaseMeter.Root>;
 

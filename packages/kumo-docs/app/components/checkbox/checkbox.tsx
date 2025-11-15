@@ -1,6 +1,6 @@
 import React from "react";
 import { CheckIcon } from "@phosphor-icons/react";
-import { cn } from "../utils";
+import { cn } from "@cloudflare/kumo";
 
 export interface CheckboxProps
   extends React.InputHTMLAttributes<HTMLInputElement> {

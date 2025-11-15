@@ -1,6 +1,6 @@
 import { CaretDownIcon } from "@phosphor-icons/react";
 import { type PropsWithChildren, useCallback } from "react";
-import { cn } from "../utils";
+import { cn } from "@cloudflare/kumo";
 
 type ExpandableProps = PropsWithChildren<{
   title: string;

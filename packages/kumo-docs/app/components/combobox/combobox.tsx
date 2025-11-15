@@ -1,6 +1,5 @@
 import { Combobox as ComboboxBase } from "@base-ui-components/react/combobox";
-import { inputVariants } from "../input/input";
-import { cn } from "../utils";
+import { inputVariants, cn } from "@cloudflare/kumo";
 import {
   CaretDownIcon,
   CheckIcon,

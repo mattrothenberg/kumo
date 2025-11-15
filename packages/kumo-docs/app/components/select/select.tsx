@@ -2,8 +2,7 @@ import { Select as SelectBase } from "@base-ui-components/react/select";
 import { CaretUpDownIcon, CheckIcon } from "@phosphor-icons/react";
 import { useId } from "react";
 import type { ComponentPropsWithoutRef, FC, ReactNode } from "react";
-import { cn } from "../utils";
-import { buttonVariants } from "../button/button";
+import { cn, buttonVariants } from "@cloudflare/kumo";
 
 type SelectProps = ComponentPropsWithoutRef<typeof SelectBase.Root> & {
   renderValue?: (value: string | null) => ReactNode;

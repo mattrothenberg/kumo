@@ -1,6 +1,6 @@
 import { PencilRulerIcon } from "@phosphor-icons/react";
 import { Empty } from "~/blocks/empty";
-import { Button } from "~/components/button/button";
+import { Button } from "@cloudflare/kumo";
 
 export default function Figma() {
   return (

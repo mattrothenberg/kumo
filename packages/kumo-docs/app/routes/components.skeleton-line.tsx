@@ -1,4 +1,4 @@
-import { SkeletonLine } from "~/components/loader/skeleton-line";
+import { SkeletonLine } from "@cloudflare/kumo";
 import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";
@@ -31,8 +31,8 @@ export default function SkeletonLineDoc() {
       <ComponentSection>
         <h2 className="text-2xl font-bold mb-4">Installation</h2>
         <CodeBlock
-          lang="tsx"
-          code={`import { SkeletonLine } from "~/components/loader/skeleton-line";`}
+          lang="bash"
+          code={`npm install @cloudflare/kumo`}
         />
       </ComponentSection>
 
@@ -41,7 +41,7 @@ export default function SkeletonLineDoc() {
         <h2 className="text-2xl font-bold mb-4">Usage</h2>
         <CodeBlock
           lang="tsx"
-          code={`import { SkeletonLine } from "~/components/loader/skeleton-line";
+          code={`import { SkeletonLine } from "@cloudflare/kumo";
 
 export default function Example() {
   return (

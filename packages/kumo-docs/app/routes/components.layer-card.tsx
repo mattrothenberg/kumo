@@ -3,7 +3,7 @@ import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";
 import { CodeBlock } from "~/components/code/code-lazy";
-import { Button } from "~/components/button/button";
+import { Button } from "@cloudflare/kumo";
 import { ArrowRightIcon } from "@phosphor-icons/react";
 
 export default function LayerCardDoc() {

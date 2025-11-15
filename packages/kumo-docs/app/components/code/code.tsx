@@ -1,5 +1,5 @@
 import { type CSSProperties } from "react";
-import { cn } from "../utils";
+import { cn } from "@cloudflare/kumo";
 
 type BundledLanguage = "ts" | "tsx" | "jsonc" | "bash";
 

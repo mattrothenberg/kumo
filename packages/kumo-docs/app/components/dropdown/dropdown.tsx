@@ -1,13 +1,12 @@
 import { Menu as DropdownMenuPrimitive } from "@base-ui-components/react/menu";
 import * as React from "react";
-import { cn } from "../utils";
+import { cn, useLinkComponent } from "@cloudflare/kumo";
 import { Checkbox } from "./../checkbox/checkbox";
 import {
   CaretRightIcon as CaretRight,
   CheckIcon as Check,
   type Icon,
 } from "@phosphor-icons/react";
-import { useLinkComponent } from "../link-provider";
 
 const DropdownMenuSubTrigger = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.SubmenuTrigger>,

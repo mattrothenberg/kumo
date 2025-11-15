@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { InputGroup } from "../input/input-group";
+import { InputGroup } from "@cloudflare/kumo";
 import { CaretDoubleLeftIcon, CaretDoubleRightIcon, CaretLeftIcon, CaretRightIcon } from "@phosphor-icons/react";
 
 export function Pagination({

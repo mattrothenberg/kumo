@@ -4,7 +4,7 @@ import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";
 import { CodeBlock } from "~/components/code/code-lazy";
 import { ResourceListPage } from "~/layouts/resource-list";
-import { Button } from "~/components/button/button";
+import { Button } from "@cloudflare/kumo";
 import { Pagination } from "~/components/pagination/pagination";
 import { Empty } from "~/blocks/empty";
 

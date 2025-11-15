@@ -1,5 +1,5 @@
 import { Field } from "~/components/field/field";
-import { Input } from "~/components/input/input";
+import { Input } from "@cloudflare/kumo";
 import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";

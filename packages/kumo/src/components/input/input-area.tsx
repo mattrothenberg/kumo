@@ -1,5 +1,5 @@
 import { inputVariants } from './input';
-import { cn } from '../utils';
+import { cn } from '../../utils/cn';
 import { useCallback, useId } from 'react';
 import * as React from 'react';
 

@@ -1,5 +1,5 @@
 import { Tooltip } from "../tooltip/tooltip";
-import { cn } from "../utils";
+import { cn } from "@cloudflare/kumo";
 import { IconContext } from "@phosphor-icons/react";
 import React, { useRef } from "react";
 import { useMenuNavigation } from "./use-menu-navigation";

@@ -3,7 +3,7 @@
 	"version": "0.0.0",
 	"private": true,
 	"type": "module",
-	"description": "Cloudflare's component library for building modern web applications",
+	"description": "Kumo - Cloudflare's component library for building modern web applications",
 	"main": "./dist/index.js",
 	"module": "./dist/index.js",
 	"types": "./dist/index.d.ts",
@@ -12,20 +12,58 @@
 			"types": "./dist/index.d.ts",
 			"import": "./dist/index.js"
 		},
-		"./styles": "./dist/styles/kumo.css"
+		"./components/badge": {
+			"types": "./dist/components/badge/index.d.ts",
+			"import": "./dist/components/badge/index.js"
+		},
+		"./components/button": {
+			"types": "./dist/components/button/index.d.ts",
+			"import": "./dist/components/button/index.js"
+		},
+		"./components/input": {
+			"types": "./dist/components/input/index.d.ts",
+			"import": "./dist/components/input/index.js"
+		},
+		"./components/loader": {
+			"types": "./dist/components/loader/index.d.ts",
+			"import": "./dist/components/loader/index.js"
+		},
+		"./components/surface": {
+			"types": "./dist/components/surface/index.d.ts",
+			"import": "./dist/components/surface/index.js"
+		},
+		"./utils": {
+			"types": "./dist/utils/index.d.ts",
+			"import": "./dist/utils/index.js"
+		},
+		"./styles": "./dist/styles/kumo.css",
+		"./styles/*": "./dist/styles/*.css"
 	},
 	"files": [
 		"dist"
 	],
 	"scripts": {
-		"build": "echo 'Build not yet configured - see KUMO-003'",
+		"build": "vite build && tsx scripts/build-css.ts",
+		"dev": "vite build --watch",
 		"typecheck": "tsc --noEmit"
 	},
 	"peerDependencies": {
+		"@base-ui-components/react": "^1.0.0-beta.4",
+		"@phosphor-icons/react": "^2.1.9",
 		"react": "^18.0.0 || ^19.0.0",
 		"react-dom": "^18.0.0 || ^19.0.0"
 	},
+	"dependencies": {
+		"clsx": "^2.1.1",
+		"tailwind-merge": "^2.5.5"
+	},
 	"devDependencies": {
-		"typescript": "^5.9.2"
+		"@types/node": "^22.10.2",
+		"@types/react": "^18.3.18",
+		"@types/react-dom": "^18.3.5",
+		"tsx": "^4.19.2",
+		"typescript": "^5.9.2",
+		"vite": "^6.0.7",
+		"vite-plugin-dts": "^4.3.0"
 	}
 }
