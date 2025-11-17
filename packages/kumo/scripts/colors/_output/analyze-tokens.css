@@ -1,0 +1,13 @@
+:root {
+  --color-kumo-1: light-dark(oklch(20.5% 0 0), oklch(20.5% 0 0));
+  --color-kumo-2: light-dark(#000, #fff);
+  --color-kumo-3: light-dark(#fff, #fff);
+  --color-kumo-4: light-dark(#fff, oklch(20.5% 0 0));
+  --color-kumo-5: light-dark(inherit, inherit);
+  --color-kumo-6: light-dark(oklch(14.5% 0 0 / 0.1), oklch(26.9% 0 0));
+  --color-kumo-7: light-dark(oklch(20.5% 0 0), oklch(97% 0 0));
+  --color-kumo-8: light-dark(oklch(63.7% 0.237 25.331), oklch(63.7% 0.237 25.331));
+  --color-kumo-9: light-dark(oklch(70.8% 0 0), oklch(70.8% 0 0));
+  --color-kumo-10: light-dark(oklch(92.2% 0 0), oklch(26.9% 0 0));
+  --color-kumo-11: light-dark(transparent, transparent);
+}
