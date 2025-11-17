@@ -1,16 +1,15 @@
-import { inputVariants } from './input';
-import { cn } from '../../utils/cn';
-import { useCallback, useId } from 'react';
-import * as React from 'react';
+import { inputVariants } from "./input";
+import { cn } from "../../utils/cn";
+import { useCallback, useId } from "react";
+import * as React from "react";
 
 export const InputArea = React.forwardRef<HTMLTextAreaElement, InputAreaProps>(
   (props, ref) => {
     const {
-      children,
       className,
       onValueChange,
-      size = 'base',
-      variant = 'default',
+      size = "base",
+      variant = "default",
       onChange,
       label,
       hideLabel = true,
@@ -33,7 +32,11 @@ export const InputArea = React.forwardRef<HTMLTextAreaElement, InputAreaProps>(
         {label && (
           <label
             htmlFor={textAreaId}
-            className={hideLabel ? 'sr-only' : 'block text-sm font-medium text-surface'}
+            className={
+              hideLabel
+                ? "sr-only"
+                : "block text-sm font-medium text-kumo-surface"
+            }
           >
             {label}
           </label>
@@ -43,7 +46,7 @@ export const InputArea = React.forwardRef<HTMLTextAreaElement, InputAreaProps>(
           id={textAreaId}
           className={cn(
             inputVariants({ size, variant, focusIndicator: true }),
-            'h-auto py-2', // Input variant always come with size, but it does not apply for textarea
+            "h-auto py-2", // Input variant always come with size, but it does not apply for textarea
             className
           )}
           onChange={handleChange}
@@ -54,7 +57,7 @@ export const InputArea = React.forwardRef<HTMLTextAreaElement, InputAreaProps>(
   }
 );
 
-InputArea.displayName = 'InputArea';
+InputArea.displayName = "InputArea";
 
 export type InputAreaProps = {
   onValueChange?: (value: string) => void;
@@ -68,4 +71,4 @@ export type InputAreaProps = {
   className?: string;
 
   // Finally, spread the native input props (least important)
-} & Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'size'>;
+} & Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "size">;

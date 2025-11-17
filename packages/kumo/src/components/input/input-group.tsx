@@ -1,8 +1,12 @@
-import { type PropsWithChildren, useContext } from 'react';
-import * as React from 'react';
-import { cn } from '../../utils/cn';
-import { Input as InputExternal, type InputProps, inputVariants } from './input';
-import { type ButtonProps, Button as ButtonExternal } from '../button/button';
+import { type PropsWithChildren, useContext } from "react";
+import * as React from "react";
+import { cn } from "../../utils/cn";
+import {
+  Input as InputExternal,
+  type InputProps,
+  inputVariants,
+} from "./input";
+import { type ButtonProps, Button as ButtonExternal } from "../button/button";
 
 interface InputGroupRootProps {
   className?: string;
@@ -14,7 +18,7 @@ const InputGroupContext = React.createContext<InputGroupRootProps | null>(null);
 function Root({
   size,
   children,
-  className
+  className,
 }: PropsWithChildren<InputGroupRootProps>) {
   const contextValue = React.useMemo(() => ({ size }), [size]);
 
@@ -23,7 +27,7 @@ function Root({
       <div
         className={cn(
           inputVariants({ size, parentFocusIndicator: true }),
-          'border-0 flex gap-0 overflow-hidden px-0 w-full ring ring-neutral-950/10 shadow-xs focus-within:ring-active dark:ring-neutral-800',
+          "border-0 flex gap-0 overflow-hidden px-0 w-full ring shadow-xs focus-within:ring-kumo-active ring-kumo-border",
           className
         )}
       >
@@ -41,7 +45,7 @@ function Label({ children }: PropsWithChildren<{}>) {
     const rootElement = event.currentTarget.parentElement;
 
     if (rootElement) {
-      const inputElement = rootElement.querySelector('input');
+      const inputElement = rootElement.querySelector("input");
       if (inputElement) {
         inputElement.focus();
       }
@@ -50,7 +54,7 @@ function Label({ children }: PropsWithChildren<{}>) {
 
   return (
     <div
-      className="flex p-0 items-center text-muted px-2 h-full"
+      className="flex p-0 items-center text-kumo-muted px-2 h-full"
       onClick={onLabelClick}
     >
       {children}
@@ -66,9 +70,9 @@ function Input(props: InputProps) {
       size={context?.size}
       {...props}
       className={cn(
-        'border-0 h-full rounded-none flex items-center first:pl-2 last:pr-2 bg-surface font-sans',
-        'focus:border-color',
-        'grow px-0',
+        "border-0 h-full rounded-none flex items-center first:pl-2 last:pr-2 bg-kumo-surface font-sans",
+        "focus:border-kumo-color",
+        "grow px-0",
         props.className
       )}
     />
@@ -87,7 +91,7 @@ function Button({
       {...props}
       size={context?.size}
       className={cn(
-        'rounded-none h-full! disabled:bg-surface-secondary disabled:text-neutral-400!',
+        "rounded-none h-full! disabled:bg-kumo-surface-secondary disabled:text-kumo-disabled!",
         className
       )}
     >

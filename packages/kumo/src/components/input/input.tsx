@@ -20,8 +20,8 @@ const sizeStyles = {
 };
 
 const variantStyles = {
-  default: "focus:ring-active",
-  error: "!ring-destructive focus:ring-destructive",
+  default: "focus:ring-kumo-active",
+  error: "!ring-kumo-destructive focus:ring-kumo-destructive",
 };
 
 export function inputVariants({
@@ -32,16 +32,16 @@ export function inputVariants({
 }: KumoInputVariantsProps = {}) {
   return cn(
     // Base styles
-    "bg-surface dark:bg-neutral-900 ring ring-neutral-950/10 dark:ring-neutral-800 text-surface",
+    "bg-kumo-surface text-kumo-surface ring ring-kumo-border",
     // Disabled state and placeholder styles
-    "placeholder:text-muted disabled:text-muted outline-none",
+    "placeholder:text-kumo-muted disabled:text-kumo-muted outline-none",
     // Apply size styles
     sizeStyles[size],
     // Apply variant styles
     variantStyles[variant],
     // Focus state handling
-    parentFocusIndicator && "[&:has(:focus-within)]:ring-active",
-    focusIndicator && "focus:ring-active"
+    parentFocusIndicator && "[&:has(:focus-within)]:ring-kumo-active",
+    focusIndicator && "focus:ring-kumo-active"
   );
 }
 
@@ -63,7 +63,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
       {label && (
         <label
           htmlFor={inputId}
-          className={hideLabel ? "sr-only" : "block text-sm font-medium text-surface"}
+          className={
+            hideLabel
+              ? "sr-only"
+              : "block text-sm font-medium text-kumo-surface"
+          }
         >
           {label}
         </label>
