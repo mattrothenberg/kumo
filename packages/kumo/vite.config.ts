@@ -47,7 +47,7 @@ export default defineConfig({
         'components/tooltip': resolve(__dirname, 'src/components/tooltip/index.ts'),
         // PLOP_INJECT_COMPONENT_ENTRY
         // Block entry points
-        'blocks/breadcrumbs': resolve(__dirname, 'src/blocks/breadcrumbs/index.ts'),
+        'blocks/breadcrumb': resolve(__dirname, 'src/blocks/breadcrumb/index.ts'),
         'blocks/empty': resolve(__dirname, 'src/blocks/empty/index.ts'),
         'blocks/page-header': resolve(__dirname, 'src/blocks/page-header/index.ts'),
         // PLOP_INJECT_BLOCK_ENTRY
