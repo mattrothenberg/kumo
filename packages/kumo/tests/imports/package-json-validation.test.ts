@@ -29,8 +29,8 @@ describe('Package.json Validation', () => {
           console.error(`   - ${name}`);
           console.error(`     Add this to package.json exports:`);
           console.error(`     "./components/${name}": {`);
-          console.error(`       "types": "./dist/components/${name}/index.d.ts",`);
-          console.error(`       "import": "./dist/components/${name}/index.js"`);
+          console.error(`       "types": "./dist/src/components/${name}/index.d.ts",`);
+          console.error(`       "import": "./dist/components/${name}.js"`);
           console.error(`     }`);
         });
       }
@@ -50,8 +50,8 @@ describe('Package.json Validation', () => {
           console.error(`   - ${name}`);
           console.error(`     Add this to package.json exports:`);
           console.error(`     "./blocks/${name}": {`);
-          console.error(`       "types": "./dist/blocks/${name}/index.d.ts",`);
-          console.error(`       "import": "./dist/blocks/${name}/index.js"`);
+          console.error(`       "types": "./dist/src/blocks/${name}/index.d.ts",`);
+          console.error(`       "import": "./dist/blocks/${name}.js"`);
           console.error(`     }`);
         });
       }
@@ -103,8 +103,8 @@ describe('Package.json Validation', () => {
           console.error(`   - ${name}`);
           console.error(`     Add this to package.json exports:`);
           console.error(`     "./layouts/${name}": {`);
-          console.error(`       "types": "./dist/layouts/${name}/index.d.ts",`);
-          console.error(`       "import": "./dist/layouts/${name}/index.js"`);
+          console.error(`       "types": "./dist/src/layouts/${name}/index.d.ts",`);
+          console.error(`       "import": "./dist/layouts/${name}.js"`);
           console.error(`     }`);
         });
       }
@@ -143,12 +143,12 @@ describe('Package.json Validation', () => {
         });
 
         it('should have correct types path', () => {
-          const expectedTypesPath = `./dist/components/${componentName}/index.d.ts`;
+          const expectedTypesPath = `./dist/src/components/${componentName}/index.d.ts`;
           expect(exportConfig.types).toBe(expectedTypesPath);
         });
 
         it('should have correct import path', () => {
-          const expectedImportPath = `./dist/components/${componentName}/index.js`;
+          const expectedImportPath = `./dist/components/${componentName}.js`;
           expect(exportConfig.import).toBe(expectedImportPath);
         });
       });
@@ -166,12 +166,12 @@ describe('Package.json Validation', () => {
         });
 
         it('should have correct types path', () => {
-          const expectedTypesPath = `./dist/blocks/${blockName}/index.d.ts`;
+          const expectedTypesPath = `./dist/src/blocks/${blockName}/index.d.ts`;
           expect(exportConfig.types).toBe(expectedTypesPath);
         });
 
         it('should have correct import path', () => {
-          const expectedImportPath = `./dist/blocks/${blockName}/index.js`;
+          const expectedImportPath = `./dist/blocks/${blockName}.js`;
           expect(exportConfig.import).toBe(expectedImportPath);
         });
       });
@@ -189,12 +189,12 @@ describe('Package.json Validation', () => {
         });
 
         it('should have correct types path', () => {
-          const expectedTypesPath = `./dist/layouts/${layoutName}/index.d.ts`;
+          const expectedTypesPath = `./dist/src/layouts/${layoutName}/index.d.ts`;
           expect(exportConfig.types).toBe(expectedTypesPath);
         });
 
         it('should have correct import path', () => {
-          const expectedImportPath = `./dist/layouts/${layoutName}/index.js`;
+          const expectedImportPath = `./dist/layouts/${layoutName}.js`;
           expect(exportConfig.import).toBe(expectedImportPath);
         });
       });
