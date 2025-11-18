@@ -19,131 +19,131 @@
 	],
 	"main": "./dist/index.js",
 	"module": "./dist/index.js",
-	"types": "./dist/index.d.ts",
+	"types": "./dist/src/index.d.ts",
 	"exports": {
 		".": {
-			"types": "./dist/index.d.ts",
+			"types": "./dist/src/index.d.ts",
 			"import": "./dist/index.js"
 		},
 		"./components/badge": {
-			"types": "./dist/components/badge/index.d.ts",
-			"import": "./dist/components/badge/index.js"
+			"types": "./dist/src/components/badge/index.d.ts",
+			"import": "./dist/components/badge.js"
 		},
 		"./components/banner": {
-			"types": "./dist/components/banner/index.d.ts",
-			"import": "./dist/components/banner/index.js"
+			"types": "./dist/src/components/banner/index.d.ts",
+			"import": "./dist/components/banner.js"
 		},
 		"./components/button": {
-			"types": "./dist/components/button/index.d.ts",
-			"import": "./dist/components/button/index.js"
+			"types": "./dist/src/components/button/index.d.ts",
+			"import": "./dist/components/button.js"
 		},
 		"./components/calendar": {
-			"types": "./dist/components/calendar/index.d.ts",
-			"import": "./dist/components/calendar/index.js"
+			"types": "./dist/src/components/calendar/index.d.ts",
+			"import": "./dist/components/calendar.js"
 		},
 		"./components/checkbox": {
-			"types": "./dist/components/checkbox/index.d.ts",
-			"import": "./dist/components/checkbox/index.js"
+			"types": "./dist/src/components/checkbox/index.d.ts",
+			"import": "./dist/components/checkbox.js"
 		},
 		"./components/clipboard-text": {
-			"types": "./dist/components/clipboard-text/index.d.ts",
-			"import": "./dist/components/clipboard-text/index.js"
+			"types": "./dist/src/components/clipboard-text/index.d.ts",
+			"import": "./dist/components/clipboard-text.js"
 		},
 		"./components/code": {
-			"types": "./dist/components/code/index.d.ts",
-			"import": "./dist/components/code/index.js"
+			"types": "./dist/src/components/code/index.d.ts",
+			"import": "./dist/components/code.js"
 		},
 		"./components/combobox": {
-			"types": "./dist/components/combobox/index.d.ts",
-			"import": "./dist/components/combobox/index.js"
+			"types": "./dist/src/components/combobox/index.d.ts",
+			"import": "./dist/components/combobox.js"
 		},
 		"./components/dialog": {
-			"types": "./dist/components/dialog/index.d.ts",
-			"import": "./dist/components/dialog/index.js"
+			"types": "./dist/src/components/dialog/index.d.ts",
+			"import": "./dist/components/dialog.js"
 		},
 		"./components/dropdown": {
-			"types": "./dist/components/dropdown/index.d.ts",
-			"import": "./dist/components/dropdown/index.js"
+			"types": "./dist/src/components/dropdown/index.d.ts",
+			"import": "./dist/components/dropdown.js"
 		},
 		"./components/expandable": {
-			"types": "./dist/components/expandable/index.d.ts",
-			"import": "./dist/components/expandable/index.js"
+			"types": "./dist/src/components/expandable/index.d.ts",
+			"import": "./dist/components/expandable.js"
 		},
 		"./components/field": {
-			"types": "./dist/components/field/index.d.ts",
-			"import": "./dist/components/field/index.js"
+			"types": "./dist/src/components/field/index.d.ts",
+			"import": "./dist/components/field.js"
 		},
 		"./components/input": {
-			"types": "./dist/components/input/index.d.ts",
-			"import": "./dist/components/input/index.js"
+			"types": "./dist/src/components/input/index.d.ts",
+			"import": "./dist/components/input.js"
 		},
 		"./components/layer-card": {
-			"types": "./dist/components/layer-card/index.d.ts",
-			"import": "./dist/components/layer-card/index.js"
+			"types": "./dist/src/components/layer-card/index.d.ts",
+			"import": "./dist/components/layer-card.js"
 		},
 		"./components/loader": {
-			"types": "./dist/components/loader/index.d.ts",
-			"import": "./dist/components/loader/index.js"
+			"types": "./dist/src/components/loader/index.d.ts",
+			"import": "./dist/components/loader.js"
 		},
 		"./components/menubar": {
-			"types": "./dist/components/menubar/index.d.ts",
-			"import": "./dist/components/menubar/index.js"
+			"types": "./dist/src/components/menubar/index.d.ts",
+			"import": "./dist/components/menubar.js"
 		},
 		"./components/meter": {
-			"types": "./dist/components/meter/index.d.ts",
-			"import": "./dist/components/meter/index.js"
+			"types": "./dist/src/components/meter/index.d.ts",
+			"import": "./dist/components/meter.js"
 		},
 		"./components/pagination": {
-			"types": "./dist/components/pagination/index.d.ts",
-			"import": "./dist/components/pagination/index.js"
+			"types": "./dist/src/components/pagination/index.d.ts",
+			"import": "./dist/components/pagination.js"
 		},
 		"./components/select": {
-			"types": "./dist/components/select/index.d.ts",
-			"import": "./dist/components/select/index.js"
+			"types": "./dist/src/components/select/index.d.ts",
+			"import": "./dist/components/select.js"
 		},
 		"./components/surface": {
-			"types": "./dist/components/surface/index.d.ts",
-			"import": "./dist/components/surface/index.js"
+			"types": "./dist/src/components/surface/index.d.ts",
+			"import": "./dist/components/surface.js"
 		},
 		"./components/switch": {
-			"types": "./dist/components/switch/index.d.ts",
-			"import": "./dist/components/switch/index.js"
+			"types": "./dist/src/components/switch/index.d.ts",
+			"import": "./dist/components/switch.js"
 		},
 		"./components/tabs": {
-			"types": "./dist/components/tabs/index.d.ts",
-			"import": "./dist/components/tabs/index.js"
+			"types": "./dist/src/components/tabs/index.d.ts",
+			"import": "./dist/components/tabs.js"
 		},
 		"./components/text": {
-			"types": "./dist/components/text/index.d.ts",
-			"import": "./dist/components/text/index.js"
+			"types": "./dist/src/components/text/index.d.ts",
+			"import": "./dist/components/text.js"
 		},
 		"./components/toast": {
-			"types": "./dist/components/toast/index.d.ts",
-			"import": "./dist/components/toast/index.js"
+			"types": "./dist/src/components/toast/index.d.ts",
+			"import": "./dist/components/toast.js"
 		},
 		"./components/tooltip": {
-			"types": "./dist/components/tooltip/index.d.ts",
-			"import": "./dist/components/tooltip/index.js"
+			"types": "./dist/src/components/tooltip/index.d.ts",
+			"import": "./dist/components/tooltip.js"
 		},
 		"./blocks/breadcrumbs": {
-			"types": "./dist/blocks/breadcrumbs/index.d.ts",
-			"import": "./dist/blocks/breadcrumbs/index.js"
+			"types": "./dist/src/blocks/breadcrumbs/index.d.ts",
+			"import": "./dist/blocks/breadcrumbs.js"
 		},
 		"./blocks/empty": {
-			"types": "./dist/blocks/empty/index.d.ts",
-			"import": "./dist/blocks/empty/index.js"
+			"types": "./dist/src/blocks/empty/index.d.ts",
+			"import": "./dist/blocks/empty.js"
 		},
 		"./blocks/page-header": {
-			"types": "./dist/blocks/page-header/index.d.ts",
-			"import": "./dist/blocks/page-header/index.js"
+			"types": "./dist/src/blocks/page-header/index.d.ts",
+			"import": "./dist/blocks/page-header.js"
 		},
 		"./layouts/resource-list": {
-			"types": "./dist/layouts/resource-list/index.d.ts",
-			"import": "./dist/layouts/resource-list/index.js"
+			"types": "./dist/src/layouts/resource-list/index.d.ts",
+			"import": "./dist/layouts/resource-list.js"
 		},
 		"./utils": {
-			"types": "./dist/utils/index.d.ts",
-			"import": "./dist/utils/index.js"
+			"types": "./dist/src/utils/index.d.ts",
+			"import": "./dist/utils.js"
 		},
 		"./styles/tailwind": "./dist/styles/kumo.css",
 		"./styles/standalone": "./dist/styles/kumo-standalone.css",

@@ -73,9 +73,12 @@ export default function (plop) {
         path: 'package.json',
         transform: (packageJson) => {
           // Create the new export entry
+          // Note: With preserveModules: true in vite.config.ts:
+          // - JS files are flat: dist/components/[name].js
+          // - Type files are nested: dist/src/components/[name]/index.d.ts
           const newExport = {
-            types: `./dist/components/${kebabName}/index.d.ts`,
-            import: `./dist/components/${kebabName}/index.js`,
+            types: `./dist/src/components/${kebabName}/index.d.ts`,
+            import: `./dist/components/${kebabName}.js`,
           };
 
           // Get all exports
@@ -188,9 +191,12 @@ export default function (plop) {
         path: 'package.json',
         transform: (packageJson) => {
           // Create the new export entry
+          // Note: With preserveModules: true in vite.config.ts:
+          // - JS files are flat: dist/blocks/[name].js
+          // - Type files are nested: dist/src/blocks/[name]/index.d.ts
           const newExport = {
-            types: `./dist/blocks/${kebabName}/index.d.ts`,
-            import: `./dist/blocks/${kebabName}/index.js`,
+            types: `./dist/src/blocks/${kebabName}/index.d.ts`,
+            import: `./dist/blocks/${kebabName}.js`,
           };
 
           // Get all exports
@@ -304,9 +310,12 @@ export default function (plop) {
         path: 'package.json',
         transform: (packageJson) => {
           // Create the new export entry
+          // Note: With preserveModules: true in vite.config.ts:
+          // - JS files are flat: dist/layouts/[name].js
+          // - Type files are nested: dist/src/layouts/[name]/index.d.ts
           const newExport = {
-            types: `./dist/layouts/${kebabName}/index.d.ts`,
-            import: `./dist/layouts/${kebabName}/index.js`,
+            types: `./dist/src/layouts/${kebabName}/index.d.ts`,
+            import: `./dist/layouts/${kebabName}.js`,
           };
 
           // Get all exports
