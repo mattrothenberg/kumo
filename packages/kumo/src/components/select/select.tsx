@@ -1,52 +1,93 @@
 import { Select as SelectBase } from "@base-ui-components/react/select";
 import { CaretUpDownIcon, CheckIcon } from "@phosphor-icons/react";
 import { useId } from "react";
-import type { ComponentPropsWithoutRef, FC, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { cn } from "../../utils/cn";
 import { buttonVariants } from "../button";
+import { SkeletonLine } from "../loader";
 
-type SelectProps = ComponentPropsWithoutRef<typeof SelectBase.Root> & {
-  renderValue?: (value: string | null) => ReactNode;
+type SelectProps<
+  T,
+  Multiple extends boolean | undefined = false
+> = SelectBase.Root.Props<T, Multiple> & {
+  multiple?: Multiple;
+  renderValue?: (value: Multiple extends true ? T[] : T) => ReactNode;
   className?: string;
   label?: string;
   hideLabel?: boolean;
   placeholder?: string;
+  loading?: boolean;
 };
 
-type SelectComponent = FC<SelectProps> & {
-  Option: FC<OptionProps>;
-};
-
-function SelectRoot({
+export function Select<T, Multiple extends boolean | undefined = false>({
   children,
   className,
   renderValue,
   label,
   hideLabel = true,
   placeholder,
+  loading,
   ...props
-}: SelectProps) {
+}: SelectProps<T, Multiple>) {
   const labelId = useId();
   const propLookup = props as Record<string, unknown>;
   const ariaLabel = propLookup["aria-label"] as string | undefined;
   const ariaLabelledby = propLookup["aria-labelledby"] as string | undefined;
   const fallbackLabel = label ?? placeholder;
-  const triggerLabelledBy =
-    ariaLabelledby ?? (label ? labelId : undefined);
+  const triggerLabelledBy = ariaLabelledby ?? (label ? labelId : undefined);
   const triggerAriaLabel =
     ariaLabel ?? (!triggerLabelledBy ? fallbackLabel : undefined);
+
+  // Placeholder must be provide via the items props
+  // We need to fake the items or do some transformation
+  let items = props.items;
+  if (placeholder) {
+    if (!items) {
+      items = [
+        {
+          value: null as T,
+          label: placeholder,
+        },
+      ];
+    } else if (typeof items === "object") {
+      items = [
+        {
+          value: null as T,
+          label: placeholder,
+        },
+        ...Object.entries(items).map(([key, value]) => ({
+          value: key as T,
+          label: value,
+        })),
+      ];
+    } else if (Array.isArray(items)) {
+      items = [
+        {
+          value: null as T,
+          label: placeholder,
+        },
+        ...items,
+      ];
+    }
+  }
 
   return (
     <>
       {label && (
         <span
           id={labelId}
-          className={hideLabel ? "sr-only" : "block text-sm font-medium text-surface"}
+          className={
+            hideLabel ? "sr-only" : "block text-sm font-medium text-surface"
+          }
         >
           {label}
         </span>
       )}
-      <SelectBase.Root {...props}>
+      <SelectBase.Root
+        {...props}
+        items={items}
+        disabled={loading || props.disabled}
+      >
         <SelectBase.Trigger
           className={cn(
             buttonVariants(),
@@ -57,11 +98,11 @@ function SelectRoot({
           aria-label={triggerAriaLabel}
           aria-labelledby={triggerLabelledBy}
         >
-          <SelectBase.Value>
-            {renderValue ??
-              ((value: string | null) =>
-                value === null || value === "" ? placeholder ?? "" : value)}
-          </SelectBase.Value>
+          {loading ? (
+            <SkeletonLine />
+          ) : (
+            <SelectBase.Value>{renderValue}</SelectBase.Value>
+          )}
           <SelectBase.Icon>
             <CaretUpDownIcon />
           </SelectBase.Icon>
@@ -85,15 +126,12 @@ function SelectRoot({
   );
 }
 
-type OptionProps = {
+type OptionProps<T> = {
   children: ReactNode;
-  value: string;
+  value: T;
 };
 
-function Option({
-  children,
-  value,
-}: OptionProps) {
+function Option<T>({ children, value }: OptionProps<T>) {
   return (
     <SelectBase.Item
       value={value}
@@ -107,8 +145,4 @@ function Option({
   );
 }
 
-const Select = Object.assign(SelectRoot, {
-  Option,
-}) as SelectComponent;
-
-export { Select };
+Select.Option = Option;
