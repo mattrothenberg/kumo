@@ -32,7 +32,7 @@ export function inputVariants({
 }: KumoInputVariantsProps = {}) {
   return cn(
     // Base styles
-    "bg-kumo-surface text-kumo-surface ring ring-kumo-border",
+    "border-0 bg-kumo-surface text-kumo-surface ring ring-kumo-border",
     // Disabled state and placeholder styles
     "placeholder:text-kumo-muted disabled:text-kumo-muted outline-none",
     // Apply size styles
