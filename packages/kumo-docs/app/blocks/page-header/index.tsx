@@ -1,6 +1,6 @@
 import { Tabs, type TabsItem } from "~/components/tabs/tabs";
 import Breadcrumbs, { type BreadcrumbItem } from "../breadcrumbs";
-import { cn } from "~/components/utils";
+import { cn } from "@cloudflare/kumo";
 
 export function PageHeader({ breadcrumbs, tabs, defaultTab, onValueChange, className, children }: { breadcrumbs: BreadcrumbItem[]; tabs?: TabsItem[]; defaultTab?: string, onValueChange?: (value: string) => void, className?: string, children?: React.ReactNode }) {
     return (

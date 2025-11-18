@@ -1,8 +1,8 @@
 import React from "react";
 import { ArrowsClockwiseIcon, type Icon } from "@phosphor-icons/react";
 import { Loader } from "../loader/loader";
-import { cn } from "../utils";
-import { useLinkComponent } from "../link-provider";
+import { cn } from "../../utils/cn";
+import { useLinkComponent } from "../../utils/link-provider";
 
 interface KumoButtonVariantsProps {
   shape?: "base" | "square" | "circle";
@@ -25,13 +25,16 @@ export function buttonVariants({
   // Variant-specific styles
   const variantStyles = {
     primary:
-      "bg-primary !text-primary hover:bg-primary/70 disabled:bg-primary/50 disabled:!text-primary/70",
-    secondary:
-      'bg-secondary !text-secondary ring ring-neutral-950/10 dark:ring-neutral-800 not-disabled:hover:border-border-hover! not-disabled:hover:bg-secondary-hover disabled:bg-secondary/50 disabled:!text-secondary/70 data-[state="open"]:bg-secondary-hover',
-    ghost: "bg-inherit text-surface hover:bg-accent shadow-none",
-    destructive: "bg-destructive text-destructive hover:bg-destructive/70",
-    outline:
-      "bg-surface text-surface ring ring-neutral-950/10 dark:ring-neutral-800",
+      "bg-kumo-primary !text-kumo-primary hover:bg-kumo-primary/70 disabled:bg-kumo-primary/50 disabled:!text-kumo-primary/70",
+    secondary: cn(
+      "bg-kumo-secondary !text-kumo-secondary ring not-disabled:hover:border-kumo-subtle!",
+      "not-disabled:hover:bg-kumo-subtle disabled:bg-kumo-secondary/50 disabled:!text-kumo-secondary/70",
+      'data-[state="open"]:bg-kumo-subtle ring-kumo-border'
+    ),
+    ghost: "text-kumo-surface hover:bg-kumo-accent shadow-none bg-inherit",
+    destructive:
+      "bg-kumo-destructive !text-kumo-destructive hover:bg-kumo-destructive/70",
+    outline: "bg-kumo-surface text-kumo-surface ring ring-kumo-border",
   };
 
   const isCompactShape = shape === "square" || shape === "circle";
@@ -50,7 +53,7 @@ export function buttonVariants({
     "border-0 shadow-xs",
     "cursor-pointer",
     // Disabled state
-    "disabled:text-muted disabled:cursor-not-allowed",
+    "disabled:text-kumo-muted disabled:cursor-not-allowed",
     // Apply variant, size styles
     variantStyles[variant],
     sizeStyles[size],
@@ -107,7 +110,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         className={cn(
           buttonVariants({ variant, size, shape }),
-          "focus-visible:ring-active outline-none focus:opacity-100 focus-visible:ring-1 *:in-focus:opacity-100", // Focus styles
+          "focus-visible:ring-kumo-active outline-none focus:opacity-100 focus-visible:ring-1 *:in-focus:opacity-100", // Focus styles
           disabled && "opacity-50 cursor-not-allowed",
           className
         )}
@@ -154,7 +157,7 @@ export const LinkButton = React.forwardRef<HTMLAnchorElement, LinkButtonProps>(
       size = "base",
       variant = "ghost",
       icon: IconComponent,
-      linksExternal = false,
+      // linksExternal = false,
       ...props
     },
     ref

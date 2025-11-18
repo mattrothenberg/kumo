@@ -7,7 +7,6 @@
  */
 
 @layer base {
-
   /* Light mode color scheme */
   :root {
     /* Main background color and its contrasting text color */
@@ -124,6 +123,103 @@
   --color-neutral-750: oklch(0.31 0 0);
   --color-neutral-850: oklch(0.23 0 0);
   --color-neutral-925: oklch(0.175 0 0);
+
+  --color-kumo-surface: light-dark(
+    var(--color-white, #fff),
+    var(--color-black, #000)
+  );
+  --text-color-kumo-surface: light-dark(
+    var(--color-black, #000),
+    var(--color-neutral-50, oklch(98.5% 0 0))
+  );
+
+  --color-kumo-surface-secondary: light-dark(
+    var(--color-neutral-50, oklch(98.5% 0 0)),
+    #000
+  );
+
+  --color-kumo-active: light-dark(
+    var(--color-neutral-400, oklch(70.8% 0 0)),
+    var(--color-neutral-600, oklch(43.9% 0 0))
+  );
+  --color-kumo-muted: light-dark(
+    var(--color-neutral-100, oklch(97% 0.001 106.424)),
+    var(--color-neutral-500, oklch(55.3% 0.013 58.071))
+  );
+
+  --color-kumo-primary: light-dark(#056dff, #056dff);
+  --text-color-kumo-primary: light-dark(
+    var(--color-white, #fff),
+    var(--color-white, #fff)
+  );
+
+ /* New: beta semantic color */
+  --color-kumo-beta: light-dark(#056dff, #056dff);
+  --text-color-kumo-beta: light-dark(#056dff, #056dff);
+  
+  --color-kumo-secondary: light-dark(
+    var(--color-white, #fff),
+    var(--color-neutral-900, oklch(21% 0.006 285.885))
+  );
+
+  --text-color-kumo-secondary: light-dark(
+    var(--color-neutral-900, oklch(21% 0.006 285.885)),
+    var(--color-neutral-50, oklch(98.5% 0 0))
+  );
+
+  --color-kumo-subtle: light-dark(
+    var(--color-neutral-50, oklch(98.5% 0 0)),
+    var(--color-neutral-800, oklch(26.9% 0 0))
+  );
+
+  --color-kumo-accent: light-dark(
+    var(--color-neutral-150, oklch(0.96 0 0)),
+    var(--color-neutral-850, oklch(0.23 0 0))
+  );
+
+  --color-kumo-surface-inverse: light-dark(
+    var(--color-neutral-900, oklch(20.5% 0 0)),
+    var(--color-neutral-100, oklch(97% 0 0))
+  );
+
+  --color-kumo-surface-inverse: light-dark(
+    var(--color-neutral-900, oklch(20.5% 0 0)),
+    var(--color-neutral-100, oklch(97% 0 0))
+  );
+
+  --text-color-kumo-surface-inverse: light-dark(
+    var(--color-white, #fff),
+    var(--color-neutral-900, oklch(20.5% 0 0))
+  );
+
+  --color-kumo-destructive: light-dark(
+    var(--color-red-600, oklch(57.7% 0.245 27.325)),
+    var(--color-red-600, oklch(57.7% 0.245 27.325))
+  );
+  --text-color-kumo-destructive: light-dark(
+    var(--color-neutral-50, oklch(98.5% 0 0)),
+    var(--color-neutral-50, oklch(98.5% 0 0))
+  );
+
+  --color-kumo-color: light-dark(
+    var(--color-neutral-200, oklch(92.2% 0 0)),
+    var(--color-neutral-800, oklch(26.9% 0 0))
+  );
+
+  --color-kumo-border: light-dark(
+    oklch(14.5% 0 0 / 0.1),
+    var(--color-neutral-800, oklch(26.9% 0 0))
+  );
+
+  --text-color-kumo-muted: light-dark(
+    var(--color-neutral-500, oklch(55.6% 0 0)),
+    var(--color-neutral-50, oklch(98.5% 0 0))
+  );
+
+  --text-color-kumo-disabled: light-dark(
+    var(--color-neutral-400, oklch(70.8% 0 0)),
+    var(--color-neutral-400, oklch(70.8% 0 0))
+  );
 }
 
 /* Tailwind config */
@@ -243,12 +339,15 @@
   right: 0;
   bottom: 0;
   left: 0;
-  animation: shimmer var(--shimmer-duration, 1.5s) var(--shimmer-delay, 0s) infinite ease-in-out;
-  content: '';
-  background: linear-gradient(90deg,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 0.08) 50%,
-      rgba(0, 0, 0, 0) 100%);
+  animation: shimmer var(--shimmer-duration, 1.5s) var(--shimmer-delay, 0s)
+    infinite ease-in-out;
+  content: "";
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.08) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
 }
 
 .dark-mode .skeleton-line {
@@ -256,8 +355,10 @@
 }
 
 .dark-mode .skeleton-line::after {
-  background: linear-gradient(90deg,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0.05) 50%,
-      rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
 }

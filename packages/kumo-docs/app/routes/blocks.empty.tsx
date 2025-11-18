@@ -4,7 +4,7 @@ import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";
 import { CodeBlock } from "~/components/code/code-lazy";
 import { Empty } from "~/blocks/empty";
-import { Button } from "~/components/button/button";
+import { Button } from "@cloudflare/kumo";
 
 export default function EmptyDoc() {
   return (

@@ -20,7 +20,7 @@ export function cn(...inputs: ClassValue[]) {
 }`,
 
   "/components/button.tsx": `import React from "react";
-import { cn } from "./utils";
+import { cn } from "@cloudflare/kumo";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "ghost" | "destructive" | "outline";
@@ -102,7 +102,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = "Button";`,
 
   "/components/input.tsx": `import React from "react";
-import { cn } from "./utils";
+import { cn } from "@cloudflare/kumo";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   variant?: "default" | "error";
@@ -131,7 +131,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 Input.displayName = "Input";`,
 
   "/components/field.tsx": `import React from "react";
-import { cn } from "./utils";
+import { cn } from "@cloudflare/kumo";
 
 interface FieldProps {
   label?: string;
@@ -161,7 +161,7 @@ export function Field({ label, description, error, children, className }: FieldP
 }`,
 
   "/components/checkbox.tsx": `import React from "react";
-import { cn } from "./utils";
+import { cn } from "@cloudflare/kumo";
 
 interface CheckboxProps {
   label?: string;
@@ -185,7 +185,7 @@ export function Checkbox({ label, checked, onChange, className }: CheckboxProps)
 }`,
 
   "/components/surface.tsx": `import React from "react";
-import { cn } from "./utils";
+import { cn } from "@cloudflare/kumo";
 
 interface SurfaceProps {
   children: React.ReactNode;
@@ -201,7 +201,7 @@ export function Surface({ children, className }: SurfaceProps) {
 }`,
 
   "/components/badge.tsx": `import React from "react";
-import { cn } from "./utils";
+import { cn } from "@cloudflare/kumo";
 
 interface BadgeProps {
   children: React.ReactNode;
@@ -229,7 +229,7 @@ export function Badge({ children, variant = "primary", className }: BadgeProps) 
 }`,
 
   "/components/switch.tsx": `import React from "react";
-import { cn } from "./utils";
+import { cn } from "@cloudflare/kumo";
 
 interface SwitchProps {
   toggled?: boolean;
@@ -259,7 +259,7 @@ export function Switch({ toggled, onClick, className }: SwitchProps) {
 }`,
 
   "/components/select.tsx": `import React, { useState } from "react";
-import { cn } from "./utils";
+import { cn } from "@cloudflare/kumo";
 
 interface SelectProps {
   children: React.ReactNode;
@@ -321,7 +321,7 @@ export const Select = Object.assign(SelectRoot, {
 `,
 
   "/components/dialog.tsx": `import React, { useState } from "react";
-import { cn } from "./utils";
+import { cn } from "@cloudflare/kumo";
 
 interface DialogRootProps {
   children: React.ReactNode;
@@ -444,7 +444,7 @@ const Dialog = Object.assign(DialogContent, {
 export { Dialog, DialogRoot, DialogTrigger, DialogTitle, DialogDescription, DialogClose };`,
 
   "/components/dropdown.tsx": `import React, { useState, useRef, useEffect } from "react";
-import { cn } from "./utils";
+import { cn } from "@cloudflare/kumo";
 
 interface DropdownMenuProps {
   children: React.ReactNode;
@@ -572,7 +572,7 @@ export const DropdownMenu = Object.assign(DropdownMenuRoot, {
 });`,
 
   "/components/tooltip.tsx": `import React, { useState } from "react";
-import { cn } from "./utils";
+import { cn } from "@cloudflare/kumo";
 
 interface TooltipProviderProps {
   children: React.ReactNode;
@@ -614,7 +614,7 @@ export function Tooltip({ children, content, asChild, className }: TooltipProps)
 }`,
 
   "/components/banner.tsx": `import React from "react";
-import { cn } from "./utils";
+import { cn } from "@cloudflare/kumo";
 
 export enum BannerVariant {
   DEFAULT = "default",
@@ -652,7 +652,7 @@ export function Banner({ icon, text, variant = "default", className }: BannerPro
 
   "/components/layer-card.tsx": `import React from "react";
 import { Surface } from "./surface";
-import { cn } from "./utils";
+import { cn } from "@cloudflare/kumo";
 
 interface LayerCardProps {
   className?: string;
@@ -754,7 +754,7 @@ export function Loader({ className, size = 24 }: LoaderProps) {
 }`,
 
   "/layouts/resource-list.tsx": `import React from "react";
-import { cn } from "../components/utils";
+import { cn } from "@cloudflare/kumo";
 
 interface ResourceListPageProps {
   title?: string;

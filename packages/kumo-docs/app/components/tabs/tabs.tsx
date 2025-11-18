@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Tabs as TabsPrimitive } from "@base-ui-components/react/tabs";
-import { cn } from "../utils";
+import { cn } from "@cloudflare/kumo";
 
 export type TabsItem = {
   value: string;

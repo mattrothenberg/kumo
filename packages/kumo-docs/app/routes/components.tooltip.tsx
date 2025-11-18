@@ -1,6 +1,6 @@
 import { PlusIcon, TranslateIcon } from "@phosphor-icons/react";
 import { Tooltip, TooltipProvider } from "~/components/tooltip/tooltip";
-import { Button } from "~/components/button/button";
+import { Button } from "@cloudflare/kumo";
 import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";
@@ -44,7 +44,7 @@ export default function TooltipDoc() {
         <CodeBlock
           lang="tsx"
           code={`import { Tooltip, TooltipProvider } from "~/components/tooltip/tooltip";
-import { Button } from "~/components/button/button";
+import { Button } from "@cloudflare/kumo";
 
 export default function Example() {
   return (

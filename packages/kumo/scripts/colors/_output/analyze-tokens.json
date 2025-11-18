@@ -1,0 +1,669 @@
+{
+  "tokenLength": 11,
+  "dataLength": 64,
+  "tokens": {
+    "kumo-1": {
+      "light": "",
+      "dark": "oklch(20.5% 0 0)",
+      "source": {
+        "packages/kumo/src/components/input/input.tsx": {
+          "bg-surface dark:bg-neutral-900 ring ring-neutral-950/10 dark:ring-neutral-800 text-surface": {
+            "bg": {
+              "bg-surface": {
+                "value": ""
+              },
+              "dark:bg-neutral-900": {
+                "value": "oklch(20.5% 0 0)"
+              }
+            },
+            "text": {
+              "text-surface": {
+                "value": ""
+              }
+            }
+          }
+        }
+      },
+      "type": [
+        "bg"
+      ]
+    },
+    "kumo-2": {
+      "light": "#000",
+      "dark": "#fff",
+      "source": {
+        "packages/kumo/src/components/badge/badge.tsx": {
+          "bg-transparent border border-neutral-200 text-black dark:border-neutral-800 dark:text-white": {
+            "text": {
+              "dark:text-white": {
+                "value": "#fff"
+              },
+              "text-black": {
+                "value": "#000"
+              }
+            }
+          }
+        }
+      },
+      "type": [
+        "text"
+      ]
+    },
+    "kumo-3": {
+      "light": "#fff",
+      "dark": "",
+      "source": {
+        "packages/kumo/src/components/badge/badge.tsx": {
+          "bg-red-500 text-white": {
+            "text": {
+              "text-white": {
+                "value": "#fff"
+              }
+            }
+          }
+        }
+      },
+      "type": [
+        "text"
+      ]
+    },
+    "kumo-4": {
+      "light": "#fff",
+      "dark": "oklch(20.5% 0 0)",
+      "source": {
+        "packages/kumo/src/components/badge/badge.tsx": {
+          "bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900": {
+            "bg": {
+              "bg-neutral-900": {
+                "value": "oklch(20.5% 0 0)"
+              }
+            },
+            "text": {
+              "dark:text-neutral-900": {
+                "value": "oklch(20.5% 0 0)"
+              },
+              "text-white": {
+                "value": "#fff"
+              }
+            }
+          }
+        }
+      },
+      "type": [
+        "text"
+      ]
+    },
+    "kumo-5": {
+      "light": "inherit",
+      "dark": "",
+      "source": {
+        "packages/kumo/src/components/button/button.tsx": {
+          "bg-inherit text-surface hover:bg-accent shadow-none": {
+            "bg": {
+              "bg-inherit": {
+                "value": "inherit"
+              }
+            }
+          }
+        }
+      },
+      "type": [
+        "bg"
+      ]
+    },
+    "kumo-6": {
+      "light": "oklch(14.5% 0 0 / 0.1)",
+      "dark": "oklch(26.9% 0 0)",
+      "source": {
+        "packages/kumo/src/components/button/button.tsx": {
+          "bg-secondary !text-secondary ring ring-neutral-950/10 dark:ring-neutral-800 not-disabled:hover:border-border-hover! not-disabled:hover:bg-secondary-hover disabled:bg-secondary/50 disabled:!text-secondary/70 data-[state=\"open\"]:bg-secondary-hover": {
+            "ring": {
+              "dark:ring-neutral-800": {
+                "value": "oklch(26.9% 0 0)"
+              },
+              "ring-neutral-950/10": {
+                "value": "oklch(14.5% 0 0 / 0.1)"
+              }
+            }
+          },
+          "bg-surface text-surface ring ring-neutral-950/10 dark:ring-neutral-800": {
+            "ring": {
+              "dark:ring-neutral-800": {
+                "value": "oklch(26.9% 0 0)"
+              },
+              "ring-neutral-950/10": {
+                "value": "oklch(14.5% 0 0 / 0.1)"
+              }
+            }
+          }
+        },
+        "packages/kumo/src/components/input/input-group.tsx": {
+          "border-0 flex gap-0 overflow-hidden px-0 w-full ring ring-neutral-950/10 shadow-xs focus-within:ring-active dark:ring-neutral-800": {
+            "ring": {
+              "dark:ring-neutral-800": {
+                "value": "oklch(26.9% 0 0)"
+              },
+              "ring-neutral-950/10": {
+                "value": "oklch(14.5% 0 0 / 0.1)"
+              }
+            }
+          }
+        },
+        "packages/kumo/src/components/input/input.tsx": {
+          "bg-surface dark:bg-neutral-900 ring ring-neutral-950/10 dark:ring-neutral-800 text-surface": {
+            "ring": {
+              "dark:ring-neutral-800": {
+                "value": "oklch(26.9% 0 0)"
+              },
+              "ring-neutral-950/10": {
+                "value": "oklch(14.5% 0 0 / 0.1)"
+              }
+            }
+          }
+        },
+        "packages/kumo/src/components/surface/surface.tsx": {
+          "ring ring-neutral-950/10 shadow-xs dark:ring-neutral-800": {
+            "ring": {
+              "dark:ring-neutral-800": {
+                "value": "oklch(26.9% 0 0)"
+              },
+              "ring-neutral-950/10": {
+                "value": "oklch(14.5% 0 0 / 0.1)"
+              }
+            }
+          }
+        }
+      },
+      "type": [
+        "ring"
+      ]
+    },
+    "kumo-7": {
+      "light": "oklch(20.5% 0 0)",
+      "dark": "oklch(97% 0 0)",
+      "source": {
+        "packages/kumo/src/components/badge/badge.tsx": {
+          "bg-neutral-200 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100": {
+            "text": {
+              "dark:text-neutral-100": {
+                "value": "oklch(97% 0 0)"
+              },
+              "text-neutral-900": {
+                "value": "oklch(20.5% 0 0)"
+              }
+            }
+          },
+          "bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900": {
+            "bg": {
+              "bg-neutral-900": {
+                "value": "oklch(20.5% 0 0)"
+              },
+              "dark:bg-neutral-100": {
+                "value": "oklch(97% 0 0)"
+              }
+            },
+            "text": {
+              "dark:text-neutral-900": {
+                "value": "oklch(20.5% 0 0)"
+              }
+            }
+          }
+        }
+      },
+      "type": [
+        "bg",
+        "text"
+      ]
+    },
+    "kumo-8": {
+      "light": "oklch(63.7% 0.237 25.331)",
+      "dark": "",
+      "source": {
+        "packages/kumo/src/components/badge/badge.tsx": {
+          "bg-red-500 text-white": {
+            "bg": {
+              "bg-red-500": {
+                "value": "oklch(63.7% 0.237 25.331)"
+              }
+            }
+          }
+        }
+      },
+      "type": [
+        "bg"
+      ]
+    },
+    "kumo-9": {
+      "light": "oklch(70.8% 0 0)",
+      "dark": "",
+      "source": {
+        "packages/kumo/src/components/input/input-group.tsx": {
+          "rounded-none h-full! disabled:bg-surface-secondary disabled:text-neutral-400!": {
+            "disabled:text": {
+              "disabled:text-neutral-400": {
+                "value": "oklch(70.8% 0 0)"
+              }
+            }
+          }
+        }
+      },
+      "type": [
+        "disabled:text"
+      ]
+    },
+    "kumo-10": {
+      "light": "oklch(92.2% 0 0)",
+      "dark": "oklch(26.9% 0 0)",
+      "source": {
+        "packages/kumo/src/components/badge/badge.tsx": {
+          "bg-neutral-200 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100": {
+            "bg": {
+              "bg-neutral-200": {
+                "value": "oklch(92.2% 0 0)"
+              },
+              "dark:bg-neutral-800": {
+                "value": "oklch(26.9% 0 0)"
+              }
+            }
+          },
+          "bg-transparent border border-neutral-200 text-black dark:border-neutral-800 dark:text-white": {
+            "border": {
+              "border-neutral-200": {
+                "value": "oklch(92.2% 0 0)"
+              },
+              "dark:border-neutral-800": {
+                "value": "oklch(26.9% 0 0)"
+              }
+            }
+          }
+        }
+      },
+      "type": [
+        "bg",
+        "border"
+      ]
+    },
+    "kumo-11": {
+      "light": "transparent",
+      "dark": "",
+      "source": {
+        "packages/kumo/src/components/badge/badge.tsx": {
+          "bg-transparent border border-neutral-200 text-black dark:border-neutral-800 dark:text-white": {
+            "bg": {
+              "bg-transparent": {
+                "value": "transparent"
+              }
+            }
+          }
+        }
+      },
+      "type": [
+        "bg"
+      ]
+    }
+  },
+  "data": {
+    "packages/kumo/src/components/badge/badge.tsx": [
+      {
+        "bg-neutral-200 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100": {
+          "bg": {
+            "bg-neutral-200": {
+              "value": "oklch(92.2% 0 0)"
+            },
+            "dark:bg-neutral-800": {
+              "value": "oklch(26.9% 0 0)"
+            }
+          },
+          "text": {
+            "dark:text-neutral-100": {
+              "value": "oklch(97% 0 0)"
+            },
+            "text-neutral-900": {
+              "value": "oklch(20.5% 0 0)"
+            }
+          }
+        },
+        "bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900": {
+          "bg": {
+            "bg-neutral-900": {
+              "value": "oklch(20.5% 0 0)"
+            },
+            "dark:bg-neutral-100": {
+              "value": "oklch(97% 0 0)"
+            }
+          },
+          "text": {
+            "dark:text-neutral-900": {
+              "value": "oklch(20.5% 0 0)"
+            },
+            "text-white": {
+              "value": "#fff"
+            }
+          }
+        },
+        "bg-red-500 text-white": {
+          "bg": {
+            "bg-red-500": {
+              "value": "oklch(63.7% 0.237 25.331)"
+            }
+          },
+          "text": {
+            "text-white": {
+              "value": "#fff"
+            }
+          }
+        },
+        "bg-transparent border border-neutral-200 text-black dark:border-neutral-800 dark:text-white": {
+          "bg": {
+            "bg-transparent": {
+              "value": "transparent"
+            }
+          },
+          "border": {
+            "border-neutral-200": {
+              "value": "oklch(92.2% 0 0)"
+            },
+            "dark:border-neutral-800": {
+              "value": "oklch(26.9% 0 0)"
+            }
+          },
+          "text": {
+            "dark:text-white": {
+              "value": "#fff"
+            },
+            "text-black": {
+              "value": "#000"
+            }
+          }
+        }
+      }
+    ],
+    "packages/kumo/src/components/button/button.tsx": [
+      {
+        "bg-destructive text-destructive hover:bg-destructive/70": {
+          "bg": {
+            "bg-destructive": {
+              "value": ""
+            }
+          },
+          "hover:bg": {
+            "hover:bg-destructive/70": {
+              "value": ""
+            }
+          },
+          "text": {
+            "text-destructive": {
+              "value": ""
+            }
+          }
+        },
+        "bg-inherit text-surface hover:bg-accent shadow-none": {
+          "bg": {
+            "bg-inherit": {
+              "value": "inherit"
+            }
+          },
+          "hover:bg": {
+            "hover:bg-accent": {
+              "value": ""
+            }
+          },
+          "text": {
+            "text-surface": {
+              "value": ""
+            }
+          }
+        },
+        "bg-primary !text-primary hover:bg-primary/70 disabled:bg-primary/50 disabled:!text-primary/70": {
+          "bg": {
+            "bg-primary": {
+              "value": ""
+            }
+          },
+          "disabled:bg": {
+            "disabled:bg-primary/50": {
+              "value": ""
+            }
+          },
+          "hover:bg": {
+            "hover:bg-primary/70": {
+              "value": ""
+            }
+          },
+          "text": {
+            "text-primary": {
+              "value": ""
+            },
+            "text-primary/70": {
+              "value": ""
+            }
+          }
+        },
+        "bg-secondary !text-secondary ring ring-neutral-950/10 dark:ring-neutral-800 not-disabled:hover:border-border-hover! not-disabled:hover:bg-secondary-hover disabled:bg-secondary/50 disabled:!text-secondary/70 data-[state=\"open\"]:bg-secondary-hover": {
+          "bg": {
+            "bg-secondary": {
+              "value": ""
+            },
+            "bg-secondary-hover": {
+              "value": ""
+            }
+          },
+          "disabled:bg": {
+            "disabled:bg-secondary/50": {
+              "value": ""
+            }
+          },
+          "hover:bg": {
+            "not-disabled:hover:bg-secondary-hover": {
+              "value": ""
+            }
+          },
+          "hover:border": {
+            "not-disabled:hover:border-border-hover": {
+              "value": ""
+            }
+          },
+          "ring": {
+            "dark:ring-neutral-800": {
+              "value": "oklch(26.9% 0 0)"
+            },
+            "ring-neutral-950/10": {
+              "value": "oklch(14.5% 0 0 / 0.1)"
+            }
+          },
+          "text": {
+            "text-secondary": {
+              "value": ""
+            },
+            "text-secondary/70": {
+              "value": ""
+            }
+          }
+        },
+        "bg-surface text-surface ring ring-neutral-950/10 dark:ring-neutral-800": {
+          "bg": {
+            "bg-surface": {
+              "value": ""
+            }
+          },
+          "ring": {
+            "dark:ring-neutral-800": {
+              "value": "oklch(26.9% 0 0)"
+            },
+            "ring-neutral-950/10": {
+              "value": "oklch(14.5% 0 0 / 0.1)"
+            }
+          },
+          "text": {
+            "text-surface": {
+              "value": ""
+            }
+          }
+        },
+        "disabled:text-muted disabled:cursor-not-allowed": {
+          "disabled:text": {
+            "disabled:text-muted": {
+              "value": ""
+            }
+          }
+        },
+        "focus-visible:ring-active outline-none focus:opacity-100 focus-visible:ring-1 *:in-focus:opacity-100": {
+          "ring": {
+            "focus-visible:ring-active": {
+              "value": ""
+            }
+          }
+        }
+      }
+    ],
+    "packages/kumo/src/components/input/input-area.tsx": [
+      {
+        "block text-sm font-medium text-surface": {
+          "text": {
+            "text-surface": {
+              "value": ""
+            }
+          }
+        }
+      }
+    ],
+    "packages/kumo/src/components/input/input-group.tsx": [
+      {
+        "border-0 flex gap-0 overflow-hidden px-0 w-full ring ring-neutral-950/10 shadow-xs focus-within:ring-active dark:ring-neutral-800": {
+          "focus-within:ring": {
+            "focus-within:ring-active": {
+              "value": ""
+            }
+          },
+          "ring": {
+            "dark:ring-neutral-800": {
+              "value": "oklch(26.9% 0 0)"
+            },
+            "ring-neutral-950/10": {
+              "value": "oklch(14.5% 0 0 / 0.1)"
+            }
+          }
+        },
+        "border-0 h-full rounded-none flex items-center first:pl-2 last:pr-2 bg-surface font-sans": {
+          "bg": {
+            "bg-surface": {
+              "value": ""
+            }
+          }
+        },
+        "flex p-0 items-center text-muted px-2 h-full": {
+          "text": {
+            "text-muted": {
+              "value": ""
+            }
+          }
+        },
+        "focus:border-color": {
+          "focus:border": {
+            "focus:border-color": {
+              "value": ""
+            }
+          }
+        },
+        "rounded-none h-full! disabled:bg-surface-secondary disabled:text-neutral-400!": {
+          "disabled:bg": {
+            "disabled:bg-surface-secondary": {
+              "value": ""
+            }
+          },
+          "disabled:text": {
+            "disabled:text-neutral-400": {
+              "value": "oklch(70.8% 0 0)"
+            }
+          }
+        }
+      }
+    ],
+    "packages/kumo/src/components/input/input.tsx": [
+      {
+        "!ring-destructive focus:ring-destructive": {
+          "focus:ring": {
+            "focus:ring-destructive": {
+              "value": ""
+            }
+          },
+          "ring": {
+            "ring-destructive": {
+              "value": ""
+            }
+          }
+        },
+        "[&:has(:focus-within)]:ring-active": {
+          "ring": {
+            "ring-active": {
+              "value": ""
+            }
+          }
+        },
+        "bg-surface dark:bg-neutral-900 ring ring-neutral-950/10 dark:ring-neutral-800 text-surface": {
+          "bg": {
+            "bg-surface": {
+              "value": ""
+            },
+            "dark:bg-neutral-900": {
+              "value": "oklch(20.5% 0 0)"
+            }
+          },
+          "ring": {
+            "dark:ring-neutral-800": {
+              "value": "oklch(26.9% 0 0)"
+            },
+            "ring-neutral-950/10": {
+              "value": "oklch(14.5% 0 0 / 0.1)"
+            }
+          },
+          "text": {
+            "text-surface": {
+              "value": ""
+            }
+          }
+        },
+        "block text-sm font-medium text-surface": {
+          "text": {
+            "text-surface": {
+              "value": ""
+            }
+          }
+        },
+        "focus:ring-active": {
+          "focus:ring": {
+            "focus:ring-active": {
+              "value": ""
+            }
+          }
+        },
+        "placeholder:text-muted disabled:text-muted outline-none": {
+          "disabled:text": {
+            "disabled:text-muted": {
+              "value": ""
+            }
+          },
+          "text": {
+            "placeholder:text-muted": {
+              "value": ""
+            }
+          }
+        }
+      }
+    ],
+    "packages/kumo/src/components/surface/surface.tsx": [
+      {
+        "ring ring-neutral-950/10 shadow-xs dark:ring-neutral-800": {
+          "ring": {
+            "dark:ring-neutral-800": {
+              "value": "oklch(26.9% 0 0)"
+            },
+            "ring-neutral-950/10": {
+              "value": "oklch(14.5% 0 0 / 0.1)"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

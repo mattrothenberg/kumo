@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { cn } from "../utils";
+import { cn } from "../../utils/cn";
 
 const getRandomWidth = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1) + min);

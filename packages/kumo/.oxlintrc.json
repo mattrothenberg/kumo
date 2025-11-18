@@ -1,0 +1,7 @@
+{
+  "jsPlugins": ["./scripts/linting/kumo-plugin.js"],
+  "rules": {
+    "kumo/no-tailwind-dark-variant": "error",
+    "kumo/no-primitive-colors": "error"
+  }
+}

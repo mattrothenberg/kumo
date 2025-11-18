@@ -1,4 +1,4 @@
-import { Button } from "~/components/button/button";
+import { Button, Input, Surface } from "@cloudflare/kumo";
 import type { Route } from "./+types/home";
 import {
   CalendarDotIcon,
@@ -14,8 +14,6 @@ import {
   WarningIcon,
   WarningOctagonIcon,
 } from "@phosphor-icons/react";
-import { Input } from "~/components/input/input";
-import { Surface } from "~/components/surface/surface";
 import { Dialog } from "~/components/dialog/dialog";
 import { Checkbox } from "~/components/checkbox/checkbox";
 import { DropdownMenu } from "~/components/dropdown/dropdown";
@@ -28,12 +26,10 @@ import { MenuBar } from "~/components/menubar/menubar";
 import { Switch } from "~/components/switch/switch";
 import { CodeBlock } from "~/components/code/code-lazy";
 import { LayerCard } from "~/components/layer-card/layer-card";
-import { Loader } from "~/components/loader/loader";
-import { SkeletonLine } from "~/components/loader/skeleton-line";
+import { Loader, Badge, SkeletonLine, InputArea } from "@cloudflare/kumo";
 import { Field } from "~/components/field/field";
 import { Banner, BannerVariant } from "~/components/banner/banner";
 import { Tabs } from "~/components/tabs/tabs";
-import { Badge } from "~/components/badge/badge";
 import { Toasty as Toast } from "~/components/toast/toast";
 import { Toast as BaseToast } from '@base-ui-components/react/toast';
 import DateRangePicker from "~/components/calendar/calendar";
@@ -43,7 +39,6 @@ import Breadcrumbs from "~/blocks/breadcrumbs";
 import { PageHeader } from "~/blocks/page-header";
 import { ResourceListPage } from "~/layouts/resource-list";
 import { Pagination } from "~/components/pagination/pagination";
-import { InputArea } from "~/components/input/input-area";
 import { Link } from "react-router";
 import Meter from "~/components/meter/meter";
 

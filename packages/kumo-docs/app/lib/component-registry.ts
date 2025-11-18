@@ -28,7 +28,7 @@ export interface ComponentMetadata {
 export const COMPONENT_REGISTRY: Record<string, ComponentMetadata> = {
   Button: {
     name: "Button",
-    importPath: "~/components/button/button",
+    importPath: "@cloudflare/kumo",
     description: "Displays a button or a component that looks like a button.",
     category: "Form",
     props: [
@@ -49,7 +49,7 @@ export const COMPONENT_REGISTRY: Record<string, ComponentMetadata> = {
   },
   Input: {
     name: "Input",
-    importPath: "~/components/input/input",
+    importPath: "@cloudflare/kumo",
     description: "Text input field with variants.",
     category: "Form",
     props: [
@@ -169,7 +169,7 @@ export const COMPONENT_REGISTRY: Record<string, ComponentMetadata> = {
   },
   Surface: {
     name: "Surface",
-    importPath: "~/components/surface/surface",
+    importPath: "@cloudflare/kumo",
     description: "Container surface with background.",
     category: "Layout",
     props: [
@@ -197,7 +197,7 @@ export const COMPONENT_REGISTRY: Record<string, ComponentMetadata> = {
   },
   Loader: {
     name: "Loader",
-    importPath: "~/components/loader/loader",
+    importPath: "@cloudflare/kumo",
     description: "Loading spinner.",
     category: "Display",
     props: [
@@ -255,7 +255,7 @@ export const COMPONENT_REGISTRY: Record<string, ComponentMetadata> = {
   },
   Badge: {
     name: "Badge",
-    importPath: "~/components/badge/badge",
+    importPath: "@cloudflare/kumo",
     description: "Small badge for labels and status indicators.",
     category: "Display",
     props: [

@@ -1,6 +1,6 @@
 import { PlusIcon } from "@phosphor-icons/react";
 import { DropdownMenu } from "~/components/dropdown/dropdown";
-import { Button } from "~/components/button/button";
+import { Button } from "@cloudflare/kumo";
 import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";
@@ -50,7 +50,7 @@ export default function DropdownDoc() {
         <CodeBlock
           lang="tsx"
           code={`import { DropdownMenu } from "~/components/dropdown/dropdown";
-import { Button } from "~/components/button/button";
+import { Button } from "@cloudflare/kumo";
 
 export default function Example() {
   return (

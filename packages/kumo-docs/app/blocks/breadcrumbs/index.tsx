@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { useCallback, useRef, type ReactNode } from "react";
-import { cn } from "~/components/utils";
+import { cn } from "@cloudflare/kumo";
 
 export type BreadcrumbItem = {
   label: ReactNode;

@@ -7,7 +7,7 @@ import {
   useMemo,
   type ElementType,
 } from "react";
-import { cn } from "../utils";
+import { cn } from "@cloudflare/kumo";
 
 type Heading = "heading1" | "heading2" | "heading3";
 type Copy = "body" | "secondary" | "success" | "error";

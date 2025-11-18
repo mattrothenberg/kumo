@@ -7,24 +7,16 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { compileAndExecuteJSX, wrapInComponent } from "../../lib/jsx-runtime";
-import { cn } from "../utils";
-import { Loader } from "../loader/loader";
+import { cn, Button, Input, InputArea, Surface, Loader as LoaderComponent, SkeletonLine, Badge } from "@cloudflare/kumo";
 
 // Import all Kumo components for the preview scope
-import { Button } from "../button/button";
-import { Input } from "../input/input";
-import { InputArea } from "../input/input-area";
 import { Select } from "../select/select";
 import { Checkbox } from "../checkbox/checkbox";
 import { Switch } from "../switch/switch";
 import { Dialog } from "../dialog/dialog";
 import { Tooltip, TooltipProvider } from "../tooltip/tooltip";
 import { DropdownMenu } from "../dropdown/dropdown";
-import { Surface } from "../surface/surface";
 import { Field } from "../field/field";
-import { Loader as LoaderComponent } from "../loader/loader";
-import { SkeletonLine } from "../loader/skeleton-line";
-import { Badge } from "../badge/badge";
 import { Banner, BannerVariant } from "../banner/banner";
 import { Expandable } from "../expandable/expandable";
 import { ClipboardText } from "../clipboard-text/clipboard-text";

@@ -9,8 +9,7 @@ import {
   useLocation,
 } from "react-router";
 import React, { useEffect, useState } from "react";
-import { cn } from "~/components/utils";
-import { Button } from "~/components/button/button";
+import { cn, Button } from "@cloudflare/kumo";
 import { KumoMenuIcon } from "~/components/kumo-menu-icon";
 import { ThemeToggle } from "~/components/theme-toggle";
 import { CaretDownIcon } from "@phosphor-icons/react";
@@ -62,13 +61,12 @@ export default function App() {
   const [blocksOpen, setBlocksOpen] = useState(true);
   const [layoutsOpen, setLayoutsOpen] = useState(true);
   const contentRef = React.useRef<HTMLDivElement>(null);
-  
+
   useEffect(() => {
     // Check if dark mode is enabled
     const isDarkMode = document.documentElement.classList.contains("dark-mode");
     setIsDark(isDarkMode);
   }, []);
-
 
   useEffect(() => {
     if (contentRef.current) {
@@ -156,9 +154,7 @@ export default function App() {
         >
           {/* Sidebar */}
         </div>
-        <div
-          className="p-4 text-sm text-neutral-600 overflow-y-auto overscroll-contain grow min-h-0"
-        >
+        <div className="p-4 text-sm text-neutral-600 overflow-y-auto overscroll-contain grow min-h-0">
           <div>
             <ul className="flex flex-col">
               <li>
@@ -258,6 +254,18 @@ export default function App() {
                   )}
                 >
                   Button
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/components/badge"
+                  prefetch="intent"
+                  className={cn(
+                    LI_STYLE,
+                    location.pathname === "/components/badge" && LI_ACTIVE_STYLE
+                  )}
+                >
+                  Badge
                 </Link>
               </li>
               <li>

@@ -1,4 +1,4 @@
-import { cn } from "./utils";
+import { cn } from "@cloudflare/kumo";
 
 interface ThemeToggleProps {
   isDark: boolean;
