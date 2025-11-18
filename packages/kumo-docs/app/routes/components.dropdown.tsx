@@ -1,10 +1,8 @@
 import { PlusIcon } from "@phosphor-icons/react";
-import { DropdownMenu } from "~/components/dropdown/dropdown";
-import { Button } from "@cloudflare/kumo";
+import { DropdownMenu, Button, CodeBlock } from "@cloudflare/kumo";
 import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";
-import { CodeBlock } from "~/components/code/code-lazy";
 
 export default function DropdownDoc() {
   return (
@@ -38,9 +36,15 @@ export default function DropdownDoc() {
       {/* Installation */}
       <ComponentSection>
         <h2 className="text-2xl font-bold mb-4">Installation</h2>
+        <h3 className="text-lg font-semibold mb-2">Barrel</h3>
         <CodeBlock
           lang="tsx"
-          code={`import { DropdownMenu } from "~/components/dropdown/dropdown";`}
+          code={`import { DropdownMenu } from "@cloudflare/kumo";`}
+        />
+        <h3 className="text-lg font-semibold mb-2 mt-4">Granular</h3>
+        <CodeBlock
+          lang="tsx"
+          code={`import { DropdownMenu } from "@cloudflare/kumo/components/dropdown";`}
         />
       </ComponentSection>
 
@@ -49,8 +53,7 @@ export default function DropdownDoc() {
         <h2 className="text-2xl font-bold mb-4">Usage</h2>
         <CodeBlock
           lang="tsx"
-          code={`import { DropdownMenu } from "~/components/dropdown/dropdown";
-import { Button } from "@cloudflare/kumo";
+          code={`import { DropdownMenu, Button } from "@cloudflare/kumo";
 
 export default function Example() {
   return (

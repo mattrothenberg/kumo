@@ -1,8 +1,7 @@
 import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";
-import { CodeBlock } from "~/components/code/code-lazy";
-import { Text } from "~/components/text/text";
+import { CodeBlock, Text } from "@cloudflare/kumo";
 
 export default function TextDoc() {
   return (
@@ -66,9 +65,15 @@ export default function TextDoc() {
       {/* Installation */}
       <ComponentSection>
         <h2 className="text-2xl font-bold mb-4">Installation</h2>
+        <h3 className="text-lg font-semibold mb-2">Barrel</h3>
         <CodeBlock
           lang="tsx"
-          code={`import { Text } from "~/components/text/text";`}
+          code={`import { Text } from "@cloudflare/kumo";`}
+        />
+        <h3 className="text-lg font-semibold mb-2 mt-4">Granular</h3>
+        <CodeBlock
+          lang="tsx"
+          code={`import { Text } from "@cloudflare/kumo/components/text";`}
         />
       </ComponentSection>
 
@@ -77,7 +82,7 @@ export default function TextDoc() {
         <h2 className="text-2xl font-bold mb-4">Usage</h2>
         <CodeBlock
           lang="tsx"
-          code={`import { Text } from "~/components/text/text";
+          code={`import { Text } from "@cloudflare/kumo";
 
 export default function Example() {
   return <Text>Your content here</Text>;

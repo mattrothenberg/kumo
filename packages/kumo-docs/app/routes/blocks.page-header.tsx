@@ -1,10 +1,9 @@
 import { HouseIcon, GearIcon, CodeIcon, GlobeIcon } from "@phosphor-icons/react";
+import { CodeBlock, Button } from "@cloudflare/kumo";
 import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";
-import { CodeBlock } from "~/components/code/code-lazy";
-import { PageHeader } from "~/blocks/page-header";
-import { Button } from "@cloudflare/kumo";
+import { PageHeader } from "@cloudflare/kumo";
 
 export default function PageHeaderDoc() {
   return (
@@ -81,7 +80,9 @@ export default function PageHeaderDoc() {
         </p>
         <CodeBlock
           lang="tsx"
-          code={`import { PageHeader } from "~/blocks/page-header";`}
+          code={`import { PageHeader } from "@cloudflare/kumo";
+// or
+import { PageHeader } from "@cloudflare/kumo/blocks/page-header";`}
         />
       </ComponentSection>
 
@@ -90,8 +91,7 @@ export default function PageHeaderDoc() {
         <h2 className="text-2xl font-bold mb-4">Usage</h2>
         <CodeBlock
           lang="tsx"
-          code={`import { PageHeader } from "~/blocks/page-header";
-import { cn } from "@cloudflare/kumo";
+          code={`import { PageHeader, cn } from "@cloudflare/kumo";
 
 export default function Example() {
   return (

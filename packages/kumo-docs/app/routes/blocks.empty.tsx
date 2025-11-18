@@ -1,10 +1,9 @@
 import { CodeIcon, GlobeIcon, PackageIcon, RocketIcon, SquaresFourIcon } from "@phosphor-icons/react";
+import { CodeBlock, Button } from "@cloudflare/kumo";
 import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";
-import { CodeBlock } from "~/components/code/code-lazy";
-import { Empty } from "~/blocks/empty";
-import { Button } from "@cloudflare/kumo";
+import { Empty } from "@cloudflare/kumo";
 
 export default function EmptyDoc() {
   return (
@@ -47,7 +46,9 @@ export default function EmptyDoc() {
         </p>
         <CodeBlock
           lang="tsx"
-          code={`import { Empty } from "~/blocks/empty";`}
+          code={`import { Empty } from "@cloudflare/kumo";
+// or
+import { Empty } from "@cloudflare/kumo/blocks/empty";`}
         />
       </ComponentSection>
 
@@ -56,7 +57,7 @@ export default function EmptyDoc() {
         <h2 className="text-2xl font-bold mb-4">Usage</h2>
         <CodeBlock
           lang="tsx"
-          code={`import { Empty } from "~/blocks/empty";
+          code={`import { Empty } from "@cloudflare/kumo";
 import { PackageIcon } from "@phosphor-icons/react";
 
 export default function Example() {

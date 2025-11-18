@@ -7,23 +7,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { compileAndExecuteJSX, wrapInComponent } from "../../lib/jsx-runtime";
-import { cn, Button, Input, InputArea, Surface, Loader as LoaderComponent, SkeletonLine, Badge } from "@cloudflare/kumo";
-
-// Import all Kumo components for the preview scope
-import { Select } from "../select/select";
-import { Checkbox } from "../checkbox/checkbox";
-import { Switch } from "../switch/switch";
-import { Dialog } from "../dialog/dialog";
-import { Tooltip, TooltipProvider } from "../tooltip/tooltip";
-import { DropdownMenu } from "../dropdown/dropdown";
-import { Field } from "../field/field";
-import { Banner, BannerVariant } from "../banner/banner";
-import { Expandable } from "../expandable/expandable";
-import { ClipboardText } from "../clipboard-text/clipboard-text";
-import { CodeBlock } from "../code/code";
-import { LayerCard } from "../layer-card/layer-card";
-import { Combobox } from "../combobox/combobox";
-import { MenuBar } from "../menubar/menubar";
+import { cn, Button, Input, InputArea, Surface, Loader as LoaderComponent, SkeletonLine, Badge, Select, Checkbox, Switch, Field, Dialog, Tooltip, TooltipProvider, DropdownMenu, MenuBar, Banner, BannerVariant, Expandable, ClipboardText, CodeBlock, Combobox, LayerCard } from "@cloudflare/kumo";
 
 // Import common icons
 import {

@@ -1,0 +1,134 @@
+stages:
+  - no-op
+  # - validation
+  # - beta-release
+
+variables:
+  PNPM_VERSION: &PNPM_VERSION '10.22.0'
+  NODE_VERSION: &NODE_VERSION '24.11.1'
+  PACKAGE_NAME: '@cloudflare/kumo'
+
+# default:
+#   id_tokens:
+#     VAULT_ID_TOKEN:
+#       aud: https://vault.cfdata.org
+
+# validate-changeset:
+#   stage: validation
+#   image: node:${NODE_VERSION}
+#   before_script:
+#     # Install pnpm
+#     - corepack enable
+#     - corepack prepare pnpm@${PNPM_VERSION} --activate
+#     # Configure npm registry authentication
+#     - |
+#       cat > ~/.npmrc << EOF
+#       @cloudflare:registry=https://registry-gateway.cloudflare-ui.workers.dev
+#       //registry-gateway.cloudflare-ui.workers.dev/:_authToken=${NPM_TOKEN}
+#       EOF
+#     - pnpm install --frozen-lockfile
+#   script:
+#     - cd packages/kumo && pnpm validate:changeset
+#   rules:
+#     - if: $CI_MERGE_REQUEST_IID
+#       changes:
+#         paths:
+#           - packages/kumo/**/*
+#         compare_to: 'refs/heads/main'
+#       when: on_success  # Run for MRs with kumo changes, script handles changeset validation
+#     - when: never       # Never run in any other case
+#   secrets:
+#     NPM_TOKEN:
+#       vault: gitlab/_ci_components/_dev/npm/kv_token@kv
+#       file: false
+
+# version-and-publish-beta:
+#   stage: beta-release
+#   needs:
+#     - job: validate-changeset
+#       optional: false
+#   image: node:${NODE_VERSION}
+#   before_script:
+#     # Install pnpm
+#     - corepack enable
+#     - corepack prepare pnpm@${PNPM_VERSION} --activate
+#     # Install dependencies
+#     - pnpm install --frozen-lockfile
+#     # Configure git for commits
+#     - git config --global user.email "ci@cloudflare.com"
+#     - git config --global user.name "Kumo CI"
+#     # Configure npm registry authentication
+#     - |
+#       cat > ~/.npmrc << EOF
+#       @cloudflare:registry=https://registry-gateway.cloudflare-ui.workers.dev
+#       //registry-gateway.cloudflare-ui.workers.dev/:_authToken=${NPM_TOKEN}
+#       EOF
+#   script:
+#     # Run the versioning step first
+#     - pnpm run version:beta
+#     # Build the package before publishing
+#     - cd packages/kumo && pnpm run build
+#     # Run the publish step after versioning and building
+#     - cd ../.. && pnpm run release:beta
+#     # Verify the version was published successfully
+#     - |
+#       NEW_VERSION=$(node -p "require('./packages/kumo/package.json').version")
+#       echo "Verifying that version $NEW_VERSION was published to npm registry..."
+      
+#       # Wait longer for npm registry to propagate the new version
+#       sleep 45
+      
+#       # Get all versions and check if our version exists
+#       AVAILABLE_VERSIONS=$(pnpm view ${PACKAGE_NAME} versions --json 2>/dev/null || echo '[]')
+#       echo "Checking for version: $NEW_VERSION"
+      
+#       # Check if our version exists using multiple methods for reliability
+#       if echo "$AVAILABLE_VERSIONS" | grep -F "\"$NEW_VERSION\"" > /dev/null; then
+#         echo "✅ Version $NEW_VERSION successfully published and verified in npm registry"
+#       elif pnpm view ${PACKAGE_NAME}@${NEW_VERSION} version > /dev/null 2>&1; then
+#         echo "✅ Version $NEW_VERSION successfully published and verified via direct lookup"
+#       else
+#         echo "❌ Version $NEW_VERSION not found in npm registry after publishing"
+#         echo "Searched for: $NEW_VERSION"
+#         echo "Last 10 available versions:"
+#         echo "$AVAILABLE_VERSIONS" | grep -o '"[^"]*"' | tail -10
+#         echo ""
+#         echo "Note: The version might exist but verification failed due to registry propagation delay"
+#         echo "Manual verification: pnpm view ${PACKAGE_NAME}@${NEW_VERSION}"
+#         exit 1
+#       fi
+#     # Post MR comment only after successful publishing and verification
+#     - |
+#       NEW_VERSION=$(node -p "require('./packages/kumo/package.json').version")
+#       echo "Posting MR comment for successful beta release: $NEW_VERSION"
+      
+#       curl --request POST \
+#         --header "PRIVATE-TOKEN: $GITLAB_API_TOKEN" \
+#         --header "Content-Type: application/json" \
+#         --data "{
+#           \"body\": \"🎉 **Beta Release Published**\n\n📦 \`${PACKAGE_NAME}@$NEW_VERSION\` has been published to the npm registry.\n\n**Installation:**\n\`\`\`bash\nnpm install ${PACKAGE_NAME}@$NEW_VERSION\n# or\npnpm add ${PACKAGE_NAME}@$NEW_VERSION\n\`\`\`\n\n**Testing:** You can now test this beta version in your projects before the final release.\"
+#         }" \
+#         "$CI_API_V4_URL/projects/$CI_PROJECT_ID/merge_requests/$CI_MERGE_REQUEST_IID/notes" || echo "Failed to post MR comment"
+#   rules:
+#     - if: $CI_MERGE_REQUEST_IID
+#       changes:
+#         paths:
+#            - packages/kumo/**/*
+#         compare_to: 'refs/heads/main'
+#       when: on_success  # Run if MR + kumo changed (validation job will also exist and must succeed)
+#     - when: never       # Never run in any other case (only run for MRs)
+#   secrets:
+#     NPM_TOKEN:
+#       vault: gitlab/_ci_components/_dev/npm/kv_token@kv
+#       file: false
+#     GITLAB_API_TOKEN:
+#       vault: gitlab/cloudflare/fe/fractus/_dev/workers_preview_bot/data@kv
+#       file: false
+
+# Dummy job to prevent empty pipeline errors
+no-op-kumo:
+  stage: no-op
+  script:
+    - echo "no-op job run to prevent empty pipelines"
+  rules:
+    - when: always

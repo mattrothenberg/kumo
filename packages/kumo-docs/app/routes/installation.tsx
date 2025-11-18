@@ -1,6 +1,6 @@
 import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentSection } from "~/components/docs/component-section";
-import { CodeBlock } from "~/components/code/code-lazy";
+import { CodeBlock } from "@cloudflare/kumo";
 
 export default function Installation() {
   return (
@@ -68,24 +68,68 @@ import { Input } from "@cloudflare/kumo/components/input";`}
       <ComponentSection>
         <h2 className="text-2xl font-bold mb-4">Import Styles</h2>
         <p className="text-neutral-600 dark:text-neutral-400 mb-4">
-          Import the Kumo CSS file in your application's entry point:
+          Kumo provides two CSS distribution options depending on your setup:
         </p>
-        <CodeBlock
-          lang="tsx"
-          code={`import "@cloudflare/kumo/styles";`}
-        />
+        
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-lg font-semibold mb-3">For Tailwind CSS Users (Recommended)</h3>
+            <p className="text-neutral-600 dark:text-neutral-400 mb-3">
+              If your application uses Tailwind CSS, add Kumo's source files to your content configuration and import the styles. 
+              Make sure to import Tailwind first, then Kumo styles:
+            </p>
+            <CodeBlock
+              lang="css"
+              code={`/* app.css or main.css */
+@source "../node_modules/@cloudflare/kumo/dist/**/*.{js,jsx,ts,tsx}";
+@import "tailwindcss";
+@import "@cloudflare/kumo/styles/tailwind";
+
+/* Your custom styles */`}
+            />
+            <p className="text-sm text-neutral-500 dark:text-neutral-500 mt-2">
+              Note: You can also use the default export <code className="text-xs bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">@cloudflare/kumo/styles</code> which is equivalent to <code className="text-xs bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">styles/tailwind</code>.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-3">For Non-Tailwind Users (Standalone)</h3>
+            <p className="text-neutral-600 dark:text-neutral-400 mb-3">
+              If your application doesn't use Tailwind CSS, use the standalone build which includes all compiled styles:
+            </p>
+            <CodeBlock
+              lang="tsx"
+              code={`// In your app entry point (e.g., main.tsx, index.tsx)
+import "@cloudflare/kumo/styles/standalone";`}
+            />
+            <p className="text-sm text-neutral-500 dark:text-neutral-500 mt-2">
+              The standalone build includes all Tailwind utilities and Kumo component styles pre-compiled. No Tailwind configuration needed!
+            </p>
+          </div>
+        </div>
       </ComponentSection>
 
       {/* Usage Example */}
       <ComponentSection>
         <h2 className="text-2xl font-bold mb-4">Usage Example</h2>
         <p className="text-neutral-600 dark:text-neutral-400 mb-4">
-          Here's a complete example of using Kumo components:
+          Here's a complete example of using Kumo components with Tailwind CSS:
         </p>
-        <CodeBlock
-          lang="tsx"
-          code={`import { Button, Input, Surface } from "@cloudflare/kumo";
-import "@cloudflare/kumo/styles";
+        <div className="space-y-4">
+          <div>
+            <p className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">CSS File (app.css)</p>
+            <CodeBlock
+              lang="css"
+              code={`@import "tailwindcss";
+@import "@cloudflare/kumo/styles/tailwind";`}
+            />
+          </div>
+          <div>
+            <p className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Component File (App.tsx)</p>
+            <CodeBlock
+              lang="tsx"
+              code={`import { Button, Input, Surface } from "@cloudflare/kumo";
+import "./app.css";
 
 export default function App() {
   return (
@@ -96,7 +140,9 @@ export default function App() {
     </Surface>
   );
 }`}
-        />
+            />
+          </div>
+        </div>
       </ComponentSection>
 
       {/* Available Components */}

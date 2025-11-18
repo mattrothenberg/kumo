@@ -6,13 +6,17 @@ scripts/
 *.config.ts
 *.config.js
 tsconfig.json
+vite.config.ts
+vitest.config.ts
 
 # Development files
 node_modules/
 *.log
 .DS_Store
+.gitkeep
 
 # Test files
+tests/
 **/*.test.ts
 **/*.test.tsx
 **/*.spec.ts
@@ -21,3 +25,13 @@ node_modules/
 # Story files
 **/*.stories.tsx
 **/*.stories.ts
+
+# Scaffolding tools
+plop-templates/
+plopfile.js
+
+# CI/CD
+.gitlab-ci.yml
+
+# Changesets (if present at package level)
+.changeset/

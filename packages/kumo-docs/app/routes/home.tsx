@@ -1,4 +1,4 @@
-import { Button, Input, Surface } from "@cloudflare/kumo";
+import { Button, Input, Surface, Checkbox, Select, Switch, Field, Dialog, DropdownMenu, Tooltip, TooltipProvider, MenuBar, Toasty, Toast, ClipboardText, Expandable, Combobox, CodeBlock, Banner, BannerVariant, DateRangePicker } from "@cloudflare/kumo";
 import type { Route } from "./+types/home";
 import {
   CalendarDotIcon,
@@ -14,33 +14,9 @@ import {
   WarningIcon,
   WarningOctagonIcon,
 } from "@phosphor-icons/react";
-import { Dialog } from "~/components/dialog/dialog";
-import { Checkbox } from "~/components/checkbox/checkbox";
-import { DropdownMenu } from "~/components/dropdown/dropdown";
-import { Select } from "~/components/select/select";
-import { Tooltip, TooltipProvider } from "~/components/tooltip/tooltip";
-import { ClipboardText } from "~/components/clipboard-text/clipboard-text";
-import { Expandable } from "~/components/expandable/expandable";
-import { Combobox } from "~/components/combobox/combobox";
-import { MenuBar } from "~/components/menubar/menubar";
-import { Switch } from "~/components/switch/switch";
-import { CodeBlock } from "~/components/code/code-lazy";
-import { LayerCard } from "~/components/layer-card/layer-card";
-import { Loader, Badge, SkeletonLine, InputArea } from "@cloudflare/kumo";
-import { Field } from "~/components/field/field";
-import { Banner, BannerVariant } from "~/components/banner/banner";
-import { Tabs } from "~/components/tabs/tabs";
-import { Toasty as Toast } from "~/components/toast/toast";
-import { Toast as BaseToast } from '@base-ui-components/react/toast';
-import DateRangePicker from "~/components/calendar/calendar";
+import { Loader, Badge, SkeletonLine, InputArea, Tabs, Pagination, Meter, LayerCard, Empty, Breadcrumbs, PageHeader, ResourceListPage } from "@cloudflare/kumo";
 import { useState } from "react";
-import { Empty } from "~/blocks/empty";
-import Breadcrumbs from "~/blocks/breadcrumbs";
-import { PageHeader } from "~/blocks/page-header";
-import { ResourceListPage } from "~/layouts/resource-list";
-import { Pagination } from "~/components/pagination/pagination";
 import { Link } from "react-router";
-import Meter from "~/components/meter/meter";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -50,7 +26,7 @@ export function meta({}: Route.MetaArgs) {
 }
 
 function ToastTriggerButton() {
-  const toastManager = BaseToast.useToastManager();
+  const toastManager = Toast.useToastManager();
   return (
     <Button
       onClick={() =>
@@ -287,9 +263,9 @@ export default function Home() {
   {
     name: "Toast",
     Component: (
-      <Toast>
+      <Toasty>
         <ToastTriggerButton />
-      </Toast>
+      </Toasty>
     )
   },
   {

@@ -1,6 +1,7 @@
-import { copyFileSync, mkdirSync, existsSync } from 'fs';
+import { copyFileSync, mkdirSync, existsSync, writeFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { execSync } from 'child_process';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -13,7 +14,7 @@ if (!existsSync(distDir)) {
   mkdirSync(distDir, { recursive: true });
 }
 
-// Copy CSS files
+// Copy CSS files for Tailwind users (raw CSS with Tailwind directives)
 const cssFiles: string[] = ['kumo.css', 'kumo-binding.css'];
 
 cssFiles.forEach((file) => {
@@ -22,10 +23,28 @@ cssFiles.forEach((file) => {
   
   if (existsSync(srcPath)) {
     copyFileSync(srcPath, distPath);
-    console.log(`✓ Copied ${file} to dist/styles/`);
+    console.log(`✓ Copied ${file} to dist/styles/ (Tailwind version)`);
   } else {
     console.warn(`⚠ Warning: ${file} not found in src/styles/`);
   }
 });
+
+// Compile standalone CSS for non-Tailwind users
+console.log('📦 Compiling standalone CSS...');
+try {
+  const standaloneInput = join(srcDir, 'kumo-standalone.css');
+  const standaloneOutput = join(distDir, 'kumo-standalone.css');
+  
+  // Use Tailwind CLI to compile the CSS
+  execSync(
+    `npx tailwindcss -i ${standaloneInput} -o ${standaloneOutput} --minify`,
+    { stdio: 'inherit' }
+  );
+  
+  console.log('✓ Compiled kumo-standalone.css');
+} catch (error) {
+  console.error('❌ Failed to compile standalone CSS:', error);
+  process.exit(1);
+}
 
 console.log('✅ CSS build complete');

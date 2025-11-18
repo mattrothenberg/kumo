@@ -2,8 +2,7 @@ import { HouseIcon, FolderIcon, FileTextIcon } from "@phosphor-icons/react";
 import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";
-import { CodeBlock } from "~/components/code/code-lazy";
-import { Breadcrumbs } from "~/blocks/breadcrumbs";
+import { CodeBlock, Breadcrumbs } from "@cloudflare/kumo";
 
 export default function BreadcrumbsDoc() {
   return (
@@ -36,7 +35,9 @@ export default function BreadcrumbsDoc() {
         </p>
         <CodeBlock
           lang="tsx"
-          code={`import { Breadcrumbs } from "~/blocks/breadcrumbs";`}
+          code={`import { Breadcrumbs } from "@cloudflare/kumo";
+// or
+import { Breadcrumbs } from "@cloudflare/kumo/blocks/breadcrumbs";`}
         />
       </ComponentSection>
 
@@ -45,7 +46,7 @@ export default function BreadcrumbsDoc() {
         <h2 className="text-2xl font-bold mb-4">Usage</h2>
         <CodeBlock
           lang="tsx"
-          code={`import { Breadcrumbs } from "~/blocks/breadcrumbs";
+          code={`import { Breadcrumbs } from "@cloudflare/kumo";
 
 export default function Example() {
   return (

@@ -1,9 +1,7 @@
-import { Field } from "~/components/field/field";
-import { Input } from "@cloudflare/kumo";
+import { Field, Input, CodeBlock } from "@cloudflare/kumo";
 import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";
-import { CodeBlock } from "~/components/code/code-lazy";
 
 export default function FieldDoc() {
   return (
@@ -33,9 +31,15 @@ export default function FieldDoc() {
       {/* Installation */}
       <ComponentSection>
         <h2 className="text-2xl font-bold mb-4">Installation</h2>
+        <h3 className="text-lg font-semibold mb-2">Barrel</h3>
         <CodeBlock
           lang="tsx"
-          code={`import { Field } from "~/components/field/field";`}
+          code={`import { Field } from "@cloudflare/kumo";`}
+        />
+        <h3 className="text-lg font-semibold mb-2 mt-4">Granular</h3>
+        <CodeBlock
+          lang="tsx"
+          code={`import { Field } from "@cloudflare/kumo/components/field";`}
         />
       </ComponentSection>
 
@@ -44,8 +48,7 @@ export default function FieldDoc() {
         <h2 className="text-2xl font-bold mb-4">Usage</h2>
         <CodeBlock
           lang="tsx"
-          code={`import { Field } from "~/components/field/field";
-import { Input } from "~/components/input/input";
+          code={`import { Field, Input } from "@cloudflare/kumo";
 
 export default function Example() {
   return (

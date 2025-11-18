@@ -1,8 +1,7 @@
-import { Expandable } from "~/components/expandable/expandable";
+import { Expandable, CodeBlock } from "@cloudflare/kumo";
 import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";
-import { CodeBlock } from "~/components/code/code-lazy";
 import { useState } from "react";
 
 export default function ExpandableDoc() {
@@ -30,9 +29,15 @@ export default function ExpandableDoc() {
       {/* Installation */}
       <ComponentSection>
         <h2 className="text-2xl font-bold mb-4">Installation</h2>
+        <h3 className="text-lg font-semibold mb-2">Barrel</h3>
         <CodeBlock
           lang="tsx"
-          code={`import { Expandable } from "~/components/expandable/expandable";`}
+          code={`import { Expandable } from "@cloudflare/kumo";`}
+        />
+        <h3 className="text-lg font-semibold mb-2 mt-4">Granular</h3>
+        <CodeBlock
+          lang="tsx"
+          code={`import { Expandable } from "@cloudflare/kumo/components/expandable";`}
         />
       </ComponentSection>
 
@@ -41,7 +46,7 @@ export default function ExpandableDoc() {
         <h2 className="text-2xl font-bold mb-4">Usage</h2>
         <CodeBlock
           lang="tsx"
-          code={`import { Expandable } from "~/components/expandable/expandable";
+          code={`import { Expandable } from "@cloudflare/kumo";
 
 export default function Example() {
   return (
