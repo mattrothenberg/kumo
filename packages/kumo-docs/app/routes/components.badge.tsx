@@ -1,8 +1,7 @@
-import { Badge } from "@cloudflare/kumo";
+import { Badge, CodeBlock } from "@cloudflare/kumo";
 import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";
-import { CodeBlock } from "~/components/code/code-lazy";
 
 export default function BadgeDoc() {
   return (

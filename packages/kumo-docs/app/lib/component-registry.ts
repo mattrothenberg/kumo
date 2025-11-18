@@ -67,7 +67,7 @@ export const COMPONENT_REGISTRY: Record<string, ComponentMetadata> = {
   },
   Select: {
     name: "Select",
-    importPath: "~/components/select/select",
+    importPath: "@cloudflare/kumo",
     description: "Dropdown select component. Use with Select.Option children.",
     category: "Form",
     props: [
@@ -85,7 +85,7 @@ export const COMPONENT_REGISTRY: Record<string, ComponentMetadata> = {
   },
   Checkbox: {
     name: "Checkbox",
-    importPath: "~/components/checkbox/checkbox",
+    importPath: "@cloudflare/kumo",
     description: "Checkbox input with optional label.",
     category: "Form",
     props: [
@@ -100,7 +100,7 @@ export const COMPONENT_REGISTRY: Record<string, ComponentMetadata> = {
   },
   Switch: {
     name: "Switch",
-    importPath: "~/components/switch/switch",
+    importPath: "@cloudflare/kumo",
     description: "Switch component for toggling boolean state.",
     category: "Form",
     props: [
@@ -113,7 +113,7 @@ export const COMPONENT_REGISTRY: Record<string, ComponentMetadata> = {
   },
   Dialog: {
     name: "Dialog",
-    importPath: "~/components/dialog/dialog",
+    importPath: "@cloudflare/kumo",
     description: "Modal dialog. Use Dialog.Root, Dialog.Trigger, Dialog.Title, Dialog.Description, Dialog.Close.",
     category: "Overlay",
     props: [],
@@ -136,7 +136,7 @@ export const COMPONENT_REGISTRY: Record<string, ComponentMetadata> = {
   },
   Tooltip: {
     name: "Tooltip",
-    importPath: "~/components/tooltip/tooltip",
+    importPath: "@cloudflare/kumo",
     description: "Tooltip component. Wrap in TooltipProvider.",
     category: "Overlay",
     props: [
@@ -153,7 +153,7 @@ export const COMPONENT_REGISTRY: Record<string, ComponentMetadata> = {
   },
   DropdownMenu: {
     name: "DropdownMenu",
-    importPath: "~/components/dropdown/dropdown",
+    importPath: "@cloudflare/kumo",
     description: "Dropdown menu with trigger and items.",
     category: "Overlay",
     props: [],
@@ -181,7 +181,7 @@ export const COMPONENT_REGISTRY: Record<string, ComponentMetadata> = {
   },
   Field: {
     name: "Field",
-    importPath: "~/components/field/field",
+    importPath: "@cloudflare/kumo",
     description: "Form field wrapper with label, description, and error.",
     category: "Form",
     props: [
@@ -268,7 +268,7 @@ export const COMPONENT_REGISTRY: Record<string, ComponentMetadata> = {
   },
   Banner: {
     name: "Banner",
-    importPath: "~/components/banner/banner",
+    importPath: "@cloudflare/kumo",
     description: "Banner for notifications and alerts.",
     category: "Feedback",
     props: [
@@ -283,7 +283,7 @@ export const COMPONENT_REGISTRY: Record<string, ComponentMetadata> = {
   },
   LayerCard: {
     name: "LayerCard",
-    importPath: "~/components/layer-card/layer-card",
+    importPath: "@cloudflare/kumo",
     description: "Card component with header and content sections. Perfect for displaying grouped information with a title.",
     category: "Layout",
     props: [

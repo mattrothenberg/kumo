@@ -1,12 +1,9 @@
 import { ListIcon, CodeIcon, GlobeIcon, SquaresFourIcon } from "@phosphor-icons/react";
+import { CodeBlock, Button, Pagination } from "@cloudflare/kumo";
 import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";
-import { CodeBlock } from "~/components/code/code-lazy";
-import { ResourceListPage } from "~/layouts/resource-list";
-import { Button } from "@cloudflare/kumo";
-import { Pagination } from "~/components/pagination/pagination";
-import { Empty } from "~/blocks/empty";
+import { ResourceListPage, Empty } from "@cloudflare/kumo";
 
 export default function ResourceListDoc() {
   return (
@@ -70,7 +67,9 @@ export default function ResourceListDoc() {
         </p>
         <CodeBlock
           lang="tsx"
-          code={`import { ResourceListPage } from "~/layouts/resource-list";`}
+          code={`import { ResourceListPage } from "@cloudflare/kumo";
+// or
+import { ResourceListPage } from "@cloudflare/kumo/layouts/resource-list";`}
         />
       </ComponentSection>
 
@@ -79,7 +78,7 @@ export default function ResourceListDoc() {
         <h2 className="text-2xl font-bold mb-4">Usage</h2>
         <CodeBlock
           lang="tsx"
-          code={`import { ResourceListPage } from "~/layouts/resource-list";
+          code={`import { ResourceListPage } from "@cloudflare/kumo";
 import { ListIcon } from "@phosphor-icons/react";
 
 export default function Example() {

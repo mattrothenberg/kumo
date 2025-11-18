@@ -183,6 +183,18 @@ export default function App() {
               </li>
               <li>
                 <Link
+                  to="/contributing"
+                  prefetch="intent"
+                  className={cn(
+                    LI_STYLE,
+                    location.pathname === "/contributing" && LI_ACTIVE_STYLE
+                  )}
+                >
+                  Contributing
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/accessibility"
                   prefetch="intent"
                   className={cn(

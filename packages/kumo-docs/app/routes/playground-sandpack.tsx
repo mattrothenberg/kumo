@@ -100,10 +100,10 @@ export default function PlaygroundSandpack() {
           imports.push('import { DropdownMenu } from "./components/dropdown";');
         }
         if (data.code.includes("<ResourceListPage")) {
-          imports.push('import { ResourceListPage } from "./layouts/resource-list";');
+          imports.push('import { ResourceListPage } from "@cloudflare/kumo";');
         }
         if (data.code.includes("<Empty")) {
-          imports.push('import { Empty } from "./blocks/empty";');
+          imports.push('import { Empty } from "@cloudflare/kumo";');
         }
         
         // Check for icons

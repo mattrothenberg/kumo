@@ -1,8 +1,8 @@
-import { Checkbox } from "~/components/checkbox/checkbox";
+import { Checkbox } from "@cloudflare/kumo";
 import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";
-import { CodeBlock } from "~/components/code/code-lazy";
+import { CodeBlock } from "@cloudflare/kumo";
 
 export default function CheckboxDoc() {
   return (
@@ -22,9 +22,15 @@ export default function CheckboxDoc() {
       {/* Installation */}
       <ComponentSection>
         <h2 className="text-2xl font-bold mb-4">Installation</h2>
+        <h3 className="text-lg font-semibold mb-2">Barrel</h3>
         <CodeBlock
           lang="tsx"
-          code={`import { Checkbox } from "~/components/checkbox/checkbox";`}
+          code={`import { Checkbox } from "@cloudflare/kumo";`}
+        />
+        <h3 className="text-lg font-semibold mb-2 mt-4">Granular</h3>
+        <CodeBlock
+          lang="tsx"
+          code={`import { Checkbox } from "@cloudflare/kumo/components/checkbox";`}
         />
       </ComponentSection>
 
@@ -33,7 +39,7 @@ export default function CheckboxDoc() {
         <h2 className="text-2xl font-bold mb-4">Usage</h2>
         <CodeBlock
           lang="tsx"
-          code={`import { Checkbox } from "~/components/checkbox/checkbox";
+          code={`import { Checkbox } from "@cloudflare/kumo";
 
 export default function Example() {
   return <Checkbox label="Accept terms" />;

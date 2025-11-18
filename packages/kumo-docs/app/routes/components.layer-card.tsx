@@ -1,8 +1,7 @@
-import { LayerCard } from "~/components/layer-card/layer-card";
+import { LayerCard, CodeBlock } from "@cloudflare/kumo";
 import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";
-import { CodeBlock } from "~/components/code/code-lazy";
 import { Button } from "@cloudflare/kumo";
 import { ArrowRightIcon } from "@phosphor-icons/react";
 
@@ -41,9 +40,15 @@ export default function LayerCardDoc() {
       {/* Installation */}
       <ComponentSection>
         <h2 className="text-2xl font-bold mb-4">Installation</h2>
+        <h3 className="text-lg font-semibold mb-2">Barrel</h3>
         <CodeBlock
           lang="tsx"
-          code={`import { LayerCard } from "~/components/layer-card/layer-card";`}
+          code={`import { LayerCard } from "@cloudflare/kumo";`}
+        />
+        <h3 className="text-lg font-semibold mb-2 mt-4">Granular</h3>
+        <CodeBlock
+          lang="tsx"
+          code={`import { LayerCard } from "@cloudflare/kumo/components/layer-card";`}
         />
       </ComponentSection>
 
@@ -52,7 +57,7 @@ export default function LayerCardDoc() {
         <h2 className="text-2xl font-bold mb-4">Usage</h2>
         <CodeBlock
           lang="tsx"
-          code={`import { LayerCard } from "~/components/layer-card/layer-card";
+          code={`import { LayerCard } from "@cloudflare/kumo";
 
 export default function Example() {
   return (

@@ -1,7 +1,14 @@
-/* @import "tailwindcss"; */
 @import "./kumo-binding.css";
 
-/* Kumo Component Library Styles */
+/* 
+ * Kumo Component Library Styles - Tailwind Version
+ * 
+ * Note: This file does NOT import Tailwind CSS.
+ * Consumer applications must import Tailwind separately in their own CSS:
+ * 
+ * @import "tailwindcss";
+ * @import "@cloudflare/kumo/styles/tailwind";
+ */
 
 /* Skeleton loading animation */
 @keyframes skeleton {

@@ -1,7 +1,6 @@
 import React from "react";
-import { cn } from "@cloudflare/kumo";
+import { cn, CodeBlock } from "@cloudflare/kumo";
 import { ComponentPreview } from "./component-preview";
-import { CodeBlock } from "../code/code";
 
 interface ComponentExampleProps {
   children: React.ReactNode;
