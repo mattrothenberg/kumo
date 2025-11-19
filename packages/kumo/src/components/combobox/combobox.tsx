@@ -1,7 +1,8 @@
 import { Combobox as ComboboxBase } from "@base-ui-components/react";
-import { cn, inputVariants } from "@cloudflare/kumo";
 import { CaretDownIcon, CheckIcon, XIcon } from "@phosphor-icons/react";
 import { Fragment, type PropsWithChildren } from "react";
+import { inputVariants } from "../input/input";
+import { cn } from "../../utils/cn";
 
 function Root<
   ItemValue,
