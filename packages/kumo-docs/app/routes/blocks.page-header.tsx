@@ -8,7 +8,7 @@ import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";
 import { Button } from "@cloudflare/kumo";
-import { PageHeader, Breadcrumb, CodeBlock } from "@cloudflare/kumo";
+import { PageHeader, Breadcrumbs, CodeBlock } from "@cloudflare/kumo";
 
 export default function PageHeaderDoc() {
   return (
@@ -22,13 +22,13 @@ export default function PageHeaderDoc() {
           code={`<PageHeader
   className="w-full"
   breadcrumbs={
-    <Breadcrumb>
-      <Breadcrumb.Link icon={<HouseIcon size={16} />} href="#">
+    <Breadcrumbs>
+      <Breadcrumbs.Link icon={<HouseIcon size={16} />} href="#">
         Workers & Pages
-      </Breadcrumb.Link>
-      <Breadcrumb.Separator />
-      <Breadcrumb.Current>cloudflare-dev-platform</Breadcrumb.Current>
-    </Breadcrumb>
+      </Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Current>cloudflare-dev-platform</Breadcrumbs.Current>
+    </Breadcrumbs>
   }
   tabs={[
     { label: "Overview", value: "overview" },
@@ -48,13 +48,13 @@ export default function PageHeaderDoc() {
           <PageHeader
             className="w-full"
             breadcrumbs={
-              <Breadcrumb>
-                <Breadcrumb.Link icon={<HouseIcon size={16} />} href="#">
+              <Breadcrumbs>
+                <Breadcrumbs.Link icon={<HouseIcon size={16} />} href="#">
                   Workers & Pages
-                </Breadcrumb.Link>
-                <Breadcrumb.Separator />
-                <Breadcrumb.Current>cloudflare-dev-platform</Breadcrumb.Current>
-              </Breadcrumb>
+                </Breadcrumbs.Link>
+                <Breadcrumbs.Separator />
+                <Breadcrumbs.Current>cloudflare-dev-platform</Breadcrumbs.Current>
+              </Breadcrumbs>
             }
             tabs={[
               { label: "Overview", value: "overview" },
@@ -95,19 +95,19 @@ export default function PageHeaderDoc() {
         <CodeBlock
           lang="tsx"
           code={`import { PageHeader } from "~/blocks/page-header";
-import { Breadcrumb } from "@cloudflare/kumo";
+import { Breadcrumbs } from "@cloudflare/kumo";
 
 export default function Example() {
   return (
     <PageHeader
       breadcrumbs={
-        <Breadcrumb>
-          <Breadcrumb.Link href="#">Home</Breadcrumb.Link>
-          <Breadcrumb.Separator />
-          <Breadcrumb.Link href="#">Projects</Breadcrumb.Link>
-          <Breadcrumb.Separator />
-          <Breadcrumb.Current>My Project</Breadcrumb.Current>
-        </Breadcrumb>
+        <Breadcrumbs>
+          <Breadcrumbs.Link href="#">Home</Breadcrumbs.Link>
+          <Breadcrumbs.Separator />
+          <Breadcrumbs.Link href="#">Projects</Breadcrumbs.Link>
+          <Breadcrumbs.Separator />
+          <Breadcrumbs.Current>My Project</Breadcrumbs.Current>
+        </Breadcrumbs>
       }
       tabs={[
         { label: "Overview", value: "overview" },
@@ -133,21 +133,21 @@ export default function Example() {
           <ComponentExample
             code={`<PageHeader
   breadcrumbs={
-    <Breadcrumb>
-      <Breadcrumb.Link href="#">Home</Breadcrumb.Link>
-      <Breadcrumb.Separator />
-      <Breadcrumb.Current>Dashboard</Breadcrumb.Current>
-    </Breadcrumb>
+    <Breadcrumbs>
+      <Breadcrumbs.Link href="#">Home</Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Current>Dashboard</Breadcrumbs.Current>
+    </Breadcrumbs>
   }
 />`}
           >
             <PageHeader
               breadcrumbs={
-                <Breadcrumb>
-                  <Breadcrumb.Link href="#">Home</Breadcrumb.Link>
-                  <Breadcrumb.Separator />
-                  <Breadcrumb.Current>Dashboard</Breadcrumb.Current>
-                </Breadcrumb>
+                <Breadcrumbs>
+                  <Breadcrumbs.Link href="#">Home</Breadcrumbs.Link>
+                  <Breadcrumbs.Separator />
+                  <Breadcrumbs.Current>Dashboard</Breadcrumbs.Current>
+                </Breadcrumbs>
               }
             />
           </ComponentExample>
@@ -159,11 +159,11 @@ export default function Example() {
           <ComponentExample
             code={`<PageHeader
   breadcrumbs={
-    <Breadcrumb>
-      <Breadcrumb.Link href="#">Home</Breadcrumb.Link>
-      <Breadcrumb.Separator />
-      <Breadcrumb.Current>Settings</Breadcrumb.Current>
-    </Breadcrumb>
+    <Breadcrumbs>
+      <Breadcrumbs.Link href="#">Home</Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Current>Settings</Breadcrumbs.Current>
+    </Breadcrumbs>
   }
   tabs={[
     { label: "General", href: "/settings" },
@@ -174,11 +174,11 @@ export default function Example() {
           >
             <PageHeader
               breadcrumbs={
-                <Breadcrumb>
-                  <Breadcrumb.Link href="#">Home</Breadcrumb.Link>
-                  <Breadcrumb.Separator />
-                  <Breadcrumb.Current>Settings</Breadcrumb.Current>
-                </Breadcrumb>
+                <Breadcrumbs>
+                  <Breadcrumbs.Link href="#">Home</Breadcrumbs.Link>
+                  <Breadcrumbs.Separator />
+                  <Breadcrumbs.Current>Settings</Breadcrumbs.Current>
+                </Breadcrumbs>
               }
               //   tabs={[
               //     { label: "General", href: "/settings" },
@@ -195,15 +195,15 @@ export default function Example() {
           <ComponentExample
             code={`<PageHeader
   breadcrumbs={
-    <Breadcrumb>
-      <Breadcrumb.Link icon={<HouseIcon size={16} />} href="#">
+    <Breadcrumbs>
+      <Breadcrumbs.Link icon={<HouseIcon size={16} />} href="#">
         Home
-      </Breadcrumb.Link>
-      <Breadcrumb.Separator />
-      <Breadcrumb.Current icon={<GearIcon size={16} />}>
+      </Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Current icon={<GearIcon size={16} />}>
         Settings
-      </Breadcrumb.Current>
-    </Breadcrumb>
+      </Breadcrumbs.Current>
+    </Breadcrumbs>
   }
   tabs={[
     { label: "General", href: "/settings" },
@@ -213,15 +213,15 @@ export default function Example() {
           >
             <PageHeader
               breadcrumbs={
-                <Breadcrumb>
-                  <Breadcrumb.Link icon={<HouseIcon size={16} />} href="#">
+                <Breadcrumbs>
+                  <Breadcrumbs.Link icon={<HouseIcon size={16} />} href="#">
                     Home
-                  </Breadcrumb.Link>
-                  <Breadcrumb.Separator />
-                  <Breadcrumb.Current icon={<GearIcon size={16} />}>
+                  </Breadcrumbs.Link>
+                  <Breadcrumbs.Separator />
+                  <Breadcrumbs.Current icon={<GearIcon size={16} />}>
                     Settings
-                  </Breadcrumb.Current>
-                </Breadcrumb>
+                  </Breadcrumbs.Current>
+                </Breadcrumbs>
               }
               //   tabs={[
               //     { label: "General", href: "/settings" },
@@ -237,13 +237,13 @@ export default function Example() {
           <ComponentExample
             code={`<PageHeader
   breadcrumbs={
-    <Breadcrumb>
-      <Breadcrumb.Link href="#">Home</Breadcrumb.Link>
-      <Breadcrumb.Separator />
-      <Breadcrumb.Link href="#">Projects</Breadcrumb.Link>
-      <Breadcrumb.Separator />
-      <Breadcrumb.Current>My Project</Breadcrumb.Current>
-    </Breadcrumb>
+    <Breadcrumbs>
+      <Breadcrumbs.Link href="#">Home</Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Link href="#">Projects</Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Current>My Project</Breadcrumbs.Current>
+    </Breadcrumbs>
   }
   tabs={[
     { label: "Overview", href: "/projects/my-project" },
@@ -257,13 +257,13 @@ export default function Example() {
           >
             <PageHeader
               breadcrumbs={
-                <Breadcrumb>
-                  <Breadcrumb.Link href="#">Home</Breadcrumb.Link>
-                  <Breadcrumb.Separator />
-                  <Breadcrumb.Link href="#">Projects</Breadcrumb.Link>
-                  <Breadcrumb.Separator />
-                  <Breadcrumb.Current>My Project</Breadcrumb.Current>
-                </Breadcrumb>
+                <Breadcrumbs>
+                  <Breadcrumbs.Link href="#">Home</Breadcrumbs.Link>
+                  <Breadcrumbs.Separator />
+                  <Breadcrumbs.Link href="#">Projects</Breadcrumbs.Link>
+                  <Breadcrumbs.Separator />
+                  <Breadcrumbs.Current>My Project</Breadcrumbs.Current>
+                </Breadcrumbs>
               }
               //   tabs={[
               //     { label: "Overview", href: "/projects/my-project" },
@@ -294,7 +294,7 @@ export default function Example() {
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
                 <td className="py-3 px-4 font-mono text-xs">breadcrumbs</td>
                 <td className="py-3 px-4 font-mono text-xs">
-                  BreadcrumbItem[]
+                  BreadcrumbsItem[]
                 </td>
                 <td className="py-3 px-4 font-mono text-xs">required</td>
               </tr>

@@ -64,18 +64,14 @@ export default defineConfig({
     },
     rollupOptions: {
       // Externalize dependencies that shouldn't be bundled
-      external: [
-        'react',
-        'react-dom',
-        'react/jsx-runtime',
-        '@base-ui-components/react',
-        '@phosphor-icons/react',
-        'clsx',
-        'tailwind-merge',
-      ],
+      external: (id) => {
+        // Externalize all node_modules dependencies
+        return !id.startsWith('.') && !id.startsWith('/');
+      },
       output: {
         // Preserve module structure for better tree-shaking and debugging
         preserveModules: true,
+        preserveModulesRoot: 'src',
         // Global variables for UMD build (if needed)
         globals: {
           react: 'React',

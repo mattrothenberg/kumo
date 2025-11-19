@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { PageHeader } from './page-header';
+import { Breadcrumbs } from '../breadcrumb';
 import { Button } from '../../components/button';
 import { Plus } from '@phosphor-icons/react';
 
@@ -16,52 +17,69 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {
-    breadcrumbs: [
-      { label: 'Home', to: '/' },
-      { label: 'Projects', to: '/projects' },
-      { label: 'Current Project' },
-    ],
-  },
+  render: () => (
+    <PageHeader
+      breadcrumbs={
+        <Breadcrumbs>
+          <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+          <Breadcrumbs.Separator />
+          <Breadcrumbs.Link href="/projects">Projects</Breadcrumbs.Link>
+          <Breadcrumbs.Separator />
+          <Breadcrumbs.Current>Current Project</Breadcrumbs.Current>
+        </Breadcrumbs>
+      }
+    />
+  ),
+  args: { breadcrumbs: undefined as any },
 };
 
 export const WithTabs: Story = {
-  args: {
-    breadcrumbs: [
-      { label: 'Home', to: '/' },
-      { label: 'Settings' },
-    ],
-    tabs: [
-      { label: 'General', value: 'general' },
-      { label: 'Security', value: 'security' },
-      { label: 'Notifications', value: 'notifications' },
-      { label: 'Billing', value: 'billing' },
-    ],
-    defaultTab: 'general',
-  },
+  render: () => (
+    <PageHeader
+      breadcrumbs={
+        <Breadcrumbs>
+          <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+          <Breadcrumbs.Separator />
+          <Breadcrumbs.Current>Settings</Breadcrumbs.Current>
+        </Breadcrumbs>
+      }
+      tabs={[
+        { label: 'General', value: 'general' },
+        { label: 'Security', value: 'security' },
+        { label: 'Notifications', value: 'notifications' },
+        { label: 'Billing', value: 'billing' },
+      ]}
+      defaultTab="general"
+    />
+  ),
+  args: { breadcrumbs: undefined as any },
 };
 
 export const WithTabsAndActions: Story = {
-  args: {
-    breadcrumbs: [
-      { label: 'Home', to: '/' },
-      { label: 'Projects', to: '/projects' },
-      { label: 'My Project' },
-    ],
-    tabs: [
-      { label: 'Overview', value: 'overview' },
-      { label: 'Analytics', value: 'analytics' },
-      { label: 'Settings', value: 'settings' },
-    ],
-    defaultTab: 'overview',
-    children: (
-      <>
-        <Button variant="outline" size="sm">Export</Button>
-        <Button variant="primary" size="sm">
-          <Plus size={16} />
-          New Item
-        </Button>
-      </>
-    ),
-  },
+  render: () => (
+    <PageHeader
+      breadcrumbs={
+        <Breadcrumbs>
+          <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+          <Breadcrumbs.Separator />
+          <Breadcrumbs.Link href="/projects">Projects</Breadcrumbs.Link>
+          <Breadcrumbs.Separator />
+          <Breadcrumbs.Current>My Project</Breadcrumbs.Current>
+        </Breadcrumbs>
+      }
+      tabs={[
+        { label: 'Overview', value: 'overview' },
+        { label: 'Analytics', value: 'analytics' },
+        { label: 'Settings', value: 'settings' },
+      ]}
+      defaultTab="overview"
+    >
+      <Button variant="outline" size="sm">Export</Button>
+      <Button variant="primary" size="sm">
+        <Plus size={16} />
+        New Item
+      </Button>
+    </PageHeader>
+  ),
+  args: { breadcrumbs: undefined as any },
 };

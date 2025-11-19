@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Breadcrumbs } from './breadcrumbs';
+import { Breadcrumbs } from '../breadcrumb';
 import { House, Folder, File } from '@phosphor-icons/react';
 
 const meta = {
@@ -15,41 +15,53 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {
-    items: [
-      { label: 'Home', to: '/' },
-      { label: 'Projects', to: '/projects' },
-      { label: 'Current Project' },
-    ],
-  },
+  render: () => (
+    <Breadcrumbs>
+      <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Link href="/projects">Projects</Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Current>Current Project</Breadcrumbs.Current>
+    </Breadcrumbs>
+  ),
 };
 
 export const WithIcons: Story = {
-  args: {
-    items: [
-      { label: 'Home', to: '/', icon: <House size={16} /> },
-      { label: 'Documents', to: '/documents', icon: <Folder size={16} /> },
-      { label: 'File.txt', icon: <File size={16} /> },
-    ],
-  },
+  render: () => (
+    <Breadcrumbs>
+      <Breadcrumbs.Link href="/" icon={<House size={16} />}>
+        Home
+      </Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Link href="/documents" icon={<Folder size={16} />}>
+        Documents
+      </Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Current icon={<File size={16} />}>File.txt</Breadcrumbs.Current>
+    </Breadcrumbs>
+  ),
 };
 
 export const LongPath: Story = {
-  args: {
-    items: [
-      { label: 'Home', to: '/' },
-      { label: 'Projects', to: '/projects' },
-      { label: 'Web Applications', to: '/projects/web' },
-      { label: 'Dashboard', to: '/projects/web/dashboard' },
-      { label: 'Settings' },
-    ],
-  },
+  render: () => (
+    <Breadcrumbs>
+      <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Link href="/projects">Projects</Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Link href="/projects/web">Web Applications</Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Link href="/projects/web/dashboard">Dashboard</Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Current>Settings</Breadcrumbs.Current>
+    </Breadcrumbs>
+  ),
 };
 
 export const SingleItem: Story = {
-  args: {
-    items: [
-      { label: 'Home' },
-    ],
-  },
+  render: () => (
+    <Breadcrumbs>
+      <Breadcrumbs.Current>Home</Breadcrumbs.Current>
+    </Breadcrumbs>
+  ),
 };
