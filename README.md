@@ -15,7 +15,11 @@ This repository uses **pnpm workspaces** for monorepo management:
 ```
 kumo/
 ├── packages/
-│   ├── kumo/                      # Component library package (future)
+│   ├── kumo/                      # Component library package
+│   │   ├── src/                   # Component source code
+│   │   ├── dist/                  # Build output
+│   │   ├── .storybook/            # Storybook configuration
+│   │   └── package.json
 │   └── kumo-docs/                 # Documentation site
 │       ├── app/                   # React Router application
 │       ├── workers/               # Cloudflare Workers
@@ -58,8 +62,8 @@ Your application runs at `http://localhost:5173`.
 # Install dependencies for all packages
 pnpm install
 
-# Run commands in all packages
-pnpm -r build
+# Build all packages
+pnpm build:all
 
 # Run command in specific package
 pnpm --filter @cloudflare/kumo build
@@ -68,8 +72,6 @@ pnpm --filter @cloudflare/kumo-docs dev
 # Add dependency to specific package
 pnpm --filter @cloudflare/kumo add react
 
-# List all workspace packages
-pnpm -r list --depth 0
 ```
 
 ## Development Workflows
@@ -82,72 +84,80 @@ The monorepo contains two packages with different development characteristics:
 - Component library built with Vite in library mode
 - Watch mode rebuilds on changes (not full HMR)
 - Outputs to `dist/` for consumption by docs site
+- Includes Storybook for component development
 
 **@cloudflare/kumo-docs** (`packages/kumo-docs/`)
 - Documentation site built with React Router + Vite
 - Full HMR with React Fast Refresh
 - Runs at `http://localhost:5173`
 
-### Running in Development
+### Running the Documentation Site
 
-**Option 1: Documentation Only**
-
-If you're only working on the docs site:
+Start the kumo-docs development server:
 
 ```bash
+# From workspace root
 pnpm dev
-```
 
-This starts the docs site with full HMR enabled.
-
-**Option 2: Full Development (Both Packages)**
-
-To develop both packages simultaneously with live updates:
-
-```bash
-# Terminal 1 - Watch library changes
-pnpm --filter @cloudflare/kumo dev
-
-# Terminal 2 - Run documentation site
+# Or target the specific package
 pnpm --filter @cloudflare/kumo-docs dev
 ```
 
-The library rebuilds automatically when you edit components, and the docs site detects the changes and reloads.
+The documentation site runs at `http://localhost:5173`.
+
+### Running Storybook
+
+Start the Storybook development server for component development:
+
+```bash
+# From workspace root
+pnpm storybook
+
+# Or target the specific package
+pnpm --filter @cloudflare/kumo storybook
+```
+
+Storybook runs at `http://localhost:6006` and provides:
+- Component development in isolation
+- Full HMR for instant updates
+- Interactive component testing
+- Documentation of component props and variants
+
+See [packages/kumo/STORYBOOK.md](./packages/kumo/STORYBOOK.md) for more details.
+
+### Development Scenarios
+
+**Working on Components (Recommended: Use Storybook)**
+1. Run Storybook: `pnpm --filter @cloudflare/kumo storybook`
+2. Edit components in `packages/kumo/src/components/`
+3. See instant HMR updates in Storybook
+4. Write and test component stories
+
+**Working on Documentation Only**
+1. Run: `pnpm dev` (or `pnpm --filter @cloudflare/kumo-docs dev`)
+2. Edit files in `packages/kumo-docs/app/`
+3. See instant HMR updates
+
+**Testing Components**
+1. Run tests: `pnpm --filter @cloudflare/kumo test`
+2. Edit components and see live test results
 
 ### Understanding HMR
+
+**Storybook:**
+- ✅ Full HMR with React Fast Refresh
+- ✅ Changes reflect instantly without page reload
+- ✅ Best for component development
 
 **Documentation Site:**
 - ✅ Full HMR with React Fast Refresh
 - ✅ Changes reflect instantly without page reload
 - ✅ Component state preserved during updates
 
-**Component Library:**
+**Component Library (Watch Mode):**
 - ⚠️ Watch mode (auto-rebuild on changes)
 - ⚠️ Requires docs site refresh to see updates
 - ⚠️ Not true HMR due to library build mode
-
-### Development Scenarios
-
-**Working on Components:**
-1. Run both terminals (library watch + docs dev)
-2. Edit components in `packages/kumo/src/components/`
-3. Library rebuilds automatically
-4. Docs site refreshes to show changes
-
-**Working on Documentation:**
-1. Run docs only: `pnpm dev`
-2. Edit files in `packages/kumo-docs/app/`
-3. See instant HMR updates
-
-**Testing Components:**
-1. Run tests: `pnpm --filter @cloudflare/kumo test`
-2. Edit components and see live test results
-
-**Developing with Storybook:**
-1. Run Storybook: `pnpm --filter @cloudflare/kumo storybook`
-2. Build components in isolation at `http://localhost:6006`
-3. See instant HMR updates for component changes
-4. See [packages/kumo/STORYBOOK.md](./packages/kumo/STORYBOOK.md) for details
 
 ## Creating New Components
 

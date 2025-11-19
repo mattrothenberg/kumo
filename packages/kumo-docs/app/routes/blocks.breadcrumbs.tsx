@@ -2,7 +2,7 @@ import { HouseIcon } from "@phosphor-icons/react";
 import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";
-import { Breadcrumb, CodeBlock } from "@cloudflare/kumo";
+import { Breadcrumbs, CodeBlock } from "@cloudflare/kumo";
 
 export default function BreadcrumbsDoc() {
   return (
@@ -13,25 +13,25 @@ export default function BreadcrumbsDoc() {
       {/* Demo */}
       <ComponentSection>
         <ComponentExample
-          code={`<Breadcrumb>
-  <Breadcrumb.Link icon={<HouseIcon size={16} />} href="/">
+          code={`<Breadcrumbs>
+  <Breadcrumbs.Link icon={<HouseIcon size={16} />} href="/">
     Home
-  </Breadcrumb.Link>
-  <Breadcrumb.Separator />
-  <Breadcrumb.Link href="/docs">Projects</Breadcrumb.Link>
-  <Breadcrumb.Separator />
-  <Breadcrumb.Current>Current Project</Breadcrumb.Current>
-</Breadcrumb>`}
+  </Breadcrumbs.Link>
+  <Breadcrumbs.Separator />
+  <Breadcrumbs.Link href="/docs">Projects</Breadcrumbs.Link>
+  <Breadcrumbs.Separator />
+  <Breadcrumbs.Current>Current Project</Breadcrumbs.Current>
+</Breadcrumbs>`}
         >
-          <Breadcrumb>
-            <Breadcrumb.Link icon={<HouseIcon size={16} />} href="#">
+          <Breadcrumbs>
+            <Breadcrumbs.Link icon={<HouseIcon size={16} />} href="#">
               Home
-            </Breadcrumb.Link>
-            <Breadcrumb.Separator />
-            <Breadcrumb.Link href="#">Projects</Breadcrumb.Link>
-            <Breadcrumb.Separator />
-            <Breadcrumb.Current>Current Project</Breadcrumb.Current>
-          </Breadcrumb>
+            </Breadcrumbs.Link>
+            <Breadcrumbs.Separator />
+            <Breadcrumbs.Link href="#">Projects</Breadcrumbs.Link>
+            <Breadcrumbs.Separator />
+            <Breadcrumbs.Current>Current Project</Breadcrumbs.Current>
+          </Breadcrumbs>
         </ComponentExample>
       </ComponentSection>
 
@@ -43,7 +43,7 @@ export default function BreadcrumbsDoc() {
         </p>
         <CodeBlock
           lang="tsx"
-          code={`import { Breadcrumb } from "@cloudflare/kumo";`}
+          code={`import { Breadcrumbs } from "@cloudflare/kumo";`}
         />
       </ComponentSection>
 
@@ -52,17 +52,17 @@ export default function BreadcrumbsDoc() {
         <h2 className="text-2xl font-bold mb-4">Usage</h2>
         <CodeBlock
           lang="tsx"
-          code={`import { Breadcrumb } from "@cloudflare/kumo";
+          code={`import { Breadcrumbs } from "@cloudflare/kumo";
 
 export default function Example() {
   return (
-    <Breadcrumb>
-      <Breadcrumb.Link href="/">Home</Breadcrumb.Link>
-      <Breadcrumb.Separator />
-      <Breadcrumb.Link href="/docs">Docs</Breadcrumb.Link>
-      <Breadcrumb.Separator />
-      <Breadcrumb.Current>Breadcrumbs</Breadcrumb.Current>
-    </Breadcrumb>
+    <Breadcrumbs>
+      <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Link href="/docs">Docs</Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Current>Breadcrumbss</Breadcrumbs.Current>
+    </Breadcrumbs>
   );
 }`}
         />
@@ -76,21 +76,21 @@ export default function Example() {
         <div className="mb-12">
           <h3 className="text-xl font-semibold mb-4">Basic</h3>
           <ComponentExample
-            code={`<Breadcrumb>
-  <Breadcrumb.Link href="#">Home</Breadcrumb.Link>
-  <Breadcrumb.Separator />
-  <Breadcrumb.Link href="/docs">Docs</Breadcrumb.Link>
-  <Breadcrumb.Separator />
-  <Breadcrumb.Current>Breadcrumbs</Breadcrumb.Current>
-</Breadcrumb>`}
+            code={`<Breadcrumbs>
+  <Breadcrumbs.Link href="#">Home</Breadcrumbs.Link>
+  <Breadcrumbs.Separator />
+  <Breadcrumbs.Link href="/docs">Docs</Breadcrumbs.Link>
+  <Breadcrumbs.Separator />
+  <Breadcrumbs.Current>Breadcrumbss</Breadcrumbs.Current>
+</Breadcrumbs>`}
           >
-            <Breadcrumb>
-              <Breadcrumb.Link href="#">Home</Breadcrumb.Link>
-              <Breadcrumb.Separator />
-              <Breadcrumb.Link href="#">Docs</Breadcrumb.Link>
-              <Breadcrumb.Separator />
-              <Breadcrumb.Current>Breadcrumbs</Breadcrumb.Current>
-            </Breadcrumb>
+            <Breadcrumbs>
+              <Breadcrumbs.Link href="#">Home</Breadcrumbs.Link>
+              <Breadcrumbs.Separator />
+              <Breadcrumbs.Link href="#">Docs</Breadcrumbs.Link>
+              <Breadcrumbs.Separator />
+              <Breadcrumbs.Current>Breadcrumbs</Breadcrumbs.Current>
+            </Breadcrumbs>
           </ComponentExample>
         </div>
       </ComponentSection>
@@ -100,25 +100,25 @@ export default function Example() {
         <div className="mb-12">
           <h3 className="text-xl font-semibold mb-4">Loading</h3>
           <ComponentExample
-            code={`<Breadcrumb>
-  <Breadcrumb.Link href="#" icon={<HouseIcon size={16} />}>
+            code={`<Breadcrumbs>
+  <Breadcrumbs.Link href="#" icon={<HouseIcon size={16} />}>
     Home
-  </Breadcrumb.Link>
-  <Breadcrumb.Separator />
-  <Breadcrumb.Link href="/docs">Docs</Breadcrumb.Link>
-  <Breadcrumb.Separator />
-  <Breadcrumb.Current loading></Breadcrumb.Current>
-</Breadcrumb>`}
+  </Breadcrumbs.Link>
+  <Breadcrumbs.Separator />
+  <Breadcrumbs.Link href="/docs">Docs</Breadcrumbs.Link>
+  <Breadcrumbs.Separator />
+  <Breadcrumbs.Current loading></Breadcrumbs.Current>
+</Breadcrumbs>`}
           >
-            <Breadcrumb>
-              <Breadcrumb.Link href="#" icon={<HouseIcon size={16} />}>
+            <Breadcrumbs>
+              <Breadcrumbs.Link href="#" icon={<HouseIcon size={16} />}>
                 Home
-              </Breadcrumb.Link>
-              <Breadcrumb.Separator />
-              <Breadcrumb.Link href="#">Docs</Breadcrumb.Link>
-              <Breadcrumb.Separator />
-              <Breadcrumb.Current loading></Breadcrumb.Current>
-            </Breadcrumb>
+              </Breadcrumbs.Link>
+              <Breadcrumbs.Separator />
+              <Breadcrumbs.Link href="#">Docs</Breadcrumbs.Link>
+              <Breadcrumbs.Separator />
+              <Breadcrumbs.Current loading></Breadcrumbs.Current>
+            </Breadcrumbs>
           </ComponentExample>
         </div>
       </ComponentSection>
@@ -128,17 +128,17 @@ export default function Example() {
         <div className="mb-12">
           <h3 className="text-xl font-semibold mb-4">Root</h3>
           <ComponentExample
-            code={`<Breadcrumb>
-  <Breadcrumb.Current icon={<HouseIcon size={16} />}>
+            code={`<Breadcrumbs>
+  <Breadcrumbs.Current icon={<HouseIcon size={16} />}>
     Worker Analytics
-  </Breadcrumb.Current>
-</Breadcrumb>`}
+  </Breadcrumbs.Current>
+</Breadcrumbs>`}
           >
-            <Breadcrumb>
-              <Breadcrumb.Current icon={<HouseIcon size={16} />}>
+            <Breadcrumbs>
+              <Breadcrumbs.Current icon={<HouseIcon size={16} />}>
                 Worker Analytics
-              </Breadcrumb.Current>
-            </Breadcrumb>
+              </Breadcrumbs.Current>
+            </Breadcrumbs>
           </ComponentExample>
         </div>
       </ComponentSection>
@@ -148,19 +148,19 @@ export default function Example() {
         <div className="mb-12">
           <h3 className="text-xl font-semibold mb-4">Clipboard</h3>
           <ComponentExample
-            code={`<Breadcrumb>
-  <Breadcrumb.Link href="#">Home</Breadcrumb.Link>
-  <Breadcrumb.Separator />
-  <Breadcrumb.Current>Breadcrumbs</Breadcrumb.Current>
-  <Breadcrumb.Clipboard text="#" />
-</Breadcrumb>`}
+            code={`<Breadcrumbs>
+  <Breadcrumbs.Link href="#">Home</Breadcrumbs.Link>
+  <Breadcrumbs.Separator />
+  <Breadcrumbs.Current>Breadcrumbs</Breadcrumbs.Current>
+  <Breadcrumbs.Clipboard text="#" />
+</Breadcrumbs>`}
           >
-            <Breadcrumb>
-              <Breadcrumb.Link href="#">Home</Breadcrumb.Link>
-              <Breadcrumb.Separator />
-              <Breadcrumb.Current>Breadcrumbs</Breadcrumb.Current>
-              <Breadcrumb.Clipboard text="#" />
-            </Breadcrumb>
+            <Breadcrumbs>
+              <Breadcrumbs.Link href="#">Home</Breadcrumbs.Link>
+              <Breadcrumbs.Separator />
+              <Breadcrumbs.Current>Breadcrumbs</Breadcrumbs.Current>
+              <Breadcrumbs.Clipboard text="#" />
+            </Breadcrumbs>
           </ComponentExample>
         </div>
       </ComponentSection>
@@ -170,9 +170,9 @@ export default function Example() {
         <h2 className="text-2xl font-bold mb-4">API Reference</h2>
 
         <div className="space-y-8">
-          {/* Breadcrumb */}
+          {/* Breadcrumbs */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">Breadcrumb</h3>
+            <h3 className="text-lg font-semibold mb-3">Breadcrumbs</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
@@ -195,9 +195,9 @@ export default function Example() {
             </div>
           </div>
 
-          {/* Breadcrumb.Link */}
+          {/* Breadcrumbs.Link */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">Breadcrumb.Link</h3>
+            <h3 className="text-lg font-semibold mb-3">Breadcrumbs.Link</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
@@ -230,9 +230,9 @@ export default function Example() {
             </div>
           </div>
 
-          {/* Breadcrumb.Current */}
+          {/* Breadcrumbs.Current */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">Breadcrumb.Current</h3>
+            <h3 className="text-lg font-semibold mb-3">Breadcrumbs.Current</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
@@ -265,9 +265,9 @@ export default function Example() {
             </div>
           </div>
 
-          {/* Breadcrumb.Separator */}
+          {/* Breadcrumbs.Separator */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">Breadcrumb.Separator</h3>
+            <h3 className="text-lg font-semibold mb-3">Breadcrumbs.Separator</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
@@ -290,9 +290,9 @@ export default function Example() {
             </div>
           </div>
 
-          {/* Breadcrumb.Clipboard */}
+          {/* Breadcrumbs.Clipboard */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">Breadcrumb.Clipboard</h3>
+            <h3 className="text-lg font-semibold mb-3">Breadcrumbs.Clipboard</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>

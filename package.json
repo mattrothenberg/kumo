@@ -13,6 +13,7 @@
 		"dev": "pnpm --filter @cloudflare/kumo-docs dev",
 		"deploy": "pnpm --filter @cloudflare/kumo-docs deploy",
 		"preview": "pnpm --filter @cloudflare/kumo-docs preview",
+		"storybook": "pnpm --filter @cloudflare/kumo storybook",
 		"typecheck": "pnpm -r typecheck",
 		"clean": "pnpm -r exec rm -rf dist build .react-router .wrangler node_modules",
 		"format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",

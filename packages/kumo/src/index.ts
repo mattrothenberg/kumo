@@ -48,7 +48,7 @@ export { Tooltip, TooltipProvider } from "./components/tooltip";
 // PLOP_INJECT_EXPORT
 
 // Blocks
-export { Breadcrumb } from "./blocks/breadcrumb";
+export { Breadcrumbs } from "./blocks/breadcrumb";
 export { Empty, type EmptyProps } from "./blocks/empty";
 export { PageHeader, type PageHeaderProps } from "./blocks/page-header";
 // PLOP_INJECT_BLOCK_EXPORT
