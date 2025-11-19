@@ -27,7 +27,7 @@ export function Badge({
           ? "text-kumo-destructive bg-kumo-destructive"
           : "",
         variant === "beta"
-          ? "border border-dashed bg-transparent border-kumo-beta text-kumo-beta"
+          ? "border border-dashed bg-transparent border-kumo-primary text-kumo-beta"
           : "",
         className
       )}

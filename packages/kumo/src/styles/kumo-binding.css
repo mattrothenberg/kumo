@@ -154,9 +154,8 @@
   );
 
  /* New: beta semantic color */
-  --color-kumo-beta: light-dark(#056dff, #056dff);
   --text-color-kumo-beta: light-dark(#056dff, #056dff);
-  
+
   --color-kumo-secondary: light-dark(
     var(--color-white, #fff),
     var(--color-neutral-900, oklch(21% 0.006 285.885))
