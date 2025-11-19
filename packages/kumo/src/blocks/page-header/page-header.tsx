@@ -1,9 +1,9 @@
+import { ReactNode } from "react";
 import { Tabs, type TabsItem } from "../../components/tabs";
 import { cn } from "../../utils/cn";
-import { Breadcrumbs, type BreadcrumbItem } from "../breadcrumbs";
 
 export interface PageHeaderProps {
-  breadcrumbs: BreadcrumbItem[];
+  breadcrumbs: ReactNode;
   tabs?: TabsItem[];
   defaultTab?: string;
   onValueChange?: (value: string) => void;
@@ -17,12 +17,12 @@ export function PageHeader({
   defaultTab,
   onValueChange,
   className,
-  children
+  children,
 }: PageHeaderProps) {
   return (
     <div className={cn("flex flex-col gap-2", className)}>
       <div className="border-b border-neutral-250 dark:border-neutral-800">
-        <Breadcrumbs items={breadcrumbs} />
+        {breadcrumbs}
       </div>
 
       {tabs && (
@@ -36,9 +36,7 @@ export function PageHeader({
             }}
           />
 
-          <div className="flex items-center gap-2">
-            {children}
-          </div>
+          <div className="flex items-center gap-2">{children}</div>
         </div>
       )}
     </div>
