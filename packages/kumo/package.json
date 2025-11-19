@@ -178,7 +178,9 @@
 		"new-component": "plop component",
 		"new-block": "plop block",
 		"new-layout": "plop layout",
-		"validate:changeset": "tsx ../../ci/scripts/validate-kumo-changeset.ts"
+		"validate:changeset": "tsx ../../ci/scripts/validate-kumo-changeset.ts",
+		"storybook": "storybook dev -p 6006",
+		"build-storybook": "storybook build"
 	},
 	"peerDependencies": {
 		"@base-ui-components/react": "^1.0.0-beta.4",
@@ -191,7 +193,11 @@
 		"tailwind-merge": "^2.5.5"
 	},
 	"devDependencies": {
+		"@storybook/addon-docs": "^10.0.8",
+		"@storybook/react": "10.0.8",
+		"@storybook/react-vite": "^10.0.8",
 		"@tailwindcss/cli": "4.1.17",
+		"@tailwindcss/vite": "^4.1.17",
 		"@types/node": "^22.10.2",
 		"@types/react": "^18.3.18",
 		"@types/react-dom": "^18.3.5",
@@ -200,6 +206,7 @@
 		"oxlint": "1.28.0",
 		"oxlint-tsgolint": "0.6.0",
 		"plop": "4.0.4",
+		"storybook": "^10.0.8",
 		"tailwindcss": "^4.1.13",
 		"tsx": "^4.19.2",
 		"typescript": "^5.9.2",

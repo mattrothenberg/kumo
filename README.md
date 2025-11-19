@@ -143,6 +143,12 @@ The library rebuilds automatically when you edit components, and the docs site d
 1. Run tests: `pnpm --filter @cloudflare/kumo test`
 2. Edit components and see live test results
 
+**Developing with Storybook:**
+1. Run Storybook: `pnpm --filter @cloudflare/kumo storybook`
+2. Build components in isolation at `http://localhost:6006`
+3. See instant HMR updates for component changes
+4. See [packages/kumo/STORYBOOK.md](./packages/kumo/STORYBOOK.md) for details
+
 ## Creating New Components
 
 Use the scaffolding tool to quickly create new components in the library:

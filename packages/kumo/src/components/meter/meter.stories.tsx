@@ -1,0 +1,33 @@
+import type { Meta, StoryObj } from '@storybook/react';
+import { Meter } from './meter';
+
+const meta = {
+	title: 'Components/Meter',
+	component: Meter,
+	parameters: {
+		layout: 'padded',
+	},
+	tags: ['autodocs'],
+} satisfies Meta<typeof Meter>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+	args: {
+		label: 'Progress',
+		value: 50,
+		max: 100,
+	},
+};
+
+export const DifferentValues: Story = {
+	render: () => (
+		<div className="flex flex-col gap-4 w-64">
+			<Meter label="Low" value={25} max={100} />
+			<Meter label="Medium" value={50} max={100} />
+			<Meter label="High" value={75} max={100} />
+			<Meter label="Complete" value={100} max={100} />
+		</div>
+	),
+};

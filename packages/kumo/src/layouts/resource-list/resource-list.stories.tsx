@@ -1,0 +1,114 @@
+import type { Meta, StoryObj } from '@storybook/react';
+import { ResourceListPage } from './resource-list';
+import { Database } from '@phosphor-icons/react';
+import { Surface } from '../../components/surface';
+import { Code } from '../../components/code';
+
+const meta = {
+  title: 'Layouts/ResourceListPage',
+  component: ResourceListPage,
+  parameters: {
+    layout: 'fullscreen',
+  },
+  tags: ['autodocs'],
+} satisfies Meta<typeof ResourceListPage>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+  args: {
+    title: 'Databases',
+    description: 'Manage your database instances and configurations',
+    icon: <Database size={32} className="text-neutral-700 dark:text-neutral-300" />,
+    children: (
+      <Surface className="p-6">
+        <p>Main content area - your resource list would go here</p>
+      </Surface>
+    ),
+  },
+};
+
+export const WithUsage: Story = {
+  args: {
+    title: 'API Keys',
+    description: 'Create and manage API keys for your applications',
+    usage: (
+      <Surface className="p-4">
+        <h3 className="font-semibold mb-2">Quick Start</h3>
+        <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">
+          Generate an API key to authenticate your requests
+        </p>
+        <Code lang="bash" code='curl -H "Authorization: Bearer YOUR_API_KEY" https://api.example.com' />
+      </Surface>
+    ),
+    children: (
+      <Surface className="p-6">
+        <p>API keys list would appear here</p>
+      </Surface>
+    ),
+  },
+};
+
+export const WithAdditionalContent: Story = {
+  args: {
+    title: 'Workers',
+    description: 'Deploy and manage serverless functions at the edge',
+    additionalContent: (
+      <Surface className="p-4">
+        <h3 className="font-semibold mb-2">Resources</h3>
+        <ul className="text-sm space-y-2">
+          <li><a href="#" className="text-blue-600 hover:underline">Documentation</a></li>
+          <li><a href="#" className="text-blue-600 hover:underline">Examples</a></li>
+          <li><a href="#" className="text-blue-600 hover:underline">Community</a></li>
+        </ul>
+      </Surface>
+    ),
+    children: (
+      <Surface className="p-6">
+        <p>Workers list would appear here</p>
+      </Surface>
+    ),
+  },
+};
+
+export const Complete: Story = {
+  args: {
+    title: 'KV Namespaces',
+    description: 'Store key-value data globally with low-latency access',
+    icon: <Database size={32} className="text-neutral-700 dark:text-neutral-300" />,
+    usage: (
+      <Surface className="p-4">
+        <h3 className="font-semibold mb-2">Usage Example</h3>
+        <Code
+          lang="ts"
+          code={`// Read from KV
+const value = await KV.get('key');
+
+// Write to KV
+await KV.put('key', 'value');`}
+        />
+      </Surface>
+    ),
+    additionalContent: (
+      <Surface className="p-4">
+        <h3 className="font-semibold mb-2">Learn More</h3>
+        <p className="text-sm text-neutral-600 dark:text-neutral-400">
+          Check out our documentation to learn more about KV storage.
+        </p>
+      </Surface>
+    ),
+    children: (
+      <div className="space-y-4">
+        <Surface className="p-6">
+          <h4 className="font-semibold mb-2">production-kv</h4>
+          <p className="text-sm text-neutral-600 dark:text-neutral-400">Created 2 days ago</p>
+        </Surface>
+        <Surface className="p-6">
+          <h4 className="font-semibold mb-2">staging-kv</h4>
+          <p className="text-sm text-neutral-600 dark:text-neutral-400">Created 1 week ago</p>
+        </Surface>
+      </div>
+    ),
+  },
+};

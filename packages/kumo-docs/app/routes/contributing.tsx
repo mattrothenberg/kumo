@@ -260,7 +260,13 @@ export default function Contributing() {
           <li>
             <strong>Implement the component/block/layout</strong>
             <p className="ml-6 mt-1 text-neutral-600 dark:text-neutral-400">
-              Edit the generated <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">.tsx</code> file with your implementation.
+              Edit the generated <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">.tsx</code> file with your implementation. Use Storybook for rapid development.
+            </p>
+          </li>
+          <li>
+            <strong>Create stories</strong>
+            <p className="ml-6 mt-1 text-neutral-600 dark:text-neutral-400">
+              Add a <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">.stories.tsx</code> file to showcase component variants in Storybook.
             </p>
           </li>
           <li>
@@ -290,6 +296,70 @@ export default function Contributing() {
             </p>
           </li>
         </ol>
+      </ComponentSection>
+
+      {/* Storybook Development */}
+      <ComponentSection>
+        <h2 className="text-2xl font-bold mb-4">Storybook Development</h2>
+        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
+          Kumo uses Storybook as a live development environment for building and testing components in isolation. It provides instant feedback and serves as interactive documentation.
+        </p>
+        
+        <h3 className="text-xl font-semibold mb-3 mt-6">Start Storybook</h3>
+        <CodeBlock
+          lang="bash"
+          code={`pnpm --filter @cloudflare/kumo storybook`}
+        />
+        <p className="text-neutral-600 dark:text-neutral-400 mt-2 mb-4">
+          Opens at <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">http://localhost:6006</code> with hot module replacement enabled.
+        </p>
+
+        <h3 className="text-xl font-semibold mb-3 mt-6">Why Use Storybook</h3>
+        <ul className="list-disc list-inside space-y-2 text-neutral-700 dark:text-neutral-300 mb-4">
+          <li>Build components without running the full application</li>
+          <li>Test all variations and edge cases interactively</li>
+          <li>Auto-generated documentation from TypeScript types</li>
+          <li>Instant HMR updates as you code</li>
+          <li>Shared tool for designers and developers</li>
+        </ul>
+
+        <h3 className="text-xl font-semibold mb-3 mt-6">Creating Stories</h3>
+        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
+          Story files live alongside components and follow the pattern <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">{"{name}"}.stories.tsx</code>:
+        </p>
+        <CodeBlock
+          lang="tsx"
+          code={`import type { Meta, StoryObj } from '@storybook/react';
+import { Button } from './button';
+
+const meta = {
+  title: 'Components/Button',
+  component: Button,
+  tags: ['autodocs'],
+} satisfies Meta<typeof Button>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Primary: Story = {
+  args: { children: 'Click me' },
+};`}
+        />
+
+        <h3 className="text-xl font-semibold mb-3 mt-6">Story Organization</h3>
+        <ul className="list-disc list-inside space-y-2 text-neutral-700 dark:text-neutral-300 mb-4">
+          <li><strong>Components</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/components/{"{name}"}/{"{name}"}.stories.tsx</code></li>
+          <li><strong>Blocks</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/blocks/{"{name}"}/{"{name}"}.stories.tsx</code></li>
+          <li><strong>Layouts</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/layouts/{"{name}"}/{"{name}"}.stories.tsx</code></li>
+        </ul>
+
+        <p className="text-neutral-600 dark:text-neutral-400 mt-4">
+          <strong>Best Practice:</strong> Always create stories for new components, blocks, and layouts. Stories serve as living documentation and make development faster.
+        </p>
+
+        <p className="text-neutral-600 dark:text-neutral-400 mt-4">
+          For comprehensive Storybook documentation, see <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">packages/kumo/STORYBOOK.md</code>
+        </p>
       </ComponentSection>
 
       {/* Testing */}
