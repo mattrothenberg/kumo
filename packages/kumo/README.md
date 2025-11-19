@@ -2,16 +2,6 @@
 
 Cloudflare's component library for building modern web applications.
 
-## Status
-
-🚧 **Under Development** - This package is being migrated from the monorepo structure.
-
-This package will contain:
-- Component library source code
-- Build configuration for library mode
-- TypeScript declarations
-- CSS styles and design tokens
-
 ## Development
 
 ### Creating New Components
@@ -105,6 +95,45 @@ pnpm new-layout
    import { DashboardPage } from "@cloudflare/kumo";
    import { DashboardPage } from "@cloudflare/kumo/layouts/dashboard-page";
 ```
+
+### Storybook Development
+
+Kumo uses **Storybook** as a live development environment for building and testing components in isolation. Storybook provides instant feedback, interactive controls, and serves as living documentation for the component library.
+
+**Start Storybook:**
+```bash
+# From workspace root
+pnpm --filter @cloudflare/kumo storybook
+
+# Or use shorthand
+pnpm --filter @cloudflare/kumo storybook
+```
+
+Storybook runs at `http://localhost:6006` with hot module replacement enabled.
+
+**Build static Storybook:**
+```bash
+pnpm --filter @cloudflare/kumo build-storybook
+```
+
+**Why use Storybook:**
+- Build components without running the full app
+- Test all variations and edge cases interactively
+- Auto-generated docs from TypeScript types
+- Develop components in isolation with instant HMR
+- Shared tool for designers and developers
+- Test keyboard navigation and screen readers
+
+**Story files** live alongside components:
+- Components: `src/components/{name}/{name}.stories.tsx`
+- Blocks: `src/blocks/{name}/{name}.stories.tsx`
+- Layouts: `src/layouts/{name}/{name}.stories.tsx`
+
+
+**See [STORYBOOK.md](./STORYBOOK.md) for documentation** including:
+- Writing stories guide
+- Development workflow
+- Best practices
 
 ### Testing
 

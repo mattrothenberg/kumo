@@ -30,3 +30,5 @@ worker-configuration.d.ts
 # OS
 .DS_Store
 Thumbs.db
+
+*storybook.log
