@@ -36,6 +36,7 @@ export default function ComboboxDoc() {
       <ExampleInputInsidePopup />
       <ExampleGroupLabel />
       <ExampleMultiple />
+      <ExampleMultiple2 />
     </DocLayout>
   );
 }
@@ -382,6 +383,77 @@ const fruits = [
               {(item: string) => (
                 <Combobox.Item key={item} value={item}>
                   {item}
+                </Combobox.Item>
+              )}
+            </Combobox.List>
+          </Combobox.Content>
+        </Combobox>
+      </ComponentExample>
+    </ComponentSection>
+  );
+}
+
+type BotType = {
+  label: string;
+  author: string;
+  value: string;
+};
+
+const botList: BotType[] = [
+  { label: "Amazonbot", author: "Amazon", value: "amazonbot" },
+  { label: "Googlebot", author: "Google", value: "googlebot" },
+  { label: "BingBot", author: "Bing", value: "bingbot" },
+  { label: "CCBot", author: "Common Crawl", value: "ccbot" },
+  { label: "DuckDuckBot", author: "DuckDuckGo", value: "duckduckbot" },
+  { label: "FacebookBot", author: "Facebook", value: "facebookbot" },
+  { label: "TwitterBot", author: "Twitter", value: "twitterbot" },
+  { label: "LinkedInBot", author: "LinkedIn", value: "linkedinbot" },
+  { label: "InstagramBot", author: "Instagram", value: "instagrambot" },
+  { label: "WhatsAppBot", author: "WhatsApp", value: "whatsappbot" },
+  { label: "SlackBot", author: "Slack", value: "slackbot" },
+];
+
+function ExampleMultiple2() {
+  const [value, setValue] = useState<BotType[]>([]);
+
+  return (
+    <ComponentSection>
+      <p className="mb-4 flex flex-col gap-4">
+        <Text variant="heading3">Multiple Example 2</Text>
+        <Text variant="secondary">
+          Allow users to select multiple options from the list.
+        </Text>
+      </p>
+
+      <ComponentExample code={``}>
+        <Combobox
+          value={value}
+          onValueChange={setValue}
+          items={botList}
+          isItemEqualToValue={(bot, selectedValue) =>
+            bot.value === selectedValue.value
+          }
+          multiple
+        >
+          <Combobox.TriggerMultipleWithInput
+            className="w-full"
+            placeholder="Select bot"
+            renderItem={(selected: BotType) => (
+              <Combobox.Chip key={selected.value}>
+                {selected.label}
+              </Combobox.Chip>
+            )}
+            inputSide="top"
+          />
+          <Combobox.Content className="min-w-auto">
+            <Combobox.Empty />
+            <Combobox.List>
+              {(item: BotType) => (
+                <Combobox.Item key={item.value} value={item}>
+                  <div className="flex gap-2">
+                    <Text>{item.label}</Text>
+                    <Text variant="secondary">{item.author}</Text>
+                  </div>
                 </Combobox.Item>
               )}
             </Combobox.List>

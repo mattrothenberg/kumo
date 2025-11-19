@@ -138,35 +138,51 @@ function Chip(props: ComboboxBase.Chip.Props) {
   return (
     <ComboboxBase.Chip
       {...props}
-      className="bg-neutral-100 dark:bg-neutral-800 px-2 py-1 rounded-lg flex items-center gap-1"
+      className="bg-neutral-100 dark:bg-neutral-800 px-2 py-1 rounded-md flex items-center gap-1"
     >
       {props.children}
-      <ComboboxBase.ChipRemove className="cursor-pointer hover:bg-neutral-200 dark:hover:bg-neutral-700 p-1 rounded-lg">
+      <ComboboxBase.ChipRemove className="cursor-pointer hover:bg-neutral-200 dark:hover:bg-neutral-700 p-1 rounded-md">
         <XIcon size={12} weight="bold" />
       </ComboboxBase.ChipRemove>
     </ComboboxBase.Chip>
   );
 }
 
-function TriggerMultipleWithInput<ValueType>(props: {
+function TriggerMultipleWithInput<ValueType>({
+  placeholder,
+  renderItem,
+  className,
+  inputSide = "right",
+}: {
   placeholder?: string;
   renderItem: (value: ValueType) => React.ReactNode;
+  className?: string;
+  inputSide?: "right" | "top";
 }) {
   return (
     <ComboboxBase.Chips
       className={cn(
         inputVariants(),
-        "flex items-center overflow-hidden gap-1 px-1"
+        "flex items-center overflow-hidden gap-1 px-1 flex-wrap h-auto p-1 gap-1",
+        className
       )}
     >
       <ComboboxBase.Value>
         {(value: ValueType[]) => (
           <Fragment>
-            {value.map((item) => props.renderItem(item))}{" "}
-            <ComboboxBase.Input
-              placeholder={props.placeholder}
-              className="flex-1 h-full outline-none px-2"
-            />
+            {inputSide === "top" && (
+              <ComboboxBase.Input
+                placeholder={placeholder}
+                className="w-full h-full outline-none px-2 py-1"
+              />
+            )}
+            {value.map((item) => renderItem(item))}
+            {inputSide === "right" && (
+              <ComboboxBase.Input
+                placeholder={placeholder}
+                className="flex-1 h-full outline-none px-2 py-1"
+              />
+            )}
           </Fragment>
         )}
       </ComboboxBase.Value>
