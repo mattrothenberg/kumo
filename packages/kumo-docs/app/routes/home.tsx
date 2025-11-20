@@ -91,16 +91,25 @@ export default function Home() {
     name: "Combobox",
     Component: (
       <Combobox
-        initialItems={[
+        items={[
           { id: "bug", value: "bug" },
           { id: "docs", value: "documentation" },
           { id: "enhancement", value: "enhancement" },
           { id: "help-wanted", value: "help wanted" },
           { id: "good-first-issue", value: "good first issue" },
         ]}
-        onCreate={(v) => console.log(`Created ${v}`)}
-        placeholder="Select an issue..."
-      />
+      >
+        <Combobox.TriggerInput placeholder="Select an issue..." />
+        <Combobox.Content>
+          <Combobox.List>
+            {(item: { id: string; value: string }) => (
+              <Combobox.Item key={item.id} value={item.value}>
+                {item.value}
+              </Combobox.Item>
+            )}
+          </Combobox.List>
+        </Combobox.Content>
+      </Combobox>
     ),
   },
   {
