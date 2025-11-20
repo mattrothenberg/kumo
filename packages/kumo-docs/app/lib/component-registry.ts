@@ -259,11 +259,12 @@ export const COMPONENT_REGISTRY: Record<string, ComponentMetadata> = {
     description: "Small badge for labels and status indicators.",
     category: "Display",
     props: [
-      { name: "variant", type: "'primary' | 'secondary' | 'outline' | 'destructive'" },
+      { name: "variant", type: "'primary' | 'secondary' | 'outline' | 'destructive'| 'beta'" },
     ],
     examples: [
       '<Badge variant="primary">New</Badge>',
       '<Badge variant="destructive">Error</Badge>',
+      '<Badge variant="beta">Beta</Badge>',
     ],
   },
   Banner: {

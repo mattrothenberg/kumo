@@ -15,13 +15,15 @@ export default function BadgeDoc() {
           code={`<Badge variant="primary">Primary</Badge>
 <Badge variant="secondary">Secondary</Badge>
 <Badge variant="destructive">Destructive</Badge>
-<Badge variant="outline">Outline</Badge>`}
+<Badge variant="outline">Outline</Badge>
+<Badge variant="beta">Beta</Badge>`}
         >
           <div className="flex flex-wrap items-center gap-2">
             <Badge variant="primary">Primary</Badge>
             <Badge variant="secondary">Secondary</Badge>
             <Badge variant="destructive">Destructive</Badge>
             <Badge variant="outline">Outline</Badge>
+            <Badge variant="beta">Beta</Badge>
           </div>
         </ComponentExample>
       </ComponentSection>
@@ -88,6 +90,14 @@ export default function Example() {
                 <Badge variant="outline">Outline</Badge>
               </ComponentExample>
             </div>
+            <div>
+              <h4 className="text-base font-medium mb-3">Beta</h4>
+              <ComponentExample
+                code={`<Badge variant="beta">Beta</Badge>`}
+              >
+                <Badge variant="beta">Beta</Badge>
+              </ComponentExample>
+            </div>
           </div>
         </div>
 
@@ -102,7 +112,7 @@ export default function Example() {
           >
             <p className="flex items-center gap-2">
               Workers
-              <Badge variant="primary">Beta</Badge>
+              <Badge variant="beta">Beta</Badge>
             </p>
           </ComponentExample>
         </div>
@@ -124,7 +134,7 @@ export default function Example() {
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
                 <td className="py-3 px-4 font-mono text-xs">variant</td>
                 <td className="py-3 px-4 font-mono text-xs">
-                  "primary" | "secondary" | "destructive" | "outline"
+                  "primary" | "secondary" | "destructive" | "outline" | "beta"
                 </td>
                 <td className="py-3 px-4 font-mono text-xs">"primary"</td>
               </tr>

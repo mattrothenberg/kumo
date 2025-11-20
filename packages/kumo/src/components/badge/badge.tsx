@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { cn } from "../../utils/cn";
 
-export type BadgeVariant = "primary" | "secondary" | "destructive" | "outline";
+export type BadgeVariant = "primary" | "secondary" | "destructive" | "outline" | "beta";
 
 export function Badge({
   variant = "primary",
@@ -25,6 +25,9 @@ export function Badge({
         variant === "secondary" ? "text-kumo-surface bg-kumo-color" : "",
         variant === "destructive"
           ? "text-kumo-destructive bg-kumo-destructive"
+          : "",
+        variant === "beta"
+          ? "border border-dashed bg-transparent border-kumo-primary text-kumo-beta"
           : "",
         className
       )}

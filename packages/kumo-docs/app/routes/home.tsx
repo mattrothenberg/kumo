@@ -249,6 +249,7 @@ export default function Home() {
         <Badge variant="primary">Primary</Badge>
         <Badge variant="secondary">Secondary</Badge>
         <Badge variant="outline">Outline</Badge>
+        <Badge variant="beta">Beta</Badge>
         <Badge variant="destructive">Destructive</Badge>
         <div className="flex items-center gap-2">
           <Badge>1</Badge>
