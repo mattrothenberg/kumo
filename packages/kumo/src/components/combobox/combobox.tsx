@@ -93,12 +93,12 @@ function Item({ children, ...props }: ComboboxBase.Item.Props) {
   return (
     <ComboboxBase.Item
       {...props}
-      className="data-highlighted:bg-neutral-100 dark:data-highlighted:bg-neutral-800 px-2 rounded py-1.5 text-base grid grid-cols-[16px_1fr] gap-2 group cursor-pointer"
+      className="data-highlighted:bg-neutral-100 dark:data-highlighted:bg-neutral-800 px-2 rounded py-1.5 text-base grid grid-cols-[1fr_16px] gap-2 group cursor-pointer"
     >
-      <ComboboxBase.ItemIndicator className="col-start-1 flex items-center">
+      <div className="col-start-1">{children}</div>
+      <ComboboxBase.ItemIndicator className="col-start-2 flex items-center">
         <CheckIcon />
       </ComboboxBase.ItemIndicator>
-      <div className="col-start-2">{children}</div>
     </ComboboxBase.Item>
   );
 }
