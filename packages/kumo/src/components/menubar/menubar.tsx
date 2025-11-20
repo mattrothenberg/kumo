@@ -31,7 +31,7 @@ const MenuOption = ({
         )}
         onClick={onClick}
       >
-        <IconContext.Provider value={{ size: 18 }}>{icon}</IconContext.Provider>
+        <IconContext.Provider value={{ size: 18 }} {...({} as any)}>{icon}</IconContext.Provider>
       </button>
     </Tooltip>
   );

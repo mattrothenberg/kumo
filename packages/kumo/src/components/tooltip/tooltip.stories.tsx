@@ -15,6 +15,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+	args: {
+		content: 'This is a tooltip',
+	},
 	render: () => (
 		<Tooltip content="This is a tooltip">
 			<Button>Hover me</Button>

@@ -15,6 +15,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+	args: {
+		title: 'Click to expand',
+	},
 	render: () => {
 		const [open, setOpen] = useState(false);
 		return (

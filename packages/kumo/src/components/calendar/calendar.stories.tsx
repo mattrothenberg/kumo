@@ -15,6 +15,10 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+	args: {
+		onStartDateChange: () => {},
+		onEndDateChange: () => {},
+	},
 	render: () => {
 		const [startDate, setStartDate] = useState<Date | null>(null);
 		const [endDate, setEndDate] = useState<Date | null>(null);

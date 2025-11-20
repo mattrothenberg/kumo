@@ -15,6 +15,7 @@
 		"preview": "pnpm --filter @cloudflare/kumo-docs preview",
 		"storybook": "pnpm --filter @cloudflare/kumo storybook",
 		"typecheck": "pnpm -r typecheck",
+		"lockfile-check": "pnpm install --no-frozen-lockfile && git diff --exit-code pnpm-lock.yaml",
 		"clean": "pnpm -r exec rm -rf dist build .react-router .wrangler node_modules",
 		"format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
 		"lint": "pnpm --filter @cloudflare/kumo lint",

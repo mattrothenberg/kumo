@@ -16,6 +16,10 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+	args: {
+		isActive: 'home',
+		options: [],
+	},
 	render: () => {
 		const [active, setActive] = useState<string>('home');
 		

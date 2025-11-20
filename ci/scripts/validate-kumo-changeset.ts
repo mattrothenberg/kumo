@@ -54,26 +54,34 @@ function main() {
   );
 
   if (newKumoChangesets.length === 0) {
+    // Use GitLab CI collapsible section for better visibility
+    console.error('\x1b[0Ksection_start:' + Date.now() + ':changeset_error\r\x1b[0K\x1b[31;1m❌ CHANGESET VALIDATION FAILED\x1b[0m');
+    console.error('');
+    
     // Check if there are any new changesets at all
     if (newChangesets.length === 0) {
-      console.error('❌ ERROR: Changes detected in packages/kumo/ but no NEW changeset files found');
+      console.error('\x1b[31;1m❌ ERROR: Changes detected in packages/kumo/ but no NEW changeset files found\x1b[0m');
     } else {
-      console.error('❌ ERROR: Found NEW changeset files, but none target @cloudflare/kumo');
+      console.error('\x1b[31;1m❌ ERROR: Found NEW changeset files, but none target @cloudflare/kumo\x1b[0m');
       console.error('');
       console.error('New changesets found:');
       newChangesets.forEach(cs => {
         console.error(`   - ${cs.name} (targets: ${cs.packages.join(', ')})`);
       });
     }
-    console.error(`
-To fix this issue:
-   1. Run: pnpm changeset
-   2. Select "@cloudflare/kumo" when prompted
-   3. Choose the appropriate change type (patch/minor/major)
-   4. Write a clear description of your changes
-   5. Commit the generated changeset file
-
-This ensures proper versioning and changelog generation for the kumo package.`);
+    
+    console.error('');
+    console.error('\x1b[33;1m📋 To fix this issue:\x1b[0m');
+    console.error('   1. Run: \x1b[36mpnpm changeset\x1b[0m');
+    console.error('   2. Select "\x1b[36m@cloudflare/kumo\x1b[0m" when prompted');
+    console.error('   3. Choose the appropriate change type (patch/minor/major)');
+    console.error('   4. Write a clear description of your changes');
+    console.error('   5. Commit the generated changeset file');
+    console.error('');
+    console.error('This ensures proper versioning and changelog generation for the kumo package.');
+    console.error('');
+    console.error('\x1b[0Ksection_end:' + Date.now() + ':changeset_error\r\x1b[0K');
+    
     process.exit(1);
   }
 
@@ -201,6 +209,7 @@ function parseChangesetPackages(content: string): string[] {
   return packages;
 }
 
-if (require.main === module) {
+// Run if this is the main module (ES module compatible check)
+if (import.meta.url === `file://${process.argv[1]}`) {
   main();
 }

@@ -48,6 +48,9 @@ export const Outline: Story = {
 };
 
 export const AllVariants: Story = {
+	args: {
+		children: 'Badge',
+	},
 	render: () => (
 		<div className="flex gap-2">
 			<Badge variant="primary">Primary</Badge>

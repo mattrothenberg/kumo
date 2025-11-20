@@ -1,7 +1,7 @@
 import { type CSSProperties } from "react";
 import { cn } from "../../utils/cn";
 
-type BundledLanguage = "ts" | "tsx" | "jsonc" | "bash";
+export type BundledLanguage = "ts" | "tsx" | "jsonc" | "bash" | "css";
 
 /**
  * Simple code component without syntax highlighting

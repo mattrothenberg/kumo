@@ -15,14 +15,18 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	args: {
-		currentPage: 1,
-		totalPages: 10,
+		page: 1,
+		perPage: 10,
+		totalCount: 100,
+		setPage: () => {},
 	},
 };
 
 export const MiddlePage: Story = {
 	args: {
-		currentPage: 5,
-		totalPages: 10,
+		page: 5,
+		perPage: 10,
+		totalCount: 100,
+		setPage: () => {},
 	},
 };

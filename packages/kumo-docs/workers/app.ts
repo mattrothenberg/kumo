@@ -23,7 +23,7 @@ export default {
     // Cache static pages for 1 hour
     const url = new URL(request.url);
     const cacheKey = new Request(url.toString(), request);
-    const cache = caches.default;
+    const cache = (caches as any).default;
 
     // Try to get from cache first
     let response = await cache.match(cacheKey);

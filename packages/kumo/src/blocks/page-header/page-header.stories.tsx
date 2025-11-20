@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { PageHeader } from './page-header';
-import { Breadcrumbs } from '../breadcrumb';
+import { Breadcrumbs } from '../breadcrumbs';
 import { Button } from '../../components/button';
 import { Plus } from '@phosphor-icons/react';
 

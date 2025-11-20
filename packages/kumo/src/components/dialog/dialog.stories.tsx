@@ -2,19 +2,22 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Dialog } from './dialog';
 import { Button } from '../button/button';
 
-const meta = {
+const meta: Meta<typeof Dialog> = {
 	title: 'Components/Dialog',
 	component: Dialog,
 	parameters: {
 		layout: 'centered',
 	},
 	tags: ['autodocs'],
-} satisfies Meta<typeof Dialog>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+	args: {
+		children: null,
+	},
 	render: () => (
 		<Dialog.Root>
 			<Dialog.Trigger>
