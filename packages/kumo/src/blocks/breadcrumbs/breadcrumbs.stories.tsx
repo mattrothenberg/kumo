@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Breadcrumbs } from '../breadcrumb';
+import { Breadcrumbs } from '../breadcrumbs';
 import { House, Folder, File } from '@phosphor-icons/react';
 
 const meta = {

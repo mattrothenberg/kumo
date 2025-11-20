@@ -1,7 +1,123 @@
-# Dummy job to prevent empty pipeline errors
-no-op:
-  stage: .pre
-  script:
-    - echo "No-op job to prevent empty pipelines"
-  rules:
-    - when: always
+# Kumo CI/CD Pipeline
+stages:
+  - build
+  - checks
+  - test
+
+variables:
+  PNPM_VERSION: &PNPM_VERSION 'latest-10'
+  NODE_VERSION: &NODE_VERSION '24'
+
+# ============= BUILD STAGE (First - creates artifacts for downstream jobs) =============
+
+include:
+  # Build @cloudflare/kumo package
+  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/build@~latest
+    inputs:
+      stage: build
+      jobPrefix: build-kumo
+      PNPM_VERSION: *PNPM_VERSION
+      NODE_VERSION: *NODE_VERSION
+      workDir: 'packages/kumo'
+      artifactDir: 'dist'
+      runOnMR: true
+      runOnBranches: '^main$'
+
+  # Build @cloudflare/kumo-docs
+  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/build@~latest
+    inputs:
+      stage: build
+      jobPrefix: build-kumo-docs
+      PNPM_VERSION: *PNPM_VERSION
+      NODE_VERSION: *NODE_VERSION
+      workDir: 'packages/kumo-docs'
+      artifactDir: 'build'
+      runOnMR: true
+      runOnBranches: '^main$'
+
+# ============= CHECKS STAGE (Runs after build, can use artifacts) =============
+
+  # Validate lockfile integrity
+  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
+    inputs:
+      stage: checks
+      jobPrefix: lockfile-check
+      PNPM_VERSION: *PNPM_VERSION
+      NODE_VERSION: *NODE_VERSION
+      PNPM_RUN_TARGET: 'lockfile-check'
+      runOnMR: true
+
+  # Type checking across workspace
+  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
+    inputs:
+      stage: checks
+      jobPrefix: typecheck
+      PNPM_VERSION: *PNPM_VERSION
+      NODE_VERSION: *NODE_VERSION
+      PNPM_RUN_TARGET: 'typecheck'
+      runOnMR: true
+      runOnBranches: '^main$'
+
+  # Linting @cloudflare/kumo
+  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/lint@~latest
+    inputs:
+      stage: checks
+      jobPrefix: lint-kumo
+      PNPM_VERSION: *PNPM_VERSION
+      NODE_VERSION: *NODE_VERSION
+      workDir: 'packages/kumo'
+      runOnMR: true
+      runOnBranches: '^main$'
+
+  # Changeset validation for @cloudflare/kumo
+  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
+    inputs:
+      stage: checks
+      jobPrefix: validate-changeset
+      PNPM_VERSION: *PNPM_VERSION
+      NODE_VERSION: *NODE_VERSION
+      PNPM_RUN_TARGET: 'validate:changeset'
+      workDir: 'packages/kumo'
+      runOnMR: true
+
+# ============= TEST STAGE (Uses build artifacts) =============
+
+  # Test @cloudflare/kumo
+  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/test@~latest
+    inputs:
+      stage: test
+      jobPrefix: test-kumo
+      PNPM_VERSION: *PNPM_VERSION
+      NODE_VERSION: *NODE_VERSION
+      workDir: 'packages/kumo'
+      # COVERAGE_FOLDER: 'coverage'  # Disabled - enable when using test:coverage script
+      runOnMR: true
+      runOnBranches: '^main$'
+
+# Job overrides for dependencies and additional configuration
+
+# kumo-docs depends on kumo being built first (imports from @cloudflare/kumo)
+build-kumo-docs-build:
+  needs:
+    - build-kumo-build
+
+typecheck-run:
+  needs:
+    - build-kumo-build
+    - build-kumo-docs-build
+
+lint-kumo-lint:
+  needs:
+    - build-kumo-build
+  allow_failure: true  # Temporarily allow lint failures
+
+test-kumo-test:
+  needs:
+    - build-kumo-build
+  # Coverage disabled temporarily - enable when test:coverage script is used
+  # coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
+  # artifacts:
+  #   reports:
+  #     coverage_report:
+  #       coverage_format: cobertura
+  #       path: packages/kumo/coverage/cobertura-coverage.xml

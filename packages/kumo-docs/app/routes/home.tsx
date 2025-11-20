@@ -78,7 +78,7 @@ export default function Home() {
             specific: "Specific versions",
           };
           if (!v) return "Select a version...";
-          return labels[v];
+          return labels[v as string];
         }}
       >
         <Select.Option value="all">All deployed versions</Select.Option>

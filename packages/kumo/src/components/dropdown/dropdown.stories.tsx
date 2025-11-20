@@ -2,19 +2,22 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { DropdownMenu } from './dropdown';
 import { Button } from '../button/button';
 
-const meta = {
+const meta: Meta<typeof DropdownMenu> = {
 	title: 'Components/Dropdown',
 	component: DropdownMenu,
 	parameters: {
 		layout: 'centered',
 	},
 	tags: ['autodocs'],
-} satisfies Meta<typeof DropdownMenu>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+	args: {
+		children: null,
+	},
 	render: () => (
 		<DropdownMenu>
 			<DropdownMenu.Trigger>

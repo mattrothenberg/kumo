@@ -20,13 +20,18 @@ export const Default: Story = {
 };
 
 export const AllVariants: Story = {
+	args: {
+		children: 'Text',
+	},
 	render: () => (
 		<div className="flex flex-col gap-2">
 			<Text>Default text</Text>
-			<Text className="text-sm">Small text</Text>
-			<Text className="text-lg">Large text</Text>
-			<Text className="font-bold">Bold text</Text>
-			<Text className="text-blue-600">Colored text</Text>
+			<Text size="sm">Small text</Text>
+			<Text size="lg">Large text</Text>
+			<Text bold>Bold text</Text>
+			<Text variant="success">Success text</Text>
+			<Text variant="error">Error text</Text>
+			<Text variant="secondary">Secondary text</Text>
 		</div>
 	),
 };

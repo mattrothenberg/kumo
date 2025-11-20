@@ -16,19 +16,24 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
 	args: {
 		label: 'Toggle switch',
+		onClick: () => {},
+		toggled: false,
 	},
 };
 
 export const Checked: Story = {
 	args: {
 		label: 'Enabled',
-		checked: true,
+		onClick: () => {},
+		toggled: true,
 	},
 };
 
 export const Disabled: Story = {
 	args: {
 		label: 'Disabled',
+		onClick: () => {},
+		toggled: false,
 		disabled: true,
 	},
 };
@@ -36,7 +41,8 @@ export const Disabled: Story = {
 export const CheckedDisabled: Story = {
 	args: {
 		label: 'Enabled & Disabled',
-		checked: true,
+		onClick: () => {},
+		toggled: true,
 		disabled: true,
 	},
 };

@@ -32,3 +32,4 @@ worker-configuration.d.ts
 Thumbs.db
 
 *storybook.log
+*.tsbuildinfo

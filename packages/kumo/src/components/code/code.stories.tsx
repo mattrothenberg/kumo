@@ -21,9 +21,13 @@ export const Default: Story = {
 };
 
 export const Inline: Story = {
+	args: {
+		lang: 'ts',
+		code: 'console.log()',
+	},
 	render: () => (
 		<p>
-			Use the <Code>console.log()</Code> function to debug.
+			Use the <Code lang="ts" code="console.log()" /> function to debug.
 		</p>
 	),
 };

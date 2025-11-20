@@ -22,6 +22,11 @@ export const Default: Story = {
 };
 
 export const DifferentValues: Story = {
+	args: {
+		label: 'Progress',
+		value: 50,
+		max: 100,
+	},
 	render: () => (
 		<div className="flex flex-col gap-4 w-64">
 			<Meter label="Low" value={25} max={100} />

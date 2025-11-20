@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Input } from './input';
 
-const meta = {
+const meta: Meta<typeof Input> = {
 	title: 'Components/Input',
 	component: Input,
 	parameters: {
@@ -18,7 +18,7 @@ const meta = {
 			options: ['default', 'error'],
 		},
 	},
-} satisfies Meta<typeof Input>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -53,6 +53,9 @@ export const Disabled: Story = {
 };
 
 export const Sizes: Story = {
+	args: {
+		placeholder: 'Enter text...',
+	},
 	render: () => (
 		<div className="flex flex-col gap-2 w-64">
 			<Input size="xs" placeholder="Extra small" />

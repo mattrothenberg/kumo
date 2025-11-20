@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Button, LinkButton, RefreshButton } from './button';
 import { PlusIcon, TrashIcon } from '@phosphor-icons/react';
 
-const meta = {
+const meta: Meta<typeof Button> = {
 	title: 'Components/Button',
 	component: Button,
 	parameters: {
@@ -23,7 +23,7 @@ const meta = {
 			options: ['base', 'square', 'circle'],
 		},
 	},
-} satisfies Meta<typeof Button>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -88,6 +88,9 @@ export const Disabled: Story = {
 };
 
 export const Sizes: Story = {
+	args: {
+		children: 'Button',
+	},
 	render: () => (
 		<div className="flex gap-2 items-center">
 			<Button size="xs">Extra Small</Button>
@@ -124,6 +127,9 @@ export const Refresh: Story = {
 };
 
 export const Link: Story = {
+	args: {
+		children: 'Button',
+	},
 	render: () => (
 		<div className="flex gap-2">
 			<LinkButton href="#" variant="ghost">

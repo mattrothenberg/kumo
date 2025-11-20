@@ -1,1 +1,1 @@
-export { Code, CodeBlock } from "./code";
+export { Code, CodeBlock, type BundledLanguage } from "./code";

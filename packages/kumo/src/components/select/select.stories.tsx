@@ -14,14 +14,14 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+	args: {
+		placeholder: 'Select an option',
+	},
 	render: () => (
-		<Select defaultValue="1">
-			<Select.Trigger placeholder="Select an option" />
-			<Select.Content>
-				<Select.Item value="1">Option 1</Select.Item>
-				<Select.Item value="2">Option 2</Select.Item>
-				<Select.Item value="3">Option 3</Select.Item>
-			</Select.Content>
+		<Select defaultValue="1" placeholder="Select an option">
+			<Select.Option value="1">Option 1</Select.Option>
+			<Select.Option value="2">Option 2</Select.Option>
+			<Select.Option value="3">Option 3</Select.Option>
 		</Select>
 	),
 };
