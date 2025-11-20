@@ -72,8 +72,11 @@ function TriggerValue({
 
 function TriggerInput(props: ComboboxBase.Input.Props) {
   return (
-    <div className="relative">
-      <ComboboxBase.Input {...props} className={cn(inputVariants(), "pr-8")} />
+    <div className={cn("relative inline-block", props.className)}>
+      <ComboboxBase.Input
+        {...props}
+        className={cn(inputVariants(), "w-full pr-12")}
+      />
       <ComboboxBase.Clear className="absolute top-1/2 -translate-y-1/2 right-8 cursor-pointer">
         <XIcon />
       </ComboboxBase.Clear>
