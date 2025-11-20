@@ -1,32 +1,32 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Combobox } from "./combobox";
 import { useMemo, useState } from "react";
+import { Text } from "../text";
 
 const meta = {
   title: "Components/Combobox",
-  component: () => <Example />,
+  parameters: {
+    layout: "centered",
+  },
+  tags: ["autodocs"],
 } satisfies Meta;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {},
-};
+  render: () => {
+    const items = useMemo(() => {
+      return [
+        { value: "1111-2222-3333", label: "goldfish-571" },
+        { value: "1111-2222-3334", label: "humming-birds-231" },
+        { value: "1111-2222-3335", label: "blue-bottles-131" },
+      ];
+    }, []);
 
-function Example() {
-  const items = useMemo(() => {
-    return [
-      { value: "1111-2222-3333", label: "goldfish-571" },
-      { value: "1111-2222-3334", label: "humming-birds-231" },
-      { value: "1111-2222-3335", label: "blue-bottles-131" },
-    ];
-  }, []);
+    const [value, setValue] = useState<(typeof items)[number] | null>(null);
 
-  const [value, setValue] = useState<(typeof items)[number] | null>(null);
-
-  return (
-    <div>
+    return (
       <Combobox items={items} value={value} onValueChange={setValue}>
         <Combobox.TriggerInput placeholder="Please select database" />
         <Combobox.Content>
@@ -42,6 +42,85 @@ function Example() {
           </Combobox.List>
         </Combobox.Content>
       </Combobox>
-    </div>
-  );
-}
+    );
+  },
+};
+
+type BotType = {
+  label: string;
+  author: string;
+  value: string;
+};
+
+export const Multiple: StoryObj<{
+  placeholder: string;
+  inputSide: "top" | "right";
+}> = {
+  args: {
+    placeholder: "Select bot",
+    inputSide: "top",
+  },
+  argTypes: {
+    inputSide: {
+      control: { type: "select" },
+      options: ["top", "right"],
+    },
+  },
+  render: (args) => {
+    const botList = useMemo(
+      () => [
+        { label: "Amazonbot", author: "Amazon", value: "amazonbot" },
+        { label: "Googlebot", author: "Google", value: "googlebot" },
+        { label: "BingBot", author: "Bing", value: "bingbot" },
+        { label: "CCBot", author: "Common Crawl", value: "ccbot" },
+        { label: "DuckDuckBot", author: "DuckDuckGo", value: "duckduckbot" },
+        { label: "FacebookBot", author: "Facebook", value: "facebookbot" },
+        { label: "TwitterBot", author: "Twitter", value: "twitterbot" },
+        { label: "LinkedInBot", author: "LinkedIn", value: "linkedinbot" },
+        { label: "InstagramBot", author: "Instagram", value: "instagrambot" },
+        { label: "WhatsAppBot", author: "WhatsApp", value: "whatsappbot" },
+        { label: "SlackBot", author: "Slack", value: "slackbot" },
+      ],
+      []
+    );
+
+    const [value, setValue] = useState<BotType[]>([]);
+
+    return (
+      <Combobox
+        value={value}
+        onValueChange={setValue}
+        items={botList}
+        isItemEqualToValue={(bot, selectedValue) =>
+          bot.value === selectedValue.value
+        }
+        multiple
+      >
+        <Combobox.TriggerMultipleWithInput
+          className="w-[500px]"
+          placeholder={args.placeholder}
+          renderItem={(selected: BotType) => (
+            <Combobox.Chip key={selected.value}>{selected.label}</Combobox.Chip>
+          )}
+          inputSide={args.inputSide}
+        />
+        <Combobox.Content
+          className="min-w-auto max-h-[200px] overflow-y-auto"
+          side={args.inputSide === "top" ? "top" : "bottom"}
+        >
+          <Combobox.Empty />
+          <Combobox.List>
+            {(item: BotType) => (
+              <Combobox.Item key={item.value} value={item}>
+                <div className="flex gap-2">
+                  <Text>{item.label}</Text>
+                  <Text variant="secondary">{item.author}</Text>
+                </div>
+              </Combobox.Item>
+            )}
+          </Combobox.List>
+        </Combobox.Content>
+      </Combobox>
+    );
+  },
+};
