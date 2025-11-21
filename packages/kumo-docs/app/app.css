@@ -10,10 +10,6 @@
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-html.dark-mode {
-  color-scheme: dark;
-}
-
 * {
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
