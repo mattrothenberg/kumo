@@ -248,9 +248,7 @@ export default function Contributing() {
 
 💡 Import examples:
    import { DashboardPage } from "@cloudflare/kumo";
-   import { DashboardPage } from "@cloudflare/kumo/layouts/dashboard-page";
-
-📝 Note: Layouts are page-level components for consistent structure.`}
+   import { DashboardPage } from "@cloudflare/kumo/layouts/dashboard-page";`}
         />
       </ComponentSection>
 
