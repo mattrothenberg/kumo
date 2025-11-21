@@ -9,6 +9,7 @@
 @layer base {
   /* Light mode color scheme */
   :root {
+    color-scheme: light;
     /* Main background color and its contrasting text color */
     --kumo-surface: #fff;
     --kumo-surface-foreground: #000;
@@ -47,6 +48,12 @@
   }
 
   /* Dark mode color scheme */
+  html.dark-mode,
+  :root.dark-mode,
+  .dark-mode {
+    color-scheme: dark;
+  }
+
   .dark-mode {
     /* Dark mode background and text colors */
     --kumo-surface: var(--color-black);
@@ -153,7 +160,7 @@
     var(--color-white, #fff)
   );
 
- /* New: beta semantic color */
+  /* New: beta semantic color */
   --text-color-kumo-beta: light-dark(#056dff, #056dff);
 
   --color-kumo-secondary: light-dark(
