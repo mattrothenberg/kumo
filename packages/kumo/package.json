@@ -165,7 +165,7 @@
 		"registry": "https://registry-gateway.cloudflare-ui.workers.dev"
 	},
 	"scripts": {
-		"build": "vite build --mode production && tsx scripts/build-css.ts",
+		"build": "NODE_OPTIONS='--max-old-space-size=4096' vite build --mode production && tsx scripts/build-css.ts",
 		"dev": "vite build --watch --mode development",
 		"clean": "rm -rf dist",
 		"lint": "oxlint src/** --type-aware",
