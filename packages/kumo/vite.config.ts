@@ -2,18 +2,27 @@ import { defineConfig } from 'vite';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import dts from 'vite-plugin-dts';
+import { rebuildSignalPlugin } from './vite-plugin-rebuild-signal';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-export default defineConfig({
-  plugins: [
-    dts({
-      include: ['src/**/*'],
-      exclude: ['**/*.test.ts', '**/*.test.tsx', '**/*.stories.tsx'],
-      rollupTypes: false,
-    }),
-  ],
+export default defineConfig(({ mode }) => {
+  const isDev = mode === 'development';
+
+  return {
+    plugins: [
+      dts({
+        include: ['src/**/*'],
+        exclude: ['**/*.test.ts', '**/*.test.tsx', '**/*.stories.tsx'],
+        rollupTypes: !isDev, // Only in production
+        compilerOptions: {
+          incremental: isDev,
+          tsBuildInfoFile: isDev ? './.tsbuildinfo' : undefined,
+        },
+      }),
+      rebuildSignalPlugin(),
+    ],
   build: {
     lib: {
       entry: {
@@ -79,14 +88,25 @@ export default defineConfig({
           'react/jsx-runtime': 'jsxRuntime',
         },
       },
+      // Enable Rollup caching for faster rebuilds
+      cache: isDev,
     },
-    sourcemap: true,
-    // Ensure output directory is clean
-    emptyOutDir: true,
+    // Faster sourcemaps in dev
+    sourcemap: isDev ? 'inline' : true,
+    // Skip minification in dev for faster rebuilds
+    minify: isDev ? false : 'esbuild',
+    // Don't clear dist/ on every rebuild in dev
+    emptyOutDir: !isDev,
+    // Selective file watching in dev
+    watch: isDev ? {
+      include: 'src/**',
+      exclude: ['**/*.test.*', '**/*.stories.*', '**/__tests__/**'],
+    } : undefined,
   },
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
     },
   },
+  };
 });

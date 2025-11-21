@@ -165,8 +165,8 @@
 		"registry": "https://registry-gateway.cloudflare-ui.workers.dev"
 	},
 	"scripts": {
-		"build": "vite build && tsx scripts/build-css.ts",
-		"dev": "vite build --watch",
+		"build": "vite build --mode production && tsx scripts/build-css.ts",
+		"dev": "vite build --watch --mode development",
 		"clean": "rm -rf dist",
 		"lint": "oxlint src/** --type-aware",
 		"prepublishOnly": "pnpm run clean && pnpm run build && pnpm run test:run",
