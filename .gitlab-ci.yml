@@ -3,10 +3,17 @@ stages:
   - build
   - checks
   - test
+  - beta-release
 
 variables:
   PNPM_VERSION: &PNPM_VERSION 'latest-10'
   NODE_VERSION: &NODE_VERSION '24'
+  PACKAGE_NAME: '@cloudflare/kumo'
+
+default:
+  id_tokens:
+    VAULT_ID_TOKEN:
+      aud: https://vault.cfdata.org
 
 # ============= BUILD STAGE (First - creates artifacts for downstream jobs) =============
 
@@ -94,6 +101,18 @@ include:
       runOnMR: true
       runOnBranches: '^main$'
 
+# ============= BETA RELEASE STAGE (Publishes beta versions to npm) =============
+
+  # Beta release using pnpm component
+  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
+    inputs:
+      stage: beta-release
+      jobPrefix: publish-beta
+      PNPM_VERSION: *PNPM_VERSION
+      NODE_VERSION: *NODE_VERSION
+      PNPM_RUN_TARGET: 'publish:beta'
+      runOnMR: true
+
 # Job overrides for dependencies and additional configuration
 
 # kumo-docs depends on kumo being built first (imports from @cloudflare/kumo)
@@ -121,3 +140,23 @@ test-kumo-test:
   #     coverage_report:
   #       coverage_format: cobertura
   #       path: packages/kumo/coverage/cobertura-coverage.xml
+
+publish-beta-run:
+  needs:
+    - job: validate-changeset-run
+      optional: true
+  rules:
+    - if: $CI_MERGE_REQUEST_IID
+      changes:
+        paths:
+           - packages/kumo/**/*
+        compare_to: 'refs/heads/main'
+      when: on_success
+    - when: never
+  secrets:
+    NPM_TOKEN:
+      vault: gitlab/_ci_components/_dev/npm/kv_token@kv
+      file: false
+    GITLAB_API_TOKEN:
+      vault: gitlab/cloudflare/fe/kumo/_dev/kumo_preview_bot/data@kv
+      file: false
