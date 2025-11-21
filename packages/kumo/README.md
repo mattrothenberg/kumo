@@ -96,32 +96,29 @@ pnpm new-layout
    import { DashboardPage } from "@cloudflare/kumo/layouts/dashboard-page";
 ```
 
-### Storybook Development
+### Development Workflows
+
+#### Option 1: Storybook Development (Recommended)
 
 Kumo uses **Storybook** as a live development environment for building and testing components in isolation. Storybook provides instant feedback, interactive controls, and serves as living documentation for the component library.
 
 **Start Storybook:**
 ```bash
-# From workspace root
-pnpm --filter @cloudflare/kumo storybook
+# From this directory
+pnpm storybook
 
-# Or use shorthand
+# Or from workspace root
 pnpm --filter @cloudflare/kumo storybook
 ```
 
 Storybook runs at `http://localhost:6006` with hot module replacement enabled.
 
-**Build static Storybook:**
-```bash
-pnpm --filter @cloudflare/kumo build-storybook
-```
-
 **Why use Storybook:**
-- Build components without running the full app
-- Test all variations and edge cases interactively
+- Full HMR with React Fast Refresh
+- Changes reflect instantly without page reload
+- Test all component variations and edge cases interactively
 - Auto-generated docs from TypeScript types
-- Develop components in isolation with instant HMR
-- Shared tool for designers and developers
+- Best for isolated component development
 - Test keyboard navigation and screen readers
 
 **Story files** live alongside components:
@@ -129,11 +126,48 @@ pnpm --filter @cloudflare/kumo build-storybook
 - Blocks: `src/blocks/{name}/{name}.stories.tsx`
 - Layouts: `src/layouts/{name}/{name}.stories.tsx`
 
-
 **See [STORYBOOK.md](./STORYBOOK.md) for documentation** including:
 - Writing stories guide
 - Development workflow
 - Best practices
+
+#### Option 2: Watch Build Mode
+
+When you need to test components in the actual documentation site or consuming application:
+
+**Start watch build:**
+```bash
+pnpm dev
+```
+
+This runs Vite in watch mode with optimizations for fast rebuilds:
+- ⚡~400ms rebuild time (10x faster than production builds)
+- Skips minification in development
+- Incremental TypeScript compilation
+- Selective file watching (ignores tests and stories)
+- Validates components against production build output
+
+**Using with documentation site:**
+
+Terminal 1 (this directory):
+```bash
+pnpm dev
+```
+
+Terminal 2 (from workspace root or kumo-docs):
+```bash
+cd ../kumo-docs
+pnpm dev
+```
+
+When you edit a component:
+1. Kumo rebuilds automatically (~400ms)
+2. Refresh browser to see changes in docs site
+3. Changes are validated against the actual build output
+
+**Build modes:**
+- `pnpm dev` - Development mode (fast, optimized for iteration)
+- `pnpm build` - Production mode (full optimization, minification, CSS processing)
 
 ### Testing
 
@@ -155,15 +189,15 @@ pnpm test:coverage
 ```
 
 **What's tested:**
-- ✅ All components importable from main entry: `import { Component } from "@cloudflare/kumo"`
-- ✅ All components importable via deep imports: `import { Component } from "@cloudflare/kumo/components/component-name"`
-- ✅ All blocks importable from main entry: `import { Block } from "@cloudflare/kumo"`
-- ✅ All blocks importable via deep imports: `import { Block } from "@cloudflare/kumo/blocks/block-name"`
-- ✅ All layouts importable from main entry: `import { Layout } from "@cloudflare/kumo"`
-- ✅ All layouts importable via deep imports: `import { Layout } from "@cloudflare/kumo/layouts/layout-name"`
-- ✅ Package.json exports sync with actual components, blocks, and layouts
-- ✅ Export paths and formats are correct
-- ✅ Build configuration consistency
+- All components importable from main entry: `import { Component } from "@cloudflare/kumo"`
+- All components importable via deep imports: `import { Component } from "@cloudflare/kumo/components/component-name"`
+- All blocks importable from main entry: `import { Block } from "@cloudflare/kumo"`
+- All blocks importable via deep imports: `import { Block } from "@cloudflare/kumo/blocks/block-name"`
+- All layouts importable from main entry: `import { Layout } from "@cloudflare/kumo"`
+- All layouts importable via deep imports: `import { Layout } from "@cloudflare/kumo/layouts/layout-name"`
+- Package.json exports sync with actual components, blocks, and layouts
+- Export paths and formats are correct
+- Build configuration consistency
 
 **Zero maintenance:** Tests automatically discover components, blocks, and layouts from the filesystem and validate against package.json. When adding new items, tests will fail with exact code snippets to fix configuration.
 

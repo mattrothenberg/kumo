@@ -48,6 +48,12 @@ Install the dependencies:
 pnpm install
 ```
 
+Build the component library (required first time):
+
+```bash
+pnpm --filter @cloudflare/kumo build
+```
+
 Start the development server:
 
 ```bash
@@ -55,6 +61,8 @@ pnpm dev
 ```
 
 Your application runs at `http://localhost:5173`.
+
+**Note:** The docs site requires the component library to be built at least once. After that, you can use the watch build for development (see [Development Scenarios](#development-scenarios) below).
 
 ### Working with Workspaces
 
@@ -127,37 +135,70 @@ See [packages/kumo/STORYBOOK.md](./packages/kumo/STORYBOOK.md) for more details.
 
 ### Development Scenarios
 
-**Working on Components (Recommended: Use Storybook)**
-1. Run Storybook: `pnpm --filter @cloudflare/kumo storybook`
-2. Edit components in `packages/kumo/src/components/`
-3. See instant HMR updates in Storybook
-4. Write and test component stories
+#### Isolated Component Development (Recommended)
 
-**Working on Documentation Only**
-1. Run: `pnpm dev` (or `pnpm --filter @cloudflare/kumo-docs dev`)
-2. Edit files in `packages/kumo-docs/app/`
-3. See instant HMR updates
+**Using Storybook:**
+```bash
+pnpm --filter @cloudflare/kumo storybook
+```
 
-**Testing Components**
-1. Run tests: `pnpm --filter @cloudflare/kumo test`
-2. Edit components and see live test results
-
-### Understanding HMR
-
-**Storybook:**
 - ✅ Full HMR with React Fast Refresh
 - ✅ Changes reflect instantly without page reload
-- ✅ Best for component development
+- ✅ Best for isolated component development and testing
+- ✅ Interactive component playground
 
-**Documentation Site:**
+#### Working on Components and Documentation Simultaneously
+
+When you need to test components in the actual documentation site:
+
+**Terminal 1: Start kumo watch build**
+```bash
+cd packages/kumo
+pnpm dev
+```
+
+**Terminal 2: Start kumo-docs dev server**
+```bash
+cd packages/kumo-docs
+pnpm dev
+```
+
+**Workflow:**
+1. Edit a component in `packages/kumo/src/components/`
+2. Kumo automatically rebuilds (~400ms with optimizations)
+3. Manually refresh browser to see changes in docs site
+4. Changes are validated against production build output
+
+**Build Optimizations:**
+- Development builds skip minification for faster rebuilds
+- Incremental TypeScript compilation caches type information
+- Selective file watching ignores test and story files
+- Production builds remain fully optimized
+
+#### Documentation Changes Only
+
+For docs-only work (no component changes needed):
+
+```bash
+pnpm dev
+```
+
 - ✅ Full HMR with React Fast Refresh
 - ✅ Changes reflect instantly without page reload
-- ✅ Component state preserved during updates
+- ✅ Runs at `http://localhost:5173`
 
-**Component Library (Watch Mode):**
-- ⚠️ Watch mode (auto-rebuild on changes)
-- ⚠️ Requires docs site refresh to see updates
-- ⚠️ Not true HMR due to library build mode
+#### Testing Components
+
+Run tests in watch mode while developing:
+
+```bash
+cd packages/kumo
+pnpm test
+```
+
+- Live test results as you edit
+- Coverage tracking available with `pnpm test:coverage`
+- UI mode available with `pnpm test:ui`
 
 ## Creating New Components
 
