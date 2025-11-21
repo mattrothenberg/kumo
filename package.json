@@ -23,7 +23,8 @@
 		"version": "changeset version",
 		"version:beta": "./ci/versioning/version-beta.sh",
 		"release": "pnpm build:all && changeset publish",
-		"release:beta": "changeset publish --no-git-tag --tag beta"
+		"release:beta": "changeset publish --no-git-tag --tag beta",
+		"publish:beta": "bash ci/versioning/publish-beta.sh"
 	},
 	"devDependencies": {
 		"@changesets/cli": "2.29.7"

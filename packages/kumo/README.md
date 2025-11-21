@@ -173,18 +173,29 @@ Beta releases allow you to test changes before publishing to production. Beta ve
 
 ### Automated Beta Releases
 
-Beta releases are automatically triggered for merge requests:
+Beta releases are automatically triggered for merge requests through the CI pipeline configured in the root `.gitlab-ci.yml`:
 
-- **Job**: `version-and-publish-beta`
-- **Trigger**: Automatically runs on merge requests with changes to `packages/kumo/**/*`
-- **Process**:
-  1. Validates that a changeset exists for `@cloudflare/kumo`
-  2. Consumes pending changesets
-  3. Appends `-beta.{commit-hash}` to version number
-  4. Builds the package
-  5. Publishes to npm registry with `beta` tag
-  6. Verifies successful publication
-  7. Posts MR comment with installation instructions
+**CI Job Configuration:**
+- **Job Name**: `version-and-publish-beta`
+- **Stage**: `beta-release` (runs after build, checks, and tests)
+- **Triggers**: Automatically on merge requests with changes to `packages/kumo/**/*`
+- **Dependencies**: Requires `validate-changeset-run` job to pass
+- **Environment**: Node.js container with pnpm, jq, and git configured
+- **Authentication**: Uses Vault secrets for npm and GitLab API tokens
+
+**Process Flow:**
+  1. **Validate**: Ensures changeset exists for `@cloudflare/kumo`
+  2. **Version**: Runs `pnpm run version:beta` (executes `./ci/versioning/version-beta.sh`)
+     - Consumes pending changesets
+     - Appends `-beta.{commit-hash}` to version number
+  3. **Build**: Runs `pnpm run build` in `packages/kumo`
+  4. **Publish**: Runs `pnpm run release:beta` to publish with `beta` tag
+  5. **Verify**: Waits 45s for npm propagation and verifies publication
+  6. **Notify**: Posts MR comment with installation instructions
+
+**Secrets Required:**
+- `NPM_TOKEN`: Authentication for npm registry
+- `GITLAB_API_TOKEN`: For posting MR comments
 
 ### Beta Version Format
 

@@ -244,10 +244,23 @@ Kumo uses [Changesets](https://github.com/changesets/changesets) for version man
 
 Beta releases are automatically published for merge requests, allowing you to test changes before merging to production.
 
+**CI Pipeline:**
+The beta release process is automated through the `version-and-publish-beta` job in `.gitlab-ci.yml`:
+- **Stage**: `beta-release` (runs after checks/tests pass)
+- **Triggers**: Automatically on merge requests with changes to `packages/kumo/**/*`
+- **Dependencies**: Requires `validate-changeset-run` job to pass
+- **Process**:
+  1. Validates changeset exists
+  2. Runs `pnpm run version:beta` to append `-beta.{commit-hash}` to version
+  3. Builds the package (`pnpm run build`)
+  4. Publishes to npm with `beta` tag (`pnpm run release:beta`)
+  5. Verifies publication succeeded (45s propagation wait)
+  6. Posts MR comment with installation instructions
+
 **How it works:**
 1. Create a changeset for your changes: `pnpm changeset`
-2. Open a merge request
-3. CI automatically validates changeset exists
+2. Open a merge request with changes to `packages/kumo/`
+3. CI automatically validates changeset exists (`validate-changeset-run` job)
 4. CI publishes beta version with format: `{version}-beta.{commit-hash}`
 5. MR receives comment with installation instructions
 
@@ -306,5 +319,20 @@ The changeset will be consumed during the next release and added to the changelo
 4. **Beta Test**: Test the auto-published beta version
 5. **Merge**: Merge MR to main
 6. **Release**: Run production release process
+
+### Troubleshooting Beta Releases
+
+**Beta job not appearing in MR pipeline:**
+1. **Check file changes**: The job only triggers when files in `packages/kumo/**/*` are modified
+2. **Verify changeset exists**: Run `ls .changeset/*.md` to confirm a changeset is present
+3. **Check pipeline rules**: The job requires `$CI_MERGE_REQUEST_IID` to be set (only runs on MRs, not branches)
+4. **Review dependencies**: Ensure the `validate-changeset-run` job is present and passing
+5. **Check GitLab CI logs**: Review pipeline configuration and rule evaluation
+
+**Beta job failed:**
+- Check that `jq` is installed in the CI environment
+- Verify npm token secrets are configured in Vault
+- Ensure git is properly configured with user email/name
+- Review build logs for package build failures
 
 For detailed documentation, see [`packages/kumo/README.md`](./packages/kumo/README.md).
