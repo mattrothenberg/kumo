@@ -94,6 +94,7 @@ export default function Contributing() {
         <ul className="list-disc list-inside space-y-2 text-neutral-700 dark:text-neutral-300 mb-4">
           <li><strong>Component file</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/components/{"{name}"}/{"{name}"}.tsx</code></li>
           <li><strong>Index file</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/components/{"{name}"}/index.ts</code></li>
+          <li><strong>Story file</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/components/{"{name}"}/{"{name}"}.stories.tsx</code></li>
           <li><strong>Test file</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/components/{"{name}"}/{"{name}"}.test.tsx</code></li>
           <li><strong>Main exports</strong> - Updates <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/index.ts</code></li>
           <li><strong>Build config</strong> - Updates <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">vite.config.ts</code></li>
@@ -116,6 +117,7 @@ export default function Contributing() {
 📁 Files created:
    - src/components/alert-banner/alert-banner.tsx
    - src/components/alert-banner/index.ts
+   - src/components/alert-banner/alert-banner.stories.tsx
    - src/components/alert-banner/alert-banner.test.tsx
 
 📝 Files updated:
@@ -165,6 +167,7 @@ export default function Contributing() {
         <ul className="list-disc list-inside space-y-2 text-neutral-700 dark:text-neutral-300 mb-4">
           <li><strong>Block file</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/blocks/{"{name}"}/{"{name}"}.tsx</code></li>
           <li><strong>Index file</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/blocks/{"{name}"}/index.ts</code></li>
+          <li><strong>Story file</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/blocks/{"{name}"}/{"{name}"}.stories.tsx</code></li>
           <li><strong>Test file</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/blocks/{"{name}"}/{"{name}"}.test.tsx</code></li>
           <li><strong>Main exports</strong> - Updates <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/index.ts</code> (Blocks section)</li>
           <li><strong>Build config</strong> - Updates <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">vite.config.ts</code></li>
@@ -181,6 +184,7 @@ export default function Contributing() {
 📁 Files created:
    - src/blocks/navigation-bar/navigation-bar.tsx
    - src/blocks/navigation-bar/index.ts
+   - src/blocks/navigation-bar/navigation-bar.stories.tsx
    - src/blocks/navigation-bar/navigation-bar.test.tsx
 
 📝 Files updated:
@@ -190,9 +194,7 @@ export default function Contributing() {
 
 💡 Import examples:
    import { NavigationBar } from "@cloudflare/kumo";
-   import { NavigationBar } from "@cloudflare/kumo/blocks/navigation-bar";
-
-📝 Note: Blocks are higher-level components that compose base components.`}
+   import { NavigationBar } from "@cloudflare/kumo/blocks/navigation-bar";`}
         />
       </ComponentSection>
 
@@ -219,6 +221,7 @@ export default function Contributing() {
         <ul className="list-disc list-inside space-y-2 text-neutral-700 dark:text-neutral-300 mb-4">
           <li><strong>Layout file</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/layouts/{"{name}"}/{"{name}"}.tsx</code></li>
           <li><strong>Index file</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/layouts/{"{name}"}/index.ts</code></li>
+          <li><strong>Story file</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/layouts/{"{name}"}/{"{name}"}.stories.tsx</code></li>
           <li><strong>Test file</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/layouts/{"{name}"}/{"{name}"}.test.tsx</code></li>
           <li><strong>Main exports</strong> - Updates <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/index.ts</code> (Layouts section)</li>
           <li><strong>Build config</strong> - Updates <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">vite.config.ts</code></li>
@@ -235,6 +238,7 @@ export default function Contributing() {
 📁 Files created:
    - src/layouts/dashboard-page/dashboard-page.tsx
    - src/layouts/dashboard-page/index.ts
+   - src/layouts/dashboard-page/dashboard-page.stories.tsx
    - src/layouts/dashboard-page/dashboard-page.test.tsx
 
 📝 Files updated:
@@ -244,9 +248,7 @@ export default function Contributing() {
 
 💡 Import examples:
    import { DashboardPage } from "@cloudflare/kumo";
-   import { DashboardPage } from "@cloudflare/kumo/layouts/dashboard-page";
-
-📝 Note: Layouts are page-level components for consistent structure.`}
+   import { DashboardPage } from "@cloudflare/kumo/layouts/dashboard-page";`}
         />
       </ComponentSection>
 
@@ -254,36 +256,87 @@ export default function Contributing() {
       <ComponentSection>
         <h2 className="text-2xl font-bold mb-4">Development Workflow</h2>
         <p className="text-neutral-600 dark:text-neutral-400 mb-4">
-          After scaffolding a component, block, or layout, follow these steps:
+          After scaffolding a component, block, or layout, choose your development approach:
         </p>
+
+        <div className="grid md:grid-cols-2 gap-6 mb-6">
+          <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+            <h3 className="text-lg font-semibold mb-2 text-blue-900 dark:text-blue-100">
+              Option 1: Storybook (Recommended)
+            </h3>
+            <p className="text-sm text-blue-800 dark:text-blue-200 mb-3">
+              Best for isolated component development with instant feedback
+            </p>
+            <CodeBlock
+              lang="bash"
+              code={`pnpm storybook`}
+            />
+            <ul className="list-disc list-inside space-y-1 text-sm text-blue-900 dark:text-blue-100 mt-3">
+              <li>Full HMR with React Fast Refresh</li>
+              <li>Changes reflect instantly</li>
+              <li>Interactive component testing</li>
+              <li>No build required</li>
+            </ul>
+          </div>
+
+          <div className="bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-4">
+            <h3 className="text-lg font-semibold mb-2">
+              Option 2: Watch Build
+            </h3>
+            <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">
+              For testing components in the documentation site
+            </p>
+            <CodeBlock
+              lang="bash"
+              code={`# Terminal 1
+pnpm --filter @cloudflare/kumo dev
+
+# Terminal 2
+pnpm --filter @cloudflare/kumo-docs dev`}
+            />
+            <ul className="list-disc list-inside space-y-1 text-sm text-neutral-700 dark:text-neutral-300 mt-3">
+              <li>Fast rebuild time</li>
+              <li>Validates bundle exports/imports</li>
+              <li>Tests actual build output</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 className="text-xl font-semibold mb-3 mt-6">Implementation Steps</h3>
         <ol className="list-decimal list-inside space-y-3 text-neutral-700 dark:text-neutral-300">
           <li>
             <strong>Implement the component/block/layout</strong>
             <p className="ml-6 mt-1 text-neutral-600 dark:text-neutral-400">
-              Edit the generated <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">.tsx</code> file with your implementation. Use Storybook for rapid development.
+              Edit the generated <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">.tsx</code> file. Start Storybook for rapid iteration with instant HMR.
             </p>
           </li>
           <li>
             <strong>Create stories</strong>
             <p className="ml-6 mt-1 text-neutral-600 dark:text-neutral-400">
-              Add a <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">.stories.tsx</code> file to showcase component variants in Storybook.
+              Add a <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">.stories.tsx</code> file to showcase component variants. Stories serve as living documentation.
             </p>
           </li>
           <li>
             <strong>Write tests</strong>
             <p className="ml-6 mt-1 text-neutral-600 dark:text-neutral-400">
-              Add tests to the generated <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">.test.tsx</code> file.
+              Add tests to the generated <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">.test.tsx</code> file. Run tests in watch mode while developing.
             </p>
-          </li>
-          <li>
-            <strong>Run tests</strong>
             <CodeBlock
               lang="bash"
               code={`pnpm --filter @cloudflare/kumo test`}
             />
           </li>
           <li>
+            <strong>Test in documentation site (optional)</strong>
+            <p className="ml-6 mt-1 text-neutral-600 dark:text-neutral-400">
+              Use the two-terminal watch build setup to see your component in the actual docs site. Validates production build output.
+            </p>
+          </li>
+          <li>
             <strong>Build the package</strong>
+            <p className="ml-6 mt-1 text-neutral-600 dark:text-neutral-400">
+              Before committing, do a full production build to ensure everything works:
+            </p>
             <CodeBlock
               lang="bash"
               code={`pnpm --filter @cloudflare/kumo build`}
@@ -292,7 +345,7 @@ export default function Contributing() {
           <li>
             <strong>Add documentation</strong>
             <p className="ml-6 mt-1 text-neutral-600 dark:text-neutral-400">
-              Create a documentation page in <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">kumo-docs/app/routes/</code>
+              Create a documentation page in <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">kumo-docs/app/routes/</code> showing real-world usage examples.
             </p>
           </li>
         </ol>
@@ -300,9 +353,9 @@ export default function Contributing() {
 
       {/* Storybook Development */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Storybook Development</h2>
+        <h2 className="text-2xl font-bold mb-4">Storybook Development (Recommended)</h2>
         <p className="text-neutral-600 dark:text-neutral-400 mb-4">
-          Kumo uses Storybook as a live development environment for building and testing components in isolation. It provides instant feedback and serves as interactive documentation.
+          Storybook is the recommended way to develop components. It provides instant feedback with full HMR and serves as interactive documentation. Use this for 90% of your component development work.
         </p>
         
         <h3 className="text-xl font-semibold mb-3 mt-6">Start Storybook</h3>
@@ -314,14 +367,29 @@ export default function Contributing() {
           Opens at <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">http://localhost:6006</code> with hot module replacement enabled.
         </p>
 
-        <h3 className="text-xl font-semibold mb-3 mt-6">Why Use Storybook</h3>
+        <h3 className="text-xl font-semibold mb-3 mt-6">Why Storybook is Recommended</h3>
         <ul className="list-disc list-inside space-y-2 text-neutral-700 dark:text-neutral-300 mb-4">
-          <li>Build components without running the full application</li>
-          <li>Test all variations and edge cases interactively</li>
-          <li>Auto-generated documentation from TypeScript types</li>
-          <li>Instant HMR updates as you code</li>
-          <li>Shared tool for designers and developers</li>
+          <li><strong>Instant HMR</strong> - Changes reflect immediately without page reload</li>
+          <li><strong>No build step</strong> - Components run directly from source</li>
+          <li><strong>Isolated testing</strong> - Test components without running the full app</li>
+          <li><strong>Interactive playground</strong> - Test all variations and edge cases</li>
+          <li><strong>Auto-generated docs</strong> - Documentation from TypeScript types</li>
+          <li><strong>Shared workflow</strong> - Same tool for designers and developers</li>
         </ul>
+
+        <h3 className="text-xl font-semibold mb-3 mt-6">When to Use Watch Build Instead</h3>
+        <p className="text-neutral-600 dark:text-neutral-400 mb-2">
+          Only use the watch build mode when you need to:
+        </p>
+        <ul className="list-disc list-inside space-y-2 text-neutral-700 dark:text-neutral-300 mb-4">
+          <li>Test components in the actual documentation site with real content</li>
+          <li>Validate production build configuration and exports</li>
+          <li>Debug issues specific to the build process</li>
+          <li>Test integration with other production features</li>
+        </ul>
+        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
+          <strong>Note:</strong> Watch build requires manual browser refresh and takes ~400ms per rebuild. Use Storybook for faster iteration during component development.
+        </p>
 
         <h3 className="text-xl font-semibold mb-3 mt-6">Creating Stories</h3>
         <p className="text-neutral-600 dark:text-neutral-400 mb-4">
