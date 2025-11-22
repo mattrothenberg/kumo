@@ -9,6 +9,7 @@ export default [
   route("playground", "routes/playground-sandpack.tsx"),
   route("api/generate", "routes/api.generate.tsx"),
   route("components/badge", "routes/components.badge.tsx"),
+  route("components/banner", "routes/components.banner.tsx"),
   route("components/button", "routes/components.button.tsx"),
   route("components/input", "routes/components.input.tsx"),
   route("components/checkbox", "routes/components.checkbox.tsx"),

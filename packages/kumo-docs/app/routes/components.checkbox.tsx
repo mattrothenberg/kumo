@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Checkbox } from "@cloudflare/kumo";
 import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
@@ -5,6 +6,10 @@ import { ComponentSection } from "~/components/docs/component-section";
 import { CodeBlock } from "@cloudflare/kumo";
 
 export default function CheckboxDoc() {
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [enableNotifications, setEnableNotifications] = useState(false);
+  const [agree, setAgree] = useState(true);
+
   return (
     <DocLayout
       title="Checkbox"
@@ -15,7 +20,11 @@ export default function CheckboxDoc() {
         <ComponentExample
           code={`<Checkbox label="Accept terms and conditions" />`}
         >
-          <Checkbox label="Accept terms and conditions" />
+          <Checkbox
+            label="Accept terms and conditions"
+            checked={acceptTerms}
+            onValueChange={setAcceptTerms}
+          />
         </ComponentExample>
       </ComponentSection>
 
@@ -57,7 +66,11 @@ export default function Example() {
             <ComponentExample
               code={`<Checkbox label="Enable notifications" />`}
             >
-              <Checkbox label="Enable notifications" />
+              <Checkbox
+                label="Enable notifications"
+                checked={enableNotifications}
+                onValueChange={setEnableNotifications}
+              />
             </ComponentExample>
           </div>
 
@@ -66,7 +79,11 @@ export default function Example() {
             <ComponentExample
               code={`<Checkbox label="I agree" defaultChecked />`}
             >
-              <Checkbox label="I agree" defaultChecked />
+              <Checkbox
+                label="I agree"
+                checked={agree}
+                onValueChange={setAgree}
+              />
             </ComponentExample>
           </div>
 

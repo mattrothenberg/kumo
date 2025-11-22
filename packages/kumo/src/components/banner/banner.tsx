@@ -2,36 +2,41 @@ import type { ReactNode } from "react";
 import { cn } from "../../utils/cn";
 
 export enum BannerVariant {
-    DEFAULT,
-    ALERT,
-    ERROR
+  DEFAULT,
+  ALERT,
+  ERROR,
 }
 
-const DEFAULT_CLASS = "rounded-lg w-full bg-blue-500/20 px-4 py-1.5 border border-blue-500 dark:border-blue-700 text-blue-800 dark:text-blue-400 flex items-center gap-2 selection:bg-blue-300 dark:selection:bg-blue-900"
-const ALERT_CLASS = "rounded-lg w-full bg-yellow-500/20 px-4 py-1.5 border border-yellow-500 dark:border-yellow-700 text-yellow-800 dark:text-yellow-400 flex items-center gap-2 selection:bg-yellow-300 dark:selection:bg-yellow-900"
-const ERROR_CLASS = "rounded-lg w-full bg-red-500/20 px-4 py-1.5 border border-red-500 dark:border-red-700 text-red-800 dark:text-red-400 flex items-center gap-2 selection:bg-red-300 dark:selection:bg-red-900"
+const DEFAULT_CLASS =
+  "rounded-lg w-full bg-kumo-info-surface px-4 py-1.5 border border-kumo-info-border text-kumo-info flex items-center gap-2 selection:bg-kumo-info-selection";
+const ALERT_CLASS =
+  "rounded-lg w-full bg-kumo-alert-surface px-4 py-1.5 border border-kumo-alert-border text-kumo-alert flex items-center gap-2 selection:bg-kumo-alert-selection";
+const ERROR_CLASS =
+  "rounded-lg w-full bg-kumo-error-surface px-4 py-1.5 border border-kumo-error-border text-kumo-error flex items-center gap-2 selection:bg-kumo-error-selection";
 
 export function Banner({
-    icon,
-    text,
-    variant = BannerVariant.DEFAULT,
-    className,
+  icon,
+  text,
+  variant = BannerVariant.DEFAULT,
+  className,
 }: {
-    icon?: ReactNode;
-    text: string;
-    variant?: BannerVariant;
-    className?: string;
+  icon?: ReactNode;
+  text: string;
+  variant?: BannerVariant;
+  className?: string;
 }) {
-    return (
-        <div className={cn(
-            "flex items-center gap-2 text-base", 
-            variant === BannerVariant.DEFAULT && DEFAULT_CLASS, 
-            variant === BannerVariant.ALERT && ALERT_CLASS, 
-            variant === BannerVariant.ERROR && ERROR_CLASS,
-            className
-        )}>
-            {icon}
-            <p>{text}</p>
-        </div>
-    )
+  return (
+    <div
+      className={cn(
+        "flex items-center gap-2 text-base",
+        variant === BannerVariant.DEFAULT && DEFAULT_CLASS,
+        variant === BannerVariant.ALERT && ALERT_CLASS,
+        variant === BannerVariant.ERROR && ERROR_CLASS,
+        className
+      )}
+    >
+      {icon}
+      <p>{text}</p>
+    </div>
+  );
 }

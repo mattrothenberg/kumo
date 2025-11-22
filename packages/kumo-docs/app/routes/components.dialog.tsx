@@ -2,6 +2,54 @@ import { Dialog, Button, CodeBlock } from "@cloudflare/kumo";
 import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";
+import { X } from "@phosphor-icons/react";
+
+type DialogExampleProps = {
+  withButtons?: boolean;
+};
+
+function DialogExample({ withButtons = false }: DialogExampleProps) {
+  return (
+    <Dialog className="p-8">
+      <div className="flex items-start justify-between gap-4 mb-4">
+        <div>
+          <Dialog.Title className="text-2xl font-semibold">
+            Modal Title
+          </Dialog.Title>
+        </div>
+        <Dialog.Close
+          aria-label="Close"
+          render={(props) => (
+            <Button
+              {...props}
+              variant="secondary"
+              shape="square"
+              icon={<X />}
+            />
+          )}
+        />
+      </div>
+      <Dialog.Description className="text-sm text-neutral-700">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+        commodo consequat.
+      </Dialog.Description>
+      {withButtons && (
+        <div className="mt-8 flex justify-end gap-2">
+          <Button variant="secondary">Cancel</Button>
+          <Dialog.Close
+            render={(props) => (
+              <Button variant="destructive" {...props}>
+                Delete
+              </Button>
+            )}
+          />
+        </div>
+      )}
+    </Dialog>
+  );
+}
 
 export default function DialogDoc() {
   return (
@@ -14,22 +62,49 @@ export default function DialogDoc() {
         <ComponentExample
           code={`<Dialog.Root>
   <Dialog.Trigger render={(p) => <Button {...p}>Open Dialog</Button>} />
-  <Dialog>
-    <Dialog.Title>Welcome</Dialog.Title>
-    <Dialog.Description>
-      This is a dialog component.
+  <Dialog className="p-8">
+    <div className="flex items-start justify-between gap-4 mb-4">
+      <div>
+        <Dialog.Title className="text-2xl font-semibold">
+          Modal Title
+        </Dialog.Title>
+      </div>
+      <Dialog.Close
+        aria-label="Close"
+        render={(props) => (
+          <Button
+            {...props}
+            variant="secondary"
+            shape="square"
+            icon={<X />}
+          />
+        )}
+      />
+    </div>
+    <Dialog.Description className="text-sm text-neutral-700">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+      commodo consequat.
     </Dialog.Description>
+    <div className="mt-8 flex justify-end gap-2">
+      <Button variant="secondary">Cancel</Button>
+      <Dialog.Close
+        render={(props) => (
+          <Button variant="destructive" {...props}>
+            Delete
+          </Button>
+        )}
+      />
+    </div>
   </Dialog>
 </Dialog.Root>`}
         >
           <Dialog.Root>
-            <Dialog.Trigger render={(p) => <Button {...p}>Open Dialog</Button>} />
-            <Dialog>
-              <Dialog.Title>Welcome</Dialog.Title>
-              <Dialog.Description>
-                This is a dialog component.
-              </Dialog.Description>
-            </Dialog>
+            <Dialog.Trigger
+              render={(p) => <Button {...p}>Open Dialog</Button>}
+            />
+            <DialogExample withButtons />
           </Dialog.Root>
         </ComponentExample>
       </ComponentSection>
@@ -69,7 +144,7 @@ export default function Example() {
           <Dialog.Close
             render={(p) => (
               <Button variant="secondary" {...p}>
-                Close
+                Cancel
               </Button>
             )}
           />
@@ -91,18 +166,39 @@ export default function Example() {
             <ComponentExample
               code={`<Dialog.Root>
   <Dialog.Trigger render={(p) => <Button {...p}>Click me</Button>} />
-  <Dialog>
-    <Dialog.Title>Hello!</Dialog.Title>
-    <Dialog.Description>I'm a dialog.</Dialog.Description>
+  <Dialog className="p-8">
+    <div className="flex items-start justify-between gap-4 mb-4">
+      <div>
+        <Dialog.Title className="text-2xl font-semibold">
+          Modal Title
+        </Dialog.Title>
+      </div>
+      <Dialog.Close
+        aria-label="Close"
+        render={(props) => (
+          <Button
+            {...props}
+            variant="secondary"
+            shape="square"
+            icon={<X />}
+          />
+        )}
+      />
+    </div>
+    <Dialog.Description className="text-sm text-neutral-700">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+      commodo consequat.
+    </Dialog.Description>
   </Dialog>
 </Dialog.Root>`}
             >
               <Dialog.Root>
-                <Dialog.Trigger render={(p) => <Button {...p}>Click me</Button>} />
-                <Dialog>
-                  <Dialog.Title>Hello!</Dialog.Title>
-                  <Dialog.Description>I'm a dialog.</Dialog.Description>
-                </Dialog>
+                <Dialog.Trigger
+                  render={(p) => <Button {...p}>Click me</Button>}
+                />
+                <DialogExample />
               </Dialog.Root>
             </ComponentExample>
           </div>
@@ -112,40 +208,49 @@ export default function Example() {
             <ComponentExample
               code={`<Dialog.Root>
   <Dialog.Trigger render={(p) => <Button {...p}>Delete</Button>} />
-  <Dialog>
-    <Dialog.Title>Are you sure?</Dialog.Title>
-    <Dialog.Description>
-      This action cannot be undone.
+  <Dialog className="p-8">
+    <div className="flex items-start justify-between gap-4 mb-4">
+      <div>
+        <Dialog.Title className="text-2xl font-semibold">
+          Modal Title
+        </Dialog.Title>
+      </div>
+      <Dialog.Close
+        aria-label="Close"
+        render={(props) => (
+          <Button
+            {...props}
+            variant="secondary"
+            shape="square"
+            icon={<X />}
+          />
+        )}
+      />
+    </div>
+    <Dialog.Description className="text-sm text-neutral-700">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+      commodo consequat.
     </Dialog.Description>
-    <div className="flex gap-2 mt-4">
-      <Button variant="destructive">Delete</Button>
-      <Dialog.Close render={(p) => (
-        <Button variant="secondary" {...p}>
-          Cancel
-        </Button>
-      )} />
+    <div className="mt-8 flex justify-end gap-2">
+      <Button variant="secondary">Cancel</Button>
+      <Dialog.Close
+        render={(props) => (
+          <Button variant="destructive" {...props}>
+            Delete
+          </Button>
+        )}
+      />
     </div>
   </Dialog>
 </Dialog.Root>`}
             >
               <Dialog.Root>
-                <Dialog.Trigger render={(p) => <Button {...p}>Delete</Button>} />
-                <Dialog>
-                  <Dialog.Title>Are you sure?</Dialog.Title>
-                  <Dialog.Description>
-                    This action cannot be undone.
-                  </Dialog.Description>
-                  <div className="flex gap-2 mt-4">
-                    <Button variant="destructive">Delete</Button>
-                    <Dialog.Close
-                      render={(p) => (
-                        <Button variant="secondary" {...p}>
-                          Cancel
-                        </Button>
-                      )}
-                    />
-                  </div>
-                </Dialog>
+                <Dialog.Trigger
+                  render={(p) => <Button {...p}>Delete</Button>}
+                />
+                <DialogExample withButtons />
               </Dialog.Root>
             </ComponentExample>
           </div>

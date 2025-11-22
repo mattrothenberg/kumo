@@ -155,13 +155,11 @@
   );
 
   --color-kumo-primary: light-dark(#056dff, #056dff);
+  --text-color-kumo-beta: light-dark(#056dff, #056dff);
   --text-color-kumo-primary: light-dark(
     var(--color-white, #fff),
     var(--color-white, #fff)
   );
-
-  /* New: beta semantic color */
-  --text-color-kumo-beta: light-dark(#056dff, #056dff);
 
   --color-kumo-secondary: light-dark(
     var(--color-white, #fff),
@@ -225,6 +223,63 @@
   --text-color-kumo-disabled: light-dark(
     var(--color-neutral-400, oklch(70.8% 0 0)),
     var(--color-neutral-400, oklch(70.8% 0 0))
+  );
+
+  --text-color-kumo-info: light-dark(
+    oklch(42.4% 0.199 265.638),
+    oklch(70.7% 0.165 254.624)
+  );
+
+  --color-kumo-info-border: light-dark(
+    oklch(62.3% 0.214 259.815),
+    oklch(48.8% 0.243 264.376)
+  );
+
+  --color-kumo-info-surface: light-dark(
+    oklch(62.3% 0.214 259.815 / 0.2),
+    oklch(62.3% 0.214 259.815 / 0.2)
+  );
+
+  --color-kumo-info-selection: light-dark(
+    oklch(80.9% 0.105 251.813),
+    oklch(37.9% 0.146 265.522)
+  );
+
+  --text-color-kumo-error: light-dark(
+    oklch(44.4% 0.177 26.899),
+    oklch(70.4% 0.191 22.216)
+  );
+
+  --color-kumo-error-surface: light-dark(
+    oklch(63.7% 0.237 25.331 / 0.2),
+    oklch(63.7% 0.237 25.331 / 0.2)
+  );
+  --color-kumo-error-border: light-dark(
+    oklch(63.7% 0.237 25.331),
+    oklch(50.5% 0.213 27.518)
+  );
+
+  --color-kumo-error-selection: light-dark(
+    oklch(80.8% 0.114 19.571),
+    oklch(39.6% 0.141 25.723)
+  );
+
+  --text-color-kumo-alert: light-dark(
+    oklch(47.6% 0.114 61.907),
+    oklch(85.2% 0.199 91.936)
+  );
+  --color-kumo-alert-surface: light-dark(
+    oklch(79.5% 0.184 86.047 / 0.2),
+    oklch(79.5% 0.184 86.047 / 0.2)
+  );
+  --color-kumo-alert-border: light-dark(
+    oklch(79.5% 0.184 86.047),
+    oklch(55.4% 0.135 66.442)
+  );
+
+  --color-kumo-alert-selection: light-dark(
+    oklch(90.5% 0.182 98.111),
+    oklch(42.1% 0.095 57.708)
   );
 }
 

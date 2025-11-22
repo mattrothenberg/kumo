@@ -49,8 +49,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 // -translate-x-2
-const LI_STYLE = `block rounded-lg font-medium !text-neutral-600 dark:text-neutral-200 text-surface hover:text-neutral-800 dark:hover:text-white hover:bg-neutral-200/30 dark:hover:bg-neutral-800/50 p-2 my-[.05rem] cursor-pointer transition-colors no-underline relative z-10`;
-const LI_ACTIVE_STYLE = `text-neutral-800 dark:text-white bg-neutral-200/50 dark:bg-neutral-800`;
+const LI_STYLE = `block rounded-lg text-neutral-600 hover:text-neutral-800 dark:hover:text-white hover:bg-neutral-200/30 dark:hover:bg-neutral-800/50 p-2 my-[.05rem] cursor-pointer transition-colors no-underline relative z-10`;
+const LI_ACTIVE_STYLE = `font-semibold text-neutral-800 dark:text-white bg-neutral-200/50 dark:bg-neutral-800`;
 
 export default function App() {
   const location = useLocation();
@@ -278,6 +278,19 @@ export default function App() {
                   )}
                 >
                   Badge
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/components/banner"
+                  prefetch="intent"
+                  className={cn(
+                    LI_STYLE,
+                    location.pathname === "/components/banner" &&
+                      LI_ACTIVE_STYLE
+                  )}
+                >
+                  Banner
                 </Link>
               </li>
               <li>
