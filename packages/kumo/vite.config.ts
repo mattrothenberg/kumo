@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => {
       dts({
         include: ['src/**/*'],
         exclude: ['**/*.test.ts', '**/*.test.tsx', '**/*.stories.tsx'],
-        rollupTypes: !isDev, // Only in production
+        rollupTypes: false, // Disabled - causes timeouts with many entry points
         compilerOptions: {
           incremental: isDev,
           tsBuildInfoFile: isDev ? './.tsbuildinfo' : undefined,
