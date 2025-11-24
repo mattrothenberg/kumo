@@ -1,7 +1,12 @@
 import type { ReactNode } from "react";
 import { cn } from "../../utils/cn";
 
-export type BadgeVariant = "primary" | "secondary" | "destructive" | "outline" | "beta";
+export type BadgeVariant =
+  | "primary"
+  | "secondary"
+  | "destructive"
+  | "outline"
+  | "beta";
 
 export function Badge({
   variant = "primary",

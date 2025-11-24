@@ -9,18 +9,14 @@ type DialogProps = {
   style?: CSSProperties;
 };
 
-function DialogContent({
-  className,
-  children,
-  style,
-}: DialogProps) {
+function DialogContent({ className, children, style }: DialogProps) {
   return (
     <DialogBase.Portal>
       <DialogBase.Backdrop className="fixed inset-0 bg-neutral-100 dark:bg-black opacity-80 transition-all duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0" />
       <Surface
         as={DialogBase.Popup}
         className={cn(
-          `fixed left-1/2 min-w-96 max-w-[calc(100vw-3rem)] -translate-x-1/2 rounded-xl bg-surface dark:bg-surface-secondary dark:text-white text-neutral-900 duration-150 data-ending-style:scale-90 data-ending-style:opacity-0 data-starting-style:scale-90 data-starting-style:opacity-0 overflow-hidden shadow-m top-8 z-modal`,
+          `fixed left-1/2 top-1/2 min-w-96 max-w-[calc(100vw-3rem)] -translate-x-1/2 -translate-y-1/2 rounded-xl bg-surface dark:bg-surface-secondary dark:text-white text-neutral-900 duration-150 data-ending-style:scale-90 data-ending-style:opacity-0 data-starting-style:scale-90 data-starting-style:opacity-0 overflow-hidden shadow-m z-modal`,
           className
         )}
         style={
@@ -62,4 +58,11 @@ const DialogTitle = Dialog.Title;
 const DialogDescription = Dialog.Description;
 const DialogClose = Dialog.Close;
 
-export { Dialog, DialogRoot, DialogTrigger, DialogTitle, DialogDescription, DialogClose };
+export {
+  Dialog,
+  DialogRoot,
+  DialogTrigger,
+  DialogTitle,
+  DialogDescription,
+  DialogClose,
+};

@@ -12,51 +12,53 @@ export default function TextDoc() {
       {/* Demo */}
       <ComponentSection>
         <ComponentExample
-          code={`<div>
-  <Text variant="h1">Heading 1</Text>
-  <Text variant="h2">Heading 2</Text>
-  <Text variant="h3">Heading 3</Text>
-</div>
-<div>
-  <Text>Body</Text>
-  <Text bold>Body bold</Text>
-  <Text variant="secondary">Body secondary</Text>
-  <Text variant="success">Success</Text>
-  <Text variant="error">Error</Text>
-  <Text variant="mono">Monospace</Text>
-  <Text variant="mono-secondary">Monospace secondary</Text>
-</div>
-<div>
-  <Text size="xs">Body xs</Text>
-  <Text size="sm">Body sm</Text>
-  <Text size="lg">Body lg</Text>
-  <Text variant="mono" size="lg">
-    Monospace lg
-  </Text>
+          code={`<div className="flex gap-10 xl:gap-10 items-start">
+  <div className="grid gap-2">
+    <Text variant="heading1">Heading 1</Text>
+    <Text variant="heading2">Heading 2</Text>
+    <Text variant="heading3">Heading 3</Text>
+    <Text variant="secondary">Body secondary</Text>
+    <Text variant="mono">Monospace</Text>
+    <Text variant="mono-secondary">Monospace secondary</Text>
+    <Text variant="success">Success</Text>
+    <Text variant="error">Error</Text>
+  </div>
+  <div className="grid gap-2">
+    <Text variant="mono" size="lg">
+      Monospace lg
+    </Text>
+    <Text size="lg">Body lg</Text>
+    <Text size="sm">Body sm</Text>
+    <Text size="xs">Body xs</Text>
+  </div>
+  <div className="grid gap-2">
+    <Text>Body</Text>
+    <Text bold>Body bold</Text>
+  </div>
 </div>`}
         >
-          <div className="flex xl:gap-10 items-start">
-            <div>
+          <div className="flex gap-10 xl:gap-10 items-start">
+            <div className="grid gap-2">
               <Text variant="heading1">Heading 1</Text>
               <Text variant="heading2">Heading 2</Text>
               <Text variant="heading3">Heading 3</Text>
-            </div>
-            <div className="grid">
-              <Text>Body</Text>
-              <Text bold>Body bold</Text>
               <Text variant="secondary">Body secondary</Text>
-              <Text variant="success">Success</Text>
-              <Text variant="error">Error</Text>
               <Text variant="mono">Monospace</Text>
               <Text variant="mono-secondary">Monospace secondary</Text>
+              <Text variant="success">Success</Text>
+              <Text variant="error">Error</Text>
             </div>
-            <div className="grid">
-              <Text size="xs">Body xs</Text>
-              <Text size="sm">Body sm</Text>
-              <Text size="lg">Body lg</Text>
+            <div className="grid gap-2">
               <Text variant="mono" size="lg">
                 Monospace lg
               </Text>
+              <Text size="lg">Body lg</Text>
+              <Text size="sm">Body sm</Text>
+              <Text size="xs">Body xs</Text>
+            </div>
+            <div className="grid gap-2">
+              <Text>Body</Text>
+              <Text bold>Body bold</Text>
             </div>
           </div>
         </ComponentExample>
