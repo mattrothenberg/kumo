@@ -28,9 +28,7 @@ export function Badge({
           ? "bg-kumo-surface-inverse text-kumo-surface-inverse"
           : "",
         variant === "secondary" ? "text-kumo-surface bg-kumo-color" : "",
-        variant === "destructive"
-          ? "text-kumo-destructive bg-kumo-destructive"
-          : "",
+        variant === "destructive" ? "text-kumo-white bg-kumo-destructive" : "",
         variant === "beta"
           ? "border border-dashed bg-transparent border-kumo-primary text-kumo-beta"
           : "",

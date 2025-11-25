@@ -1,61 +1,107 @@
 {
-  "tokenLength": 12,
-  "dataLength": 21,
+  "tokenLength": 17,
+  "dataLength": 39,
   "tokens": {
     "kumo-1": {
-      "light": "oklch(42.4% 0.199 265.638)",
-      "dark": "oklch(70.7% 0.165 254.624)",
+      "light": "",
+      "dark": "oklch(87% 0 0 / 0.1)",
       "source": {
-        "packages/kumo/src/components/banner/banner.tsx": {
-          "rounded-lg w-full bg-blue-500/20 px-4 py-1.5 border border-blue-500 dark:border-blue-700 text-blue-800 dark:text-blue-400 flex items-center gap-2 selection:bg-blue-300 dark:selection:bg-blue-900": {
-            "text": {
-              "dark:text-blue-400": {
-                "value": "oklch(70.7% 0.165 254.624)"
-              },
-              "text-blue-800": {
-                "value": "oklch(42.4% 0.199 265.638)"
+        "packages/kumo/src/components/calendar/calendar.tsx": {
+          "py-1.5 text-sm rounded-md font-semibold text-neutral-900 dark:text-neutral-100 select-none focus:outline-none hover:dark:bg-neutral-300/10 transition-all duration-200": {
+            "hover:bg": {
+              "hover:dark:bg-neutral-300/10": {
+                "value": "oklch(87% 0 0 / 0.1)"
               }
             }
           }
         }
       },
       "type": [
-        "text"
+        "hover:bg"
       ]
     },
     "kumo-2": {
-      "light": "oklch(44.4% 0.177 26.899)",
-      "dark": "oklch(70.4% 0.191 22.216)",
+      "light": "oklch(0.985 0 0)",
+      "dark": "",
       "source": {
-        "packages/kumo/src/components/banner/banner.tsx": {
-          "rounded-lg w-full bg-red-500/20 px-4 py-1.5 border border-red-500 dark:border-red-700 text-red-800 dark:text-red-400 flex items-center gap-2 selection:bg-red-300 dark:selection:bg-red-900": {
-            "text": {
-              "dark:text-red-400": {
-                "value": "oklch(70.4% 0.191 22.216)"
-              },
-              "text-red-800": {
-                "value": "oklch(44.4% 0.177 26.899)"
+        "packages/kumo/src/components/calendar/calendar.tsx": {
+          "!bg-neutral-950 dark:!bg-neutral-50 rounded-tl-[5px] rounded-bl-[5px]": {
+            "bg": {
+              "bg-neutral-50": {
+                "value": "oklch(0.985 0 0)"
+              }
+            }
+          },
+          "!bg-neutral-950 dark:!bg-neutral-50 rounded-tr-[5px] rounded-br-[5px]": {
+            "bg": {
+              "bg-neutral-50": {
+                "value": "oklch(0.985 0 0)"
               }
             }
           }
         }
       },
       "type": [
-        "text"
+        "bg"
       ]
     },
     "kumo-3": {
-      "light": "oklch(47.6% 0.114 61.907)",
-      "dark": "oklch(85.2% 0.199 91.936)",
+      "light": "oklch(14.5% 0 0)",
+      "dark": "",
       "source": {
-        "packages/kumo/src/components/banner/banner.tsx": {
-          "rounded-lg w-full bg-yellow-500/20 px-4 py-1.5 border border-yellow-500 dark:border-yellow-700 text-yellow-800 dark:text-yellow-400 flex items-center gap-2 selection:bg-yellow-300 dark:selection:bg-yellow-900": {
+        "packages/kumo/src/components/calendar/calendar.tsx": {
+          "!bg-neutral-950 dark:!bg-neutral-50 rounded-tl-[5px] rounded-bl-[5px]": {
+            "bg": {
+              "bg-neutral-950": {
+                "value": "oklch(14.5% 0 0)"
+              }
+            }
+          },
+          "!bg-neutral-950 dark:!bg-neutral-50 rounded-tr-[5px] rounded-br-[5px]": {
+            "bg": {
+              "bg-neutral-950": {
+                "value": "oklch(14.5% 0 0)"
+              }
+            }
+          }
+        }
+      },
+      "type": [
+        "bg"
+      ]
+    },
+    "kumo-4": {
+      "light": "oklch(20.5% 0 0)",
+      "dark": "oklch(97% 0 0)",
+      "source": {
+        "packages/kumo/src/components/calendar/calendar.tsx": {
+          "h-[26px] w-7 transition-all duration-[50] cursor-pointer text-center text-sm leading-[26px] text-neutral-900 dark:text-neutral-100": {
             "text": {
-              "dark:text-yellow-400": {
-                "value": "oklch(85.2% 0.199 91.936)"
+              "dark:text-neutral-100": {
+                "value": "oklch(97% 0 0)"
               },
-              "text-yellow-800": {
-                "value": "oklch(47.6% 0.114 61.907)"
+              "text-neutral-900": {
+                "value": "oklch(20.5% 0 0)"
+              }
+            }
+          },
+          "py-1.5 text-sm rounded-md font-semibold text-neutral-900 dark:text-neutral-100 select-none focus:outline-none hover:dark:bg-neutral-300/10 transition-all duration-200": {
+            "text": {
+              "dark:text-neutral-100": {
+                "value": "oklch(97% 0 0)"
+              },
+              "text-neutral-900": {
+                "value": "oklch(20.5% 0 0)"
+              }
+            }
+          },
+          "text-neutral-900 dark:text-neutral-100": {
+            "text": {
+              "dark:text-neutral-100": {
+                "value": "oklch(97% 0 0)"
+              },
+              "text-neutral-900": {
+                "value": "oklch(20.5% 0 0)"
               }
             }
           }
@@ -65,93 +111,145 @@
         "text"
       ]
     },
-    "kumo-4": {
-      "light": "oklch(62.3% 0.214 259.815 / 0.2)",
+    "kumo-5": {
+      "light": "oklch(26.9% 0 0)",
       "dark": "",
       "source": {
-        "packages/kumo/src/components/banner/banner.tsx": {
-          "rounded-lg w-full bg-blue-500/20 px-4 py-1.5 border border-blue-500 dark:border-blue-700 text-blue-800 dark:text-blue-400 flex items-center gap-2 selection:bg-blue-300 dark:selection:bg-blue-900": {
-            "bg": {
-              "bg-blue-500/20": {
-                "value": "oklch(62.3% 0.214 259.815 / 0.2)"
+        "packages/kumo/src/components/calendar/calendar.tsx": {
+          "!text-neutral-200 dark:!text-neutral-800": {
+            "text": {
+              "text-neutral-800": {
+                "value": "oklch(26.9% 0 0)"
               }
             }
           }
         }
       },
       "type": [
-        "bg"
-      ]
-    },
-    "kumo-5": {
-      "light": "oklch(62.3% 0.214 259.815)",
-      "dark": "oklch(48.8% 0.243 264.376)",
-      "source": {
-        "packages/kumo/src/components/banner/banner.tsx": {
-          "rounded-lg w-full bg-blue-500/20 px-4 py-1.5 border border-blue-500 dark:border-blue-700 text-blue-800 dark:text-blue-400 flex items-center gap-2 selection:bg-blue-300 dark:selection:bg-blue-900": {
-            "border": {
-              "border-blue-500": {
-                "value": "oklch(62.3% 0.214 259.815)"
-              },
-              "dark:border-blue-700": {
-                "value": "oklch(48.8% 0.243 264.376)"
-              }
-            }
-          }
-        }
-      },
-      "type": [
-        "border"
+        "text"
       ]
     },
     "kumo-6": {
-      "light": "oklch(63.7% 0.237 25.331 / 0.2)",
-      "dark": "",
+      "light": "oklch(26.9% 0 0)",
+      "dark": "oklch(92.2% 0 0)",
       "source": {
-        "packages/kumo/src/components/banner/banner.tsx": {
-          "rounded-lg w-full bg-red-500/20 px-4 py-1.5 border border-red-500 dark:border-red-700 text-red-800 dark:text-red-400 flex items-center gap-2 selection:bg-red-300 dark:selection:bg-red-900": {
-            "bg": {
-              "bg-red-500/20": {
-                "value": "oklch(63.7% 0.237 25.331 / 0.2)"
+        "packages/kumo/src/components/calendar/calendar.tsx": {
+          "cursor-pointer font-semibold text-neutral-800 underline underline-offset-2 dark:text-neutral-200": {
+            "text": {
+              "dark:text-neutral-200": {
+                "value": "oklch(92.2% 0 0)"
+              },
+              "text-neutral-800": {
+                "value": "oklch(26.9% 0 0)"
               }
             }
           }
         }
       },
       "type": [
-        "bg"
+        "text"
       ]
     },
     "kumo-7": {
-      "light": "oklch(63.7% 0.237 25.331)",
-      "dark": "oklch(50.5% 0.213 27.518)",
+      "light": "oklch(37.1% 0 0)",
+      "dark": "",
       "source": {
-        "packages/kumo/src/components/banner/banner.tsx": {
-          "rounded-lg w-full bg-red-500/20 px-4 py-1.5 border border-red-500 dark:border-red-700 text-red-800 dark:text-red-400 flex items-center gap-2 selection:bg-red-300 dark:selection:bg-red-900": {
-            "border": {
-              "border-red-500": {
-                "value": "oklch(63.7% 0.237 25.331)"
-              },
-              "dark:border-red-700": {
-                "value": "oklch(50.5% 0.213 27.518)"
+        "packages/kumo/src/components/calendar/calendar.tsx": {
+          "!text-neutral-300 dark:!text-neutral-700": {
+            "text": {
+              "text-neutral-700": {
+                "value": "oklch(37.1% 0 0)"
               }
             }
           }
         }
       },
       "type": [
-        "border"
+        "text"
       ]
     },
     "kumo-8": {
-      "light": "oklch(79.5% 0.184 86.047 / 0.2)",
+      "light": "oklch(37.1% 0 0)",
+      "dark": "oklch(87% 0 0)",
+      "source": {
+        "packages/kumo/src/components/calendar/calendar.tsx": {
+          "flex items-center gap-2 text-sm text-neutral-700 dark:text-neutral-300": {
+            "text": {
+              "dark:text-neutral-300": {
+                "value": "oklch(87% 0 0)"
+              },
+              "text-neutral-700": {
+                "value": "oklch(37.1% 0 0)"
+              }
+            }
+          }
+        }
+      },
+      "type": [
+        "text"
+      ]
+    },
+    "kumo-9": {
+      "light": "oklch(43.9% 0 0)",
+      "dark": "oklch(70.8% 0 0)",
+      "source": {
+        "packages/kumo/src/components/calendar/calendar.stories.tsx": {
+          "mt-4 text-sm text-neutral-600 dark:text-neutral-400": {
+            "text": {
+              "dark:text-neutral-400": {
+                "value": "oklch(70.8% 0 0)"
+              },
+              "text-neutral-600": {
+                "value": "oklch(43.9% 0 0)"
+              }
+            }
+          }
+        }
+      },
+      "type": [
+        "text"
+      ]
+    },
+    "kumo-10": {
+      "light": "oklch(55.6% 0 0)",
       "dark": "",
       "source": {
-        "packages/kumo/src/components/banner/banner.tsx": {
-          "rounded-lg w-full bg-yellow-500/20 px-4 py-1.5 border border-yellow-500 dark:border-yellow-700 text-yellow-800 dark:text-yellow-400 flex items-center gap-2 selection:bg-yellow-300 dark:selection:bg-yellow-900": {
+        "packages/kumo/src/components/calendar/calendar.tsx": {
+          "h-[22px] w-7 text-center text-sm text-neutral-500": {
+            "text": {
+              "text-neutral-500": {
+                "value": "oklch(55.6% 0 0)"
+              }
+            }
+          }
+        }
+      },
+      "type": [
+        "text"
+      ]
+    },
+    "kumo-11": {
+      "light": "oklch(87% 0 0 / 0.85)",
+      "dark": "oklch(37.1% 0 0 / 0.85)",
+      "source": {
+        "packages/kumo/src/components/calendar/calendar.tsx": {
+          "absolute left-0 top-0 cursor-pointer rounded bg-neutral-300/85 hover:bg-neutral-300 dark:bg-neutral-700/85 hover:dark:bg-neutral-700 p-1.5": {
             "bg": {
-              "bg-yellow-500/20": {
-                "value": "oklch(79.5% 0.184 86.047 / 0.2)"
+              "bg-neutral-300/85": {
+                "value": "oklch(87% 0 0 / 0.85)"
+              },
+              "dark:bg-neutral-700/85": {
+                "value": "oklch(37.1% 0 0 / 0.85)"
+              }
+            }
+          },
+          "absolute right-0 top-0 cursor-pointer rounded bg-neutral-300/85 hover:bg-neutral-300 dark:bg-neutral-700/85 hover:dark:bg-neutral-700 p-1.5": {
+            "bg": {
+              "bg-neutral-300/85": {
+                "value": "oklch(87% 0 0 / 0.85)"
+              },
+              "dark:bg-neutral-700/85": {
+                "value": "oklch(37.1% 0 0 / 0.85)"
               }
             }
           }
@@ -161,184 +259,354 @@
         "bg"
       ]
     },
-    "kumo-9": {
-      "light": "oklch(79.5% 0.184 86.047)",
-      "dark": "oklch(55.4% 0.135 66.442)",
-      "source": {
-        "packages/kumo/src/components/banner/banner.tsx": {
-          "rounded-lg w-full bg-yellow-500/20 px-4 py-1.5 border border-yellow-500 dark:border-yellow-700 text-yellow-800 dark:text-yellow-400 flex items-center gap-2 selection:bg-yellow-300 dark:selection:bg-yellow-900": {
-            "border": {
-              "border-yellow-500": {
-                "value": "oklch(79.5% 0.184 86.047)"
-              },
-              "dark:border-yellow-700": {
-                "value": "oklch(55.4% 0.135 66.442)"
-              }
-            }
-          }
-        }
-      },
-      "type": [
-        "border"
-      ]
-    },
-    "kumo-10": {
-      "light": "oklch(80.8% 0.114 19.571)",
-      "dark": "oklch(39.6% 0.141 25.723)",
-      "source": {
-        "packages/kumo/src/components/banner/banner.tsx": {
-          "rounded-lg w-full bg-red-500/20 px-4 py-1.5 border border-red-500 dark:border-red-700 text-red-800 dark:text-red-400 flex items-center gap-2 selection:bg-red-300 dark:selection:bg-red-900": {
-            "selection:bg": {
-              "dark:selection:bg-red-900": {
-                "value": "oklch(39.6% 0.141 25.723)"
-              },
-              "selection:bg-red-300": {
-                "value": "oklch(80.8% 0.114 19.571)"
-              }
-            }
-          }
-        }
-      },
-      "type": [
-        "selection:bg"
-      ]
-    },
-    "kumo-11": {
-      "light": "oklch(80.9% 0.105 251.813)",
-      "dark": "oklch(37.9% 0.146 265.522)",
-      "source": {
-        "packages/kumo/src/components/banner/banner.tsx": {
-          "rounded-lg w-full bg-blue-500/20 px-4 py-1.5 border border-blue-500 dark:border-blue-700 text-blue-800 dark:text-blue-400 flex items-center gap-2 selection:bg-blue-300 dark:selection:bg-blue-900": {
-            "selection:bg": {
-              "dark:selection:bg-blue-900": {
-                "value": "oklch(37.9% 0.146 265.522)"
-              },
-              "selection:bg-blue-300": {
-                "value": "oklch(80.9% 0.105 251.813)"
-              }
-            }
-          }
-        }
-      },
-      "type": [
-        "selection:bg"
-      ]
-    },
     "kumo-12": {
-      "light": "oklch(90.5% 0.182 98.111)",
-      "dark": "oklch(42.1% 0.095 57.708)",
+      "light": "oklch(87% 0 0)",
+      "dark": "",
       "source": {
-        "packages/kumo/src/components/banner/banner.tsx": {
-          "rounded-lg w-full bg-yellow-500/20 px-4 py-1.5 border border-yellow-500 dark:border-yellow-700 text-yellow-800 dark:text-yellow-400 flex items-center gap-2 selection:bg-yellow-300 dark:selection:bg-yellow-900": {
-            "selection:bg": {
-              "dark:selection:bg-yellow-900": {
-                "value": "oklch(42.1% 0.095 57.708)"
-              },
-              "selection:bg-yellow-300": {
-                "value": "oklch(90.5% 0.182 98.111)"
+        "packages/kumo/src/components/calendar/calendar.tsx": {
+          "!text-neutral-300 dark:!text-neutral-700": {
+            "text": {
+              "text-neutral-300": {
+                "value": "oklch(87% 0 0)"
               }
             }
           }
         }
       },
       "type": [
-        "selection:bg"
+        "text"
+      ]
+    },
+    "kumo-13": {
+      "light": "oklch(87% 0 0)",
+      "dark": "oklch(37.1% 0 0)",
+      "source": {
+        "packages/kumo/src/components/calendar/calendar.tsx": {
+          "absolute left-0 top-0 cursor-pointer rounded bg-neutral-300/85 hover:bg-neutral-300 dark:bg-neutral-700/85 hover:dark:bg-neutral-700 p-1.5": {
+            "hover:bg": {
+              "hover:bg-neutral-300": {
+                "value": "oklch(87% 0 0)"
+              },
+              "hover:dark:bg-neutral-700": {
+                "value": "oklch(37.1% 0 0)"
+              }
+            }
+          },
+          "absolute right-0 top-0 cursor-pointer rounded bg-neutral-300/85 hover:bg-neutral-300 dark:bg-neutral-700/85 hover:dark:bg-neutral-700 p-1.5": {
+            "hover:bg": {
+              "hover:bg-neutral-300": {
+                "value": "oklch(87% 0 0)"
+              },
+              "hover:dark:bg-neutral-700": {
+                "value": "oklch(37.1% 0 0)"
+              }
+            }
+          },
+          "bg-neutral-300 dark:bg-neutral-700": {
+            "bg": {
+              "bg-neutral-300": {
+                "value": "oklch(87% 0 0)"
+              },
+              "dark:bg-neutral-700": {
+                "value": "oklch(37.1% 0 0)"
+              }
+            }
+          },
+          "hover:bg-neutral-300 hover:dark:bg-neutral-700": {
+            "hover:bg": {
+              "hover:bg-neutral-300": {
+                "value": "oklch(87% 0 0)"
+              },
+              "hover:dark:bg-neutral-700": {
+                "value": "oklch(37.1% 0 0)"
+              }
+            }
+          }
+        }
+      },
+      "type": [
+        "bg",
+        "hover:bg"
+      ]
+    },
+    "kumo-14": {
+      "light": "oklch(92.2% 0 0)",
+      "dark": "",
+      "source": {
+        "packages/kumo/src/components/calendar/calendar.tsx": {
+          "!text-neutral-200 dark:!text-neutral-800": {
+            "text": {
+              "text-neutral-200": {
+                "value": "oklch(92.2% 0 0)"
+              }
+            }
+          }
+        }
+      },
+      "type": [
+        "text"
+      ]
+    },
+    "kumo-15": {
+      "light": "oklch(92.2% 0 0)",
+      "dark": "oklch(26.9% 0 0)",
+      "source": {
+        "packages/kumo/src/components/calendar/calendar.tsx": {
+          "bg-neutral-200 dark:bg-neutral-800": {
+            "bg": {
+              "bg-neutral-200": {
+                "value": "oklch(92.2% 0 0)"
+              },
+              "dark:bg-neutral-800": {
+                "value": "oklch(26.9% 0 0)"
+              }
+            }
+          }
+        }
+      },
+      "type": [
+        "bg"
+      ]
+    },
+    "kumo-16": {
+      "light": "oklch(97% 0 0)",
+      "dark": "oklch(20.5% 0 0)",
+      "source": {
+        "packages/kumo/src/components/calendar/calendar.tsx": {
+          "flex flex-col gap-2.5 rounded-xl bg-neutral-100 p-4 dark:bg-neutral-900 select-none": {
+            "bg": {
+              "bg-neutral-100": {
+                "value": "oklch(97% 0 0)"
+              },
+              "dark:bg-neutral-900": {
+                "value": "oklch(20.5% 0 0)"
+              }
+            }
+          }
+        }
+      },
+      "type": [
+        "bg"
+      ]
+    },
+    "kumo-17": {
+      "light": "transparent",
+      "dark": "",
+      "source": {
+        "packages/kumo/src/components/calendar/calendar.tsx": {
+          "bg-transparent": {
+            "bg": {
+              "bg-transparent": {
+                "value": "transparent"
+              }
+            }
+          }
+        }
+      },
+      "type": [
+        "bg"
       ]
     }
   },
   "data": {
-    "packages/kumo/src/components/banner/banner.tsx": [
+    "packages/kumo/src/components/calendar/calendar.stories.tsx": [
       {
-        "rounded-lg w-full bg-blue-500/20 px-4 py-1.5 border border-blue-500 dark:border-blue-700 text-blue-800 dark:text-blue-400 flex items-center gap-2 selection:bg-blue-300 dark:selection:bg-blue-900": {
-          "bg": {
-            "bg-blue-500/20": {
-              "value": "oklch(62.3% 0.214 259.815 / 0.2)"
-            }
-          },
-          "border": {
-            "border-blue-500": {
-              "value": "oklch(62.3% 0.214 259.815)"
-            },
-            "dark:border-blue-700": {
-              "value": "oklch(48.8% 0.243 264.376)"
-            }
-          },
-          "selection:bg": {
-            "dark:selection:bg-blue-900": {
-              "value": "oklch(37.9% 0.146 265.522)"
-            },
-            "selection:bg-blue-300": {
-              "value": "oklch(80.9% 0.105 251.813)"
-            }
-          },
+        "mt-4 text-sm text-neutral-600 dark:text-neutral-400": {
           "text": {
-            "dark:text-blue-400": {
-              "value": "oklch(70.7% 0.165 254.624)"
+            "dark:text-neutral-400": {
+              "value": "oklch(70.8% 0 0)"
             },
-            "text-blue-800": {
-              "value": "oklch(42.4% 0.199 265.638)"
+            "text-neutral-600": {
+              "value": "oklch(43.9% 0 0)"
+            }
+          }
+        }
+      }
+    ],
+    "packages/kumo/src/components/calendar/calendar.tsx": [
+      {
+        "!bg-neutral-950 dark:!bg-neutral-50 rounded-tl-[5px] rounded-bl-[5px]": {
+          "bg": {
+            "bg-neutral-50": {
+              "value": "oklch(0.985 0 0)"
+            },
+            "bg-neutral-950": {
+              "value": "oklch(14.5% 0 0)"
             }
           }
         },
-        "rounded-lg w-full bg-red-500/20 px-4 py-1.5 border border-red-500 dark:border-red-700 text-red-800 dark:text-red-400 flex items-center gap-2 selection:bg-red-300 dark:selection:bg-red-900": {
+        "!bg-neutral-950 dark:!bg-neutral-50 rounded-tr-[5px] rounded-br-[5px]": {
           "bg": {
-            "bg-red-500/20": {
-              "value": "oklch(63.7% 0.237 25.331 / 0.2)"
-            }
-          },
-          "border": {
-            "border-red-500": {
-              "value": "oklch(63.7% 0.237 25.331)"
+            "bg-neutral-50": {
+              "value": "oklch(0.985 0 0)"
             },
-            "dark:border-red-700": {
-              "value": "oklch(50.5% 0.213 27.518)"
-            }
-          },
-          "selection:bg": {
-            "dark:selection:bg-red-900": {
-              "value": "oklch(39.6% 0.141 25.723)"
-            },
-            "selection:bg-red-300": {
-              "value": "oklch(80.8% 0.114 19.571)"
-            }
-          },
-          "text": {
-            "dark:text-red-400": {
-              "value": "oklch(70.4% 0.191 22.216)"
-            },
-            "text-red-800": {
-              "value": "oklch(44.4% 0.177 26.899)"
+            "bg-neutral-950": {
+              "value": "oklch(14.5% 0 0)"
             }
           }
         },
-        "rounded-lg w-full bg-yellow-500/20 px-4 py-1.5 border border-yellow-500 dark:border-yellow-700 text-yellow-800 dark:text-yellow-400 flex items-center gap-2 selection:bg-yellow-300 dark:selection:bg-yellow-900": {
+        "!text-neutral-200 dark:!text-neutral-800": {
+          "text": {
+            "text-neutral-200": {
+              "value": "oklch(92.2% 0 0)"
+            },
+            "text-neutral-800": {
+              "value": "oklch(26.9% 0 0)"
+            }
+          }
+        },
+        "!text-neutral-300 dark:!text-neutral-700": {
+          "text": {
+            "text-neutral-300": {
+              "value": "oklch(87% 0 0)"
+            },
+            "text-neutral-700": {
+              "value": "oklch(37.1% 0 0)"
+            }
+          }
+        },
+        "absolute left-0 top-0 cursor-pointer rounded bg-neutral-300/85 hover:bg-neutral-300 dark:bg-neutral-700/85 hover:dark:bg-neutral-700 p-1.5": {
           "bg": {
-            "bg-yellow-500/20": {
-              "value": "oklch(79.5% 0.184 86.047 / 0.2)"
+            "bg-neutral-300/85": {
+              "value": "oklch(87% 0 0 / 0.85)"
+            },
+            "dark:bg-neutral-700/85": {
+              "value": "oklch(37.1% 0 0 / 0.85)"
             }
           },
-          "border": {
-            "border-yellow-500": {
-              "value": "oklch(79.5% 0.184 86.047)"
+          "hover:bg": {
+            "hover:bg-neutral-300": {
+              "value": "oklch(87% 0 0)"
             },
-            "dark:border-yellow-700": {
-              "value": "oklch(55.4% 0.135 66.442)"
+            "hover:dark:bg-neutral-700": {
+              "value": "oklch(37.1% 0 0)"
+            }
+          }
+        },
+        "absolute right-0 top-0 cursor-pointer rounded bg-neutral-300/85 hover:bg-neutral-300 dark:bg-neutral-700/85 hover:dark:bg-neutral-700 p-1.5": {
+          "bg": {
+            "bg-neutral-300/85": {
+              "value": "oklch(87% 0 0 / 0.85)"
+            },
+            "dark:bg-neutral-700/85": {
+              "value": "oklch(37.1% 0 0 / 0.85)"
             }
           },
-          "selection:bg": {
-            "dark:selection:bg-yellow-900": {
-              "value": "oklch(42.1% 0.095 57.708)"
+          "hover:bg": {
+            "hover:bg-neutral-300": {
+              "value": "oklch(87% 0 0)"
             },
-            "selection:bg-yellow-300": {
-              "value": "oklch(90.5% 0.182 98.111)"
+            "hover:dark:bg-neutral-700": {
+              "value": "oklch(37.1% 0 0)"
+            }
+          }
+        },
+        "bg-neutral-200 dark:bg-neutral-800": {
+          "bg": {
+            "bg-neutral-200": {
+              "value": "oklch(92.2% 0 0)"
+            },
+            "dark:bg-neutral-800": {
+              "value": "oklch(26.9% 0 0)"
+            }
+          }
+        },
+        "bg-neutral-300 dark:bg-neutral-700": {
+          "bg": {
+            "bg-neutral-300": {
+              "value": "oklch(87% 0 0)"
+            },
+            "dark:bg-neutral-700": {
+              "value": "oklch(37.1% 0 0)"
+            }
+          }
+        },
+        "bg-transparent": {
+          "bg": {
+            "bg-transparent": {
+              "value": "transparent"
+            }
+          }
+        },
+        "cursor-pointer font-semibold text-neutral-800 underline underline-offset-2 dark:text-neutral-200": {
+          "text": {
+            "dark:text-neutral-200": {
+              "value": "oklch(92.2% 0 0)"
+            },
+            "text-neutral-800": {
+              "value": "oklch(26.9% 0 0)"
+            }
+          }
+        },
+        "flex flex-col gap-2.5 rounded-xl bg-neutral-100 p-4 dark:bg-neutral-900 select-none": {
+          "bg": {
+            "bg-neutral-100": {
+              "value": "oklch(97% 0 0)"
+            },
+            "dark:bg-neutral-900": {
+              "value": "oklch(20.5% 0 0)"
+            }
+          }
+        },
+        "flex items-center gap-2 text-sm text-neutral-700 dark:text-neutral-300": {
+          "text": {
+            "dark:text-neutral-300": {
+              "value": "oklch(87% 0 0)"
+            },
+            "text-neutral-700": {
+              "value": "oklch(37.1% 0 0)"
+            }
+          }
+        },
+        "h-[22px] w-7 text-center text-sm text-neutral-500": {
+          "text": {
+            "text-neutral-500": {
+              "value": "oklch(55.6% 0 0)"
+            }
+          }
+        },
+        "h-[26px] w-7 transition-all duration-[50] cursor-pointer text-center text-sm leading-[26px] text-neutral-900 dark:text-neutral-100": {
+          "text": {
+            "dark:text-neutral-100": {
+              "value": "oklch(97% 0 0)"
+            },
+            "text-neutral-900": {
+              "value": "oklch(20.5% 0 0)"
+            }
+          }
+        },
+        "hover:bg-neutral-300 hover:dark:bg-neutral-700": {
+          "hover:bg": {
+            "hover:bg-neutral-300": {
+              "value": "oklch(87% 0 0)"
+            },
+            "hover:dark:bg-neutral-700": {
+              "value": "oklch(37.1% 0 0)"
+            }
+          }
+        },
+        "py-1.5 text-sm rounded-md font-semibold text-neutral-900 dark:text-neutral-100 select-none focus:outline-none hover:dark:bg-neutral-300/10 transition-all duration-200": {
+          "hover:bg": {
+            "hover:dark:bg-neutral-300/10": {
+              "value": "oklch(87% 0 0 / 0.1)"
             }
           },
           "text": {
-            "dark:text-yellow-400": {
-              "value": "oklch(85.2% 0.199 91.936)"
+            "dark:text-neutral-100": {
+              "value": "oklch(97% 0 0)"
             },
-            "text-yellow-800": {
-              "value": "oklch(47.6% 0.114 61.907)"
+            "text-neutral-900": {
+              "value": "oklch(20.5% 0 0)"
+            }
+          }
+        },
+        "text-neutral-900 dark:text-neutral-100": {
+          "text": {
+            "dark:text-neutral-100": {
+              "value": "oklch(97% 0 0)"
+            },
+            "text-neutral-900": {
+              "value": "oklch(20.5% 0 0)"
             }
           }
         }

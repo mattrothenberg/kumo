@@ -25,7 +25,7 @@ export function buttonVariants({
   // Variant-specific styles
   const variantStyles = {
     primary:
-      "bg-kumo-primary !text-kumo-primary hover:bg-kumo-primary/70 disabled:bg-kumo-primary/50 disabled:!text-kumo-primary/70",
+      "bg-kumo-primary !text-kumo-white hover:bg-kumo-primary/70 disabled:bg-kumo-primary/50 disabled:!text-kumo-primary/70",
     secondary: cn(
       "bg-kumo-secondary !text-kumo-secondary ring not-disabled:hover:border-kumo-subtle!",
       "not-disabled:hover:bg-kumo-subtle disabled:bg-kumo-secondary/50 disabled:!text-kumo-secondary/70",
@@ -33,7 +33,7 @@ export function buttonVariants({
     ),
     ghost: "text-kumo-surface hover:bg-kumo-accent shadow-none bg-inherit",
     destructive:
-      "bg-kumo-destructive !text-kumo-destructive hover:bg-kumo-destructive/70",
+      "bg-kumo-destructive !text-kumo-white hover:bg-kumo-destructive/70",
     outline: "bg-kumo-surface text-kumo-surface ring ring-kumo-border",
   };
 

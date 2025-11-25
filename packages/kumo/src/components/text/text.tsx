@@ -53,9 +53,9 @@ const variantStyles: Record<TextVariant, string> = {
 
   // Copy variants
   body: "",
-  secondary: "text-muted",
-  success: "text-blue-600 dark:text-blue-500",
-  error: "text-error",
+  secondary: "text-kumo-muted",
+  success: "text-kumo-success",
+  error: "text-kumo-destructive",
 
   // Monospace variants
   mono: "font-mono",
