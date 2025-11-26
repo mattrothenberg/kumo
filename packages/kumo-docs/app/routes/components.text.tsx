@@ -37,7 +37,7 @@ export default function TextDoc() {
   </div>
 </div>`}
         >
-          <div className="flex gap-10 xl:gap-10 items-start">
+          <div className="flex items-start gap-10 xl:gap-10">
             <div className="grid gap-2">
               <Text variant="heading1">Heading 1</Text>
               <Text variant="heading2">Heading 2</Text>
@@ -66,13 +66,13 @@ export default function TextDoc() {
 
       {/* Installation */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Installation</h2>
-        <h3 className="text-lg font-semibold mb-2">Barrel</h3>
+        <h2 className="mb-4 text-2xl font-bold">Installation</h2>
+        <h3 className="mb-2 text-lg font-semibold">Barrel</h3>
         <CodeBlock
           lang="tsx"
           code={`import { Text } from "@cloudflare/kumo";`}
         />
-        <h3 className="text-lg font-semibold mb-2 mt-4">Granular</h3>
+        <h3 className="mt-4 mb-2 text-lg font-semibold">Granular</h3>
         <CodeBlock
           lang="tsx"
           code={`import { Text } from "@cloudflare/kumo/components/text";`}
@@ -81,7 +81,7 @@ export default function TextDoc() {
 
       {/* Usage */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Usage</h2>
+        <h2 className="mb-4 text-2xl font-bold">Usage</h2>
         <CodeBlock
           lang="tsx"
           code={`import { Text } from "@cloudflare/kumo";

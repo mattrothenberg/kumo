@@ -5,7 +5,7 @@ import { ComponentSection } from "~/components/docs/component-section";
 import { useState } from "react";
 
 export default function ExpandableDoc() {
-    const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(true);
   return (
     <DocLayout
       title="Expandable"
@@ -18,9 +18,13 @@ export default function ExpandableDoc() {
   Kumo is Cloudflare's new design system.
 </Expandable>`}
         >
-          <Expandable title="What is Kumo?" open={isOpen} onOpenChange={(open) => {
-            setIsOpen(open)
-          }}>
+          <Expandable
+            title="What is Kumo?"
+            open={isOpen}
+            onOpenChange={(open) => {
+              setIsOpen(open);
+            }}
+          >
             Kumo is Cloudflare's new design system.
           </Expandable>
         </ComponentExample>
@@ -28,13 +32,13 @@ export default function ExpandableDoc() {
 
       {/* Installation */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Installation</h2>
-        <h3 className="text-lg font-semibold mb-2">Barrel</h3>
+        <h2 className="mb-4 text-2xl font-bold">Installation</h2>
+        <h3 className="mb-2 text-lg font-semibold">Barrel</h3>
         <CodeBlock
           lang="tsx"
           code={`import { Expandable } from "@cloudflare/kumo";`}
         />
-        <h3 className="text-lg font-semibold mb-2 mt-4">Granular</h3>
+        <h3 className="mt-4 mb-2 text-lg font-semibold">Granular</h3>
         <CodeBlock
           lang="tsx"
           code={`import { Expandable } from "@cloudflare/kumo/components/expandable";`}
@@ -43,7 +47,7 @@ export default function ExpandableDoc() {
 
       {/* Usage */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Usage</h2>
+        <h2 className="mb-4 text-2xl font-bold">Usage</h2>
         <CodeBlock
           lang="tsx"
           code={`import { Expandable } from "@cloudflare/kumo";
@@ -60,11 +64,11 @@ export default function Example() {
 
       {/* Examples */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-6">Examples</h2>
+        <h2 className="mb-6 text-2xl font-bold">Examples</h2>
 
         <div className="space-y-8">
           <div>
-            <h3 className="text-xl font-semibold mb-4">Single Item</h3>
+            <h3 className="mb-4 text-xl font-semibold">Single Item</h3>
             <ComponentExample
               code={`<Expandable title="What is Kumo?">
   Kumo is Cloudflare's new design system.
@@ -77,7 +81,7 @@ export default function Example() {
           </div>
 
           <div>
-            <h3 className="text-xl font-semibold mb-4">Multiple Items</h3>
+            <h3 className="mb-4 text-xl font-semibold">Multiple Items</h3>
             <ComponentExample
               code={`<div className="space-y-2">
   <Expandable title="What is Kumo?">
@@ -91,7 +95,7 @@ export default function Example() {
   </Expandable>
 </div>`}
             >
-              <div className="space-y-2 w-full">
+              <div className="w-full space-y-2">
                 <Expandable title="What is Kumo?">
                   Kumo is Cloudflare's new design system.
                 </Expandable>
@@ -109,26 +113,26 @@ export default function Example() {
 
       {/* API Reference */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">API Reference</h2>
+        <h2 className="mb-4 text-2xl font-bold">API Reference</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                <th className="text-left py-3 px-4 font-semibold">Prop</th>
-                <th className="text-left py-3 px-4 font-semibold">Type</th>
-                <th className="text-left py-3 px-4 font-semibold">Default</th>
+                <th className="px-4 py-3 text-left font-semibold">Prop</th>
+                <th className="px-4 py-3 text-left font-semibold">Type</th>
+                <th className="px-4 py-3 text-left font-semibold">Default</th>
               </tr>
             </thead>
             <tbody className="text-neutral-600 dark:text-neutral-400">
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                <td className="py-3 px-4 font-mono text-xs">title</td>
-                <td className="py-3 px-4 font-mono text-xs">string</td>
-                <td className="py-3 px-4 font-mono text-xs">undefined</td>
+                <td className="px-4 py-3 font-mono text-xs">title</td>
+                <td className="px-4 py-3 font-mono text-xs">string</td>
+                <td className="px-4 py-3 font-mono text-xs">undefined</td>
               </tr>
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                <td className="py-3 px-4 font-mono text-xs">children</td>
-                <td className="py-3 px-4 font-mono text-xs">React.ReactNode</td>
-                <td className="py-3 px-4 font-mono text-xs">undefined</td>
+                <td className="px-4 py-3 font-mono text-xs">children</td>
+                <td className="px-4 py-3 font-mono text-xs">React.ReactNode</td>
+                <td className="px-4 py-3 font-mono text-xs">undefined</td>
               </tr>
             </tbody>
           </table>

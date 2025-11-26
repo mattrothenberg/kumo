@@ -29,13 +29,13 @@ export default function TooltipDoc() {
 
       {/* Installation */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Installation</h2>
-        <h3 className="text-lg font-semibold mb-2">Barrel</h3>
+        <h2 className="mb-4 text-2xl font-bold">Installation</h2>
+        <h3 className="mb-2 text-lg font-semibold">Barrel</h3>
         <CodeBlock
           lang="tsx"
           code={`import { Tooltip, TooltipProvider } from "@cloudflare/kumo";`}
         />
-        <h3 className="text-lg font-semibold mb-2 mt-4">Granular</h3>
+        <h3 className="mt-4 mb-2 text-lg font-semibold">Granular</h3>
         <CodeBlock
           lang="tsx"
           code={`import { Tooltip, TooltipProvider } from "@cloudflare/kumo/components/tooltip";`}
@@ -44,7 +44,7 @@ export default function TooltipDoc() {
 
       {/* Usage */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Usage</h2>
+        <h2 className="mb-4 text-2xl font-bold">Usage</h2>
         <CodeBlock
           lang="tsx"
           code={`import { Tooltip, TooltipProvider, Button } from "@cloudflare/kumo";
@@ -63,11 +63,11 @@ export default function Example() {
 
       {/* Examples */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-6">Examples</h2>
+        <h2 className="mb-6 text-2xl font-bold">Examples</h2>
 
         <div className="space-y-8">
           <div>
-            <h3 className="text-xl font-semibold mb-4">Basic Tooltip</h3>
+            <h3 className="mb-4 text-xl font-semibold">Basic Tooltip</h3>
             <ComponentExample
               code={`<TooltipProvider>
   <Tooltip content="Add" asChild>
@@ -84,7 +84,7 @@ export default function Example() {
           </div>
 
           <div>
-            <h3 className="text-xl font-semibold mb-4">Multiple Tooltips</h3>
+            <h3 className="mb-4 text-xl font-semibold">Multiple Tooltips</h3>
             <ComponentExample
               code={`<TooltipProvider>
   <div className="flex gap-2">
@@ -114,31 +114,31 @@ export default function Example() {
 
       {/* API Reference */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">API Reference</h2>
+        <h2 className="mb-4 text-2xl font-bold">API Reference</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                <th className="text-left py-3 px-4 font-semibold">Prop</th>
-                <th className="text-left py-3 px-4 font-semibold">Type</th>
-                <th className="text-left py-3 px-4 font-semibold">Default</th>
+                <th className="px-4 py-3 text-left font-semibold">Prop</th>
+                <th className="px-4 py-3 text-left font-semibold">Type</th>
+                <th className="px-4 py-3 text-left font-semibold">Default</th>
               </tr>
             </thead>
             <tbody className="text-neutral-600 dark:text-neutral-400">
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                <td className="py-3 px-4 font-mono text-xs">content</td>
-                <td className="py-3 px-4 font-mono text-xs">React.ReactNode</td>
-                <td className="py-3 px-4 font-mono text-xs">undefined</td>
+                <td className="px-4 py-3 font-mono text-xs">content</td>
+                <td className="px-4 py-3 font-mono text-xs">React.ReactNode</td>
+                <td className="px-4 py-3 font-mono text-xs">undefined</td>
               </tr>
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                <td className="py-3 px-4 font-mono text-xs">asChild</td>
-                <td className="py-3 px-4 font-mono text-xs">boolean</td>
-                <td className="py-3 px-4 font-mono text-xs">false</td>
+                <td className="px-4 py-3 font-mono text-xs">asChild</td>
+                <td className="px-4 py-3 font-mono text-xs">boolean</td>
+                <td className="px-4 py-3 font-mono text-xs">false</td>
               </tr>
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                <td className="py-3 px-4 font-mono text-xs">open</td>
-                <td className="py-3 px-4 font-mono text-xs">boolean</td>
-                <td className="py-3 px-4 font-mono text-xs">undefined</td>
+                <td className="px-4 py-3 font-mono text-xs">open</td>
+                <td className="px-4 py-3 font-mono text-xs">boolean</td>
+                <td className="px-4 py-3 font-mono text-xs">undefined</td>
               </tr>
             </tbody>
           </table>

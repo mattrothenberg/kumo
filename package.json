@@ -1,37 +1,39 @@
 {
-	"name": "kumo-workspace",
-	"private": true,
-	"type": "module",
-	"packageManager": "pnpm@10.22.0",
-	"engines": {
-		"node": "^24.11.1",
-		"pnpm": ">=10.21.0"
-	},
-	"scripts": {
-		"build": "pnpm --filter @cloudflare/kumo-docs build",
-		"build:all": "pnpm -r build",
-		"dev": "pnpm --filter @cloudflare/kumo-docs dev",
-		"deploy": "pnpm --filter @cloudflare/kumo-docs deploy",
-		"preview": "pnpm --filter @cloudflare/kumo-docs preview",
-		"storybook": "pnpm --filter @cloudflare/kumo storybook",
-		"typecheck": "pnpm -r typecheck",
-		"lockfile-check": "pnpm install --no-frozen-lockfile && git diff --exit-code pnpm-lock.yaml",
-		"clean": "pnpm -r exec rm -rf dist build .react-router .wrangler node_modules",
-		"format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
-		"lint": "pnpm --filter @cloudflare/kumo lint",
-		"changeset": "changeset",
-		"version": "changeset version",
-		"version:beta": "./ci/versioning/version-beta.sh",
-		"release": "pnpm build:all && changeset publish",
-		"release:beta": "changeset publish --no-git-tag --tag beta",
-		"publish:beta": "bash ci/versioning/publish-beta.sh",
-		"release:production": "bash ci/versioning/release-production.sh"
-	},
-	"devDependencies": {
-		"@changesets/cli": "2.29.7",
-		"@gitbeaker/rest": "^42.5.0",
-		"@types/node": "^22.0.0",
-		"tsx": "^4.16.2",
-		"typescript": "^5.0.0"
-	}
+  "name": "kumo-workspace",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.22.0",
+  "engines": {
+    "node": "^24.11.1",
+    "pnpm": ">=10.21.0"
+  },
+  "scripts": {
+    "build": "pnpm --filter @cloudflare/kumo-docs build",
+    "build:all": "pnpm -r build",
+    "dev": "pnpm --filter @cloudflare/kumo-docs dev",
+    "deploy": "pnpm --filter @cloudflare/kumo-docs deploy",
+    "preview": "pnpm --filter @cloudflare/kumo-docs preview",
+    "storybook": "pnpm --filter @cloudflare/kumo storybook",
+    "typecheck": "pnpm -r typecheck",
+    "lockfile-check": "pnpm install --no-frozen-lockfile && git diff --exit-code pnpm-lock.yaml",
+    "clean": "pnpm -r exec rm -rf dist build .react-router .wrangler node_modules",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "lint": "pnpm --filter @cloudflare/kumo lint",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "version:beta": "./ci/versioning/version-beta.sh",
+    "release": "pnpm build:all && changeset publish",
+    "release:beta": "changeset publish --no-git-tag --tag beta",
+    "publish:beta": "bash ci/versioning/publish-beta.sh",
+    "release:production": "bash ci/versioning/release-production.sh"
+  },
+  "devDependencies": {
+    "@changesets/cli": "2.29.7",
+    "@gitbeaker/rest": "^42.5.0",
+    "@types/node": "^22.0.0",
+    "prettier": "3.6.2",
+    "prettier-plugin-tailwindcss": "0.7.1",
+    "tsx": "^4.16.2",
+    "typescript": "^5.0.0"
+  }
 }

@@ -1,6 +1,6 @@
 /**
  * JSX Runtime Compiler
- * 
+ *
  * Safely compiles and executes JSX code strings at runtime using Babel standalone.
  * Includes comprehensive error handling and validation.
  */
@@ -25,10 +25,19 @@ function validateJSX(code: string): { valid: boolean; error?: string } {
   // Check for dangerous patterns
   const dangerousPatterns = [
     { pattern: /eval\s*\(/g, message: "eval() is not allowed" },
-    { pattern: /Function\s*\(/g, message: "Function constructor is not allowed" },
-    { pattern: /import\s+/g, message: "Dynamic imports are not allowed in preview code" },
+    {
+      pattern: /Function\s*\(/g,
+      message: "Function constructor is not allowed",
+    },
+    {
+      pattern: /import\s+/g,
+      message: "Dynamic imports are not allowed in preview code",
+    },
     { pattern: /__proto__/g, message: "Prototype manipulation is not allowed" },
-    { pattern: /constructor\s*\[/g, message: "Constructor access is not allowed" },
+    {
+      pattern: /constructor\s*\[/g,
+      message: "Constructor access is not allowed",
+    },
   ];
 
   for (const { pattern, message } of dangerousPatterns) {
@@ -41,9 +50,13 @@ function validateJSX(code: string): { valid: boolean; error?: string } {
   const openTags = code.match(/<[A-Z][a-zA-Z0-9]*[\s>]/g) || [];
   const closeTags = code.match(/<\/[A-Z][a-zA-Z0-9]*>/g) || [];
   const selfClosing = code.match(/<[A-Z][a-zA-Z0-9]*[^>]*\/>/g) || [];
-  
+
   // Basic sanity check (not perfect but catches obvious issues)
-  if (openTags.length > 0 && closeTags.length === 0 && selfClosing.length === 0) {
+  if (
+    openTags.length > 0 &&
+    closeTags.length === 0 &&
+    selfClosing.length === 0
+  ) {
     return { valid: false, error: "JSX tags appear to be unclosed" };
   }
 
@@ -53,7 +66,11 @@ function validateJSX(code: string): { valid: boolean; error?: string } {
 /**
  * Compiles JSX code string to executable JavaScript
  */
-function compileJSX(code: string): { success: boolean; compiled?: string; error?: string } {
+function compileJSX(code: string): {
+  success: boolean;
+  compiled?: string;
+  error?: string;
+} {
   try {
     const result = Babel.transform(code, {
       presets: ["react", "typescript"],
@@ -92,11 +109,11 @@ function createExecutionContext(componentScope: Record<string, any>) {
  */
 function executeCode(
   compiledCode: string,
-  componentScope: Record<string, any>
+  componentScope: Record<string, any>,
 ): { success: boolean; component?: React.ComponentType; error?: string } {
   // try {
   //   const context = createExecutionContext(componentScope);
-    
+
   //   // Wrap the code to return the result
   //   // The code should either be an IIFE that returns JSX, or just JSX
   //   const wrappedCode = `
@@ -136,19 +153,19 @@ function executeCode(
   //   return { success: false, error: `Runtime error: ${message}` };
   // }
 
-  return { success: false, error: `Runtime error` }
+  return { success: false, error: `Runtime error` };
 }
 
 /**
  * Main function to compile and execute JSX code
- * 
+ *
  * @param code - JSX code string to compile
  * @param componentScope - Object containing all available components and utilities
  * @returns CompilationResult with component or error
  */
 export function compileAndExecuteJSX(
   code: string,
-  componentScope: Record<string, any>
+  componentScope: Record<string, any>,
 ): CompilationResult {
   // Step 1: Validate
   const validation = validateJSX(code);
@@ -200,7 +217,7 @@ export function compileAndExecuteJSX(
  */
 export function wrapInComponent(code: string): string {
   const trimmed = code.trim();
-  
+
   // If it's already an IIFE or starts with JSX, use as-is
   if (trimmed.startsWith("(() =>") || trimmed.startsWith("<")) {
     return trimmed;
@@ -220,14 +237,16 @@ export function wrapInComponent(code: string): string {
  */
 export function extractComponentBody(code: string): string {
   const trimmed = code.trim();
-  
+
   // If it's already just JSX, return as-is
   if (trimmed.startsWith("<")) {
     return trimmed;
   }
 
   // Try to extract return statement
-  const returnMatch = trimmed.match(/return\s*\(?\s*([\s\S]*?)\s*\)?;?\s*\}?\s*$/);
+  const returnMatch = trimmed.match(
+    /return\s*\(?\s*([\s\S]*?)\s*\)?;?\s*\}?\s*$/,
+  );
   if (returnMatch) {
     return returnMatch[1].trim();
   }

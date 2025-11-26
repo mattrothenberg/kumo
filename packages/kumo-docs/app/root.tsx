@@ -97,10 +97,10 @@ export default function App() {
       <div
         className={cn(
           "fixed inset-y-0 left-0 z-50 w-12 bg-surface-secondary",
-          "border-r border-neutral-200 dark:border-neutral-800"
+          "border-r border-neutral-200 dark:border-neutral-800",
         )}
       >
-        <div className="h-[49px] border-b border-neutral-200 dark:border-neutral-800 relative">
+        <div className="relative h-[49px] border-b border-neutral-200 dark:border-neutral-800">
           <div className="absolute top-2 right-1">
             <Button
               variant="ghost"
@@ -116,7 +116,7 @@ export default function App() {
       </div>
 
       {/* Kumo brand label: fixed next to the rail; stays in same position */}
-      <div className="fixed left-12 top-0 z-50 h-[49px] flex items-center px-4 font-medium select-none pointer-events-none">
+      <div className="pointer-events-none fixed top-0 left-12 z-50 flex h-[49px] items-center px-4 font-medium select-none">
         <h1 className="flex gap-2 text-base">
           {/* <span>雲</span> */}
           <span>Kumo</span>
@@ -124,7 +124,7 @@ export default function App() {
       </div>
 
       {/* Theme toggle: fixed in top right corner */}
-      <div className="fixed right-2 top-0 z-50 h-[49px] flex items-center pointer-events-auto">
+      <div className="pointer-events-auto fixed top-0 right-2 z-50 flex h-[49px] items-center">
         <Button
           variant="ghost"
           shape="square"
@@ -138,23 +138,23 @@ export default function App() {
       {/* Sliding panel that opens to the right of the rail */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-12 z-40 w-64 backdrop-blur flex flex-col",
+          "fixed inset-y-0 left-12 z-40 flex w-64 flex-col backdrop-blur",
           "transition-transform duration-300 will-change-transform",
           sidebarOpen
             ? "translate-x-0 border-r border-neutral-200 dark:border-neutral-800"
-            : "-translate-x-full"
+            : "-translate-x-full",
         )}
       >
         {/* Panel header */}
         <div
           className={cn(
-            "h-[49px] px-4 flex items-center font-medium flex-none",
-            "border-b border-neutral-200 dark:border-neutral-800"
+            "flex h-[49px] flex-none items-center px-4 font-medium",
+            "border-b border-neutral-200 dark:border-neutral-800",
           )}
         >
           {/* Sidebar */}
         </div>
-        <div className="p-4 text-sm text-neutral-600 overflow-y-auto overscroll-contain grow min-h-0">
+        <div className="min-h-0 grow overflow-y-auto overscroll-contain p-4 text-sm text-neutral-600">
           <div>
             <ul className="flex flex-col">
               <li>
@@ -163,7 +163,7 @@ export default function App() {
                   prefetch="intent"
                   className={cn(
                     LI_STYLE,
-                    location.pathname === "/" && LI_ACTIVE_STYLE
+                    location.pathname === "/" && LI_ACTIVE_STYLE,
                   )}
                 >
                   Home
@@ -175,7 +175,7 @@ export default function App() {
                   prefetch="intent"
                   className={cn(
                     LI_STYLE,
-                    location.pathname === "/installation" && LI_ACTIVE_STYLE
+                    location.pathname === "/installation" && LI_ACTIVE_STYLE,
                   )}
                 >
                   Installation
@@ -187,7 +187,7 @@ export default function App() {
                   prefetch="intent"
                   className={cn(
                     LI_STYLE,
-                    location.pathname === "/contributing" && LI_ACTIVE_STYLE
+                    location.pathname === "/contributing" && LI_ACTIVE_STYLE,
                   )}
                 >
                   Contributing
@@ -199,7 +199,7 @@ export default function App() {
                   prefetch="intent"
                   className={cn(
                     LI_STYLE,
-                    location.pathname === "/accessibility" && LI_ACTIVE_STYLE
+                    location.pathname === "/accessibility" && LI_ACTIVE_STYLE,
                   )}
                 >
                   Accessibility
@@ -211,7 +211,7 @@ export default function App() {
                   prefetch="intent"
                   className={cn(
                     LI_STYLE,
-                    location.pathname === "/figma" && LI_ACTIVE_STYLE
+                    location.pathname === "/figma" && LI_ACTIVE_STYLE,
                   )}
                 >
                   Figma Resources
@@ -222,7 +222,7 @@ export default function App() {
 
           <div className="mb-6">
             <h4
-              className="text-xs mt-4 mb-2 ml-2 font-medium uppercase text-neutral-400 flex items-center justify-between cursor-pointer select-none hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors"
+              className="mt-4 mb-2 ml-2 flex cursor-pointer items-center justify-between text-xs font-medium text-neutral-400 uppercase transition-colors select-none hover:text-neutral-700 dark:hover:text-neutral-300"
               onClick={() => setComponentsOpen(!componentsOpen)}
             >
               <span>Components</span>
@@ -231,7 +231,7 @@ export default function App() {
                 weight="bold"
                 className={cn(
                   "transition-transform duration-200",
-                  componentsOpen && "rotate-180"
+                  componentsOpen && "rotate-180",
                 )}
               />
             </h4>
@@ -240,7 +240,7 @@ export default function App() {
                 "flex flex-col overflow-hidden transition-all duration-300 ease-in-out",
                 componentsOpen
                   ? "max-h-[2000px] opacity-100"
-                  : "max-h-0 opacity-0"
+                  : "max-h-0 opacity-0",
               )}
             >
               <li>
@@ -249,7 +249,7 @@ export default function App() {
                   prefetch="intent"
                   className={cn(
                     LI_STYLE,
-                    location.pathname === "/components/text" && LI_ACTIVE_STYLE
+                    location.pathname === "/components/text" && LI_ACTIVE_STYLE,
                   )}
                 >
                   Text
@@ -262,7 +262,7 @@ export default function App() {
                   className={cn(
                     LI_STYLE,
                     location.pathname === "/components/button" &&
-                      LI_ACTIVE_STYLE
+                      LI_ACTIVE_STYLE,
                   )}
                 >
                   Button
@@ -274,7 +274,8 @@ export default function App() {
                   prefetch="intent"
                   className={cn(
                     LI_STYLE,
-                    location.pathname === "/components/badge" && LI_ACTIVE_STYLE
+                    location.pathname === "/components/badge" &&
+                      LI_ACTIVE_STYLE,
                   )}
                 >
                   Badge
@@ -287,7 +288,7 @@ export default function App() {
                   className={cn(
                     LI_STYLE,
                     location.pathname === "/components/banner" &&
-                      LI_ACTIVE_STYLE
+                      LI_ACTIVE_STYLE,
                   )}
                 >
                   Banner
@@ -300,7 +301,7 @@ export default function App() {
                   className={cn(
                     LI_STYLE,
                     location.pathname === "/components/checkbox" &&
-                      LI_ACTIVE_STYLE
+                      LI_ACTIVE_STYLE,
                   )}
                 >
                   Checkbox
@@ -325,7 +326,7 @@ export default function App() {
                   prefetch="intent"
                   className={cn(
                     LI_STYLE,
-                    location.pathname === "/components/code" && LI_ACTIVE_STYLE
+                    location.pathname === "/components/code" && LI_ACTIVE_STYLE,
                   )}
                 >
                   Code
@@ -338,7 +339,7 @@ export default function App() {
                   className={cn(
                     LI_STYLE,
                     location.pathname === "/components/combobox" &&
-                      LI_ACTIVE_STYLE
+                      LI_ACTIVE_STYLE,
                   )}
                 >
                   Combobox
@@ -351,7 +352,7 @@ export default function App() {
                   className={cn(
                     LI_STYLE,
                     location.pathname === "/components/dialog" &&
-                      LI_ACTIVE_STYLE
+                      LI_ACTIVE_STYLE,
                   )}
                 >
                   Dialog
@@ -364,7 +365,7 @@ export default function App() {
                   className={cn(
                     LI_STYLE,
                     location.pathname === "/components/dropdown" &&
-                      LI_ACTIVE_STYLE
+                      LI_ACTIVE_STYLE,
                   )}
                 >
                   Dropdown
@@ -377,7 +378,7 @@ export default function App() {
                   className={cn(
                     LI_STYLE,
                     location.pathname === "/components/expandable" &&
-                      LI_ACTIVE_STYLE
+                      LI_ACTIVE_STYLE,
                   )}
                 >
                   Expandable
@@ -389,7 +390,8 @@ export default function App() {
                   prefetch="intent"
                   className={cn(
                     LI_STYLE,
-                    location.pathname === "/components/field" && LI_ACTIVE_STYLE
+                    location.pathname === "/components/field" &&
+                      LI_ACTIVE_STYLE,
                   )}
                 >
                   Field
@@ -401,7 +403,8 @@ export default function App() {
                   prefetch="intent"
                   className={cn(
                     LI_STYLE,
-                    location.pathname === "/components/input" && LI_ACTIVE_STYLE
+                    location.pathname === "/components/input" &&
+                      LI_ACTIVE_STYLE,
                   )}
                 >
                   Input
@@ -414,7 +417,7 @@ export default function App() {
                   className={cn(
                     LI_STYLE,
                     location.pathname === "/components/layer-card" &&
-                      LI_ACTIVE_STYLE
+                      LI_ACTIVE_STYLE,
                   )}
                 >
                   Layer Card
@@ -427,7 +430,7 @@ export default function App() {
                   className={cn(
                     LI_STYLE,
                     location.pathname === "/components/loader" &&
-                      LI_ACTIVE_STYLE
+                      LI_ACTIVE_STYLE,
                   )}
                 >
                   Loader
@@ -452,7 +455,7 @@ export default function App() {
                   className={cn(
                     LI_STYLE,
                     location.pathname === "/components/select" &&
-                      LI_ACTIVE_STYLE
+                      LI_ACTIVE_STYLE,
                   )}
                 >
                   Select
@@ -465,7 +468,7 @@ export default function App() {
                   className={cn(
                     LI_STYLE,
                     location.pathname === "/components/skeleton-line" &&
-                      LI_ACTIVE_STYLE
+                      LI_ACTIVE_STYLE,
                   )}
                 >
                   Skeleton Line
@@ -478,7 +481,7 @@ export default function App() {
                   className={cn(
                     LI_STYLE,
                     location.pathname === "/components/surface" &&
-                      LI_ACTIVE_STYLE
+                      LI_ACTIVE_STYLE,
                   )}
                 >
                   Surface
@@ -491,7 +494,7 @@ export default function App() {
                   className={cn(
                     LI_STYLE,
                     location.pathname === "/components/switch" &&
-                      LI_ACTIVE_STYLE
+                      LI_ACTIVE_STYLE,
                   )}
                 >
                   Switch
@@ -504,7 +507,7 @@ export default function App() {
                   className={cn(
                     LI_STYLE,
                     location.pathname === "/components/tooltip" &&
-                      LI_ACTIVE_STYLE
+                      LI_ACTIVE_STYLE,
                   )}
                 >
                   Tooltip
@@ -512,7 +515,7 @@ export default function App() {
               </li>
             </ul>
             <h4
-              className="text-xs mt-4 mb-2 ml-2 font-medium uppercase text-neutral-400 flex items-center justify-between cursor-pointer select-none hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors"
+              className="mt-4 mb-2 ml-2 flex cursor-pointer items-center justify-between text-xs font-medium text-neutral-400 uppercase transition-colors select-none hover:text-neutral-700 dark:hover:text-neutral-300"
               onClick={() => setBlocksOpen(!blocksOpen)}
             >
               <span>Blocks</span>
@@ -521,14 +524,14 @@ export default function App() {
                 weight="bold"
                 className={cn(
                   "transition-transform duration-200",
-                  blocksOpen && "rotate-180"
+                  blocksOpen && "rotate-180",
                 )}
               />
             </h4>
             <ul
               className={cn(
                 "flex flex-col overflow-hidden transition-all duration-300 ease-in-out",
-                blocksOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+                blocksOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0",
               )}
             >
               <li>
@@ -538,7 +541,7 @@ export default function App() {
                   className={cn(
                     LI_STYLE,
                     location.pathname === "/blocks/breadcrumbs" &&
-                      LI_ACTIVE_STYLE
+                      LI_ACTIVE_STYLE,
                   )}
                 >
                   Breadcrumbs
@@ -550,7 +553,7 @@ export default function App() {
                   prefetch="intent"
                   className={cn(
                     LI_STYLE,
-                    location.pathname === "/blocks/empty" && LI_ACTIVE_STYLE
+                    location.pathname === "/blocks/empty" && LI_ACTIVE_STYLE,
                   )}
                 >
                   Empty State
@@ -563,7 +566,7 @@ export default function App() {
                   className={cn(
                     LI_STYLE,
                     location.pathname === "/blocks/page-header" &&
-                      LI_ACTIVE_STYLE
+                      LI_ACTIVE_STYLE,
                   )}
                 >
                   Page Header
@@ -571,7 +574,7 @@ export default function App() {
               </li>
             </ul>
             <h4
-              className="text-xs mt-4 mb-2 ml-2 font-medium uppercase text-neutral-400 flex items-center justify-between cursor-pointer select-none hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors"
+              className="mt-4 mb-2 ml-2 flex cursor-pointer items-center justify-between text-xs font-medium text-neutral-400 uppercase transition-colors select-none hover:text-neutral-700 dark:hover:text-neutral-300"
               onClick={() => setLayoutsOpen(!layoutsOpen)}
             >
               <span>Layouts</span>
@@ -580,14 +583,14 @@ export default function App() {
                 weight="bold"
                 className={cn(
                   "transition-transform duration-200",
-                  layoutsOpen && "rotate-180"
+                  layoutsOpen && "rotate-180",
                 )}
               />
             </h4>
             <ul
               className={cn(
                 "flex flex-col overflow-hidden transition-all duration-300 ease-in-out",
-                layoutsOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+                layoutsOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0",
               )}
             >
               <li>
@@ -597,7 +600,7 @@ export default function App() {
                   className={cn(
                     LI_STYLE,
                     location.pathname === "/layouts/resource-list" &&
-                      LI_ACTIVE_STYLE
+                      LI_ACTIVE_STYLE,
                   )}
                 >
                   Resource List
@@ -611,8 +614,8 @@ export default function App() {
       {/* Content shifts by rail width when closed, and rail+panel when open on md+ */}
       <div
         className={cn(
-          "transition-[margin] duration-300 h-screen overflow-y-auto overscroll-y-none",
-          sidebarOpen ? "ml-12 md:ml-[304px]" : "ml-12"
+          "h-screen overflow-y-auto overscroll-y-none transition-[margin] duration-300",
+          sidebarOpen ? "ml-12 md:ml-[304px]" : "ml-12",
         )}
         ref={contentRef}
       >
@@ -639,11 +642,11 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main className="pt-16 p-4 container mx-auto">
+    <main className="container mx-auto p-4 pt-16">
       <h1>{message}</h1>
       <p>{details}</p>
       {stack && (
-        <pre className="w-full p-4 overflow-x-auto">
+        <pre className="w-full overflow-x-auto p-4">
           <code>{stack}</code>
         </pre>
       )}

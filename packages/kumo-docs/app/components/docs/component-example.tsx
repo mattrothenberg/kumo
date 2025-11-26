@@ -11,13 +11,15 @@ interface ComponentExampleProps {
 /**
  * Shows a component example with optional code snippet
  */
-export function ComponentExample({ children, code, className }: ComponentExampleProps) {
+export function ComponentExample({
+  children,
+  code,
+  className,
+}: ComponentExampleProps) {
   return (
     <div className={cn("space-y-4", className)}>
       <ComponentPreview>{children}</ComponentPreview>
-      {code && (
-        <CodeBlock lang="tsx" code={code} />
-      )}
+      {code && <CodeBlock lang="tsx" code={code} />}
     </div>
   );
 }

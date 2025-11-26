@@ -37,51 +37,53 @@ export default function Installation() {
 
       {/* Installation */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Install Package</h2>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
+        <h2 className="mb-4 text-2xl font-bold">Install Package</h2>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
           Install Kumo using your preferred package manager:
         </p>
         <div className="space-y-4">
           <div>
-            <p className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">npm</p>
-            <CodeBlock
-              lang="bash"
-              code={`npm install @cloudflare/kumo`}
-            />
+            <p className="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+              npm
+            </p>
+            <CodeBlock lang="bash" code={`npm install @cloudflare/kumo`} />
           </div>
           <div>
-            <p className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">pnpm</p>
-            <CodeBlock
-              lang="bash"
-              code={`pnpm add @cloudflare/kumo`}
-            />
+            <p className="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+              pnpm
+            </p>
+            <CodeBlock lang="bash" code={`pnpm add @cloudflare/kumo`} />
           </div>
           <div>
-            <p className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">yarn</p>
-            <CodeBlock
-              lang="bash"
-              code={`yarn add @cloudflare/kumo`}
-            />
+            <p className="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+              yarn
+            </p>
+            <CodeBlock lang="bash" code={`yarn add @cloudflare/kumo`} />
           </div>
         </div>
       </ComponentSection>
 
       {/* Import Components */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Import Components</h2>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
-          Import components from the main package or use granular imports for better tree-shaking:
+        <h2 className="mb-4 text-2xl font-bold">Import Components</h2>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
+          Import components from the main package or use granular imports for
+          better tree-shaking:
         </p>
         <div className="space-y-4">
           <div>
-            <p className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Main Package Import</p>
+            <p className="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+              Main Package Import
+            </p>
             <CodeBlock
               lang="tsx"
               code={`import { Button, Input, Surface } from "@cloudflare/kumo";`}
             />
           </div>
           <div>
-            <p className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Granular Import (Recommended)</p>
+            <p className="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+              Granular Import (Recommended)
+            </p>
             <CodeBlock
               lang="tsx"
               code={`import { Button } from "@cloudflare/kumo/components/button";
@@ -93,17 +95,20 @@ import { Input } from "@cloudflare/kumo/components/input";`}
 
       {/* Import Styles */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Import Styles</h2>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
+        <h2 className="mb-4 text-2xl font-bold">Import Styles</h2>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
           Kumo provides two CSS distribution options depending on your setup:
         </p>
-        
+
         <div className="space-y-6">
           <div>
-            <h3 className="text-lg font-semibold mb-3">For Tailwind CSS Users (Recommended)</h3>
-            <p className="text-neutral-600 dark:text-neutral-400 mb-3">
-              If your application uses Tailwind CSS, add Kumo's source files to your content configuration and import the styles. 
-              Make sure to import Tailwind first, then Kumo styles:
+            <h3 className="mb-3 text-lg font-semibold">
+              For Tailwind CSS Users (Recommended)
+            </h3>
+            <p className="mb-3 text-neutral-600 dark:text-neutral-400">
+              If your application uses Tailwind CSS, add Kumo's source files to
+              your content configuration and import the styles. Make sure to
+              import Tailwind first, then Kumo styles:
             </p>
             <CodeBlock
               lang="css"
@@ -114,23 +119,35 @@ import { Input } from "@cloudflare/kumo/components/input";`}
 
 /* Your custom styles */`}
             />
-            <p className="text-sm text-neutral-500 dark:text-neutral-500 mt-2">
-              Note: You can also use the default export <code className="text-xs bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">@cloudflare/kumo/styles</code> which is equivalent to <code className="text-xs bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">styles/tailwind</code>.
+            <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-500">
+              Note: You can also use the default export{" "}
+              <code className="rounded bg-neutral-100 px-1 py-0.5 text-xs dark:bg-neutral-800">
+                @cloudflare/kumo/styles
+              </code>{" "}
+              which is equivalent to{" "}
+              <code className="rounded bg-neutral-100 px-1 py-0.5 text-xs dark:bg-neutral-800">
+                styles/tailwind
+              </code>
+              .
             </p>
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold mb-3">For Non-Tailwind Users (Standalone)</h3>
-            <p className="text-neutral-600 dark:text-neutral-400 mb-3">
-              If your application doesn't use Tailwind CSS, use the standalone build which includes all compiled styles:
+            <h3 className="mb-3 text-lg font-semibold">
+              For Non-Tailwind Users (Standalone)
+            </h3>
+            <p className="mb-3 text-neutral-600 dark:text-neutral-400">
+              If your application doesn't use Tailwind CSS, use the standalone
+              build which includes all compiled styles:
             </p>
             <CodeBlock
               lang="tsx"
               code={`// In your app entry point (e.g., main.tsx, index.tsx)
 import "@cloudflare/kumo/styles/standalone";`}
             />
-            <p className="text-sm text-neutral-500 dark:text-neutral-500 mt-2">
-              The standalone build includes all Tailwind utilities and Kumo component styles pre-compiled. No Tailwind configuration needed!
+            <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-500">
+              The standalone build includes all Tailwind utilities and Kumo
+              component styles pre-compiled. No Tailwind configuration needed!
             </p>
           </div>
         </div>
@@ -138,13 +155,15 @@ import "@cloudflare/kumo/styles/standalone";`}
 
       {/* Usage Example */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Usage Example</h2>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
+        <h2 className="mb-4 text-2xl font-bold">Usage Example</h2>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
           Here's a complete example of using Kumo components with Tailwind CSS:
         </p>
         <div className="space-y-4">
           <div>
-            <p className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">CSS File (app.css)</p>
+            <p className="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+              CSS File (app.css)
+            </p>
             <CodeBlock
               lang="css"
               code={`@import "tailwindcss";
@@ -152,7 +171,9 @@ import "@cloudflare/kumo/styles/standalone";`}
             />
           </div>
           <div>
-            <p className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Component File (App.tsx)</p>
+            <p className="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+              Component File (App.tsx)
+            </p>
             <CodeBlock
               lang="tsx"
               code={`import { Button, Input, Surface } from "@cloudflare/kumo";
@@ -174,29 +195,48 @@ export default function App() {
 
       {/* Available Components */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Available Components</h2>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
+        <h2 className="mb-4 text-2xl font-bold">Available Components</h2>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
           The following components are currently available in Kumo:
         </p>
-        <ul className="list-disc list-inside space-y-2 text-neutral-700 dark:text-neutral-300">
-          <li><strong>Badge</strong> - Display status indicators and labels</li>
-          <li><strong>Button</strong> - Interactive buttons with multiple variants</li>
-          <li><strong>Input</strong> - Text input fields with validation support</li>
-          <li><strong>InputArea</strong> - Multi-line textarea with Input styling</li>
-          <li><strong>InputGroup</strong> - Compound component for grouped inputs and buttons</li>
-          <li><strong>Loader</strong> - Loading spinners and indicators</li>
-          <li><strong>SkeletonLine</strong> - Animated skeleton loading placeholders</li>
-          <li><strong>Surface</strong> - Container component for content</li>
+        <ul className="list-inside list-disc space-y-2 text-neutral-700 dark:text-neutral-300">
+          <li>
+            <strong>Badge</strong> - Display status indicators and labels
+          </li>
+          <li>
+            <strong>Button</strong> - Interactive buttons with multiple variants
+          </li>
+          <li>
+            <strong>Input</strong> - Text input fields with validation support
+          </li>
+          <li>
+            <strong>InputArea</strong> - Multi-line textarea with Input styling
+          </li>
+          <li>
+            <strong>InputGroup</strong> - Compound component for grouped inputs
+            and buttons
+          </li>
+          <li>
+            <strong>Loader</strong> - Loading spinners and indicators
+          </li>
+          <li>
+            <strong>SkeletonLine</strong> - Animated skeleton loading
+            placeholders
+          </li>
+          <li>
+            <strong>Surface</strong> - Container component for content
+          </li>
         </ul>
-        <p className="text-neutral-600 dark:text-neutral-400 mt-4">
-          More components are being added regularly. Check the Components section for detailed documentation.
+        <p className="mt-4 text-neutral-600 dark:text-neutral-400">
+          More components are being added regularly. Check the Components
+          section for detailed documentation.
         </p>
       </ComponentSection>
 
       {/* Utilities */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Utilities</h2>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
+        <h2 className="mb-4 text-2xl font-bold">Utilities</h2>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
           Kumo also exports utility functions for common tasks:
         </p>
         <CodeBlock

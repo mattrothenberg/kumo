@@ -326,7 +326,7 @@ function Example3() {
       { id: 6, name: "Visal In", title: "System Engineer" },
       { id: 7, name: "Laura Kim", title: "Technical Writer" },
     ],
-    []
+    [],
   );
 
   const [value, setValue] = useState<(typeof authors)[0] | null>(null);
@@ -385,7 +385,7 @@ function App() {
         >
           {authors.map((author) => (
             <Select.Option key={author.id} value={author}>
-              <div className="flex items-center gap-2 w-[300px] justify-between">
+              <div className="flex w-[300px] items-center justify-between gap-2">
                 <Text>{author.name}</Text>
                 <Text variant="secondary">{author.title}</Text>
               </div>

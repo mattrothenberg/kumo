@@ -1,6 +1,6 @@
 /**
  * Component Registry for AI Playground
- * 
+ *
  * This registry provides metadata about all Kumo components to help the AI
  * generate valid code. Each component includes:
  * - Import path
@@ -32,10 +32,22 @@ export const COMPONENT_REGISTRY: Record<string, ComponentMetadata> = {
     description: "Displays a button or a component that looks like a button.",
     category: "Form",
     props: [
-      { name: "variant", type: '"primary" | "secondary" | "ghost" | "destructive" | "outline"', default: '"secondary"' },
+      {
+        name: "variant",
+        type: '"primary" | "secondary" | "ghost" | "destructive" | "outline"',
+        default: '"secondary"',
+      },
       { name: "size", type: '"xs" | "sm" | "base" | "lg"', default: '"base"' },
-      { name: "shape", type: '"base" | "square" | "circle"', default: '"base"' },
-      { name: "icon", type: "Icon | React.ReactNode", description: "Icon from @phosphor-icons/react" },
+      {
+        name: "shape",
+        type: '"base" | "square" | "circle"',
+        default: '"base"',
+      },
+      {
+        name: "icon",
+        type: "Icon | React.ReactNode",
+        description: "Icon from @phosphor-icons/react",
+      },
       { name: "loading", type: "boolean", default: "false" },
       { name: "disabled", type: "boolean", default: "false" },
       { name: "onClick", type: "() => void" },
@@ -44,7 +56,7 @@ export const COMPONENT_REGISTRY: Record<string, ComponentMetadata> = {
       '<Button variant="primary">Click me</Button>',
       '<Button variant="secondary" icon={PlusIcon}>Add Item</Button>',
       '<Button shape="square" icon={PlusIcon} />',
-      '<Button loading>Loading...</Button>',
+      "<Button loading>Loading...</Button>",
     ],
   },
   Input: {
@@ -57,7 +69,10 @@ export const COMPONENT_REGISTRY: Record<string, ComponentMetadata> = {
       { name: "variant", type: '"default" | "error"', default: '"default"' },
       { name: "type", type: "string", default: '"text"' },
       { name: "value", type: "string" },
-      { name: "onChange", type: "(e: React.ChangeEvent<HTMLInputElement>) => void" },
+      {
+        name: "onChange",
+        type: "(e: React.ChangeEvent<HTMLInputElement>) => void",
+      },
     ],
     examples: [
       '<Input placeholder="Enter your name..." />',
@@ -107,14 +122,13 @@ export const COMPONENT_REGISTRY: Record<string, ComponentMetadata> = {
       { name: "toggled", type: "boolean" },
       { name: "onClick", type: "() => void" },
     ],
-    examples: [
-      '<Switch toggled={true} onClick={() => {}} />',
-    ],
+    examples: ["<Switch toggled={true} onClick={() => {}} />"],
   },
   Dialog: {
     name: "Dialog",
     importPath: "@cloudflare/kumo",
-    description: "Modal dialog. Use Dialog.Root, Dialog.Trigger, Dialog.Title, Dialog.Description, Dialog.Close.",
+    description:
+      "Modal dialog. Use Dialog.Root, Dialog.Trigger, Dialog.Title, Dialog.Description, Dialog.Close.",
     category: "Overlay",
     props: [],
     examples: [
@@ -172,12 +186,8 @@ export const COMPONENT_REGISTRY: Record<string, ComponentMetadata> = {
     importPath: "@cloudflare/kumo",
     description: "Container surface with background.",
     category: "Layout",
-    props: [
-      { name: "className", type: "string" },
-    ],
-    examples: [
-      '<Surface className="p-4 rounded-lg">Content here</Surface>',
-    ],
+    props: [{ name: "className", type: "string" }],
+    examples: ['<Surface className="p-4 rounded-lg">Content here</Surface>'],
   },
   Field: {
     name: "Field",
@@ -187,7 +197,7 @@ export const COMPONENT_REGISTRY: Record<string, ComponentMetadata> = {
     props: [
       { name: "label", type: "string" },
       { name: "description", type: "string" },
-      { name: "error", type: '{ message: string; match?: string }' },
+      { name: "error", type: "{ message: string; match?: string }" },
     ],
     examples: [
       `<Field label="Email" description="Your email address">
@@ -200,18 +210,14 @@ export const COMPONENT_REGISTRY: Record<string, ComponentMetadata> = {
     importPath: "@cloudflare/kumo",
     description: "Loading spinner.",
     category: "Display",
-    props: [
-      { name: "size", type: "number", default: "16" },
-    ],
-    examples: [
-      '<Loader />',
-      '<Loader size={24} />',
-    ],
+    props: [{ name: "size", type: "number", default: "16" }],
+    examples: ["<Loader />", "<Loader size={24} />"],
   },
   ResourceListPage: {
     name: "ResourceListPage",
     importPath: "~/layouts/resource-list",
-    description: "Page layout for resource lists with optional sidebar. Use this for Workers, Zones, DNS records, etc.",
+    description:
+      "Page layout for resource lists with optional sidebar. Use this for Workers, Zones, DNS records, etc.",
     category: "Layout",
     props: [
       { name: "title", type: "string" },
@@ -234,7 +240,8 @@ export const COMPONENT_REGISTRY: Record<string, ComponentMetadata> = {
   Empty: {
     name: "Empty",
     importPath: "~/blocks/empty",
-    description: "Empty state component with optional command line and action button.",
+    description:
+      "Empty state component with optional command line and action button.",
     category: "Display",
     props: [
       { name: "icon", type: "React.ReactNode" },
@@ -259,7 +266,10 @@ export const COMPONENT_REGISTRY: Record<string, ComponentMetadata> = {
     description: "Small badge for labels and status indicators.",
     category: "Display",
     props: [
-      { name: "variant", type: "'primary' | 'secondary' | 'outline' | 'destructive'| 'beta'" },
+      {
+        name: "variant",
+        type: "'primary' | 'secondary' | 'outline' | 'destructive'| 'beta'",
+      },
     ],
     examples: [
       '<Badge variant="primary">New</Badge>',
@@ -285,7 +295,8 @@ export const COMPONENT_REGISTRY: Record<string, ComponentMetadata> = {
   LayerCard: {
     name: "LayerCard",
     importPath: "@cloudflare/kumo",
-    description: "Card component with header and content sections. Perfect for displaying grouped information with a title.",
+    description:
+      "Card component with header and content sections. Perfect for displaying grouped information with a title.",
     category: "Layout",
     props: [
       { name: "title", type: "React.ReactNode", required: true },
@@ -333,14 +344,14 @@ export const COMMON_ICONS = [
  */
 export function generateAIContext(): string {
   const components = Object.values(COMPONENT_REGISTRY);
-  
+
   let context = "# Available Kumo Components\n\n";
-  
+
   for (const comp of components) {
     context += `## ${comp.name}\n`;
     context += `${comp.description}\n`;
     context += `Import: import { ${comp.name} } from "${comp.importPath}";\n\n`;
-    
+
     if (comp.props.length > 0) {
       context += "Props:\n";
       for (const prop of comp.props) {
@@ -353,18 +364,18 @@ export function generateAIContext(): string {
       }
       context += "\n";
     }
-    
+
     context += "Examples:\n";
     for (const example of comp.examples) {
       context += `\`\`\`tsx\n${example}\n\`\`\`\n\n`;
     }
     context += "\n";
   }
-  
+
   context += `\n# Common Icons (from @phosphor-icons/react)\n`;
   context += COMMON_ICONS.join(", ");
   context += "\n\n";
-  
+
   return context;
 }
 
@@ -374,12 +385,12 @@ export function generateAIContext(): string {
 export function extractRequiredImports(code: string): string[] {
   const imports: string[] = [];
   const importMap: Record<string, string> = {};
-  
+
   // Build import map
   for (const comp of Object.values(COMPONENT_REGISTRY)) {
     importMap[comp.name] = comp.importPath;
   }
-  
+
   // Check which components are used in the code
   for (const [componentName, importPath] of Object.entries(importMap)) {
     if (code.includes(componentName)) {
@@ -390,16 +401,18 @@ export function extractRequiredImports(code: string): string[] {
       }
     }
   }
-  
+
   // Check for icon imports
   const iconMatches = code.match(/\b(\w+Icon)\b/g);
   if (iconMatches) {
     const uniqueIcons = [...new Set(iconMatches)];
-    const kumoIcons = uniqueIcons.filter(icon => COMMON_ICONS.includes(icon));
+    const kumoIcons = uniqueIcons.filter((icon) => COMMON_ICONS.includes(icon));
     if (kumoIcons.length > 0) {
-      imports.push(`import { ${kumoIcons.join(", ")} } from "@phosphor-icons/react";`);
+      imports.push(
+        `import { ${kumoIcons.join(", ")} } from "@phosphor-icons/react";`,
+      );
     }
   }
-  
+
   return imports;
 }

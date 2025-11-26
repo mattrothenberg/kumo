@@ -39,13 +39,13 @@ export default function BannerDoc() {
 
       {/* Installation */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Installation</h2>
+        <h2 className="mb-4 text-2xl font-bold">Installation</h2>
         <CodeBlock lang="bash" code={`npm install @cloudflare/kumo`} />
       </ComponentSection>
 
       {/* Usage */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Usage</h2>
+        <h2 className="mb-4 text-2xl font-bold">Usage</h2>
         <CodeBlock
           lang="tsx"
           code={`import { Banner, BannerVariant } from "@cloudflare/kumo";
@@ -65,14 +65,14 @@ export default function Example() {
 
       {/* Examples */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-6">Examples</h2>
+        <h2 className="mb-6 text-2xl font-bold">Examples</h2>
 
         {/* Variants */}
         <div className="mb-12">
-          <h3 className="text-xl font-semibold mb-4">Variants</h3>
+          <h3 className="mb-4 text-xl font-semibold">Variants</h3>
           <div className="space-y-8">
             <div>
-              <h4 className="text-base font-medium mb-3">Default</h4>
+              <h4 className="mb-3 text-base font-medium">Default</h4>
               <ComponentExample
                 code={`<Banner text="This is an informational banner." />`}
               >
@@ -81,7 +81,7 @@ export default function Example() {
             </div>
 
             <div>
-              <h4 className="text-base font-medium mb-3">Alert</h4>
+              <h4 className="mb-3 text-base font-medium">Alert</h4>
               <ComponentExample
                 code={`<Banner
   variant={BannerVariant.ALERT}
@@ -96,7 +96,7 @@ export default function Example() {
             </div>
 
             <div>
-              <h4 className="text-base font-medium mb-3">Error</h4>
+              <h4 className="mb-3 text-base font-medium">Error</h4>
               <ComponentExample
                 code={`<Banner
   variant={BannerVariant.ERROR}
@@ -114,7 +114,7 @@ export default function Example() {
 
         {/* With icon */}
         <div className="mb-12">
-          <h3 className="text-xl font-semibold mb-4">With icon</h3>
+          <h3 className="mb-4 text-xl font-semibold">With icon</h3>
           <ComponentExample
             code={`<Banner
   icon={<WarningCircle />}
@@ -133,41 +133,41 @@ export default function Example() {
 
       {/* API Reference */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">API Reference</h2>
+        <h2 className="mb-4 text-2xl font-bold">API Reference</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                <th className="text-left py-3 px-4 font-semibold">Prop</th>
-                <th className="text-left py-3 px-4 font-semibold">Type</th>
-                <th className="text-left py-3 px-4 font-semibold">Default</th>
+                <th className="px-4 py-3 text-left font-semibold">Prop</th>
+                <th className="px-4 py-3 text-left font-semibold">Type</th>
+                <th className="px-4 py-3 text-left font-semibold">Default</th>
               </tr>
             </thead>
             <tbody className="text-neutral-600 dark:text-neutral-400">
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                <td className="py-3 px-4 font-mono text-xs">text</td>
-                <td className="py-3 px-4 font-mono text-xs">string</td>
-                <td className="py-3 px-4 font-mono text-xs">required</td>
+                <td className="px-4 py-3 font-mono text-xs">text</td>
+                <td className="px-4 py-3 font-mono text-xs">string</td>
+                <td className="px-4 py-3 font-mono text-xs">required</td>
               </tr>
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                <td className="py-3 px-4 font-mono text-xs">icon</td>
-                <td className="py-3 px-4 font-mono text-xs">React.ReactNode</td>
-                <td className="py-3 px-4 font-mono text-xs">undefined</td>
+                <td className="px-4 py-3 font-mono text-xs">icon</td>
+                <td className="px-4 py-3 font-mono text-xs">React.ReactNode</td>
+                <td className="px-4 py-3 font-mono text-xs">undefined</td>
               </tr>
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                <td className="py-3 px-4 font-mono text-xs">variant</td>
-                <td className="py-3 px-4 font-mono text-xs">
+                <td className="px-4 py-3 font-mono text-xs">variant</td>
+                <td className="px-4 py-3 font-mono text-xs">
                   BannerVariant.DEFAULT | BannerVariant.ALERT |
                   BannerVariant.ERROR
                 </td>
-                <td className="py-3 px-4 font-mono text-xs">
+                <td className="px-4 py-3 font-mono text-xs">
                   BannerVariant.DEFAULT
                 </td>
               </tr>
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                <td className="py-3 px-4 font-mono text-xs">className</td>
-                <td className="py-3 px-4 font-mono text-xs">string</td>
-                <td className="py-3 px-4 font-mono text-xs">undefined</td>
+                <td className="px-4 py-3 font-mono text-xs">className</td>
+                <td className="px-4 py-3 font-mono text-xs">string</td>
+                <td className="px-4 py-3 font-mono text-xs">undefined</td>
               </tr>
             </tbody>
           </table>

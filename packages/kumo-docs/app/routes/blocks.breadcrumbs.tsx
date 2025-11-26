@@ -37,8 +37,8 @@ export default function BreadcrumbsDoc() {
 
       {/* Installation */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Installation</h2>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
+        <h2 className="mb-4 text-2xl font-bold">Installation</h2>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
           Copy and paste the following code into your project.
         </p>
         <CodeBlock
@@ -49,7 +49,7 @@ export default function BreadcrumbsDoc() {
 
       {/* Usage */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Usage</h2>
+        <h2 className="mb-4 text-2xl font-bold">Usage</h2>
         <CodeBlock
           lang="tsx"
           code={`import { Breadcrumbs } from "@cloudflare/kumo";
@@ -70,11 +70,11 @@ export default function Example() {
 
       {/* Examples */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-6">Examples</h2>
+        <h2 className="mb-6 text-2xl font-bold">Examples</h2>
 
         {/* Basic */}
         <div className="mb-12">
-          <h3 className="text-xl font-semibold mb-4">Basic</h3>
+          <h3 className="mb-4 text-xl font-semibold">Basic</h3>
           <ComponentExample
             code={`<Breadcrumbs>
   <Breadcrumbs.Link href="#">Home</Breadcrumbs.Link>
@@ -98,7 +98,7 @@ export default function Example() {
       <ComponentSection>
         {/* Loading */}
         <div className="mb-12">
-          <h3 className="text-xl font-semibold mb-4">Loading</h3>
+          <h3 className="mb-4 text-xl font-semibold">Loading</h3>
           <ComponentExample
             code={`<Breadcrumbs>
   <Breadcrumbs.Link href="#" icon={<HouseIcon size={16} />}>
@@ -126,7 +126,7 @@ export default function Example() {
       <ComponentSection>
         {/* Root */}
         <div className="mb-12">
-          <h3 className="text-xl font-semibold mb-4">Root</h3>
+          <h3 className="mb-4 text-xl font-semibold">Root</h3>
           <ComponentExample
             code={`<Breadcrumbs>
   <Breadcrumbs.Current icon={<HouseIcon size={16} />}>
@@ -146,7 +146,7 @@ export default function Example() {
       <ComponentSection>
         {/* Clipboard */}
         <div className="mb-12">
-          <h3 className="text-xl font-semibold mb-4">Clipboard</h3>
+          <h3 className="mb-4 text-xl font-semibold">Clipboard</h3>
           <ComponentExample
             code={`<Breadcrumbs>
   <Breadcrumbs.Link href="#">Home</Breadcrumbs.Link>
@@ -167,28 +167,28 @@ export default function Example() {
 
       {/* API Reference */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">API Reference</h2>
+        <h2 className="mb-4 text-2xl font-bold">API Reference</h2>
 
         <div className="space-y-8">
           {/* Breadcrumbs */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">Breadcrumbs</h3>
+            <h3 className="mb-3 text-lg font-semibold">Breadcrumbs</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                    <th className="text-left py-3 px-4 font-semibold">Prop</th>
-                    <th className="text-left py-3 px-4 font-semibold">Type</th>
-                    <th className="text-left py-3 px-4 font-semibold">
+                    <th className="px-4 py-3 text-left font-semibold">Prop</th>
+                    <th className="px-4 py-3 text-left font-semibold">Type</th>
+                    <th className="px-4 py-3 text-left font-semibold">
                       Default
                     </th>
                   </tr>
                 </thead>
                 <tbody className="text-neutral-600 dark:text-neutral-400">
                   <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                    <td className="py-3 px-4 font-mono text-xs">children</td>
-                    <td className="py-3 px-4 font-mono text-xs">ReactNode</td>
-                    <td className="py-3 px-4 font-mono text-xs">required</td>
+                    <td className="px-4 py-3 font-mono text-xs">children</td>
+                    <td className="px-4 py-3 font-mono text-xs">ReactNode</td>
+                    <td className="px-4 py-3 font-mono text-xs">required</td>
                   </tr>
                 </tbody>
               </table>
@@ -197,33 +197,33 @@ export default function Example() {
 
           {/* Breadcrumbs.Link */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">Breadcrumbs.Link</h3>
+            <h3 className="mb-3 text-lg font-semibold">Breadcrumbs.Link</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                    <th className="text-left py-3 px-4 font-semibold">Prop</th>
-                    <th className="text-left py-3 px-4 font-semibold">Type</th>
-                    <th className="text-left py-3 px-4 font-semibold">
+                    <th className="px-4 py-3 text-left font-semibold">Prop</th>
+                    <th className="px-4 py-3 text-left font-semibold">Type</th>
+                    <th className="px-4 py-3 text-left font-semibold">
                       Default
                     </th>
                   </tr>
                 </thead>
                 <tbody className="text-neutral-600 dark:text-neutral-400">
                   <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                    <td className="py-3 px-4 font-mono text-xs">children</td>
-                    <td className="py-3 px-4 font-mono text-xs">ReactNode</td>
-                    <td className="py-3 px-4 font-mono text-xs">required</td>
+                    <td className="px-4 py-3 font-mono text-xs">children</td>
+                    <td className="px-4 py-3 font-mono text-xs">ReactNode</td>
+                    <td className="px-4 py-3 font-mono text-xs">required</td>
                   </tr>
                   <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                    <td className="py-3 px-4 font-mono text-xs">href</td>
-                    <td className="py-3 px-4 font-mono text-xs">string</td>
-                    <td className="py-3 px-4 font-mono text-xs">required</td>
+                    <td className="px-4 py-3 font-mono text-xs">href</td>
+                    <td className="px-4 py-3 font-mono text-xs">string</td>
+                    <td className="px-4 py-3 font-mono text-xs">required</td>
                   </tr>
                   <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                    <td className="py-3 px-4 font-mono text-xs">icon</td>
-                    <td className="py-3 px-4 font-mono text-xs">ReactNode</td>
-                    <td className="py-3 px-4 font-mono text-xs">undefined</td>
+                    <td className="px-4 py-3 font-mono text-xs">icon</td>
+                    <td className="px-4 py-3 font-mono text-xs">ReactNode</td>
+                    <td className="px-4 py-3 font-mono text-xs">undefined</td>
                   </tr>
                 </tbody>
               </table>
@@ -232,33 +232,33 @@ export default function Example() {
 
           {/* Breadcrumbs.Current */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">Breadcrumbs.Current</h3>
+            <h3 className="mb-3 text-lg font-semibold">Breadcrumbs.Current</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                    <th className="text-left py-3 px-4 font-semibold">Prop</th>
-                    <th className="text-left py-3 px-4 font-semibold">Type</th>
-                    <th className="text-left py-3 px-4 font-semibold">
+                    <th className="px-4 py-3 text-left font-semibold">Prop</th>
+                    <th className="px-4 py-3 text-left font-semibold">Type</th>
+                    <th className="px-4 py-3 text-left font-semibold">
                       Default
                     </th>
                   </tr>
                 </thead>
                 <tbody className="text-neutral-600 dark:text-neutral-400">
                   <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                    <td className="py-3 px-4 font-mono text-xs">children</td>
-                    <td className="py-3 px-4 font-mono text-xs">ReactNode</td>
-                    <td className="py-3 px-4 font-mono text-xs">required</td>
+                    <td className="px-4 py-3 font-mono text-xs">children</td>
+                    <td className="px-4 py-3 font-mono text-xs">ReactNode</td>
+                    <td className="px-4 py-3 font-mono text-xs">required</td>
                   </tr>
                   <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                    <td className="py-3 px-4 font-mono text-xs">icon</td>
-                    <td className="py-3 px-4 font-mono text-xs">ReactNode</td>
-                    <td className="py-3 px-4 font-mono text-xs">undefined</td>
+                    <td className="px-4 py-3 font-mono text-xs">icon</td>
+                    <td className="px-4 py-3 font-mono text-xs">ReactNode</td>
+                    <td className="px-4 py-3 font-mono text-xs">undefined</td>
                   </tr>
                   <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                    <td className="py-3 px-4 font-mono text-xs">loading</td>
-                    <td className="py-3 px-4 font-mono text-xs">boolean</td>
-                    <td className="py-3 px-4 font-mono text-xs">false</td>
+                    <td className="px-4 py-3 font-mono text-xs">loading</td>
+                    <td className="px-4 py-3 font-mono text-xs">boolean</td>
+                    <td className="px-4 py-3 font-mono text-xs">false</td>
                   </tr>
                 </tbody>
               </table>
@@ -267,23 +267,25 @@ export default function Example() {
 
           {/* Breadcrumbs.Separator */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">Breadcrumbs.Separator</h3>
+            <h3 className="mb-3 text-lg font-semibold">
+              Breadcrumbs.Separator
+            </h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                    <th className="text-left py-3 px-4 font-semibold">Prop</th>
-                    <th className="text-left py-3 px-4 font-semibold">Type</th>
-                    <th className="text-left py-3 px-4 font-semibold">
+                    <th className="px-4 py-3 text-left font-semibold">Prop</th>
+                    <th className="px-4 py-3 text-left font-semibold">Type</th>
+                    <th className="px-4 py-3 text-left font-semibold">
                       Default
                     </th>
                   </tr>
                 </thead>
                 <tbody className="text-neutral-600 dark:text-neutral-400">
                   <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                    <td className="py-3 px-4 font-mono text-xs">-</td>
-                    <td className="py-3 px-4 font-mono text-xs">-</td>
-                    <td className="py-3 px-4 font-mono text-xs">-</td>
+                    <td className="px-4 py-3 font-mono text-xs">-</td>
+                    <td className="px-4 py-3 font-mono text-xs">-</td>
+                    <td className="px-4 py-3 font-mono text-xs">-</td>
                   </tr>
                 </tbody>
               </table>
@@ -292,23 +294,25 @@ export default function Example() {
 
           {/* Breadcrumbs.Clipboard */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">Breadcrumbs.Clipboard</h3>
+            <h3 className="mb-3 text-lg font-semibold">
+              Breadcrumbs.Clipboard
+            </h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                    <th className="text-left py-3 px-4 font-semibold">Prop</th>
-                    <th className="text-left py-3 px-4 font-semibold">Type</th>
-                    <th className="text-left py-3 px-4 font-semibold">
+                    <th className="px-4 py-3 text-left font-semibold">Prop</th>
+                    <th className="px-4 py-3 text-left font-semibold">Type</th>
+                    <th className="px-4 py-3 text-left font-semibold">
                       Default
                     </th>
                   </tr>
                 </thead>
                 <tbody className="text-neutral-600 dark:text-neutral-400">
                   <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                    <td className="py-3 px-4 font-mono text-xs">text</td>
-                    <td className="py-3 px-4 font-mono text-xs">string</td>
-                    <td className="py-3 px-4 font-mono text-xs">required</td>
+                    <td className="px-4 py-3 font-mono text-xs">text</td>
+                    <td className="px-4 py-3 font-mono text-xs">string</td>
+                    <td className="px-4 py-3 font-mono text-xs">required</td>
                   </tr>
                 </tbody>
               </table>

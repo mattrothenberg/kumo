@@ -1,6 +1,6 @@
 /**
  * Sandpack Files Configuration
- * 
+ *
  * This file contains all the Kumo component source code embedded as strings
  * so Sandpack can bundle them properly
  */
