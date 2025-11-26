@@ -9,6 +9,7 @@ export default function CheckboxDoc() {
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [enableNotifications, setEnableNotifications] = useState(false);
   const [agree, setAgree] = useState(true);
+  const [indeterminate, setIndeterminate] = useState(true);
 
   return (
     <DocLayout
@@ -76,13 +77,24 @@ export default function Example() {
 
           <div>
             <h3 className="text-xl font-semibold mb-4">Checked</h3>
-            <ComponentExample
-              code={`<Checkbox label="I agree" defaultChecked />`}
-            >
+            <ComponentExample code={`<Checkbox label="I agree" checked />`}>
               <Checkbox
                 label="I agree"
                 checked={agree}
                 onValueChange={setAgree}
+              />
+            </ComponentExample>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold mb-4">Indeterminate</h3>
+            <ComponentExample
+              code={`<Checkbox label="Select all" indeterminate />`}
+            >
+              <Checkbox
+                label="Select all"
+                indeterminate={indeterminate}
+                onValueChange={setIndeterminate}
               />
             </ComponentExample>
           </div>
@@ -93,6 +105,15 @@ export default function Example() {
               code={`<Checkbox label="Disabled option" disabled />`}
             >
               <Checkbox label="Disabled option" disabled />
+            </ComponentExample>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold mb-4">Error</h3>
+            <ComponentExample
+              code={`<Checkbox label="Invalid option" variant="error" />`}
+            >
+              <Checkbox label="Invalid option" variant="error" />
             </ComponentExample>
           </div>
         </div>
@@ -117,7 +138,12 @@ export default function Example() {
                 <td className="py-3 px-4 font-mono text-xs">undefined</td>
               </tr>
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                <td className="py-3 px-4 font-mono text-xs">defaultChecked</td>
+                <td className="py-3 px-4 font-mono text-xs">checked</td>
+                <td className="py-3 px-4 font-mono text-xs">boolean</td>
+                <td className="py-3 px-4 font-mono text-xs">false</td>
+              </tr>
+              <tr className="border-b border-neutral-200 dark:border-neutral-800">
+                <td className="py-3 px-4 font-mono text-xs">indeterminate</td>
                 <td className="py-3 px-4 font-mono text-xs">boolean</td>
                 <td className="py-3 px-4 font-mono text-xs">false</td>
               </tr>
@@ -125,6 +151,13 @@ export default function Example() {
                 <td className="py-3 px-4 font-mono text-xs">disabled</td>
                 <td className="py-3 px-4 font-mono text-xs">boolean</td>
                 <td className="py-3 px-4 font-mono text-xs">false</td>
+              </tr>
+              <tr className="border-b border-neutral-200 dark:border-neutral-800">
+                <td className="py-3 px-4 font-mono text-xs">variant</td>
+                <td className="py-3 px-4 font-mono text-xs">
+                  "default" | "disabled"
+                </td>
+                <td className="py-3 px-4 font-mono text-xs">"default"</td>
               </tr>
             </tbody>
           </table>

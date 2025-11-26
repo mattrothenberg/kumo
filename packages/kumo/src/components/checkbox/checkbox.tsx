@@ -1,50 +1,66 @@
-import React from "react";
-import { CheckIcon } from "@phosphor-icons/react";
+import {
+  forwardRef,
+  useRef,
+  useEffect,
+  useImperativeHandle,
+  type InputHTMLAttributes,
+} from "react";
+import { CheckIcon, MinusIcon } from "@phosphor-icons/react";
 import { cn } from "../../utils/cn";
 
-export interface CheckboxProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+export type CheckboxProps = InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
-  error?: boolean;
-  description?: string;
-}
-
-export const inputClasses = cn(
-  "flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center rounded border border-neutral-500 hover:opacity-90"
-);
-
-const selectedInputClasses =
-  "dark:border-neutral-400 border-neutral-600 dark:bg-neutral-100 bg-neutral-900";
-
-export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
-  className?: string;
   checked?: boolean;
-  label?: string;
+  indeterminate?: boolean;
+  disabled?: boolean;
+  variant?: "default" | "error";
   onValueChange?: (checked: boolean) => void;
 };
 
-export const Checkbox = React.forwardRef<HTMLInputElement, InputProps>(
+const variantStyles = {
+  default:
+    "[&:focus-within>span]:ring-kumo-active [&:hover>span]:ring-kumo-active",
+  error: "[&>span]:ring-kumo-destructive",
+};
+
+export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   (
     {
       className,
       checked,
-      onValueChange,
-      label,
-      onChange,
+      indeterminate,
       disabled,
+      variant = "default",
+      label,
+      onValueChange,
+      onChange,
       ...props
     },
     ref
   ) => {
+    const internalRef = useRef<HTMLInputElement>(null);
+    const Icon = indeterminate ? MinusIcon : checked ? CheckIcon : undefined;
+
+    useImperativeHandle(ref, () => internalRef.current!, []);
+
+    useEffect(() => {
+      if (internalRef.current) {
+        internalRef.current.indeterminate = indeterminate === true;
+      }
+    }, [internalRef, indeterminate]);
+
     return (
       <label
         className={cn(
-          "inline-flex! m-0! items-center gap-2 cursor-pointer",
-          disabled && "cursor-not-allowed opacity-60"
+          "flex! m-0! items-center gap-2",
+          disabled
+            ? "opacity-50 cursor-not-allowed"
+            : [variantStyles[variant], "cursor-pointer"],
+          className
         )}
       >
         <input
-          ref={ref}
+          ref={internalRef}
           type="checkbox"
           className="sr-only"
           checked={checked}
@@ -55,29 +71,22 @@ export const Checkbox = React.forwardRef<HTMLInputElement, InputProps>(
           }}
           {...props}
         />
-
-        <div
+        <span
           aria-hidden
           className={cn(
-            inputClasses,
-            checked ? selectedInputClasses : "",
-            disabled && "opacity-75 cursor-not-allowed",
-            className
+            "flex items-center justify-center w-4 h-4 border-0 rounded-sm bg-kumo-surface ring ring-kumo-border",
+            (checked || indeterminate) && "dark:bg-neutral-100 bg-neutral-900"
           )}
         >
-          {checked && (
-            <CheckIcon
-              size={12}
+          {Icon && (
+            <Icon
+              className="text-neutral-100 dark:text-neutral-900"
               weight="bold"
-              className="m-auto text-neutral-100 dark:text-neutral-900"
+              size="12"
             />
           )}
-        </div>
-        {label && (
-          <span className="select-none" aria-hidden={false}>
-            {label}
-          </span>
-        )}
+        </span>
+        {label}
       </label>
     );
   }
