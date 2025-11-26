@@ -1,0 +1,29 @@
+import type { Preview } from "@storybook/react-vite";
+import "./preview.css";
+
+const preview: Preview = {
+  parameters: {
+    controls: {
+      matchers: {
+        color: /(background|color)$/i,
+        date: /Date$/i,
+      },
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div className="flex flex-col gap-4 p-4">
+        <div className="flex-1">
+          <div className="mb-2 text-[12px] font-medium">Light</div>
+          <Story />
+        </div>
+        <div className="dark-mode flex-1">
+          <div className="mb-2 text-[12px] font-medium">Dark</div>
+          <Story />
+        </div>
+      </div>
+    ),
+  ],
+};
+
+export default preview;

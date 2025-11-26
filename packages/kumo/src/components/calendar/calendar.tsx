@@ -354,13 +354,13 @@ function DateRangeDayCell({
       case DateRangeCellMode.ENABLED:
         return "bg-transparent";
       case DateRangeCellMode.SELECTED_START_NODE:
-        return "!bg-neutral-950 dark:!bg-neutral-50 rounded-tl-[5px] rounded-bl-[5px]";
+        return "!bg-kumo-calendar-day-range-selected-endpoints rounded-tl-[5px] rounded-bl-[5px]";
       case DateRangeCellMode.SELECTED_END_NODE:
-        return "!bg-neutral-950 dark:!bg-neutral-50 rounded-tr-[5px] rounded-br-[5px]";
+        return "!bg-kumo-calendar-day-range-selected-endpoints rounded-tr-[5px] rounded-br-[5px]";
       case DateRangeCellMode.SELECTED:
-        return "bg-neutral-300 dark:bg-neutral-700";
+        return "bg-kumo-calendar-day-range-selected";
       case DateRangeCellMode.SELECTED_OUT_OF_RANGE:
-        return "bg-neutral-200 dark:bg-neutral-800";
+        return "bg-kumo-calendar-day-range-selected-out-of-range";
     }
   }, [mode]);
 
@@ -371,9 +371,9 @@ function DateRangeDayCell({
         return "!text-neutral-300 dark:!text-neutral-700";
       case DateRangeCellMode.SELECTED_START_NODE:
       case DateRangeCellMode.SELECTED_END_NODE:
-        return "!text-neutral-200 dark:!text-neutral-800";
+        return "!text-kumo-calendar-day-range-selected-endpoints";
       default:
-        return "text-neutral-900 dark:text-neutral-100";
+        return "text-kumo-secondary";
     }
   }, [mode]);
 
