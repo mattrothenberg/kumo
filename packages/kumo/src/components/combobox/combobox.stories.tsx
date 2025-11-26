@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Combobox } from "./combobox";
 import { useMemo, useState } from "react";
 import { Text } from "../text";
+import { Button } from "../button";
 
 const meta = {
   title: "Components/Combobox",
@@ -87,40 +88,48 @@ export const Multiple: StoryObj<{
     const [value, setValue] = useState<BotType[]>([]);
 
     return (
-      <Combobox
-        value={value}
-        onValueChange={setValue}
-        items={botList}
-        isItemEqualToValue={(bot, selectedValue) =>
-          bot.value === selectedValue.value
-        }
-        multiple
-      >
-        <Combobox.TriggerMultipleWithInput
-          className="w-[500px]"
-          placeholder={args.placeholder}
-          renderItem={(selected: BotType) => (
-            <Combobox.Chip key={selected.value}>{selected.label}</Combobox.Chip>
-          )}
-          inputSide={args.inputSide}
-        />
-        <Combobox.Content
-          className="min-w-auto max-h-[200px] overflow-y-auto"
-          side={args.inputSide === "top" ? "top" : "bottom"}
-        >
-          <Combobox.Empty />
-          <Combobox.List>
-            {(item: BotType) => (
-              <Combobox.Item key={item.value} value={item}>
-                <div className="flex gap-2">
-                  <Text>{item.label}</Text>
-                  <Text variant="secondary">{item.author}</Text>
-                </div>
-              </Combobox.Item>
-            )}
-          </Combobox.List>
-        </Combobox.Content>
-      </Combobox>
+      <div className="flex gap-2">
+        <div>
+          <Combobox
+            value={value}
+            onValueChange={setValue}
+            items={botList}
+            isItemEqualToValue={(bot, selectedValue) =>
+              bot.value === selectedValue.value
+            }
+            multiple
+          >
+            <Combobox.TriggerMultipleWithInput
+              className="w-[400px]"
+              placeholder={args.placeholder}
+              renderItem={(selected: BotType) => (
+                <Combobox.Chip key={selected.value}>
+                  {selected.label}
+                </Combobox.Chip>
+              )}
+              inputSide={args.inputSide}
+            />
+            <Combobox.Content
+              className="min-w-auto max-h-[200px] overflow-y-auto"
+              side={args.inputSide === "top" ? "top" : "bottom"}
+            >
+              <Combobox.Empty />
+              <Combobox.List>
+                {(item: BotType) => (
+                  <Combobox.Item key={item.value} value={item}>
+                    <div className="flex gap-2">
+                      <Text>{item.label}</Text>
+                      <Text variant="secondary">{item.author}</Text>
+                    </div>
+                  </Combobox.Item>
+                )}
+              </Combobox.List>
+            </Combobox.Content>
+          </Combobox>
+        </div>
+        {/* Demonstrates that the multi-select combobox maintains consistent height with other Kumo components */}
+        <Button variant="primary">Submit</Button>
+      </div>
     );
   },
 };

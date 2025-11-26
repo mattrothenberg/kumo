@@ -166,7 +166,12 @@ function TriggerMultipleWithInput<ValueType>({
     <ComboboxBase.Chips
       className={cn(
         inputVariants(),
-        "flex items-center overflow-hidden gap-1 px-1 flex-wrap h-auto p-1 gap-1",
+        cn(
+          "flex flex-wrap items-center overflow-hidden", // Base layout and overflow handling
+          "gap-1 p-1", // Consistent spacing for chips and padding
+          "min-h-9", // Match standard Kumo component height
+          "h-auto" // Allow height expansion for multi-line chip wrapping
+        ),
         className
       )}
     >
