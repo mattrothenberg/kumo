@@ -40,6 +40,19 @@ Install pnpm globally if you haven't already:
 npm install -g pnpm
 ```
 
+### NPM Registry Configuration
+
+Follow the steps at [Getting started with the private NPM registry](https://wiki.cfdata.org/display/FE/Getting+started+with+the+private+NPM+registry) to configure your `NPM_TOKEN`.
+
+
+To install `@cloudflare` scoped packages, you need to configure NPM to use the Cloudflare private registry. Add the following to either your user-level NPM configuration (`~/.npmrc`) or your consuming project's `.npmrc`:
+
+```
+# Cloudflare registry configuration
+@cloudflare:registry=https://registry-gateway.cloudflare-ui.workers.dev
+//registry-gateway.cloudflare-ui.workers.dev/:_authToken="${NPM_TOKEN}"
+```
+
 ### Installation
 
 Install the dependencies:

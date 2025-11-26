@@ -8,6 +8,33 @@ export default function Installation() {
       title="Installation"
       description="Get started with Kumo by installing the package and importing components."
     >
+      <ComponentSection>
+        <h2 className="text-2xl font-bold mb-4">NPM Registry Configuration</h2>
+        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
+          Follow the steps at{" "}
+          <a
+            href="https://wiki.cfdata.org/display/FE/Getting+started+with+the+private+NPM+registry"
+            className="text-blue-600 dark:text-blue-400 hover:underline"
+          >
+            Getting started with the private NPM registry
+          </a>{" "}
+          to configure your local environment with a <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">NPM_TOKEN</code>.
+        </p>
+
+        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
+          To install <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">@cloudflare</code> scoped packages, 
+          you need to configure NPM to use the Cloudflare private registry.<br />
+          Add the following to either your user-level NPM configuration (<code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">~/.npmrc</code>) 
+          or your consuming project's <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">.npmrc</code> file:
+        </p>
+        <CodeBlock
+          lang="bash"
+          code={`# Cloudflare registry configuration
+@cloudflare:registry=https://registry-gateway.cloudflare-ui.workers.dev
+//registry-gateway.cloudflare-ui.workers.dev/:_authToken="\${NPM_TOKEN}"`}
+        />
+      </ComponentSection>
+
       {/* Installation */}
       <ComponentSection>
         <h2 className="text-2xl font-bold mb-4">Install Package</h2>
