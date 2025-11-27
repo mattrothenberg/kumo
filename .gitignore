@@ -22,7 +22,7 @@ worker-configuration.d.ts
 .react-router
 
 # IDE
-.vscode/
+# .vscode/
 .idea/
 *.swp
 *.swo
