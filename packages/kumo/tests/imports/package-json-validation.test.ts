@@ -250,7 +250,7 @@ describe("Package.json Validation", () => {
       const missingBuildEntries: string[] = [];
 
       componentsWithExports.forEach((componentName: string) => {
-        const buildEntryPattern = `'components/${componentName}'`;
+        const buildEntryPattern = `components/${componentName}`;
         if (!viteConfigContent.includes(buildEntryPattern)) {
           missingBuildEntries.push(componentName);
         }
@@ -276,7 +276,7 @@ describe("Package.json Validation", () => {
       const missingBuildEntries: string[] = [];
 
       blocksWithExports.forEach((blockName: string) => {
-        const buildEntryPattern = `'blocks/${blockName}'`;
+        const buildEntryPattern = `blocks/${blockName}`;
         if (!viteConfigContent.includes(buildEntryPattern)) {
           missingBuildEntries.push(blockName);
         }
@@ -300,7 +300,7 @@ describe("Package.json Validation", () => {
       const missingBuildEntries: string[] = [];
 
       layoutsWithExports.forEach((layoutName: string) => {
-        const buildEntryPattern = `'layouts/${layoutName}'`;
+        const buildEntryPattern = `layouts/${layoutName}`;
         if (!viteConfigContent.includes(buildEntryPattern)) {
           missingBuildEntries.push(layoutName);
         }

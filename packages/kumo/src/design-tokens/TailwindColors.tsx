@@ -1,5 +1,8 @@
 import type { FC } from "react";
-import { kumoColors } from "../../scripts/color/dist/storybook-colors";
+import {
+  kumoColors,
+  type KumoColor,
+} from "../../scripts/color/dist/storybook-colors.js";
 
 // We only expose two public display modes, but reuse the same filtering logic
 // internally to keep behavior consistent.
@@ -24,7 +27,7 @@ function matchesDisplay(name: string, display: DisplayMode): boolean {
 export const TailwindColorTokens: FC<TailwindColorTokensProps> = ({
   display = "colors",
 }) => {
-  const filtered = kumoColors.filter((color) =>
+  const filtered = kumoColors.filter((color: KumoColor) =>
     matchesDisplay(color.name, display),
   );
 
@@ -67,7 +70,7 @@ export const TailwindColorTokens: FC<TailwindColorTokensProps> = ({
         </ul>
       </div>
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-        {filtered.map((token) => (
+        {filtered.map((token: KumoColor) => (
           <div
             key={token.name}
             className="flex items-center gap-3 rounded-md border border-kumo-color bg-kumo-surface px-3 py-2 text-xs"
