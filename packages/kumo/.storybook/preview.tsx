@@ -13,11 +13,11 @@ const preview: Preview = {
   decorators: [
     (Story) => (
       <div className="flex flex-col gap-4 p-4">
-        <div className="flex-1">
+        <div className="flex-1 bg-kumo-surface p-6 text-kumo-surface">
           <div className="mb-2 text-[12px] font-medium">Light</div>
           <Story />
         </div>
-        <div className="dark-mode flex-1">
+        <div className="dark-mode flex-1 bg-kumo-surface p-6 text-kumo-surface">
           <div className="mb-2 text-[12px] font-medium">Dark</div>
           <Story />
         </div>

@@ -133,3 +133,52 @@ export const Multiple: StoryObj<{
     );
   },
 };
+
+export const MultipleWithPreselectedChips: Story = {
+  render: () => {
+    const botList = useMemo(
+      () => [
+        { label: "Amazonbot", author: "Amazon", value: "amazonbot" },
+        { label: "Googlebot", author: "Google", value: "googlebot" },
+        { label: "BingBot", author: "Bing", value: "bingbot" },
+      ],
+      [],
+    );
+
+    const [value, setValue] = useState<BotType[]>([botList[0], botList[1]]);
+
+    return (
+      <Combobox
+        value={value}
+        onValueChange={setValue}
+        items={botList}
+        isItemEqualToValue={(bot, selectedValue) =>
+          bot.value === selectedValue.value
+        }
+        multiple
+      >
+        <Combobox.TriggerMultipleWithInput
+          className="w-[400px]"
+          placeholder="Select bot"
+          renderItem={(selected: BotType) => (
+            <Combobox.Chip key={selected.value}>{selected.label}</Combobox.Chip>
+          )}
+          inputSide="top"
+        />
+        <Combobox.Content className="max-h-[200px] min-w-auto overflow-y-auto">
+          <Combobox.Empty />
+          <Combobox.List>
+            {(item: BotType) => (
+              <Combobox.Item key={item.value} value={item}>
+                <div className="flex gap-2">
+                  <Text>{item.label}</Text>
+                  <Text variant="secondary">{item.author}</Text>
+                </div>
+              </Combobox.Item>
+            )}
+          </Combobox.List>
+        </Combobox.Content>
+      </Combobox>
+    );
+  },
+};

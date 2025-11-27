@@ -23,8 +23,8 @@ const DropdownMenuSubTrigger = React.forwardRef<
     className={cn(
       "flex cursor-default items-center rounded-sm text-base outline-hidden select-none", // base styles
       "px-2 py-1.5", // spacing
-      "focus:bg-accent", // focus state
-      "data-[state=open]:bg-accent", // open state
+      "focus:bg-kumo-accent", // focus state
+      "data-[state=open]:bg-kumo-accent", // open state
       inset && "pl-8", // conditional inset
       className,
     )}
@@ -51,8 +51,8 @@ const DropdownMenuContent = React.forwardRef<
     >
       <DropdownMenuPrimitive.Popup
         className={cn(
-          "z-50 overflow-hidden bg-surface text-surface dark:bg-neutral-900", // background
-          "rounded-lg shadow-lg ring ring-neutral-950/10 dark:ring-neutral-800", // border part
+          "z-50 overflow-hidden bg-kumo-secondary text-kumo-surface", // background
+          "rounded-lg shadow-lg ring ring-kumo-border", // border part
           "min-w-36 p-1.5", // spacing
           "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95", // open animation
           "data-[side=bottom]:slide-in-from-top-2", // bottom side animation
@@ -120,7 +120,7 @@ const DropdownMenuItem = React.forwardRef<
       const styles = cn(
         "flex items-center",
         variant === "danger" &&
-          "text-error data-highlighted:bg-red-100 data-highlighted:text-error data-highlighted:dark:bg-red-950",
+          "text-kumo-error data-highlighted:bg-kumo-destructive-2 data-highlighted:text-kumo-error",
       );
       if (isExternal) {
         return (
@@ -161,11 +161,11 @@ const DropdownMenuItem = React.forwardRef<
       <DropdownMenuPrimitive.Item
         ref={ref}
         className={cn(
-          "relative flex cursor-default items-center rounded-md px-2 py-1.5 text-base outline-hidden select-none focus:text-secondary data-disabled:pointer-events-none data-disabled:opacity-50 data-highlighted:bg-neutral-100 dark:data-highlighted:bg-neutral-800",
+          "relative flex cursor-default items-center rounded-md px-2 py-1.5 text-base outline-hidden select-none focus:text-kumo-secondary data-disabled:pointer-events-none data-disabled:opacity-50 data-highlighted:bg-kumo-color-3",
           inset && "pl-8",
           className,
         )}
-        render={Boolean(href) ? content : render}
+        render={href ? content : render}
         {...props}
       >
         {children}
@@ -183,7 +183,7 @@ const DropdownMenuCheckboxItem = React.forwardRef<
   <DropdownMenuPrimitive.CheckboxItem
     ref={ref}
     className={cn(
-      "relative flex cursor-default items-center rounded-sm py-1.5 pr-2 pl-8 text-base outline-hidden transition-colors select-none focus:bg-accent focus:text-secondary data-disabled:pointer-events-none data-disabled:opacity-50",
+      "relative flex cursor-default items-center rounded-sm py-1.5 pr-2 pl-8 text-base outline-hidden transition-colors select-none focus:bg-kumo-accent focus:text-kumo-secondary data-disabled:pointer-events-none data-disabled:opacity-50",
       className,
     )}
     checked={checked}
@@ -222,7 +222,7 @@ const DropdownMenuSeparator = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DropdownMenuPrimitive.Separator
     ref={ref}
-    className={cn("-mx-1 my-1 h-px bg-muted", className)}
+    className={cn("-mx-1 my-1 h-px bg-kumo-muted", className)}
     {...props}
   />
 ));

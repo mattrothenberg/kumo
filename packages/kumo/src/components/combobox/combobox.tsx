@@ -38,8 +38,8 @@ function Content({
         <ComboboxBase.Popup
           className={cn(
             "max-h-[min(var(--available-height),24rem)] max-w-(--available-width) min-w-(--anchor-width) scroll-pt-2 scroll-pb-2 overflow-y-auto overscroll-contain p-1.5",
-            "z-50 overflow-hidden bg-surface text-surface dark:bg-neutral-900", // background
-            "rounded-lg shadow-lg ring ring-neutral-950/10 dark:ring-neutral-800", // border part
+            "z-50 overflow-hidden bg-kumo-secondary text-kumo-surface", // background
+            "rounded-lg shadow-lg ring ring-kumo-border", // border part
             className,
           )}
         >
@@ -93,7 +93,7 @@ function Item({ children, ...props }: ComboboxBase.Item.Props) {
   return (
     <ComboboxBase.Item
       {...props}
-      className="group grid cursor-pointer grid-cols-[1fr_16px] gap-2 rounded px-2 py-1.5 text-base data-highlighted:bg-neutral-100 dark:data-highlighted:bg-neutral-800"
+      className="group grid cursor-pointer grid-cols-[1fr_16px] gap-2 rounded px-2 py-1.5 text-base data-highlighted:bg-kumo-color-3"
     >
       <div className="col-start-1">{children}</div>
       <ComboboxBase.ItemIndicator className="col-start-2 flex items-center">
@@ -141,10 +141,10 @@ function Chip(props: ComboboxBase.Chip.Props) {
   return (
     <ComboboxBase.Chip
       {...props}
-      className="flex items-center gap-1 rounded-md bg-neutral-100 px-2 py-1 dark:bg-neutral-800"
+      className="flex items-center gap-1 rounded-md bg-kumo-color-3 px-2 py-1"
     >
       {props.children}
-      <ComboboxBase.ChipRemove className="cursor-pointer rounded-md p-1 hover:bg-neutral-200 dark:hover:bg-neutral-700">
+      <ComboboxBase.ChipRemove className="cursor-pointer rounded-md p-1 hover:bg-kumo-color-2">
         <XIcon size={12} weight="bold" />
       </ComboboxBase.ChipRemove>
     </ComboboxBase.Chip>

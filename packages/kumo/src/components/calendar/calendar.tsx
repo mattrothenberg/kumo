@@ -439,7 +439,7 @@ function DateRangeMonthHeader({
 
 function DateRangeFooter({ reset }: { reset?: () => void }) {
   return (
-    <div className="flex items-center gap-2 text-sm text-kumo-calendar-footer">
+    <div className="text-kumo-neutral-subtle flex items-center gap-2 text-sm">
       <GlobeHemisphereWestIcon size={16} />
       <span className="flex-1">Timezone: New York, NY, USA (GMT-4)</span>
       <span

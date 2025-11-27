@@ -24,12 +24,15 @@ export function Field({
       </FieldBase.Label>
       {children}
       {error && (
-        <FieldBase.Error className="text-sm text-error" match={error.match}>
+        <FieldBase.Error
+          className="text-sm text-kumo-error"
+          match={error.match}
+        >
           {error.message}
         </FieldBase.Error>
       )}
       {description && (
-        <FieldBase.Description className="text-sm leading-snug text-muted">
+        <FieldBase.Description className="text-sm leading-snug text-kumo-muted">
           {description}
         </FieldBase.Description>
       )}

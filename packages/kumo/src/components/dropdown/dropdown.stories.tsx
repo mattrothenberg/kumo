@@ -31,3 +31,21 @@ export const Default: Story = {
     </DropdownMenu>
   ),
 };
+
+export const DangerLinkItem: Story = {
+  args: {
+    children: null,
+  },
+  render: () => (
+    <DropdownMenu>
+      <DropdownMenu.Trigger>
+        <Button>Open Menu</Button>
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content>
+        <DropdownMenu.Item href="https://example.com" variant="danger">
+          Delete worker
+        </DropdownMenu.Item>
+      </DropdownMenu.Content>
+    </DropdownMenu>
+  ),
+};

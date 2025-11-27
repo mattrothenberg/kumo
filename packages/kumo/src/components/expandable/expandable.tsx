@@ -23,7 +23,7 @@ export function Expandable({
   return (
     <div>
       <div
-        className="flex cursor-pointer items-center gap-1 text-sm text-blue-600 select-none dark:text-blue-400"
+        className="flex cursor-pointer items-center gap-1 text-sm text-kumo-success select-none"
         onClick={handleOpen}
       >
         {title}{" "}
@@ -34,7 +34,7 @@ export function Expandable({
       {open && (
         <div
           className={cn(
-            "my-2 space-y-4 border-l-2 border-color pl-4",
+            "my-2 space-y-4 border-l-2 border-kumo-color pl-4",
             className,
           )}
         >
