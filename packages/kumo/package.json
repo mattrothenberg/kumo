@@ -170,7 +170,7 @@
     "clean": "rm -rf dist",
     "lint": "oxlint src/** --type-aware",
     "prepublishOnly": "pnpm run clean && pnpm run build && pnpm run test:run",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "pnpm run build:colors && tsc --noEmit",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
