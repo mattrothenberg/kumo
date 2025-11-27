@@ -238,6 +238,10 @@
   );
 
   /* colors */
+  --color-kumo-white: light-dark(
+    var(--color-white, #fff),
+    var(--color-white, #fff)
+  );
 
   --color-kumo-black-icon: light-dark(
     var(--color-neutral-900, oklch(21% 0.006 285.885)),

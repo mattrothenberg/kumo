@@ -37,8 +37,8 @@ export const TAILWIND_COLOR_FAMILIES = new Set([
   "stone",
   // common utility color keywords (note: "transparent" is intentionally
   // excluded so utilities like bg-transparent / ring-transparent are allowed)
-  // "black",
-  // "white",
+  "black",
+  "white",
 ]);
 
 // Semantic color families that are backed by kumo-binding.css
@@ -200,20 +200,6 @@ export const noPrimitiveColorsRule = defineRule({
         if (node.value) {
           const strings = extractStrings(node.value);
           reportIfPrimitiveColor(node, strings);
-        }
-      },
-      Literal(node) {
-        if (
-          typeof node.value === "string" &&
-          hasPrimitiveOrSemanticColor(node.value)
-        ) {
-          context.report({ node, messageId: RULE_NAME });
-        }
-      },
-      TemplateLiteral(node) {
-        const strings = extractStrings(node);
-        if (strings.some(hasPrimitiveOrSemanticColor)) {
-          context.report({ node, messageId: RULE_NAME });
         }
       },
     };

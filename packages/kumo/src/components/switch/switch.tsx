@@ -109,7 +109,7 @@ export const Switch = ({
             )}
             <BaseSwitch.Thumb
               className={cn(
-                "pointer-events-none aspect-square h-full rounded-full bg-white transition-all",
+                "pointer-events-none aspect-square h-full rounded-full bg-kumo-white transition-all",
                 {
                   "translate-x-full": state.checked,
                 },
