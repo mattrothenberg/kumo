@@ -1,6 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Button, LinkButton, RefreshButton } from "./button";
+import {
+  Button,
+  LinkButton,
+  RefreshButton,
+  KUMO_BUTTON_VARIANTS,
+  KUMO_BUTTON_DEFAULT_VARIANTS,
+} from "./button";
 import { PlusIcon, TrashIcon } from "@phosphor-icons/react";
+import { propTester } from "../../utils/prop-tester";
 
 const meta: Meta<typeof Button> = {
   title: "Components/Button",
@@ -12,54 +19,69 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     variant: {
       control: "select",
-      options: ["primary", "secondary", "ghost", "destructive", "outline"],
+      options: Object.keys(KUMO_BUTTON_VARIANTS.variant),
     },
     size: {
       control: "select",
-      options: ["xs", "sm", "base", "lg"],
+      options: Object.keys(KUMO_BUTTON_VARIANTS.size),
     },
     shape: {
       control: "select",
-      options: ["base", "square", "circle"],
+      options: Object.keys(KUMO_BUTTON_VARIANTS.shape),
     },
+  },
+  args: {
+    variant: KUMO_BUTTON_DEFAULT_VARIANTS.variant,
+    size: KUMO_BUTTON_DEFAULT_VARIANTS.size,
+    shape: KUMO_BUTTON_DEFAULT_VARIANTS.shape,
+    children: "Button",
   },
 };
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {
+export const Variants: Story = {
+  render: () => (
+    <>
+      {propTester(
+        Object.keys(KUMO_BUTTON_VARIANTS.variant),
+        "variant",
+        <Button>Button</Button>,
+      )}
+    </>
+  ),
+};
+
+export const Sizes: Story = {
+  render: () => (
+    <>
+      {propTester(
+        Object.keys(KUMO_BUTTON_VARIANTS.size),
+        "size",
+        <Button>Button</Button>,
+      )}
+    </>
+  ),
+};
+
+export const Shapes: Story = {
+  render: () => (
+    <>
+      {propTester(
+        Object.keys(KUMO_BUTTON_VARIANTS.shape),
+        "shape",
+        <Button icon={PlusIcon} />,
+      )}
+    </>
+  ),
+};
+
+export const Disabled: Story = {
   args: {
     variant: "primary",
-    children: "Button",
-  },
-};
-
-export const Secondary: Story = {
-  args: {
-    variant: "secondary",
-    children: "Button",
-  },
-};
-
-export const Ghost: Story = {
-  args: {
-    variant: "ghost",
-    children: "Button",
-  },
-};
-
-export const Destructive: Story = {
-  args: {
-    variant: "destructive",
-    children: "Button",
-  },
-};
-
-export const Outline: Story = {
-  args: {
-    variant: "outline",
-    children: "Button",
+    disabled: true,
+    children: "Disabled",
   },
 };
 
@@ -76,44 +98,6 @@ export const Loading: Story = {
     variant: "primary",
     loading: true,
     children: "Loading...",
-  },
-};
-
-export const Disabled: Story = {
-  args: {
-    variant: "primary",
-    disabled: true,
-    children: "Disabled",
-  },
-};
-
-export const Sizes: Story = {
-  args: {
-    children: "Button",
-  },
-  render: () => (
-    <div className="flex items-center gap-2">
-      <Button size="xs">Extra Small</Button>
-      <Button size="sm">Small</Button>
-      <Button size="base">Base</Button>
-      <Button size="lg">Large</Button>
-    </div>
-  ),
-};
-
-export const Square: Story = {
-  args: {
-    variant: "secondary",
-    shape: "square",
-    icon: TrashIcon,
-  },
-};
-
-export const Circle: Story = {
-  args: {
-    variant: "secondary",
-    shape: "circle",
-    icon: PlusIcon,
   },
 };
 

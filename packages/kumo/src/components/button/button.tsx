@@ -3,49 +3,105 @@ import { ArrowsClockwiseIcon, type Icon } from "@phosphor-icons/react";
 import { Loader } from "../loader/loader";
 import { cn } from "../../utils/cn";
 import { useLinkComponent } from "../../utils/link-provider";
+import { defineSchema, COMMON_PROPS } from "../../utils/schema-helpers";
 
-interface KumoButtonVariantsProps {
-  shape?: "base" | "square" | "circle";
-  size?: "base" | "xs" | "sm" | "lg";
-  variant?: "primary" | "secondary" | "ghost" | "destructive" | "outline";
+// =============================================================================
+// KUMO_BUTTON_VARIANTS - Single source of truth for all button prop options
+// =============================================================================
+
+export const KUMO_BUTTON_VARIANTS = {
+  shape: {
+    base: {
+      classes: "",
+      description: "Default rectangular button shape",
+    },
+    square: {
+      classes: "items-center justify-center p-0",
+      description: "Square button for icon-only actions",
+    },
+    circle: {
+      classes: "items-center justify-center p-0 rounded-full",
+      description: "Circular button for icon-only actions",
+    },
+  },
+  size: {
+    xs: {
+      classes: "h-5 gap-1 rounded-sm px-1.5 text-xs",
+      description: "Extra small button for compact UIs",
+    },
+    sm: {
+      classes: "h-6.5 gap-1 rounded-md px-2 text-xs",
+      description: "Small button for secondary actions",
+    },
+    base: {
+      classes: "h-9 gap-1.5 rounded-lg px-3 text-base",
+      description: "Default button size",
+    },
+    lg: {
+      classes: "h-10 gap-2 rounded-lg px-4 text-base",
+      description: "Large button for primary CTAs",
+    },
+  },
+  compactSize: {
+    xs: { classes: "size-3.5" },
+    sm: { classes: "size-6.5" },
+    base: { classes: "size-9" },
+    lg: { classes: "size-10" },
+  },
+  variant: {
+    primary: {
+      classes:
+        "bg-kumo-primary !text-kumo-white hover:bg-kumo-primary/70 disabled:bg-kumo-primary/50 disabled:!text-kumo-primary/70",
+      description: "High-emphasis button for primary actions",
+    },
+    secondary: {
+      classes:
+        "bg-kumo-secondary !text-kumo-secondary ring not-disabled:hover:border-kumo-subtle! not-disabled:hover:bg-kumo-subtle disabled:bg-kumo-secondary/50 disabled:!text-kumo-secondary/70 ring-kumo-border data-[state=open]:bg-kumo-subtle",
+      description: "Default button style for most actions",
+    },
+    ghost: {
+      classes: "text-kumo-surface hover:bg-kumo-accent shadow-none bg-inherit",
+      description: "Minimal button with no background",
+    },
+    destructive: {
+      classes:
+        "bg-kumo-destructive !text-kumo-white hover:bg-kumo-destructive/70",
+      description: "Danger button for destructive actions like delete",
+    },
+    outline: {
+      classes: "bg-kumo-surface text-kumo-surface ring ring-kumo-border",
+      description: "Bordered button with transparent background",
+    },
+  },
+} as const;
+
+export const KUMO_BUTTON_DEFAULT_VARIANTS = {
+  shape: "base",
+  size: "base",
+  variant: "secondary",
+} as const;
+
+// Derived types from KUMO_BUTTON_VARIANTS
+export type KumoButtonShape = keyof typeof KUMO_BUTTON_VARIANTS.shape;
+export type KumoButtonSize = keyof typeof KUMO_BUTTON_VARIANTS.size;
+export type KumoButtonVariant = keyof typeof KUMO_BUTTON_VARIANTS.variant;
+
+export interface KumoButtonVariantsProps {
+  shape?: KumoButtonShape;
+  size?: KumoButtonSize;
+  variant?: KumoButtonVariant;
 }
 
-const sizeStyles = {
-  xs: "h-5 gap-1 rounded-sm px-1.5 text-xs",
-  sm: "h-6.5 gap-1 rounded-md px-2 text-xs",
-  base: "h-9 gap-1.5 rounded-lg px-3 text-base",
-  lg: "h-10 gap-2 rounded-lg px-4 text-base",
-};
+// =============================================================================
+// buttonVariants - Computes class names from KUMO_BUTTON_VARIANTS
+// =============================================================================
 
 export function buttonVariants({
-  variant = "secondary",
-  size = "base",
-  shape = "base",
+  variant = KUMO_BUTTON_DEFAULT_VARIANTS.variant,
+  size = KUMO_BUTTON_DEFAULT_VARIANTS.size,
+  shape = KUMO_BUTTON_DEFAULT_VARIANTS.shape,
 }: KumoButtonVariantsProps = {}) {
-  // Variant-specific styles
-  const variantStyles = {
-    primary:
-      "bg-kumo-primary !text-kumo-white hover:bg-kumo-primary/70 disabled:bg-kumo-primary/50 disabled:!text-kumo-primary/70",
-    secondary: cn(
-      "bg-kumo-secondary !text-kumo-secondary ring not-disabled:hover:border-kumo-subtle!",
-      "not-disabled:hover:bg-kumo-subtle disabled:bg-kumo-secondary/50 disabled:!text-kumo-secondary/70",
-      'ring-kumo-border data-[state="open"]:bg-kumo-subtle',
-    ),
-    ghost: "text-kumo-surface hover:bg-kumo-accent shadow-none bg-inherit",
-    destructive:
-      "bg-kumo-destructive !text-kumo-white hover:bg-kumo-destructive/70",
-    outline: "bg-kumo-surface text-kumo-surface ring ring-kumo-border",
-  };
-
   const isCompactShape = shape === "square" || shape === "circle";
-
-  // Compact shape size mappings
-  const compactSizeStyles = {
-    xs: "size-3.5",
-    sm: "size-6.5",
-    base: "size-9",
-    lg: "size-10",
-  };
 
   return cn(
     // Base styles
@@ -54,13 +110,11 @@ export function buttonVariants({
     "cursor-pointer",
     // Disabled state
     "disabled:cursor-not-allowed disabled:text-kumo-muted",
-    // Apply variant, size styles
-    variantStyles[variant],
-    sizeStyles[size],
-    // Apply shape-specific styles
-    isCompactShape && compactSizeStyles[size],
-    isCompactShape && "items-center justify-center p-0",
-    shape === "circle" && "rounded-full",
+    // Apply variant, size, shape styles from KUMO_BUTTON_VARIANTS
+    KUMO_BUTTON_VARIANTS.variant[variant].classes,
+    KUMO_BUTTON_VARIANTS.size[size].classes,
+    KUMO_BUTTON_VARIANTS.shape[shape].classes,
+    isCompactShape && KUMO_BUTTON_VARIANTS.compactSize[size].classes,
   );
 }
 
@@ -188,3 +242,32 @@ export const LinkButton = React.forwardRef<HTMLAnchorElement, LinkButtonProps>(
 );
 
 LinkButton.displayName = "LinkButton";
+
+// =============================================================================
+// BUTTON_SCHEMA - Machine-readable component metadata for AI/agent consumption
+// =============================================================================
+
+export const BUTTON_SCHEMA = defineSchema({
+  component: Button,
+  description: "Displays a button or a component that looks like a button",
+  category: "Action",
+  variants: KUMO_BUTTON_VARIANTS,
+  defaults: KUMO_BUTTON_DEFAULT_VARIANTS,
+  excludeVariants: ["compactSize"], // Internal variant, not exposed as prop
+  additionalProps: {
+    icon: COMMON_PROPS.icon,
+    loading: COMMON_PROPS.loading,
+    disabled: COMMON_PROPS.disabled,
+    onClick: COMMON_PROPS.onClick,
+    className: COMMON_PROPS.className,
+    children: COMMON_PROPS.childrenOptional,
+  },
+  examples: [
+    '<Button variant="primary">Save Changes</Button>',
+    '<Button variant="primary" icon={PlusIcon}>Add Item</Button>',
+    '<Button variant="destructive" icon={TrashIcon}>Delete</Button>',
+    '<Button variant="primary" loading>Saving...</Button>',
+    '<Button shape="square" icon={PlusIcon} aria-label="Add" />',
+    "<Button disabled>Disabled</Button>",
+  ],
+});

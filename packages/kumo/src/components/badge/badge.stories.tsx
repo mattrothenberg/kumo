@@ -1,7 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Badge } from "./badge";
+import {
+  Badge,
+  KUMO_BADGE_VARIANTS,
+  KUMO_BADGE_DEFAULT_VARIANTS,
+} from "./badge";
+import { propTester } from "../../utils/prop-tester";
 
-const meta = {
+const meta: Meta<typeof Badge> = {
   title: "Components/Badge",
   component: Badge,
   parameters: {
@@ -11,52 +16,26 @@ const meta = {
   argTypes: {
     variant: {
       control: "select",
-      options: ["primary", "secondary", "destructive", "outline"],
+      options: Object.keys(KUMO_BADGE_VARIANTS.variant),
     },
   },
-} satisfies Meta<typeof Badge>;
+  args: {
+    variant: KUMO_BADGE_DEFAULT_VARIANTS.variant,
+    children: "Badge",
+  },
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {
-  args: {
-    variant: "primary",
-    children: "Badge",
-  },
-};
-
-export const Secondary: Story = {
-  args: {
-    variant: "secondary",
-    children: "Badge",
-  },
-};
-
-export const Destructive: Story = {
-  args: {
-    variant: "destructive",
-    children: "Badge",
-  },
-};
-
-export const Outline: Story = {
-  args: {
-    variant: "outline",
-    children: "Badge",
-  },
-};
-
-export const AllVariants: Story = {
-  args: {
-    children: "Badge",
-  },
+export const Variants: Story = {
   render: () => (
-    <div className="flex gap-2">
-      <Badge variant="primary">Primary</Badge>
-      <Badge variant="secondary">Secondary</Badge>
-      <Badge variant="destructive">Destructive</Badge>
-      <Badge variant="outline">Outline</Badge>
-    </div>
+    <>
+      {propTester(
+        Object.keys(KUMO_BADGE_VARIANTS.variant),
+        "variant",
+        <Badge>Badge</Badge>,
+      )}
+    </>
   ),
 };

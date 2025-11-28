@@ -346,18 +346,18 @@
   );
 
   --color-kumo-info-surface: light-dark(
-    var(--color-blue-500, oklch(62.3% 0.214 259.815 / 0.2)),
-    var(--color-blue-500, oklch(62.3% 0.214 259.815 / 0.2))
+    oklch(62.3% 0.214 259.815 / 0.2),
+    oklch(62.3% 0.214 259.815 / 0.2)
   );
 
   --color-kumo-error-surface: light-dark(
-    var(--color-red-500, oklch(63.7% 0.237 25.331 / 0.2)),
-    var(--color-red-500, oklch(63.7% 0.237 25.331 / 0.2))
+    oklch(63.7% 0.237 25.331 / 0.2),
+    oklch(63.7% 0.237 25.331 / 0.2)
   );
 
   --color-kumo-alert-surface: light-dark(
-    var(--color-yellow-500, oklch(79.5% 0.184 86.047 / 0.2)),
-    var(--color-yellow-500, oklch(79.5% 0.184 86.047 / 0.2))
+    oklch(79.5% 0.184 86.047 / 0.2),
+    oklch(79.5% 0.184 86.047 / 0.2)
   );
 
   /* selection colors */

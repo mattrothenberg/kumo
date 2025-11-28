@@ -181,7 +181,8 @@
     "validate:changeset": "tsx ../../ci/scripts/validate-kumo-changeset.ts",
     "build:colors": "tsx scripts/color/build-colors-storybook.ts",
     "storybook": "pnpm run build:colors && storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "build:ai-metadata": "tsx scripts/ai/component-metadata.ts"
   },
   "peerDependencies": {
     "@base-ui-components/react": "^1.0.0-beta.4",

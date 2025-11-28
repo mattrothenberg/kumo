@@ -33,11 +33,11 @@ const preview: Preview = {
 
       return (
         <div className="flex flex-col gap-4">
-          <div className="flex-1 bg-kumo-surface p-6 text-kumo-surface">
+          <div className="flex flex-1 items-center gap-4 bg-kumo-surface p-6 text-kumo-surface">
             <div className="mb-2 text-[12px] font-medium">Light</div>
             <Story />
           </div>
-          <div className="dark-mode flex-1 bg-kumo-surface p-6 text-kumo-surface">
+          <div className="dark-mode flex flex-1 items-center gap-4 bg-kumo-surface p-6 text-kumo-surface">
             <div className="mb-2 text-[12px] font-medium">Dark</div>
             <Story />
           </div>

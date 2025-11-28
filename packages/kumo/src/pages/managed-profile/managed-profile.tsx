@@ -69,6 +69,7 @@ export function ManagedProfileApp({ view }: { view: ManagedProfileView }) {
 
         {/* Tabs */}
         <Tabs
+          className="w-fit"
           tabs={[
             { label: "Settings", value: "preferences" },
             ...(initialTab === "authentication"
