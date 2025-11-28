@@ -12,7 +12,7 @@ type DialogProps = {
 function DialogContent({ className, children, style }: DialogProps) {
   return (
     <DialogBase.Portal>
-      <DialogBase.Backdrop className="fixed inset-0 bg-kumo-color-3 opacity-80 transition-all duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0" />
+      <DialogBase.Backdrop className="z-modal fixed inset-0 bg-kumo-color-3 opacity-80 transition-all duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0" />
       <Surface
         as={DialogBase.Popup}
         className={cn(

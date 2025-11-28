@@ -1,8 +1,11 @@
+import { useState, useEffect } from "react";
 import type { Preview } from "@storybook/react-vite";
+import { ThemeToggle } from "./theme-toggle";
 import "./preview.css";
 
 const preview: Preview = {
   parameters: {
+    layout: "fullscreen",
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -15,7 +18,7 @@ const preview: Preview = {
       // Special-case: Tailwind color tokens should only render once (no light/dark split)
       if (context.title === "Design-Tokens/Colors") {
         return (
-          <div className="flex flex-col gap-4 p-4">
+          <div className="flex flex-col gap-4">
             <div className="flex-1 bg-kumo-surface p-6 text-kumo-surface">
               <Story />
             </div>
@@ -23,8 +26,13 @@ const preview: Preview = {
         );
       }
 
+      // Special-case: Pages render standalone with dark-mode class at root for proper modal/dialog support
+      if (context.title.startsWith("Pages/")) {
+        return <PageDecorator Story={Story} />;
+      }
+
       return (
-        <div className="flex flex-col gap-4 p-4">
+        <div className="flex flex-col gap-4">
           <div className="flex-1 bg-kumo-surface p-6 text-kumo-surface">
             <div className="mb-2 text-[12px] font-medium">Light</div>
             <Story />
@@ -38,5 +46,34 @@ const preview: Preview = {
     },
   ],
 };
+
+function PageDecorator({ Story }: { Story: React.ComponentType }) {
+  const [isDark, setIsDark] = useState(false);
+
+  // Apply dark-mode class to document.body so portaled elements (modals, dialogs) inherit the theme
+  useEffect(() => {
+    if (isDark) {
+      document.body.classList.add("dark-mode");
+    } else {
+      document.body.classList.remove("dark-mode");
+    }
+    return () => {
+      document.body.classList.remove("dark-mode");
+    };
+  }, [isDark]);
+
+  return (
+    <>
+      <div className="fixed top-4 right-4 z-50 flex items-center gap-2 rounded-lg bg-kumo-surface-secondary p-2 shadow-md">
+        <ThemeToggle
+          isDark={isDark}
+          onClick={() => setIsDark(!isDark)}
+          className="text-kumo-secondary"
+        />
+      </div>
+      <Story />
+    </>
+  );
+}
 
 export default preview;
