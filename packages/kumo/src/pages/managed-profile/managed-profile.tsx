@@ -454,7 +454,7 @@ function PendingEmailBanner({ newEmail }: { newEmail: string }) {
 function UpdateEmailDialog({ currentEmail }: { currentEmail: string }) {
   return (
     <Dialog className="w-[400px]">
-      <div className="flex items-center justify-between border-b border-kumo-border p-4">
+      <div className="flex items-center justify-between p-4">
         <DialogTitle className="text-base font-semibold text-kumo-secondary">
           Update Email
         </DialogTitle>
@@ -493,7 +493,7 @@ function UpdateEmailDialog({ currentEmail }: { currentEmail: string }) {
           <Input type="password" placeholder="" />
         </Field>
       </div>
-      <div className="flex justify-end gap-2 border-t border-kumo-border p-4">
+      <div className="flex justify-end gap-2 p-4">
         <DialogClose>
           <Button size="sm" variant="outline">
             Cancel
@@ -556,7 +556,7 @@ function DeleteUserDialog({
 }) {
   return (
     <Dialog className="w-[400px]">
-      <div className="flex items-center justify-between border-b border-kumo-border p-4">
+      <div className="flex items-center justify-between p-4">
         <DialogTitle className="text-base font-semibold text-kumo-secondary">
           Delete User
         </DialogTitle>
@@ -652,7 +652,7 @@ function DeleteUserFormContent() {
           pending litigation).
         </Text>
       </div>
-      <div className="flex justify-end gap-2 border-t border-kumo-border p-4">
+      <div className="flex justify-end gap-2 p-4">
         <DialogClose>
           <Button size="sm" variant="outline">
             Cancel
