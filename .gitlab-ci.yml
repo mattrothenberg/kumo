@@ -151,8 +151,9 @@ lint-kumo-lint:
 test-kumo-test:
   needs:
     - build-kumo-build
-  before_script:
-    - cd packages/kumo && pnpm exec playwright install chromium --with-deps
+  script:
+    # Install Playwright browser, then run all tests (unit + storybook)
+    - cd packages/kumo && npx playwright install chromium --with-deps && pnpm test:run
   # Coverage disabled temporarily - enable when test:coverage script is used
   # coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
   # artifacts:
