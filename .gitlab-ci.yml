@@ -91,15 +91,15 @@ include:
 
   # ============= TEST STAGE (Uses build artifacts) =============
 
-  # Test @cloudflare/kumo
-  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/test@~latest
+  # Test @cloudflare/kumo (unit tests only - Storybook browser tests require Playwright)
+  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
     inputs:
       stage: test
       jobPrefix: test-kumo
       PNPM_VERSION: *PNPM_VERSION
       NODE_VERSION: *NODE_VERSION
+      PNPM_RUN_TARGET: "test:ci"
       workDir: "packages/kumo"
-      # COVERAGE_FOLDER: 'coverage'  # Disabled - enable when using test:coverage script
       runOnMR: true
       runOnBranches: "^main$"
 
@@ -149,7 +149,7 @@ lint-kumo-lint:
   needs:
     - build-kumo-build
 
-test-kumo-test:
+test-kumo-run:
   needs:
     - build-kumo-build
   # Coverage disabled temporarily - enable when test:coverage script is used

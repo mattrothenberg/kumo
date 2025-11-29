@@ -6,7 +6,7 @@ import "./preview.css";
 const preview: Preview = {
   parameters: {
     a11y: {
-      test: "todo",
+      test: "error",
     },
     layout: "fullscreen",
     options: {

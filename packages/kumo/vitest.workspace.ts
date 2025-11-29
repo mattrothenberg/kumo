@@ -7,7 +7,12 @@ const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineWorkspace([
   // Existing unit tests
-  "./vitest.config.ts",
+  {
+    extends: "./vitest.config.ts",
+    test: {
+      name: "unit",
+    },
+  },
   // Storybook tests (component + a11y)
   {
     extends: "./vitest.config.ts",
