@@ -152,9 +152,9 @@ test-kumo-test:
   needs:
     - build-kumo-build
   # Run only unit tests in CI (skip Storybook browser tests which require Playwright)
-  # Storybook tests can be run locally with: pnpm test:storybook
+  # Storybook tests can be run locally with: pnpm --filter @cloudflare/kumo test:storybook
   script:
-    - cd packages/kumo && pnpm test:ci
+    - pnpm test:ci
   # Coverage disabled temporarily - enable when test:coverage script is used
   # coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
   # artifacts:
