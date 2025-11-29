@@ -22,10 +22,10 @@ To create a static build of Storybook for deployment or review:
 
 ```bash
 # From workspace root
-pnpm --filter @cloudflare/kumo build-storybook
+pnpm --filter @cloudflare/kumo build:storybook
 
 # Or from packages/kumo directory
-pnpm build-storybook
+pnpm build:storybook
 ```
 
 This generates a static site in `storybook-static/` that can be deployed to any web server.

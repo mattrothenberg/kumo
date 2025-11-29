@@ -91,7 +91,7 @@ include:
 
   # ============= TEST STAGE (Uses build artifacts) =============
 
-  # Test @cloudflare/kumo (unit + Storybook a11y tests)
+  # Test @cloudflare/kumo (unit tests only - Storybook tests require Playwright)
   - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/test@~latest
     inputs:
       stage: test
@@ -99,6 +99,7 @@ include:
       PNPM_VERSION: *PNPM_VERSION
       NODE_VERSION: *NODE_VERSION
       workDir: "packages/kumo"
+      PNPM_TEST_TARGET: "test:ci"
       runOnMR: true
       runOnBranches: "^main$"
 
@@ -151,10 +152,6 @@ lint-kumo-lint:
 test-kumo-test:
   needs:
     - build-kumo-build
-  # Run only unit tests in CI (skip Storybook browser tests which require Playwright)
-  # Storybook tests can be run locally with: pnpm --filter @cloudflare/kumo test:storybook
-  script:
-    - pnpm test:ci
   # Coverage disabled temporarily - enable when test:coverage script is used
   # coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
   # artifacts:
