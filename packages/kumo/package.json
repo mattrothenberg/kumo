@@ -169,7 +169,7 @@
     "dev": "vite build --watch --mode development",
     "clean": "rm -rf dist",
     "lint": "oxlint src/** --type-aware",
-    "prepublishOnly": "pnpm run clean && pnpm run build && pnpm run test:run",
+    "prepublishOnly": "pnpm run clean && pnpm run build && pnpm run test:ci",
     "typecheck": "pnpm run build:colors && tsc --noEmit",
     "test": "vitest",
     "test:ui": "vitest --ui",
