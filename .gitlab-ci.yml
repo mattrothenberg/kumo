@@ -91,14 +91,13 @@ include:
 
   # ============= TEST STAGE (Uses build artifacts) =============
 
-  # Test @cloudflare/kumo (unit tests only - Storybook browser tests require Playwright)
-  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
+  # Test @cloudflare/kumo (unit + Storybook a11y tests)
+  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/test@~latest
     inputs:
       stage: test
       jobPrefix: test-kumo
       PNPM_VERSION: *PNPM_VERSION
       NODE_VERSION: *NODE_VERSION
-      PNPM_RUN_TARGET: "test:ci"
       workDir: "packages/kumo"
       runOnMR: true
       runOnBranches: "^main$"
@@ -149,9 +148,11 @@ lint-kumo-lint:
   needs:
     - build-kumo-build
 
-test-kumo-run:
+test-kumo-test:
   needs:
     - build-kumo-build
+  before_script:
+    - cd packages/kumo && pnpm exec playwright install chromium --with-deps
   # Coverage disabled temporarily - enable when test:coverage script is used
   # coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
   # artifacts:
