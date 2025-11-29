@@ -151,9 +151,10 @@ lint-kumo-lint:
 test-kumo-test:
   needs:
     - build-kumo-build
+  # Run only unit tests in CI (skip Storybook browser tests which require Playwright)
+  # Storybook tests can be run locally with: pnpm test:storybook
   script:
-    # Install Playwright browser, then run all tests (unit + storybook)
-    - cd packages/kumo && npx playwright install chromium --with-deps && pnpm test:run
+    - cd packages/kumo && pnpm test:ci
   # Coverage disabled temporarily - enable when test:coverage script is used
   # coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
   # artifacts:
