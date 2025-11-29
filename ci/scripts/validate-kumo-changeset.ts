@@ -189,12 +189,16 @@ function getNewlyAddedChangesets(): ChangesetFile[] {
 }
 
 function getChangesets(): ChangesetFile[] {
-  if (!existsSync(CHANGESET_DIR)) {
+  // Determine working directory (handle both repo root and packages/kumo contexts)
+  const repoRoot = process.cwd().includes("packages/kumo") ? "../.." : ".";
+  const changesetDir = join(repoRoot, CHANGESET_DIR);
+
+  if (!existsSync(changesetDir)) {
     return [];
   }
 
   const changesets: ChangesetFile[] = [];
-  const files = readdirSync(CHANGESET_DIR);
+  const files = readdirSync(changesetDir);
 
   for (const file of files) {
     // Skip config files and README
@@ -207,7 +211,7 @@ function getChangesets(): ChangesetFile[] {
       continue;
     }
 
-    const filePath = join(CHANGESET_DIR, file);
+    const filePath = join(changesetDir, file);
     try {
       const content = readFileSync(filePath, "utf8");
       const packages = parseChangesetPackages(content);
