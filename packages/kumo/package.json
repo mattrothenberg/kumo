@@ -169,13 +169,14 @@
     "dev": "vite build --watch --mode development",
     "clean": "rm -rf dist",
     "lint": "oxlint src/** --type-aware",
-    "prepublishOnly": "pnpm run clean && pnpm run build && pnpm run test:ci",
+    "prepublishOnly": "pnpm run clean && pnpm run build && pnpm run test:unit",
     "typecheck": "pnpm run build:colors && tsc --noEmit",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
-    "test:ci": "vitest run --project=unit",
+    "test:unit": "vitest run --project=unit",
     "test:storybook": "vitest run --project=storybook",
+    "test:ci": "CI=true vitest run",
     "test:coverage": "vitest run --coverage",
     "new-component": "plop component",
     "new-block": "plop block",
@@ -184,6 +185,9 @@
     "build:colors": "tsx scripts/color/build-colors-storybook.ts",
     "storybook": "pnpm run build:colors && storybook dev -p 6006",
     "build:storybook": "pnpm run build:colors && storybook build",
+    "deploy": "pnpm run build:storybook && wrangler pages deploy",
+    "deploy:ci": "CLOUDFLARE_ACCOUNT_ID=$CLOUDFLARE_ACCOUNT_ID CLOUDFLARE_API_TOKEN=$CLOUDFLARE_API_TOKEN pnpm run build:storybook && wrangler pages deploy",
+    "deploy-prod:ci": "pnpm run deploy:ci --branch main",
     "build:ai-metadata": "tsx scripts/ai/component-metadata.ts"
   },
   "peerDependencies": {
@@ -220,6 +224,7 @@
     "typescript": "catalog:",
     "vite": "^6.0.7",
     "vite-plugin-dts": "^4.3.0",
-    "vitest": "^2.1.9"
+    "vitest": "^2.1.9",
+    "wrangler": "^4.0.0"
   }
 }

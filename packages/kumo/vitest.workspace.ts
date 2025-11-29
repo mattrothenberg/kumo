@@ -5,6 +5,12 @@ import { fileURLToPath } from "node:url";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// In CI, use the deployed Storybook URL for test failure links
+const storybookUrl =
+  process.env.CI === "true"
+    ? "https://kumo-storybook.pages.dev"
+    : "http://localhost:6006";
+
 export default defineWorkspace([
   // Existing unit tests
   {
@@ -20,6 +26,7 @@ export default defineWorkspace([
       storybookTest({
         configDir: path.join(dirname, ".storybook"),
         storybookScript: "pnpm storybook --ci",
+        storybookUrl,
       }),
     ],
     test: {
