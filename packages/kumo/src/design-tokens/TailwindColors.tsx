@@ -35,11 +35,11 @@ function subscribeToTheme(callback: () => void) {
 }
 
 function getTheme(): string {
-  return document.body.getAttribute("data-theme") ?? "KUMO";
+  return document.body.getAttribute("data-theme") ?? "kumo";
 }
 
 function useCurrentTheme(): string {
-  return useSyncExternalStore(subscribeToTheme, getTheme, () => "KUMO");
+  return useSyncExternalStore(subscribeToTheme, getTheme, () => "kumo");
 }
 
 /**
@@ -49,10 +49,10 @@ function useCurrentTheme(): string {
  */
 function getColorsForTheme(theme: string, display: DisplayMode): KumoColor[] {
   const kumoColors_ = kumoColors.filter(
-    (c) => c.theme === "KUMO" && matchesDisplay(c.name, display),
+    (c) => c.theme === "kumo" && matchesDisplay(c.name, display),
   );
 
-  if (theme === "KUMO") {
+  if (theme === "kumo") {
     return kumoColors_;
   }
 
@@ -73,7 +73,7 @@ export const TailwindColorTokens: FC<TailwindColorTokensProps> = ({
   const currentTheme = useCurrentTheme();
   const filtered = getColorsForTheme(currentTheme, display);
   const themeOverrideCount =
-    currentTheme !== "KUMO"
+    currentTheme !== "kumo"
       ? kumoColors.filter(
           (c) => c.theme === currentTheme && matchesDisplay(c.name, display),
         ).length
@@ -88,7 +88,7 @@ export const TailwindColorTokens: FC<TailwindColorTokensProps> = ({
       </div>
       <div className="text-sm text-surface">
         Displaying {filtered.length} tokens for <code>{display}</code>
-        {currentTheme !== "KUMO" && (
+        {currentTheme !== "kumo" && (
           <span className="ml-1">
             ({themeOverrideCount} overridden by{" "}
             <code className="rounded bg-primary p-1">{currentTheme}</code>)
@@ -128,7 +128,7 @@ export const TailwindColorTokens: FC<TailwindColorTokensProps> = ({
           <div
             key={token.name}
             className={`flex items-center gap-3 rounded-md border bg-surface px-3 py-2 text-xs ${
-              token.theme !== "KUMO"
+              token.theme !== "kumo"
                 ? "border-2 border-info-border ring-1 ring-info-border/30"
                 : "border-color"
             }`}

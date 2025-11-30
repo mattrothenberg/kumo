@@ -29,7 +29,7 @@ async function main() {
 
   const colors: KumoColor[] = [];
 
-  // Parse base theme colors from kumo-theme.css (default KUMO theme)
+  // Parse base theme colors from kumo-theme.css (default kumo theme)
   for (const match of themeCss.matchAll(colorRegex)) {
     const [, name, argsRaw] = match;
     const parsed = parseLightDarkArgs(argsRaw);
@@ -38,7 +38,7 @@ async function main() {
         name,
         light: parsed.light,
         dark: parsed.dark,
-        theme: "KUMO",
+        theme: "kumo",
       });
     }
   }
@@ -77,14 +77,14 @@ async function main() {
 
   await writeFile(outFile, fileContents, "utf8");
 
-  const kumoCount = colors.filter((c) => c.theme === "KUMO").length;
+  const kumoCount = colors.filter((c) => c.theme === "kumo").length;
   const otherThemes = [
-    ...new Set(colors.filter((c) => c.theme !== "KUMO").map((c) => c.theme)),
+    ...new Set(colors.filter((c) => c.theme !== "kumo").map((c) => c.theme)),
   ];
-  const overrideCount = colors.filter((c) => c.theme !== "KUMO").length;
+  const overrideCount = colors.filter((c) => c.theme !== "kumo").length;
   // eslint-disable-next-line no-console
   console.log(
-    `Generated ${kumoCount} KUMO colors + ${overrideCount} overrides (${otherThemes.join(", ")}) to ${outFile}`,
+    `Generated ${kumoCount} kumo colors + ${overrideCount} overrides (${otherThemes.join(", ")}) to ${outFile}`,
   );
 }
 
