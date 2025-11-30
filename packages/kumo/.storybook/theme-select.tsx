@@ -1,6 +1,6 @@
 import { Select } from "../src/components/select/select";
 
-type Theme = "KUMO" | "FEDRAMP";
+type Theme = "kumo" | "fedramp";
 
 interface ThemeSelectProps {
   theme: Theme;
@@ -9,8 +9,8 @@ interface ThemeSelectProps {
 }
 
 const themes: { value: Theme; label: string }[] = [
-  { value: "KUMO", label: "Kumo" },
-  { value: "FEDRAMP", label: "FedRAMP" },
+  { value: "kumo", label: "Kumo" },
+  { value: "fedramp", label: "FedRAMP" },
 ];
 
 export function ThemeSelect({

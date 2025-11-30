@@ -39,7 +39,7 @@ const preview: Preview = {
       }
 
       return (
-        <div className="flex" data-theme="KUMO">
+        <div className="flex" data-theme="kumo">
           <div className="flex-1 items-center border bg-surface p-6">
             <div className="mb-2 font-sans text-sm leading-5 tracking-wide text-muted-2 uppercase">
               Light
@@ -48,10 +48,7 @@ const preview: Preview = {
               <Story />
             </div>
           </div>
-          <div
-            data-mode="dark"
-            className="flex-1 items-center bg-surface p-6"
-          >
+          <div data-mode="dark" className="flex-1 items-center bg-surface p-6">
             <div className="mb-2 font-sans text-sm leading-5 tracking-wide text-muted-2 uppercase">
               Dark
             </div>
@@ -67,7 +64,7 @@ const preview: Preview = {
 
 function PageDecorator({ Story }: { Story: React.ComponentType }) {
   const [isDark, setIsDark] = useState(false);
-  const [theme, setTheme] = useState<Theme>("KUMO");
+  const [theme, setTheme] = useState<Theme>("kumo");
 
   // Apply data-mode and bg-surface to document.body so portaled elements (modals, dialogs) inherit the mode
   // and the entire canvas background is styled
@@ -93,7 +90,11 @@ function PageDecorator({ Story }: { Story: React.ComponentType }) {
   }, [theme]);
 
   return (
-    <div data-theme={theme} data-mode={isDark ? "dark" : "light"} className="bg-surface">
+    <div
+      data-theme={theme}
+      data-mode={isDark ? "dark" : "light"}
+      className="bg-surface"
+    >
       <div className="fixed top-4 right-4 z-50 flex items-center gap-2 rounded-lg bg-surface-secondary p-2 shadow-md">
         <ThemeSelect theme={theme} onThemeChange={setTheme} />
         <ModeToggle

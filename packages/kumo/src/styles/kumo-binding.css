@@ -9,9 +9,9 @@
     color-scheme: dark;
   }
 
-  [data-theme="FEDRAMP"] {
+  [data-theme="fedramp"] {
     --color-surface: light-dark(#5b697c, #5b697c);
-    --color-active: light-dark(#C8D4E5, #C8D4E5);
+    --color-active: light-dark(#c8d4e5, #c8d4e5);
     --text-color-surface: light-dark(#ffffff, #ffffff);
   }
 }
