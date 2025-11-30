@@ -121,11 +121,13 @@ type TextProps<Variant extends TextVariant = "body"> = BaseTextProps &
           bold?: never;
           size?: "lg";
         }
-      : {
-          variant?: Variant;
-          bold?: never;
-          size?: never;
-        });
+      : Variant extends Heading
+        ? {
+            variant?: Variant;
+            bold?: never;
+            size?: never;
+          }
+        : never);
 
 function _Text<Variant extends TextVariant = "body">(
   {

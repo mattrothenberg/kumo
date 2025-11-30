@@ -15,5 +15,12 @@
     "noEmit": true
   },
   "include": ["src/**/*", "scripts/**/*"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/design-tokens",
+    "scripts/**/dist",
+    "**/*.test.ts",
+    "**/*.test.tsx"
+  ]
 }

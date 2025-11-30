@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
 import dts from "vite-plugin-dts";
+import preserveDirectives from "rollup-plugin-preserve-directives";
 import { rebuildSignalPlugin } from "./vite-plugin-rebuild-signal";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -156,6 +157,8 @@ export default defineConfig(({ mode }) => {
           // Preserve module structure for better tree-shaking and debugging
           preserveModules: true,
           preserveModulesRoot: "src",
+          // Hoist "use client" directives to the top of chunks
+          hoistTransitiveImports: false,
           // Global variables for UMD build (if needed)
           globals: {
             react: "React",
@@ -163,6 +166,7 @@ export default defineConfig(({ mode }) => {
             "react/jsx-runtime": "jsxRuntime",
           },
         },
+        plugins: [preserveDirectives()],
         // Enable Rollup caching for faster rebuilds
         cache: isDev,
       },

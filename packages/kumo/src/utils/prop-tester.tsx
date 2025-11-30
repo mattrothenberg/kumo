@@ -1,6 +1,9 @@
 import React from "react";
 
-export function propTester<T, C extends React.ReactElement>(
+export function propTester<
+  T extends string | number | boolean,
+  C extends React.ReactElement,
+>(
   allProps: readonly T[] | T[],
   testProp: string,
   Component: C,

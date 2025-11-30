@@ -49,9 +49,9 @@ export interface ComboboxProps extends KumoComboboxVariantsProps {
   /** Array of items to display in the dropdown */
   items: unknown[];
   /** Currently selected value(s) */
-  value?: unknown | unknown[] | null;
+  value?: unknown;
   /** Callback when selection changes */
-  onValueChange?: (value: unknown | unknown[]) => void;
+  onValueChange?: (value: unknown) => void;
   /** Enable multi-select mode */
   multiple?: boolean;
   /** Combobox content (trigger, content, items) */

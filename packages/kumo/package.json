@@ -219,6 +219,7 @@
     "oxlint-tsgolint": "0.6.0",
     "playwright": "catalog:",
     "plop": "4.0.4",
+    "rollup-plugin-preserve-directives": "0.4.0",
     "storybook": "catalog:",
     "tailwindcss": "catalog:",
     "ts-json-schema-generator": "2.4.0",
