@@ -61,7 +61,7 @@ export function Tabs({
             key={tab.value}
             value={tab.value}
             className={cn(
-              "relative z-10 flex items-center px-2.5 text-base my-px rounded-lg whitespace-nowrap text-neutral-500 transition-colors focus-visible:outline-none dark:text-neutral-400 cursor-pointer",
+              "relative z-10 flex items-center px-2.5 text-base my-px rounded-lg whitespace-nowrap text-neutral-500 transition-colors focus-visible:outline-none dark:text-neutral-400 cursor-pointer bg-transparent",
               "data-selected:text-black dark:data-selected:text-white",
               tab.className
             )}
