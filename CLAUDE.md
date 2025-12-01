@@ -120,6 +120,76 @@ The color system is defined in `packages/kumo/src/styles/kumo-binding.css`. Colo
 <div className="bg-kumo-surface text-kumo-surface">
 ```
 
+### Mode & Theme System
+
+Kumo uses two data attributes for styling control:
+
+- **`data-mode`**: Controls light/dark mode (`"light"` | `"dark"`)
+- **`data-theme`**: Controls theme variants (e.g., `"fedramp"`)
+
+#### Dark Mode (`data-mode`)
+
+Set `data-mode` on a parent element (typically `<html>` or `<body>`) to control color scheme:
+
+```tsx
+// Light mode
+<html data-mode="light">
+
+// Dark mode
+<html data-mode="dark">
+```
+
+The CSS uses `color-scheme` and `light-dark()` to automatically adapt all semantic tokens:
+
+```css
+:root {
+  color-scheme: light;
+}
+
+[data-mode="dark"] {
+  color-scheme: dark;
+}
+```
+
+#### Themes (`data-theme`)
+
+Themes override semantic color tokens defined in `packages/kumo/src/styles/kumo-binding.css`.
+
+**Existing Themes:**
+
+- **Default**: No `data-theme` attribute required
+- **FedRAMP**: `data-theme="fedramp"` - Government compliance styling
+
+#### Adding a New Theme
+
+1. Add theme overrides in `kumo-binding.css` within `@layer base`:
+
+```css
+@layer base {
+  [data-theme="my-theme"] {
+    --color-surface: light-dark(#custom-light, #custom-dark);
+    --color-active: light-dark(#custom-light, #custom-dark);
+    --text-color-surface: light-dark(#custom-light, #custom-dark);
+    /* Override any semantic tokens as needed */
+  }
+}
+```
+
+2. Apply the theme by setting the `data-theme` attribute on a parent element:
+
+```tsx
+<div data-theme="my-theme">
+  {/* All Kumo components inside will use theme overrides */}
+</div>
+```
+
+#### Theme Guidelines
+
+- **Use `light-dark()`**: Ensures themes work with both light and dark modes
+- **Override sparingly**: Only override tokens that need to change
+- **Semantic tokens only**: Themes should override `--color-*` and `--text-color-*` variables, not component-specific styles
+- **Test both modes**: Verify theme looks correct in light and dark mode
+
 ## Component Patterns
 
 ### Standard Component Structure
