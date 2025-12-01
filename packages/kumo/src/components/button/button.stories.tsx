@@ -4,36 +4,14 @@ import {
   LinkButton,
   RefreshButton,
   KUMO_BUTTON_VARIANTS,
-  KUMO_BUTTON_DEFAULT_VARIANTS,
 } from "./button";
-import { PlusIcon, TrashIcon } from "@phosphor-icons/react";
+import { PlusIcon } from "@phosphor-icons/react";
 import { propTester } from "../../utils/prop-tester";
 
-const meta: Meta<typeof Button> = {
+const meta = {
   title: "Components/Button",
   component: Button,
-  tags: ["autodocs"],
-  argTypes: {
-    variant: {
-      control: "select",
-      options: Object.keys(KUMO_BUTTON_VARIANTS.variant),
-    },
-    size: {
-      control: "select",
-      options: Object.keys(KUMO_BUTTON_VARIANTS.size),
-    },
-    shape: {
-      control: "select",
-      options: Object.keys(KUMO_BUTTON_VARIANTS.shape),
-    },
-  },
-  args: {
-    variant: KUMO_BUTTON_DEFAULT_VARIANTS.variant,
-    size: KUMO_BUTTON_DEFAULT_VARIANTS.size,
-    shape: KUMO_BUTTON_DEFAULT_VARIANTS.shape,
-    children: "Button",
-  },
-};
+} satisfies Meta<typeof Button>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -75,11 +53,15 @@ export const Shapes: Story = {
 };
 
 export const Disabled: Story = {
-  args: {
-    variant: "primary",
-    disabled: true,
-    children: "Disabled",
-  },
+  render: () => (
+    <>
+      {propTester(
+        Object.keys(KUMO_BUTTON_VARIANTS.variant),
+        "variant",
+        <Button disabled>Button</Button>,
+      )}
+    </>
+  ),
 };
 
 export const WithIcon: Story = {

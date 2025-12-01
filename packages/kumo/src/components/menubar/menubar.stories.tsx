@@ -14,7 +14,6 @@ const meta = {
   parameters: {
     layout: "padded",
   },
-  tags: ["autodocs"],
 } satisfies Meta<typeof MenuBar>;
 
 export default meta;
@@ -28,28 +27,28 @@ function DefaultMenuBar() {
       isActive={active}
       options={[
         {
-          icon: <HouseIcon />,
+          icon: <HouseIcon className="fill-surface-inverse" />,
           id: "home",
           isActive: active,
           onClick: () => setActive("home"),
           tooltip: "Home",
         },
         {
-          icon: <MagnifyingGlassIcon />,
+          icon: <MagnifyingGlassIcon className="fill-surface-inverse" />,
           id: "search",
           isActive: active,
           onClick: () => setActive("search"),
           tooltip: "Search",
         },
         {
-          icon: <BellIcon />,
+          icon: <BellIcon className="fill-surface-inverse" />,
           id: "notifications",
           isActive: active,
           onClick: () => setActive("notifications"),
           tooltip: "Notifications",
         },
         {
-          icon: <GearIcon />,
+          icon: <GearIcon className="fill-surface-inverse" />,
           id: "settings",
           isActive: active,
           onClick: () => setActive("settings"),

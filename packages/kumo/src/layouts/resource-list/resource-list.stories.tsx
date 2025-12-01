@@ -10,7 +10,6 @@ const meta = {
   parameters: {
     layout: "fullscreen",
   },
-  tags: ["autodocs"],
 } satisfies Meta<typeof ResourceListPage>;
 
 export default meta;
@@ -20,7 +19,7 @@ export const Default: Story = {
   args: {
     title: "Databases",
     description: "Manage your database instances and configurations",
-    icon: <DatabaseIcon size={32} className="text-kumo-neutral-subtle" />,
+    icon: <DatabaseIcon size={32} className="text-neutral-subtle" />,
     children: (
       <Surface className="p-6">
         <p>Main content area - your resource list would go here</p>
@@ -36,7 +35,7 @@ export const WithUsage: Story = {
     usage: (
       <Surface className="p-4">
         <h3 className="mb-2 font-semibold">Quick Start</h3>
-        <p className="mb-3 text-sm text-kumo-label">
+        <p className="mb-3 text-sm text-label">
           Generate an API key to authenticate your requests
         </p>
         <Code
@@ -62,17 +61,17 @@ export const WithAdditionalContent: Story = {
         <h3 className="mb-2 font-semibold">Resources</h3>
         <ul className="space-y-2 text-sm">
           <li>
-            <a href="#" className="text-kumo-success hover:underline">
+            <a href="#" className="text-success hover:underline">
               Documentation
             </a>
           </li>
           <li>
-            <a href="#" className="text-kumo-success hover:underline">
+            <a href="#" className="text-success hover:underline">
               Examples
             </a>
           </li>
           <li>
-            <a href="#" className="text-kumo-success hover:underline">
+            <a href="#" className="text-success hover:underline">
               Community
             </a>
           </li>
@@ -91,7 +90,7 @@ export const Complete: Story = {
   args: {
     title: "KV Namespaces",
     description: "Store key-value data globally with low-latency access",
-    icon: <DatabaseIcon size={32} className="text-kumo-neutral-subtle" />,
+    icon: <DatabaseIcon size={32} className="text-neutral-subtle" />,
     usage: (
       <Surface className="p-4">
         <h3 className="mb-2 font-semibold">Usage Example</h3>
@@ -108,7 +107,7 @@ await KV.put('key', 'value');`}
     additionalContent: (
       <Surface className="p-4">
         <h3 className="mb-2 font-semibold">Learn More</h3>
-        <p className="text-sm text-kumo-label">
+        <p className="text-sm text-label">
           Check out our documentation to learn more about KV storage.
         </p>
       </Surface>
@@ -117,11 +116,11 @@ await KV.put('key', 'value');`}
       <div className="space-y-4">
         <Surface className="p-6">
           <h4 className="mb-2 font-semibold">production-kv</h4>
-          <p className="text-sm text-kumo-label">Created 2 days ago</p>
+          <p className="text-sm text-label">Created 2 days ago</p>
         </Surface>
         <Surface className="p-6">
           <h4 className="mb-2 font-semibold">staging-kv</h4>
-          <p className="text-sm text-kumo-label">Created 1 week ago</p>
+          <p className="text-sm text-label">Created 1 week ago</p>
         </Surface>
       </div>
     ),

@@ -9,12 +9,95 @@ import {
 } from "react";
 import { cn } from "../../utils/cn";
 
+export const KUMO_TEXT_VARIANTS = {
+  variant: {
+    heading1: {
+      classes: "text-3xl font-semibold",
+      description: "Large heading for page titles",
+    },
+    heading2: {
+      classes: "text-2xl font-semibold",
+      description: "Medium heading for section titles",
+    },
+    heading3: {
+      classes: "text-lg font-semibold",
+      description: "Small heading for subsections",
+    },
+    body: {
+      classes: "text-surface",
+      description: "Default body text",
+    },
+    secondary: {
+      classes: "text-muted",
+      description: "Muted text for secondary information",
+    },
+    success: {
+      classes: "text-success",
+      description: "Success state text",
+    },
+    error: {
+      classes: "text-destructive",
+      description: "Error state text",
+    },
+    mono: {
+      classes: "font-mono",
+      description: "Monospace text for code",
+    },
+    "mono-secondary": {
+      classes: "font-mono text-muted",
+      description: "Muted monospace text",
+    },
+  },
+  size: {
+    xs: {
+      classes: "text-xs",
+      description: "Extra small text",
+    },
+    sm: {
+      classes: "text-sm",
+      description: "Small text",
+    },
+    base: {
+      classes: "text-base",
+      description: "Default text size",
+    },
+    lg: {
+      classes: "text-lg",
+      description: "Large text",
+    },
+  },
+} as const;
+
+export const KUMO_TEXT_DEFAULT_VARIANTS = {
+  variant: "body",
+  size: "base",
+} as const;
+
+// Derived types from KUMO_TEXT_VARIANTS
+export type KumoTextVariant = keyof typeof KUMO_TEXT_VARIANTS.variant;
+export type KumoTextSize = keyof typeof KUMO_TEXT_VARIANTS.size;
+
+export interface KumoTextVariantsProps {
+  variant?: KumoTextVariant;
+  size?: KumoTextSize;
+}
+
+export function textVariants({
+  variant = KUMO_TEXT_DEFAULT_VARIANTS.variant,
+  size = KUMO_TEXT_DEFAULT_VARIANTS.size,
+}: KumoTextVariantsProps = {}) {
+  return cn(
+    KUMO_TEXT_VARIANTS.variant[variant].classes,
+    KUMO_TEXT_VARIANTS.size[size].classes,
+  );
+}
+
+// Legacy types for backwards compatibility
 type Heading = "heading1" | "heading2" | "heading3";
 type Copy = "body" | "secondary" | "success" | "error";
 type Monospace = "mono" | "mono-secondary";
-
-type TextSize = "base" | "sm" | "xs" | "lg";
-type TextVariant = Heading | Copy | Monospace;
+type TextSize = KumoTextSize;
+type TextVariant = KumoTextVariant;
 
 type BaseTextProps = Omit<
   ComponentPropsWithoutRef<"span">,
@@ -43,32 +126,6 @@ type TextProps<Variant extends TextVariant = "body"> = BaseTextProps &
           bold?: never;
           size?: never;
         });
-
-// Variant-specific styles
-const variantStyles: Record<TextVariant, string> = {
-  // Headings
-  heading1: "text-3xl font-semibold",
-  heading2: "text-2xl font-semibold",
-  heading3: "text-lg font-semibold",
-
-  // Copy variants
-  body: "",
-  secondary: "text-kumo-muted",
-  success: "text-kumo-success",
-  error: "text-kumo-destructive",
-
-  // Monospace variants
-  mono: "font-mono",
-  "mono-secondary": "font-mono text-kumo-muted",
-};
-
-// Size styles (only apply to Copy variants)
-const sizeStyles: Record<TextSize, string> = {
-  base: "text-base",
-  sm: "text-sm",
-  xs: "text-xs",
-  lg: "text-lg",
-};
 
 function _Text<Variant extends TextVariant = "body">(
   {
@@ -99,11 +156,14 @@ function _Text<Variant extends TextVariant = "body">(
     <Component
       ref={ref}
       className={cn(
-        variantStyles[variant],
-        isCopy ? sizeStyles[size] : "",
+        KUMO_TEXT_VARIANTS.variant[variant].classes,
+        isCopy ? KUMO_TEXT_VARIANTS.size[size].classes : "",
         isCopy && bold ? "font-medium" : "",
         // Monospace fonts need to be 1pt smaller than body text to optically match
-        isMono && (size === "lg" ? sizeStyles.base : sizeStyles.sm),
+        isMono &&
+          (size === "lg"
+            ? KUMO_TEXT_VARIANTS.size.base.classes
+            : KUMO_TEXT_VARIANTS.size.sm.classes),
         DANGEROUS_className,
       )}
       style={DANGEROUS_style}

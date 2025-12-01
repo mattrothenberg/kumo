@@ -7,7 +7,6 @@ const meta = {
   parameters: {
     layout: "padded",
   },
-  tags: ["autodocs"],
 } satisfies Meta<typeof Meter>;
 
 export default meta;

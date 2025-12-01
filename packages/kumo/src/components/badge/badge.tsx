@@ -1,32 +1,26 @@
 import type { ReactNode } from "react";
 import { cn } from "../../utils/cn";
-import { defineSchema, COMMON_PROPS } from "../../utils/schema-helpers";
-
-// =============================================================================
-// KUMO_BADGE_VARIANTS - Single source of truth for all badge prop options
-// =============================================================================
 
 export const KUMO_BADGE_VARIANTS = {
   variant: {
     primary: {
-      classes: "bg-kumo-surface-inverse text-kumo-surface-inverse",
+      classes: "bg-surface-inverse text-surface-inverse",
       description: "Default high-emphasis badge for important labels",
     },
     secondary: {
-      classes: "bg-kumo-color text-kumo-surface",
+      classes: "bg-color text-surface",
       description: "Subtle badge for secondary information",
     },
     destructive: {
-      classes: "bg-kumo-destructive text-kumo-white",
+      classes: "bg-destructive text-white",
       description: "Error or danger state indicator",
     },
     outline: {
-      classes: "border border-kumo-color bg-transparent text-kumo-surface",
+      classes: "border border-color bg-transparent text-surface",
       description: "Bordered badge with transparent background",
     },
     beta: {
-      classes:
-        "border border-dashed border-kumo-primary bg-transparent text-kumo-beta",
+      classes: "border border-dashed border-primary bg-transparent text-beta",
       description: "Indicates beta or experimental features",
     },
   },
@@ -43,10 +37,6 @@ export interface KumoBadgeVariantsProps {
   variant?: KumoBadgeVariant;
 }
 
-// =============================================================================
-// badgeVariants - Computes class names from KUMO_BADGE_VARIANTS
-// =============================================================================
-
 export function badgeVariants({
   variant = KUMO_BADGE_DEFAULT_VARIANTS.variant,
 }: KumoBadgeVariantsProps = {}) {
@@ -61,39 +51,20 @@ export function badgeVariants({
 // Legacy type alias for backwards compatibility
 export type BadgeVariant = KumoBadgeVariant;
 
+export interface BadgeProps {
+  variant?: KumoBadgeVariant;
+  className?: string;
+  children: ReactNode;
+}
+
 export function Badge({
   variant = KUMO_BADGE_DEFAULT_VARIANTS.variant,
   className,
   children,
-}: {
-  variant?: KumoBadgeVariant;
-  className?: string;
-  children: ReactNode;
-}) {
+}: BadgeProps) {
   return (
     <span className={cn(badgeVariants({ variant }), className)}>
       {children}
     </span>
   );
 }
-
-// =============================================================================
-// BADGE_SCHEMA - Machine-readable component metadata for AI/agent consumption
-// =============================================================================
-
-export const BADGE_SCHEMA = defineSchema({
-  component: Badge,
-  description: "Small badge for labels and status indicators",
-  category: "Display",
-  variants: KUMO_BADGE_VARIANTS,
-  defaults: KUMO_BADGE_DEFAULT_VARIANTS,
-  additionalProps: {
-    className: COMMON_PROPS.className,
-    children: COMMON_PROPS.children,
-  },
-  examples: [
-    '<Badge variant="primary">New</Badge>',
-    '<Badge variant="destructive">Error</Badge>',
-    '<Badge variant="beta">Beta</Badge>',
-  ],
-});

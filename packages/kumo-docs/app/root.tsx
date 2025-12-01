@@ -64,7 +64,7 @@ export default function App() {
 
   useEffect(() => {
     // Check if dark mode is enabled
-    const isDarkMode = document.documentElement.classList.contains("dark-mode");
+    const isDarkMode = document.documentElement.dataset.mode === "dark";
     setIsDark(isDarkMode);
   }, []);
 
@@ -83,11 +83,11 @@ export default function App() {
     setIsDark(newIsDark);
 
     if (newIsDark) {
-      document.documentElement.classList.add("dark-mode");
-      localStorage.setItem("theme", "dark");
+      document.documentElement.dataset.mode = "dark";
+      localStorage.setItem("mode", "dark");
     } else {
-      document.documentElement.classList.remove("dark-mode");
-      localStorage.setItem("theme", "light");
+      delete document.documentElement.dataset.mode;
+      localStorage.setItem("mode", "light");
     }
   };
 

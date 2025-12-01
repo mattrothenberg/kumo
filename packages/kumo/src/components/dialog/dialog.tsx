@@ -3,22 +3,67 @@ import { Dialog as DialogBase } from "@base-ui-components/react";
 import { Surface } from "../surface";
 import { cn } from "../../utils/cn";
 
-type DialogProps = {
+export const KUMO_DIALOG_VARIANTS = {
+  size: {
+    base: {
+      classes: "min-w-96",
+      description: "Default dialog width",
+    },
+    sm: {
+      classes: "min-w-72",
+      description: "Small dialog for simple confirmations",
+    },
+    lg: {
+      classes: "min-w-[32rem]",
+      description: "Large dialog for complex content",
+    },
+    xl: {
+      classes: "min-w-[48rem]",
+      description: "Extra large dialog for detailed views",
+    },
+  },
+} as const;
+
+export const KUMO_DIALOG_DEFAULT_VARIANTS = {
+  size: "base",
+} as const;
+
+// Derived types from KUMO_DIALOG_VARIANTS
+export type KumoDialogSize = keyof typeof KUMO_DIALOG_VARIANTS.size;
+
+export interface KumoDialogVariantsProps {
+  size?: KumoDialogSize;
+}
+
+export function dialogVariants({
+  size = KUMO_DIALOG_DEFAULT_VARIANTS.size,
+}: KumoDialogVariantsProps = {}) {
+  return cn(
+    // Base styles
+    "shadow-m z-modal fixed top-1/2 left-1/2 max-w-[calc(100vw-3rem)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl bg-surface text-secondary duration-150 data-ending-style:scale-90 data-ending-style:opacity-0 data-starting-style:scale-90 data-starting-style:opacity-0",
+    // Apply size from KUMO_DIALOG_VARIANTS
+    KUMO_DIALOG_VARIANTS.size[size].classes,
+  );
+}
+
+export type DialogProps = KumoDialogVariantsProps & {
   className?: string;
   children: ReactNode;
   style?: CSSProperties;
 };
 
-function DialogContent({ className, children, style }: DialogProps) {
+function DialogContent({
+  className,
+  children,
+  style,
+  size = KUMO_DIALOG_DEFAULT_VARIANTS.size,
+}: DialogProps) {
   return (
     <DialogBase.Portal>
-      <DialogBase.Backdrop className="z-modal fixed inset-0 bg-kumo-color-3 opacity-80 transition-all duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0" />
+      <DialogBase.Backdrop className="z-modal fixed inset-0 bg-color-3 opacity-80 transition-all duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0" />
       <Surface
         as={DialogBase.Popup}
-        className={cn(
-          `shadow-m z-modal fixed top-1/2 left-1/2 max-w-[calc(100vw-3rem)] min-w-96 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl bg-kumo-surface text-kumo-secondary duration-150 data-ending-style:scale-90 data-ending-style:opacity-0 data-starting-style:scale-90 data-starting-style:opacity-0`,
-          className,
-        )}
+        className={cn(dialogVariants({ size }), className)}
         style={
           {
             transitionProperty: "scale, opacity",

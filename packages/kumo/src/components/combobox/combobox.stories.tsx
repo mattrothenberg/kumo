@@ -1,18 +1,26 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Combobox } from "./combobox";
+import {
+  Combobox,
+  KUMO_COMBOBOX_VARIANTS,
+  KUMO_COMBOBOX_DEFAULT_VARIANTS,
+  type KumoComboboxInputSide,
+} from "./combobox";
 import { useMemo, useState } from "react";
 import { Text } from "../text";
 import { Button } from "../button";
 
-const meta = {
+const meta: Meta<typeof Combobox> = {
   title: "Components/Combobox",
-  tags: ["autodocs"],
-} satisfies Meta;
+  component: Combobox,
+  parameters: {
+    layout: "padded",
+  },
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Single: Story = {
   render: () => {
     const items = useMemo(() => {
       return [
@@ -52,16 +60,16 @@ type BotType = {
 
 export const Multiple: StoryObj<{
   placeholder: string;
-  inputSide: "top" | "right";
+  inputSide: KumoComboboxInputSide;
 }> = {
   args: {
     placeholder: "Select bot",
-    inputSide: "top",
+    inputSide: KUMO_COMBOBOX_DEFAULT_VARIANTS.inputSide,
   },
   argTypes: {
     inputSide: {
-      control: { type: "select" },
-      options: ["top", "right"],
+      control: "select",
+      options: Object.keys(KUMO_COMBOBOX_VARIANTS.inputSide),
     },
   },
   render: (args) => {
@@ -131,24 +139,23 @@ export const Multiple: StoryObj<{
   },
 };
 
+const INITIAL_BOT_LIST: BotType[] = [
+  { label: "Amazonbot", author: "Amazon", value: "amazonbot" },
+  { label: "Googlebot", author: "Google", value: "googlebot" },
+  { label: "BingBot", author: "Bing", value: "bingbot" },
+];
+
+const INITIAL_SELECTED: BotType[] = [INITIAL_BOT_LIST[0], INITIAL_BOT_LIST[1]];
+
 export const MultipleWithPreselectedChips: Story = {
   render: () => {
-    const botList = useMemo(
-      () => [
-        { label: "Amazonbot", author: "Amazon", value: "amazonbot" },
-        { label: "Googlebot", author: "Google", value: "googlebot" },
-        { label: "BingBot", author: "Bing", value: "bingbot" },
-      ],
-      [],
-    );
-
-    const [value, setValue] = useState<BotType[]>([botList[0], botList[1]]);
+    const [value, setValue] = useState<BotType[]>(INITIAL_SELECTED);
 
     return (
       <Combobox
         value={value}
         onValueChange={setValue}
-        items={botList}
+        items={INITIAL_BOT_LIST}
         isItemEqualToValue={(bot, selectedValue) =>
           bot.value === selectedValue.value
         }
@@ -157,6 +164,7 @@ export const MultipleWithPreselectedChips: Story = {
         <Combobox.TriggerMultipleWithInput
           className="w-[400px]"
           placeholder="Select bot"
+          value={value}
           renderItem={(selected: BotType) => (
             <Combobox.Chip key={selected.value}>{selected.label}</Combobox.Chip>
           )}

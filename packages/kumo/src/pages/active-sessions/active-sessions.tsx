@@ -13,7 +13,7 @@ export function ActiveSessionsApp({
   const sessions = getActiveSessions();
 
   return (
-    <div className="min-h-screen bg-kumo-surface p-8 text-kumo-secondary">
+    <div className="min-h-screen bg-surface p-8 text-secondary">
       <div className="mx-auto max-w-4xl">
         {/* Header */}
         <div className="mb-2">
@@ -29,7 +29,7 @@ export function ActiveSessionsApp({
             href="https://developers.cloudflare.com/fundamentals/setup/manage-account/active-sessions/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-full border border-kumo-border bg-transparent px-2.5 py-1 text-xs font-medium text-kumo-muted transition-colors hover:border-kumo-color hover:text-kumo-secondary"
+            className="inline-flex items-center gap-1.5 rounded-full border border-border bg-transparent px-2.5 py-1 text-xs font-medium text-muted transition-colors hover:border-color hover:text-secondary"
           >
             <BookOpenIcon />
             Active sessions documentation
@@ -65,7 +65,7 @@ function SessionCard({ session }: { session: ActiveSession }) {
         </div>
 
         {/* Session details */}
-        <div className="flex flex-col gap-1.5 text-kumo-muted">
+        <div className="flex flex-col gap-1.5 text-muted">
           <div className="flex items-center gap-2">
             <BrowserIcon />
             <Text variant="secondary" size="sm">
@@ -122,7 +122,7 @@ function MonitorIcon() {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="shrink-0 text-kumo-secondary"
+      className="shrink-0 text-secondary"
     >
       <rect width="20" height="14" x="2" y="3" rx="2" />
       <line x1="8" x2="16" y1="21" y2="21" />

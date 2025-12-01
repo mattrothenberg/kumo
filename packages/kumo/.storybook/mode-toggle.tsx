@@ -1,4 +1,4 @@
-interface ThemeToggleProps {
+interface ModeToggleProps {
   isDark: boolean;
   onClick: () => void;
   className?: string;
@@ -8,13 +8,13 @@ function cn(...classes: (string | undefined | false)[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export function ThemeToggle({ isDark, onClick, className }: ThemeToggleProps) {
+export function ModeToggle({ isDark, onClick, className }: ModeToggleProps) {
   return (
     <button
       onClick={onClick}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       className={cn(
-        "relative h-[20px] w-[20px] cursor-pointer overflow-visible",
+        "relative box-content h-6 w-6 cursor-pointer overflow-visible p-1",
         className,
       )}
     >

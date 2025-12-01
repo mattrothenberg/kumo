@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Surface } from "./surface";
+import { Text } from "../text/text";
 
 const meta = {
   title: "Components/Surface",
@@ -7,7 +8,6 @@ const meta = {
   parameters: {
     layout: "padded",
   },
-  tags: ["autodocs"],
 } satisfies Meta<typeof Surface>;
 
 export default meta;
@@ -15,6 +15,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    children: "Surface content",
+    children: <Text>Surface content</Text>,
   },
 };

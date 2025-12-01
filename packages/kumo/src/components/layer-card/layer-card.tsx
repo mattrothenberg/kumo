@@ -1,26 +1,35 @@
 import type { FC, PropsWithChildren } from "react";
 import { cn } from "../../utils/cn";
 
-type LayerCardProps = PropsWithChildren<{ className?: string }>;
+export const KUMO_LAYER_CARD_VARIANTS = {
+  // LayerCard currently has no variant options but structure is ready for future additions
+} as const;
+
+export const KUMO_LAYER_CARD_DEFAULT_VARIANTS = {} as const;
+
+// Derived types from KUMO_LAYER_CARD_VARIANTS
+export interface KumoLayerCardVariantsProps {}
+
+export function layerCardVariants(_props: KumoLayerCardVariantsProps = {}) {
+  return cn(
+    // Base styles
+    "flex w-full flex-col rounded-lg bg-surface-2 text-base ring ring-border",
+  );
+}
+
+export type LayerCardProps = PropsWithChildren<
+  KumoLayerCardVariantsProps & { className?: string }
+>;
 
 function LayerCardRoot({ children, className }: LayerCardProps) {
-  return (
-    <div
-      className={cn(
-        "flex w-full flex-col rounded-lg bg-kumo-surface-2 text-base ring ring-kumo-border",
-        className,
-      )}
-    >
-      {children}
-    </div>
-  );
+  return <div className={cn(layerCardVariants(), className)}>{children}</div>;
 }
 
 function LayerCardSecondary({ children, className }: LayerCardProps) {
   return (
     <div
       className={cn(
-        "flex items-center gap-2 p-2 text-base font-medium text-kumo-neutral-dim",
+        "flex items-center gap-2 p-2 text-base font-medium text-neutral-dim",
         className,
       )}
     >
@@ -33,7 +42,7 @@ function LayerCardPrimary({ children, className }: LayerCardProps) {
   return (
     <div
       className={cn(
-        "flex flex-col gap-2 rounded-lg bg-kumo-surface-2 p-4 pr-3 text-inherit no-underline ring ring-kumo-color",
+        "flex flex-col gap-2 rounded-lg bg-surface-2 p-4 pr-3 text-inherit no-underline ring ring-color",
         className,
       )}
     >

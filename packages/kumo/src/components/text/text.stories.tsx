@@ -1,34 +1,42 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Text } from "./text";
+import { Text, KUMO_TEXT_VARIANTS } from "./text";
+import { propTester } from "../../utils/prop-tester";
 
 const meta = {
   title: "Components/Text",
   component: Text,
-  tags: ["autodocs"],
 } satisfies Meta<typeof Text>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  args: {
-    children: "This is default text",
-  },
+export const Variants: Story = {
+  render: () => (
+    <>
+      {propTester(
+        Object.keys(KUMO_TEXT_VARIANTS.variant),
+        "variant",
+        <Text>Sample text</Text>,
+      )}
+    </>
+  ),
 };
 
-export const AllVariants: Story = {
-  args: {
-    children: "Text",
-  },
+export const Sizes: Story = {
   render: () => (
-    <div className="flex flex-col gap-2">
-      <Text>Default text</Text>
-      <Text size="sm">Small text</Text>
-      <Text size="lg">Large text</Text>
-      <Text bold>Bold text</Text>
-      <Text variant="success">Success text</Text>
-      <Text variant="error">Error text</Text>
-      <Text variant="secondary">Secondary text</Text>
-    </div>
+    <>
+      {propTester(
+        Object.keys(KUMO_TEXT_VARIANTS.size),
+        "size",
+        <Text>Sample text</Text>,
+      )}
+    </>
   ),
+};
+
+export const Bold: Story = {
+  args: {
+    bold: true,
+    children: "Bold text",
+  },
 };

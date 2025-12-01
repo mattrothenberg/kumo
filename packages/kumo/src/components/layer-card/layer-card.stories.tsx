@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { ArrowRightIcon } from "@phosphor-icons/react";
 import { Button } from "../button/button";
 import { LayerCard } from "./layer-card";
+import { Text } from "../text";
 
 const meta = {
   title: "Components/LayerCard",
@@ -9,7 +10,6 @@ const meta = {
   parameters: {
     layout: "padded",
   },
-  tags: ["autodocs"],
 } satisfies Meta<typeof LayerCard>;
 
 export default meta;
@@ -25,7 +25,9 @@ export const Default: Story = {
         </Button>
       </LayerCard.Secondary>
 
-      <LayerCard.Primary>Get started with Kumo</LayerCard.Primary>
+      <LayerCard.Primary>
+        <Text>Get started with Kumo</Text>
+      </LayerCard.Primary>
     </LayerCard>
   ),
 };

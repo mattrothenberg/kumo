@@ -6,18 +6,36 @@ import { cn } from "../../utils/cn";
 import { buttonVariants } from "../button";
 import { SkeletonLine } from "../loader";
 
+export const KUMO_SELECT_VARIANTS = {
+  // Select currently has no variant options but structure is ready for future additions
+} as const;
+
+export const KUMO_SELECT_DEFAULT_VARIANTS = {} as const;
+
+// Derived types from KUMO_SELECT_VARIANTS
+export interface KumoSelectVariantsProps {}
+
+export function selectVariants(_props: KumoSelectVariantsProps = {}) {
+  return cn(
+    buttonVariants(),
+    "justify-between font-normal",
+    "outline-none focus:opacity-100 focus-visible:ring-1 focus-visible:ring-active *:in-focus:opacity-100",
+  );
+}
+
 type SelectProps<
   T,
   Multiple extends boolean | undefined = false,
-> = SelectBase.Root.Props<T, Multiple> & {
-  multiple?: Multiple;
-  renderValue?: (value: Multiple extends true ? T[] : T) => ReactNode;
-  className?: string;
-  label?: string;
-  hideLabel?: boolean;
-  placeholder?: string;
-  loading?: boolean;
-};
+> = SelectBase.Root.Props<T, Multiple> &
+  KumoSelectVariantsProps & {
+    multiple?: Multiple;
+    renderValue?: (value: Multiple extends true ? T[] : T) => ReactNode;
+    className?: string;
+    label?: string;
+    hideLabel?: boolean;
+    placeholder?: string;
+    loading?: boolean;
+  };
 
 export function Select<T, Multiple extends boolean | undefined = false>({
   children,
@@ -77,9 +95,7 @@ export function Select<T, Multiple extends boolean | undefined = false>({
         <span
           id={labelId}
           className={
-            hideLabel
-              ? "sr-only"
-              : "block text-sm font-medium text-kumo-surface"
+            hideLabel ? "sr-only" : "block text-sm font-medium text-surface"
           }
         >
           {label}
@@ -94,7 +110,7 @@ export function Select<T, Multiple extends boolean | undefined = false>({
           className={cn(
             buttonVariants(),
             "justify-between font-normal",
-            "outline-none focus:opacity-100 focus-visible:ring-1 focus-visible:ring-kumo-active *:in-focus:opacity-100",
+            "outline-none focus:opacity-100 focus-visible:ring-1 focus-visible:ring-active *:in-focus:opacity-100",
             className,
           )}
           aria-label={triggerAriaLabel}
@@ -110,11 +126,11 @@ export function Select<T, Multiple extends boolean | undefined = false>({
           </SelectBase.Icon>
         </SelectBase.Trigger>
         <SelectBase.Portal>
-          <SelectBase.Positioner>
+          <SelectBase.Positioner className="z-50">
             <SelectBase.Popup
               className={cn(
-                "z-50 overflow-hidden bg-kumo-secondary text-kumo-surface", // background
-                "rounded-lg shadow-lg ring ring-kumo-border", // border part
+                "z-50 overflow-hidden bg-secondary text-surface", // background
+                "rounded-lg shadow-lg ring ring-border", // border part
                 // 3px adjustment to account for padding + border differences
                 "min-w-[calc(var(--anchor-width)+3px)] p-1.5", // spacing
               )}
@@ -137,7 +153,7 @@ function Option<T>({ children, value }: OptionProps<T>) {
   return (
     <SelectBase.Item
       value={value}
-      className="group flex cursor-pointer items-center justify-between gap-2 rounded px-2 py-1.5 text-base data-highlighted:bg-kumo-color-3"
+      className="group flex cursor-pointer items-center justify-between gap-2 rounded px-2 py-1.5 text-base data-highlighted:bg-color-3"
     >
       <SelectBase.ItemText>{children}</SelectBase.ItemText>
       <SelectBase.ItemIndicator>

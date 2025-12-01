@@ -3,6 +3,39 @@ import { CheckIcon, CopyIcon } from "@phosphor-icons/react";
 import { Button } from "../../components/button";
 import { SkeletonLine } from "../../components/loader/skeleton-line";
 import { useLinkComponent } from "../../utils/link-provider";
+import { cn } from "../../utils/cn";
+
+export const KUMO_BREADCRUMBS_VARIANTS = {
+  size: {
+    sm: {
+      classes: "text-sm h-10 gap-0.5",
+      description: "Compact breadcrumbs for dense UIs",
+    },
+    base: {
+      classes: "text-base h-12 gap-1",
+      description: "Default breadcrumbs size",
+    },
+  },
+} as const;
+
+export const KUMO_BREADCRUMBS_DEFAULT_VARIANTS = {
+  size: "base",
+} as const;
+
+export type KumoBreadcrumbsSize = keyof typeof KUMO_BREADCRUMBS_VARIANTS.size;
+
+export interface KumoBreadcrumbsVariantsProps {
+  size?: KumoBreadcrumbsSize;
+}
+
+export function breadcrumbsVariants({
+  size = KUMO_BREADCRUMBS_DEFAULT_VARIANTS.size,
+}: KumoBreadcrumbsVariantsProps = {}) {
+  return cn(
+    "group mr-4 hidden min-w-0 grow items-center sm:flex",
+    KUMO_BREADCRUMBS_VARIANTS.size[size].classes,
+  );
+}
 
 interface BreadcrumbsItemProps {
   href: string;
@@ -19,7 +52,7 @@ const Link = ({
   return (
     <LinkComponent
       to={href}
-      className="flex min-w-0 items-center gap-1 text-kumo-muted no-underline"
+      className="flex min-w-0 items-center gap-1 text-muted no-underline"
     >
       {!!icon && <span className="flex shrink-0 items-center">{icon}</span>}
       {children}
@@ -59,10 +92,7 @@ function Current({
 
 function Separator() {
   return (
-    <span
-      className="flex items-center text-kumo-label-inverse"
-      aria-hidden="true"
-    >
+    <span className="flex items-center text-label-inverse" aria-hidden="true">
       <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
         <path
           stroke="currentColor"
@@ -108,7 +138,7 @@ function Clipboard({ text }: { text: string }) {
       aria-label="Copy"
     >
       {isCopied ? (
-        <CheckIcon weight="bold" className="text-kumo-green-2" />
+        <CheckIcon weight="bold" className="text-green-2" />
       ) : (
         <CopyIcon weight="regular" />
       )}
@@ -116,10 +146,20 @@ function Clipboard({ text }: { text: string }) {
   );
 }
 
-export function Breadcrumb({ children }: PropsWithChildren) {
+export interface BreadcrumbsProps
+  extends PropsWithChildren,
+    KumoBreadcrumbsVariantsProps {
+  className?: string;
+}
+
+export function Breadcrumb({
+  children,
+  size = "base",
+  className,
+}: BreadcrumbsProps) {
   return (
     <nav
-      className="group mr-4 hidden h-12 min-w-0 grow items-center gap-1 text-base sm:flex"
+      className={cn(breadcrumbsVariants({ size }), className)}
       aria-label="breadcrumb"
     >
       {children}

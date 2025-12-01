@@ -1,26 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { InfoIcon } from "@phosphor-icons/react";
-import {
-  Banner,
-  KUMO_BANNER_VARIANTS,
-  KUMO_BANNER_DEFAULT_VARIANTS,
-} from "./banner";
+import { Banner, KUMO_BANNER_VARIANTS } from "./banner";
 import { propTester } from "../../utils/prop-tester";
 
 const meta: Meta<typeof Banner> = {
   title: "Components/Banner",
   component: Banner,
-  tags: ["autodocs"],
-  argTypes: {
-    variant: {
-      control: "select",
-      options: Object.keys(KUMO_BANNER_VARIANTS.variant),
-    },
-  },
-  args: {
-    variant: KUMO_BANNER_DEFAULT_VARIANTS.variant,
-    text: "This is a banner message",
-  },
 };
 
 export default meta;

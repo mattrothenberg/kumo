@@ -2,7 +2,7 @@
 @import "@cloudflare/kumo/styles";
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark-mode, .dark-mode *));
+@custom-variant dark (&:where([data-mode="dark"], [data-mode="dark"] *));
 
 @theme {
   --font-sans:

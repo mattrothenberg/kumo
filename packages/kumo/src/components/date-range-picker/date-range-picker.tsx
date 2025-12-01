@@ -6,6 +6,82 @@ import {
 import { useCallback, useState } from "react";
 import { cn } from "../../utils/cn";
 
+export const KUMO_DATE_RANGE_PICKER_VARIANTS = {
+  size: {
+    sm: {
+      classes: "p-3 gap-2",
+      cellHeight: "h-[22px]",
+      cellWidth: "w-6",
+      calendarWidth: "w-[168px]",
+      textSize: "text-xs",
+      iconSize: 14,
+      description: "Compact calendar for tight spaces",
+    },
+    base: {
+      classes: "p-4 gap-2.5",
+      cellHeight: "h-[26px]",
+      cellWidth: "w-7",
+      calendarWidth: "w-[196px]",
+      textSize: "text-sm",
+      iconSize: 16,
+      description: "Default calendar size",
+    },
+    lg: {
+      classes: "p-5 gap-3",
+      cellHeight: "h-[32px]",
+      cellWidth: "w-9",
+      calendarWidth: "w-[252px]",
+      textSize: "text-base",
+      iconSize: 18,
+      description: "Large calendar for prominent date selection",
+    },
+  },
+  variant: {
+    default: {
+      classes: "bg-calendar",
+      description: "Default calendar appearance",
+    },
+    subtle: {
+      classes: "bg-surface",
+      description: "Subtle calendar with minimal background",
+    },
+  },
+} as const;
+
+export const KUMO_DATE_RANGE_PICKER_DEFAULT_VARIANTS = {
+  size: "base",
+  variant: "default",
+} as const;
+
+// Derived types from KUMO_DATE_RANGE_PICKER_VARIANTS
+export type KumoDateRangePickerSize =
+  keyof typeof KUMO_DATE_RANGE_PICKER_VARIANTS.size;
+export type KumoDateRangePickerVariant =
+  keyof typeof KUMO_DATE_RANGE_PICKER_VARIANTS.variant;
+
+export interface KumoDateRangePickerVariantsProps {
+  size?: KumoDateRangePickerSize;
+  variant?: KumoDateRangePickerVariant;
+}
+
+export function dateRangePickerVariants({
+  size = KUMO_DATE_RANGE_PICKER_DEFAULT_VARIANTS.size,
+  variant = KUMO_DATE_RANGE_PICKER_DEFAULT_VARIANTS.variant,
+}: KumoDateRangePickerVariantsProps = {}) {
+  return cn(
+    // Base styles
+    "flex flex-col rounded-xl select-none",
+    // Apply variant and size styles
+    KUMO_DATE_RANGE_PICKER_VARIANTS.variant[variant].classes,
+    KUMO_DATE_RANGE_PICKER_VARIANTS.size[size].classes,
+  );
+}
+
+// Helper to get size config
+function getSizeConfig(size: KumoDateRangePickerSize) {
+  return KUMO_DATE_RANGE_PICKER_VARIANTS.size[size];
+}
+
 enum DateRangeCellMode {
   OUT_OF_RANGE,
   ENABLED,
@@ -14,21 +90,34 @@ enum DateRangeCellMode {
   SELECTED,
   SELECTED_OUT_OF_RANGE,
 }
-const DAYS_OF_WEEK = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
-interface DateRangePickerProps {
+const DAYS_OF_WEEK = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"] as const;
+
+export interface DateRangePickerProps extends KumoDateRangePickerVariantsProps {
+  /** Callback fired when start date changes */
   onStartDateChange: (date: Date | null) => void;
+  /** Callback fired when end date changes */
   onEndDateChange: (date: Date | null) => void;
+  /** Display timezone (display only) */
+  timezone?: string;
+  /** Additional CSS classes */
+  className?: string;
 }
 
-export default function DateRangePicker({
+export function DateRangePicker({
   onStartDateChange,
   onEndDateChange,
+  size = KUMO_DATE_RANGE_PICKER_DEFAULT_VARIANTS.size,
+  variant = KUMO_DATE_RANGE_PICKER_DEFAULT_VARIANTS.variant,
+  timezone = "New York, NY, USA (GMT-4)",
+  className,
 }: DateRangePickerProps) {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [viewingMonth, setViewingMonth] = useState<Date>(new Date());
   const [hoveringDate, setHoveringDate] = useState<Date | null>(null);
+
+  const sizeConfig = getSizeConfig(size);
 
   const handleStartDateChange = (date: Date | null) => {
     setStartDate(date);
@@ -122,19 +211,20 @@ export default function DateRangePicker({
   }, []);
 
   return (
-    <div className="flex flex-col gap-2.5 rounded-xl bg-kumo-calendar p-4 select-none">
+    <div className={cn(dateRangePickerVariants({ size, variant }), className)}>
       <div className="flex gap-4">
-        <div className="relative w-[196px]">
+        <div className={cn("relative", sizeConfig.calendarWidth)}>
           <div
-            className="absolute top-0 left-0 cursor-pointer rounded bg-kumo-calendar-day-range-selected/85 p-1.5 hover:bg-kumo-calendar-day-range-selected"
+            className="absolute top-0 left-0 cursor-pointer rounded bg-calendar-day-range-selected/85 p-1.5 hover:bg-calendar-day-range-selected"
             onClick={() => adjustMonth(-1)}
           >
-            <CaretLeftIcon size={16} />
+            <CaretLeftIcon size={sizeConfig.iconSize} />
           </div>
 
           <DateRangeMonthHeader
             month={getMonthName(viewingMonth)}
             year={getDateYear(viewingMonth)}
+            size={size}
             updateCurrentMonth={(dateString) => {
               setViewingMonth(new Date(dateString));
             }}
@@ -145,6 +235,7 @@ export default function DateRangePicker({
               <DateRangeDayCell
                 key={index}
                 date={getDateFromIndex(viewingMonth, 0, index)}
+                size={size}
                 mode={
                   // After current month range
                   (startDate &&
@@ -221,17 +312,18 @@ export default function DateRangePicker({
             ))}
           </div>
         </div>
-        <div className="relative w-[196px]">
+        <div className={cn("relative", sizeConfig.calendarWidth)}>
           <div
-            className="absolute top-0 right-0 cursor-pointer rounded bg-kumo-calendar-day-range-selected/85 p-1.5 hover:bg-kumo-calendar-day-range-selected"
+            className="absolute top-0 right-0 cursor-pointer rounded bg-calendar-day-range-selected/85 p-1.5 hover:bg-calendar-day-range-selected"
             onClick={() => adjustMonth(1)}
           >
-            <CaretRightIcon size={16} />
+            <CaretRightIcon size={sizeConfig.iconSize} />
           </div>
 
           <DateRangeMonthHeader
             month={getMonthName(viewingMonth, 1)}
             year={getDateYear(viewingMonth, 1)}
+            size={size}
             updateCurrentMonth={(dateString) => {
               const date = new Date(dateString);
               date.setMonth(date.getMonth() - 1);
@@ -244,6 +336,7 @@ export default function DateRangePicker({
               <DateRangeDayCell
                 key={index}
                 date={getDateFromIndex(viewingMonth, 1, index)}
+                size={size}
                 mode={
                   // After current month range
                   (startDate &&
@@ -323,6 +416,8 @@ export default function DateRangePicker({
       </div>
 
       <DateRangeFooter
+        timezone={timezone}
+        size={size}
         reset={() => {
           handleStartDateChange(null);
           handleEndDateChange(null);
@@ -335,14 +430,18 @@ export default function DateRangePicker({
 function DateRangeDayCell({
   date,
   mode,
+  size = KUMO_DATE_RANGE_PICKER_DEFAULT_VARIANTS.size,
   onClick,
   isHoveringDate,
 }: {
   date: Date;
   mode?: DateRangeCellMode;
+  size?: KumoDateRangePickerSize;
   onClick?: (date: Date) => void;
   isHoveringDate?: (date: Date) => void;
 }) {
+  const sizeConfig = getSizeConfig(size);
+
   const getDateNumberFromDate = useCallback((date: Date) => {
     return date.getDate();
   }, []);
@@ -354,13 +453,13 @@ function DateRangeDayCell({
       case DateRangeCellMode.ENABLED:
         return "bg-transparent";
       case DateRangeCellMode.SELECTED_START_NODE:
-        return "!bg-kumo-calendar-day-range-selected-endpoints rounded-tl-[5px] rounded-bl-[5px]";
+        return "!bg-calendar-day-range-selected-endpoints rounded-tl-[5px] rounded-bl-[5px]";
       case DateRangeCellMode.SELECTED_END_NODE:
-        return "!bg-kumo-calendar-day-range-selected-endpoints rounded-tr-[5px] rounded-br-[5px]";
+        return "!bg-calendar-day-range-selected-endpoints rounded-tr-[5px] rounded-br-[5px]";
       case DateRangeCellMode.SELECTED:
-        return "bg-kumo-calendar-day-range-selected";
+        return "bg-calendar-day-range-selected";
       case DateRangeCellMode.SELECTED_OUT_OF_RANGE:
-        return "bg-kumo-calendar-day-range-selected-out-of-range";
+        return "bg-calendar-day-range-selected-out-of-range";
     }
   }, [mode]);
 
@@ -368,12 +467,12 @@ function DateRangeDayCell({
     switch (mode) {
       case DateRangeCellMode.OUT_OF_RANGE:
       case DateRangeCellMode.SELECTED_OUT_OF_RANGE:
-        return "!text-kumo-calendar-day-range-selected-out-of-range";
+        return "!text-calendar-day-range-selected-out-of-range";
       case DateRangeCellMode.SELECTED_START_NODE:
       case DateRangeCellMode.SELECTED_END_NODE:
-        return "!text-kumo-calendar-day-range-selected-endpoints";
+        return "!text-calendar-day-range-selected-endpoints";
       default:
-        return "text-kumo-secondary";
+        return "text-secondary";
     }
   }, [mode]);
 
@@ -381,10 +480,14 @@ function DateRangeDayCell({
     <div
       id={date.toDateString()}
       className={cn(
-        `h-[26px] w-7 cursor-pointer text-center text-sm leading-[26px] text-kumo-secondary transition-all duration-[50]`,
+        sizeConfig.cellHeight,
+        sizeConfig.cellWidth,
+        sizeConfig.textSize,
+        "cursor-pointer text-center text-secondary transition-all duration-[50]",
+        `leading-[${sizeConfig.cellHeight.replace("h-[", "").replace("]", "")}]`,
         mode !== DateRangeCellMode.OUT_OF_RANGE &&
           mode !== DateRangeCellMode.SELECTED_OUT_OF_RANGE
-          ? "hover:bg-kumo-hover"
+          ? "hover:bg-hover"
           : "",
         getBackgroundColor(),
         getTextColor(),
@@ -392,7 +495,6 @@ function DateRangeDayCell({
       onClick={() => onClick?.(date)}
       onMouseOver={() => isHoveringDate?.(date)}
     >
-      {/* {text} */}
       {getDateNumberFromDate(date)}
     </div>
   );
@@ -401,19 +503,26 @@ function DateRangeDayCell({
 function DateRangeMonthHeader({
   month,
   year,
+  size = KUMO_DATE_RANGE_PICKER_DEFAULT_VARIANTS.size,
   updateCurrentMonth,
 }: {
   month?: string;
   year?: number;
+  size?: KumoDateRangePickerSize;
   updateCurrentMonth?: (dateString: string) => void;
 }) {
+  const sizeConfig = getSizeConfig(size);
+
   return (
     <div>
       <div className="mb-3 text-center">
         <div
           contentEditable
           suppressContentEditableWarning
-          className="rounded-md py-1.5 text-sm font-semibold text-kumo-secondary transition-all duration-200 select-none focus:outline-none"
+          className={cn(
+            "rounded-md py-1.5 font-semibold text-secondary transition-all duration-200 select-none focus:outline-none",
+            sizeConfig.textSize,
+          )}
           onBlur={(e) => {
             if (e.currentTarget.textContent?.length === 0) return;
             updateCurrentMonth?.(e.currentTarget.textContent || "");
@@ -427,7 +536,11 @@ function DateRangeMonthHeader({
         {DAYS_OF_WEEK.map((day) => (
           <div
             key={day}
-            className="h-[22px] w-7 text-center text-sm text-kumo-neutral-dim"
+            className={cn(
+              "h-[22px] text-center text-neutral-dim",
+              sizeConfig.cellWidth,
+              sizeConfig.textSize,
+            )}
           >
             {day}
           </div>
@@ -437,17 +550,35 @@ function DateRangeMonthHeader({
   );
 }
 
-function DateRangeFooter({ reset }: { reset?: () => void }) {
+function DateRangeFooter({
+  timezone,
+  size = KUMO_DATE_RANGE_PICKER_DEFAULT_VARIANTS.size,
+  reset,
+}: {
+  timezone?: string;
+  size?: KumoDateRangePickerSize;
+  reset?: () => void;
+}) {
+  const sizeConfig = getSizeConfig(size);
+
   return (
-    <div className="flex items-center gap-2 text-sm text-kumo-neutral-subtle">
-      <GlobeHemisphereWestIcon size={16} />
-      <span className="flex-1">Timezone: New York, NY, USA (GMT-4)</span>
+    <div
+      className={cn(
+        "flex items-center gap-2 text-neutral-subtle",
+        sizeConfig.textSize,
+      )}
+    >
+      <GlobeHemisphereWestIcon size={sizeConfig.iconSize} />
+      <span className="flex-1">Timezone: {timezone}</span>
       <span
         onClick={reset}
-        className="cursor-pointer font-semibold text-kumo-calendar-reset underline underline-offset-2"
+        className="cursor-pointer font-semibold text-calendar-reset underline underline-offset-2"
       >
         Reset Dates
       </span>
     </div>
   );
 }
+
+// Default export for backwards compatibility
+export default DateRangePicker;

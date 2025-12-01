@@ -1,11 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { DropdownMenu } from "./dropdown";
+import { DropdownMenu, KUMO_DROPDOWN_VARIANTS } from "./dropdown";
 import { Button } from "../button/button";
 
 const meta: Meta<typeof DropdownMenu> = {
   title: "Components/Dropdown",
   component: DropdownMenu,
-  tags: ["autodocs"],
+  parameters: {
+    layout: "padded",
+  },
 };
 
 export default meta;
@@ -29,7 +31,7 @@ export const Default: Story = {
   ),
 };
 
-export const DangerLinkItem: Story = {
+export const ItemVariants: Story = {
   args: {
     children: null,
   },
@@ -37,9 +39,14 @@ export const DangerLinkItem: Story = {
     <DropdownMenu>
       <DropdownMenu.Trigger render={<Button>Open Menu</Button>} />
       <DropdownMenu.Content>
-        <DropdownMenu.Item href="https://example.com" variant="danger">
-          Delete worker
-        </DropdownMenu.Item>
+        {Object.keys(KUMO_DROPDOWN_VARIANTS.variant).map((variant) => (
+          <DropdownMenu.Item
+            key={variant}
+            variant={variant as keyof typeof KUMO_DROPDOWN_VARIANTS.variant}
+          >
+            {variant} item
+          </DropdownMenu.Item>
+        ))}
       </DropdownMenu.Content>
     </DropdownMenu>
   ),

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Breadcrumbs } from "../breadcrumbs";
+import { Breadcrumbs, KUMO_BREADCRUMBS_VARIANTS } from "../breadcrumbs";
 import { House, Folder, File } from "@phosphor-icons/react";
+import { propTester } from "../../utils/prop-tester";
 
 const meta = {
   title: "Blocks/Breadcrumbs",
@@ -8,7 +9,6 @@ const meta = {
   parameters: {
     layout: "padded",
   },
-  tags: ["autodocs"],
 } satisfies Meta<typeof Breadcrumbs>;
 
 export default meta;
@@ -23,6 +23,24 @@ export const Default: Story = {
       <Breadcrumbs.Separator />
       <Breadcrumbs.Current>Current Project</Breadcrumbs.Current>
     </Breadcrumbs>
+  ),
+};
+
+export const Sizes: Story = {
+  render: () => (
+    <>
+      {propTester(
+        Object.keys(KUMO_BREADCRUMBS_VARIANTS.size),
+        "size",
+        <Breadcrumbs>
+          <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+          <Breadcrumbs.Separator />
+          <Breadcrumbs.Link href="/projects">Projects</Breadcrumbs.Link>
+          <Breadcrumbs.Separator />
+          <Breadcrumbs.Current>Current Project</Breadcrumbs.Current>
+        </Breadcrumbs>,
+      )}
+    </>
   ),
 };
 

@@ -41,9 +41,9 @@ export default defineConfig(({ mode }) => {
             __dirname,
             "src/components/button/index.ts",
           ),
-          "components/calendar": resolve(
+          "components/date-range-picker": resolve(
             __dirname,
-            "src/components/calendar/index.ts",
+            "src/components/date-range-picker/index.ts",
           ),
           "components/checkbox": resolve(
             __dirname,

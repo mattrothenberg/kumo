@@ -33,9 +33,7 @@ export const InputArea = React.forwardRef<HTMLTextAreaElement, InputAreaProps>(
           <label
             htmlFor={textAreaId}
             className={
-              hideLabel
-                ? "sr-only"
-                : "block text-sm font-medium text-kumo-surface"
+              hideLabel ? "sr-only" : "block text-sm font-medium text-surface"
             }
           >
             {label}

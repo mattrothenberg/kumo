@@ -57,7 +57,7 @@ export function ManagedProfileApp({ view }: { view: ManagedProfileView }) {
   >(initialTab);
 
   return (
-    <div className="min-h-[100vh] bg-kumo-surface p-8 text-kumo-secondary">
+    <div className="min-h-[100vh] bg-surface p-8 text-secondary">
       <div className="mx-auto max-w-4xl">
         {/* Header */}
         <div className="mb-2">
@@ -228,7 +228,7 @@ function PreferencesView({
       </div>
 
       {/* Divider */}
-      <hr className="my-8 border-kumo-border" />
+      <hr className="my-8 border-border" />
 
       {/* Delete Profile Section */}
       <Text variant="heading3" DANGEROUS_className="mb-2">
@@ -245,7 +245,7 @@ function PreferencesView({
               <Button
                 size="sm"
                 variant="outline"
-                className="border-kumo-destructive text-kumo-destructive hover:bg-kumo-destructive/10"
+                className="border-destructive text-destructive hover:bg-destructive/10"
                 disabled={sso}
               >
                 Delete User
@@ -323,7 +323,7 @@ function NotificationsView({
                     onValueChange={(checked) =>
                       updateNotificationSubscription(value, checked)
                     }
-                    className="text-sm font-medium text-kumo-secondary"
+                    className="text-sm font-medium text-secondary"
                   />
                   <Text
                     variant="secondary"
@@ -377,7 +377,7 @@ function AuthenticationView({
         <Text variant="body" bold size="sm" DANGEROUS_className="mb-4">
           2FA methods
         </Text>
-        <div className="divide-y divide-kumo-border">
+        <div className="divide-y divide-border">
           {/* Security key or biometrics */}
           <div className="flex items-center justify-between py-4">
             <div className="flex items-start gap-8">
@@ -460,10 +460,10 @@ function UpdateEmailDialog({ currentEmail }: { currentEmail: string }) {
   return (
     <Dialog className="w-[400px]">
       <div className="flex items-center justify-between p-4">
-        <DialogTitle className="text-base font-semibold text-kumo-secondary">
+        <DialogTitle className="text-base font-semibold text-secondary">
           Update Email
         </DialogTitle>
-        <DialogClose className="text-kumo-muted-foreground hover:text-kumo-secondary">
+        <DialogClose className="text-muted-foreground hover:text-secondary">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
@@ -485,7 +485,7 @@ function UpdateEmailDialog({ currentEmail }: { currentEmail: string }) {
           <Input
             value={currentEmail}
             disabled
-            className="bg-kumo-surface-secondary"
+            className="bg-surface-secondary"
           />
         </Field>
         <Field label="Updated Email">
@@ -564,10 +564,10 @@ function DeleteUserDialog({
   return (
     <Dialog className="w-[400px]">
       <div className="flex items-center justify-between p-4">
-        <DialogTitle className="text-base font-semibold text-kumo-secondary">
+        <DialogTitle className="text-base font-semibold text-secondary">
           Delete User
         </DialogTitle>
-        <DialogClose className="text-kumo-muted-foreground hover:text-kumo-secondary">
+        <DialogClose className="text-muted-foreground hover:text-secondary">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
@@ -598,7 +598,7 @@ function DeleteUserWarningContent() {
       <div className="space-y-4 p-4">
         <Text variant="body" size="sm">
           <span className="font-semibold">Important:</span>{" "}
-          <a href="#" className="text-kumo-info hover:underline">
+          <a href="#" className="text-info hover:underline">
             Follow these prerequisites <ExternalLinkIcon />
           </a>{" "}
           before deleting your user account.
@@ -609,14 +609,14 @@ function DeleteUserWarningContent() {
         </Text>
         <Text variant="body" size="sm">
           Learn more about{" "}
-          <a href="#" className="text-kumo-info hover:underline">
+          <a href="#" className="text-info hover:underline">
             deleting your user account <ExternalLinkIcon />
           </a>
         </Text>
         <LayerCard>
           <LayerCard.Primary className="flex-row items-center justify-between gap-3">
             <div className="flex items-center gap-2">
-              <AlertTriangleIcon className="text-kumo-destructive" />
+              <AlertTriangleIcon className="text-destructive" />
               <Text variant="body" size="sm">
                 Deletion is permanent and the associated email address cannot be
                 used to create a new Cloudflare account.
@@ -629,7 +629,7 @@ function DeleteUserWarningContent() {
         <Button
           size="sm"
           variant="primary"
-          className="bg-kumo-destructive hover:bg-kumo-destructive/90"
+          className="bg-destructive hover:bg-destructive/90"
         >
           Delete user
         </Button>
@@ -670,7 +670,7 @@ function DeleteUserFormContent() {
         <Button
           size="sm"
           variant="primary"
-          className="bg-kumo-destructive hover:bg-kumo-destructive/90"
+          className="bg-destructive hover:bg-destructive/90"
         >
           Delete user
         </Button>
@@ -706,7 +706,7 @@ function DeleteUserConfirmContent() {
         icon={<CheckCircleIcon />}
         text="Cloudflare is committed to privacy. Our network and all of our products are built with protection in mind."
       />
-      <Text variant="body" size="sm" DANGEROUS_className="text-kumo-info">
+      <Text variant="body" size="sm" DANGEROUS_className="text-info">
         You will be logged out in 5 seconds.
       </Text>
     </div>

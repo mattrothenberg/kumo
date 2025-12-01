@@ -3,11 +3,6 @@ import { ArrowsClockwiseIcon, type Icon } from "@phosphor-icons/react";
 import { Loader } from "../loader/loader";
 import { cn } from "../../utils/cn";
 import { useLinkComponent } from "../../utils/link-provider";
-import { defineSchema, COMMON_PROPS } from "../../utils/schema-helpers";
-
-// =============================================================================
-// KUMO_BUTTON_VARIANTS - Single source of truth for all button prop options
-// =============================================================================
 
 export const KUMO_BUTTON_VARIANTS = {
   shape: {
@@ -51,25 +46,24 @@ export const KUMO_BUTTON_VARIANTS = {
   variant: {
     primary: {
       classes:
-        "bg-kumo-primary !text-kumo-white hover:bg-kumo-primary/70 disabled:bg-kumo-primary/50 disabled:!text-kumo-primary/70",
+        "bg-primary !text-white hover:bg-primary/70 disabled:bg-primary/50 disabled:!text-primary/70",
       description: "High-emphasis button for primary actions",
     },
     secondary: {
       classes:
-        "bg-kumo-secondary !text-kumo-secondary ring not-disabled:hover:border-kumo-subtle! not-disabled:hover:bg-kumo-subtle disabled:bg-kumo-secondary/50 disabled:!text-kumo-secondary/70 ring-kumo-border data-[state=open]:bg-kumo-subtle",
+        "bg-secondary !text-secondary ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-secondary/70 ring-border data-[state=open]:bg-subtle",
       description: "Default button style for most actions",
     },
     ghost: {
-      classes: "text-kumo-surface hover:bg-kumo-accent shadow-none bg-inherit",
+      classes: "text-surface hover:bg-accent shadow-none bg-inherit",
       description: "Minimal button with no background",
     },
     destructive: {
-      classes:
-        "bg-kumo-destructive !text-kumo-white hover:bg-kumo-destructive/70",
+      classes: "bg-destructive !text-white hover:bg-destructive/70",
       description: "Danger button for destructive actions like delete",
     },
     outline: {
-      classes: "bg-kumo-surface text-kumo-surface ring ring-kumo-border",
+      classes: "bg-surface text-surface ring ring-border",
       description: "Bordered button with transparent background",
     },
   },
@@ -92,10 +86,6 @@ export interface KumoButtonVariantsProps {
   variant?: KumoButtonVariant;
 }
 
-// =============================================================================
-// buttonVariants - Computes class names from KUMO_BUTTON_VARIANTS
-// =============================================================================
-
 export function buttonVariants({
   variant = KUMO_BUTTON_DEFAULT_VARIANTS.variant,
   size = KUMO_BUTTON_DEFAULT_VARIANTS.size,
@@ -109,7 +99,7 @@ export function buttonVariants({
     "border-0 shadow-xs",
     "cursor-pointer",
     // Disabled state
-    "disabled:cursor-not-allowed disabled:text-kumo-muted",
+    "disabled:cursor-not-allowed disabled:text-muted",
     // Apply variant, size, shape styles from KUMO_BUTTON_VARIANTS
     KUMO_BUTTON_VARIANTS.variant[variant].classes,
     KUMO_BUTTON_VARIANTS.size[size].classes,
@@ -164,7 +154,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         className={cn(
           buttonVariants({ variant, size, shape }),
-          "outline-none focus:opacity-100 focus-visible:ring-1 focus-visible:ring-kumo-active *:in-focus:opacity-100", // Focus styles
+          "outline-none focus:opacity-100 focus-visible:ring-1 focus-visible:ring-active *:in-focus:opacity-100", // Focus styles
           disabled && "cursor-not-allowed opacity-50",
           className,
         )}
@@ -242,32 +232,3 @@ export const LinkButton = React.forwardRef<HTMLAnchorElement, LinkButtonProps>(
 );
 
 LinkButton.displayName = "LinkButton";
-
-// =============================================================================
-// BUTTON_SCHEMA - Machine-readable component metadata for AI/agent consumption
-// =============================================================================
-
-export const BUTTON_SCHEMA = defineSchema({
-  component: Button,
-  description: "Displays a button or a component that looks like a button",
-  category: "Action",
-  variants: KUMO_BUTTON_VARIANTS,
-  defaults: KUMO_BUTTON_DEFAULT_VARIANTS,
-  excludeVariants: ["compactSize"], // Internal variant, not exposed as prop
-  additionalProps: {
-    icon: COMMON_PROPS.icon,
-    loading: COMMON_PROPS.loading,
-    disabled: COMMON_PROPS.disabled,
-    onClick: COMMON_PROPS.onClick,
-    className: COMMON_PROPS.className,
-    children: COMMON_PROPS.childrenOptional,
-  },
-  examples: [
-    '<Button variant="primary">Save Changes</Button>',
-    '<Button variant="primary" icon={PlusIcon}>Add Item</Button>',
-    '<Button variant="destructive" icon={TrashIcon}>Delete</Button>',
-    '<Button variant="primary" loading>Saving...</Button>',
-    '<Button shape="square" icon={PlusIcon} aria-label="Add" />',
-    "<Button disabled>Disabled</Button>",
-  ],
-});

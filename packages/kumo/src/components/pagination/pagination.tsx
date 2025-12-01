@@ -6,18 +6,37 @@ import {
   CaretLeftIcon,
   CaretRightIcon,
 } from "@phosphor-icons/react";
+import { cn } from "../../utils/cn";
+
+export const KUMO_PAGINATION_VARIANTS = {
+  // Pagination currently has no variant options but structure is ready for future additions
+} as const;
+
+export const KUMO_PAGINATION_DEFAULT_VARIANTS = {} as const;
+
+// Derived types from KUMO_PAGINATION_VARIANTS
+export interface KumoPaginationVariantsProps {}
+
+export function paginationVariants(_props: KumoPaginationVariantsProps = {}) {
+  return cn(
+    // Base styles
+    "flex items-center justify-between gap-2",
+  );
+}
+
+export interface PaginationProps extends KumoPaginationVariantsProps {
+  setPage: (page: number) => void;
+  page?: number;
+  perPage?: number;
+  totalCount?: number;
+}
 
 export function Pagination({
   page = 1,
   perPage,
   totalCount,
   setPage,
-}: {
-  setPage: (page: number) => void;
-  page?: number;
-  perPage?: number;
-  totalCount?: number;
-}) {
+}: PaginationProps) {
   const [editingPage, setEditingPage] = useState<number>(1);
 
   // Value of the input as its being modified to display in the input, eventually syncs with `pagination.page`
@@ -41,7 +60,7 @@ export function Pagination({
 
   return (
     <div className="flex items-center justify-between gap-2">
-      <div className="grow text-sm text-kumo-label">
+      <div className="grow text-sm text-label">
         {totalCount && totalCount > 0
           ? `Showing ${pageShowingRange} of ${totalCount}`
           : null}

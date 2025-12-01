@@ -27,7 +27,7 @@ function Root({
       <div
         className={cn(
           inputVariants({ size, parentFocusIndicator: true }),
-          "flex w-full gap-0 overflow-hidden border-0 px-0 shadow-xs ring ring-kumo-border focus-within:ring-kumo-active",
+          "flex w-full gap-0 overflow-hidden border-0 px-0 shadow-xs ring ring-border focus-within:ring-active",
           className,
         )}
       >
@@ -54,7 +54,7 @@ function Label({ children }: PropsWithChildren<{}>) {
 
   return (
     <div
-      className="flex h-full items-center p-0 px-2 text-kumo-muted"
+      className="flex h-full items-center p-0 px-2 text-muted"
       onClick={onLabelClick}
     >
       {children}
@@ -70,8 +70,8 @@ function Input(props: InputProps) {
       size={context?.size}
       {...props}
       className={cn(
-        "flex h-full items-center rounded-none border-0 bg-kumo-surface font-sans first:pl-2 last:pr-2",
-        "focus:border-kumo-color",
+        "flex h-full items-center rounded-none border-0 bg-surface font-sans first:pl-2 last:pr-2",
+        "focus:border-color",
         "grow px-0",
         props.className,
       )}
@@ -91,7 +91,7 @@ function Button({
       {...props}
       size={context?.size}
       className={cn(
-        "h-full! rounded-none disabled:bg-kumo-surface-secondary disabled:text-kumo-disabled!",
+        "h-full! rounded-none disabled:bg-surface-secondary disabled:text-disabled!",
         className,
       )}
     >

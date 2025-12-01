@@ -6,52 +6,59 @@ type KumoColor = {
   name: string;
   light: string;
   dark: string;
+  theme?: string;
 };
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 async function main() {
-  const cssPath = resolve(__dirname, "../../src/styles/kumo-binding.css");
+  const themeCssPath = resolve(__dirname, "../../src/styles/kumo-theme.css");
+  const bindingCssPath = resolve(
+    __dirname,
+    "../../src/styles/kumo-binding.css",
+  );
   const outDir = resolve(__dirname, "./dist");
   const outFile = resolve(outDir, "storybook-colors.ts");
 
-  const css = await readFile(cssPath, "utf8");
+  const themeCss = await readFile(themeCssPath, "utf8");
+  const bindingCss = await readFile(bindingCssPath, "utf8");
 
   const colorRegex =
-    /(--(?:color|text-color)-kumo-[\w-]+):\s*light-dark\(\s*([\s\S]*?)\s*\);/g;
+    /(--(?:color|text-color)-[\w-]+):\s*light-dark\(\s*([\s\S]*?)\s*\);/g;
 
   const colors: KumoColor[] = [];
 
-  for (const match of css.matchAll(colorRegex)) {
+  // Parse base theme colors from kumo-theme.css (default KUMO theme)
+  for (const match of themeCss.matchAll(colorRegex)) {
     const [, name, argsRaw] = match;
+    const parsed = parseLightDarkArgs(argsRaw);
+    if (parsed) {
+      colors.push({
+        name,
+        light: parsed.light,
+        dark: parsed.dark,
+        theme: "KUMO",
+      });
+    }
+  }
 
-    let depth = 0;
-    let splitIndex = -1;
-    for (let i = 0; i < argsRaw.length; i++) {
-      const ch = argsRaw[i];
-      if (ch === "(") {
-        depth++;
-      } else if (ch === ")") {
-        depth--;
-      } else if (ch === "," && depth === 0) {
-        splitIndex = i;
-        break;
+  // Parse theme-specific overrides from kumo-binding.css
+  const themeBlockRegex = /\[data-theme="([^"]+)"\]\s*\{([^}]+)\}/g;
+  for (const blockMatch of bindingCss.matchAll(themeBlockRegex)) {
+    const [, themeName, blockContent] = blockMatch;
+    for (const colorMatch of blockContent.matchAll(colorRegex)) {
+      const [, name, argsRaw] = colorMatch;
+      const parsed = parseLightDarkArgs(argsRaw);
+      if (parsed) {
+        colors.push({
+          name,
+          light: parsed.light,
+          dark: parsed.dark,
+          theme: themeName,
+        });
       }
     }
-
-    if (splitIndex === -1) {
-      continue;
-    }
-
-    const light = argsRaw.slice(0, splitIndex).trim();
-    const dark = argsRaw.slice(splitIndex + 1).trim();
-
-    colors.push({
-      name,
-      light,
-      dark,
-    });
   }
 
   await mkdir(outDir, { recursive: true });
@@ -63,14 +70,48 @@ async function main() {
     `  name: string;\n` +
     `  light: string;\n` +
     `  dark: string;\n` +
+    `  theme: string;\n` +
     `};\n` +
     `\n` +
     `export const kumoColors: KumoColor[] = ${JSON.stringify(colors, null, 2)};\n`;
 
   await writeFile(outFile, fileContents, "utf8");
 
+  const kumoCount = colors.filter((c) => c.theme === "KUMO").length;
+  const otherThemes = [
+    ...new Set(colors.filter((c) => c.theme !== "KUMO").map((c) => c.theme)),
+  ];
+  const overrideCount = colors.filter((c) => c.theme !== "KUMO").length;
   // eslint-disable-next-line no-console
-  console.log(`Generated ${colors.length} kumo colors to ${outFile}`);
+  console.log(
+    `Generated ${kumoCount} KUMO colors + ${overrideCount} overrides (${otherThemes.join(", ")}) to ${outFile}`,
+  );
+}
+
+function parseLightDarkArgs(
+  argsRaw: string,
+): { light: string; dark: string } | null {
+  let depth = 0;
+  let splitIndex = -1;
+  for (let i = 0; i < argsRaw.length; i++) {
+    const ch = argsRaw[i];
+    if (ch === "(") {
+      depth++;
+    } else if (ch === ")") {
+      depth--;
+    } else if (ch === "," && depth === 0) {
+      splitIndex = i;
+      break;
+    }
+  }
+
+  if (splitIndex === -1) {
+    return null;
+  }
+
+  const light = argsRaw.slice(0, splitIndex).trim();
+  const dark = argsRaw.slice(splitIndex + 1).trim();
+  return { light, dark };
 }
 
 main().catch((error) => {

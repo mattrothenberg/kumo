@@ -9,6 +9,37 @@ import {
   type Icon,
 } from "@phosphor-icons/react";
 
+export const KUMO_DROPDOWN_VARIANTS = {
+  variant: {
+    default: {
+      classes: "",
+      description: "Default dropdown item appearance",
+    },
+    danger: {
+      classes:
+        "text-error data-highlighted:bg-destructive-2 data-highlighted:text-error",
+      description: "Destructive action item",
+    },
+  },
+} as const;
+
+export const KUMO_DROPDOWN_DEFAULT_VARIANTS = {
+  variant: "default",
+} as const;
+
+// Derived types from KUMO_DROPDOWN_VARIANTS
+export type KumoDropdownVariant = keyof typeof KUMO_DROPDOWN_VARIANTS.variant;
+
+export interface KumoDropdownVariantsProps {
+  variant?: KumoDropdownVariant;
+}
+
+export function dropdownVariants({
+  variant = KUMO_DROPDOWN_DEFAULT_VARIANTS.variant,
+}: KumoDropdownVariantsProps = {}) {
+  return cn(KUMO_DROPDOWN_VARIANTS.variant[variant].classes);
+}
+
 const DropdownMenuSubTrigger = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.SubmenuTrigger>,
   React.ComponentPropsWithoutRef<
@@ -23,8 +54,8 @@ const DropdownMenuSubTrigger = React.forwardRef<
     className={cn(
       "flex cursor-default items-center rounded-sm text-base outline-hidden select-none", // base styles
       "px-2 py-1.5", // spacing
-      "focus:bg-kumo-accent", // focus state
-      "data-[state=open]:bg-kumo-accent", // open state
+      "focus:bg-accent", // focus state
+      "data-[state=open]:bg-accent", // open state
       inset && "pl-8", // conditional inset
       className,
     )}
@@ -51,8 +82,8 @@ const DropdownMenuContent = React.forwardRef<
     >
       <DropdownMenuPrimitive.Popup
         className={cn(
-          "z-50 overflow-hidden bg-kumo-secondary text-kumo-surface", // background
-          "rounded-lg shadow-lg ring ring-kumo-border", // border part
+          "z-50 overflow-hidden bg-secondary text-surface", // background
+          "rounded-lg shadow-lg ring ring-border", // border part
           "min-w-36 p-1.5", // spacing
           "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95", // open animation
           "data-[side=bottom]:slide-in-from-top-2", // bottom side animation
@@ -120,7 +151,7 @@ const DropdownMenuItem = React.forwardRef<
       const styles = cn(
         "flex items-center",
         variant === "danger" &&
-          "text-kumo-error data-highlighted:bg-kumo-destructive-2 data-highlighted:text-kumo-error",
+          "text-error data-highlighted:bg-destructive-2 data-highlighted:text-error",
       );
       if (isExternal) {
         return (
@@ -161,7 +192,7 @@ const DropdownMenuItem = React.forwardRef<
       <DropdownMenuPrimitive.Item
         ref={ref}
         className={cn(
-          "relative flex cursor-default items-center rounded-md px-2 py-1.5 text-base outline-hidden select-none focus:text-kumo-secondary data-disabled:pointer-events-none data-disabled:opacity-50 data-highlighted:bg-kumo-color-3",
+          "relative flex cursor-default items-center rounded-md px-2 py-1.5 text-base outline-hidden select-none focus:text-secondary data-disabled:pointer-events-none data-disabled:opacity-50 data-highlighted:bg-color-3",
           inset && "pl-8",
           className,
         )}
@@ -183,7 +214,7 @@ const DropdownMenuCheckboxItem = React.forwardRef<
   <DropdownMenuPrimitive.CheckboxItem
     ref={ref}
     className={cn(
-      "relative flex cursor-default items-center rounded-sm py-1.5 pr-2 pl-8 text-base outline-hidden transition-colors select-none focus:bg-kumo-accent focus:text-kumo-secondary data-disabled:pointer-events-none data-disabled:opacity-50",
+      "relative flex cursor-default items-center rounded-sm py-1.5 pr-2 pl-8 text-base outline-hidden transition-colors select-none focus:bg-accent focus:text-secondary data-disabled:pointer-events-none data-disabled:opacity-50",
       className,
     )}
     checked={checked}
@@ -222,7 +253,7 @@ const DropdownMenuSeparator = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DropdownMenuPrimitive.Separator
     ref={ref}
-    className={cn("-mx-1 my-1 h-px bg-kumo-muted", className)}
+    className={cn("-mx-1 my-1 h-px bg-muted", className)}
     {...props}
   />
 ));

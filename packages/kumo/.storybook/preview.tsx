@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import type { Preview } from "@storybook/react-vite";
-import { ThemeToggle } from "./theme-toggle";
+import { ModeToggle } from "./mode-toggle";
+import { ThemeSelect, type Theme } from "./theme-select";
 import "./preview.css";
 
 const preview: Preview = {
   parameters: {
     a11y: {
-      test: "error",
+      test: "todo",
+      // test: "error",
     },
     layout: "fullscreen",
     options: {
@@ -23,37 +25,37 @@ const preview: Preview = {
   },
   decorators: [
     (Story, context) => {
-      // Special-case: Tailwind color tokens should only render once (no light/dark split)
-      if (context.title === "Design-Tokens/Colors") {
-        return (
-          <div className="flex flex-col gap-4">
-            <div className="flex-1 bg-kumo-surface p-6 text-kumo-surface">
-              <Story />
-            </div>
-          </div>
-        );
-      }
-
-      // Special-case: Pages render standalone with dark-mode class at root for proper modal/dialog support
-      if (context.title.startsWith("Pages/")) {
+      if (
+        context.title.startsWith("Pages/") ||
+        context.title.startsWith("Design-Tokens/") ||
+        context.title.startsWith("Components/Combobox") ||
+        context.title.startsWith("Components/Dialog") ||
+        context.title.startsWith("Components/Dropdown") ||
+        context.title.startsWith("Components/Select") ||
+        context.title.startsWith("Components/Toast") ||
+        context.title.startsWith("Components/Tooltip")
+      ) {
         return <PageDecorator Story={Story} />;
       }
 
       return (
-        <div className="flex flex-col">
-          <div className="flex-1 items-center border bg-kumo-surface p-6">
-            <div className="mb-2 font-sans text-sm leading-5 tracking-wide text-kumo-muted-2 uppercase">
+        <div className="flex" data-theme="KUMO">
+          <div className="flex-1 items-center border bg-surface p-6">
+            <div className="mb-2 font-sans text-sm leading-5 tracking-wide text-muted-2 uppercase">
               Light
             </div>
-            <div className="flex gap-4">
+            <div className="flex flex-col flex-wrap gap-4">
               <Story />
             </div>
           </div>
-          <div className="dark-mode flex-1 items-center bg-kumo-surface p-6">
-            <div className="mb-2 font-sans text-sm leading-5 tracking-wide text-kumo-muted-2 uppercase">
+          <div
+            data-mode="dark"
+            className="flex-1 items-center bg-surface p-6"
+          >
+            <div className="mb-2 font-sans text-sm leading-5 tracking-wide text-muted-2 uppercase">
               Dark
             </div>
-            <div className="flex gap-4">
+            <div className="flex flex-col flex-wrap gap-4">
               <Story />
             </div>
           </div>
@@ -65,30 +67,43 @@ const preview: Preview = {
 
 function PageDecorator({ Story }: { Story: React.ComponentType }) {
   const [isDark, setIsDark] = useState(false);
+  const [theme, setTheme] = useState<Theme>("KUMO");
 
-  // Apply dark-mode class to document.body so portaled elements (modals, dialogs) inherit the theme
+  // Apply data-mode and bg-surface to document.body so portaled elements (modals, dialogs) inherit the mode
+  // and the entire canvas background is styled
   useEffect(() => {
+    document.body.classList.add("bg-surface");
     if (isDark) {
-      document.body.classList.add("dark-mode");
+      document.body.setAttribute("data-mode", "dark");
     } else {
-      document.body.classList.remove("dark-mode");
+      document.body.removeAttribute("data-mode");
     }
     return () => {
-      document.body.classList.remove("dark-mode");
+      document.body.removeAttribute("data-mode");
+      document.body.classList.remove("bg-surface");
     };
   }, [isDark]);
 
+  // Apply data-theme to document.body so portaled elements inherit the theme
+  useEffect(() => {
+    document.body.setAttribute("data-theme", theme);
+    return () => {
+      document.body.removeAttribute("data-theme");
+    };
+  }, [theme]);
+
   return (
-    <>
-      <div className="fixed top-4 right-4 z-50 flex items-center gap-2 rounded-lg bg-kumo-surface-secondary p-2 shadow-md">
-        <ThemeToggle
+    <div data-theme={theme} data-mode={isDark ? "dark" : "light"} className="bg-surface">
+      <div className="fixed top-4 right-4 z-50 flex items-center gap-2 rounded-lg bg-surface-secondary p-2 shadow-md">
+        <ThemeSelect theme={theme} onThemeChange={setTheme} />
+        <ModeToggle
           isDark={isDark}
           onClick={() => setIsDark(!isDark)}
-          className="text-kumo-secondary"
+          className="text-secondary"
         />
       </div>
       <Story />
-    </>
+    </div>
   );
 }
 

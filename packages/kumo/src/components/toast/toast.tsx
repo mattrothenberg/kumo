@@ -2,12 +2,32 @@ import { Toast } from "@base-ui-components/react/toast";
 import type React from "react";
 import { cn } from "../../utils/cn";
 
-export function Toasty({ children }: { children: React.ReactNode }) {
+export const KUMO_TOAST_VARIANTS = {
+  // Toast currently has no variant options but structure is ready for future additions
+} as const;
+
+export const KUMO_TOAST_DEFAULT_VARIANTS = {} as const;
+
+// Derived types from KUMO_TOAST_VARIANTS
+export interface KumoToastVariantsProps {}
+
+export function toastVariants(_props: KumoToastVariantsProps = {}) {
+  return cn(
+    // Base styles for toast root
+    "absolute right-0 bottom-0 left-auto z-[calc(1000-var(--toast-index))] mr-0 h-[var(--height)] w-full origin-bottom rounded-lg border border-color bg-toast bg-clip-padding p-4 shadow-lg select-none",
+  );
+}
+
+export interface ToastyProps extends KumoToastVariantsProps {
+  children: React.ReactNode;
+}
+
+export function Toasty({ children }: ToastyProps) {
   return (
     <Toast.Provider>
       {children}
       <Toast.Portal>
-        <Toast.Viewport className="fixed top-auto right-[1rem] bottom-[1rem] z-10 mx-auto flex w-[250px] sm:right-[2rem] sm:bottom-[2rem] sm:w-[300px]">
+        <Toast.Viewport className="fixed top-auto right-4 bottom-4 z-10 mx-auto flex w-[250px] sm:right-8 sm:bottom-8 sm:w-[300px]">
           <ToastList />
         </Toast.Viewport>
       </Toast.Portal>
@@ -22,7 +42,7 @@ function ToastList() {
       key={toast.id}
       toast={toast}
       className={cn(
-        "absolute right-0 bottom-0 left-auto z-[calc(1000-var(--toast-index))] mr-0 h-[var(--height)] w-full origin-bottom rounded-lg border border-kumo-color bg-kumo-toast bg-clip-padding p-4 shadow-lg select-none",
+        "absolute right-0 bottom-0 left-auto z-[calc(1000-var(--toast-index))] mr-0 h-[var(--height)] w-full origin-bottom rounded-lg border border-color bg-toast bg-clip-padding p-4 shadow-lg select-none",
         "[--gap:0.75rem] [--height:var(--toast-frontmost-height,var(--toast-height))] [--offset-y:calc(var(--toast-offset-y)*-1+calc(var(--toast-index)*var(--gap)*-1)+var(--toast-swipe-movement-y))] [--peek:0.75rem] [--scale:calc(max(0,1-(var(--toast-index)*0.1)))] [--shrink:calc(1-var(--scale))]",
         "[transform:translateX(var(--toast-swipe-movement-x))_translateY(calc(var(--toast-swipe-movement-y)-(var(--toast-index)*var(--peek))-(var(--shrink)*var(--height))))_scale(var(--scale))] [transition:transform_0.5s_cubic-bezier(0.22,1,0.36,1),opacity_0.5s,height_0.15s]",
         "after:absolute after:top-full after:left-0 after:h-[calc(var(--gap)+1px)] after:w-full after:content-['']",
@@ -35,10 +55,10 @@ function ToastList() {
       )}
     >
       <Toast.Content className="overflow-hidden transition-opacity [transition-duration:250ms] data-[behind]:pointer-events-none data-[behind]:opacity-0 data-[expanded]:pointer-events-auto data-[expanded]:opacity-100">
-        <Toast.Title className="text-[0.975rem] leading-5 font-medium text-kumo-secondary" />
-        <Toast.Description className="text-[0.925rem] leading-5 text-kumo-muted-2" />
+        <Toast.Title className="text-[0.975rem] leading-5 font-medium text-secondary" />
+        <Toast.Description className="text-[0.925rem] leading-5 text-muted-2" />
         <Toast.Close
-          className="absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded border-none bg-transparent text-kumo-neutral-dim hover:bg-kumo-toast-button-hover hover:text-kumo-toast-button-hover"
+          className="absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded border-none bg-transparent text-neutral-dim hover:bg-toast-button-hover hover:text-toast-button-hover"
           aria-label="Close"
         >
           <XIcon className="h-4 w-4" />

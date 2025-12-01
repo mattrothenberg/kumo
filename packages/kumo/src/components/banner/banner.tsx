@@ -1,26 +1,21 @@
 import type { ReactNode } from "react";
 import { cn } from "../../utils/cn";
-import { defineSchema, COMMON_PROPS } from "../../utils/schema-helpers";
-
-// =============================================================================
-// KUMO_BANNER_VARIANTS - Single source of truth for all banner prop options
-// =============================================================================
 
 export const KUMO_BANNER_VARIANTS = {
   variant: {
     default: {
       classes:
-        "bg-kumo-info-surface border-kumo-info-border text-kumo-info selection:bg-kumo-info-selection",
+        "bg-info-surface border-info-border text-info selection:bg-info-selection",
       description: "Informational banner for general messages",
     },
     alert: {
       classes:
-        "bg-kumo-alert-surface border-kumo-alert-border text-kumo-alert selection:bg-kumo-alert-selection",
+        "bg-alert-surface border-alert-border text-alert selection:bg-alert-selection",
       description: "Warning banner for cautionary messages",
     },
     error: {
       classes:
-        "bg-kumo-error-surface border-kumo-error-border text-kumo-error selection:bg-kumo-error-selection",
+        "bg-error-surface border-error-border text-error selection:bg-error-selection",
       description: "Error banner for critical issues",
     },
   },
@@ -36,10 +31,6 @@ export type KumoBannerVariant = keyof typeof KUMO_BANNER_VARIANTS.variant;
 export interface KumoBannerVariantsProps {
   variant?: KumoBannerVariant;
 }
-
-// =============================================================================
-// bannerVariants - Computes class names from KUMO_BANNER_VARIANTS
-// =============================================================================
 
 export function bannerVariants({
   variant = KUMO_BANNER_DEFAULT_VARIANTS.variant,
@@ -59,17 +50,19 @@ export enum BannerVariant {
   ERROR,
 }
 
+export interface BannerProps {
+  icon?: ReactNode;
+  text: string;
+  variant?: KumoBannerVariant;
+  className?: string;
+}
+
 export function Banner({
   icon,
   text,
   variant = KUMO_BANNER_DEFAULT_VARIANTS.variant,
   className,
-}: {
-  icon?: ReactNode;
-  text: string;
-  variant?: KumoBannerVariant;
-  className?: string;
-}) {
+}: BannerProps) {
   return (
     <div className={cn(bannerVariants({ variant }), className)}>
       {icon}
@@ -77,25 +70,3 @@ export function Banner({
     </div>
   );
 }
-
-// =============================================================================
-// BANNER_SCHEMA - Machine-readable component metadata for AI/agent consumption
-// =============================================================================
-
-export const BANNER_SCHEMA = defineSchema({
-  component: Banner,
-  description: "Banner for notifications and alerts",
-  category: "Feedback",
-  variants: KUMO_BANNER_VARIANTS,
-  defaults: KUMO_BANNER_DEFAULT_VARIANTS,
-  additionalProps: {
-    text: { type: "string", required: true },
-    icon: { type: "ReactNode", optional: true },
-    className: COMMON_PROPS.className,
-  },
-  examples: [
-    '<Banner text="This is a notification" />',
-    '<Banner text="Warning!" variant="alert" icon={<WarningIcon />} />',
-    '<Banner text="Error occurred" variant="error" />',
-  ],
-});

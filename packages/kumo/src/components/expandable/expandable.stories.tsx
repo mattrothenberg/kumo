@@ -1,14 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import { Expandable } from "./expandable";
+import { Text } from "../text";
 
 const meta = {
   title: "Components/Expandable",
   component: Expandable,
-  parameters: {
-    layout: "padded",
-  },
-  tags: ["autodocs"],
 } satisfies Meta<typeof Expandable>;
 
 export default meta;
@@ -22,7 +19,7 @@ export const Default: Story = {
     const [open, setOpen] = useState(false);
     return (
       <Expandable title="Click to expand" open={open} onOpenChange={setOpen}>
-        This is the expandable content that can be shown or hidden.
+        <Text>This is the expandable content that can be shown or hidden.</Text>
       </Expandable>
     );
   },

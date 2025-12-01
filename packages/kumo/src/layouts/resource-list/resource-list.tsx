@@ -38,7 +38,7 @@ export function ResourceListPage({
               {title}
             </h1>
           </div>
-          <p className="hidden p-0 text-lg leading-normal text-pretty text-kumo-label md:block">
+          <p className="hidden p-0 text-lg leading-normal text-pretty text-label md:block">
             {description}
           </p>
         </div>
