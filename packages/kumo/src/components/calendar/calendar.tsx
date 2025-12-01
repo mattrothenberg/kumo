@@ -384,7 +384,7 @@ function DateRangeDayCell({
         `h-[26px] w-7 cursor-pointer text-center text-sm leading-[26px] text-kumo-secondary transition-all duration-[50]`,
         mode !== DateRangeCellMode.OUT_OF_RANGE &&
           mode !== DateRangeCellMode.SELECTED_OUT_OF_RANGE
-          ? "hover:bg-kumo-calendar-day-cell-hover"
+          ? "hover:bg-kumo-hover"
           : "",
         getBackgroundColor(),
         getTextColor(),
@@ -427,7 +427,7 @@ function DateRangeMonthHeader({
         {DAYS_OF_WEEK.map((day) => (
           <div
             key={day}
-            className="text-kumo-neutral-dim h-[22px] w-7 text-center text-sm"
+            className="h-[22px] w-7 text-center text-sm text-kumo-neutral-dim"
           >
             {day}
           </div>

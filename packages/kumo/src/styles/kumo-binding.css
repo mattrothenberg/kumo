@@ -168,6 +168,11 @@
     var(--color-neutral-50, oklch(98.5% 0 0))
   );
 
+  --text-color-kumo-muted-2: light-dark(
+    var(--color-neutral-500, oklch(55.6% 0 0)),
+    var(--color-neutral-400, oklch(70.8% 0 0))
+  );
+
   --text-color-kumo-disabled: light-dark(
     var(--color-neutral-400, oklch(70.8% 0 0)),
     var(--color-neutral-400, oklch(70.8% 0 0))
@@ -178,9 +183,31 @@
     var(--color-neutral-500, oklch(55.6% 0 0))
   );
 
+  --text-color-kumo-neutral-dim-2: light-dark(
+    var(--color-neutral-600, oklch(43.9% 0 0)),
+    var(--color-neutral-600, oklch(43.9% 0 0))
+  );
+
   --text-color-kumo-label: light-dark(
     var(--color-neutral-600, oklch(43.9% 0 0)),
     var(--color-neutral-400, oklch(70.8% 0 0))
+  );
+
+  --text-color-kumo-label-inverse: light-dark(
+    var(--color-neutral-400, oklch(70.8% 0 0)),
+    var(--color-neutral-600, oklch(43.9% 0 0))
+  );
+
+  --text-color-kumo-brand: light-dark(#f6821f, #f6821f);
+
+  --text-color-kumo-green: light-dark(
+    var(--color-green-500, oklch(72.3% 0.219 149.579)),
+    var(--color-green-500, oklch(72.3% 0.219 149.579))
+  );
+
+  --text-color-kumo-green-2: light-dark(
+    var(--color-green-600, oklch(62.7% 0.194 149.214)),
+    var(--color-green-600, oklch(62.7% 0.194 149.214))
   );
 
   --text-color-kumo-beta: light-dark(#056dff, #056dff);
@@ -211,6 +238,17 @@
   );
 
   /* colors */
+
+  --color-kumo-black-icon: light-dark(
+    var(--color-neutral-900, oklch(21% 0.006 285.885)),
+    var(--color-neutral-900, oklch(21% 0.006 285.885))
+  );
+
+  --color-kumo-icon-path: light-dark(
+    var(--color-gray-200, oklch(92.8% 0.006 264.531)),
+    transparent
+  );
+
   --color-kumo-surface: light-dark(
     var(--color-white, #fff),
     var(--color-black, #000)
@@ -219,6 +257,16 @@
   --color-kumo-surface-2: light-dark(
     var(--color-neutral-25, oklch(0.99 0 0)),
     var(--color-neutral-950, oklch(14.5% 0 0))
+  );
+
+  --color-kumo-surface-3: light-dark(
+    var(--color-neutral-250, oklch(0.9 0 0)),
+    var(--color-neutral-750, oklch(0.31 0 0))
+  );
+
+  --color-kumo-surface-elevated: light-dark(
+    var(--color-white, #fff),
+    var(--color-neutral-850, oklch(0.23 0 0))
   );
 
   --color-kumo-surface-secondary: light-dark(
@@ -257,6 +305,11 @@
   );
 
   --color-kumo-primary: light-dark(#056dff, #056dff);
+
+  --color-kumo-selected: light-dark(
+    var(--color-blue-600, oklch(54.6% 0.245 262.881)),
+    var(--color-blue-600, oklch(54.6% 0.245 262.881))
+  );
 
   --color-kumo-destructive: light-dark(
     var(--color-red-600, oklch(57.7% 0.245 27.325)),
@@ -319,10 +372,31 @@
     var(--color-yellow-900, oklch(42.1% 0.095 57.708))
   );
 
+  /* hover colors */
+  --color-kumo-hover: light-dark(
+    var(--color-neutral-300, oklch(87% 0 0)),
+    var(--color-neutral-700, oklch(37.1% 0 0))
+  );
+
+  --color-kumo-hover-selected: light-dark(
+    var(--color-blue-700, oklch(48.8% 0.243 264.376)),
+    var(--color-blue-700, oklch(48.8% 0.243 264.376))
+  );
+
+  --color-kumo-hover-border: light-dark(
+    oklch(87% 0 0 / 0.8),
+    oklch(37.1% 0 0 / 0.8)
+  );
+
   /* border colors */
   --color-kumo-border: light-dark(
     oklch(14.5% 0 0 / 0.1),
     var(--color-neutral-800, oklch(26.9% 0 0))
+  );
+
+  --color-kumo-border-2: light-dark(
+    oklch(92.2% 0 0 / 0.6),
+    oklch(26.9% 0 0 / 0.6)
   );
 
   --color-kumo-info-border: light-dark(
@@ -345,11 +419,6 @@
   --color-kumo-calendar: light-dark(
     var(--color-neutral-100, oklch(97% 0 0)),
     var(--color-neutral-900, oklch(20.5% 0 0))
-  );
-
-  --color-kumo-calendar-day-cell-hover: light-dark(
-    var(--color-neutral-300, oklch(87% 0 0)),
-    var(--color-neutral-700, oklch(37.1% 0 0))
   );
 
   --color-kumo-calendar-day-range-selected-endpoints: light-dark(
@@ -380,6 +449,28 @@
   --text-color-kumo-calendar-reset: light-dark(
     var(--color-neutral-800, oklch(26.9% 0 0)),
     var(--color-neutral-200, oklch(92.2% 0 0))
+  );
+
+  /* toast */
+  --color-kumo-toast: light-dark(
+    var(--color-neutral-50, oklch(0.985 0 0)),
+    var(--color-neutral-900, oklch(20.5% 0 0))
+  );
+
+  --color-kumo-toast-button-hover: light-dark(
+    var(--color-neutral-100, oklch(97% 0 0)),
+    var(--color-neutral-100, oklch(97% 0 0))
+  );
+
+  --text-color-kumo-toast-button-hover: light-dark(
+    var(--color-neutral-700, oklch(37.1% 0 0)),
+    var(--color-neutral-700, oklch(37.1% 0 0))
+  );
+
+  /* meter */
+  --color-kumo-meter-500: light-dark(
+    var(--color-blue-500, oklch(62.3% 0.214 259.815)),
+    var(--color-blue-500, oklch(62.3% 0.214 259.815))
   );
 }
 

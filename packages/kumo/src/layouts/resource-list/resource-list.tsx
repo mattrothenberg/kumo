@@ -33,12 +33,12 @@ export function ResourceListPage({
       <div className="mx-auto flex max-w-[1400px] flex-col p-6 md:gap-4 md:p-8 lg:px-10 lg:py-9 xl:gap-6">
         <div className="flex flex-col">
           <div className="mb-1.5 flex items-center gap-1.5">
-            {icon && icon}
+            {icon}
             <h1 className="font-heading m-0 p-0 text-3xl font-semibold">
               {title}
             </h1>
           </div>
-          <p className="hidden p-0 text-lg leading-normal text-pretty text-neutral-600 md:block dark:text-neutral-400">
+          <p className="hidden p-0 text-lg leading-normal text-pretty text-kumo-label md:block">
             {description}
           </p>
         </div>
@@ -50,10 +50,10 @@ export function ResourceListPage({
             <div
               className={`top-22 flex h-fit w-full shrink-0 flex-col gap-4 xl:sticky xl:w-[380px]`}
             >
-              {usage && usage}
+              {usage}
 
               <div className={cn("hidden xl:block", usage ? "mt-6" : "")}>
-                {additionalContent && additionalContent}
+                {additionalContent}
               </div>
             </div>
           )}

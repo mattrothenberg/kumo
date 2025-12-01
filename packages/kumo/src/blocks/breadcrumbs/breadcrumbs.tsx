@@ -19,7 +19,7 @@ const Link = ({
   return (
     <LinkComponent
       to={href}
-      className="flex min-w-0 items-center gap-1 text-muted no-underline"
+      className="flex min-w-0 items-center gap-1 text-kumo-muted no-underline"
     >
       {!!icon && <span className="flex shrink-0 items-center">{icon}</span>}
       {children}
@@ -60,7 +60,7 @@ function Current({
 function Separator() {
   return (
     <span
-      className="flex items-center text-neutral-400 dark:text-neutral-600"
+      className="flex items-center text-kumo-label-inverse"
       aria-hidden="true"
     >
       <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -108,7 +108,7 @@ function Clipboard({ text }: { text: string }) {
       aria-label="Copy"
     >
       {isCopied ? (
-        <CheckIcon weight="bold" className="text-green-600" />
+        <CheckIcon weight="bold" className="text-kumo-green-2" />
       ) : (
         <CopyIcon weight="regular" />
       )}

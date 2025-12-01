@@ -61,16 +61,14 @@ export const Switch = ({
         };
 
         const mergedClassName = cn(
-          "interactive flex items-center gap-2 rounded-full border border-transparent bg-neutral-250 p-1 transition-colors dark:bg-neutral-750",
+          "interactive flex items-center gap-2 rounded-full border border-transparent bg-kumo-surface-3 p-1 transition-colors",
           {
             "h-5.5 w-8.5": size === "sm",
             "h-6.5 w-10.5": size === "base",
             "h-7.5 w-12.5": size === "lg",
-            "bg-blue-600 dark:bg-blue-600": state.checked,
-            "hover:bg-blue-700 dark:hover:bg-blue-700":
-              state.checked && !transitioning,
-            "hover:bg-neutral-300 dark:hover:bg-neutral-700":
-              !state.checked && !transitioning,
+            "bg-kumo-selected": state.checked,
+            "hover:bg-kumo-hover-selected": state.checked && !transitioning,
+            "hover:bg-kumo-hover": !state.checked && !transitioning,
           },
           transitioning ? "cursor-wait" : "cursor-pointer",
           className,
@@ -101,7 +99,9 @@ export const Switch = ({
               <span
                 id={effectiveLabelId}
                 className={cn(
-                  hideLabel ? "sr-only" : "text-sm font-medium text-surface",
+                  hideLabel
+                    ? "sr-only"
+                    : "text-sm font-medium text-kumo-surface",
                 )}
               >
                 {label}

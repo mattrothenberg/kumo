@@ -108,7 +108,7 @@ function Empty(props: ComboboxBase.Empty.Props) {
     <ComboboxBase.Empty
       {...props}
       className={cn(
-        "px-4 py-2 text-[0.925rem] leading-4 text-gray-600 empty:m-0 empty:p-0",
+        "px-4 py-2 text-[0.925rem] leading-4 text-kumo-neutral-dim-2 empty:m-0 empty:p-0",
       )}
       children={props.children ?? "No labels found."}
     />

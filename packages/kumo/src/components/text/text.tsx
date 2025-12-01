@@ -59,7 +59,7 @@ const variantStyles: Record<TextVariant, string> = {
 
   // Monospace variants
   mono: "font-mono",
-  "mono-secondary": "font-mono text-muted",
+  "mono-secondary": "font-mono text-kumo-muted",
 };
 
 // Size styles (only apply to Copy variants)

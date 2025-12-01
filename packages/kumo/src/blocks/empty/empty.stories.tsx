@@ -17,7 +17,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    icon: <Database size={48} className="text-neutral-400" />,
+    icon: <Database size={48} className="text-kumo-disabled" />,
     title: "No data available",
     description:
       "There is no data to display at the moment. Try creating a new item to get started.",
@@ -26,7 +26,7 @@ export const Default: Story = {
 
 export const WithCommandLine: Story = {
   args: {
-    icon: <FolderOpen size={48} className="text-neutral-400" />,
+    icon: <FolderOpen size={48} className="text-kumo-disabled" />,
     title: "No projects found",
     description:
       "Get started by creating your first project using the command below.",
@@ -34,9 +34,20 @@ export const WithCommandLine: Story = {
   },
 };
 
+export const WithLongCommandLine: Story = {
+  args: {
+    icon: <FolderOpen size={48} className="text-kumo-disabled" />,
+    title: "Long command example",
+    description:
+      "Demonstrates how long commands scroll horizontally inside the command line area.",
+    commandLine:
+      "npx create-kumo-app --template edge-worker --name my-very-long-project-name-with-extra-flags --region us-west-2",
+  },
+};
+
 export const WithCustomContent: Story = {
   args: {
-    icon: <CloudSlash size={48} className="text-neutral-400" />,
+    icon: <CloudSlash size={48} className="text-kumo-disabled" />,
     title: "No connection",
     description:
       "Unable to connect to the server. Please check your connection and try again.",

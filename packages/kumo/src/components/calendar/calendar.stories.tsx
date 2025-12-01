@@ -30,7 +30,7 @@ export const Default: Story = {
           onEndDateChange={setEndDate}
         />
         {startDate && endDate && (
-          <div className="mt-4 text-sm text-neutral-600 dark:text-neutral-400">
+          <div className="mt-4 text-sm text-kumo-label">
             Selected range: {startDate.toLocaleDateString()} -{" "}
             {endDate.toLocaleDateString()}
           </div>

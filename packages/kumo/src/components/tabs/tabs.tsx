@@ -49,11 +49,11 @@ export function Tabs({
         onValueChange?.(stringValue);
       }}
     >
-      <div className="absolute inset-x-0 top-1/2 -z-10 h-8.5 -translate-y-1/2 rounded-lg bg-accent dark:bg-neutral-900" />
+      <div className="absolute inset-x-0 top-1/2 -z-10 h-8.5 -translate-y-1/2 rounded-lg bg-kumo-accent" />
       <TabsPrimitive.List
         className={cn(
-          "scrollbar-hide relative flex h-8.5 min-w-0 shrink items-stretch overflow-x-auto rounded-lg bg-accent px-px dark:bg-neutral-900",
-          listClassName
+          "scrollbar-hide relative flex h-8.5 min-w-0 shrink items-stretch overflow-x-auto rounded-lg bg-kumo-accent px-px",
+          listClassName,
         )}
       >
         {items.map((tab) => (
@@ -61,9 +61,9 @@ export function Tabs({
             key={tab.value}
             value={tab.value}
             className={cn(
-              "relative z-10 my-px flex cursor-pointer items-center rounded-lg px-2.5 text-base whitespace-nowrap text-neutral-500 transition-colors focus-visible:outline-none dark:text-neutral-400 bg-transparent",
-              "data-selected:text-black dark:data-selected:text-white",
-              tab.className
+              "relative z-10 my-px flex cursor-pointer items-center rounded-lg bg-transparent px-2.5 text-base whitespace-nowrap text-kumo-muted-2 transition-colors focus-visible:outline-none",
+              "data-selected:text-kumo-surface",
+              tab.className,
             )}
           >
             {tab.label}
@@ -71,10 +71,10 @@ export function Tabs({
         ))}
         <TabsPrimitive.Indicator
           className={cn(
-            "absolute z-0 rounded-lg bg-surface shadow ring ring-neutral-950/10 transition-[left,width,transform] duration-200 ease-out dark:bg-neutral-850 dark:ring-neutral-800",
+            "absolute z-0 rounded-lg bg-kumo-surface-elevated shadow ring ring-kumo-border transition-[left,width,transform] duration-200 ease-out",
             "data-[rendered=false]:scale-90 data-[rendered=false]:opacity-0",
             "top-(--active-tab-top) left-(--active-tab-left) h-(--active-tab-height) w-(--active-tab-width)",
-            indicatorClassName
+            indicatorClassName,
           )}
         />
       </TabsPrimitive.List>

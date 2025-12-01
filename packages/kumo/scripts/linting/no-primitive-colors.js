@@ -37,8 +37,8 @@ export const TAILWIND_COLOR_FAMILIES = new Set([
   "stone",
   // common utility color keywords (note: "transparent" is intentionally
   // excluded so utilities like bg-transparent / ring-transparent are allowed)
-  "black",
-  "white",
+  // "black",
+  // "white",
 ]);
 
 // Semantic color families that are backed by kumo-binding.css
@@ -150,7 +150,17 @@ function hasPrimitiveOrSemanticColor(str) {
 
     // Flag both Tailwind primitive families (e.g. blue, slate, red)
     // and legacy semantic families (e.g. surface, primary, active).
-    if (TAILWIND_COLOR_FAMILIES.has(colorFamily)) return true;
+    // Tailwind utilities often use a numeric shade suffix (e.g. neutral-500).
+    // Our TAILWIND_COLOR_FAMILIES set only tracks the base family name
+    // (e.g. "neutral"), so strip off a trailing -NN or -NNN segment when
+    // checking for primitive families.
+    const primitiveFamily = colorFamily.split("-")[0];
+
+    if (TAILWIND_COLOR_FAMILIES.has(primitiveFamily)) return true;
+
+    // Semantic color families in SEMANTIC_COLORS may legitimately contain
+    // hyphens (e.g. surface-secondary), so we check the full token here
+    // without normalization.
     if (SEMANTIC_COLORS.has(colorFamily)) return true;
   }
 
@@ -182,6 +192,16 @@ export const noPrimitiveColorsRule = defineRule({
     }
 
     return {
+      JSXAttribute(node) {
+        const name =
+          node.name.type === "JSXIdentifier" ? node.name.name : undefined;
+        if (name !== "className" && name !== "class") return;
+
+        if (node.value) {
+          const strings = extractStrings(node.value);
+          reportIfPrimitiveColor(node, strings);
+        }
+      },
       Literal(node) {
         if (
           typeof node.value === "string" &&

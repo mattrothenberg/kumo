@@ -52,7 +52,7 @@ export function Meter({
       >
         <BaseMeter.Indicator
           className={cn(
-            "absolute inset-y-0 left-0 rounded-full bg-linear-to-r from-blue-500 via-blue-500 to-blue-600 transition-[width] duration-300 ease-out",
+            "absolute inset-y-0 left-0 rounded-full bg-linear-to-r from-kumo-meter-500 via-kumo-meter-500 to-kumo-selected transition-[width] duration-300 ease-out",
             indicatorClassName,
           )}
         />
