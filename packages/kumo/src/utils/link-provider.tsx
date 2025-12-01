@@ -15,7 +15,7 @@ type LinkComponentProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
 const DefaultLinkComponent = forwardRef<HTMLAnchorElement, LinkComponentProps>(
   function DefaultAnchor({ to, href, ...rest }, ref) {
     return <a ref={ref} href={href ?? to ?? undefined} {...rest} />;
-  }
+  },
 );
 
 type ForwardLinkComponent = ForwardRefExoticComponent<
@@ -37,9 +37,7 @@ export function LinkProvider({
   children: ReactNode;
 }) {
   return (
-    <LinkComponentContext.Provider
-      value={component ?? DefaultLinkComponent}
-    >
+    <LinkComponentContext.Provider value={component ?? DefaultLinkComponent}>
       {children}
     </LinkComponentContext.Provider>
   );

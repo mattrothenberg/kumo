@@ -28,8 +28,8 @@ export function Code({
   return (
     <pre
       className={cn(
-        "text-sm m-0 bg-transparent font-mono leading-[20px] p-0 rounded-none border-none w-auto text-neutral-700 dark:text-neutral-300",
-        className
+        "m-0 w-auto rounded-none border-none bg-transparent p-0 font-mono text-sm leading-[20px] text-neutral-700 dark:text-neutral-300",
+        className,
       )}
       style={style}
     >
@@ -46,7 +46,7 @@ export function CodeBlock({
   code: string;
 }) {
   return (
-    <div className="bg-surface rounded-md border border-neutral-200 dark:border-neutral-800 min-w-0 [&>pre]:p-2.5!">
+    <div className="min-w-0 rounded-md border border-neutral-200 bg-surface dark:border-neutral-800 [&>pre]:p-2.5!">
       <Code lang={lang} code={code} />
     </div>
   );

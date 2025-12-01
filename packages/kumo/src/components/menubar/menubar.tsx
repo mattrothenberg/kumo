@@ -23,15 +23,17 @@ const MenuOption = ({
     <Tooltip content={tooltip}>
       <button
         className={cn(
-          "focus:inset-ring-focus bg-neutral-200 dark:bg-neutral-800 border-none relative -ml-px flex h-full w-11 cursor-pointer items-center justify-center transition-colors focus:z-10 focus:outline-none focus-visible:z-10 focus-visible:inset-ring-[0.5] rounded-md",
+          "focus:inset-ring-focus relative -ml-px flex h-full w-11 cursor-pointer items-center justify-center rounded-md border-none bg-neutral-200 transition-colors focus:z-10 focus:outline-none focus-visible:z-10 focus-visible:inset-ring-[0.5] dark:bg-neutral-800",
           {
-            "bg-white shadow-xs dark:bg-black z-20 transition-colors":
+            "z-20 bg-white shadow-xs transition-colors dark:bg-black":
               isActive === id,
-          }
+          },
         )}
         onClick={onClick}
       >
-        <IconContext.Provider value={{ size: 18 }} {...({} as any)}>{icon}</IconContext.Provider>
+        <IconContext.Provider value={{ size: 18 }} {...({} as any)}>
+          {icon}
+        </IconContext.Provider>
       </button>
     </Tooltip>
   );
@@ -57,8 +59,8 @@ export const MenuBar = ({
   return (
     <nav
       className={cn(
-        "pl-px bg-neutral-200 dark:bg-neutral-800 border border-color flex rounded-lg shadow-xs transition-colors",
-        className
+        "flex rounded-lg border border-color bg-neutral-200 pl-px shadow-xs transition-colors dark:bg-neutral-800",
+        className,
       )}
       ref={menuRef}
     >

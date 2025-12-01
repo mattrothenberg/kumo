@@ -1,15 +1,15 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Empty } from './empty';
-import { Database, FolderOpen, CloudSlash } from '@phosphor-icons/react';
-import { Button } from '../../components/button';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Empty } from "./empty";
+import { Database, FolderOpen, CloudSlash } from "@phosphor-icons/react";
+import { Button } from "../../components/button";
 
 const meta = {
-  title: 'Blocks/Empty',
+  title: "Blocks/Empty",
   component: Empty,
   parameters: {
-    layout: 'padded',
+    layout: "padded",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
 } satisfies Meta<typeof Empty>;
 
 export default meta;
@@ -18,25 +18,28 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     icon: <Database size={48} className="text-neutral-400" />,
-    title: 'No data available',
-    description: 'There is no data to display at the moment. Try creating a new item to get started.',
+    title: "No data available",
+    description:
+      "There is no data to display at the moment. Try creating a new item to get started.",
   },
 };
 
 export const WithCommandLine: Story = {
   args: {
     icon: <FolderOpen size={48} className="text-neutral-400" />,
-    title: 'No projects found',
-    description: 'Get started by creating your first project using the command below.',
-    commandLine: 'npm create kumo-project',
+    title: "No projects found",
+    description:
+      "Get started by creating your first project using the command below.",
+    commandLine: "npm create kumo-project",
   },
 };
 
 export const WithCustomContent: Story = {
   args: {
     icon: <CloudSlash size={48} className="text-neutral-400" />,
-    title: 'No connection',
-    description: 'Unable to connect to the server. Please check your connection and try again.',
+    title: "No connection",
+    description:
+      "Unable to connect to the server. Please check your connection and try again.",
     contents: (
       <div className="flex gap-2">
         <Button variant="primary">Retry</Button>
@@ -48,6 +51,6 @@ export const WithCustomContent: Story = {
 
 export const Minimal: Story = {
   args: {
-    title: 'Nothing here',
+    title: "Nothing here",
   },
 };

@@ -30,7 +30,9 @@ export function ClipboardText({ text, className }: ClipboardTextProps) {
       textarea.style.left = "-9999px";
       document.body.appendChild(textarea);
       const selection = document.getSelection();
-      const previousRange = selection?.rangeCount ? selection.getRangeAt(0) : null;
+      const previousRange = selection?.rangeCount
+        ? selection.getRangeAt(0)
+        : null;
       textarea.select();
       try {
         document.execCommand("copy");
@@ -51,8 +53,8 @@ export function ClipboardText({ text, className }: ClipboardTextProps) {
     inputVariants({
       size: "lg",
     }),
-    "flex items-center bg-surface px-0 overflow-hidden text-sm font-mono",
-    className
+    "flex items-center overflow-hidden bg-kumo-surface px-0 font-mono text-sm",
+    className,
   );
 
   useEffect(() => {
@@ -71,7 +73,7 @@ export function ClipboardText({ text, className }: ClipboardTextProps) {
       <Button
         size="lg"
         variant="ghost"
-        className="rounded-none border-l! border-neutral-200! dark:border-neutral-800! px-3"
+        className="rounded-none border-l! border-kumo-color! px-3"
         onClick={copyToClipboard}
         aria-label={copied ? "Copied" : "Copy to clipboard"}
         aria-pressed={copied}

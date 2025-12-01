@@ -1,16 +1,16 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { PageHeader } from './page-header';
-import { Breadcrumbs } from '../breadcrumbs';
-import { Button } from '../../components/button';
-import { Plus } from '@phosphor-icons/react';
+import type { Meta, StoryObj } from "@storybook/react";
+import { PageHeader } from "./page-header";
+import { Breadcrumbs } from "../breadcrumbs";
+import { Button } from "../../components/button";
+import { Plus } from "@phosphor-icons/react";
 
 const meta = {
-  title: 'Blocks/PageHeader',
+  title: "Blocks/PageHeader",
   component: PageHeader,
   parameters: {
-    layout: 'fullscreen',
+    layout: "fullscreen",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
 } satisfies Meta<typeof PageHeader>;
 
 export default meta;
@@ -44,10 +44,10 @@ export const WithTabs: Story = {
         </Breadcrumbs>
       }
       tabs={[
-        { label: 'General', value: 'general' },
-        { label: 'Security', value: 'security' },
-        { label: 'Notifications', value: 'notifications' },
-        { label: 'Billing', value: 'billing' },
+        { label: "General", value: "general" },
+        { label: "Security", value: "security" },
+        { label: "Notifications", value: "notifications" },
+        { label: "Billing", value: "billing" },
       ]}
       defaultTab="general"
     />
@@ -68,13 +68,15 @@ export const WithTabsAndActions: Story = {
         </Breadcrumbs>
       }
       tabs={[
-        { label: 'Overview', value: 'overview' },
-        { label: 'Analytics', value: 'analytics' },
-        { label: 'Settings', value: 'settings' },
+        { label: "Overview", value: "overview" },
+        { label: "Analytics", value: "analytics" },
+        { label: "Settings", value: "settings" },
       ]}
       defaultTab="overview"
     >
-      <Button variant="outline" size="sm">Export</Button>
+      <Button variant="outline" size="sm">
+        Export
+      </Button>
       <Button variant="primary" size="sm">
         <Plus size={16} />
         New Item

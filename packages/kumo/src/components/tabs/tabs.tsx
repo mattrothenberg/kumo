@@ -37,7 +37,7 @@ export function Tabs({
   const isControlled = value !== undefined;
   const rootProps = {
     value: isControlled ? value : undefined,
-    defaultValue: isControlled ? undefined : selectedValue ?? fallbackValue,
+    defaultValue: isControlled ? undefined : (selectedValue ?? fallbackValue),
   };
 
   return (
@@ -52,7 +52,7 @@ export function Tabs({
       <div className="absolute inset-x-0 top-1/2 -z-10 h-8.5 -translate-y-1/2 rounded-lg bg-accent dark:bg-neutral-900" />
       <TabsPrimitive.List
         className={cn(
-          "relative flex h-8.5 items-stretch rounded-lg overflow-x-auto shrink min-w-0 px-px scrollbar-hide bg-accent dark:bg-neutral-900",
+          "scrollbar-hide relative flex h-8.5 min-w-0 shrink items-stretch overflow-x-auto rounded-lg bg-accent px-px dark:bg-neutral-900",
           listClassName
         )}
       >
@@ -61,7 +61,7 @@ export function Tabs({
             key={tab.value}
             value={tab.value}
             className={cn(
-              "relative z-10 flex items-center px-2.5 text-base my-px rounded-lg whitespace-nowrap text-neutral-500 transition-colors focus-visible:outline-none dark:text-neutral-400 cursor-pointer bg-transparent",
+              "relative z-10 my-px flex cursor-pointer items-center rounded-lg px-2.5 text-base whitespace-nowrap text-neutral-500 transition-colors focus-visible:outline-none dark:text-neutral-400 bg-transparent",
               "data-selected:text-black dark:data-selected:text-white",
               tab.className
             )}
@@ -72,8 +72,8 @@ export function Tabs({
         <TabsPrimitive.Indicator
           className={cn(
             "absolute z-0 rounded-lg bg-surface shadow ring ring-neutral-950/10 transition-[left,width,transform] duration-200 ease-out dark:bg-neutral-850 dark:ring-neutral-800",
-            "data-[rendered=false]:opacity-0 data-[rendered=false]:scale-90",
-            "left-(--active-tab-left) top-(--active-tab-top) h-(--active-tab-height) w-(--active-tab-width)",
+            "data-[rendered=false]:scale-90 data-[rendered=false]:opacity-0",
+            "top-(--active-tab-top) left-(--active-tab-left) h-(--active-tab-height) w-(--active-tab-width)",
             indicatorClassName
           )}
         />

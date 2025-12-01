@@ -29,7 +29,7 @@ export function buttonVariants({
     secondary: cn(
       "bg-kumo-secondary !text-kumo-secondary ring not-disabled:hover:border-kumo-subtle!",
       "not-disabled:hover:bg-kumo-subtle disabled:bg-kumo-secondary/50 disabled:!text-kumo-secondary/70",
-      'data-[state="open"]:bg-kumo-subtle ring-kumo-border'
+      'ring-kumo-border data-[state="open"]:bg-kumo-subtle',
     ),
     ghost: "text-kumo-surface hover:bg-kumo-accent shadow-none bg-inherit",
     destructive:
@@ -53,14 +53,14 @@ export function buttonVariants({
     "border-0 shadow-xs",
     "cursor-pointer",
     // Disabled state
-    "disabled:text-kumo-muted disabled:cursor-not-allowed",
+    "disabled:cursor-not-allowed disabled:text-kumo-muted",
     // Apply variant, size styles
     variantStyles[variant],
     sizeStyles[size],
     // Apply shape-specific styles
     isCompactShape && compactSizeStyles[size],
-    isCompactShape && "p-0 items-center justify-center",
-    shape === "circle" && "rounded-full"
+    isCompactShape && "items-center justify-center p-0",
+    shape === "circle" && "rounded-full",
   );
 }
 
@@ -102,7 +102,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       icon: IconComponent,
       ...props
     },
-    ref
+    ref,
   ) => {
     const { type, ...restProps } = props;
     return (
@@ -110,9 +110,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         className={cn(
           buttonVariants({ variant, size, shape }),
-          "focus-visible:ring-kumo-active outline-none focus:opacity-100 focus-visible:ring-1 *:in-focus:opacity-100", // Focus styles
-          disabled && "opacity-50 cursor-not-allowed",
-          className
+          "outline-none focus:opacity-100 focus-visible:ring-1 focus-visible:ring-kumo-active *:in-focus:opacity-100", // Focus styles
+          disabled && "cursor-not-allowed opacity-50",
+          className,
         )}
         disabled={loading || disabled}
         type={type ?? "button"}
@@ -124,7 +124,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {children}
       </button>
     );
-  }
+  },
 );
 
 Button.displayName = "Button";
@@ -160,7 +160,7 @@ export const LinkButton = React.forwardRef<HTMLAnchorElement, LinkButtonProps>(
       // linksExternal = false,
       ...props
     },
-    ref
+    ref,
   ) => {
     const LinkComponent = useLinkComponent();
     const externalProps = external
@@ -173,7 +173,7 @@ export const LinkButton = React.forwardRef<HTMLAnchorElement, LinkButtonProps>(
         className={cn(
           buttonVariants({ variant, size, shape }),
           "flex items-center no-underline!",
-          className
+          className,
         )}
         href={href}
         to={typeof href === "string" ? href : undefined}
@@ -184,7 +184,7 @@ export const LinkButton = React.forwardRef<HTMLAnchorElement, LinkButtonProps>(
         {children}
       </LinkComponent>
     );
-  }
+  },
 );
 
 LinkButton.displayName = "LinkButton";

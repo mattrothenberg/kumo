@@ -15,27 +15,27 @@ export function Empty({
   title,
   description,
   commandLine,
-  contents
+  contents,
 }: EmptyProps) {
   const [emptyStateCopied, setEmptyStateCopied] = useState<boolean>(false);
 
   return (
-    <div className="w-full px-10 py-16 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl flex flex-col gap-6 items-center">
+    <div className="flex w-full flex-col items-center gap-6 rounded-xl border border-neutral-200 bg-white px-10 py-16 dark:border-neutral-800 dark:bg-neutral-900">
       {icon}
       <h2 className="text-2xl font-semibold">{title}</h2>
 
       {description && (
-        <p className="text-center max-w-140 text-neutral-600 dark:text-neutral-400">
+        <p className="max-w-140 text-center text-neutral-600 dark:text-neutral-400">
           {description}
         </p>
       )}
 
       {commandLine && (
-        <div className="group/cmd relative bg-neutral-50 dark:bg-black rounded-lg h-10 inline-flex items-center gap-2 font-mono pl-3 pr-2 shadow-sm border border-neutral-200/60 dark:border-neutral-800/60 transform-gpu transition-all duration-300 hover:shadow-md hover:border-neutral-300/80 dark:hover:border-neutral-700/80 max-w-8/10">
-          <span className="text-xs text-neutral-400 dark:text-neutral-600 select-none">
+        <div className="group/cmd relative inline-flex h-10 max-w-8/10 transform-gpu items-center gap-2 rounded-lg border border-neutral-200/60 bg-neutral-50 pr-2 pl-3 font-mono shadow-sm transition-all duration-300 hover:border-neutral-300/80 hover:shadow-md dark:border-neutral-800/60 dark:bg-black dark:hover:border-neutral-700/80">
+          <span className="text-xs text-neutral-400 select-none dark:text-neutral-600">
             $
           </span>
-          <span className="text-[#f6821f] text-[14px] overflow-scroll whitespace-nowrap no-scrollbar">
+          <span className="no-scrollbar overflow-scroll text-[14px] whitespace-nowrap text-[#f6821f]">
             {commandLine}
           </span>
           <Button
@@ -53,11 +53,14 @@ export function Empty({
             }}
           >
             {emptyStateCopied ? (
-              <CheckIcon size={16} className="text-green-500 animate-bounce-in" />
+              <CheckIcon
+                size={16}
+                className="animate-bounce-in text-green-500"
+              />
             ) : (
               <CopyIcon
                 size={16}
-                className="group-hover:text-[#f6821f] text-neutral-400 dark:text-neutral-600"
+                className="text-neutral-400 group-hover:text-[#f6821f] dark:text-neutral-600"
               />
             )}
           </Button>

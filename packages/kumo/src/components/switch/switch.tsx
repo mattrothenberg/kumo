@@ -2,7 +2,10 @@ import { Switch as BaseSwitch } from "@base-ui-components/react/switch";
 import { type ButtonHTMLAttributes, type Ref, useId } from "react";
 import { cn } from "../../utils/cn";
 
-type SwitchProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick" | "type"> & {
+type SwitchProps = Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  "onClick" | "type"
+> & {
   onClick: () => void;
   size?: "sm" | "base" | "lg";
   toggled: boolean;
@@ -24,13 +27,16 @@ export const Switch = ({
   const generatedLabelId = useId();
   const propsLookup = buttonProps as Record<string, unknown>;
   const ariaLabelFromProps = propsLookup["aria-label"] as string | undefined;
-  const ariaLabelledbyFromProps = propsLookup["aria-labelledby"] as string | undefined;
+  const ariaLabelledbyFromProps = propsLookup["aria-labelledby"] as
+    | string
+    | undefined;
 
   const needsLabelledBy = !ariaLabelFromProps;
   const effectiveLabelId =
-    ariaLabelledbyFromProps ?? (needsLabelledBy && label ? generatedLabelId : undefined);
+    ariaLabelledbyFromProps ??
+    (needsLabelledBy && label ? generatedLabelId : undefined);
   const effectiveAriaLabel =
-    ariaLabelFromProps ?? (!effectiveLabelId ? label ?? "Switch" : undefined);
+    ariaLabelFromProps ?? (!effectiveLabelId ? (label ?? "Switch") : undefined);
 
   return (
     <BaseSwitch.Root
@@ -55,7 +61,7 @@ export const Switch = ({
         };
 
         const mergedClassName = cn(
-          "interactive dark:bg-neutral-750 bg-neutral-250 rounded-full border border-transparent p-1 transition-colors flex items-center gap-2",
+          "interactive flex items-center gap-2 rounded-full border border-transparent bg-neutral-250 p-1 transition-colors dark:bg-neutral-750",
           {
             "h-5.5 w-8.5": size === "sm",
             "h-6.5 w-10.5": size === "base",
@@ -68,10 +74,11 @@ export const Switch = ({
           },
           transitioning ? "cursor-wait" : "cursor-pointer",
           className,
-          baseClassName
+          baseClassName,
         );
 
-        const role = (buttonProps.role as string | undefined) ?? baseRole ?? "switch";
+        const role =
+          (buttonProps.role as string | undefined) ?? baseRole ?? "switch";
         const checkedA11yProps =
           role === "switch"
             ? { "aria-checked": state.checked }
@@ -94,7 +101,7 @@ export const Switch = ({
               <span
                 id={effectiveLabelId}
                 className={cn(
-                  hideLabel ? "sr-only" : "text-sm font-medium text-surface"
+                  hideLabel ? "sr-only" : "text-sm font-medium text-surface",
                 )}
               >
                 {label}
@@ -105,7 +112,7 @@ export const Switch = ({
                 "pointer-events-none aspect-square h-full rounded-full bg-white transition-all",
                 {
                   "translate-x-full": state.checked,
-                }
+                },
               )}
             />
           </button>

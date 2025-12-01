@@ -26,7 +26,7 @@ export function PageHeader({
       </div>
 
       {tabs && (
-        <div className="flex items-center justify-between w-full border-b border-neutral-250 dark:border-neutral-800 pb-3 pt-1 pl-3">
+        <div className="flex w-full items-center justify-between border-b border-neutral-250 pt-1 pb-3 pl-3 dark:border-neutral-800">
           <Tabs
             tabs={tabs}
             selectedValue={defaultTab}

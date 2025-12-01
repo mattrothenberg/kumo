@@ -1,14 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Breadcrumbs } from '../breadcrumbs';
-import { House, Folder, File } from '@phosphor-icons/react';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Breadcrumbs } from "../breadcrumbs";
+import { House, Folder, File } from "@phosphor-icons/react";
 
 const meta = {
-  title: 'Blocks/Breadcrumbs',
+  title: "Blocks/Breadcrumbs",
   component: Breadcrumbs,
   parameters: {
-    layout: 'padded',
+    layout: "padded",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
 } satisfies Meta<typeof Breadcrumbs>;
 
 export default meta;
@@ -37,7 +37,9 @@ export const WithIcons: Story = {
         Documents
       </Breadcrumbs.Link>
       <Breadcrumbs.Separator />
-      <Breadcrumbs.Current icon={<File size={16} />}>File.txt</Breadcrumbs.Current>
+      <Breadcrumbs.Current icon={<File size={16} />}>
+        File.txt
+      </Breadcrumbs.Current>
     </Breadcrumbs>
   ),
 };
@@ -51,7 +53,9 @@ export const LongPath: Story = {
       <Breadcrumbs.Separator />
       <Breadcrumbs.Link href="/projects/web">Web Applications</Breadcrumbs.Link>
       <Breadcrumbs.Separator />
-      <Breadcrumbs.Link href="/projects/web/dashboard">Dashboard</Breadcrumbs.Link>
+      <Breadcrumbs.Link href="/projects/web/dashboard">
+        Dashboard
+      </Breadcrumbs.Link>
       <Breadcrumbs.Separator />
       <Breadcrumbs.Current>Settings</Breadcrumbs.Current>
     </Breadcrumbs>

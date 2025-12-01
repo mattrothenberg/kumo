@@ -81,7 +81,7 @@ function _Text<Variant extends TextVariant = "body">(
     as,
     ...props
   }: TextProps<Variant>,
-  ref: ForwardedRef<HTMLHeadingElement>
+  ref: ForwardedRef<HTMLHeadingElement>,
 ) {
   const isCopy = ["body", "secondary", "success", "error"].includes(variant);
   const isMono = ["mono", "mono-secondary"].includes(variant);
@@ -103,7 +103,7 @@ function _Text<Variant extends TextVariant = "body">(
         isCopy && bold ? "font-medium" : "",
         // Monospace fonts need to be 1pt smaller than body text to optically match
         isMono && (size === "lg" ? sizeStyles.base : sizeStyles.sm),
-        DANGEROUS_className
+        DANGEROUS_className,
       )}
       style={DANGEROUS_style}
       {...props}
@@ -114,5 +114,5 @@ function _Text<Variant extends TextVariant = "body">(
 }
 
 export const Text = forwardRef(_Text) as <Variant extends TextVariant = "body">(
-  props: TextProps<Variant> & { ref?: ForwardedRef<ElementRef<"span">> }
+  props: TextProps<Variant> & { ref?: ForwardedRef<ElementRef<"span">> },
 ) => React.ReactElement;

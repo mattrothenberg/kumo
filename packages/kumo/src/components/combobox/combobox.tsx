@@ -7,7 +7,7 @@ import { cn } from "../../utils/cn";
 function Root<
   ItemValue,
   SelectedValue = ItemValue,
-  Multiple extends boolean | undefined = false
+  Multiple extends boolean | undefined = false,
 >(props: ComboboxBase.Root.Props<ItemValue, SelectedValue, Multiple>) {
   return <ComboboxBase.Root {...props} />;
 }
@@ -37,10 +37,10 @@ function Content({
       >
         <ComboboxBase.Popup
           className={cn(
-            "min-w-(--anchor-width) max-h-[min(var(--available-height),24rem)] max-w-(--available-width) overflow-y-auto scroll-pt-2 scroll-pb-2 overscroll-contain p-1.5",
-            "z-50 bg-surface dark:bg-neutral-900 text-surface overflow-hidden", // background
-            "ring ring-neutral-950/10 dark:ring-neutral-800 shadow-lg rounded-lg", // border part
-            className
+            "max-h-[min(var(--available-height),24rem)] max-w-(--available-width) min-w-(--anchor-width) scroll-pt-2 scroll-pb-2 overflow-y-auto overscroll-contain p-1.5",
+            "z-50 overflow-hidden bg-surface text-surface dark:bg-neutral-900", // background
+            "rounded-lg shadow-lg ring ring-neutral-950/10 dark:ring-neutral-800", // border part
+            className,
           )}
         >
           {children}
@@ -58,12 +58,12 @@ function TriggerValue({
     <ComboboxBase.Trigger
       className={cn(
         inputVariants(),
-        "relative pr-8 flex items-center",
-        className
+        "relative flex items-center pr-8",
+        className,
       )}
     >
       <ComboboxBase.Value>{props.children}</ComboboxBase.Value>
-      <ComboboxBase.Icon className="absolute top-1/2 -translate-y-1/2 right-2">
+      <ComboboxBase.Icon className="absolute top-1/2 right-2 -translate-y-1/2">
         <CaretDownIcon />
       </ComboboxBase.Icon>
     </ComboboxBase.Trigger>
@@ -77,11 +77,11 @@ function TriggerInput(props: ComboboxBase.Input.Props) {
         {...props}
         className={cn(inputVariants(), "w-full pr-12")}
       />
-      <ComboboxBase.Clear className="absolute top-1/2 -translate-y-1/2 right-8 cursor-pointer">
+      <ComboboxBase.Clear className="absolute top-1/2 right-8 -translate-y-1/2 cursor-pointer">
         <XIcon />
       </ComboboxBase.Clear>
       <ComboboxBase.Trigger>
-        <ComboboxBase.Icon className="absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer">
+        <ComboboxBase.Icon className="absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer">
           <CaretDownIcon />
         </ComboboxBase.Icon>
       </ComboboxBase.Trigger>
@@ -93,7 +93,7 @@ function Item({ children, ...props }: ComboboxBase.Item.Props) {
   return (
     <ComboboxBase.Item
       {...props}
-      className="data-highlighted:bg-neutral-100 dark:data-highlighted:bg-neutral-800 px-2 rounded py-1.5 text-base grid grid-cols-[1fr_16px] gap-2 group cursor-pointer"
+      className="group grid cursor-pointer grid-cols-[1fr_16px] gap-2 rounded px-2 py-1.5 text-base data-highlighted:bg-neutral-100 dark:data-highlighted:bg-neutral-800"
     >
       <div className="col-start-1">{children}</div>
       <ComboboxBase.ItemIndicator className="col-start-2 flex items-center">
@@ -108,7 +108,7 @@ function Empty(props: ComboboxBase.Empty.Props) {
     <ComboboxBase.Empty
       {...props}
       className={cn(
-        "px-4 py-2 text-[0.925rem] leading-4 text-gray-600 empty:m-0 empty:p-0"
+        "px-4 py-2 text-[0.925rem] leading-4 text-gray-600 empty:m-0 empty:p-0",
       )}
       children={props.children ?? "No labels found."}
     />
@@ -128,7 +128,7 @@ function GroupLabel(props: ComboboxBase.GroupLabel.Props) {
   return (
     <ComboboxBase.GroupLabel
       {...props}
-      className="text-sm font-medium py-1.5 px-4 ml-[16px]"
+      className="ml-[16px] px-4 py-1.5 text-sm font-medium"
     />
   );
 }
@@ -141,10 +141,10 @@ function Chip(props: ComboboxBase.Chip.Props) {
   return (
     <ComboboxBase.Chip
       {...props}
-      className="bg-neutral-100 dark:bg-neutral-800 px-2 py-1 rounded-md flex items-center gap-1"
+      className="flex items-center gap-1 rounded-md bg-neutral-100 px-2 py-1 dark:bg-neutral-800"
     >
       {props.children}
-      <ComboboxBase.ChipRemove className="cursor-pointer hover:bg-neutral-200 dark:hover:bg-neutral-700 p-1 rounded-md">
+      <ComboboxBase.ChipRemove className="cursor-pointer rounded-md p-1 hover:bg-neutral-200 dark:hover:bg-neutral-700">
         <XIcon size={12} weight="bold" />
       </ComboboxBase.ChipRemove>
     </ComboboxBase.Chip>
@@ -170,9 +170,9 @@ function TriggerMultipleWithInput<ValueType>({
           "flex flex-wrap items-center overflow-hidden", // Base layout and overflow handling
           "gap-1 p-1", // Consistent spacing for chips and padding
           "min-h-9", // Match standard Kumo component height
-          "h-auto" // Allow height expansion for multi-line chip wrapping
+          "h-auto", // Allow height expansion for multi-line chip wrapping
         ),
-        className
+        className,
       )}
     >
       <ComboboxBase.Value>
@@ -181,14 +181,14 @@ function TriggerMultipleWithInput<ValueType>({
             {inputSide === "top" && (
               <ComboboxBase.Input
                 placeholder={placeholder}
-                className="w-full h-full outline-none px-2 py-1"
+                className="h-full w-full px-2 py-1 outline-none"
               />
             )}
             {value.map((item) => renderItem(item))}
             {inputSide === "right" && (
               <ComboboxBase.Input
                 placeholder={placeholder}
-                className="flex-1 h-full outline-none px-2 py-1"
+                className="h-full flex-1 px-2 py-1 outline-none"
               />
             )}
           </Fragment>

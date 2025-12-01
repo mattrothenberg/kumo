@@ -19,9 +19,9 @@ const Link = ({
   return (
     <LinkComponent
       to={href}
-      className="flex items-center gap-1 min-w-0 text-muted no-underline"
+      className="flex min-w-0 items-center gap-1 text-muted no-underline"
     >
-      {!!icon && <span className="shrink-0 flex items-center">{icon}</span>}
+      {!!icon && <span className="flex shrink-0 items-center">{icon}</span>}
       {children}
     </LinkComponent>
   );
@@ -39,8 +39,8 @@ function Current({
 }: PropsWithChildren<BreadcrumbsCurrentProps>) {
   if (loading) {
     return (
-      <div className="w-[125px] flex items-center gap-1 min-w-0">
-        {icon && <span className="shrink-0 flex items-center">{icon}</span>}
+      <div className="flex w-[125px] min-w-0 items-center gap-1">
+        {icon && <span className="flex shrink-0 items-center">{icon}</span>}
         <SkeletonLine />
       </div>
     );
@@ -48,10 +48,10 @@ function Current({
 
   return (
     <div
-      className="font-medium truncate flex items-center gap-1"
+      className="flex items-center gap-1 truncate font-medium"
       aria-current="page"
     >
-      {icon && <span className="shrink-0 flex items-center">{icon}</span>}
+      {icon && <span className="flex shrink-0 items-center">{icon}</span>}
       {children}
     </div>
   );
@@ -60,7 +60,7 @@ function Current({
 function Separator() {
   return (
     <span
-      className="text-neutral-400 dark:text-neutral-600 flex items-center"
+      className="flex items-center text-neutral-400 dark:text-neutral-600"
       aria-hidden="true"
     >
       <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -102,7 +102,7 @@ function Clipboard({ text }: { text: string }) {
       variant="ghost"
       shape="square"
       size="sm"
-      className="group-hover:opacity-100 opacity-0 transition-[opacity]"
+      className="opacity-0 transition-[opacity] group-hover:opacity-100"
       onClick={handleCopyDeeplink}
       title="Click to copy"
       aria-label="Copy"
@@ -119,7 +119,7 @@ function Clipboard({ text }: { text: string }) {
 export function Breadcrumb({ children }: PropsWithChildren) {
   return (
     <nav
-      className="text-base hidden sm:flex grow items-center gap-1 min-w-0 mr-4 h-12 group"
+      className="group mr-4 hidden h-12 min-w-0 grow items-center gap-1 text-base sm:flex"
       aria-label="breadcrumb"
     >
       {children}

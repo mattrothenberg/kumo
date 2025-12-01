@@ -36,7 +36,7 @@ export function Tooltip({
       </TooltipBase.Trigger>
       <TooltipBase.Portal>
         <TooltipBase.Positioner align={align} side={side} sideOffset={10}>
-          <TooltipBase.Popup className="flex origin-[var(--transform-origin)] flex-col rounded-md bg-neutral-900 text-neutral-100 px-2.5 py-1.5 text-sm shadow-lg shadow-gray-200 transition-[transform,scale,opacity] data-[ending-style]:scale-90 data-[ending-style]:opacity-0 data-[instant]:duration-0 data-[starting-style]:scale-90 data-[starting-style]:opacity-0 dark:shadow-none dark:-outline-offset-1 dark:outline-gray-300">
+          <TooltipBase.Popup className="flex origin-[var(--transform-origin)] flex-col rounded-md bg-neutral-900 px-2.5 py-1.5 text-sm text-neutral-100 shadow-lg shadow-gray-200 transition-[transform,scale,opacity] data-[ending-style]:scale-90 data-[ending-style]:opacity-0 data-[instant]:duration-0 data-[starting-style]:scale-90 data-[starting-style]:opacity-0 dark:shadow-none dark:-outline-offset-1 dark:outline-gray-300">
             <TooltipBase.Arrow className="data-[side=bottom]:top-[-8px] data-[side=left]:right-[-13px] data-[side=left]:rotate-90 data-[side=right]:left-[-13px] data-[side=right]:-rotate-90 data-[side=top]:bottom-[-8px] data-[side=top]:rotate-180">
               <ArrowSvg />
             </TooltipBase.Arrow>

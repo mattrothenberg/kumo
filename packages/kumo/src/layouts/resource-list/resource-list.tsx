@@ -13,7 +13,7 @@ export interface ResourceListPageProps {
 
 /**
  * ResourceListPage - A layout component for resource list pages
- * 
+ *
  * Layouts are page-level components that provide consistent structure
  * for common page patterns like resource lists, dashboards, and settings.
  */
@@ -27,30 +27,32 @@ export function ResourceListPage({
   className,
 }: ResourceListPageProps) {
   return (
-    <div className={cn("w-full h-full min-h-screen bg-bg-secondary", className)}>
-      <div className="flex flex-col p-6 md:p-8 lg:px-10 lg:py-9 md:gap-4 xl:gap-6 max-w-[1400px] mx-auto">
+    <div
+      className={cn("bg-bg-secondary h-full min-h-screen w-full", className)}
+    >
+      <div className="mx-auto flex max-w-[1400px] flex-col p-6 md:gap-4 md:p-8 lg:px-10 lg:py-9 xl:gap-6">
         <div className="flex flex-col">
           <div className="mb-1.5 flex items-center gap-1.5">
             {icon && icon}
-            <h1 className="font-heading text-3xl font-semibold m-0 p-0">{title}</h1>
+            <h1 className="font-heading m-0 p-0 text-3xl font-semibold">
+              {title}
+            </h1>
           </div>
-          <p className="text-neutral-600 dark:text-neutral-400 text-lg hidden md:block leading-normal text-pretty p-0">
+          <p className="hidden p-0 text-lg leading-normal text-pretty text-neutral-600 md:block dark:text-neutral-400">
             {description}
           </p>
         </div>
 
-        <div className="flex flex-col-reverse xl:flex-row gap-6 xl:gap-8">
+        <div className="flex flex-col-reverse gap-6 xl:flex-row xl:gap-8">
           <div className="min-w-0 grow">{children}</div>
 
           {(usage || additionalContent) && (
             <div
-              className={`xl:w-[380px] w-full xl:sticky top-22 h-fit flex flex-col gap-4 shrink-0`}
+              className={`top-22 flex h-fit w-full shrink-0 flex-col gap-4 xl:sticky xl:w-[380px]`}
             >
               {usage && usage}
 
-              <div
-                className={cn("hidden xl:block", usage ? "mt-6" : "")}
-              >
+              <div className={cn("hidden xl:block", usage ? "mt-6" : "")}>
                 {additionalContent && additionalContent}
               </div>
             </div>

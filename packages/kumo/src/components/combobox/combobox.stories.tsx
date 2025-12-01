@@ -82,7 +82,7 @@ export const Multiple: StoryObj<{
         { label: "WhatsAppBot", author: "WhatsApp", value: "whatsappbot" },
         { label: "SlackBot", author: "Slack", value: "slackbot" },
       ],
-      []
+      [],
     );
 
     const [value, setValue] = useState<BotType[]>([]);
@@ -110,7 +110,7 @@ export const Multiple: StoryObj<{
               inputSide={args.inputSide}
             />
             <Combobox.Content
-              className="min-w-auto max-h-[200px] overflow-y-auto"
+              className="max-h-[200px] min-w-auto overflow-y-auto"
               side={args.inputSide === "top" ? "top" : "bottom"}
             >
               <Combobox.Empty />

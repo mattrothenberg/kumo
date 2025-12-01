@@ -1,13 +1,13 @@
-import { copyFileSync, mkdirSync, existsSync, writeFileSync } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
-import { execSync } from 'child_process';
+import { copyFileSync, mkdirSync, existsSync, writeFileSync } from "fs";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
+import { execSync } from "child_process";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const srcDir = join(__dirname, '../src/styles');
-const distDir = join(__dirname, '../dist/styles');
+const srcDir = join(__dirname, "../src/styles");
+const distDir = join(__dirname, "../dist/styles");
 
 // Create dist/styles directory if it doesn't exist
 if (!existsSync(distDir)) {
@@ -15,12 +15,12 @@ if (!existsSync(distDir)) {
 }
 
 // Copy CSS files for Tailwind users (raw CSS with Tailwind directives)
-const cssFiles: string[] = ['kumo.css', 'kumo-binding.css'];
+const cssFiles: string[] = ["kumo.css", "kumo-binding.css"];
 
 cssFiles.forEach((file) => {
   const srcPath = join(srcDir, file);
   const distPath = join(distDir, file);
-  
+
   if (existsSync(srcPath)) {
     copyFileSync(srcPath, distPath);
     console.log(`✓ Copied ${file} to dist/styles/ (Tailwind version)`);
@@ -30,21 +30,21 @@ cssFiles.forEach((file) => {
 });
 
 // Compile standalone CSS for non-Tailwind users
-console.log('📦 Compiling standalone CSS...');
+console.log("📦 Compiling standalone CSS...");
 try {
-  const standaloneInput = join(srcDir, 'kumo-standalone.css');
-  const standaloneOutput = join(distDir, 'kumo-standalone.css');
-  
+  const standaloneInput = join(srcDir, "kumo-standalone.css");
+  const standaloneOutput = join(distDir, "kumo-standalone.css");
+
   // Use Tailwind CLI to compile the CSS
   execSync(
     `npx tailwindcss -i ${standaloneInput} -o ${standaloneOutput} --minify`,
-    { stdio: 'inherit' }
+    { stdio: "inherit" },
   );
-  
-  console.log('✓ Compiled kumo-standalone.css');
+
+  console.log("✓ Compiled kumo-standalone.css");
 } catch (error) {
-  console.error('❌ Failed to compile standalone CSS:', error);
+  console.error("❌ Failed to compile standalone CSS:", error);
   process.exit(1);
 }
 
-console.log('✅ CSS build complete');
+console.log("✅ CSS build complete");

@@ -56,7 +56,7 @@ function specificityScore(role: RoleName, tokenTypes: RoleName[]): number {
 function shouldPreferNewMapping(
   existing: RoleMapping,
   nextTokenTypes: RoleName[],
-  role: RoleName
+  role: RoleName,
 ): boolean {
   const existingScore = specificityScore(role, existing.tokenTypes);
   const nextScore = specificityScore(role, nextTokenTypes);
@@ -92,7 +92,7 @@ function buildFilesMapping(data: AnalyzeTokens): FilesMapping {
           }
 
           const mergedUtilities = Array.from(
-            new Set([...existing.utilityNames, ...utilityNames])
+            new Set([...existing.utilityNames, ...utilityNames]),
           );
 
           if (!shouldPreferNewMapping(existing, tokenTypes, role)) {
@@ -122,7 +122,7 @@ function buildSemanticClass(role: RoleName, tokenId: string): string {
 
 function rewriteClassString(
   classString: string,
-  classMapping: ClassMapping
+  classMapping: ClassMapping,
 ): string {
   const parts = classString.split(/\s+/).filter(Boolean);
 
@@ -161,7 +161,7 @@ function rewriteClassString(
 
 function rewriteFile(
   filePathKey: string,
-  fileClassMapping: FileClassMapping
+  fileClassMapping: FileClassMapping,
 ): void {
   const absolutePath = path.resolve(ROOT_DIR, filePathKey);
 

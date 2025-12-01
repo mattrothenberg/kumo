@@ -20,19 +20,19 @@ export function Badge({
   return (
     <span
       className={cn(
-        "inline-flex items-center w-fit whitespace-nowrap flex-none shrink-0 justify-self-start text-xs font-medium px-2 py-0.5 rounded-full",
+        "inline-flex w-fit flex-none shrink-0 items-center justify-self-start rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap",
         variant === "outline"
-          ? "border text-kumo-surface border-kumo-color bg-transparent"
+          ? "border border-kumo-color bg-transparent text-kumo-surface"
           : "",
         variant === "primary"
           ? "bg-kumo-surface-inverse text-kumo-surface-inverse"
           : "",
-        variant === "secondary" ? "text-kumo-surface bg-kumo-color" : "",
-        variant === "destructive" ? "text-kumo-white bg-kumo-destructive" : "",
+        variant === "secondary" ? "bg-kumo-color text-kumo-surface" : "",
+        variant === "destructive" ? "bg-kumo-destructive text-kumo-white" : "",
         variant === "beta"
-          ? "border border-dashed bg-transparent border-kumo-primary text-kumo-beta"
+          ? "border border-dashed border-kumo-primary bg-transparent text-kumo-beta"
           : "",
-        className
+        className,
       )}
     >
       {children}

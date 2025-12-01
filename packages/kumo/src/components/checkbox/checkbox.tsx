@@ -36,7 +36,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       onChange,
       ...props
     },
-    ref
+    ref,
   ) => {
     const internalRef = useRef<HTMLInputElement>(null);
     const Icon = indeterminate ? MinusIcon : checked ? CheckIcon : undefined;
@@ -52,11 +52,11 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     return (
       <label
         className={cn(
-          "flex! m-0! items-center gap-2",
+          "m-0! flex! items-center gap-2",
           disabled
-            ? "opacity-50 cursor-not-allowed"
+            ? "cursor-not-allowed opacity-50"
             : [variantStyles[variant], "cursor-pointer"],
-          className
+          className,
         )}
       >
         <input
@@ -74,13 +74,13 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
         <span
           aria-hidden
           className={cn(
-            "flex items-center justify-center w-4 h-4 border-0 rounded-sm bg-kumo-surface ring ring-kumo-border",
-            (checked || indeterminate) && "dark:bg-neutral-100 bg-neutral-900"
+            "flex h-4 w-4 items-center justify-center rounded-sm border-0 bg-kumo-surface ring ring-kumo-border",
+            (checked || indeterminate) && "bg-kumo-surface-inverse",
           )}
         >
           {Icon && (
             <Icon
-              className="text-neutral-100 dark:text-neutral-900"
+              className="text-kumo-surface-inverse"
               weight="bold"
               size="12"
             />
@@ -89,7 +89,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
         {label}
       </label>
     );
-  }
+  },
 );
 
 Checkbox.displayName = "Checkbox";

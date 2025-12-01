@@ -32,7 +32,7 @@ export function Banner({
         variant === BannerVariant.DEFAULT && DEFAULT_CLASS,
         variant === BannerVariant.ALERT && ALERT_CLASS,
         variant === BannerVariant.ERROR && ERROR_CLASS,
-        className
+        className,
       )}
     >
       {icon}

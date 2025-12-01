@@ -16,9 +16,7 @@
           }
         }
       },
-      "type": [
-        "hover:bg"
-      ]
+      "type": ["hover:bg"]
     },
     "kumo-2": {
       "light": "oklch(0.985 0 0)",
@@ -41,9 +39,7 @@
           }
         }
       },
-      "type": [
-        "bg"
-      ]
+      "type": ["bg"]
     },
     "kumo-3": {
       "light": "oklch(14.5% 0 0)",
@@ -66,9 +62,7 @@
           }
         }
       },
-      "type": [
-        "bg"
-      ]
+      "type": ["bg"]
     },
     "kumo-4": {
       "light": "oklch(20.5% 0 0)",
@@ -107,9 +101,7 @@
           }
         }
       },
-      "type": [
-        "text"
-      ]
+      "type": ["text"]
     },
     "kumo-5": {
       "light": "oklch(26.9% 0 0)",
@@ -125,9 +117,7 @@
           }
         }
       },
-      "type": [
-        "text"
-      ]
+      "type": ["text"]
     },
     "kumo-6": {
       "light": "oklch(26.9% 0 0)",
@@ -146,9 +136,7 @@
           }
         }
       },
-      "type": [
-        "text"
-      ]
+      "type": ["text"]
     },
     "kumo-7": {
       "light": "oklch(37.1% 0 0)",
@@ -164,9 +152,7 @@
           }
         }
       },
-      "type": [
-        "text"
-      ]
+      "type": ["text"]
     },
     "kumo-8": {
       "light": "oklch(37.1% 0 0)",
@@ -185,9 +171,7 @@
           }
         }
       },
-      "type": [
-        "text"
-      ]
+      "type": ["text"]
     },
     "kumo-9": {
       "light": "oklch(43.9% 0 0)",
@@ -206,9 +190,7 @@
           }
         }
       },
-      "type": [
-        "text"
-      ]
+      "type": ["text"]
     },
     "kumo-10": {
       "light": "oklch(55.6% 0 0)",
@@ -224,9 +206,7 @@
           }
         }
       },
-      "type": [
-        "text"
-      ]
+      "type": ["text"]
     },
     "kumo-11": {
       "light": "oklch(87% 0 0 / 0.85)",
@@ -255,9 +235,7 @@
           }
         }
       },
-      "type": [
-        "bg"
-      ]
+      "type": ["bg"]
     },
     "kumo-12": {
       "light": "oklch(87% 0 0)",
@@ -273,9 +251,7 @@
           }
         }
       },
-      "type": [
-        "text"
-      ]
+      "type": ["text"]
     },
     "kumo-13": {
       "light": "oklch(87% 0 0)",
@@ -324,10 +300,7 @@
           }
         }
       },
-      "type": [
-        "bg",
-        "hover:bg"
-      ]
+      "type": ["bg", "hover:bg"]
     },
     "kumo-14": {
       "light": "oklch(92.2% 0 0)",
@@ -343,9 +316,7 @@
           }
         }
       },
-      "type": [
-        "text"
-      ]
+      "type": ["text"]
     },
     "kumo-15": {
       "light": "oklch(92.2% 0 0)",
@@ -364,9 +335,7 @@
           }
         }
       },
-      "type": [
-        "bg"
-      ]
+      "type": ["bg"]
     },
     "kumo-16": {
       "light": "oklch(97% 0 0)",
@@ -385,9 +354,7 @@
           }
         }
       },
-      "type": [
-        "bg"
-      ]
+      "type": ["bg"]
     },
     "kumo-17": {
       "light": "transparent",
@@ -403,9 +370,7 @@
           }
         }
       },
-      "type": [
-        "bg"
-      ]
+      "type": ["bg"]
     }
   },
   "data": {

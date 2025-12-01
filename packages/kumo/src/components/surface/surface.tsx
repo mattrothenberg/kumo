@@ -25,21 +25,21 @@ type SurfaceProps<E extends ElementType = typeof defaultElement> =
   };
 
 type SurfaceComponent = <E extends ElementType = typeof defaultElement>(
-  props: SurfaceProps<E> & { ref?: PolymorphicRef<E> }
+  props: SurfaceProps<E> & { ref?: PolymorphicRef<E> },
 ) => JSX.Element;
 
 const SurfaceImpl = function Surface<
   E extends ElementType = typeof defaultElement,
 >(
   { as, children, className, ...restProps }: SurfaceProps<E>,
-  ref: PolymorphicRef<E>
+  ref: PolymorphicRef<E>,
 ) {
   const Component = as ?? defaultElement;
   return (
     <Component
       ref={ref}
       {...restProps}
-      className={cn("ring shadow-xs ring-kumo-border", className)}
+      className={cn("shadow-xs ring ring-kumo-border", className)}
     >
       {children}
     </Component>
@@ -47,5 +47,5 @@ const SurfaceImpl = function Surface<
 };
 
 export const Surface = forwardRef(
-  SurfaceImpl as any
+  SurfaceImpl as any,
 ) as unknown as SurfaceComponent;

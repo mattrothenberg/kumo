@@ -1,36 +1,36 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Loader } from './loader';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Loader } from "./loader";
 
 const meta = {
-	title: 'Components/Loader',
-	component: Loader,
-	parameters: {
-		layout: 'centered',
-	},
-	tags: ['autodocs'],
+  title: "Components/Loader",
+  component: Loader,
+  parameters: {
+    layout: "centered",
+  },
+  tags: ["autodocs"],
 } satisfies Meta<typeof Loader>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-	args: {},
+  args: {},
 };
 
 export const CustomSize: Story = {
-	args: {
-		size: 32,
-	},
+  args: {
+    size: 32,
+  },
 };
 
 export const Sizes: Story = {
-	render: () => (
-		<div className="flex gap-4 items-center">
-			<Loader size={12} />
-			<Loader size={16} />
-			<Loader size={24} />
-			<Loader size={32} />
-			<Loader size={48} />
-		</div>
-	),
+  render: () => (
+    <div className="flex items-center gap-4">
+      <Loader size={12} />
+      <Loader size={16} />
+      <Loader size={24} />
+      <Loader size={32} />
+      <Loader size={48} />
+    </div>
+  ),
 };

@@ -24,7 +24,7 @@ export const InputArea = React.forwardRef<HTMLTextAreaElement, InputAreaProps>(
         onChange?.(event);
         onValueChange?.(event.target.value);
       },
-      [onChange, onValueChange]
+      [onChange, onValueChange],
     );
 
     return (
@@ -47,14 +47,14 @@ export const InputArea = React.forwardRef<HTMLTextAreaElement, InputAreaProps>(
           className={cn(
             inputVariants({ size, variant, focusIndicator: true }),
             "h-auto py-2", // Input variant always come with size, but it does not apply for textarea
-            className
+            className,
           )}
           onChange={handleChange}
           {...inputProps}
         />
       </>
     );
-  }
+  },
 );
 
 InputArea.displayName = "InputArea";

@@ -34,14 +34,14 @@ export function inputVariants({
     // Base styles
     "border-0 bg-kumo-secondary text-kumo-surface ring ring-kumo-border",
     // Disabled state and placeholder styles
-    "placeholder:text-kumo-muted disabled:text-kumo-muted outline-none",
+    "outline-none placeholder:text-kumo-muted disabled:text-kumo-muted",
     // Apply size styles
     sizeStyles[size],
     // Apply variant styles
     variantStyles[variant],
     // Focus state handling
     parentFocusIndicator && "[&:has(:focus-within)]:ring-kumo-active",
-    focusIndicator && "focus:ring-kumo-active"
+    focusIndicator && "focus:ring-kumo-active",
   );
 }
 
@@ -77,7 +77,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
         id={inputId}
         className={cn(
           inputVariants({ size, variant, focusIndicator: true }),
-          className
+          className,
         )}
         {...inputProps}
       />

@@ -162,7 +162,7 @@ async function analyzeFile(filePath: string): Promise<MatchItem[]> {
 
       if (!isAllowedColorFamily(family)) continue;
       const rel = path.posix.normalize(
-        path.relative(process.cwd(), filePath).replace(/\\/g, "/")
+        path.relative(process.cwd(), filePath).replace(/\\/g, "/"),
       );
       // Determine the index of the captured class token in the file to extract a snippet
       const overallIdx = m.index ?? 0;
@@ -191,7 +191,7 @@ function extractSnippet(content: string, pos: number): string {
       content,
       ts.ScriptTarget.Latest,
       true,
-      ts.ScriptKind.TSX
+      ts.ScriptKind.TSX,
     );
     let found: string | null = null;
 
@@ -274,7 +274,7 @@ function extractSnippet(content: string, pos: number): string {
     const lineEnd = content.indexOf("\n", pos);
     const line = content.slice(
       lineStart,
-      lineEnd === -1 ? content.length : lineEnd
+      lineEnd === -1 ? content.length : lineEnd,
     );
     return line.replace(/\s+/g, " ").trim();
   } catch {
@@ -294,7 +294,7 @@ async function run(): Promise<GroupedBySource> {
   await Promise.all(
     files.map(async (f) => {
       const rel = path.posix.normalize(
-        path.relative(process.cwd(), f).replace(/\\/g, "/")
+        path.relative(process.cwd(), f).replace(/\\/g, "/"),
       );
       if (IGNORE_FILES.has(rel)) return;
       const items = await analyzeFile(f);
@@ -304,7 +304,7 @@ async function run(): Promise<GroupedBySource> {
       // with multiple snippets within the same file.
       arr.push(...items);
       grouped.set(items[0].source, arr);
-    })
+    }),
   );
   const out: GroupedBySource = {};
   const sources = Array.from(grouped.keys()).sort();
@@ -323,7 +323,7 @@ async function run(): Promise<GroupedBySource> {
 }
 
 function parseCssColorVars(
-  css: string
+  css: string,
 ): Record<string, string | Record<string, string>> {
   const out: Record<string, string | Record<string, string>> = {};
   const re = /--color-([a-z-]+)(?:-(\d{2,3}))?:\s*([^;]+);/gim;
@@ -464,7 +464,7 @@ run()
     function lookupColorForClass(
       cls: string,
       colors: Record<string, string | Record<string, string>>,
-      semantic: SemanticModeColors
+      semantic: SemanticModeColors,
     ): string {
       const last = cls.split(":").pop() ?? cls;
       let token = last.startsWith("!") ? last.slice(1) : last;
@@ -480,7 +480,7 @@ run()
 
       const m =
         /^(?:bg|border|text|ring(?:-offset)?|fill|stroke|placeholder|caret|accent|decoration|divide|outline|from|via|to)-(.+)$/.exec(
-          token
+          token,
         );
       if (!m) return "";
       const rest = m[1];
@@ -547,7 +547,7 @@ run()
       const token = last.startsWith("!") ? last.slice(1) : last;
       const utilMatch =
         /^(bg|border|text|ring(?:-offset)?|fill|stroke|placeholder|caret|accent|decoration|divide|outline|from|via|to)-/.exec(
-          token
+          token,
         );
       const utility = utilMatch ? utilMatch[1] : "";
 
@@ -602,12 +602,12 @@ run()
         Record<string, Record<string, { value: string }>>
       > = {};
       const snippetKeys = Array.from(groups.keys()).sort((a, b) =>
-        a < b ? -1 : a > b ? 1 : 0
+        a < b ? -1 : a > b ? 1 : 0,
       );
       for (const sn of snippetKeys) {
         const byGroup = groups.get(sn)!;
         const groupKeys = Array.from(byGroup.keys()).sort((a, b) =>
-          a < b ? -1 : a > b ? 1 : 0
+          a < b ? -1 : a > b ? 1 : 0,
         );
         const groupedObj: Record<
           string,
@@ -615,7 +615,7 @@ run()
         > = {};
         for (const gk of groupKeys) {
           const classEntries = Array.from(byGroup.get(gk)!.entries()).sort(
-            (a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0)
+            (a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0),
           );
           groupedObj[gk] = Object.fromEntries(classEntries);
         }
@@ -715,7 +715,7 @@ run()
             : 0
         : a.light < b.light
           ? -1
-          : 1
+          : 1,
     );
 
     // Count total leaf nodes: number of class entries at the deepest level
@@ -758,7 +758,7 @@ run()
       const srcKeys = Array.from(srcMap.keys()).sort();
       for (const src of srcKeys) {
         const snippetKeys = Array.from(
-          srcMap.get(src) ?? new Set<string>()
+          srcMap.get(src) ?? new Set<string>(),
         ).sort();
         const snippetObj: Record<
           string,
@@ -786,11 +786,11 @@ run()
             const filteredClassesEntries = Object.entries(classes).filter(
               ([, obj]) =>
                 !!obj &&
-                (obj.value === t.light || (t.dark && obj.value === t.dark))
+                (obj.value === t.light || (t.dark && obj.value === t.dark)),
             );
             if (!filteredClassesEntries.length) continue;
             filteredGroups[groupKey] = Object.fromEntries(
-              filteredClassesEntries
+              filteredClassesEntries,
             );
           }
 
@@ -860,7 +860,7 @@ run()
     const distCssOutPath = path.resolve(
       process.cwd(),
       "dist",
-      "analyze-tokens.css"
+      "analyze-tokens.css",
     );
     await mkdir(path.dirname(distCssOutPath), { recursive: true });
     await writeFile(distCssOutPath, cssOut, "utf8");
@@ -869,12 +869,12 @@ run()
     const jsonOutPath = path.resolve(
       __dirname,
       "_output",
-      "analyze-tokens.json"
+      "analyze-tokens.json",
     );
     await writeFile(
       jsonOutPath,
       JSON.stringify(wrapped, null, 2) + "\n",
-      "utf8"
+      "utf8",
     );
 
     process.stdout.write(JSON.stringify(wrapped, null, 2) + "\n");

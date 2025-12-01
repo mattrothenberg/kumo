@@ -19,7 +19,7 @@ export function Field({
 }) {
   return (
     <FieldBase.Root className="grid gap-2">
-      <FieldBase.Label className="font-medium text-base">
+      <FieldBase.Label className="text-base font-medium">
         {label}
       </FieldBase.Label>
       {children}
@@ -29,7 +29,7 @@ export function Field({
         </FieldBase.Error>
       )}
       {description && (
-        <FieldBase.Description className="text-sm text-muted leading-snug">
+        <FieldBase.Description className="text-sm leading-snug text-muted">
           {description}
         </FieldBase.Description>
       )}
