@@ -1217,8 +1217,10 @@ const KEEP_PROPS = new Set([
   "size", // Common variant prop, even though InputHTMLAttributes has size for field width
   "title", // Common component prop, even though HTMLAttributes has title for tooltips
   "label", // Common form field prop
-  "onClick", // Common event handler to keep
   "href", // Common link prop for navigation components
+  "onClick", // Common event handler to keep
+  "onChange", // Common event handler to keep
+  "onSubmit", // Common event handler to keep
 ]);
 
 /**

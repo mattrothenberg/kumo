@@ -47,7 +47,7 @@ const preview: Preview = {
       }
 
       return (
-        <div className="flex" data-theme="kumo">
+        <div className="flex">
           <div className="flex-1 items-center border bg-surface p-6">
             <div className="mb-2 font-sans text-sm leading-5 tracking-wide text-muted-2 uppercase">
               Light
