@@ -57,44 +57,44 @@ The color system is defined in `packages/kumo/src/styles/kumo-binding.css`. Colo
 
 #### Background Colors
 
-- `bg-kumo-surface` - Main background
-- `bg-kumo-surface-2` - Secondary surface
-- `bg-kumo-surface-elevated` - Elevated surfaces (modals, cards)
-- `bg-kumo-secondary` - Secondary elements
-- `bg-kumo-accent` - Accent backgrounds
-- `bg-kumo-primary` - Primary action backgrounds
-- `bg-kumo-destructive` - Destructive action backgrounds
-- `bg-kumo-subtle` - Subtle backgrounds
-- `bg-kumo-color` - Border-like backgrounds
+- `bg-surface` - Main background
+- `bg-surface-2` - Secondary surface
+- `bg-surface-elevated` - Elevated surfaces (modals, cards)
+- `bg-secondary` - Secondary elements
+- `bg-accent` - Accent backgrounds
+- `bg-primary` - Primary action backgrounds
+- `bg-destructive` - Destructive action backgrounds
+- `bg-subtle` - Subtle backgrounds
+- `bg-color` - Border-like backgrounds
 
 #### Text Colors
 
-- `text-kumo-surface` - Primary text
-- `text-kumo-secondary` - Secondary text
-- `text-kumo-muted` - Muted/placeholder text
-- `text-kumo-white` - Always white text
-- `text-kumo-label` - Label text
-- `text-kumo-destructive` - Error/destructive text
-- `text-kumo-success` - Success text
-- `text-kumo-info` - Info text
-- `text-kumo-error` - Error text
+- `text-surface` - Primary text
+- `text-secondary` - Secondary text
+- `text-muted` - Muted/placeholder text
+- `text-white` - Always white text
+- `text-label` - Label text
+- `text-destructive` - Error/destructive text
+- `text-success` - Success text
+- `text-info` - Info text
+- `text-error` - Error text
 
 #### Border Colors
 
-- `border-kumo-border` - Default borders
-- `border-kumo-color` - Alternative borders
-- `ring-kumo-border` - Ring borders
-- `ring-kumo-active` - Active/focus rings
+- `border-border` - Default borders
+- `border-color` - Alternative borders
+- `ring-border` - Ring borders
+- `ring-active` - Active/focus rings
 
 ### Example Usage
 
 ```tsx
 // ✅ CORRECT - Using Kumo semantic tokens
-<button className="bg-kumo-primary text-kumo-white hover:bg-kumo-primary/70">
+<button className="bg-primary text-white hover:bg-primary/70">
   Submit
 </button>
 
-<div className="bg-kumo-surface border border-kumo-border text-kumo-surface">
+<div className="bg-surface border border-border text-surface">
   Content
 </div>
 
@@ -117,7 +117,7 @@ The color system is defined in `packages/kumo/src/styles/kumo-binding.css`. Colo
 <div className="bg-white dark:bg-black text-black dark:text-white">
 
 // ✅ CORRECT - Automatic dark mode via semantic tokens
-<div className="bg-kumo-surface text-kumo-surface">
+<div className="bg-surface text-surface">
 ```
 
 ### Mode & Theme System
@@ -225,8 +225,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           // Base styles
           "flex items-center font-medium",
           // Variant styles using Kumo tokens
-          variant === "primary" && "bg-kumo-primary text-kumo-white",
-          variant === "secondary" && "bg-kumo-secondary text-kumo-secondary ring ring-kumo-border",
+          variant === "primary" && "bg-primary text-white",
+          variant === "secondary" && "bg-secondary text-secondary ring ring-border",
           // Size styles
           size === "base" && "h-9 px-3 text-base",
           className,
@@ -250,8 +250,8 @@ import { Dialog as DialogBase } from "@base-ui-components/react";
 function DialogContent({ children }) {
   return (
     <DialogBase.Portal>
-      <DialogBase.Backdrop className="bg-kumo-color-3 opacity-80" />
-      <DialogBase.Popup className="bg-kumo-surface rounded-xl">
+      <DialogBase.Backdrop className="bg-color-3 opacity-80" />
+      <DialogBase.Popup className="bg-surface rounded-xl">
         {children}
       </DialogBase.Popup>
     </DialogBase.Portal>
@@ -297,7 +297,7 @@ pnpm --filter @cloudflare/kumo lint
 
 1. **`no-primitive-colors`** (`scripts/linting/no-primitive-colors.js`)
    - Disallows Tailwind primitive colors (e.g., `bg-blue-500`, `text-gray-900`)
-   - Enforces use of `--color-kumo-*` semantic tokens
+   - Enforces use of Kumo semantic tokens (e.g., `bg-surface`, `text-muted`)
 
 2. **`no-tailwind-dark-variant`** (`scripts/linting/no-tailwind-dark-variant.js`)
    - Disallows `dark:` variant in class names
@@ -372,7 +372,7 @@ When reviewing code, focus on:
 
 ### Styling
 
-- **Verify Kumo tokens**: Ensure `bg-kumo-*`, `text-kumo-*`, `border-kumo-*` classes are used
+- **Verify Kumo tokens**: Ensure `bg-*`, `text-*`, `border-*` semantic classes are used (e.g., `bg-surface`, `text-muted`, `border-border`)
 - **No raw Tailwind colors**: Flag any `bg-blue-500`, `text-gray-*`, etc.
 - **No `dark:` variants**: Dark mode should be automatic via tokens
 - **Use `cn()` utility**: For conditional class composition
