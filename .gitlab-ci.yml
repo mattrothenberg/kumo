@@ -3,6 +3,7 @@ stages:
   - build
   - checks
   - test
+  - review
   - beta-release
   - production-release
 
@@ -114,6 +115,7 @@ include:
       PNPM_RUN_TARGET: "publish:beta"
       runOnMR: true
 
+<<<<<<< HEAD
 
 # ============= PRODUCTION RELEASE STAGE (Publishes production versions to npm) =============
 
@@ -127,6 +129,13 @@ include:
       PNPM_RUN_TARGET: 'release:production'
       runOnMR: false
       runOnBranches: 'never'
+=======
+  # ============= REVIEW STAGE (AI-powered code review) =============
+
+  # Claude Code Review
+  # DevTools docs -> https://gitlab.cfdata.org/cloudflare/ci/ai
+  - component: $CI_SERVER_FQDN/cloudflare/ci/ai/review@~latest
+>>>>>>> ed8783e (claude reviews in ci/cd)
 
 # Job overrides for dependencies and additional configuration
 
@@ -174,7 +183,6 @@ publish-beta-run:
     GITLAB_API_TOKEN:
       vault: gitlab/cloudflare/fe/kumo/_dev/kumo_preview_bot/data@kv
       file: false
-<<<<<<< HEAD
 
 # ============= MANUAL RELEASES STAGE (Production releases) =============
 
@@ -240,5 +248,3 @@ prod-release-kumo-run:
     CI_RELEASE_TOKEN:
       vault: gitlab/cloudflare/fe/kumo/_dev/ci_release_token/data@kv
       file: false
-=======
->>>>>>> aab96f2 (pnpm catalog - token docs in storybook - more semantic updates)
