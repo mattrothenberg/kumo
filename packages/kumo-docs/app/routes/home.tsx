@@ -18,7 +18,6 @@ import {
   Combobox,
   CodeBlock,
   Banner,
-  BannerVariant,
   DateRangePicker,
   Loader,
   Badge,
@@ -272,12 +271,12 @@ export default function Home() {
           <Banner
             icon={<WarningIcon weight="fill" />}
             text="This is an alert banner."
-            variant={BannerVariant.ALERT}
+            variant="alert"
           />
           <Banner
             icon={<WarningOctagonIcon weight="fill" />}
             text="This is an error banner."
-            variant={BannerVariant.ERROR}
+            variant="error"
           />
         </div>
       ),

@@ -54,7 +54,7 @@ export const MenuBar = ({
   const menuRef = useRef<HTMLElement | null>(null);
 
   useMenuNavigation({ menuRef, direction: "horizontal" });
-  // bg-cl1-gray-9 dark:bg-cl1-gray-8
+
   return (
     <nav
       className={cn(

@@ -1,4 +1,4 @@
-import { Banner, BannerVariant, CodeBlock } from "@cloudflare/kumo";
+import { Banner, CodeBlock } from "@cloudflare/kumo";
 import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";
@@ -25,14 +25,8 @@ export default function BannerDoc() {
         >
           <div className="space-y-3">
             <Banner text="This is an informational banner." />
-            <Banner
-              variant={BannerVariant.ALERT}
-              text="This is an alert banner."
-            />
-            <Banner
-              variant={BannerVariant.ERROR}
-              text="This is an error banner."
-            />
+            <Banner variant="alert" text="This is an alert banner." />
+            <Banner variant="error" text="This is an error banner." />
           </div>
         </ComponentExample>
       </ComponentSection>
@@ -88,10 +82,7 @@ export default function Example() {
   text="Your session will expire soon."
 />`}
               >
-                <Banner
-                  variant={BannerVariant.ALERT}
-                  text="Your session will expire soon."
-                />
+                <Banner variant="alert" text="Your session will expire soon." />
               </ComponentExample>
             </div>
 
@@ -103,10 +94,7 @@ export default function Example() {
   text="We couldn't save your changes."
 />`}
               >
-                <Banner
-                  variant={BannerVariant.ERROR}
-                  text="We couldn't save your changes."
-                />
+                <Banner variant="error" text="We couldn't save your changes." />
               </ComponentExample>
             </div>
           </div>
@@ -124,7 +112,7 @@ export default function Example() {
           >
             <Banner
               icon={<WarningCircle />}
-              variant={BannerVariant.ALERT}
+              variant="alert"
               text="Review your billing information."
             />
           </ComponentExample>
