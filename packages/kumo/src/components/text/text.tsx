@@ -108,7 +108,7 @@ type BaseTextProps = Omit<
   as?: ElementType;
 };
 
-type TextProps<Variant extends TextVariant = "body"> = BaseTextProps &
+type TextPropsInternal<Variant extends TextVariant = "body"> = BaseTextProps &
   (Variant extends Copy
     ? {
         variant?: Variant;
@@ -129,6 +129,23 @@ type TextProps<Variant extends TextVariant = "body"> = BaseTextProps &
           }
         : never);
 
+/**
+ * Props for the Text component.
+ * @description A typography component for rendering text with consistent styling.
+ */
+export interface TextProps {
+  /** Text style variant */
+  variant?: KumoTextVariant;
+  /** Text size (only applies to body/secondary/success/error variants) */
+  size?: KumoTextSize;
+  /** Whether to use bold font weight (only applies to body variants) */
+  bold?: boolean;
+  /** The element type to render as */
+  as?: ElementType;
+  /** Child text content */
+  children?: React.ReactNode;
+}
+
 function _Text<Variant extends TextVariant = "body">(
   {
     variant = "body" as Variant,
@@ -139,7 +156,7 @@ function _Text<Variant extends TextVariant = "body">(
     DANGEROUS_style,
     as,
     ...props
-  }: TextProps<Variant>,
+  }: TextPropsInternal<Variant>,
   ref: ForwardedRef<HTMLHeadingElement>,
 ) {
   const isCopy = ["body", "secondary", "success", "error"].includes(variant);
@@ -177,5 +194,7 @@ function _Text<Variant extends TextVariant = "body">(
 }
 
 export const Text = forwardRef(_Text) as <Variant extends TextVariant = "body">(
-  props: TextProps<Variant> & { ref?: ForwardedRef<ElementRef<"span">> },
+  props: TextPropsInternal<Variant> & {
+    ref?: ForwardedRef<ElementRef<"span">>;
+  },
 ) => React.ReactElement;

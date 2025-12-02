@@ -13,7 +13,14 @@ const preview: Preview = {
     layout: "fullscreen",
     options: {
       storySort: {
-        order: ["Design-Tokens", "Components", "Blocks", "Layouts", "Pages"],
+        order: [
+          "Agents",
+          "Design-Tokens",
+          "Components",
+          "Blocks",
+          "Layouts",
+          "Pages",
+        ],
       },
     },
     controls: {
@@ -27,6 +34,7 @@ const preview: Preview = {
     (Story, context) => {
       if (
         context.title.startsWith("Pages/") ||
+        context.title.startsWith("Agents/") ||
         context.title.startsWith("Design-Tokens/") ||
         context.title.startsWith("Components/Combobox") ||
         context.title.startsWith("Components/Dialog") ||

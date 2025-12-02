@@ -165,12 +165,14 @@
     "registry": "https://registry-gateway.cloudflare-ui.workers.dev"
   },
   "scripts": {
-    "build": "vite build --mode production && tsx scripts/build-css.ts",
+    "prepare": "pnpm run prebuild",
+    "build": "pnpm run prebuild && vite build --mode production && tsx scripts/build-css.ts",
+    "prebuild": "pnpm run build:colors && pnpm run build:ai-metadata",
     "dev": "vite build --watch --mode development",
     "clean": "rm -rf dist",
     "lint": "oxlint src/** --type-aware",
     "prepublishOnly": "pnpm run clean && pnpm run build && pnpm run test:unit",
-    "typecheck": "pnpm run build:colors && tsc --noEmit",
+    "typecheck": "tsc --noEmit",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
@@ -183,8 +185,8 @@
     "new-layout": "plop layout",
     "validate:changeset": "tsx ../../ci/scripts/validate-kumo-changeset.ts",
     "build:colors": "tsx scripts/color/build-colors-storybook.ts",
-    "storybook": "pnpm run build:colors && storybook dev -p 6006",
-    "build:storybook": "pnpm run build:colors && storybook build",
+    "storybook": "pnpm run prebuild && storybook dev -p 6006",
+    "build:storybook": "pnpm run prebuild && storybook build",
     "deploy": "pnpm run build:storybook && wrangler pages deploy",
     "deploy:ci": "CLOUDFLARE_ACCOUNT_ID=$CLOUDFLARE_ACCOUNT_ID CLOUDFLARE_API_TOKEN=$CLOUDFLARE_API_TOKEN pnpm run build:storybook && wrangler pages deploy",
     "deploy-prod:ci": "pnpm run deploy:ci --branch main",
@@ -198,6 +200,7 @@
   },
   "dependencies": {
     "clsx": "catalog:",
+    "remark-gfm": "4.0.1",
     "tailwind-merge": "catalog:"
   },
   "devDependencies": {
@@ -219,6 +222,7 @@
     "oxlint-tsgolint": "0.6.0",
     "playwright": "catalog:",
     "plop": "4.0.4",
+    "react-markdown": "10.1.0",
     "rollup-plugin-preserve-directives": "0.4.0",
     "storybook": "catalog:",
     "tailwindcss": "catalog:",

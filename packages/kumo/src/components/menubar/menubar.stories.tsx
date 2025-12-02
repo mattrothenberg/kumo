@@ -25,6 +25,7 @@ function DefaultMenuBar() {
   return (
     <MenuBar
       isActive={active}
+      optionIds
       options={[
         {
           icon: <HouseIcon className="fill-surface-inverse" />,

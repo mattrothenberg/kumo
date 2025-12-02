@@ -14,9 +14,6 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {
-    children: null,
-  },
   render: () => (
     <DropdownMenu>
       <DropdownMenu.Trigger>
@@ -32,9 +29,6 @@ export const Default: Story = {
 };
 
 export const ItemVariants: Story = {
-  args: {
-    children: null,
-  },
   render: () => (
     <DropdownMenu>
       <DropdownMenu.Trigger render={<Button>Open Menu</Button>} />

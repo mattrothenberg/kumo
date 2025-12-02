@@ -18,7 +18,7 @@ async function main() {
     __dirname,
     "../../src/styles/kumo-binding.css",
   );
-  const outDir = resolve(__dirname, "./dist");
+  const outDir = resolve(__dirname, "../../dist/color");
   const outFile = resolve(outDir, "storybook-colors.ts");
 
   const themeCss = await readFile(themeCssPath, "utf8");

@@ -127,22 +127,26 @@ function parsePropTesterCall(
     componentName = getNodeText(thirdArg.tagName, sourceFile);
     extractJsxAttributes(thirdArg.attributes, sourceFile, baseProps);
   } else if (ts.isJsxElement(thirdArg)) {
-    componentName = getNodeText(
-      thirdArg.openingElement.tagName,
-      sourceFile,
-    );
+    componentName = getNodeText(thirdArg.openingElement.tagName, sourceFile);
     extractJsxAttributes(
       thirdArg.openingElement.attributes,
       sourceFile,
       baseProps,
     );
-    // Extract children
+    // Extract children - preserve original formatting including newlines
+    // JsxText nodes with only whitespace return empty from getText(), so use .text property
     const childrenText = thirdArg.children
-      .map((c) => getNodeText(c, sourceFile).trim())
-      .filter((c) => c.length > 0)
+      .map((c) => {
+        if (ts.isJsxText(c)) {
+          return c.text;
+        }
+        return getNodeText(c, sourceFile);
+      })
       .join("");
-    if (childrenText) {
-      children = childrenText;
+    // Trim leading/trailing whitespace but preserve internal structure
+    const trimmedChildren = childrenText.trim();
+    if (trimmedChildren) {
+      children = trimmedChildren;
     }
   }
 
@@ -153,6 +157,31 @@ function parsePropTesterCall(
     baseProps,
     children,
   };
+}
+
+/**
+ * Escape a string value for use in JSX attribute (for propTester extraction).
+ * Uses template literal syntax {`...`} if the string contains quotes or newlines.
+ */
+function escapeJsxAttrString(value: string): string {
+  const hasDoubleQuote = value.includes('"');
+  const hasSingleQuote = value.includes("'");
+  const hasNewline = value.includes("\n");
+
+  // If string contains newlines or both quote types, use template literal
+  if (hasNewline || (hasDoubleQuote && hasSingleQuote)) {
+    // Escape backticks and ${} in template literals
+    const escaped = value.replace(/`/g, "\\`").replace(/\$\{/g, "\\${");
+    return "{`" + escaped + "`}";
+  }
+
+  // If string contains double quotes, use single quotes
+  if (hasDoubleQuote) {
+    return `'${value}'`;
+  }
+
+  // Default: use double quotes
+  return `"${value}"`;
 }
 
 /**
@@ -168,17 +197,20 @@ function extractJsxAttributes(
       const attrName = attr.name.getText(sourceFile);
       if (attr.initializer) {
         if (ts.isStringLiteral(attr.initializer)) {
-          props[attrName] = `"${attr.initializer.text}"`;
+          props[attrName] = escapeJsxAttrString(attr.initializer.text);
         } else if (ts.isJsxExpression(attr.initializer)) {
           // Capture JSX expression values (e.g., icon={PlusIcon})
           if (attr.initializer.expression) {
-            const exprText = getNodeText(attr.initializer.expression, sourceFile);
+            const exprText = getNodeText(
+              attr.initializer.expression,
+              sourceFile,
+            );
             props[attrName] = `{${exprText}}`;
           }
         }
       } else {
-        // Boolean shorthand like `disabled`
-        props[attrName] = "true";
+        // Boolean shorthand like `disabled` - store with braces for proper JSX
+        props[attrName] = "{true}";
       }
     }
   }
@@ -213,26 +245,76 @@ function findPropTesterCalls(
 }
 
 /**
+ * Format JSX with proper indentation for multi-line content.
+ * Preserves the structure of the original JSX while adding the tested prop.
+ */
+function formatJsxWithProp(
+  componentName: string,
+  propName: string,
+  propValue: string,
+  baseProps: Record<string, string>,
+  children?: string,
+): string {
+  // Build props string
+  const allProps: Record<string, string> = {
+    [propName]: `"${propValue}"`,
+    ...baseProps,
+  };
+
+  const propsString = Object.entries(allProps)
+    .map(([key, val]) => `${key}=${val}`)
+    .join(" ");
+
+  if (!children) {
+    return `<${componentName} ${propsString} />`;
+  }
+
+  // Check if children is multi-line
+  const trimmedChildren = children.trim();
+  const isMultiLine = trimmedChildren.includes("\n");
+
+  if (!isMultiLine) {
+    return `<${componentName} ${propsString}>${trimmedChildren}</${componentName}>`;
+  }
+
+  // For multi-line children, format with proper indentation
+  // Normalize the children indentation
+  const lines = trimmedChildren.split("\n");
+
+  // Find minimum indentation (excluding empty lines and the first line which may have been trimmed)
+  const nonEmptyLines = lines.filter((l) => l.trim().length > 0);
+  // Skip first line when calculating minIndent since it may have been trimmed
+  const linesToCheck =
+    nonEmptyLines.length > 1 ? nonEmptyLines.slice(1) : nonEmptyLines;
+  const minIndent = linesToCheck.reduce((min, line) => {
+    const match = line.match(/^(\s*)/);
+    const indent = match ? match[1].length : 0;
+    return Math.min(min, indent);
+  }, Number.POSITIVE_INFINITY);
+
+  // Re-indent children with 2 spaces
+  const reindentedLines = lines.map((line, index) => {
+    if (line.trim().length === 0) return "";
+    // First line may not have leading whitespace due to trim, just add indent
+    if (index === 0) {
+      return "  " + line.trim();
+    }
+    const stripped = line.slice(minIndent);
+    return "  " + stripped;
+  });
+
+  return `<${componentName} ${propsString}>\n${reindentedLines.join("\n")}\n</${componentName}>`;
+}
+
+/**
  * Generate string examples from a propTester call
  */
 function generatePropTesterExamples(call: PropTesterCall): string[] {
   const { propValues, propName, componentName, baseProps, children } = call;
 
-  return propValues.map((value) => {
-    const allProps: Record<string, string> = {
-      [propName]: `"${value}"`,
-      ...baseProps,
-    };
-
-    const propsString = Object.entries(allProps)
-      .map(([key, val]) => `${key}=${val}`)
-      .join(" ");
-
-    if (children) {
-      return `<${componentName} ${propsString}>${children}</${componentName}>`;
-    }
-    return `<${componentName} ${propsString} />`;
-  });
+  return propValues.map((value) =>
+    formatJsxWithProp(componentName, propName, value, baseProps, children),
+  );
 }
 
 /**
@@ -241,9 +323,17 @@ function generatePropTesterExamples(call: PropTesterCall): string[] {
 function extractRenderJSX(
   renderNode: ts.Node,
   sourceFile: ts.SourceFile,
-): { code: string; usesPropTester: boolean } {
+  componentName: string,
+): {
+  code: string;
+  usesPropTester: boolean;
+  usesArgsSpread: boolean;
+  isWrapperComponent: boolean;
+} {
   const fullText = getNodeText(renderNode, sourceFile);
   const usesPropTester = fullText.includes("propTester");
+  let usesArgsSpread = false;
+  let isWrapperComponent = false;
 
   // For arrow functions with block body, try to extract just the return JSX
   if (ts.isArrowFunction(renderNode) && ts.isBlock(renderNode.body)) {
@@ -258,7 +348,14 @@ function extractRenderJSX(
     if (returnJSX) {
       // Clean up the JSX - remove fragments if they just wrap a single element
       returnJSX = cleanupJSX(returnJSX);
-      return { code: returnJSX, usesPropTester };
+      // Check if this is a wrapper component (not the actual component)
+      isWrapperComponent = isWrapperComponentJSX(returnJSX, componentName);
+      return {
+        code: returnJSX,
+        usesPropTester,
+        usesArgsSpread,
+        isWrapperComponent,
+      };
     }
   }
 
@@ -266,10 +363,29 @@ function extractRenderJSX(
   if (ts.isArrowFunction(renderNode) && !ts.isBlock(renderNode.body)) {
     let jsx = getNodeText(renderNode.body, sourceFile);
     jsx = cleanupJSX(jsx);
-    return { code: jsx, usesPropTester };
+    // Check for {...args} spread pattern
+    usesArgsSpread = jsx.includes("{...args}");
+    // Check if this is a wrapper component
+    isWrapperComponent = isWrapperComponentJSX(jsx, componentName);
+    return { code: jsx, usesPropTester, usesArgsSpread, isWrapperComponent };
   }
 
-  return { code: fullText, usesPropTester };
+  return { code: fullText, usesPropTester, usesArgsSpread, isWrapperComponent };
+}
+
+/**
+ * Check if JSX is rendering a wrapper component instead of the actual component.
+ * Wrapper components are typically PascalCase names that don't match the component name.
+ */
+function isWrapperComponentJSX(jsx: string, componentName: string): boolean {
+  // Extract the tag name from JSX like "<DefaultMenuBar />" or "<Wrapper>...</Wrapper>"
+  const tagMatch = jsx.match(/^<([A-Z][a-zA-Z0-9]*)/);
+  if (!tagMatch) return false;
+
+  const tagName = tagMatch[1];
+  // It's a wrapper if the tag doesn't match the component name and doesn't start with component name
+  // e.g., "DefaultMenuBar" is a wrapper for "MenuBar", "ToastTriggerButton" is a wrapper for "Toasty"
+  return tagName !== componentName && !tagName.includes(componentName);
 }
 
 /**
@@ -296,6 +412,56 @@ function cleanupJSX(jsx: string): string {
 }
 
 /**
+ * Check if a string looks like a JavaScript identifier (variable/component name)
+ */
+function isIdentifier(str: string): boolean {
+  return /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(str);
+}
+
+/**
+ * Check if a string looks like JSX (starts with < and ends with > or />)
+ */
+function isJSXLike(str: string): boolean {
+  const trimmed = str.trim();
+  return (
+    trimmed.startsWith("<") && (trimmed.endsWith(">") || trimmed.endsWith("/>"))
+  );
+}
+
+/**
+ * Check if value is a JSX marker object from parseArgsObject
+ */
+function isJsxMarker(value: unknown): value is { __jsx: string } {
+  return typeof value === "object" && value !== null && "__jsx" in value;
+}
+
+/**
+ * Escape a string value for use in JSX attribute.
+ * Uses template literal syntax {`...`} if the string contains quotes or newlines.
+ */
+function escapeJsxStringValue(value: string): string {
+  const hasDoubleQuote = value.includes('"');
+  const hasSingleQuote = value.includes("'");
+  const hasNewline = value.includes("\n");
+  const hasBacktick = value.includes("`");
+
+  // If string contains newlines or both quote types, use template literal
+  if (hasNewline || (hasDoubleQuote && hasSingleQuote)) {
+    // Escape backticks and ${} in template literals
+    const escaped = value.replace(/`/g, "\\`").replace(/\$\{/g, "\\${");
+    return "{`" + escaped + "`}";
+  }
+
+  // If string contains double quotes, use single quotes
+  if (hasDoubleQuote) {
+    return `'${value}'`;
+  }
+
+  // Default: use double quotes
+  return `"${value}"`;
+}
+
+/**
  * Convert args object to inline JSX props
  */
 function argsToJSX(
@@ -305,11 +471,27 @@ function argsToJSX(
   const propsStr = Object.entries(args)
     .filter(([key]) => key !== "children")
     .map(([key, value]) => {
+      // Handle JSX marker objects from parseArgsObject
+      if (isJsxMarker(value)) {
+        return `${key}={${value.__jsx}}`;
+      }
       if (typeof value === "string") {
-        return `${key}="${value}"`;
+        // Check if this looks like an identifier (e.g., PlusIcon, handleClick)
+        // or JSX element - these should be wrapped in {}
+        if (isIdentifier(value) && /^[A-Z]/.test(value)) {
+          // PascalCase identifier - likely a component reference
+          return `${key}={${value}}`;
+        }
+        if (isJSXLike(value)) {
+          // JSX element
+          return `${key}={${value}}`;
+        }
+        // Regular string value - properly escape quotes
+        return `${key}=${escapeJsxStringValue(value)}`;
       }
       if (typeof value === "boolean") {
-        return value ? key : `${key}={false}`;
+        // Always use explicit JSX syntax for booleans: prop={true} or prop={false}
+        return `${key}={${value}}`;
       }
       if (typeof value === "number") {
         return `${key}={${value}}`;
@@ -349,6 +531,20 @@ function parseArgsObject(
         args[key] = valueNode.kind === ts.SyntaxKind.TrueKeyword;
       } else if (ts.isNumericLiteral(valueNode)) {
         args[key] = Number(valueNode.text);
+      } else if (
+        ts.isJsxElement(valueNode) ||
+        ts.isJsxSelfClosingElement(valueNode)
+      ) {
+        // JSX element - mark it specially so argsToJSX handles it correctly
+        args[key] = { __jsx: getNodeText(valueNode, sourceFile) };
+      } else if (ts.isParenthesizedExpression(valueNode)) {
+        // Parenthesized expression - unwrap and check if it's JSX
+        const inner = valueNode.expression;
+        if (ts.isJsxElement(inner) || ts.isJsxSelfClosingElement(inner)) {
+          args[key] = { __jsx: getNodeText(inner, sourceFile) };
+        } else {
+          args[key] = getNodeText(valueNode, sourceFile);
+        }
       } else {
         // For complex values, store the source text
         args[key] = getNodeText(valueNode, sourceFile);
@@ -408,13 +604,22 @@ function parseStoryFile(
           let argsObj: Record<string, unknown> | null = null;
           let usesPropTester = false;
 
+          let usesArgsSpread = false;
+          let isWrapperComponent = false;
+
           // Look for render and args properties
           for (const prop of storyObj.properties) {
             if (ts.isPropertyAssignment(prop) && ts.isIdentifier(prop.name)) {
               if (prop.name.text === "render") {
-                const result = extractRenderJSX(prop.initializer, sourceFile);
+                const result = extractRenderJSX(
+                  prop.initializer,
+                  sourceFile,
+                  componentName,
+                );
                 renderCode = result.code;
                 usesPropTester = result.usesPropTester;
+                usesArgsSpread = result.usesArgsSpread;
+                isWrapperComponent = result.isWrapperComponent;
               } else if (
                 prop.name.text === "args" &&
                 ts.isObjectLiteralExpression(prop.initializer)
@@ -424,8 +629,24 @@ function parseStoryFile(
             }
           }
 
-          // Determine example type and code
-          if (renderCode && !usesPropTester) {
+          // Skip wrapper components - they're not useful as examples
+          if (isWrapperComponent) {
+            continue;
+          }
+
+          // Handle render with args spread: render: (args) => <Component {...args} />
+          // Combine with args object to generate a concrete example
+          if (renderCode && usesArgsSpread && argsObj) {
+            const concreteExample = argsToJSX(componentName, argsObj);
+            examples.push({
+              storyName,
+              type: "render",
+              code: concreteExample,
+              usesPropTester: false,
+              isArgsOnly: false,
+            });
+          } else if (renderCode && !usesPropTester && !usesArgsSpread) {
+            // Regular render function with concrete JSX
             examples.push({
               storyName,
               type: "render",

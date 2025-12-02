@@ -2,7 +2,7 @@ import { type FC, useSyncExternalStore } from "react";
 import {
   kumoColors,
   type KumoColor,
-} from "../../scripts/color/dist/storybook-colors.js";
+} from "../../dist/color/storybook-colors.js";
 
 // We only expose two public display modes, but reuse the same filtering logic
 // internally to keep behavior consistent.

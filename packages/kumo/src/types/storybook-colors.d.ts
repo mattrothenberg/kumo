@@ -1,4 +1,4 @@
-declare module "../../scripts/color/dist/storybook-colors.js" {
+declare module "../../dist/color/storybook-colors.js" {
   export type KumoColor = {
     name: string;
     light: string;

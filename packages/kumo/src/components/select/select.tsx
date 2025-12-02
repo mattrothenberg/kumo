@@ -23,7 +23,7 @@ export function selectVariants(_props: KumoSelectVariantsProps = {}) {
   );
 }
 
-type SelectProps<
+type SelectPropsGeneric<
   T,
   Multiple extends boolean | undefined = false,
 > = SelectBase.Root.Props<T, Multiple> &
@@ -37,6 +37,35 @@ type SelectProps<
     loading?: boolean;
   };
 
+/**
+ * Props for the Select component.
+ * @description A dropdown select component for choosing from a list of options.
+ */
+export interface SelectProps {
+  /** Additional CSS classes */
+  className?: string;
+  /** Label text for the select */
+  label?: string;
+  /** Whether to visually hide the label (still accessible to screen readers) */
+  hideLabel?: boolean;
+  /** Placeholder text when no value is selected */
+  placeholder?: string;
+  /** Whether the select is in a loading state */
+  loading?: boolean;
+  /** Whether the select is disabled */
+  disabled?: boolean;
+  /** The currently selected value */
+  value?: unknown;
+  /** Default value for uncontrolled usage */
+  defaultValue?: unknown;
+  /** Callback when the value changes */
+  onValueChange?: (value: unknown) => void;
+  /** Whether multiple selection is enabled */
+  multiple?: boolean;
+  /** Child elements (Select.Option components) */
+  children?: ReactNode;
+}
+
 export function Select<T, Multiple extends boolean | undefined = false>({
   children,
   className,
@@ -46,7 +75,7 @@ export function Select<T, Multiple extends boolean | undefined = false>({
   placeholder,
   loading,
   ...props
-}: SelectProps<T, Multiple>) {
+}: SelectPropsGeneric<T, Multiple>) {
   const labelId = useId();
   const propLookup = props as Record<string, unknown>;
   const ariaLabel = propLookup["aria-label"] as string | undefined;
