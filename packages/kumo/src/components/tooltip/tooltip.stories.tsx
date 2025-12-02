@@ -16,7 +16,7 @@ export const Default: Story = {
     content: "This is a tooltip",
   },
   render: () => (
-    <Tooltip content="This is a tooltip">
+    <Tooltip content="This is a tooltip" asChild>
       <Button>Hover me</Button>
     </Tooltip>
   ),

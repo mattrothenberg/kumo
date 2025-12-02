@@ -88,8 +88,9 @@ function _Text<Variant extends TextVariant = "body">(
 
   const Component = useMemo(() => {
     if (as) return as;
-    if (["heading1", "heading2", "heading3"].includes(variant))
-      return variant as "h1" | "h2" | "h3";
+    if (variant === "heading1") return "h1";
+    if (variant === "heading2") return "h2";
+    if (variant === "heading3") return "h3";
     if (["mono", "mono-secondary"].includes(variant)) return "span";
     return "p";
   }, [variant, as]);

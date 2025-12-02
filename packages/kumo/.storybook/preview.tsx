@@ -5,7 +5,15 @@ import "./preview.css";
 
 const preview: Preview = {
   parameters: {
+    a11y: {
+      test: "error",
+    },
     layout: "fullscreen",
+    options: {
+      storySort: {
+        order: ["Design-Tokens", "Components", "Blocks", "Layouts", "Pages"],
+      },
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -34,7 +42,7 @@ const preview: Preview = {
       return (
         <div className="flex flex-col">
           <div className="flex-1 items-center border bg-kumo-surface p-6">
-            <div className="mb-2font-sans text-sm leading-5 tracking-wide text-kumo-muted-2 uppercase">
+            <div className="mb-2 font-sans text-sm leading-5 tracking-wide text-kumo-muted-2 uppercase">
               Light
             </div>
             <div className="flex gap-4">
@@ -42,7 +50,7 @@ const preview: Preview = {
             </div>
           </div>
           <div className="dark-mode flex-1 items-center bg-kumo-surface p-6">
-            <div className="mb-2font-sans text-sm leading-5 tracking-wide text-kumo-muted-2 uppercase">
+            <div className="mb-2 font-sans text-sm leading-5 tracking-wide text-kumo-muted-2 uppercase">
               Dark
             </div>
             <div className="flex gap-4">

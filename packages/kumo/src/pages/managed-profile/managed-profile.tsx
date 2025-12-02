@@ -184,11 +184,13 @@ function PreferencesView({
             open={isEmailDialogOpen}
             onOpenChange={setIsEmailDialogOpen}
           >
-            <DialogTrigger>
-              <Button size="sm" variant="outline" disabled={sso}>
-                Update email
-              </Button>
-            </DialogTrigger>
+            <DialogTrigger
+              render={
+                <Button size="sm" variant="outline" disabled={sso}>
+                  Update email
+                </Button>
+              }
+            />
             <UpdateEmailDialog currentEmail={userEmail} />
           </DialogRoot>
         </div>
@@ -238,16 +240,18 @@ function PreferencesView({
           open={isDeleteDialogOpen}
           onOpenChange={setIsDeleteDialogOpen}
         >
-          <DialogTrigger>
-            <Button
-              size="sm"
-              variant="outline"
-              className="border-kumo-destructive text-kumo-destructive hover:bg-kumo-destructive/10"
-              disabled={sso}
-            >
-              Delete User
-            </Button>
-          </DialogTrigger>
+          <DialogTrigger
+            render={
+              <Button
+                size="sm"
+                variant="outline"
+                className="border-kumo-destructive text-kumo-destructive hover:bg-kumo-destructive/10"
+                disabled={sso}
+              >
+                Delete User
+              </Button>
+            }
+          />
           <DeleteUserDialog step={deleteStep} />
         </DialogRoot>
       </div>
@@ -495,11 +499,13 @@ function UpdateEmailDialog({ currentEmail }: { currentEmail: string }) {
         </Field>
       </div>
       <div className="flex justify-end gap-2 p-4">
-        <DialogClose>
-          <Button size="sm" variant="outline">
-            Cancel
-          </Button>
-        </DialogClose>
+        <DialogClose
+          render={
+            <Button size="sm" variant="outline">
+              Cancel
+            </Button>
+          }
+        />
         <Button size="sm" variant="primary">
           Update
         </Button>
@@ -654,11 +660,13 @@ function DeleteUserFormContent() {
         </Text>
       </div>
       <div className="flex justify-end gap-2 p-4">
-        <DialogClose>
-          <Button size="sm" variant="outline">
-            Cancel
-          </Button>
-        </DialogClose>
+        <DialogClose
+          render={
+            <Button size="sm" variant="outline">
+              Cancel
+            </Button>
+          }
+        />
         <Button
           size="sm"
           variant="primary"

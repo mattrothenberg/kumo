@@ -24,7 +24,11 @@ export const Inline: Story = {
   },
   render: () => (
     <p>
-      Use the <Code lang="ts" code="console.log()" /> function to debug.
+      Use the{" "}
+      <code className="font-mono text-sm text-kumo-neutral-subtle">
+        console.log()
+      </code>{" "}
+      function to debug.
     </p>
   ),
 };

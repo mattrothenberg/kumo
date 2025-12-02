@@ -35,9 +35,7 @@ export const DangerLinkItem: Story = {
   },
   render: () => (
     <DropdownMenu>
-      <DropdownMenu.Trigger>
-        <Button>Open Menu</Button>
-      </DropdownMenu.Trigger>
+      <DropdownMenu.Trigger render={<Button>Open Menu</Button>} />
       <DropdownMenu.Content>
         <DropdownMenu.Item href="https://example.com" variant="danger">
           Delete worker

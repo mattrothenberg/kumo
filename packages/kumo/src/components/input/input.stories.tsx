@@ -49,16 +49,20 @@ export const Disabled: Story = {
   },
 };
 
-export const Sizes: Story = {
-  args: {
-    placeholder: "Enter text...",
-  },
-  render: () => (
+function SizesExample() {
+  return (
     <div className="flex w-64 flex-col gap-2">
       <Input size="xs" placeholder="Extra small" />
       <Input size="sm" placeholder="Small" />
       <Input size="base" placeholder="Base" />
       <Input size="lg" placeholder="Large" />
     </div>
-  ),
+  );
+}
+
+export const Sizes: Story = {
+  args: {
+    placeholder: "Enter text...",
+  },
+  render: () => <SizesExample />,
 };

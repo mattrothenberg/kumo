@@ -241,8 +241,36 @@ const DropdownMenuShortcut = ({
 };
 DropdownMenuShortcut.displayName = "DropdownMenuShortcut";
 
+/**
+ * Custom Trigger that converts a single child element to the `render` prop
+ * to avoid nested button issues with base-ui's Menu.Trigger.
+ */
+const DropdownMenuTrigger = React.forwardRef<
+  React.ElementRef<typeof DropdownMenuPrimitive.Trigger>,
+  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Trigger>
+>(({ children, render, ...props }, ref) => {
+  // If render prop is provided, use it directly
+  // Otherwise, convert single child element to render prop
+  const childElement = React.isValidElement(children) ? children : null;
+  const effectiveRender = render ?? childElement;
+
+  return (
+    <DropdownMenuPrimitive.Trigger
+      ref={ref}
+      {...props}
+      {...(effectiveRender && {
+        render: effectiveRender as React.ReactElement<Record<string, unknown>>,
+      })}
+    >
+      {/* Only pass children if not using as render prop */}
+      {childElement ? undefined : children}
+    </DropdownMenuPrimitive.Trigger>
+  );
+});
+DropdownMenuTrigger.displayName = "DropdownMenuTrigger";
+
 export const DropdownMenu = Object.assign(DropdownMenuPrimitive.Root, {
-  Trigger: DropdownMenuPrimitive.Trigger,
+  Trigger: DropdownMenuTrigger,
   Portal: DropdownMenuPrimitive.Portal,
   Sub: DropdownMenuPrimitive.SubmenuRoot,
   SubTrigger: DropdownMenuSubTrigger,
