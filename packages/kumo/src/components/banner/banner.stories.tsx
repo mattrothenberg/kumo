@@ -10,9 +10,6 @@ import { propTester } from "../../utils/prop-tester";
 const meta: Meta<typeof Banner> = {
   title: "Components/Banner",
   component: Banner,
-  parameters: {
-    layout: "padded",
-  },
   tags: ["autodocs"],
   argTypes: {
     variant: {

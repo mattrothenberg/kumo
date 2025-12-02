@@ -5,9 +5,6 @@ import DateRangePicker from "./calendar";
 const meta = {
   title: "Components/Calendar",
   component: DateRangePicker,
-  parameters: {
-    layout: "centered",
-  },
   tags: ["autodocs"],
 } satisfies Meta<typeof DateRangePicker>;
 

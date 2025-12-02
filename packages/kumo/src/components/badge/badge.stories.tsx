@@ -9,9 +9,6 @@ import { propTester } from "../../utils/prop-tester";
 const meta: Meta<typeof Badge> = {
   title: "Components/Badge",
   component: Badge,
-  parameters: {
-    layout: "centered",
-  },
   tags: ["autodocs"],
   argTypes: {
     variant: {

@@ -4,9 +4,6 @@ import { ClipboardText } from "./clipboard-text";
 const meta = {
   title: "Components/ClipboardText",
   component: ClipboardText,
-  parameters: {
-    layout: "centered",
-  },
   tags: ["autodocs"],
 } satisfies Meta<typeof ClipboardText>;
 

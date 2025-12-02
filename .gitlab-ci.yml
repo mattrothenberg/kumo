@@ -115,9 +115,7 @@ include:
       PNPM_RUN_TARGET: "publish:beta"
       runOnMR: true
 
-<<<<<<< HEAD
-
-# ============= PRODUCTION RELEASE STAGE (Publishes production versions to npm) =============
+  # ============= PRODUCTION RELEASE STAGE (Publishes production versions to npm) =============
 
   # Production release using pnpm component
   - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
@@ -126,16 +124,14 @@ include:
       jobPrefix: prod-release-kumo
       PNPM_VERSION: *PNPM_VERSION
       NODE_VERSION: *NODE_VERSION
-      PNPM_RUN_TARGET: 'release:production'
+      PNPM_RUN_TARGET: "release:production"
       runOnMR: false
-      runOnBranches: 'never'
-=======
+      runOnBranches: "never"
   # ============= REVIEW STAGE (AI-powered code review) =============
 
   # Claude Code Review
   # DevTools docs -> https://gitlab.cfdata.org/cloudflare/ci/ai
   - component: $CI_SERVER_FQDN/cloudflare/ci/ai/review@~latest
->>>>>>> ed8783e (claude reviews in ci/cd)
 
 # Job overrides for dependencies and additional configuration
 
@@ -190,9 +186,9 @@ publish-beta-run:
 prod-release-kumo-run:
   allow_failure: false
   variables:
-    PACKAGE_NAME: '@cloudflare/kumo'
-    PACKAGE_PATH: 'packages/kumo'
-    DRY_RUN: 'false'  # Set to 'true' to test without publishing or pushing
+    PACKAGE_NAME: "@cloudflare/kumo"
+    PACKAGE_PATH: "packages/kumo"
+    DRY_RUN: "false" # Set to 'true' to test without publishing or pushing
   before_script:
     # Activate Node.js 24 via nvm (already installed in image at /usr/local/nvm)
     - |

@@ -6,9 +6,6 @@ import { Button } from "../button";
 
 const meta = {
   title: "Components/Combobox",
-  parameters: {
-    layout: "centered",
-  },
   tags: ["autodocs"],
 } satisfies Meta;
 

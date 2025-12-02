@@ -106,9 +106,6 @@ import { Button } from "./button";
 const meta = {
   title: "Components/Button",
   component: Button,
-  parameters: {
-    layout: "centered",
-  },
   tags: ["autodocs"],
 } satisfies Meta<typeof Button>;
 
@@ -314,9 +311,6 @@ import { YourComponent } from "./your-component";
 const meta = {
   title: "Components/YourComponent",
   component: YourComponent,
-  parameters: {
-    layout: "centered",
-  },
   tags: ["autodocs"],
 } satisfies Meta<typeof YourComponent>;
 

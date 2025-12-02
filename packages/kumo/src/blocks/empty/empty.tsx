@@ -21,7 +21,7 @@ export function Empty({
   const [emptyStateCopied, setEmptyStateCopied] = useState<boolean>(false);
 
   return (
-    <div className="flex w-full flex-col items-center gap-6 rounded-xl border border-kumo-color bg-kumo-secondary px-10 py-16">
+    <div className="flex w-full flex-col items-center gap-6 rounded-xl border border-kumo-color bg-kumo-secondary px-10 py-16 text-kumo-surface">
       {icon}
       <h2 className="text-2xl font-semibold">{title}</h2>
 

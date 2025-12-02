@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Empty } from "./empty";
-import { Database, FolderOpen, CloudSlash } from "@phosphor-icons/react";
+import {
+  DatabaseIcon,
+  FolderOpenIcon,
+  CloudSlashIcon,
+} from "@phosphor-icons/react";
 import { Button } from "../../components/button";
 
 const meta = {
@@ -17,7 +21,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    icon: <Database size={48} className="text-kumo-disabled" />,
+    icon: <DatabaseIcon size={48} className="text-kumo-disabled" />,
     title: "No data available",
     description:
       "There is no data to display at the moment. Try creating a new item to get started.",
@@ -26,7 +30,7 @@ export const Default: Story = {
 
 export const WithCommandLine: Story = {
   args: {
-    icon: <FolderOpen size={48} className="text-kumo-disabled" />,
+    icon: <FolderOpenIcon size={48} className="text-kumo-disabled" />,
     title: "No projects found",
     description:
       "Get started by creating your first project using the command below.",
@@ -36,7 +40,7 @@ export const WithCommandLine: Story = {
 
 export const WithLongCommandLine: Story = {
   args: {
-    icon: <FolderOpen size={48} className="text-kumo-disabled" />,
+    icon: <FolderOpenIcon size={48} className="text-kumo-disabled" />,
     title: "Long command example",
     description:
       "Demonstrates how long commands scroll horizontally inside the command line area.",
@@ -47,7 +51,7 @@ export const WithLongCommandLine: Story = {
 
 export const WithCustomContent: Story = {
   args: {
-    icon: <CloudSlash size={48} className="text-kumo-disabled" />,
+    icon: <CloudSlashIcon size={48} className="text-kumo-disabled" />,
     title: "No connection",
     description:
       "Unable to connect to the server. Please check your connection and try again.",

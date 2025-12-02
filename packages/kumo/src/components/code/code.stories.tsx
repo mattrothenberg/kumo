@@ -4,9 +4,6 @@ import { Code } from "./code";
 const meta = {
   title: "Components/Code",
   component: Code,
-  parameters: {
-    layout: "centered",
-  },
   tags: ["autodocs"],
 } satisfies Meta<typeof Code>;
 

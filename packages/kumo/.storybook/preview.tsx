@@ -32,14 +32,22 @@ const preview: Preview = {
       }
 
       return (
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-1 items-center gap-4 bg-kumo-surface p-6 text-kumo-surface">
-            <div className="mb-2 text-[12px] font-medium">Light</div>
-            <Story />
+        <div className="flex flex-col">
+          <div className="flex-1 items-center border bg-kumo-surface p-6">
+            <div className="mb-2font-sans text-sm leading-5 tracking-wide text-kumo-muted-2 uppercase">
+              Light
+            </div>
+            <div className="flex gap-4">
+              <Story />
+            </div>
           </div>
-          <div className="dark-mode flex flex-1 items-center gap-4 bg-kumo-surface p-6 text-kumo-surface">
-            <div className="mb-2 text-[12px] font-medium">Dark</div>
-            <Story />
+          <div className="dark-mode flex-1 items-center bg-kumo-surface p-6">
+            <div className="mb-2font-sans text-sm leading-5 tracking-wide text-kumo-muted-2 uppercase">
+              Dark
+            </div>
+            <div className="flex gap-4">
+              <Story />
+            </div>
           </div>
         </div>
       );

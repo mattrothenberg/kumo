@@ -4,9 +4,6 @@ import { Text } from "./text";
 const meta = {
   title: "Components/Text",
   component: Text,
-  parameters: {
-    layout: "centered",
-  },
   tags: ["autodocs"],
 } satisfies Meta<typeof Text>;
 

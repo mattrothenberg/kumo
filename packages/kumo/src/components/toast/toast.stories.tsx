@@ -6,9 +6,6 @@ import { Button } from "../button/button";
 const meta = {
   title: "Components/Toast",
   component: Toasty,
-  parameters: {
-    layout: "centered",
-  },
   tags: ["autodocs"],
 } satisfies Meta<typeof Toasty>;
 
