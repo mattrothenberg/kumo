@@ -24,9 +24,14 @@
 		"version:beta": "./ci/versioning/version-beta.sh",
 		"release": "pnpm build:all && changeset publish",
 		"release:beta": "changeset publish --no-git-tag --tag beta",
-		"publish:beta": "bash ci/versioning/publish-beta.sh"
+		"publish:beta": "bash ci/versioning/publish-beta.sh",
+		"release:production": "bash ci/versioning/release-production.sh"
 	},
 	"devDependencies": {
-		"@changesets/cli": "2.29.7"
+		"@changesets/cli": "2.29.7",
+		"@gitbeaker/rest": "^42.5.0",
+		"@types/node": "^22.0.0",
+		"tsx": "^4.16.2",
+		"typescript": "^5.0.0"
 	}
 }

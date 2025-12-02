@@ -4,6 +4,7 @@ stages:
   - checks
   - test
   - beta-release
+  - production-release
 
 variables:
   PNPM_VERSION: &PNPM_VERSION 'latest-10'
@@ -113,6 +114,20 @@ include:
       PNPM_RUN_TARGET: 'publish:beta'
       runOnMR: true
 
+
+# ============= PRODUCTION RELEASE STAGE (Publishes production versions to npm) =============
+
+  # Production release using pnpm component
+  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
+    inputs:
+      stage: production-release
+      jobPrefix: prod-release-kumo
+      PNPM_VERSION: *PNPM_VERSION
+      NODE_VERSION: *NODE_VERSION
+      PNPM_RUN_TARGET: 'release:production'
+      runOnMR: false
+      runOnBranches: 'never'
+
 # Job overrides for dependencies and additional configuration
 
 # kumo-docs depends on kumo being built first (imports from @cloudflare/kumo)
@@ -159,4 +174,69 @@ publish-beta-run:
       file: false
     GITLAB_API_TOKEN:
       vault: gitlab/cloudflare/fe/kumo/_dev/kumo_preview_bot/data@kv
+      file: false
+
+# ============= MANUAL RELEASES STAGE (Production releases) =============
+
+# Override prod-release-kumo-run job with manual trigger and custom config
+prod-release-kumo-run:
+  allow_failure: false
+  variables:
+    PACKAGE_NAME: '@cloudflare/kumo'
+    PACKAGE_PATH: 'packages/kumo'
+    DRY_RUN: 'false'  # Set to 'true' to test without publishing or pushing
+  before_script:
+    # Activate Node.js 24 via nvm (already installed in image at /usr/local/nvm)
+    - |
+      export NVM_DIR="/usr/local/nvm"
+      source "$NVM_DIR/nvm.sh"
+      nvm install 24
+      nvm use 24
+      corepack enable
+      corepack prepare pnpm@latest-10 --activate
+      node --version
+      pnpm --version
+    # Validate changesets exist before proceeding
+    - |
+      CHANGESET_COUNT=$(find .changeset -name "*.md" ! -name "README.md" 2>/dev/null | wc -l | tr -d ' ')
+      if [ "$CHANGESET_COUNT" -eq 0 ]; then
+        echo "❌ No changesets found in .changeset/ directory"
+        echo "Add changesets using 'pnpm changeset' before releasing"
+        exit 1
+      fi
+      echo "✅ Found $CHANGESET_COUNT changeset(s) to release"
+    # Install dependencies
+    - pnpm install --frozen-lockfile
+    # Configure git for commits
+    - git config --global user.email "ci@cloudflare.com"
+    - git config --global user.name "Kumo CI"
+    # Configure npm registry authentication
+    - |
+      cat > ~/.npmrc << EOF
+      @cloudflare:registry=https://registry-gateway.cloudflare-ui.workers.dev
+      //registry-gateway.cloudflare-ui.workers.dev/:_authToken=${NPM_TOKEN}
+      EOF
+    # Set up Git remote with authentication for pushing
+    - git remote set-url origin "https://ci-release-token:${CI_RELEASE_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+    - if: '$CI_COMMIT_BRANCH == "rknecht/UI-7306-production-library-deployment"'
+      when: manual # Temporary: allow testing on feature branch
+    - when: never
+  artifacts:
+    paths:
+      - ${PACKAGE_PATH}/package.json
+      - ${PACKAGE_PATH}/CHANGELOG.md
+      - .changeset/
+    expire_in: 1 week
+  secrets:
+    NPM_TOKEN:
+      vault: gitlab/_ci_components/_dev/npm/kv_token@kv
+      file: false
+    GITLAB_API_TOKEN:
+      vault: gitlab/cloudflare/fe/kumo/_dev/kumo_preview_bot/data@kv
+      file: false
+    CI_RELEASE_TOKEN:
+      vault: gitlab/cloudflare/fe/kumo/_dev/ci_release_token/data@kv
       file: false

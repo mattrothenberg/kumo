@@ -19,11 +19,11 @@ export interface ChangedFilesOptions {
 
 /**
  * Gets the base and head refs for the current CI context
- * Supports both NX environment variables and GitLab CI variables
+ * Uses GitLab CI variables
  */
 export function getGitRefs(): GitRefs {
-  const baseRef = process.env.NX_BASE || process.env.CI_MERGE_REQUEST_DIFF_BASE_SHA;
-  const headRef = process.env.NX_HEAD || process.env.CI_MERGE_REQUEST_DIFF_TARGET_SHA || 'HEAD';
+  const baseRef = process.env.CI_MERGE_REQUEST_DIFF_BASE_SHA;
+  const headRef = process.env.CI_MERGE_REQUEST_DIFF_TARGET_SHA || 'HEAD';
   
   return { baseRef, headRef };
 }
