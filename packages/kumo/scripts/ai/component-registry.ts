@@ -9,7 +9,7 @@
  * Each component must export KUMO_<NAME>_VARIANTS and KUMO_<NAME>_DEFAULT_VARIANTS
  *
  * Run: pnpm build:ai-metadata
- * Output: dist/ai/component-registry.json
+ * Output: ai/component-registry.json (committed to git)
  */
 
 import {
@@ -2205,7 +2205,7 @@ async function main() {
   const aiContext = generateAIContext(registry, componentColors);
 
   // Ensure output directory exists
-  const outputDir = join(__dirname, "../../dist/ai");
+  const outputDir = join(__dirname, "../../ai");
   mkdirSync(outputDir, { recursive: true });
 
   // Write JSON registry

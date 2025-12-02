@@ -22,8 +22,8 @@ pnpm build:ai-metadata  # Generate component-registry.{json,md}
 
 **Location:**
 
-- `packages/kumo/dist/ai/component-registry.json` - Machine-readable (28 components)
-- `packages/kumo/dist/ai/component-registry.md` - Human-readable (1575 lines)
+- `packages/kumo/ai/component-registry.json` - Machine-readable (28 components)
+- `packages/kumo/ai/component-registry.md` - Human-readable (1575 lines)
 
 **Query examples:**
 
@@ -222,7 +222,7 @@ pnpm storybook                            # Dev server (http://localhost:6006)
 ## Resources
 
 - **[CLAUDE.md](./CLAUDE.md)** - Comprehensive guide: architecture, theming system, mode/theme variants, code review guidelines, release process
-- **Component Registry** - `packages/kumo/dist/ai/component-registry.{json,md}` - Always-current component metadata
+- **Component Registry** - `packages/kumo/ai/component-registry.{json,md}` - Always-current component metadata
 - **Storybook** - `pnpm storybook` - Live component playground with all variants
 - **Source** - `packages/kumo/src/` - Component source code organized by type:
   - `components/` - UI primitives (Button, Input, Dialog)

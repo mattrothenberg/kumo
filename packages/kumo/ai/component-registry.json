@@ -1,0 +1,1973 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2025-12-02T09:54:57.092Z",
+  "components": {
+    "Badge": {
+      "name": "Badge",
+      "description": "Badge component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Display",
+      "props": {
+        "variant": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "primary",
+            "secondary",
+            "destructive",
+            "outline",
+            "beta"
+          ],
+          "descriptions": {
+            "primary": "Default high-emphasis badge for important labels",
+            "secondary": "Subtle badge for secondary information",
+            "destructive": "Error or danger state indicator",
+            "outline": "Bordered badge with transparent background",
+            "beta": "Indicates beta or experimental features"
+          },
+          "default": "primary"
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        }
+      },
+      "examples": [
+        "<Badge variant=\"primary\">Badge</Badge>",
+        "<Badge variant=\"secondary\">Badge</Badge>",
+        "<Badge variant=\"destructive\">Badge</Badge>",
+        "<Badge variant=\"outline\">Badge</Badge>",
+        "<Badge variant=\"beta\">Badge</Badge>"
+      ],
+      "colors": [
+        "bg-color",
+        "bg-destructive",
+        "bg-surface-inverse",
+        "border-color",
+        "border-primary",
+        "text-beta",
+        "text-surface",
+        "text-surface-inverse",
+        "text-white"
+      ]
+    },
+    "Banner": {
+      "name": "Banner",
+      "description": "Banner component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Feedback",
+      "props": {
+        "icon": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "text": {
+          "type": "string",
+          "required": true
+        },
+        "variant": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "default",
+            "alert",
+            "error"
+          ],
+          "descriptions": {
+            "default": "Informational banner for general messages",
+            "alert": "Warning banner for cautionary messages",
+            "error": "Error banner for critical issues"
+          },
+          "default": "default"
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        }
+      },
+      "examples": [
+        "<Banner variant=\"default\" text=\"This is a banner message\" icon={<InfoIcon size={16} />} />",
+        "<Banner variant=\"alert\" text=\"This is a banner message\" icon={<InfoIcon size={16} />} />",
+        "<Banner variant=\"error\" text=\"This is a banner message\" icon={<InfoIcon size={16} />} />"
+      ],
+      "colors": [
+        "bg-alert-selection",
+        "bg-alert-surface",
+        "bg-error-selection",
+        "bg-error-surface",
+        "bg-info-selection",
+        "bg-info-surface",
+        "border-alert-border",
+        "border-error-border",
+        "border-info-border",
+        "text-alert",
+        "text-error",
+        "text-info"
+      ]
+    },
+    "Breadcrumbs": {
+      "name": "Breadcrumbs",
+      "description": "Breadcrumbs component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Block",
+      "props": {
+        "size": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "sm",
+            "base"
+          ],
+          "descriptions": {
+            "sm": "Compact breadcrumbs for dense UIs",
+            "base": "Default breadcrumbs size"
+          },
+          "default": "base"
+        },
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        }
+      },
+      "examples": [
+        "<Breadcrumbs>\n      <Breadcrumbs.Link href=\"/\">Home</Breadcrumbs.Link>\n      <Breadcrumbs.Separator />\n      <Breadcrumbs.Link href=\"/projects\">Projects</Breadcrumbs.Link>\n      <Breadcrumbs.Separator />\n      <Breadcrumbs.Current>Current Project</Breadcrumbs.Current>\n    </Breadcrumbs>",
+        "<Breadcrumbs size=\"sm\">\n  <Breadcrumbs.Link href=\"/\">Home</Breadcrumbs.Link>\n  <Breadcrumbs.Separator />\n  <Breadcrumbs.Link href=\"/projects\">Projects</Breadcrumbs.Link>\n  <Breadcrumbs.Separator />\n  <Breadcrumbs.Current>Current Project</Breadcrumbs.Current>\n</Breadcrumbs>",
+        "<Breadcrumbs size=\"base\">\n  <Breadcrumbs.Link href=\"/\">Home</Breadcrumbs.Link>\n  <Breadcrumbs.Separator />\n  <Breadcrumbs.Link href=\"/projects\">Projects</Breadcrumbs.Link>\n  <Breadcrumbs.Separator />\n  <Breadcrumbs.Current>Current Project</Breadcrumbs.Current>\n</Breadcrumbs>",
+        "<Breadcrumbs>\n      <Breadcrumbs.Link href=\"/\" icon={<House size={16} />}>\n        Home\n      </Breadcrumbs.Link>\n      <Breadcrumbs.Separator />\n      <Breadcrumbs.Link href=\"/documents\" icon={<Folder size={16} />}>\n        Documents\n      </Breadcrumbs.Link>\n      <Breadcrumbs.Separator />\n      <Breadcrumbs.Current icon={<File size={16} />}>\n        File.txt\n      </Breadcrumbs.Current>\n    </Breadcrumbs>",
+        "<Breadcrumbs>\n      <Breadcrumbs.Link href=\"/\">Home</Breadcrumbs.Link>\n      <Breadcrumbs.Separator />\n      <Breadcrumbs.Link href=\"/projects\">Projects</Breadcrumbs.Link>\n      <Breadcrumbs.Separator />\n      <Breadcrumbs.Link href=\"/projects/web\">Web Applications</Breadcrumbs.Link>\n      <Breadcrumbs.Separator />\n      <Breadcrumbs.Link href=\"/projects/web/dashboard\">\n        Dashboard\n      </Breadcrumbs.Link>\n      <Breadcrumbs.Separator />\n      <Breadcrumbs.Current>Settings</Breadcrumbs.Current>\n    </Breadcrumbs>",
+        "<Breadcrumbs>\n      <Breadcrumbs.Current>Home</Breadcrumbs.Current>\n    </Breadcrumbs>"
+      ],
+      "colors": [
+        "text-green-2",
+        "text-label-inverse",
+        "text-muted"
+      ],
+      "subComponents": {
+        "Link": {
+          "name": "Link",
+          "description": "Link sub-component",
+          "props": {
+            "href": {
+              "type": "string",
+              "required": true
+            },
+            "icon": {
+              "type": "React.ReactNode",
+              "optional": true
+            }
+          }
+        },
+        "Current": {
+          "name": "Current",
+          "description": "Current sub-component",
+          "props": {
+            "loading": {
+              "type": "boolean",
+              "optional": true
+            },
+            "icon": {
+              "type": "React.ReactNode",
+              "optional": true
+            }
+          }
+        },
+        "Separator": {
+          "name": "Separator",
+          "description": "Separator sub-component",
+          "props": {}
+        },
+        "Clipboard": {
+          "name": "Clipboard",
+          "description": "Clipboard sub-component",
+          "props": {
+            "text": {
+              "type": "string",
+              "required": true
+            }
+          }
+        }
+      }
+    },
+    "Button": {
+      "name": "Button",
+      "description": "Button component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Action",
+      "props": {
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "icon": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "loading": {
+          "type": "boolean",
+          "optional": true
+        },
+        "shape": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "base",
+            "square",
+            "circle"
+          ],
+          "descriptions": {
+            "base": "Default rectangular button shape",
+            "square": "Square button for icon-only actions",
+            "circle": "Circular button for icon-only actions"
+          },
+          "default": "base"
+        },
+        "size": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "xs",
+            "sm",
+            "base",
+            "lg"
+          ],
+          "descriptions": {
+            "xs": "Extra small button for compact UIs",
+            "sm": "Small button for secondary actions",
+            "base": "Default button size",
+            "lg": "Large button for primary CTAs"
+          },
+          "default": "base"
+        },
+        "variant": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "primary",
+            "secondary",
+            "ghost",
+            "destructive",
+            "outline"
+          ],
+          "descriptions": {
+            "primary": "High-emphasis button for primary actions",
+            "secondary": "Default button style for most actions",
+            "ghost": "Minimal button with no background",
+            "destructive": "Danger button for destructive actions like delete",
+            "outline": "Bordered button with transparent background"
+          },
+          "default": "secondary"
+        },
+        "onChange": {
+          "type": "React.FormEventHandler<HTMLButtonElement>",
+          "optional": true
+        },
+        "onSubmit": {
+          "type": "React.FormEventHandler<HTMLButtonElement>",
+          "optional": true
+        },
+        "onClick": {
+          "type": "React.MouseEventHandler<HTMLButtonElement>",
+          "optional": true
+        },
+        "id": {
+          "type": "string",
+          "optional": true
+        },
+        "title": {
+          "type": "string",
+          "optional": true
+        },
+        "disabled": {
+          "type": "boolean",
+          "optional": true
+        },
+        "name": {
+          "type": "string",
+          "optional": true
+        },
+        "type": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "submit",
+            "reset",
+            "button"
+          ]
+        },
+        "value": {
+          "type": "string | string[] | number",
+          "optional": true
+        }
+      },
+      "examples": [
+        "<Button variant=\"primary\">Button</Button>",
+        "<Button variant=\"secondary\">Button</Button>",
+        "<Button variant=\"ghost\">Button</Button>",
+        "<Button variant=\"destructive\">Button</Button>",
+        "<Button variant=\"outline\">Button</Button>",
+        "<Button size=\"xs\">Button</Button>",
+        "<Button size=\"sm\">Button</Button>",
+        "<Button size=\"base\">Button</Button>",
+        "<Button size=\"lg\">Button</Button>",
+        "<Button shape=\"base\" icon={PlusIcon} />",
+        "<Button shape=\"square\" icon={PlusIcon} />",
+        "<Button shape=\"circle\" icon={PlusIcon} />",
+        "<Button variant=\"primary\" disabled={true}>Button</Button>",
+        "<Button variant=\"secondary\" disabled={true}>Button</Button>",
+        "<Button variant=\"ghost\" disabled={true}>Button</Button>",
+        "<Button variant=\"destructive\" disabled={true}>Button</Button>",
+        "<Button variant=\"outline\" disabled={true}>Button</Button>",
+        "<Button variant=\"primary\" icon={PlusIcon}>Add Item</Button>",
+        "<Button variant=\"primary\" loading={true}>Loading...</Button>",
+        "<div className=\"flex gap-2\">\n      <RefreshButton />\n      <RefreshButton loading />\n    </div>",
+        "<div className=\"flex gap-2\">\n      <LinkButton href=\"#\" variant=\"ghost\">\n        Link Button\n      </LinkButton>\n      <LinkButton href=\"#\" variant=\"primary\" icon={PlusIcon}>\n        Link with Icon\n      </LinkButton>\n    </div>"
+      ],
+      "colors": [
+        "bg-accent",
+        "bg-destructive",
+        "bg-primary",
+        "bg-secondary",
+        "bg-subtle",
+        "bg-surface",
+        "border-subtle",
+        "ring-active",
+        "ring-border",
+        "text-muted",
+        "text-primary",
+        "text-secondary",
+        "text-surface",
+        "text-white"
+      ]
+    },
+    "Checkbox": {
+      "name": "Checkbox",
+      "description": "Checkbox component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Input",
+      "props": {
+        "variant": {
+          "type": "enum",
+          "optional": true,
+          "description": "Visual variant: \"default\" or \"error\" for validation failures",
+          "values": [
+            "default",
+            "error"
+          ],
+          "descriptions": {
+            "default": "Default checkbox appearance",
+            "error": "Error state for validation failures"
+          },
+          "default": "default"
+        },
+        "label": {
+          "type": "string",
+          "optional": true
+        },
+        "checked": {
+          "type": "boolean",
+          "optional": true
+        },
+        "indeterminate": {
+          "type": "boolean",
+          "optional": true
+        },
+        "disabled": {
+          "type": "boolean",
+          "optional": true
+        },
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "onChange": {
+          "type": "React.ChangeEventHandler<HTMLInputElement>",
+          "optional": true
+        },
+        "onSubmit": {
+          "type": "React.FormEventHandler<HTMLInputElement>",
+          "optional": true
+        },
+        "onClick": {
+          "type": "React.MouseEventHandler<HTMLInputElement>",
+          "optional": true
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "id": {
+          "type": "string",
+          "optional": true
+        },
+        "title": {
+          "type": "string",
+          "optional": true
+        },
+        "name": {
+          "type": "string",
+          "optional": true
+        },
+        "placeholder": {
+          "type": "string",
+          "optional": true
+        },
+        "readOnly": {
+          "type": "boolean",
+          "optional": true
+        },
+        "required": {
+          "type": "boolean",
+          "optional": true
+        },
+        "size": {
+          "type": "number",
+          "optional": true
+        },
+        "type": {
+          "type": "React.HTMLInputTypeAttribute",
+          "optional": true
+        },
+        "value": {
+          "type": "string | string[] | number",
+          "optional": true
+        }
+      },
+      "examples": [
+        "<Checkbox variant=\"default\" label=\"Checkbox\" />",
+        "<Checkbox variant=\"error\" label=\"Checkbox\" />",
+        "<Checkbox label={Checked} checked={true} />",
+        "<Checkbox label={Indeterminate} indeterminate={true} />",
+        "<Checkbox label={Disabled} disabled={true} />",
+        "<Checkbox label=\"Checked & Disabled\" checked={true} disabled={true} />",
+        "<Checkbox label=\"Indeterminate & Disabled\" indeterminate={true} disabled={true} />",
+        "<Checkbox label=\"undefined\" checked={false} />"
+      ],
+      "colors": [
+        "bg-surface",
+        "bg-surface-inverse",
+        "ring-active",
+        "ring-border",
+        "ring-destructive",
+        "text-surface",
+        "text-surface-inverse"
+      ]
+    },
+    "ClipboardText": {
+      "name": "ClipboardText",
+      "description": "ClipboardText component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Action",
+      "props": {
+        "size": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "sm",
+            "base",
+            "lg"
+          ],
+          "descriptions": {
+            "sm": "Small clipboard text for compact UIs",
+            "base": "Default clipboard text size",
+            "lg": "Large clipboard text for prominent display"
+          },
+          "default": "lg"
+        },
+        "text": {
+          "type": "string",
+          "required": true,
+          "description": "The text to display and copy to clipboard"
+        },
+        "className": {
+          "type": "string",
+          "optional": true,
+          "description": "Additional CSS classes"
+        }
+      },
+      "examples": [
+        "<ClipboardText size=\"sm\" text=\"npm install @cloudflare/kumo\" />",
+        "<ClipboardText size=\"base\" text=\"npm install @cloudflare/kumo\" />",
+        "<ClipboardText size=\"lg\" text=\"npm install @cloudflare/kumo\" />",
+        "<ClipboardText text=\"sk_live_abc123xyz789\" />",
+        "<ClipboardText text=\"This is a much longer text that demonstrates how the clipboard text component handles overflow with extended content\" />",
+        "<ClipboardText text=\"npx create-cloudflare@latest my-app --template kumo\" size=\"base\" />"
+      ],
+      "colors": [
+        "bg-surface",
+        "border-color"
+      ]
+    },
+    "Code": {
+      "name": "Code",
+      "description": "Simple code component without syntax highlighting",
+      "importPath": "@cloudflare/kumo",
+      "category": "Display",
+      "props": {
+        "code": {
+          "type": "string",
+          "required": true,
+          "description": "The code content to display"
+        },
+        "values": {
+          "type": "Record<string, { value: string; highlight?: boolean }>",
+          "optional": true,
+          "description": "Template values for interpolation"
+        },
+        "className": {
+          "type": "string",
+          "optional": true,
+          "description": "Additional CSS classes"
+        },
+        "lang": {
+          "type": "'ts' | 'tsx' | 'jsonc' | 'bash' | 'css'",
+          "description": "Language for syntax highlighting"
+        }
+      },
+      "examples": [
+        "<Code lang=\"ts\" code='const hello = \"world\";' />",
+        "<Code lang=\"tsx\" code='const hello = \"world\";' />",
+        "<Code lang=\"jsonc\" code='const hello = \"world\";' />",
+        "<Code lang=\"bash\" code='const hello = \"world\";' />",
+        "<Code lang=\"css\" code='const hello = \"world\";' />",
+        "<Code lang=\"ts\" code={`\\`interface User {\n  name: string;\n  email: string;\n}\n\nconst user: User = {\n  name: \"John\",\n  email: \"john@example.com\"\n};\\``} />",
+        "<Code lang=\"bash\" code=\"npm install @cloudflare/kumo\" />",
+        "<CodeBlock\n      lang=\"tsx\"\n      code={`<Button variant=\"primary\">\n  Click me\n</Button>`}\n    />"
+      ],
+      "colors": [
+        "bg-surface",
+        "border-color",
+        "text-neutral-subtle"
+      ]
+    },
+    "Combobox": {
+      "name": "Combobox",
+      "description": "Combobox component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Input",
+      "props": {
+        "inputSide": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "right",
+            "top"
+          ],
+          "descriptions": {
+            "right": "Input positioned inline to the right of chips",
+            "top": "Input positioned above chips"
+          },
+          "default": "right"
+        },
+        "items": {
+          "type": "T[]",
+          "required": true,
+          "description": "Array of items to display in the dropdown"
+        },
+        "value": {
+          "type": "T | T[]",
+          "optional": true,
+          "description": "Currently selected value(s)"
+        },
+        "children": {
+          "type": "ReactNode",
+          "optional": true,
+          "description": "Combobox content (trigger, content, items)"
+        },
+        "className": {
+          "type": "string",
+          "optional": true,
+          "description": "Additional CSS classes"
+        },
+        "onValueChange": {
+          "type": "(value: T | T[]) => void",
+          "description": "Callback when selection changes"
+        },
+        "multiple": {
+          "type": "boolean",
+          "description": "Allow multiple selections"
+        },
+        "isItemEqualToValue": {
+          "type": "(item: T, value: T) => boolean",
+          "description": "Custom equality function for comparing items"
+        }
+      },
+      "examples": [
+        "<Combobox items={items} value={value} onValueChange={setValue}>\n        <Combobox.TriggerInput placeholder=\"Please select database\" />\n        <Combobox.Content>\n          <Combobox.Empty />\n          <Combobox.List>\n            {(item: (typeof items)[number]) => {\n              return (\n                <Combobox.Item key={item.value} value={item}>\n                  {item.label}\n                </Combobox.Item>\n              );\n            }}\n          </Combobox.List>\n        </Combobox.Content>\n      </Combobox>",
+        "<div className=\"flex gap-2\">\n        <div>\n          <Combobox\n            value={value}\n            onValueChange={setValue}\n            items={botList}\n            isItemEqualToValue={(bot, selectedValue) =>\n              bot.value === selectedValue.value\n            }\n            multiple\n          >\n            <Combobox.TriggerMultipleWithInput\n              className=\"w-[400px]\"\n              placeholder={args.placeholder}\n              renderItem={(selected: BotType) => (\n                <Combobox.Chip key={selected.value}>\n                  {selected.label}\n                </Combobox.Chip>\n              )}\n              inputSide={args.inputSide}\n            />\n            <Combobox.Content\n              className=\"max-h-[200px] min-w-auto overflow-y-auto\"\n              side={args.inputSide === \"top\" ? \"top\" : \"bottom\"}\n            >\n              <Combobox.Empty />\n              <Combobox.List>\n                {(item: BotType) => (\n                  <Combobox.Item key={item.value} value={item}>\n                    <div className=\"flex gap-2\">\n                      <Text>{item.label}</Text>\n                      <Text variant=\"secondary\">{item.author}</Text>\n                    </div>\n                  </Combobox.Item>\n                )}\n              </Combobox.List>\n            </Combobox.Content>\n          </Combobox>\n        </div>\n        {/* Demonstrates that the multi-select combobox maintains consistent height with other Kumo components */}\n        <Button variant=\"primary\">Submit</Button>\n      </div>",
+        "<Combobox\n        value={value}\n        onValueChange={setValue}\n        items={INITIAL_BOT_LIST}\n        isItemEqualToValue={(bot, selectedValue) =>\n          bot.value === selectedValue.value\n        }\n        multiple\n      >\n        <Combobox.TriggerMultipleWithInput\n          className=\"w-[400px]\"\n          placeholder=\"Select bot\"\n          value={value}\n          renderItem={(selected: BotType) => (\n            <Combobox.Chip key={selected.value}>{selected.label}</Combobox.Chip>\n          )}\n          inputSide=\"top\"\n        />\n        <Combobox.Content className=\"max-h-[200px] min-w-auto overflow-y-auto\">\n          <Combobox.Empty />\n          <Combobox.List>\n            {(item: BotType) => (\n              <Combobox.Item key={item.value} value={item}>\n                <div className=\"flex gap-2\">\n                  <Text>{item.label}</Text>\n                  <Text variant=\"secondary\">{item.author}</Text>\n                </div>\n              </Combobox.Item>\n            )}\n          </Combobox.List>\n        </Combobox.Content>\n      </Combobox>"
+      ],
+      "colors": [
+        "bg-color-2",
+        "bg-color-3",
+        "bg-secondary",
+        "fill-active",
+        "ring-border",
+        "text-neutral-dim-2",
+        "text-surface"
+      ],
+      "subComponents": {
+        "Content": {
+          "name": "Content",
+          "description": "Content sub-component",
+          "props": {
+            "className": {
+              "type": "string",
+              "optional": true
+            },
+            "align": {
+              "type": "ComboboxBase.Positioner.Props[\"align\"]",
+              "optional": true
+            },
+            "alignOffset": {
+              "type": "ComboboxBase.Positioner.Props[\"alignOffset\"]",
+              "optional": true
+            },
+            "side": {
+              "type": "ComboboxBase.Positioner.Props[\"side\"]",
+              "optional": true
+            },
+            "sideOffset": {
+              "type": "ComboboxBase.Positioner.Props[\"sideOffset\"]",
+              "optional": true
+            }
+          }
+        },
+        "TriggerValue": {
+          "name": "TriggerValue",
+          "description": "TriggerValue sub-component",
+          "props": {}
+        },
+        "TriggerInput": {
+          "name": "TriggerInput",
+          "description": "TriggerInput sub-component",
+          "props": {}
+        },
+        "TriggerMultipleWithInput": {
+          "name": "TriggerMultipleWithInput",
+          "description": "TriggerMultipleWithInput sub-component",
+          "props": {}
+        },
+        "Chip": {
+          "name": "Chip",
+          "description": "Chip sub-component",
+          "props": {}
+        },
+        "Item": {
+          "name": "Item",
+          "description": "Item sub-component",
+          "props": {}
+        },
+        "Input": {
+          "name": "Input",
+          "description": "Input sub-component",
+          "props": {}
+        },
+        "Empty": {
+          "name": "Empty",
+          "description": "Empty sub-component",
+          "props": {}
+        },
+        "GroupLabel": {
+          "name": "GroupLabel",
+          "description": "GroupLabel sub-component",
+          "props": {}
+        },
+        "Group": {
+          "name": "Group",
+          "description": "Group sub-component",
+          "props": {}
+        },
+        "List": {
+          "name": "List",
+          "description": "A container for combobox items. Supports render prop for custom item rendering.",
+          "props": {
+            "children": {
+              "type": "ReactNode | ((item: T, index: number) => ReactNode)",
+              "description": "Items to render, or a function that receives each item and returns a node"
+            }
+          },
+          "isPassThrough": true,
+          "baseComponent": "ComboboxBase.List",
+          "usageExamples": [
+            "<Combobox.List>\n  {(item) => <Combobox.Item value={item}>{item.label}</Combobox.Item>}\n</Combobox.List>"
+          ],
+          "renderElement": "<div>"
+        },
+        "Collection": {
+          "name": "Collection",
+          "description": "Renders filtered list items. Use when you need more control over item rendering.",
+          "props": {
+            "children": {
+              "type": "(item: T, index: number) => ReactNode",
+              "required": true,
+              "description": "Function that receives each filtered item and returns a node"
+            }
+          },
+          "isPassThrough": true,
+          "baseComponent": "ComboboxBase.Collection",
+          "usageExamples": [
+            "<Combobox.Collection>\n  {(item, index) => (\n    <Combobox.Item key={index} value={item}>\n      {item.label}\n    </Combobox.Item>\n  )}\n</Combobox.Collection>"
+          ]
+        }
+      }
+    },
+    "DateRangePicker": {
+      "name": "DateRangePicker",
+      "description": "DateRangePicker component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Input",
+      "props": {
+        "size": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "sm",
+            "base",
+            "lg"
+          ],
+          "descriptions": {
+            "sm": "Compact calendar for tight spaces",
+            "base": "Default calendar size",
+            "lg": "Large calendar for prominent date selection"
+          },
+          "default": "base"
+        },
+        "variant": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "default",
+            "subtle"
+          ],
+          "descriptions": {
+            "default": "Default calendar appearance",
+            "subtle": "Subtle calendar with minimal background"
+          },
+          "default": "default"
+        },
+        "timezone": {
+          "type": "string",
+          "optional": true,
+          "description": "Display timezone (display only)"
+        },
+        "className": {
+          "type": "string",
+          "optional": true,
+          "description": "Additional CSS classes"
+        },
+        "onStartDateChange": {
+          "type": "(date: Date | null) => void",
+          "description": "Callback when start date changes"
+        },
+        "onEndDateChange": {
+          "type": "(date: Date | null) => void",
+          "description": "Callback when end date changes"
+        }
+      },
+      "examples": [
+        "<DateRangePicker size=\"sm\" onStartDateChange={() => {}} onEndDateChange={() => {}} />",
+        "<DateRangePicker size=\"base\" onStartDateChange={() => {}} onEndDateChange={() => {}} />",
+        "<DateRangePicker size=\"lg\" onStartDateChange={() => {}} onEndDateChange={() => {}} />",
+        "<DateRangePicker variant=\"default\" onStartDateChange={() => {}} onEndDateChange={() => {}} />",
+        "<DateRangePicker variant=\"subtle\" onStartDateChange={() => {}} onEndDateChange={() => {}} />",
+        "<DateRangePicker timezone=\"UTC (GMT+0)\" />"
+      ],
+      "colors": [
+        "bg-calendar",
+        "bg-calendar-day-range-selected",
+        "bg-calendar-day-range-selected-endpoints",
+        "bg-calendar-day-range-selected-out-of-range",
+        "bg-hover",
+        "bg-surface",
+        "text-calendar-day-range-selected-endpoints",
+        "text-calendar-day-range-selected-out-of-range",
+        "text-calendar-reset",
+        "text-neutral-dim",
+        "text-neutral-subtle",
+        "text-secondary"
+      ]
+    },
+    "Dialog": {
+      "name": "Dialog",
+      "description": "Dialog component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Overlay",
+      "props": {
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "size": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "base",
+            "sm",
+            "lg",
+            "xl"
+          ],
+          "descriptions": {
+            "base": "Default dialog width",
+            "sm": "Small dialog for simple confirmations",
+            "lg": "Large dialog for complex content",
+            "xl": "Extra large dialog for detailed views"
+          },
+          "default": "base"
+        }
+      },
+      "examples": [
+        "<Dialog.Root>\n      <Dialog.Trigger render={<Button>Open Dialog</Button>} />\n      <Dialog className=\"p-6\">\n        <Dialog.Title className=\"mb-2 text-xl font-semibold\">\n          Dialog Title\n        </Dialog.Title>\n        <Dialog.Description className=\"mb-4\">\n          This is a dialog description with some content.\n        </Dialog.Description>\n        <Dialog.Close render={<Button>Close</Button>} />\n      </Dialog>\n    </Dialog.Root>"
+      ],
+      "colors": [
+        "bg-color-3",
+        "bg-surface",
+        "text-secondary"
+      ],
+      "subComponents": {
+        "Root": {
+          "name": "Root",
+          "description": "Controls the open state of the dialog. Doesn't render its own HTML element.",
+          "props": {
+            "open": {
+              "type": "boolean",
+              "description": "Whether the dialog is currently open (controlled mode)"
+            },
+            "defaultOpen": {
+              "type": "boolean",
+              "description": "Whether the dialog is initially open (uncontrolled mode)",
+              "default": "false"
+            },
+            "onOpenChange": {
+              "type": "(open: boolean, event: Event) => void",
+              "description": "Callback fired when the dialog opens or closes"
+            },
+            "modal": {
+              "type": "boolean | 'trap-focus'",
+              "description": "Whether the dialog is modal. When true, focus is trapped and page scroll is locked",
+              "default": "true"
+            },
+            "dismissible": {
+              "type": "boolean",
+              "description": "Whether clicking outside closes the dialog",
+              "default": "true"
+            }
+          },
+          "isPassThrough": true,
+          "baseComponent": "DialogBase.Root",
+          "usageExamples": [
+            "<Dialog.Root open={isOpen} onOpenChange={setIsOpen}>",
+            "<Dialog.Root defaultOpen={false}>"
+          ]
+        },
+        "Trigger": {
+          "name": "Trigger",
+          "description": "A button that opens the dialog when clicked.",
+          "props": {
+            "render": {
+              "type": "ReactElement | ((props, state) => ReactElement)",
+              "description": "Custom element to render instead of the default button"
+            },
+            "disabled": {
+              "type": "boolean",
+              "description": "Whether the trigger is disabled"
+            }
+          },
+          "isPassThrough": true,
+          "baseComponent": "DialogBase.Trigger",
+          "usageExamples": [
+            "<Dialog.Trigger render={<Button>Open</Button>} />",
+            "<Dialog.Trigger>Open Dialog</Dialog.Trigger>"
+          ],
+          "renderElement": "<button>"
+        },
+        "Title": {
+          "name": "Title",
+          "description": "A heading that labels the dialog for accessibility.",
+          "props": {
+            "render": {
+              "type": "ReactElement | ((props, state) => ReactElement)",
+              "description": "Custom element to render instead of the default h2"
+            }
+          },
+          "isPassThrough": true,
+          "baseComponent": "DialogBase.Title",
+          "usageExamples": [
+            "<Dialog.Title>Confirm Action</Dialog.Title>",
+            "<Dialog.Title render={<h3 />}>Custom Heading</Dialog.Title>"
+          ],
+          "renderElement": "<h2>"
+        },
+        "Description": {
+          "name": "Description",
+          "description": "A paragraph providing additional context about the dialog.",
+          "props": {
+            "render": {
+              "type": "ReactElement | ((props, state) => ReactElement)",
+              "description": "Custom element to render instead of the default p"
+            }
+          },
+          "isPassThrough": true,
+          "baseComponent": "DialogBase.Description",
+          "usageExamples": [
+            "<Dialog.Description>Are you sure you want to proceed?</Dialog.Description>"
+          ],
+          "renderElement": "<p>"
+        },
+        "Close": {
+          "name": "Close",
+          "description": "A button that closes the dialog when clicked.",
+          "props": {
+            "render": {
+              "type": "ReactElement | ((props, state) => ReactElement)",
+              "description": "Custom element to render instead of the default button"
+            },
+            "disabled": {
+              "type": "boolean",
+              "description": "Whether the close button is disabled"
+            }
+          },
+          "isPassThrough": true,
+          "baseComponent": "DialogBase.Close",
+          "usageExamples": [
+            "<Dialog.Close render={<Button>Cancel</Button>} />",
+            "<Dialog.Close>×</Dialog.Close>"
+          ],
+          "renderElement": "<button>"
+        }
+      }
+    },
+    "DropdownMenu": {
+      "name": "DropdownMenu",
+      "description": "DropdownMenu component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Overlay",
+      "props": {
+        "variant": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "default",
+            "danger"
+          ],
+          "descriptions": {
+            "default": "Default dropdown item appearance",
+            "danger": "Destructive action item"
+          },
+          "default": "default"
+        }
+      },
+      "examples": [],
+      "colors": [
+        "bg-accent",
+        "bg-color-3",
+        "bg-destructive-2",
+        "bg-muted",
+        "bg-secondary",
+        "ring-border",
+        "text-error",
+        "text-secondary",
+        "text-surface"
+      ],
+      "subComponents": {
+        "Trigger": {
+          "name": "Trigger",
+          "description": "Trigger sub-component",
+          "props": {}
+        },
+        "Portal": {
+          "name": "Portal",
+          "description": "Portal sub-component (wraps DropdownMenuPrimitive)",
+          "props": {},
+          "isPassThrough": true,
+          "baseComponent": "DropdownMenuPrimitive.Portal"
+        },
+        "Sub": {
+          "name": "Sub",
+          "description": "Sub sub-component (wraps DropdownMenuPrimitive)",
+          "props": {},
+          "isPassThrough": true,
+          "baseComponent": "DropdownMenuPrimitive.SubmenuRoot"
+        },
+        "SubTrigger": {
+          "name": "SubTrigger",
+          "description": "SubTrigger sub-component",
+          "props": {}
+        },
+        "SubContent": {
+          "name": "SubContent",
+          "description": "SubContent sub-component",
+          "props": {}
+        },
+        "Content": {
+          "name": "Content",
+          "description": "Content sub-component",
+          "props": {}
+        },
+        "Item": {
+          "name": "Item",
+          "description": "Item sub-component",
+          "props": {}
+        },
+        "CheckboxItem": {
+          "name": "CheckboxItem",
+          "description": "CheckboxItem sub-component",
+          "props": {}
+        },
+        "Label": {
+          "name": "Label",
+          "description": "Label sub-component",
+          "props": {}
+        },
+        "Separator": {
+          "name": "Separator",
+          "description": "Separator sub-component",
+          "props": {}
+        },
+        "Shortcut": {
+          "name": "Shortcut",
+          "description": "Shortcut sub-component",
+          "props": {}
+        },
+        "Group": {
+          "name": "Group",
+          "description": "Group sub-component (wraps DropdownMenuPrimitive)",
+          "props": {},
+          "isPassThrough": true,
+          "baseComponent": "DropdownMenuPrimitive.Group"
+        }
+      }
+    },
+    "Empty": {
+      "name": "Empty",
+      "description": "Empty component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Block",
+      "props": {
+        "size": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "sm",
+            "base",
+            "lg"
+          ],
+          "descriptions": {
+            "sm": "Compact empty state for smaller containers",
+            "base": "Default empty state size",
+            "lg": "Large empty state for prominent placement"
+          },
+          "default": "base"
+        },
+        "icon": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "title": {
+          "type": "string",
+          "required": true
+        },
+        "description": {
+          "type": "string",
+          "optional": true
+        },
+        "commandLine": {
+          "type": "string",
+          "optional": true
+        },
+        "contents": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        }
+      },
+      "examples": [
+        "<Empty icon={<DatabaseIcon size={48} className=\"text-disabled\" />} title=\"No data available\" description=\"There is no data to display at the moment. Try creating a new item to get started.\" />",
+        "<Empty size=\"sm\" icon={<DatabaseIcon size={48} className=\"text-disabled\" />} title=\"No data available\" description=\"There is no data to display at the moment.\" />",
+        "<Empty size=\"base\" icon={<DatabaseIcon size={48} className=\"text-disabled\" />} title=\"No data available\" description=\"There is no data to display at the moment.\" />",
+        "<Empty size=\"lg\" icon={<DatabaseIcon size={48} className=\"text-disabled\" />} title=\"No data available\" description=\"There is no data to display at the moment.\" />",
+        "<Empty icon={<FolderOpenIcon size={48} className=\"text-disabled\" />} title=\"No projects found\" description=\"Get started by creating your first project using the command below.\" commandLine=\"npm create kumo-project\" />",
+        "<Empty icon={<FolderOpenIcon size={48} className=\"text-disabled\" />} title=\"Long command example\" description=\"Demonstrates how long commands scroll horizontally inside the command line area.\" commandLine=\"npx create-app --template edge-worker --name my-very-long-project-name-with-extra-flags --region us-west-2\" />",
+        "<Empty icon={<CloudSlashIcon size={48} className=\"text-disabled\" />} title=\"No connection\" description=\"Unable to connect to the server. Please check your connection and try again.\" contents={<div className=\"flex gap-2\">\n        <Button variant=\"primary\">Retry</Button>\n        <Button variant=\"outline\">Go Back</Button>\n      </div>} />",
+        "<Empty title=\"Nothing here\" />"
+      ],
+      "colors": [
+        "bg-secondary",
+        "bg-surface-secondary",
+        "border-border-2",
+        "border-color",
+        "border-hover-border",
+        "text-brand",
+        "text-green",
+        "text-label",
+        "text-label-inverse",
+        "text-surface"
+      ]
+    },
+    "Expandable": {
+      "name": "Expandable",
+      "description": "Expandable component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Display",
+      "props": {
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "title": {
+          "type": "string",
+          "required": true
+        },
+        "open": {
+          "type": "boolean",
+          "optional": true
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "onOpenChange": {
+          "type": "(open: boolean) => void",
+          "description": "Callback when expanded state changes"
+        }
+      },
+      "examples": [
+        "<Expandable title=\"Click to expand\" open={open} onOpenChange={setOpen}>\n        <Text>This is the expandable content that can be shown or hidden.</Text>\n      </Expandable>"
+      ],
+      "colors": [
+        "border-color",
+        "text-success"
+      ]
+    },
+    "Field": {
+      "name": "Field",
+      "description": "Field component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Input",
+      "props": {
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "label": {
+          "type": "string",
+          "required": true
+        },
+        "error": {
+          "type": "object",
+          "optional": true
+        },
+        "description": {
+          "type": "ReactNode",
+          "optional": true
+        }
+      },
+      "examples": [
+        "<Field label=\"Email\" description=\"Enter your email address\">\n      <Input placeholder=\"email@example.com\" />\n    </Field>",
+        "<Field\n      label=\"Email\"\n      error={{ message: \"Invalid email address\", match: true }}\n    >\n      <Input placeholder=\"email@example.com\" variant=\"error\" />\n    </Field>"
+      ],
+      "colors": [
+        "text-error",
+        "text-muted"
+      ]
+    },
+    "Input": {
+      "name": "Input",
+      "description": "Input component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Input",
+      "props": {
+        "label": {
+          "type": "string",
+          "optional": true
+        },
+        "hideLabel": {
+          "type": "boolean",
+          "optional": true
+        },
+        "size": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "xs",
+            "sm",
+            "base",
+            "lg"
+          ],
+          "descriptions": {
+            "xs": "Extra small input for compact UIs",
+            "sm": "Small input for secondary fields",
+            "base": "Default input size",
+            "lg": "Large input for prominent fields"
+          },
+          "default": "base"
+        },
+        "variant": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "default",
+            "error"
+          ],
+          "descriptions": {
+            "default": "Default input appearance",
+            "error": "Error state for validation failures"
+          },
+          "default": "default"
+        }
+      },
+      "examples": [
+        "<Input size=\"xs\" placeholder=\"Enter text...\" />",
+        "<Input size=\"sm\" placeholder=\"Enter text...\" />",
+        "<Input size=\"base\" placeholder=\"Enter text...\" />",
+        "<Input size=\"lg\" placeholder=\"Enter text...\" />",
+        "<Input variant=\"default\" placeholder=\"Enter text...\" />",
+        "<Input variant=\"error\" placeholder=\"Enter text...\" />",
+        "<Input label={Email} hideLabel={false} placeholder=\"Enter your email\" />",
+        "<Input variant=\"error\" placeholder=\"Invalid input\" defaultValue=\"error@example.com\" />",
+        "<Input placeholder=\"Disabled input\" disabled={true} />"
+      ],
+      "colors": [
+        "bg-secondary",
+        "ring-active",
+        "ring-border",
+        "ring-destructive",
+        "text-muted",
+        "text-surface"
+      ]
+    },
+    "LayerCard": {
+      "name": "LayerCard",
+      "description": "LayerCard component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Display",
+      "props": {
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        }
+      },
+      "examples": [
+        "<LayerCard className=\"w-[250px]\">\n      <LayerCard.Secondary className=\"flex items-center justify-between\">\n        <div>Next Steps</div>\n        <Button variant=\"ghost\" size=\"sm\" shape=\"square\">\n          <ArrowRightIcon size={16} />\n        </Button>\n      </LayerCard.Secondary>\n\n      <LayerCard.Primary>\n        <Text>Get started with Kumo</Text>\n      </LayerCard.Primary>\n    </LayerCard>"
+      ],
+      "colors": [
+        "bg-surface-2",
+        "ring-border",
+        "ring-color",
+        "text-neutral-dim"
+      ],
+      "subComponents": {
+        "Primary": {
+          "name": "Primary",
+          "description": "Primary sub-component",
+          "props": {}
+        },
+        "Secondary": {
+          "name": "Secondary",
+          "description": "Secondary sub-component",
+          "props": {}
+        }
+      }
+    },
+    "Loader": {
+      "name": "Loader",
+      "description": "Loader component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Feedback",
+      "props": {
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "size": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "sm",
+            "base",
+            "lg"
+          ],
+          "descriptions": {
+            "sm": "Small loader for inline use",
+            "base": "Default loader size",
+            "lg": "Large loader for prominent loading states"
+          },
+          "default": "base"
+        }
+      },
+      "examples": [
+        "<Loader size=\"sm\" className=\"text-surface\" />",
+        "<Loader size=\"base\" className=\"text-surface\" />",
+        "<Loader size=\"lg\" className=\"text-surface\" />",
+        "<Loader size={48} className=\"text-surface\" />"
+      ],
+      "colors": []
+    },
+    "MenuBar": {
+      "name": "MenuBar",
+      "description": "MenuBar component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Navigation",
+      "props": {
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "isActive": {
+          "type": "number | boolean | string",
+          "optional": true
+        },
+        "options": {
+          "type": "MenuOptionProps[]",
+          "required": true
+        },
+        "optionIds": {
+          "type": "boolean",
+          "optional": true
+        }
+      },
+      "examples": [],
+      "colors": [
+        "bg-color",
+        "bg-surface",
+        "border-color"
+      ]
+    },
+    "Meter": {
+      "name": "Meter",
+      "description": "Meter component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Display",
+      "props": {
+        "customValue": {
+          "type": "string",
+          "optional": true
+        },
+        "label": {
+          "type": "string",
+          "required": true
+        },
+        "showValue": {
+          "type": "boolean",
+          "optional": true
+        },
+        "trackClassName": {
+          "type": "string",
+          "optional": true
+        },
+        "indicatorClassName": {
+          "type": "string",
+          "optional": true
+        },
+        "value": {
+          "type": "number",
+          "description": "Current value of the meter"
+        },
+        "max": {
+          "type": "number",
+          "description": "Maximum value of the meter (default: 100)"
+        },
+        "min": {
+          "type": "number",
+          "description": "Minimum value of the meter (default: 0)"
+        }
+      },
+      "examples": [
+        "<Meter label={Progress} value={50} max={100} />",
+        "<div className=\"flex w-64 flex-col gap-4\">\n      <Meter label=\"Low\" value={25} max={100} />\n      <Meter label=\"Medium\" value={50} max={100} />\n      <Meter label=\"High\" value={75} max={100} />\n      <Meter label=\"Complete\" value={100} max={100} />\n    </div>"
+      ],
+      "colors": [
+        "bg-color",
+        "text-label",
+        "text-secondary"
+      ]
+    },
+    "PageHeader": {
+      "name": "PageHeader",
+      "description": "PageHeader component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Block",
+      "props": {
+        "spacing": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "compact",
+            "base",
+            "relaxed"
+          ],
+          "descriptions": {
+            "compact": "Compact spacing between header elements",
+            "base": "Default spacing between header elements",
+            "relaxed": "Relaxed spacing for more prominent headers"
+          },
+          "default": "base"
+        },
+        "breadcrumbs": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "tabs": {
+          "type": "TabsItem[]",
+          "optional": true
+        },
+        "defaultTab": {
+          "type": "string",
+          "optional": true
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        }
+      },
+      "examples": [
+        "<PageHeader\n      breadcrumbs={\n        <Breadcrumbs>\n          <Breadcrumbs.Link href=\"/\">Home</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Link href=\"/projects\">Projects</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Current>Current Project</Breadcrumbs.Current>\n        </Breadcrumbs>\n      }\n    />",
+        "<PageHeader spacing=\"compact\" breadcrumbs={<Breadcrumbs>\n              <Breadcrumbs.Link href=\"/\">Home</Breadcrumbs.Link>\n              <Breadcrumbs.Separator />\n              <Breadcrumbs.Current>Current</Breadcrumbs.Current>\n            </Breadcrumbs>} tabs={[\n            { label: \"General\", value: \"general\" },\n            { label: \"Settings\", value: \"settings\" },\n          ]} defaultTab=\"general\" />",
+        "<PageHeader spacing=\"base\" breadcrumbs={<Breadcrumbs>\n              <Breadcrumbs.Link href=\"/\">Home</Breadcrumbs.Link>\n              <Breadcrumbs.Separator />\n              <Breadcrumbs.Current>Current</Breadcrumbs.Current>\n            </Breadcrumbs>} tabs={[\n            { label: \"General\", value: \"general\" },\n            { label: \"Settings\", value: \"settings\" },\n          ]} defaultTab=\"general\" />",
+        "<PageHeader spacing=\"relaxed\" breadcrumbs={<Breadcrumbs>\n              <Breadcrumbs.Link href=\"/\">Home</Breadcrumbs.Link>\n              <Breadcrumbs.Separator />\n              <Breadcrumbs.Current>Current</Breadcrumbs.Current>\n            </Breadcrumbs>} tabs={[\n            { label: \"General\", value: \"general\" },\n            { label: \"Settings\", value: \"settings\" },\n          ]} defaultTab=\"general\" />",
+        "<PageHeader\n      breadcrumbs={\n        <Breadcrumbs>\n          <Breadcrumbs.Link href=\"/\">Home</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Current>Settings</Breadcrumbs.Current>\n        </Breadcrumbs>\n      }\n      tabs={[\n        { label: \"General\", value: \"general\" },\n        { label: \"Security\", value: \"security\" },\n        { label: \"Notifications\", value: \"notifications\" },\n        { label: \"Billing\", value: \"billing\" },\n      ]}\n      defaultTab=\"general\"\n    />",
+        "<PageHeader\n      breadcrumbs={\n        <Breadcrumbs>\n          <Breadcrumbs.Link href=\"/\">Home</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Link href=\"/projects\">Projects</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Current>My Project</Breadcrumbs.Current>\n        </Breadcrumbs>\n      }\n      tabs={[\n        { label: \"Overview\", value: \"overview\" },\n        { label: \"Analytics\", value: \"analytics\" },\n        { label: \"Settings\", value: \"settings\" },\n      ]}\n      defaultTab=\"overview\"\n    >\n      <Button variant=\"outline\" size=\"sm\">\n        Export\n      </Button>\n      <Button variant=\"primary\" size=\"sm\">\n        <PlusIcon size={16} />\n        New Item\n      </Button>\n    </PageHeader>"
+      ],
+      "colors": [
+        "border-color-4"
+      ]
+    },
+    "Pagination": {
+      "name": "Pagination",
+      "description": "Pagination component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Navigation",
+      "props": {
+        "setPage": {
+          "type": "(page: number) => void",
+          "required": true,
+          "description": "Callback when page changes"
+        },
+        "page": {
+          "type": "number",
+          "optional": true
+        },
+        "perPage": {
+          "type": "number",
+          "optional": true
+        },
+        "totalCount": {
+          "type": "number",
+          "optional": true
+        }
+      },
+      "examples": [
+        "<Pagination page={1} perPage={10} totalCount={100} setPage=\"() => {}\" />",
+        "<Pagination page={5} perPage={10} totalCount={100} setPage=\"() => {}\" />"
+      ],
+      "colors": [
+        "text-label"
+      ]
+    },
+    "Select": {
+      "name": "Select",
+      "description": "Select component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Input",
+      "props": {
+        "className": {
+          "type": "string",
+          "optional": true,
+          "description": "Additional CSS classes"
+        },
+        "label": {
+          "type": "string",
+          "optional": true,
+          "description": "Label text for the select"
+        },
+        "hideLabel": {
+          "type": "boolean",
+          "optional": true,
+          "description": "Whether to visually hide the label (still accessible to screen readers)"
+        },
+        "placeholder": {
+          "type": "string",
+          "optional": true,
+          "description": "Placeholder text when no value is selected"
+        },
+        "loading": {
+          "type": "boolean",
+          "optional": true,
+          "description": "Whether the select is in a loading state"
+        },
+        "disabled": {
+          "type": "boolean",
+          "optional": true,
+          "description": "Whether the select is disabled"
+        },
+        "value": {
+          "type": "string",
+          "optional": true,
+          "description": "The currently selected value"
+        },
+        "children": {
+          "type": "ReactNode",
+          "optional": true,
+          "description": "Child elements (Select.Option components)"
+        },
+        "onValueChange": {
+          "type": "(value: string) => void",
+          "description": "Callback when selection changes"
+        },
+        "defaultValue": {
+          "type": "string",
+          "description": "Initial value for uncontrolled mode"
+        }
+      },
+      "examples": [
+        "<Select defaultValue=\"1\" placeholder=\"Select an option\">\n      <Select.Option value=\"1\">Option 1</Select.Option>\n      <Select.Option value=\"2\">Option 2</Select.Option>\n      <Select.Option value=\"3\">Option 3</Select.Option>\n    </Select>"
+      ],
+      "colors": [
+        "bg-color-3",
+        "bg-secondary",
+        "ring-active",
+        "ring-border",
+        "text-surface"
+      ],
+      "subComponents": {
+        "Option": {
+          "name": "Option",
+          "description": "Option sub-component",
+          "props": {}
+        }
+      }
+    },
+    "Surface": {
+      "name": "Surface",
+      "description": "Surface component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Layout",
+      "props": {
+        "as": {
+          "type": "React.ElementType",
+          "optional": true,
+          "description": "The element type to render as (default: \"div\")"
+        },
+        "className": {
+          "type": "string",
+          "optional": true,
+          "description": "Additional CSS classes"
+        },
+        "children": {
+          "type": "ReactNode",
+          "optional": true,
+          "description": "Child elements"
+        }
+      },
+      "examples": [
+        "<Surface  />"
+      ],
+      "colors": [
+        "ring-border"
+      ]
+    },
+    "Switch": {
+      "name": "Switch",
+      "description": "Switch component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Input",
+      "props": {
+        "onClick": {
+          "type": "(event: React.MouseEvent) => void",
+          "required": true,
+          "description": "Callback when switch is clicked"
+        },
+        "size": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "sm",
+            "base",
+            "lg"
+          ],
+          "descriptions": {
+            "sm": "Small switch for compact UIs",
+            "base": "Default switch size",
+            "lg": "Large switch for prominent toggles"
+          },
+          "default": "base"
+        },
+        "toggled": {
+          "type": "boolean",
+          "required": true
+        },
+        "transitioning": {
+          "type": "boolean",
+          "optional": true
+        },
+        "label": {
+          "type": "string",
+          "optional": true
+        },
+        "hideLabel": {
+          "type": "boolean",
+          "optional": true
+        },
+        "disabled": {
+          "type": "boolean",
+          "optional": true
+        },
+        "name": {
+          "type": "string",
+          "optional": true
+        },
+        "value": {
+          "type": "string | string[] | number",
+          "optional": true
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "id": {
+          "type": "string",
+          "optional": true
+        },
+        "title": {
+          "type": "string",
+          "optional": true
+        },
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "onChange": {
+          "type": "React.FormEventHandler<HTMLButtonElement>",
+          "optional": true
+        },
+        "onSubmit": {
+          "type": "React.FormEventHandler<HTMLButtonElement>",
+          "optional": true
+        }
+      },
+      "examples": [
+        "<Switch label=\"Toggle switch\" onClick=\"() => {}\" toggled={false} />",
+        "<Switch label={Enabled} onClick=\"() => {}\" toggled={true} />",
+        "<Switch label={Disabled} onClick=\"() => {}\" toggled={false} disabled={true} />",
+        "<Switch label=\"Enabled & Disabled\" onClick=\"() => {}\" toggled={true} disabled={true} />"
+      ],
+      "colors": [
+        "bg-hover",
+        "bg-hover-selected",
+        "bg-selected",
+        "bg-surface-3",
+        "bg-white",
+        "text-surface"
+      ]
+    },
+    "Tabs": {
+      "name": "Tabs",
+      "description": "Tabs component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Navigation",
+      "props": {
+        "tabs": {
+          "type": "TabsItem[]",
+          "optional": true
+        },
+        "value": {
+          "type": "string",
+          "optional": true
+        },
+        "selectedValue": {
+          "type": "string",
+          "optional": true
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "listClassName": {
+          "type": "string",
+          "optional": true
+        },
+        "indicatorClassName": {
+          "type": "string",
+          "optional": true
+        },
+        "onValueChange": {
+          "type": "(value: string) => void",
+          "description": "Callback when active tab changes"
+        }
+      },
+      "examples": [
+        "<Tabs tabs={`[\n      { value: \"tab1\", label: \"Tab 1\" },\n      { value: \"tab2\", label: \"Tab 2\" },\n      { value: \"tab3\", label: \"Tab 3\" },\n    ]`} selectedValue=\"tab1\" />"
+      ],
+      "colors": [
+        "bg-accent",
+        "bg-surface-elevated",
+        "ring-border"
+      ]
+    },
+    "Text": {
+      "name": "Text",
+      "description": "Text component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Display",
+      "props": {
+        "variant": {
+          "type": "enum",
+          "optional": true,
+          "description": "Text style variant",
+          "values": [
+            "heading1",
+            "heading2",
+            "heading3",
+            "body",
+            "secondary",
+            "success",
+            "error",
+            "mono"
+          ],
+          "descriptions": {
+            "heading1": "Large heading for page titles",
+            "heading2": "Medium heading for section titles",
+            "heading3": "Small heading for subsections",
+            "body": "Default body text",
+            "secondary": "Muted text for secondary information",
+            "success": "Success state text",
+            "error": "Error state text",
+            "mono": "Monospace text for code"
+          },
+          "default": "body"
+        },
+        "size": {
+          "type": "enum",
+          "optional": true,
+          "description": "Text size (only applies to body/secondary/success/error variants)",
+          "values": [
+            "xs",
+            "sm",
+            "base",
+            "lg"
+          ],
+          "descriptions": {
+            "xs": "Extra small text",
+            "sm": "Small text",
+            "base": "Default text size",
+            "lg": "Large text"
+          },
+          "default": "base"
+        },
+        "bold": {
+          "type": "boolean",
+          "optional": true,
+          "description": "Whether to use bold font weight (only applies to body variants)"
+        },
+        "as": {
+          "type": "React.ElementType",
+          "optional": true,
+          "description": "The element type to render as"
+        },
+        "children": {
+          "type": "ReactNode",
+          "optional": true,
+          "description": "Child text content"
+        }
+      },
+      "examples": [
+        "<Text variant=\"heading1\">Sample text</Text>",
+        "<Text variant=\"heading2\">Sample text</Text>",
+        "<Text variant=\"heading3\">Sample text</Text>",
+        "<Text variant=\"body\">Sample text</Text>",
+        "<Text variant=\"secondary\">Sample text</Text>",
+        "<Text variant=\"success\">Sample text</Text>",
+        "<Text variant=\"error\">Sample text</Text>",
+        "<Text variant=\"mono\">Sample text</Text>",
+        "<Text size=\"xs\">Sample text</Text>",
+        "<Text size=\"sm\">Sample text</Text>",
+        "<Text size=\"base\">Sample text</Text>",
+        "<Text size=\"lg\">Sample text</Text>",
+        "<Text bold={true}>Bold text</Text>"
+      ],
+      "colors": [
+        "text-destructive",
+        "text-muted",
+        "text-success",
+        "text-surface"
+      ]
+    },
+    "Toasty": {
+      "name": "Toasty",
+      "description": "Toasty component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Feedback",
+      "props": {
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        }
+      },
+      "examples": [],
+      "colors": [
+        "bg-toast",
+        "bg-toast-button-hover",
+        "border-color",
+        "text-muted-2",
+        "text-neutral-dim",
+        "text-secondary",
+        "text-toast-button-hover"
+      ]
+    },
+    "Tooltip": {
+      "name": "Tooltip",
+      "description": "Tooltip component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Overlay",
+      "props": {
+        "align": {
+          "type": "TooltipAlign",
+          "optional": true
+        },
+        "asChild": {
+          "type": "boolean",
+          "optional": true
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "side": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "top",
+            "bottom",
+            "left",
+            "right"
+          ],
+          "descriptions": {
+            "top": "Tooltip appears above the trigger",
+            "bottom": "Tooltip appears below the trigger",
+            "left": "Tooltip appears to the left of the trigger",
+            "right": "Tooltip appears to the right of the trigger"
+          },
+          "default": "top"
+        },
+        "content": {
+          "type": "ReactNode",
+          "required": true,
+          "description": "Content to display in the tooltip"
+        }
+      },
+      "examples": [
+        "<Tooltip content=\"This is a tooltip\" asChild>\n      <Button>Hover me</Button>\n    </Tooltip>"
+      ],
+      "colors": [
+        "bg-black-icon",
+        "fill-black-icon",
+        "fill-icon-path",
+        "text-white"
+      ]
+    }
+  },
+  "search": {
+    "byCategory": {
+      "Display": [
+        "Badge",
+        "Code",
+        "Expandable",
+        "LayerCard",
+        "Meter",
+        "Text"
+      ],
+      "Feedback": [
+        "Banner",
+        "Loader",
+        "Toasty"
+      ],
+      "Block": [
+        "Breadcrumbs",
+        "Empty",
+        "PageHeader"
+      ],
+      "Action": [
+        "Button",
+        "ClipboardText"
+      ],
+      "Input": [
+        "Checkbox",
+        "Combobox",
+        "DateRangePicker",
+        "Field",
+        "Input",
+        "Select",
+        "Switch"
+      ],
+      "Overlay": [
+        "Dialog",
+        "DropdownMenu",
+        "Tooltip"
+      ],
+      "Navigation": [
+        "MenuBar",
+        "Pagination",
+        "Tabs"
+      ],
+      "Layout": [
+        "Surface"
+      ]
+    },
+    "byName": [
+      "Badge",
+      "Banner",
+      "Breadcrumbs",
+      "Button",
+      "Checkbox",
+      "ClipboardText",
+      "Code",
+      "Combobox",
+      "DateRangePicker",
+      "Dialog",
+      "DropdownMenu",
+      "Empty",
+      "Expandable",
+      "Field",
+      "Input",
+      "LayerCard",
+      "Loader",
+      "MenuBar",
+      "Meter",
+      "PageHeader",
+      "Pagination",
+      "Select",
+      "Surface",
+      "Switch",
+      "Tabs",
+      "Text",
+      "Toasty",
+      "Tooltip"
+    ]
+  }
+}
