@@ -1,4 +1,4 @@
-import {
+import React, {
   forwardRef,
   type ComponentPropsWithoutRef,
   type ComponentPropsWithRef,
@@ -26,7 +26,7 @@ type SurfaceProps<E extends ElementType = typeof defaultElement> =
 
 type SurfaceComponent = <E extends ElementType = typeof defaultElement>(
   props: SurfaceProps<E> & { ref?: PolymorphicRef<E> },
-) => JSX.Element;
+) => React.JSX.Element;
 
 const SurfaceImpl = function Surface<
   E extends ElementType = typeof defaultElement,

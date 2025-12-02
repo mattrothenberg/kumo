@@ -5,7 +5,7 @@ export function propTester<T, C extends React.ReactElement>(
   testProp: string,
   Component: C,
   children?: React.ReactNode,
-): JSX.Element[] {
+): React.JSX.Element[] {
   return allProps.map((prop) => {
     return (
       <div
