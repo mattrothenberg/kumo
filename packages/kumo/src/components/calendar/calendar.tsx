@@ -427,7 +427,7 @@ function DateRangeMonthHeader({
         {DAYS_OF_WEEK.map((day) => (
           <div
             key={day}
-            className="h-[22px] w-7 text-center text-sm text-kumo-calendar-day-header"
+            className="text-kumo-neutral-dim h-[22px] w-7 text-center text-sm"
           >
             {day}
           </div>
@@ -439,7 +439,7 @@ function DateRangeMonthHeader({
 
 function DateRangeFooter({ reset }: { reset?: () => void }) {
   return (
-    <div className="text-kumo-neutral-subtle flex items-center gap-2 text-sm">
+    <div className="flex items-center gap-2 text-sm text-kumo-neutral-subtle">
       <GlobeHemisphereWestIcon size={16} />
       <span className="flex-1">Timezone: New York, NY, USA (GMT-4)</span>
       <span

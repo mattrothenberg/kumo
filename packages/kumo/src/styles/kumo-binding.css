@@ -145,7 +145,7 @@
 
   --text-color-kumo-secondary: light-dark(
     var(--color-neutral-900, oklch(21% 0.006 285.885)),
-    var(--color-neutral-50, oklch(98.5% 0 0))
+    var(--color-neutral-100, oklch(97% 0 0))
   );
 
   --text-color-kumo-surface-inverse: light-dark(
@@ -170,6 +170,16 @@
 
   --text-color-kumo-disabled: light-dark(
     var(--color-neutral-400, oklch(70.8% 0 0)),
+    var(--color-neutral-400, oklch(70.8% 0 0))
+  );
+
+  --text-color-kumo-neutral-dim: light-dark(
+    var(--color-neutral-500, oklch(55.6% 0 0)),
+    var(--color-neutral-500, oklch(55.6% 0 0))
+  );
+
+  --text-color-kumo-label: light-dark(
+    var(--color-neutral-600, oklch(43.9% 0 0)),
     var(--color-neutral-400, oklch(70.8% 0 0))
   );
 
@@ -204,6 +214,11 @@
   --color-kumo-surface: light-dark(
     var(--color-white, #fff),
     var(--color-black, #000)
+  );
+
+  --color-kumo-surface-2: light-dark(
+    var(--color-neutral-25, oklch(0.99 0 0)),
+    var(--color-neutral-950, oklch(14.5% 0 0))
   );
 
   --color-kumo-surface-secondary: light-dark(
@@ -265,6 +280,11 @@
 
   --color-kumo-color-3: light-dark(
     var(--color-neutral-100, oklch(97% 0 0)),
+    var(--color-neutral-800, oklch(26.9% 0 0))
+  );
+
+  --color-kumo-color-4: light-dark(
+    var(--color-neutral-250, oklch(0.9 0 0)),
     var(--color-neutral-800, oklch(26.9% 0 0))
   );
 
@@ -360,11 +380,6 @@
   --text-color-kumo-calendar-reset: light-dark(
     var(--color-neutral-800, oklch(26.9% 0 0)),
     var(--color-neutral-200, oklch(92.2% 0 0))
-  );
-
-  --text-color-kumo-calendar-day-header: light-dark(
-    var(--color-neutral-500, oklch(55.6% 0 0)),
-    var(--color-neutral-500, oklch(55.6% 0 0))
   );
 }
 

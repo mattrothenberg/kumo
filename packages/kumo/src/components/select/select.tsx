@@ -77,7 +77,9 @@ export function Select<T, Multiple extends boolean | undefined = false>({
         <span
           id={labelId}
           className={
-            hideLabel ? "sr-only" : "block text-sm font-medium text-surface"
+            hideLabel
+              ? "sr-only"
+              : "block text-sm font-medium text-kumo-surface"
           }
         >
           {label}
@@ -92,7 +94,7 @@ export function Select<T, Multiple extends boolean | undefined = false>({
           className={cn(
             buttonVariants(),
             "justify-between font-normal",
-            "outline-none focus:opacity-100 focus-visible:ring-1 focus-visible:ring-active *:in-focus:opacity-100",
+            "outline-none focus:opacity-100 focus-visible:ring-1 focus-visible:ring-kumo-active *:in-focus:opacity-100",
             className,
           )}
           aria-label={triggerAriaLabel}
@@ -111,8 +113,8 @@ export function Select<T, Multiple extends boolean | undefined = false>({
           <SelectBase.Positioner>
             <SelectBase.Popup
               className={cn(
-                "z-50 overflow-hidden bg-surface text-surface dark:bg-neutral-900", // background
-                "rounded-lg shadow-lg ring ring-neutral-950/10 dark:ring-neutral-800", // border part
+                "z-50 overflow-hidden bg-kumo-secondary text-kumo-surface", // background
+                "rounded-lg shadow-lg ring ring-kumo-border", // border part
                 // 3px adjustment to account for padding + border differences
                 "min-w-[calc(var(--anchor-width)+3px)] p-1.5", // spacing
               )}
@@ -135,7 +137,7 @@ function Option<T>({ children, value }: OptionProps<T>) {
   return (
     <SelectBase.Item
       value={value}
-      className="group flex cursor-pointer items-center justify-between gap-2 rounded px-2 py-1.5 text-base data-highlighted:bg-neutral-100 dark:data-highlighted:bg-neutral-800"
+      className="group flex cursor-pointer items-center justify-between gap-2 rounded px-2 py-1.5 text-base data-highlighted:bg-kumo-color-3"
     >
       <SelectBase.ItemText>{children}</SelectBase.ItemText>
       <SelectBase.ItemIndicator>

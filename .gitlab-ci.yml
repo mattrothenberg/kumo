@@ -7,9 +7,9 @@ stages:
   - production-release
 
 variables:
-  PNPM_VERSION: &PNPM_VERSION 'latest-10'
-  NODE_VERSION: &NODE_VERSION '24'
-  PACKAGE_NAME: '@cloudflare/kumo'
+  PNPM_VERSION: &PNPM_VERSION "latest-10"
+  NODE_VERSION: &NODE_VERSION "24"
+  PACKAGE_NAME: "@cloudflare/kumo"
 
 default:
   id_tokens:
@@ -26,10 +26,10 @@ include:
       jobPrefix: build-kumo
       PNPM_VERSION: *PNPM_VERSION
       NODE_VERSION: *NODE_VERSION
-      workDir: 'packages/kumo'
-      artifactDir: 'dist'
+      workDir: "packages/kumo"
+      artifactDir: "dist"
       runOnMR: true
-      runOnBranches: '^main$'
+      runOnBranches: "^main$"
 
   # Build @cloudflare/kumo-docs
   - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/build@~latest
@@ -38,12 +38,12 @@ include:
       jobPrefix: build-kumo-docs
       PNPM_VERSION: *PNPM_VERSION
       NODE_VERSION: *NODE_VERSION
-      workDir: 'packages/kumo-docs'
-      artifactDir: 'build'
+      workDir: "packages/kumo-docs"
+      artifactDir: "build"
       runOnMR: true
-      runOnBranches: '^main$'
+      runOnBranches: "^main$"
 
-# ============= CHECKS STAGE (Runs after build, can use artifacts) =============
+  # ============= CHECKS STAGE (Runs after build, can use artifacts) =============
 
   # Validate lockfile integrity
   - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
@@ -52,7 +52,7 @@ include:
       jobPrefix: lockfile-check
       PNPM_VERSION: *PNPM_VERSION
       NODE_VERSION: *NODE_VERSION
-      PNPM_RUN_TARGET: 'lockfile-check'
+      PNPM_RUN_TARGET: "lockfile-check"
       runOnMR: true
 
   # Type checking across workspace
@@ -62,9 +62,9 @@ include:
       jobPrefix: typecheck
       PNPM_VERSION: *PNPM_VERSION
       NODE_VERSION: *NODE_VERSION
-      PNPM_RUN_TARGET: 'typecheck'
+      PNPM_RUN_TARGET: "typecheck"
       runOnMR: true
-      runOnBranches: '^main$'
+      runOnBranches: "^main$"
 
   # Linting @cloudflare/kumo
   - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/lint@~latest
@@ -73,9 +73,9 @@ include:
       jobPrefix: lint-kumo
       PNPM_VERSION: *PNPM_VERSION
       NODE_VERSION: *NODE_VERSION
-      workDir: 'packages/kumo'
+      workDir: "packages/kumo"
       runOnMR: true
-      runOnBranches: '^main$'
+      runOnBranches: "^main$"
 
   # Changeset validation for @cloudflare/kumo
   - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
@@ -84,11 +84,11 @@ include:
       jobPrefix: validate-changeset
       PNPM_VERSION: *PNPM_VERSION
       NODE_VERSION: *NODE_VERSION
-      PNPM_RUN_TARGET: 'validate:changeset'
-      workDir: 'packages/kumo'
+      PNPM_RUN_TARGET: "validate:changeset"
+      workDir: "packages/kumo"
       runOnMR: true
 
-# ============= TEST STAGE (Uses build artifacts) =============
+  # ============= TEST STAGE (Uses build artifacts) =============
 
   # Test @cloudflare/kumo
   - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/test@~latest
@@ -97,12 +97,12 @@ include:
       jobPrefix: test-kumo
       PNPM_VERSION: *PNPM_VERSION
       NODE_VERSION: *NODE_VERSION
-      workDir: 'packages/kumo'
+      workDir: "packages/kumo"
       # COVERAGE_FOLDER: 'coverage'  # Disabled - enable when using test:coverage script
       runOnMR: true
-      runOnBranches: '^main$'
+      runOnBranches: "^main$"
 
-# ============= BETA RELEASE STAGE (Publishes beta versions to npm) =============
+  # ============= BETA RELEASE STAGE (Publishes beta versions to npm) =============
 
   # Beta release using pnpm component
   - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
@@ -111,7 +111,7 @@ include:
       jobPrefix: publish-beta
       PNPM_VERSION: *PNPM_VERSION
       NODE_VERSION: *NODE_VERSION
-      PNPM_RUN_TARGET: 'publish:beta'
+      PNPM_RUN_TARGET: "publish:beta"
       runOnMR: true
 
 
@@ -143,7 +143,6 @@ typecheck-run:
 lint-kumo-lint:
   needs:
     - build-kumo-build
-  allow_failure: true  # Temporarily allow lint failures
 
 test-kumo-test:
   needs:
@@ -164,8 +163,8 @@ publish-beta-run:
     - if: $CI_MERGE_REQUEST_IID
       changes:
         paths:
-           - packages/kumo/**/*
-        compare_to: 'refs/heads/main'
+          - packages/kumo/**/*
+        compare_to: "refs/heads/main"
       when: on_success
     - when: never
   secrets:
@@ -175,6 +174,7 @@ publish-beta-run:
     GITLAB_API_TOKEN:
       vault: gitlab/cloudflare/fe/kumo/_dev/kumo_preview_bot/data@kv
       file: false
+<<<<<<< HEAD
 
 # ============= MANUAL RELEASES STAGE (Production releases) =============
 
@@ -240,3 +240,5 @@ prod-release-kumo-run:
     CI_RELEASE_TOKEN:
       vault: gitlab/cloudflare/fe/kumo/_dev/ci_release_token/data@kv
       file: false
+=======
+>>>>>>> aab96f2 (pnpm catalog - token docs in storybook - more semantic updates)

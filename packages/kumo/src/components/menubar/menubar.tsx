@@ -23,10 +23,9 @@ const MenuOption = ({
     <Tooltip content={tooltip}>
       <button
         className={cn(
-          "focus:inset-ring-focus relative -ml-px flex h-full w-11 cursor-pointer items-center justify-center rounded-md border-none bg-neutral-200 transition-colors focus:z-10 focus:outline-none focus-visible:z-10 focus-visible:inset-ring-[0.5] dark:bg-neutral-800",
+          "focus:inset-ring-focus relative -ml-px flex h-full w-11 cursor-pointer items-center justify-center rounded-md border-none bg-kumo-color transition-colors focus:z-10 focus:outline-none focus-visible:z-10 focus-visible:inset-ring-[0.5]",
           {
-            "z-20 bg-white shadow-xs transition-colors dark:bg-black":
-              isActive === id,
+            "z-20 bg-kumo-surface shadow-xs transition-colors": isActive === id,
           },
         )}
         onClick={onClick}
@@ -59,7 +58,7 @@ export const MenuBar = ({
   return (
     <nav
       className={cn(
-        "flex rounded-lg border border-color bg-neutral-200 pl-px shadow-xs transition-colors dark:bg-neutral-800",
+        "flex rounded-lg border border-kumo-color bg-kumo-color pl-px shadow-xs transition-colors",
         className,
       )}
       ref={menuRef}

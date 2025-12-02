@@ -179,7 +179,8 @@
     "new-block": "plop block",
     "new-layout": "plop layout",
     "validate:changeset": "tsx ../../ci/scripts/validate-kumo-changeset.ts",
-    "storybook": "storybook dev -p 6006",
+    "build:colors": "tsx scripts/color/build-colors-storybook.ts",
+    "storybook": "pnpm run build:colors && storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
   "peerDependencies": {
@@ -189,7 +190,7 @@
     "react-dom": "^18.0.0 || ^19.0.0"
   },
   "dependencies": {
-    "clsx": "^2.1.1",
+    "clsx": "catalog:",
     "tailwind-merge": "^2.5.5"
   },
   "devDependencies": {
@@ -197,7 +198,7 @@
     "@storybook/react": "10.0.8",
     "@storybook/react-vite": "^10.0.8",
     "@tailwindcss/cli": "4.1.17",
-    "@tailwindcss/vite": "^4.1.17",
+    "@tailwindcss/vite": "catalog:",
     "@types/node": "^22.10.2",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
@@ -207,9 +208,9 @@
     "oxlint-tsgolint": "0.6.0",
     "plop": "4.0.4",
     "storybook": "^10.0.8",
-    "tailwindcss": "^4.1.13",
+    "tailwindcss": "catalog:",
     "tsx": "^4.19.2",
-    "typescript": "^5.9.2",
+    "typescript": "catalog:",
     "vite": "^6.0.7",
     "vite-plugin-dts": "^4.3.0",
     "vitest": "^2.1.9"

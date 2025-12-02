@@ -182,16 +182,6 @@ export const noPrimitiveColorsRule = defineRule({
     }
 
     return {
-      JSXAttribute(node) {
-        const name =
-          node.name.type === "JSXIdentifier" ? node.name.name : undefined;
-        if (name !== "className" && name !== "class") return;
-
-        if (node.value) {
-          const strings = extractStrings(node.value);
-          reportIfPrimitiveColor(node, strings);
-        }
-      },
       Literal(node) {
         if (
           typeof node.value === "string" &&

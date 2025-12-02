@@ -21,12 +21,10 @@ export function PageHeader({
 }: PageHeaderProps) {
   return (
     <div className={cn("flex flex-col gap-2", className)}>
-      <div className="border-b border-neutral-250 dark:border-neutral-800">
-        {breadcrumbs}
-      </div>
+      <div className="border-b border-kumo-color-4">{breadcrumbs}</div>
 
       {tabs && (
-        <div className="flex w-full items-center justify-between border-b border-neutral-250 pt-1 pb-3 pl-3 dark:border-neutral-800">
+        <div className="flex w-full items-center justify-between border-b border-kumo-color-4 pt-1 pb-3 pl-3">
           <Tabs
             tabs={tabs}
             selectedValue={defaultTab}

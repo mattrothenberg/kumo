@@ -7,7 +7,7 @@ function LayerCardRoot({ children, className }: LayerCardProps) {
   return (
     <div
       className={cn(
-        "flex w-full flex-col rounded-lg bg-neutral-25 text-base ring ring-neutral-950/10 dark:bg-surface dark:ring-neutral-800",
+        "flex w-full flex-col rounded-lg bg-kumo-surface-2 text-base ring ring-kumo-border",
         className,
       )}
     >
@@ -20,7 +20,7 @@ function LayerCardSecondary({ children, className }: LayerCardProps) {
   return (
     <div
       className={cn(
-        "flex items-center gap-2 p-2 text-base font-medium text-neutral-500",
+        "flex items-center gap-2 p-2 text-base font-medium text-kumo-neutral-dim",
         className,
       )}
     >
@@ -33,7 +33,7 @@ function LayerCardPrimary({ children, className }: LayerCardProps) {
   return (
     <div
       className={cn(
-        "flex flex-col gap-2 rounded-lg bg-surface p-4 pr-3 text-inherit no-underline ring ring-neutral-200 dark:bg-neutral-950 dark:ring-neutral-800",
+        "flex flex-col gap-2 rounded-lg bg-kumo-surface-2 p-4 pr-3 text-inherit no-underline ring ring-kumo-color",
         className,
       )}
     >

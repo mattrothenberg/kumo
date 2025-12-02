@@ -1,2 +1,9 @@
 packages:
-  - 'packages/*'
+  - "packages/*"
+
+catalog:
+  "@base-ui-components/react": ^1.0.0-beta.4
+  "@tailwindcss/vite": ^4.1.17
+  tailwindcss: ^4.1.13
+  clsx: ^2.1.1
+  typescript: ^5.9.2

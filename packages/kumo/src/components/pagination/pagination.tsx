@@ -40,8 +40,8 @@ export function Pagination({
   }, [totalCount, perPage]);
 
   return (
-    <div className="flex items-center justify-between">
-      <div className="grow text-sm text-neutral-600 dark:text-neutral-400">
+    <div className="flex items-center justify-between gap-2">
+      <div className="grow text-sm text-kumo-label">
         {totalCount && totalCount > 0
           ? `Showing ${pageShowingRange} of ${totalCount}`
           : null}

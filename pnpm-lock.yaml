@@ -4,6 +4,24 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    '@base-ui-components/react':
+      specifier: ^1.0.0-beta.4
+      version: 1.0.0-beta.4
+    '@tailwindcss/vite':
+      specifier: ^4.1.17
+      version: 4.1.17
+    clsx:
+      specifier: ^2.1.1
+      version: 2.1.1
+    tailwindcss:
+      specifier: ^4.1.13
+      version: 4.1.17
+    typescript:
+      specifier: ^5.9.2
+      version: 5.9.3
+
 importers:
 
   .:
@@ -17,6 +35,12 @@ importers:
       '@types/node':
         specifier: ^22.0.0
         version: 22.19.1
+      prettier:
+        specifier: 3.6.2
+        version: 3.6.2
+      prettier-plugin-tailwindcss:
+        specifier: 0.7.1
+        version: 0.7.1(prettier@3.6.2)
       tsx:
         specifier: ^4.16.2
         version: 4.20.6
@@ -33,7 +57,7 @@ importers:
         specifier: ^2.1.9
         version: 2.1.10(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       clsx:
-        specifier: ^2.1.1
+        specifier: 'catalog:'
         version: 2.1.1
       react:
         specifier: ^18.0.0 || ^19.0.0
@@ -58,7 +82,7 @@ importers:
         specifier: 4.1.17
         version: 4.1.17
       '@tailwindcss/vite':
-        specifier: ^4.1.17
+        specifier: 'catalog:'
         version: 4.1.17(vite@6.4.1(@types/node@22.19.1)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.20.6))
       '@types/node':
         specifier: ^22.10.2
@@ -88,13 +112,13 @@ importers:
         specifier: ^10.0.8
         version: 10.0.8(@testing-library/dom@10.4.1)(prettier@3.6.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(vite@6.4.1(@types/node@22.19.1)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.20.6))
       tailwindcss:
-        specifier: ^4.1.13
+        specifier: 'catalog:'
         version: 4.1.17
       tsx:
         specifier: ^4.19.2
         version: 4.20.6
       typescript:
-        specifier: ^5.9.2
+        specifier: 'catalog:'
         version: 5.9.3
       vite:
         specifier: ^6.0.7
@@ -112,7 +136,7 @@ importers:
         specifier: ^7.28.5
         version: 7.28.5
       '@base-ui-components/react':
-        specifier: ^1.0.0-beta.4
+        specifier: 'catalog:'
         version: 1.0.0-beta.4(@types/react@19.2.4)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@cloudflare/kumo':
         specifier: workspace:*
@@ -127,7 +151,7 @@ importers:
         specifier: ^7.1.9
         version: 7.1.9
       clsx:
-        specifier: ^2.1.1
+        specifier: 'catalog:'
         version: 2.1.1
       isbot:
         specifier: ^5.1.31
@@ -158,7 +182,7 @@ importers:
         specifier: ^7.9.2
         version: 7.9.5(@types/node@22.19.1)(jiti@2.6.1)(lightningcss@1.30.2)(react-router@7.9.5(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(tsx@4.20.6)(typescript@5.9.3)(vite@7.2.2(@types/node@22.19.1)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.20.6))(wrangler@4.48.0)
       '@tailwindcss/vite':
-        specifier: ^4.1.16
+        specifier: 'catalog:'
         version: 4.1.17(vite@7.2.2(@types/node@22.19.1)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.20.6))
       '@types/node':
         specifier: ^22
@@ -173,10 +197,10 @@ importers:
         specifier: 4.0.3
         version: 4.0.3
       tailwindcss:
-        specifier: ^4.1.13
+        specifier: 'catalog:'
         version: 4.1.17
       typescript:
-        specifier: ^5.9.2
+        specifier: 'catalog:'
         version: 5.9.3
       vite:
         specifier: ^7.1.7
@@ -3105,6 +3129,61 @@ packages:
   postcss@8.5.6:
     resolution: {integrity: sha512-3Ybi1tAuwAP9s0r1UQ2J4n5Y0G05bJkpUIO0/bI9MhwmD70S5aTWbXGBwxHrelT+XM1k6dM0pk+SwNkpTRN7Pg==}
     engines: {node: ^10 || ^12 || >=14}
+
+  prettier-plugin-tailwindcss@0.7.1:
+    resolution: {integrity: sha512-Bzv1LZcuiR1Sk02iJTS1QzlFNp/o5l2p3xkopwOrbPmtMeh3fK9rVW5M3neBQzHq+kGKj/4LGQMTNcTH4NGPtQ==}
+    engines: {node: '>=20.19'}
+    peerDependencies:
+      '@ianvs/prettier-plugin-sort-imports': '*'
+      '@prettier/plugin-hermes': '*'
+      '@prettier/plugin-oxc': '*'
+      '@prettier/plugin-pug': '*'
+      '@shopify/prettier-plugin-liquid': '*'
+      '@trivago/prettier-plugin-sort-imports': '*'
+      '@zackad/prettier-plugin-twig': '*'
+      prettier: ^3.0
+      prettier-plugin-astro: '*'
+      prettier-plugin-css-order: '*'
+      prettier-plugin-jsdoc: '*'
+      prettier-plugin-marko: '*'
+      prettier-plugin-multiline-arrays: '*'
+      prettier-plugin-organize-attributes: '*'
+      prettier-plugin-organize-imports: '*'
+      prettier-plugin-sort-imports: '*'
+      prettier-plugin-svelte: '*'
+    peerDependenciesMeta:
+      '@ianvs/prettier-plugin-sort-imports':
+        optional: true
+      '@prettier/plugin-hermes':
+        optional: true
+      '@prettier/plugin-oxc':
+        optional: true
+      '@prettier/plugin-pug':
+        optional: true
+      '@shopify/prettier-plugin-liquid':
+        optional: true
+      '@trivago/prettier-plugin-sort-imports':
+        optional: true
+      '@zackad/prettier-plugin-twig':
+        optional: true
+      prettier-plugin-astro:
+        optional: true
+      prettier-plugin-css-order:
+        optional: true
+      prettier-plugin-jsdoc:
+        optional: true
+      prettier-plugin-marko:
+        optional: true
+      prettier-plugin-multiline-arrays:
+        optional: true
+      prettier-plugin-organize-attributes:
+        optional: true
+      prettier-plugin-organize-imports:
+        optional: true
+      prettier-plugin-sort-imports:
+        optional: true
+      prettier-plugin-svelte:
+        optional: true
 
   prettier@2.8.8:
     resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}
@@ -6834,6 +6913,10 @@ snapshots:
       nanoid: 3.3.11
       picocolors: 1.1.1
       source-map-js: 1.2.1
+
+  prettier-plugin-tailwindcss@0.7.1(prettier@3.6.2):
+    dependencies:
+      prettier: 3.6.2
 
   prettier@2.8.8: {}
 

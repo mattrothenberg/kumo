@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { ArrowRightIcon } from "@phosphor-icons/react";
+import { Button } from "../button/button";
 import { LayerCard } from "./layer-card";
 
 const meta = {
@@ -14,7 +16,16 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {
-    children: "Layer card content",
-  },
+  render: () => (
+    <LayerCard className="w-[250px]">
+      <LayerCard.Secondary className="flex items-center justify-between">
+        <div>Next Steps</div>
+        <Button variant="ghost" size="sm" shape="square">
+          <ArrowRightIcon size={16} />
+        </Button>
+      </LayerCard.Secondary>
+
+      <LayerCard.Primary>Get started with Kumo</LayerCard.Primary>
+    </LayerCard>
+  ),
 };
