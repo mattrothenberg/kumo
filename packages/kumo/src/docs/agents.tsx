@@ -5,7 +5,7 @@ import remarkGfm from "remark-gfm";
 import { Button } from "../components/button";
 
 // Import the markdown content as raw text (Vite handles ?raw imports)
-import registryMarkdown from "../../dist/ai/component-registry.md?raw";
+import registryMarkdown from "../../ai/component-registry.md?raw";
 
 export const ComponentRegistryView: FC = () => {
   const [content, setContent] = useState<string>(registryMarkdown || "");
