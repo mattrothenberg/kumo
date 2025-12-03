@@ -1,5 +1,5 @@
 import React from "react";
-import { ArrowsClockwiseIcon, type Icon } from "@phosphor-icons/react";
+import { ArrowsClockwise, type Icon } from "@phosphor-icons/react";
 import { Loader } from "../loader/loader";
 import { cn } from "../../utils/cn";
 import { useLinkComponent } from "../../utils/link-provider";
@@ -179,7 +179,7 @@ export const RefreshButton = ({
   ...props
 }: ButtonProps) => (
   <Button shape="square" aria-label={ariaLabel} {...props}>
-    <ArrowsClockwiseIcon
+    <ArrowsClockwise
       className={cn({
         "animate-refresh": loading,
         "size-4.5": props.size === "base" || !props.size,
