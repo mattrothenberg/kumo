@@ -148,17 +148,6 @@ lint-kumo-lint:
   needs:
     - build-kumo-build
 
-test-kumo-run:
-  needs:
-    - build-kumo-build
-  # Coverage disabled temporarily - enable when test:coverage script is used
-  # coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
-  # artifacts:
-  #   reports:
-  #     coverage_report:
-  #       coverage_format: cobertura
-  #       path: packages/kumo/coverage/cobertura-coverage.xml
-
 publish-beta-run:
   needs:
     - job: validate-changeset-run
