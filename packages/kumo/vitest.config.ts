@@ -29,6 +29,12 @@ export default defineConfig({
     projects: [
       // Unit tests
       {
+        resolve: {
+          alias: {
+            "@": resolve(__dirname, "src"),
+            "@cloudflare/kumo": resolve(__dirname, "src/index.ts"),
+          },
+        },
         test: {
           name: "unit",
           environment: "happy-dom",

@@ -7,26 +7,21 @@ import { readFileSync } from "fs";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+const packageJsonPath = join(__dirname, "../../package.json");
+const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
+const distDir = join(__dirname, "../../dist");
+
+// Check if dist directory exists (skip tests if not built)
+const isBuilt = existsSync(distDir);
+
 /**
  * This test validates that package.json exports point to files that actually exist
  * in the dist directory after build. This catches mismatches between configured
  * export paths and actual build output.
+ *
+ * These tests are skipped if the dist directory doesn't exist (i.e., not built yet).
  */
-describe("Export Path Validation (Post-Build)", () => {
-  const packageJsonPath = join(__dirname, "../../package.json");
-  const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
-  const distDir = join(__dirname, "../../dist");
-
-  // Check if dist directory exists (skip tests if not built)
-  const isBuilt = existsSync(distDir);
-
-  if (!isBuilt) {
-    it.skip("dist directory does not exist - run build first", () => {
-      // This test suite requires the package to be built
-    });
-    return;
-  }
-
+describe.skipIf(!isBuilt)("Export Path Validation (Post-Build)", () => {
   describe("Export paths point to existing files", () => {
     Object.entries(packageJson.exports).forEach(([exportPath, config]) => {
       // Skip wildcard and CSS-only exports
