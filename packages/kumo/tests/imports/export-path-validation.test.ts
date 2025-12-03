@@ -9,10 +9,11 @@ const __dirname = dirname(__filename);
 
 const packageJsonPath = join(__dirname, "../../package.json");
 const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
-const distDir = join(__dirname, "../../dist");
 
-// Check if dist directory exists (skip tests if not built)
-const isBuilt = existsSync(distDir);
+// Check if the main entry point exists (not just dist/ which may contain prebuild artifacts)
+// The prebuild script creates dist/color/ but the full build creates dist/index.js
+const mainEntryPath = join(__dirname, "../../dist/index.js");
+const isBuilt = existsSync(mainEntryPath);
 
 /**
  * This test validates that package.json exports point to files that actually exist
