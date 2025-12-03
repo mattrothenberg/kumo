@@ -173,7 +173,7 @@
     "lint": "oxlint src/** --type-aware",
     "prepublishOnly": "pnpm run clean && pnpm run build && pnpm run test:unit",
     "typecheck": "tsc --noEmit",
-    "test": "CI=true vitest run --project=unit --project=storybook",
+    "test": "CI=true vitest run --project=unit",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
     "test:unit": "vitest run --project=unit",
