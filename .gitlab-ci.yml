@@ -99,7 +99,6 @@ include:
       PNPM_VERSION: *PNPM_VERSION
       NODE_VERSION: *NODE_VERSION
       workDir: "packages/kumo"
-      PNPM_RUN_TARGET: "test:ci"
       runOnMR: true
       runOnBranches: "^main$"
 
