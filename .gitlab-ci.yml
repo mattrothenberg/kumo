@@ -92,7 +92,7 @@ include:
   # ============= TEST STAGE (Uses build artifacts) =============
 
   # Test @cloudflare/kumo (unit tests + Storybook a11y tests)
-  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
+  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/test@~latest
     inputs:
       stage: test
       jobPrefix: test-kumo
