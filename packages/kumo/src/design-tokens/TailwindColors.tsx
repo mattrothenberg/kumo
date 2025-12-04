@@ -1,8 +1,78 @@
-import { type FC, useSyncExternalStore } from "react";
+import { type FC, useMemo, useSyncExternalStore } from "react";
 import {
   kumoColors,
   type KumoColor,
 } from "../../dist/color/storybook-colors.js";
+
+/**
+ * Extract the actual color value from a CSS variable fallback.
+ * e.g., "var(--color-neutral-900, oklch(21% 0.006 285.885))" -> "oklch(21% 0.006 285.885)"
+ */
+function extractColorValue(value: string): string {
+  // Match var(--name, fallback) and extract the fallback
+  const varMatch = value.match(/^var\([^,]+,\s*(.+)\)$/);
+  return varMatch ? varMatch[1] : value;
+}
+
+/**
+ * Convert a color string to hex.
+ * Uses the browser's canvas API for accurate color conversion.
+ */
+function colorToHex(color: string): string | null {
+  if (typeof document === "undefined") return null;
+
+  const actualColor = extractColorValue(color);
+
+  // Skip if already hex or simple values
+  if (actualColor.startsWith("#") || actualColor === "transparent") return null;
+
+  try {
+    const canvas = document.createElement("canvas");
+    canvas.width = 1;
+    canvas.height = 1;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return null;
+
+    ctx.fillStyle = actualColor;
+    ctx.fillRect(0, 0, 1, 1);
+    const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
+    return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Displays a color swatch with both the original value and converted hex.
+ */
+const ColorSwatch: FC<{ label: string; value: string }> = ({
+  label,
+  value,
+}) => {
+  const hex = useMemo(() => colorToHex(value), [value]);
+
+  return (
+    <div className="flex items-center gap-2">
+      <span
+        className="inline-flex h-8 w-8 shrink-0 rounded border border-color"
+        style={{ background: value }}
+      />
+      <div className="flex flex-col text-xs text-surface">
+        <span className="text-[10px] tracking-wide uppercase opacity-70">
+          {label}
+        </span>
+        <span className="truncate text-[10px] opacity-60">
+          {value}
+          {hex && (
+            <span className="ml-1 font-mono font-medium text-surface">
+              {hex}
+            </span>
+          )}
+        </span>
+      </div>
+    </div>
+  );
+};
 
 // We only expose two public display modes, but reuse the same filtering logic
 // internally to keep behavior consistent.
@@ -135,30 +205,8 @@ export const TailwindColorTokens: FC<TailwindColorTokensProps> = ({
           >
             <div className="flex flex-col gap-1">
               <div className="font-mono text-xs font-medium">{token.name}</div>
-              <div className="flex items-center gap-2">
-                <span
-                  className="inline-flex h-8 w-8 rounded border border-color"
-                  style={{ background: token.light }}
-                />
-                <div className="flex flex-col text-xs text-surface">
-                  <span className="text-[10px] tracking-wide uppercase opacity-70">
-                    Light
-                  </span>
-                  <span>{token.light}</span>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <span
-                  className="inline-flex h-8 w-8 rounded border border-color"
-                  style={{ background: token.dark }}
-                />
-                <div className="flex flex-col text-xs text-surface">
-                  <span className="text-[10px] tracking-wide uppercase opacity-70">
-                    Dark
-                  </span>
-                  <span>{token.dark}</span>
-                </div>
-              </div>
+              <ColorSwatch label="Light" value={token.light} />
+              <ColorSwatch label="Dark" value={token.dark} />
             </div>
           </div>
         ))}

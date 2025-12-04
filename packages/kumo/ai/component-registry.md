@@ -1,7 +1,7 @@
 # Kumo Component Registry
 
 > Auto-generated component metadata for AI/agent consumption.
-> Generated: 2025-12-03T19:02:19.873Z
+> Generated: 2025-12-04T20:48:25.483Z
 
 
 ## Styling Guide
