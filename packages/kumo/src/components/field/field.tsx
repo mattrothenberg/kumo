@@ -1,25 +1,56 @@
 import { Field as FieldBase } from "@base-ui-components/react/field";
-import type { ComponentPropsWithoutRef, ReactNode } from "react";
+import type { ReactNode } from "react";
+import { cn } from "../../utils/cn";
 
-type BaseErrorProps = ComponentPropsWithoutRef<typeof FieldBase.Error>;
+export const KUMO_FIELD_VARIANTS = {
+  // Field currently has no variant options but structure is ready for future additions
+} as const;
 
-export function Field({
-  children,
-  label,
-  error,
-  description,
-}: {
+export const KUMO_FIELD_DEFAULT_VARIANTS = {} as const;
+
+// Derived types from KUMO_FIELD_VARIANTS
+export interface KumoFieldVariantsProps {}
+
+export function fieldVariants(_props: KumoFieldVariantsProps = {}) {
+  return cn(
+    // Base styles
+    "grid gap-2",
+  );
+}
+
+/**
+ * Match type for field validation errors.
+ * Can be a boolean or a key from the browser's ValidityState interface.
+ * Source: BaseErrorProps["match"] (ComponentPropsWithoutRef<typeof FieldBase.Error>)
+ */
+type FieldErrorMatch =
+  | boolean
+  | "badInput"
+  | "customError"
+  | "patternMismatch"
+  | "rangeOverflow"
+  | "rangeUnderflow"
+  | "stepMismatch"
+  | "tooLong"
+  | "tooShort"
+  | "typeMismatch"
+  | "valid"
+  | "valueMissing";
+
+export interface FieldProps extends KumoFieldVariantsProps {
   children: ReactNode;
   label: string;
   error?: {
     message: ReactNode;
-    match: BaseErrorProps["match"];
+    match: FieldErrorMatch;
   };
   description?: ReactNode;
-}) {
+}
+
+export function Field({ children, label, error, description }: FieldProps) {
   return (
-    <FieldBase.Root className="grid gap-2">
-      <FieldBase.Label className="font-medium text-base">
+    <FieldBase.Root className={fieldVariants()}>
+      <FieldBase.Label className="text-base font-medium">
         {label}
       </FieldBase.Label>
       {children}
@@ -29,7 +60,7 @@ export function Field({
         </FieldBase.Error>
       )}
       {description && (
-        <FieldBase.Description className="text-sm text-muted leading-snug">
+        <FieldBase.Description className="text-sm leading-snug text-muted">
           {description}
         </FieldBase.Description>
       )}

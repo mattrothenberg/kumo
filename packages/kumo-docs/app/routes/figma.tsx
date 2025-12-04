@@ -3,19 +3,19 @@ import { Empty, Button } from "@cloudflare/kumo";
 
 export default function Figma() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex min-h-screen flex-col">
       {/* Header */}
-      <header className="border-b border-neutral-200 dark:border-neutral-800 pr-12 sticky top-0 z-10 bg-surface-secondary">
-        <div className="flex items-center border-r border-neutral-200 dark:border-neutral-800 h-12 px-4 mx-auto">
-          <p className="font-mono ml-auto text-base text-neutral-500">
+      <header className="sticky top-0 z-10 border-b border-neutral-200 bg-surface-secondary pr-12 dark:border-neutral-800">
+        <div className="mx-auto flex h-12 items-center border-r border-neutral-200 px-4 dark:border-neutral-800">
+          <p className="ml-auto font-mono text-base text-neutral-500">
             @cloudflare/kumo
           </p>
         </div>
       </header>
 
       {/* Content */}
-      <main className="pr-12 grow flex flex-col">
-        <div className="border-r border-neutral-200 dark:border-neutral-800 grow mx-auto w-full flex items-center justify-center">
+      <main className="flex grow flex-col pr-12">
+        <div className="mx-auto flex w-full grow items-center justify-center border-r border-neutral-200 dark:border-neutral-800">
           <div className="p-8">
             <Empty
               icon={<PencilRulerIcon size={48} className="text-neutral-400" />}

@@ -4,6 +4,22 @@ import { IconContext } from "@phosphor-icons/react";
 import React, { useRef } from "react";
 import { useMenuNavigation } from "./use-menu-navigation";
 
+export const KUMO_MENUBAR_VARIANTS = {
+  // MenuBar currently has no variant options but structure is ready for future additions
+} as const;
+
+export const KUMO_MENUBAR_DEFAULT_VARIANTS = {} as const;
+
+// Derived types from KUMO_MENUBAR_VARIANTS
+export interface KumoMenuBarVariantsProps {}
+
+export function menuBarVariants(_props: KumoMenuBarVariantsProps = {}) {
+  return cn(
+    // Base styles
+    "flex rounded-lg border border-color bg-color pl-px shadow-xs transition-colors",
+  );
+}
+
 type MenuOptionProps = {
   icon: React.ReactNode;
   id?: number | string;
@@ -20,18 +36,19 @@ const MenuOption = ({
   tooltip,
 }: MenuOptionProps) => {
   return (
-    <Tooltip content={tooltip}>
+    <Tooltip content={tooltip} asChild>
       <button
         className={cn(
-          "focus:inset-ring-focus bg-neutral-200 dark:bg-neutral-800 border-none relative -ml-px flex h-full w-11 cursor-pointer items-center justify-center transition-colors focus:z-10 focus:outline-none focus-visible:z-10 focus-visible:inset-ring-[0.5] rounded-md",
+          "focus:inset-ring-focus relative -ml-px flex h-full w-11 cursor-pointer items-center justify-center rounded-md border-none bg-color transition-colors focus:z-10 focus:outline-none focus-visible:z-10 focus-visible:inset-ring-[0.5]",
           {
-            "bg-white shadow-xs dark:bg-black z-20 transition-colors":
-              isActive === id,
-          }
+            "z-20 bg-surface shadow-xs transition-colors": isActive === id,
+          },
         )}
         onClick={onClick}
       >
-        <IconContext.Provider value={{ size: 18 }} {...({} as any)}>{icon}</IconContext.Provider>
+        <IconContext.Provider value={{ size: 18 }} {...({} as any)}>
+          {icon}
+        </IconContext.Provider>
       </button>
     </Tooltip>
   );
@@ -53,12 +70,12 @@ export const MenuBar = ({
   const menuRef = useRef<HTMLElement | null>(null);
 
   useMenuNavigation({ menuRef, direction: "horizontal" });
-  // bg-cl1-gray-9 dark:bg-cl1-gray-8
+
   return (
     <nav
       className={cn(
-        "pl-px bg-neutral-200 dark:bg-neutral-800 border border-color flex rounded-lg shadow-xs transition-colors",
-        className
+        "flex rounded-lg border border-color bg-color pl-px shadow-xs transition-colors",
+        className,
       )}
       ref={menuRef}
     >

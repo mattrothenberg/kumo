@@ -1,0 +1,18 @@
+{
+  "tailwindCSS.experimental.configFile": {
+    "packages/kumo-docs/app/app.css": "packages/kumo-docs/app/**",
+    "packages/kumo/src/styles/kumo-standalone.css": "packages/kumo/src/**"
+  },
+  "tailwindCSS.classFunctions": ["cn"],
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
+  "tailwindCSS.includeLanguages": {
+    "typescriptreact": "html",
+    "javascriptreact": "html",
+    "mdx": "html"
+  }
+}

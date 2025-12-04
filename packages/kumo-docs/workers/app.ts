@@ -15,7 +15,7 @@ declare module "react-router" {
 
 const requestHandler = createRequestHandler(
   () => import("virtual:react-router/server-build"),
-  import.meta.env.MODE
+  import.meta.env.MODE,
 );
 
 export default {
@@ -27,21 +27,25 @@ export default {
 
     // Try to get from cache first
     let response = await cache.match(cacheKey);
-    
+
     if (!response) {
       // Not in cache, render with React Router
       response = await requestHandler(request, {
         cloudflare: { env, ctx },
       });
-      
+
       // Cache successful GET requests for static pages
-      if (request.method === "GET" && response.status === 200 && !url.pathname.startsWith("/api/")) {
+      if (
+        request.method === "GET" &&
+        response.status === 200 &&
+        !url.pathname.startsWith("/api/")
+      ) {
         response = new Response(response.body, response);
         response.headers.set("Cache-Control", "public, max-age=3600");
         ctx.waitUntil(cache.put(cacheKey, response.clone()));
       }
     }
-    
+
     return response;
   },
 } satisfies ExportedHandler<Env>;

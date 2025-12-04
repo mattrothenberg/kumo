@@ -2,7 +2,44 @@ import { ReactNode } from "react";
 import { Tabs, type TabsItem } from "../../components/tabs";
 import { cn } from "../../utils/cn";
 
-export interface PageHeaderProps {
+export const KUMO_PAGE_HEADER_VARIANTS = {
+  spacing: {
+    compact: {
+      classes: "gap-1",
+      description: "Compact spacing between header elements",
+    },
+    base: {
+      classes: "gap-2",
+      description: "Default spacing between header elements",
+    },
+    relaxed: {
+      classes: "gap-4",
+      description: "Relaxed spacing for more prominent headers",
+    },
+  },
+} as const;
+
+export const KUMO_PAGE_HEADER_DEFAULT_VARIANTS = {
+  spacing: "base",
+} as const;
+
+export type KumoPageHeaderSpacing =
+  keyof typeof KUMO_PAGE_HEADER_VARIANTS.spacing;
+
+export interface KumoPageHeaderVariantsProps {
+  spacing?: KumoPageHeaderSpacing;
+}
+
+export function pageHeaderVariants({
+  spacing = KUMO_PAGE_HEADER_DEFAULT_VARIANTS.spacing,
+}: KumoPageHeaderVariantsProps = {}) {
+  return cn(
+    "flex flex-col",
+    KUMO_PAGE_HEADER_VARIANTS.spacing[spacing].classes,
+  );
+}
+
+export interface PageHeaderProps extends KumoPageHeaderVariantsProps {
   breadcrumbs: ReactNode;
   tabs?: TabsItem[];
   defaultTab?: string;
@@ -16,17 +53,16 @@ export function PageHeader({
   tabs,
   defaultTab,
   onValueChange,
+  spacing = "base",
   className,
   children,
 }: PageHeaderProps) {
   return (
-    <div className={cn("flex flex-col gap-2", className)}>
-      <div className="border-b border-neutral-250 dark:border-neutral-800">
-        {breadcrumbs}
-      </div>
+    <div className={cn(pageHeaderVariants({ spacing }), className)}>
+      <div className="border-b border-color-4">{breadcrumbs}</div>
 
       {tabs && (
-        <div className="flex items-center justify-between w-full border-b border-neutral-250 dark:border-neutral-800 pb-3 pt-1 pl-3">
+        <div className="flex w-full items-center justify-between border-b border-color-4 pt-1 pb-3 pl-3">
           <Tabs
             tabs={tabs}
             selectedValue={defaultTab}

@@ -22,10 +22,10 @@ To create a static build of Storybook for deployment or review:
 
 ```bash
 # From workspace root
-pnpm --filter @cloudflare/kumo build-storybook
+pnpm --filter @cloudflare/kumo build:storybook
 
 # Or from packages/kumo directory
-pnpm build-storybook
+pnpm build:storybook
 ```
 
 This generates a static site in `storybook-static/` that can be deployed to any web server.
@@ -100,16 +100,13 @@ src/
 ### Basic Story Structure
 
 ```typescript
-import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from './button';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Button } from "./button";
 
 const meta = {
-  title: 'Components/Button',
+  title: "Components/Button",
   component: Button,
-  parameters: {
-    layout: 'centered',
-  },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
 } satisfies Meta<typeof Button>;
 
 export default meta;
@@ -117,15 +114,15 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
-    children: 'Button',
-    variant: 'primary',
+    children: "Button",
+    variant: "primary",
   },
 };
 
 export const Secondary: Story = {
   args: {
-    children: 'Button',
-    variant: 'secondary',
+    children: "Button",
+    variant: "secondary",
   },
 };
 ```
@@ -158,14 +155,14 @@ export const Loading: Story = {
 };
 
 export const WithIcon: Story = {
-  args: { 
+  args: {
     children: 'Save',
     icon: <FloppyDisk size={16} />,
   },
 };
 
 export const Destructive: Story = {
-  args: { 
+  args: {
     children: 'Delete',
     variant: 'destructive',
   },
@@ -176,10 +173,10 @@ export const Destructive: Story = {
 
 ```typescript
 const meta = {
-  title: 'Components/Button',
+  title: "Components/Button",
   component: Button,
   parameters: {
-    layout: 'centered',  // 'centered', 'fullscreen', or 'padded'
+    layout: "centered", // 'centered', 'fullscreen', or 'padded'
   },
 } satisfies Meta<typeof Button>;
 ```
@@ -192,9 +189,9 @@ const meta = {
 
 ```typescript
 const meta = {
-  title: 'Components/Button',
+  title: "Components/Button",
   component: Button,
-  tags: ['autodocs'],  // Generates docs from TypeScript types
+  tags: ["autodocs"], // Generates docs from TypeScript types
 } satisfies Meta<typeof Button>;
 ```
 
@@ -274,6 +271,7 @@ pnpm --filter @cloudflare/kumo-docs dev
 ### Using Controls
 
 The Controls addon (enabled by default) allows you to:
+
 - Adjust component props in real-time
 - Test edge cases without writing new stories
 - Generate shareable URLs with specific prop values
@@ -307,16 +305,13 @@ When creating a new component, block, or layout:
 ### Story Template
 
 ```typescript
-import type { Meta, StoryObj } from '@storybook/react';
-import { YourComponent } from './your-component';
+import type { Meta, StoryObj } from "@storybook/react";
+import { YourComponent } from "./your-component";
 
 const meta = {
-  title: 'Components/YourComponent',
+  title: "Components/YourComponent",
   component: YourComponent,
-  parameters: {
-    layout: 'centered',
-  },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
 } satisfies Meta<typeof YourComponent>;
 
 export default meta;

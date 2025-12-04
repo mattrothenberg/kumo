@@ -1,0 +1,13 @@
+{
+  "plugins": ["prettier-plugin-tailwindcss"],
+  "tailwindStylesheet": "./packages/kumo-docs/app/app.css",
+  "overrides": [
+    {
+      "files": "packages/kumo/src/**/*.{ts,tsx,js,jsx,md,mdx}",
+      "options": {
+        "tailwindStylesheet": "./packages/kumo/src/styles/kumo-standalone.css"
+      }
+    }
+  ],
+  "tailwindFunctions": ["clsx", "cn"]
+}

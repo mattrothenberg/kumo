@@ -23,7 +23,9 @@ export default function DropdownDoc() {
 </DropdownMenu>`}
         >
           <DropdownMenu>
-            <DropdownMenu.Trigger render={<Button icon={PlusIcon}>Add</Button>} />
+            <DropdownMenu.Trigger
+              render={<Button icon={PlusIcon}>Add</Button>}
+            />
             <DropdownMenu.Content>
               <DropdownMenu.Item>Worker</DropdownMenu.Item>
               <DropdownMenu.Item>Pages</DropdownMenu.Item>
@@ -35,13 +37,13 @@ export default function DropdownDoc() {
 
       {/* Installation */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Installation</h2>
-        <h3 className="text-lg font-semibold mb-2">Barrel</h3>
+        <h2 className="mb-4 text-2xl font-bold">Installation</h2>
+        <h3 className="mb-2 text-lg font-semibold">Barrel</h3>
         <CodeBlock
           lang="tsx"
           code={`import { DropdownMenu } from "@cloudflare/kumo";`}
         />
-        <h3 className="text-lg font-semibold mb-2 mt-4">Granular</h3>
+        <h3 className="mt-4 mb-2 text-lg font-semibold">Granular</h3>
         <CodeBlock
           lang="tsx"
           code={`import { DropdownMenu } from "@cloudflare/kumo/components/dropdown";`}
@@ -50,7 +52,7 @@ export default function DropdownDoc() {
 
       {/* Usage */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Usage</h2>
+        <h2 className="mb-4 text-2xl font-bold">Usage</h2>
         <CodeBlock
           lang="tsx"
           code={`import { DropdownMenu, Button } from "@cloudflare/kumo";
@@ -71,11 +73,11 @@ export default function Example() {
 
       {/* Examples */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-6">Examples</h2>
+        <h2 className="mb-6 text-2xl font-bold">Examples</h2>
 
         <div className="space-y-8">
           <div>
-            <h3 className="text-xl font-semibold mb-4">Basic Dropdown</h3>
+            <h3 className="mb-4 text-xl font-semibold">Basic Dropdown</h3>
             <ComponentExample
               code={`<DropdownMenu>
   <DropdownMenu.Trigger render={<Button icon={PlusIcon}>Add</Button>} />
@@ -86,7 +88,9 @@ export default function Example() {
 </DropdownMenu>`}
             >
               <DropdownMenu>
-                <DropdownMenu.Trigger render={<Button icon={PlusIcon}>Add</Button>} />
+                <DropdownMenu.Trigger
+                  render={<Button icon={PlusIcon}>Add</Button>}
+                />
                 <DropdownMenu.Content>
                   <DropdownMenu.Item>Worker</DropdownMenu.Item>
                   <DropdownMenu.Item>Pages</DropdownMenu.Item>

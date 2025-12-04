@@ -1,21 +1,21 @@
 /**
  * AI Playground - Sandpack Version
- * 
+ *
  * Uses Sandpack for reliable bundling with all Kumo components embedded
  */
 
 import { useState } from "react";
-import { 
-  SandpackProvider, 
+import {
+  SandpackProvider,
   SandpackLayout,
   SandpackCodeEditor,
   SandpackPreview,
 } from "@codesandbox/sandpack-react";
 import { Button } from "@cloudflare/kumo";
 import { getSandpackFiles } from "~/lib/sandpack-files";
-import { 
-  SparkleIcon, 
-  CopyIcon, 
+import {
+  SparkleIcon,
+  CopyIcon,
   DownloadIcon,
   ArrowsClockwiseIcon,
   CheckIcon,
@@ -25,7 +25,10 @@ import { cn } from "@cloudflare/kumo";
 export function meta() {
   return [
     { title: "AI Playground - Kumo" },
-    { name: "description", content: "Generate and preview Kumo components with AI" },
+    {
+      name: "description",
+      content: "Generate and preview Kumo components with AI",
+    },
   ];
 }
 
@@ -42,16 +45,16 @@ export default function PlaygroundSandpack() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
-  
+
   const handleGenerate = async () => {
     if (!prompt.trim()) {
       setError("Please enter a prompt");
       return;
     }
-    
+
     setIsGenerating(true);
     setError(null);
-    
+
     try {
       const response = await fetch("/api/generate", {
         method: "POST",
@@ -60,24 +63,34 @@ export default function PlaygroundSandpack() {
         },
         body: JSON.stringify({ prompt }),
       });
-      
+
       const data: GenerateResponse = await response.json();
-      
+
       if (data.success && data.code) {
         // Build imports from components used
         const imports: string[] = [];
-        
+
         // Check which components are used
-        if (data.code.includes("<Button")) imports.push('import { Button } from "./components/button";');
-        if (data.code.includes("<Input")) imports.push('import { Input } from "./components/input";');
-        if (data.code.includes("<Field")) imports.push('import { Field } from "./components/field";');
-        if (data.code.includes("<Checkbox")) imports.push('import { Checkbox } from "./components/checkbox";');
-        if (data.code.includes("<Surface")) imports.push('import { Surface } from "./components/surface";');
-        if (data.code.includes("<Badge")) imports.push('import { Badge } from "./components/badge";');
-        if (data.code.includes("<Banner")) imports.push('import { Banner } from "./components/banner";');
-        if (data.code.includes("<LayerCard")) imports.push('import { LayerCard } from "./components/layer-card";');
-        if (data.code.includes("<Loader")) imports.push('import { Loader } from "./components/loader";');
-        if (data.code.includes("<Switch")) imports.push('import { Switch } from "./components/switch";');
+        if (data.code.includes("<Button"))
+          imports.push('import { Button } from "./components/button";');
+        if (data.code.includes("<Input"))
+          imports.push('import { Input } from "./components/input";');
+        if (data.code.includes("<Field"))
+          imports.push('import { Field } from "./components/field";');
+        if (data.code.includes("<Checkbox"))
+          imports.push('import { Checkbox } from "./components/checkbox";');
+        if (data.code.includes("<Surface"))
+          imports.push('import { Surface } from "./components/surface";');
+        if (data.code.includes("<Badge"))
+          imports.push('import { Badge } from "./components/badge";');
+        if (data.code.includes("<Banner"))
+          imports.push('import { Banner } from "./components/banner";');
+        if (data.code.includes("<LayerCard"))
+          imports.push('import { LayerCard } from "./components/layer-card";');
+        if (data.code.includes("<Loader"))
+          imports.push('import { Loader } from "./components/loader";');
+        if (data.code.includes("<Switch"))
+          imports.push('import { Switch } from "./components/switch";');
         if (data.code.includes("<Select")) {
           imports.push('import { Select } from "./components/select";');
         }
@@ -90,11 +103,15 @@ export default function PlaygroundSandpack() {
             data.code.includes("<DialogDescription") ||
             data.code.includes("<DialogClose")
           ) {
-            imports.push('import { DialogRoot, DialogTrigger, DialogTitle, DialogDescription, DialogClose } from "./components/dialog";');
+            imports.push(
+              'import { DialogRoot, DialogTrigger, DialogTitle, DialogDescription, DialogClose } from "./components/dialog";',
+            );
           }
         }
         if (data.code.includes("<Tooltip")) {
-          imports.push('import { Tooltip, TooltipProvider } from "./components/tooltip";');
+          imports.push(
+            'import { Tooltip, TooltipProvider } from "./components/tooltip";',
+          );
         }
         if (data.code.includes("<DropdownMenu")) {
           imports.push('import { DropdownMenu } from "./components/dropdown";');
@@ -105,19 +122,21 @@ export default function PlaygroundSandpack() {
         if (data.code.includes("<Empty")) {
           imports.push('import { Empty } from "@cloudflare/kumo";');
         }
-        
+
         // Check for icons
         const iconMatches = data.code.match(/\b(\w+Icon)\b/g);
         if (iconMatches) {
           const uniqueIcons = [...new Set(iconMatches)];
-          imports.push(`import { ${uniqueIcons.join(", ")} } from "@phosphor-icons/react";`);
+          imports.push(
+            `import { ${uniqueIcons.join(", ")} } from "@phosphor-icons/react";`,
+          );
         }
-        
+
         // Add React imports if hooks are used
         if (data.code.includes("useState") || data.code.includes("useEffect")) {
           imports.unshift('import { useState, useEffect } from "react";');
         }
-        
+
         // Build the full App.tsx
         const fullCode = `${imports.join("\n")}
 
@@ -128,7 +147,7 @@ export default function App() {
     </div>
   );
 }`;
-        
+
         // Update files
         setFiles({
           ...files,
@@ -145,17 +164,17 @@ export default function App() {
       setIsGenerating(false);
     }
   };
-  
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
       handleGenerate();
     }
   };
-  
+
   const handleCopy = async () => {
     const appFile = files["/App.tsx"];
     const code = typeof appFile === "string" ? appFile : appFile?.code || "";
-    
+
     try {
       await navigator.clipboard.writeText(code);
       setCopied(true);
@@ -164,7 +183,7 @@ export default function App() {
       console.error("Failed to copy:", err);
     }
   };
-  
+
   const handleDownload = () => {
     const appFile = files["/App.tsx"];
     const code = typeof appFile === "string" ? appFile : appFile?.code || "";
@@ -178,7 +197,7 @@ export default function App() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
-  
+
   const handleReset = () => {
     setFiles(getSandpackFiles());
     setPrompt("");
@@ -186,16 +205,16 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-neutral-50 dark:bg-neutral-900">
+    <div className="flex min-h-screen flex-col bg-neutral-50 dark:bg-neutral-900">
       {/* Header */}
-      <header className="border-b border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950">
-        <div className="max-w-screen-2xl mx-auto px-6 py-4">
+      <header className="border-b border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950">
+        <div className="mx-auto max-w-screen-2xl px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
                 AI Playground
               </h1>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
+              <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
                 Generate live component templates with AI • Powered by Sandpack
               </p>
             </div>
@@ -230,8 +249,8 @@ export default function App() {
       </header>
 
       {/* Prompt Input */}
-      <div className="border-b border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950">
-        <div className="max-w-screen-2xl mx-auto px-6 py-4">
+      <div className="border-b border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950">
+        <div className="mx-auto max-w-screen-2xl px-6 py-4">
           <div className="flex gap-3">
             <input
               type="text"
@@ -241,12 +260,12 @@ export default function App() {
               placeholder="Describe what you want to build... (e.g., 'Create a login form with email and password')"
               disabled={isGenerating}
               className={cn(
-                "flex-1 h-9 px-3 rounded-lg text-base",
+                "h-9 flex-1 rounded-lg px-3 text-base",
                 "bg-white dark:bg-neutral-900",
                 "ring ring-neutral-950/10 dark:ring-neutral-800",
-                "text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400",
-                "outline-none focus:ring-blue-500 focus:ring-2",
-                "disabled:opacity-50 disabled:cursor-not-allowed"
+                "text-neutral-900 placeholder:text-neutral-400 dark:text-neutral-100",
+                "outline-none focus:ring-2 focus:ring-blue-500",
+                "disabled:cursor-not-allowed disabled:opacity-50",
               )}
             />
             <Button
@@ -260,12 +279,16 @@ export default function App() {
             </Button>
           </div>
           {error && (
-            <p className="text-sm text-red-600 dark:text-red-400 mt-2">
+            <p className="mt-2 text-sm text-red-600 dark:text-red-400">
               {error}
             </p>
           )}
-          <p className="text-xs text-neutral-500 mt-2">
-            Press <kbd className="px-1.5 py-0.5 bg-neutral-200 dark:bg-neutral-800 rounded text-xs font-mono">⌘ + Enter</kbd> to generate
+          <p className="mt-2 text-xs text-neutral-500">
+            Press{" "}
+            <kbd className="rounded bg-neutral-200 px-1.5 py-0.5 font-mono text-xs dark:bg-neutral-800">
+              ⌘ + Enter
+            </kbd>{" "}
+            to generate
           </p>
         </div>
       </div>
@@ -278,19 +301,17 @@ export default function App() {
           customSetup={{
             dependencies: {
               "@phosphor-icons/react": "^2.1.10",
-              "clsx": "^2.1.1",
+              clsx: "^2.1.1",
               "tailwind-merge": "^3.3.1",
             },
           }}
           theme="auto"
           options={{
-            externalResources: [
-              "https://cdn.tailwindcss.com",
-            ],
+            externalResources: ["https://cdn.tailwindcss.com"],
           }}
         >
           <SandpackLayout>
-            <SandpackCodeEditor 
+            <SandpackCodeEditor
               showTabs
               showLineNumbers
               showInlineErrors
@@ -298,7 +319,7 @@ export default function App() {
               closableTabs
               style={{ height: "calc(100vh - 200px)" }}
             />
-            <SandpackPreview 
+            <SandpackPreview
               showOpenInCodeSandbox={false}
               showRefreshButton
               showRestartButton
@@ -309,10 +330,11 @@ export default function App() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950">
-        <div className="max-w-screen-2xl mx-auto px-6 py-3">
-          <p className="text-xs text-neutral-500 text-center">
-            Powered by OpenAI GPT-4 • Sandpack by CodeSandbox • Kumo Component Library
+      <footer className="border-t border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950">
+        <div className="mx-auto max-w-screen-2xl px-6 py-3">
+          <p className="text-center text-xs text-neutral-500">
+            Powered by OpenAI GPT-4 • Sandpack by CodeSandbox • Kumo Component
+            Library
           </p>
         </div>
       </footer>

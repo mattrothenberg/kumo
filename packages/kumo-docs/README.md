@@ -23,18 +23,21 @@ The site runs at `http://localhost:5173` with full HMR support. Changes to docum
 When you need to see component library changes in the documentation site:
 
 **Terminal 1: Start kumo watch build**
+
 ```bash
 cd ../kumo
 pnpm dev
 ```
 
 **Terminal 2: Start docs dev server**
+
 ```bash
 # From this directory
 pnpm dev
 ```
 
 **Workflow:**
+
 1. Edit components in `../kumo/src/`
 2. Kumo rebuilds automatically (~400ms)
 3. Manually refresh browser to see changes

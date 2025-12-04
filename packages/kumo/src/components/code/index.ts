@@ -1,1 +1,9 @@
-export { Code, CodeBlock, type BundledLanguage } from "./code";
+export {
+  Code,
+  CodeBlock,
+  type CodeProps,
+  type CodeBlockProps,
+  type CodeLang,
+  /** @deprecated Use CodeLang instead */
+  type BundledLanguage,
+} from "./code";

@@ -102,12 +102,14 @@ The monorepo contains two packages with different development characteristics:
 ### Package Overview
 
 **@cloudflare/kumo** (`packages/kumo/`)
+
 - Component library built with Vite in library mode
 - Watch mode rebuilds on changes (not full HMR)
 - Outputs to `dist/` for consumption by docs site
 - Includes Storybook for component development
 
 **@cloudflare/kumo-docs** (`packages/kumo-docs/`)
+
 - Documentation site built with React Router + Vite
 - Full HMR with React Fast Refresh
 - Runs at `http://localhost:5173`
@@ -139,6 +141,7 @@ pnpm --filter @cloudflare/kumo storybook
 ```
 
 Storybook runs at `http://localhost:6006` and provides:
+
 - Component development in isolation
 - Full HMR for instant updates
 - Interactive component testing
@@ -151,6 +154,7 @@ See [packages/kumo/STORYBOOK.md](./packages/kumo/STORYBOOK.md) for more details.
 #### Isolated Component Development (Recommended)
 
 **Using Storybook:**
+
 ```bash
 pnpm --filter @cloudflare/kumo storybook
 ```
@@ -165,24 +169,28 @@ pnpm --filter @cloudflare/kumo storybook
 When you need to test components in the actual documentation site:
 
 **Terminal 1: Start kumo watch build**
+
 ```bash
 cd packages/kumo
 pnpm dev
 ```
 
 **Terminal 2: Start kumo-docs dev server**
+
 ```bash
 cd packages/kumo-docs
 pnpm dev
 ```
 
 **Workflow:**
+
 1. Edit a component in `packages/kumo/src/components/`
 2. Kumo automatically rebuilds (~400ms with optimizations)
 3. Manually refresh browser to see changes in docs site
 4. Changes are validated against production build output
 
 **Build Optimizations:**
+
 - Development builds skip minification for faster rebuilds
 - Incremental TypeScript compilation caches type information
 - Selective file watching ignores test and story files
@@ -226,6 +234,7 @@ pnpm --filter @cloudflare/kumo new
 ```
 
 **What it does:**
+
 - Creates component, index, and test files in `packages/kumo/src/components/{name}/`
 - Updates `src/index.ts` with component export
 - Updates `vite.config.ts` with build entry
@@ -233,6 +242,7 @@ pnpm --filter @cloudflare/kumo new
 - Handles naming automatically (converts any format to proper casing)
 
 **Example:**
+
 ```bash
 ? Component name: Alert Banner
 
@@ -249,6 +259,7 @@ pnpm --filter @cloudflare/kumo new
 ```
 
 **Next steps:**
+
 1. Implement your component in the generated `.tsx` file
 2. Write tests in the generated `.test.tsx` file
 3. Run tests: `pnpm --filter @cloudflare/kumo test`
@@ -300,6 +311,7 @@ Beta releases are automatically published for merge requests, allowing you to te
 
 **CI Pipeline:**
 The beta release process is automated through the `version-and-publish-beta` job in `.gitlab-ci.yml`:
+
 - **Stage**: `beta-release` (runs after checks/tests pass)
 - **Triggers**: Automatically on merge requests with changes to `packages/kumo/**/*`
 - **Dependencies**: Requires `validate-changeset-run` job to pass
@@ -312,6 +324,7 @@ The beta release process is automated through the `version-and-publish-beta` job
   6. Posts MR comment with installation instructions
 
 **How it works:**
+
 1. Create a changeset for your changes: `pnpm changeset`
 2. Open a merge request with changes to `packages/kumo/`
 3. CI automatically validates changeset exists (`validate-changeset-run` job)
@@ -319,6 +332,7 @@ The beta release process is automated through the `version-and-publish-beta` job
 5. MR receives comment with installation instructions
 
 **Installing beta versions:**
+
 ```bash
 npm install @cloudflare/kumo@0.1.0-beta.a1b2c3d
 # or
@@ -377,6 +391,7 @@ The changeset will be consumed during the next release and added to the changelo
 ### Troubleshooting Beta Releases
 
 **Beta job not appearing in MR pipeline:**
+
 1. **Check file changes**: The job only triggers when files in `packages/kumo/**/*` are modified
 2. **Verify changeset exists**: Run `ls .changeset/*.md` to confirm a changeset is present
 3. **Check pipeline rules**: The job requires `$CI_MERGE_REQUEST_IID` to be set (only runs on MRs, not branches)
@@ -384,6 +399,7 @@ The changeset will be consumed during the next release and added to the changelo
 5. **Check GitLab CI logs**: Review pipeline configuration and rule evaluation
 
 **Beta job failed:**
+
 - Check that `jq` is installed in the CI environment
 - Verify npm token secrets are configured in Vault
 - Ensure git is properly configured with user email/name

@@ -17,16 +17,19 @@ pnpm new
 ```
 
 **What it creates:**
+
 - Component file: `src/components/{name}/{name}.tsx`
 - Index file: `src/components/{name}/index.ts`
 - Test file: `src/components/{name}/{name}.test.tsx`
 
 **What it updates:**
+
 - `src/index.ts` - Adds component export
 - `vite.config.ts` - Adds build entry
 - `package.json` - Adds export configuration
 
 **Example:**
+
 ```bash
 ? Component name: Alert Banner
 
@@ -50,11 +53,13 @@ pnpm new-block
 ```
 
 **What it creates:**
+
 - Block file: `src/blocks/{name}/{name}.tsx`
 - Index file: `src/blocks/{name}/index.ts`
 - Test file: `src/blocks/{name}/{name}.test.tsx`
 
 **What it updates:**
+
 - `src/index.ts` - Adds block export
 - `vite.config.ts` - Adds build entry
 - `package.json` - Adds export configuration
@@ -71,16 +76,19 @@ pnpm new-layout
 ```
 
 **What it creates:**
+
 - Layout file: `src/layouts/{name}/{name}.tsx`
 - Index file: `src/layouts/{name}/index.ts`
 - Test file: `src/layouts/{name}/{name}.test.tsx`
 
 **What it updates:**
+
 - `src/index.ts` - Adds layout export
 - `vite.config.ts` - Adds build entry
 - `package.json` - Adds export configuration
 
 **Example:**
+
 ```bash
 ? Layout name: Dashboard Page
 
@@ -103,6 +111,7 @@ pnpm new-layout
 Kumo uses **Storybook** as a live development environment for building and testing components in isolation. Storybook provides instant feedback, interactive controls, and serves as living documentation for the component library.
 
 **Start Storybook:**
+
 ```bash
 # From this directory
 pnpm storybook
@@ -114,6 +123,7 @@ pnpm --filter @cloudflare/kumo storybook
 Storybook runs at `http://localhost:6006` with hot module replacement enabled.
 
 **Why use Storybook:**
+
 - Full HMR with React Fast Refresh
 - Changes reflect instantly without page reload
 - Test all component variations and edge cases interactively
@@ -122,11 +132,13 @@ Storybook runs at `http://localhost:6006` with hot module replacement enabled.
 - Test keyboard navigation and screen readers
 
 **Story files** live alongside components:
+
 - Components: `src/components/{name}/{name}.stories.tsx`
 - Blocks: `src/blocks/{name}/{name}.stories.tsx`
 - Layouts: `src/layouts/{name}/{name}.stories.tsx`
 
 **See [STORYBOOK.md](./STORYBOOK.md) for documentation** including:
+
 - Writing stories guide
 - Development workflow
 - Best practices
@@ -136,11 +148,13 @@ Storybook runs at `http://localhost:6006` with hot module replacement enabled.
 When you need to test components in the actual documentation site or consuming application:
 
 **Start watch build:**
+
 ```bash
 pnpm dev
 ```
 
 This runs Vite in watch mode with optimizations for fast rebuilds:
+
 - ⚡~400ms rebuild time (10x faster than production builds)
 - Skips minification in development
 - Incremental TypeScript compilation
@@ -150,22 +164,26 @@ This runs Vite in watch mode with optimizations for fast rebuilds:
 **Using with documentation site:**
 
 Terminal 1 (this directory):
+
 ```bash
 pnpm dev
 ```
 
 Terminal 2 (from workspace root or kumo-docs):
+
 ```bash
 cd ../kumo-docs
 pnpm dev
 ```
 
 When you edit a component:
+
 1. Kumo rebuilds automatically (~400ms)
 2. Refresh browser to see changes in docs site
 3. Changes are validated against the actual build output
 
 **Build modes:**
+
 - `pnpm dev` - Development mode (fast, optimized for iteration)
 - `pnpm build` - Production mode (full optimization, minification, CSS processing)
 
@@ -174,6 +192,7 @@ When you edit a component:
 The package includes comprehensive import validation tests that ensure all components are properly exported and consumable.
 
 **Run tests:**
+
 ```bash
 # Watch mode
 pnpm test
@@ -189,6 +208,7 @@ pnpm test:coverage
 ```
 
 **What's tested:**
+
 - All components importable from main entry: `import { Component } from "@cloudflare/kumo"`
 - All components importable via deep imports: `import { Component } from "@cloudflare/kumo/components/component-name"`
 - All blocks importable from main entry: `import { Block } from "@cloudflare/kumo"`
@@ -210,6 +230,7 @@ Beta releases allow you to test changes before publishing to production. Beta ve
 Beta releases are automatically triggered for merge requests through the CI pipeline configured in the root `.gitlab-ci.yml`:
 
 **CI Job Configuration:**
+
 - **Job Name**: `version-and-publish-beta`
 - **Stage**: `beta-release` (runs after build, checks, and tests)
 - **Triggers**: Automatically on merge requests with changes to `packages/kumo/**/*`
@@ -218,22 +239,25 @@ Beta releases are automatically triggered for merge requests through the CI pipe
 - **Authentication**: Uses Vault secrets for npm and GitLab API tokens
 
 **Process Flow:**
-  1. **Validate**: Ensures changeset exists for `@cloudflare/kumo`
-  2. **Version**: Runs `pnpm run version:beta` (executes `./ci/versioning/version-beta.sh`)
-     - Consumes pending changesets
-     - Appends `-beta.{commit-hash}` to version number
-  3. **Build**: Runs `pnpm run build` in `packages/kumo`
-  4. **Publish**: Runs `pnpm run release:beta` to publish with `beta` tag
-  5. **Verify**: Waits 45s for npm propagation and verifies publication
-  6. **Notify**: Posts MR comment with installation instructions
+
+1. **Validate**: Ensures changeset exists for `@cloudflare/kumo`
+2. **Version**: Runs `pnpm run version:beta` (executes `./ci/versioning/version-beta.sh`)
+   - Consumes pending changesets
+   - Appends `-beta.{commit-hash}` to version number
+3. **Build**: Runs `pnpm run build` in `packages/kumo`
+4. **Publish**: Runs `pnpm run release:beta` to publish with `beta` tag
+5. **Verify**: Waits 45s for npm propagation and verifies publication
+6. **Notify**: Posts MR comment with installation instructions
 
 **Secrets Required:**
+
 - `NPM_TOKEN`: Authentication for npm registry
 - `GITLAB_API_TOKEN`: For posting MR comments
 
 ### Beta Version Format
 
 Beta versions follow this pattern:
+
 ```
 {base-version}-beta.{commit-hash}
 ```
@@ -282,15 +306,18 @@ This package uses [Changesets](https://github.com/changesets/changesets) for ver
 ### Creating a Release
 
 1. **Check for existing changesets**:
+
    ```bash
    # List any pending changesets
    ls .changeset/*.md 2>/dev/null | grep -v "README\|USAGE" || echo "No pending changesets"
    ```
 
 2. **Create a changeset** for your changes (if necessary):
+
    ```bash
    pnpm changeset
    ```
+
    - Select `@cloudflare/kumo` from the list
    - Select the type of change: `patch`, `minor`, or `major`
    - Write a clear description of what changed
@@ -325,6 +352,7 @@ pnpm release
 ```
 
 This will:
+
 - Update `package.json` with new version
 - Generate/update `CHANGELOG.md`
 - Remove consumed changeset files
@@ -336,6 +364,7 @@ This will:
 After publishing:
 
 1. **Commit version changes**:
+
    ```bash
    git add .
    git commit -m "chore: release @cloudflare/kumo@{version}"
@@ -343,6 +372,7 @@ After publishing:
    ```
 
 2. **Push tags**:
+
    ```bash
    git push --tags
    ```
@@ -363,6 +393,7 @@ Follow semantic versioning guidelines:
 ### Release Notes
 
 Changesets automatically generate:
+
 - Updated `package.json` version
 - `CHANGELOG.md` with release notes
 - Git tags for each release

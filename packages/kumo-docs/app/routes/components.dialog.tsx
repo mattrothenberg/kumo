@@ -11,7 +11,7 @@ type DialogExampleProps = {
 function DialogExample({ withButtons = false }: DialogExampleProps) {
   return (
     <Dialog className="p-8">
-      <div className="flex items-start justify-between gap-4 mb-4">
+      <div className="mb-4 flex items-start justify-between gap-4">
         <div>
           <Dialog.Title className="text-2xl font-semibold">
             Modal Title
@@ -111,13 +111,13 @@ export default function DialogDoc() {
 
       {/* Installation */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Installation</h2>
-        <h3 className="text-lg font-semibold mb-2">Barrel</h3>
+        <h2 className="mb-4 text-2xl font-bold">Installation</h2>
+        <h3 className="mb-2 text-lg font-semibold">Barrel</h3>
         <CodeBlock
           lang="tsx"
           code={`import { Dialog } from "@cloudflare/kumo";`}
         />
-        <h3 className="text-lg font-semibold mb-2 mt-4">Granular</h3>
+        <h3 className="mt-4 mb-2 text-lg font-semibold">Granular</h3>
         <CodeBlock
           lang="tsx"
           code={`import { Dialog } from "@cloudflare/kumo/components/dialog";`}
@@ -126,7 +126,7 @@ export default function DialogDoc() {
 
       {/* Usage */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Usage</h2>
+        <h2 className="mb-4 text-2xl font-bold">Usage</h2>
         <CodeBlock
           lang="tsx"
           code={`import { Dialog, Button } from "@cloudflare/kumo";
@@ -158,11 +158,11 @@ export default function Example() {
 
       {/* Examples */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-6">Examples</h2>
+        <h2 className="mb-6 text-2xl font-bold">Examples</h2>
 
         <div className="space-y-8">
           <div>
-            <h3 className="text-xl font-semibold mb-4">Basic Dialog</h3>
+            <h3 className="mb-4 text-xl font-semibold">Basic Dialog</h3>
             <ComponentExample
               code={`<Dialog.Root>
   <Dialog.Trigger render={(p) => <Button {...p}>Click me</Button>} />
@@ -204,7 +204,7 @@ export default function Example() {
           </div>
 
           <div>
-            <h3 className="text-xl font-semibold mb-4">With Actions</h3>
+            <h3 className="mb-4 text-xl font-semibold">With Actions</h3>
             <ComponentExample
               code={`<Dialog.Root>
   <Dialog.Trigger render={(p) => <Button {...p}>Delete</Button>} />

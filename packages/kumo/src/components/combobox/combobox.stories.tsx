@@ -1,21 +1,26 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Combobox } from "./combobox";
+import {
+  Combobox,
+  KUMO_COMBOBOX_VARIANTS,
+  KUMO_COMBOBOX_DEFAULT_VARIANTS,
+  type KumoComboboxInputSide,
+} from "./combobox";
 import { useMemo, useState } from "react";
 import { Text } from "../text";
 import { Button } from "../button";
 
-const meta = {
+const meta: Meta<typeof Combobox> = {
   title: "Components/Combobox",
+  component: Combobox,
   parameters: {
-    layout: "centered",
+    layout: "padded",
   },
-  tags: ["autodocs"],
-} satisfies Meta;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Single: Story = {
   render: () => {
     const items = useMemo(() => {
       return [
@@ -55,16 +60,16 @@ type BotType = {
 
 export const Multiple: StoryObj<{
   placeholder: string;
-  inputSide: "top" | "right";
+  inputSide: KumoComboboxInputSide;
 }> = {
   args: {
     placeholder: "Select bot",
-    inputSide: "top",
+    inputSide: KUMO_COMBOBOX_DEFAULT_VARIANTS.inputSide,
   },
   argTypes: {
     inputSide: {
-      control: { type: "select" },
-      options: ["top", "right"],
+      control: "select",
+      options: Object.keys(KUMO_COMBOBOX_VARIANTS.inputSide),
     },
   },
   render: (args) => {
@@ -82,7 +87,7 @@ export const Multiple: StoryObj<{
         { label: "WhatsAppBot", author: "WhatsApp", value: "whatsappbot" },
         { label: "SlackBot", author: "Slack", value: "slackbot" },
       ],
-      []
+      [],
     );
 
     const [value, setValue] = useState<BotType[]>([]);
@@ -110,7 +115,7 @@ export const Multiple: StoryObj<{
               inputSide={args.inputSide}
             />
             <Combobox.Content
-              className="min-w-auto max-h-[200px] overflow-y-auto"
+              className="max-h-[200px] min-w-auto overflow-y-auto"
               side={args.inputSide === "top" ? "top" : "bottom"}
             >
               <Combobox.Empty />
@@ -130,6 +135,55 @@ export const Multiple: StoryObj<{
         {/* Demonstrates that the multi-select combobox maintains consistent height with other Kumo components */}
         <Button variant="primary">Submit</Button>
       </div>
+    );
+  },
+};
+
+const INITIAL_BOT_LIST: BotType[] = [
+  { label: "Amazonbot", author: "Amazon", value: "amazonbot" },
+  { label: "Googlebot", author: "Google", value: "googlebot" },
+  { label: "BingBot", author: "Bing", value: "bingbot" },
+];
+
+const INITIAL_SELECTED: BotType[] = [INITIAL_BOT_LIST[0], INITIAL_BOT_LIST[1]];
+
+export const MultipleWithPreselectedChips: Story = {
+  render: () => {
+    const [value, setValue] = useState<BotType[]>(INITIAL_SELECTED);
+
+    return (
+      <Combobox
+        value={value}
+        onValueChange={setValue}
+        items={INITIAL_BOT_LIST}
+        isItemEqualToValue={(bot, selectedValue) =>
+          bot.value === selectedValue.value
+        }
+        multiple
+      >
+        <Combobox.TriggerMultipleWithInput
+          className="w-[400px]"
+          placeholder="Select bot"
+          value={value}
+          renderItem={(selected: BotType) => (
+            <Combobox.Chip key={selected.value}>{selected.label}</Combobox.Chip>
+          )}
+          inputSide="top"
+        />
+        <Combobox.Content className="max-h-[200px] min-w-auto overflow-y-auto">
+          <Combobox.Empty />
+          <Combobox.List>
+            {(item: BotType) => (
+              <Combobox.Item key={item.value} value={item}>
+                <div className="flex gap-2">
+                  <Text>{item.label}</Text>
+                  <Text variant="secondary">{item.author}</Text>
+                </div>
+              </Combobox.Item>
+            )}
+          </Combobox.List>
+        </Combobox.Content>
+      </Combobox>
     );
   },
 };

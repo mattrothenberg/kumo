@@ -1,13 +1,69 @@
-import { Combobox as ComboboxBase } from "@base-ui-components/react";
+import { Combobox as ComboboxBase } from "@base-ui-components/react/combobox";
 import { CaretDownIcon, CheckIcon, XIcon } from "@phosphor-icons/react";
-import { Fragment, type PropsWithChildren } from "react";
+import { Fragment, type PropsWithChildren, type ReactNode } from "react";
 import { inputVariants } from "../input/input";
 import { cn } from "../../utils/cn";
+
+export const KUMO_COMBOBOX_VARIANTS = {
+  inputSide: {
+    right: {
+      classes: "",
+      description: "Input positioned inline to the right of chips",
+    },
+    top: {
+      classes: "",
+      description: "Input positioned above chips",
+    },
+  },
+} as const;
+
+export const KUMO_COMBOBOX_DEFAULT_VARIANTS = {
+  inputSide: "right",
+} as const;
+
+// Derived types from KUMO_COMBOBOX_VARIANTS
+export type KumoComboboxInputSide =
+  keyof typeof KUMO_COMBOBOX_VARIANTS.inputSide;
+
+export interface KumoComboboxVariantsProps {
+  inputSide?: KumoComboboxInputSide;
+}
+
+export function comboboxVariants({
+  inputSide = KUMO_COMBOBOX_DEFAULT_VARIANTS.inputSide,
+}: KumoComboboxVariantsProps = {}) {
+  return cn(KUMO_COMBOBOX_VARIANTS.inputSide[inputSide].classes);
+}
+
+// Legacy type alias for backwards compatibility
+export type ComboboxInputSide = KumoComboboxInputSide;
+
+export type ComboboxRootProps<
+  ItemValue = unknown,
+  SelectedValue = ItemValue,
+  Multiple extends boolean | undefined = false,
+> = ComboboxBase.Root.Props<ItemValue, SelectedValue, Multiple>;
+
+// Simplified props type for AI/documentation (non-generic)
+export interface ComboboxProps extends KumoComboboxVariantsProps {
+  /** Array of items to display in the dropdown */
+  items: unknown[];
+  /** Currently selected value(s) */
+  value?: unknown;
+  /** Callback when selection changes */
+  onValueChange?: (value: unknown) => void;
+  /** Enable multi-select mode */
+  multiple?: boolean;
+  /** Combobox content (trigger, content, items) */
+  children: ReactNode;
+  /** Additional CSS classes */
+  className?: string;
+}
 
 function Root<
   ItemValue,
   SelectedValue = ItemValue,
-  Multiple extends boolean | undefined = false
+  Multiple extends boolean | undefined = false,
 >(props: ComboboxBase.Root.Props<ItemValue, SelectedValue, Multiple>) {
   return <ComboboxBase.Root {...props} />;
 }
@@ -37,10 +93,10 @@ function Content({
       >
         <ComboboxBase.Popup
           className={cn(
-            "min-w-(--anchor-width) max-h-[min(var(--available-height),24rem)] max-w-(--available-width) overflow-y-auto scroll-pt-2 scroll-pb-2 overscroll-contain p-1.5",
-            "z-50 bg-surface dark:bg-neutral-900 text-surface overflow-hidden", // background
-            "ring ring-neutral-950/10 dark:ring-neutral-800 shadow-lg rounded-lg", // border part
-            className
+            "max-h-[min(var(--available-height),24rem)] max-w-(--available-width) min-w-(--anchor-width) scroll-pt-2 scroll-pb-2 overflow-y-auto overscroll-contain p-1.5",
+            "z-50 overflow-hidden bg-secondary text-surface", // background
+            "rounded-lg shadow-lg ring ring-border", // border part
+            className,
           )}
         >
           {children}
@@ -58,13 +114,13 @@ function TriggerValue({
     <ComboboxBase.Trigger
       className={cn(
         inputVariants(),
-        "relative pr-8 flex items-center",
-        className
+        "relative flex items-center pr-8",
+        className,
       )}
     >
       <ComboboxBase.Value>{props.children}</ComboboxBase.Value>
-      <ComboboxBase.Icon className="absolute top-1/2 -translate-y-1/2 right-2">
-        <CaretDownIcon />
+      <ComboboxBase.Icon className="absolute top-1/2 right-2 -translate-y-1/2">
+        <CaretDownIcon className="fill-active" />
       </ComboboxBase.Icon>
     </ComboboxBase.Trigger>
   );
@@ -77,12 +133,12 @@ function TriggerInput(props: ComboboxBase.Input.Props) {
         {...props}
         className={cn(inputVariants(), "w-full pr-12")}
       />
-      <ComboboxBase.Clear className="absolute top-1/2 -translate-y-1/2 right-8 cursor-pointer">
+      <ComboboxBase.Clear className="absolute top-1/2 right-8 -translate-y-1/2 cursor-pointer">
         <XIcon />
       </ComboboxBase.Clear>
       <ComboboxBase.Trigger>
-        <ComboboxBase.Icon className="absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer">
-          <CaretDownIcon />
+        <ComboboxBase.Icon className="absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer">
+          <CaretDownIcon className="fill-active" />
         </ComboboxBase.Icon>
       </ComboboxBase.Trigger>
     </div>
@@ -93,7 +149,7 @@ function Item({ children, ...props }: ComboboxBase.Item.Props) {
   return (
     <ComboboxBase.Item
       {...props}
-      className="data-highlighted:bg-neutral-100 dark:data-highlighted:bg-neutral-800 px-2 rounded py-1.5 text-base grid grid-cols-[1fr_16px] gap-2 group cursor-pointer"
+      className="group grid cursor-pointer grid-cols-[1fr_16px] gap-2 rounded px-2 py-1.5 text-base data-highlighted:bg-color-3"
     >
       <div className="col-start-1">{children}</div>
       <ComboboxBase.ItemIndicator className="col-start-2 flex items-center">
@@ -108,7 +164,7 @@ function Empty(props: ComboboxBase.Empty.Props) {
     <ComboboxBase.Empty
       {...props}
       className={cn(
-        "px-4 py-2 text-[0.925rem] leading-4 text-gray-600 empty:m-0 empty:p-0"
+        "px-4 py-2 text-[0.925rem] leading-4 text-neutral-dim-2 empty:m-0 empty:p-0",
       )}
       children={props.children ?? "No labels found."}
     />
@@ -128,7 +184,7 @@ function GroupLabel(props: ComboboxBase.GroupLabel.Props) {
   return (
     <ComboboxBase.GroupLabel
       {...props}
-      className="text-sm font-medium py-1.5 px-4 ml-[16px]"
+      className="ml-[16px] px-4 py-1.5 text-sm font-medium"
     />
   );
 }
@@ -141,10 +197,10 @@ function Chip(props: ComboboxBase.Chip.Props) {
   return (
     <ComboboxBase.Chip
       {...props}
-      className="bg-neutral-100 dark:bg-neutral-800 px-2 py-1 rounded-md flex items-center gap-1"
+      className="flex items-center gap-1 rounded-md bg-color-3 px-2 py-1"
     >
       {props.children}
-      <ComboboxBase.ChipRemove className="cursor-pointer hover:bg-neutral-200 dark:hover:bg-neutral-700 p-1 rounded-md">
+      <ComboboxBase.ChipRemove className="cursor-pointer rounded-md p-1 hover:bg-color-2">
         <XIcon size={12} weight="bold" />
       </ComboboxBase.ChipRemove>
     </ComboboxBase.Chip>
@@ -156,44 +212,57 @@ function TriggerMultipleWithInput<ValueType>({
   renderItem,
   className,
   inputSide = "right",
+  value: controlledValue,
 }: {
   placeholder?: string;
   renderItem: (value: ValueType) => React.ReactNode;
   className?: string;
   inputSide?: "right" | "top";
+  /** Optional controlled value for rendering chips (use when pre-selecting values) */
+  value?: ValueType[];
 }) {
+  // Determine which value to use for rendering chips
+  const chipsToRender = controlledValue;
+
   return (
     <ComboboxBase.Chips
       className={cn(
         inputVariants(),
-        cn(
-          "flex flex-wrap items-center overflow-hidden", // Base layout and overflow handling
-          "gap-1 p-1", // Consistent spacing for chips and padding
-          "min-h-9", // Match standard Kumo component height
-          "h-auto" // Allow height expansion for multi-line chip wrapping
-        ),
-        className
+        cn("flex flex-col", "gap-1 p-1", "min-h-9", "h-auto"),
+        className,
       )}
     >
-      <ComboboxBase.Value>
-        {(value: ValueType[]) => (
-          <Fragment>
-            {inputSide === "top" && (
-              <ComboboxBase.Input
-                placeholder={placeholder}
-                className="w-full h-full outline-none px-2 py-1"
-              />
-            )}
-            {value.map((item) => renderItem(item))}
-            {inputSide === "right" && (
-              <ComboboxBase.Input
-                placeholder={placeholder}
-                className="flex-1 h-full outline-none px-2 py-1"
-              />
-            )}
-          </Fragment>
+      {inputSide === "top" && (
+        <ComboboxBase.Input
+          placeholder={placeholder}
+          className="w-full px-2 py-1 outline-none"
+        />
+      )}
+      {/* Chips container */}
+      <div className="flex flex-wrap gap-1">
+        {/* Render chips from controlled value if provided */}
+        {chipsToRender !== undefined &&
+          chipsToRender.length > 0 &&
+          chipsToRender.map((item) => renderItem(item))}
+        {/* Also render from BaseUI's internal value for user selections */}
+        <ComboboxBase.Value>
+          {(internalValue: ValueType[]) => {
+            // Skip rendering if using controlled value (to avoid duplicates)
+            if (chipsToRender !== undefined) return null;
+            return (
+              <Fragment>
+                {internalValue.map((item) => renderItem(item))}
+              </Fragment>
+            );
+          }}
+        </ComboboxBase.Value>
+        {inputSide === "right" && (
+          <ComboboxBase.Input
+            placeholder={placeholder}
+            className="min-w-[100px] flex-1 px-2 py-1 outline-none"
+          />
         )}
-      </ComboboxBase.Value>
+      </div>
     </ComboboxBase.Chips>
   );
 }

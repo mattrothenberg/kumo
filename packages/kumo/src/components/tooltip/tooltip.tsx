@@ -1,21 +1,70 @@
 import { Tooltip as TooltipBase } from "@base-ui-components/react/tooltip";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
+import { cn } from "../../utils/cn";
+
+export const KUMO_TOOLTIP_VARIANTS = {
+  side: {
+    top: {
+      classes: "",
+      description: "Tooltip appears above the trigger",
+    },
+    bottom: {
+      classes: "",
+      description: "Tooltip appears below the trigger",
+    },
+    left: {
+      classes: "",
+      description: "Tooltip appears to the left of the trigger",
+    },
+    right: {
+      classes: "",
+      description: "Tooltip appears to the right of the trigger",
+    },
+  },
+} as const;
+
+export const KUMO_TOOLTIP_DEFAULT_VARIANTS = {
+  side: "top",
+} as const;
+
+// Derived types from KUMO_TOOLTIP_VARIANTS
+export type KumoTooltipSide = keyof typeof KUMO_TOOLTIP_VARIANTS.side;
+
+export interface KumoTooltipVariantsProps {
+  side?: KumoTooltipSide;
+}
+
+export function tooltipVariants({
+  side = KUMO_TOOLTIP_DEFAULT_VARIANTS.side,
+}: KumoTooltipVariantsProps = {}) {
+  return cn(
+    // Base styles
+    "flex origin-[var(--transform-origin)] flex-col rounded-md bg-black-icon px-2.5 py-1.5 text-sm text-white",
+    "shadow-lg shadow-icon-path transition-[transform,scale,opacity]",
+    "data-[ending-style]:scale-90 data-[ending-style]:opacity-0",
+    "data-[instant]:duration-0",
+    "data-[starting-style]:scale-90 data-[starting-style]:opacity-0",
+    // Apply side-specific styles (currently none, but extensible)
+    KUMO_TOOLTIP_VARIANTS.side[side].classes,
+  );
+}
 
 export const TooltipProvider = TooltipBase.Provider;
 
 type BaseTooltipProps = ComponentPropsWithoutRef<typeof TooltipBase.Root>;
 
-type PositionerProps = ComponentPropsWithoutRef<typeof TooltipBase.Positioner>;
-
 type TriggerProps = ComponentPropsWithoutRef<typeof TooltipBase.Trigger>;
 
-type TooltipProps = BaseTooltipProps & {
-  align?: PositionerProps["align"];
-  side?: PositionerProps["side"];
-  asChild?: boolean;
-  className?: string;
-  content: ReactNode;
-};
+/** Alignment options for tooltip positioning. Source: PositionerProps["align"] */
+type TooltipAlign = "start" | "center" | "end";
+
+export type TooltipProps = BaseTooltipProps &
+  KumoTooltipVariantsProps & {
+    align?: TooltipAlign;
+    asChild?: boolean;
+    className?: string;
+    content: ReactNode;
+  };
 
 export function Tooltip({
   content,
@@ -36,8 +85,23 @@ export function Tooltip({
       </TooltipBase.Trigger>
       <TooltipBase.Portal>
         <TooltipBase.Positioner align={align} side={side} sideOffset={10}>
-          <TooltipBase.Popup className="flex origin-[var(--transform-origin)] flex-col rounded-md bg-neutral-900 text-neutral-100 px-2.5 py-1.5 text-sm shadow-lg shadow-gray-200 transition-[transform,scale,opacity] data-[ending-style]:scale-90 data-[ending-style]:opacity-0 data-[instant]:duration-0 data-[starting-style]:scale-90 data-[starting-style]:opacity-0 dark:shadow-none dark:-outline-offset-1 dark:outline-gray-300">
-            <TooltipBase.Arrow className="data-[side=bottom]:top-[-8px] data-[side=left]:right-[-13px] data-[side=left]:rotate-90 data-[side=right]:left-[-13px] data-[side=right]:-rotate-90 data-[side=top]:bottom-[-8px] data-[side=top]:rotate-180">
+          <TooltipBase.Popup
+            className={cn(
+              "flex origin-[var(--transform-origin)] flex-col rounded-md bg-black-icon px-2.5 py-1.5 text-sm text-white",
+              "shadow-lg shadow-icon-path transition-[transform,scale,opacity]",
+              "data-[ending-style]:scale-90 data-[ending-style]:opacity-0",
+              "data-[instant]:duration-0",
+              "data-[starting-style]:scale-90 data-[starting-style]:opacity-0",
+            )}
+          >
+            <TooltipBase.Arrow
+              className={cn(
+                "data-[side=bottom]:top-[-8px]",
+                "data-[side=left]:right-[-13px] data-[side=left]:rotate-90",
+                "data-[side=right]:left-[-13px] data-[side=right]:-rotate-90",
+                "data-[side=top]:bottom-[-8px] data-[side=top]:rotate-180",
+              )}
+            >
               <ArrowSvg />
             </TooltipBase.Arrow>
             {content}
@@ -53,11 +117,11 @@ function ArrowSvg(props: React.ComponentProps<"svg">) {
     <svg width="20" height="10" viewBox="0 0 20 10" fill="none" {...props}>
       <path
         d="M9.66437 2.60207L4.80758 6.97318C4.07308 7.63423 3.11989 8 2.13172 8H0V10H20V8H18.5349C17.5468 8 16.5936 7.63423 15.8591 6.97318L11.0023 2.60207C10.622 2.2598 10.0447 2.25979 9.66437 2.60207Z"
-        className="fill-neutral-900"
+        className="fill-black-icon"
       />
       <path
         d="M8.99542 1.85876C9.75604 1.17425 10.9106 1.17422 11.6713 1.85878L16.5281 6.22989C17.0789 6.72568 17.7938 7.00001 18.5349 7.00001L15.89 7L11.0023 2.60207C10.622 2.2598 10.0447 2.2598 9.66436 2.60207L4.77734 7L2.13171 7.00001C2.87284 7.00001 3.58774 6.72568 4.13861 6.22989L8.99542 1.85876Z"
-        className="fill-gray-200 dark:fill-neutral-800 dark:fill-none"
+        className="fill-icon-path"
       />
     </svg>
   );

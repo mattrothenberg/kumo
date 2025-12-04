@@ -31,7 +31,7 @@
   animation: skeleton 1.5s ease-in-out infinite;
 }
 
-.dark-mode .skeleton {
+[data-mode="dark"] .skeleton {
   background: linear-gradient(
     90deg,
     transparent 0%,

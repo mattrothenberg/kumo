@@ -15,23 +15,18 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'sandpack': ['@codesandbox/sandpack-react'],
-          'phosphor': ['@phosphor-icons/react'],
-          'base-ui': ['@base-ui-components/react'],
+          sandpack: ["@codesandbox/sandpack-react"],
+          phosphor: ["@phosphor-icons/react"],
+          "base-ui": ["@base-ui-components/react"],
         },
       },
     },
     chunkSizeWarningLimit: 1000,
   },
   optimizeDeps: {
-    include: [
-      'react',
-      'react-dom',
-      'react-router',
-      '@phosphor-icons/react',
-    ],
+    include: ["react", "react-dom", "react-router", "@phosphor-icons/react"],
   },
   ssr: {
-    noExternal: ['@codesandbox/sandpack-react'],
+    noExternal: ["@codesandbox/sandpack-react"],
   },
 });

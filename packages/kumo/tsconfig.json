@@ -14,6 +14,13 @@
     "declarationMap": true,
     "noEmit": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"]
+  "include": ["src/**/*", "scripts/**/*"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/design-tokens",
+    "scripts/**/dist",
+    "**/*.test.ts",
+    "**/*.test.tsx"
+  ]
 }

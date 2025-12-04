@@ -1,4 +1,4 @@
-import {
+import React, {
   forwardRef,
   type ComponentPropsWithoutRef,
   type ComponentPropsWithRef,
@@ -6,6 +6,41 @@ import {
   type PropsWithChildren,
 } from "react";
 import { cn } from "../../utils/cn";
+
+export const KUMO_SURFACE_VARIANTS = {
+  color: {
+    primary: {
+      classes: "",
+      description: "Primary surface color",
+    },
+    secondary: {
+      classes: "",
+      description: "Secondary surface color",
+    },
+  },
+} as const;
+
+export const KUMO_SURFACE_DEFAULT_VARIANTS = {
+  color: "primary",
+} as const;
+
+// Derived types from KUMO_SURFACE_VARIANTS
+export type KumoSurfaceColor = keyof typeof KUMO_SURFACE_VARIANTS.color;
+
+export interface KumoSurfaceVariantsProps {
+  color?: KumoSurfaceColor;
+}
+
+export function surfaceVariants({
+  color = KUMO_SURFACE_DEFAULT_VARIANTS.color,
+}: KumoSurfaceVariantsProps = {}) {
+  return cn(
+    // Base styles
+    "shadow-xs ring ring-border",
+    // Apply color-specific styles
+    KUMO_SURFACE_VARIANTS.color[color].classes,
+  );
+}
 
 type PolymorphicAsProp<E extends ElementType> = {
   as?: E;
@@ -19,27 +54,40 @@ type PolymorphicRef<E extends ElementType> = ComponentPropsWithRef<E>["ref"];
 
 const defaultElement = "div";
 
-type SurfaceProps<E extends ElementType = typeof defaultElement> =
-  PolymorphicProps<E> & {
-    color?: "primary" | "secondary";
-  };
+type SurfacePropsGeneric<E extends ElementType = typeof defaultElement> =
+  PolymorphicProps<E> & KumoSurfaceVariantsProps;
+
+/**
+ * Props for the Surface component.
+ * @description A polymorphic container component for creating elevated surfaces with consistent styling.
+ */
+export interface SurfaceProps {
+  /** The element type to render as (default: "div") */
+  as?: ElementType;
+  /** Surface color variant */
+  color?: KumoSurfaceColor;
+  /** Additional CSS classes */
+  className?: string;
+  /** Child elements */
+  children?: React.ReactNode;
+}
 
 type SurfaceComponent = <E extends ElementType = typeof defaultElement>(
-  props: SurfaceProps<E> & { ref?: PolymorphicRef<E> }
-) => JSX.Element;
+  props: SurfacePropsGeneric<E> & { ref?: PolymorphicRef<E> },
+) => React.JSX.Element;
 
 const SurfaceImpl = function Surface<
   E extends ElementType = typeof defaultElement,
 >(
-  { as, children, className, ...restProps }: SurfaceProps<E>,
-  ref: PolymorphicRef<E>
+  { as, children, className, ...restProps }: SurfacePropsGeneric<E>,
+  ref: PolymorphicRef<E>,
 ) {
   const Component = as ?? defaultElement;
   return (
     <Component
       ref={ref}
       {...restProps}
-      className={cn("ring shadow-xs ring-kumo-border", className)}
+      className={cn("shadow-xs ring ring-border", className)}
     >
       {children}
     </Component>
@@ -47,5 +95,5 @@ const SurfaceImpl = function Surface<
 };
 
 export const Surface = forwardRef(
-  SurfaceImpl as any
+  SurfaceImpl as any,
 ) as unknown as SurfaceComponent;

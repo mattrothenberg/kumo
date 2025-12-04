@@ -80,6 +80,15 @@ function hasDarkVariant(str) {
   return str.includes("dark:");
 }
 
+function isInsideJsxAttribute(node) {
+  let current = node.parent;
+  while (current) {
+    if (current.type === "JSXAttribute") return true;
+    current = current.parent;
+  }
+  return false;
+}
+
 export const noTailwindDarkVariantRule = defineRule({
   meta: {
     type: "problem",
@@ -115,11 +124,21 @@ export const noTailwindDarkVariantRule = defineRule({
         }
       },
       Literal(node) {
-        if (typeof node.value === "string" && hasDarkVariant(node.value)) {
-          context.report({ node, messageId: RULE_NAME });
+        if (
+          typeof node.value !== "string" ||
+          !hasDarkVariant(node.value) ||
+          isInsideJsxAttribute(node)
+        ) {
+          return;
         }
+
+        context.report({ node, messageId: RULE_NAME });
       },
       TemplateLiteral(node) {
+        if (isInsideJsxAttribute(node)) {
+          return;
+        }
+
         const strings = extractStrings(node);
         if (strings.some(hasDarkVariant)) {
           context.report({ node, messageId: RULE_NAME });

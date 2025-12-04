@@ -1,1 +1,8 @@
-export { Dialog, DialogRoot, DialogTrigger, DialogTitle, DialogDescription, DialogClose } from "./dialog";
+export {
+  Dialog,
+  DialogRoot,
+  DialogTrigger,
+  DialogTitle,
+  DialogDescription,
+  DialogClose,
+} from "./dialog";

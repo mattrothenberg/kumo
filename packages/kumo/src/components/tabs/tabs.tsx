@@ -2,13 +2,29 @@ import type { ReactNode } from "react";
 import { Tabs as TabsPrimitive } from "@base-ui-components/react/tabs";
 import { cn } from "../../utils/cn";
 
+export const KUMO_TABS_VARIANTS = {
+  // Tabs currently has no variant options but structure is ready for future additions
+} as const;
+
+export const KUMO_TABS_DEFAULT_VARIANTS = {} as const;
+
+// Derived types from KUMO_TABS_VARIANTS
+export interface KumoTabsVariantsProps {}
+
+export function tabsVariants(_props: KumoTabsVariantsProps = {}) {
+  return cn(
+    // Base styles
+    "relative min-w-0 font-medium",
+  );
+}
+
 export type TabsItem = {
   value: string;
   label: ReactNode;
   className?: string;
 };
 
-export type TabsProps = {
+export type TabsProps = KumoTabsVariantsProps & {
   tabs?: TabsItem[];
   value?: string;
   selectedValue?: string;
@@ -37,7 +53,7 @@ export function Tabs({
   const isControlled = value !== undefined;
   const rootProps = {
     value: isControlled ? value : undefined,
-    defaultValue: isControlled ? undefined : selectedValue ?? fallbackValue,
+    defaultValue: isControlled ? undefined : (selectedValue ?? fallbackValue),
   };
 
   return (
@@ -49,11 +65,11 @@ export function Tabs({
         onValueChange?.(stringValue);
       }}
     >
-      <div className="absolute inset-x-0 top-1/2 -z-10 h-8.5 -translate-y-1/2 rounded-lg bg-accent dark:bg-neutral-900" />
+      <div className="absolute inset-x-0 top-1/2 -z-10 h-8.5 -translate-y-1/2 rounded-lg bg-accent" />
       <TabsPrimitive.List
         className={cn(
-          "relative flex h-8.5 items-stretch rounded-lg overflow-x-auto shrink min-w-0 px-px scrollbar-hide bg-accent dark:bg-neutral-900",
-          listClassName
+          "scrollbar-hide relative flex h-8.5 min-w-0 shrink items-stretch overflow-x-auto rounded-lg bg-accent px-px",
+          listClassName,
         )}
       >
         {items.map((tab) => (
@@ -61,9 +77,9 @@ export function Tabs({
             key={tab.value}
             value={tab.value}
             className={cn(
-              "relative z-10 flex items-center px-2.5 text-base my-px rounded-lg whitespace-nowrap text-neutral-500 transition-colors focus-visible:outline-none dark:text-neutral-400 cursor-pointer bg-transparent",
-              "data-selected:text-black dark:data-selected:text-white",
-              tab.className
+              "text-kumo-muted-2 relative z-10 my-px flex cursor-pointer items-center rounded-lg bg-transparent px-2.5 text-base whitespace-nowrap transition-colors focus-visible:outline-none",
+              "data-selected:text-kumo-surface",
+              tab.className,
             )}
           >
             {tab.label}
@@ -71,10 +87,10 @@ export function Tabs({
         ))}
         <TabsPrimitive.Indicator
           className={cn(
-            "absolute z-0 rounded-lg bg-surface shadow ring ring-neutral-950/10 transition-[left,width,transform] duration-200 ease-out dark:bg-neutral-850 dark:ring-neutral-800",
-            "data-[rendered=false]:opacity-0 data-[rendered=false]:scale-90",
-            "left-(--active-tab-left) top-(--active-tab-top) h-(--active-tab-height) w-(--active-tab-width)",
-            indicatorClassName
+            "absolute z-0 rounded-lg bg-surface-elevated shadow ring ring-border transition-[left,width,transform] duration-200 ease-out",
+            "data-[rendered=false]:scale-90 data-[rendered=false]:opacity-0",
+            "top-(--active-tab-top) left-(--active-tab-left) h-(--active-tab-height) w-(--active-tab-width)",
+            indicatorClassName,
           )}
         />
       </TabsPrimitive.List>

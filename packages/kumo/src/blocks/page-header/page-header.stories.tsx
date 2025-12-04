@@ -1,22 +1,23 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { PageHeader } from './page-header';
-import { Breadcrumbs } from '../breadcrumbs';
-import { Button } from '../../components/button';
-import { Plus } from '@phosphor-icons/react';
+import type { Meta, StoryObj } from "@storybook/react";
+import { PageHeader, KUMO_PAGE_HEADER_VARIANTS } from "./page-header";
+import { Breadcrumbs } from "../breadcrumbs";
+import { Button } from "../../components/button";
+import { PlusIcon } from "@phosphor-icons/react";
+import { propTester } from "../../utils/prop-tester";
 
 const meta = {
-  title: 'Blocks/PageHeader',
+  title: "Blocks/PageHeader",
   component: PageHeader,
   parameters: {
-    layout: 'fullscreen',
+    layout: "fullscreen",
   },
-  tags: ['autodocs'],
 } satisfies Meta<typeof PageHeader>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  args: { breadcrumbs: undefined as any },
   render: () => (
     <PageHeader
       breadcrumbs={
@@ -30,7 +31,40 @@ export const Default: Story = {
       }
     />
   ),
-  args: { breadcrumbs: undefined as any },
+};
+
+export const Spacing: Story = {
+  args: {
+    breadcrumbs: (
+      <Breadcrumbs>
+        <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+        <Breadcrumbs.Separator />
+        <Breadcrumbs.Current>Current</Breadcrumbs.Current>
+      </Breadcrumbs>
+    ),
+  },
+  render: () => (
+    <>
+      {propTester(
+        Object.keys(KUMO_PAGE_HEADER_VARIANTS.spacing),
+        "spacing",
+        <PageHeader
+          breadcrumbs={
+            <Breadcrumbs>
+              <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+              <Breadcrumbs.Separator />
+              <Breadcrumbs.Current>Current</Breadcrumbs.Current>
+            </Breadcrumbs>
+          }
+          tabs={[
+            { label: "General", value: "general" },
+            { label: "Settings", value: "settings" },
+          ]}
+          defaultTab="general"
+        />,
+      )}
+    </>
+  ),
 };
 
 export const WithTabs: Story = {
@@ -44,10 +78,10 @@ export const WithTabs: Story = {
         </Breadcrumbs>
       }
       tabs={[
-        { label: 'General', value: 'general' },
-        { label: 'Security', value: 'security' },
-        { label: 'Notifications', value: 'notifications' },
-        { label: 'Billing', value: 'billing' },
+        { label: "General", value: "general" },
+        { label: "Security", value: "security" },
+        { label: "Notifications", value: "notifications" },
+        { label: "Billing", value: "billing" },
       ]}
       defaultTab="general"
     />
@@ -68,15 +102,17 @@ export const WithTabsAndActions: Story = {
         </Breadcrumbs>
       }
       tabs={[
-        { label: 'Overview', value: 'overview' },
-        { label: 'Analytics', value: 'analytics' },
-        { label: 'Settings', value: 'settings' },
+        { label: "Overview", value: "overview" },
+        { label: "Analytics", value: "analytics" },
+        { label: "Settings", value: "settings" },
       ]}
       defaultTab="overview"
     >
-      <Button variant="outline" size="sm">Export</Button>
+      <Button variant="outline" size="sm">
+        Export
+      </Button>
       <Button variant="primary" size="sm">
-        <Plus size={16} />
+        <PlusIcon size={16} />
         New Item
       </Button>
     </PageHeader>

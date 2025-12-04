@@ -1,7 +1,7 @@
-import { readdirSync, statSync, readFileSync } from 'fs';
-import { join } from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import { readdirSync, statSync, readFileSync } from "fs";
+import { join } from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -16,9 +16,9 @@ export interface ComponentInfo {
  * Discover all component directories in src/components
  */
 export function discoverComponents(): string[] {
-  const componentsDir = join(__dirname, '../../src/components');
+  const componentsDir = join(__dirname, "../../src/components");
   const entries = readdirSync(componentsDir);
-  
+
   return entries.filter((entry: string) => {
     const fullPath = join(componentsDir, entry);
     return statSync(fullPath).isDirectory();
@@ -29,9 +29,9 @@ export function discoverComponents(): string[] {
  * Discover all block directories in src/blocks
  */
 export function discoverBlocks(): string[] {
-  const blocksDir = join(__dirname, '../../src/blocks');
+  const blocksDir = join(__dirname, "../../src/blocks");
   const entries = readdirSync(blocksDir);
-  
+
   return entries.filter((entry: string) => {
     const fullPath = join(blocksDir, entry);
     return statSync(fullPath).isDirectory();
@@ -42,9 +42,9 @@ export function discoverBlocks(): string[] {
  * Discover all layout directories in src/layouts
  */
 export function discoverLayouts(): string[] {
-  const layoutsDir = join(__dirname, '../../src/layouts');
+  const layoutsDir = join(__dirname, "../../src/layouts");
   const entries = readdirSync(layoutsDir);
-  
+
   return entries.filter((entry: string) => {
     const fullPath = join(layoutsDir, entry);
     return statSync(fullPath).isDirectory();
@@ -56,11 +56,11 @@ export function discoverLayouts(): string[] {
  * Dynamically reads from package.json exports field
  */
 export function getComponentsWithExports(): string[] {
-  const packageJsonPath = join(__dirname, '../../package.json');
-  const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
-  
+  const packageJsonPath = join(__dirname, "../../package.json");
+  const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
+
   const componentExports: string[] = [];
-  
+
   if (packageJson.exports) {
     for (const exportPath of Object.keys(packageJson.exports)) {
       // Match patterns like "./components/button"
@@ -70,7 +70,7 @@ export function getComponentsWithExports(): string[] {
       }
     }
   }
-  
+
   return componentExports.sort();
 }
 
@@ -79,11 +79,11 @@ export function getComponentsWithExports(): string[] {
  * Dynamically reads from package.json exports field
  */
 export function getBlocksWithExports(): string[] {
-  const packageJsonPath = join(__dirname, '../../package.json');
-  const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
-  
+  const packageJsonPath = join(__dirname, "../../package.json");
+  const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
+
   const blockExports: string[] = [];
-  
+
   if (packageJson.exports) {
     for (const exportPath of Object.keys(packageJson.exports)) {
       // Match patterns like "./blocks/breadcrumbs"
@@ -93,7 +93,7 @@ export function getBlocksWithExports(): string[] {
       }
     }
   }
-  
+
   return blockExports.sort();
 }
 
@@ -102,11 +102,11 @@ export function getBlocksWithExports(): string[] {
  * Dynamically reads from package.json exports field
  */
 export function getLayoutsWithExports(): string[] {
-  const packageJsonPath = join(__dirname, '../../package.json');
-  const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
-  
+  const packageJsonPath = join(__dirname, "../../package.json");
+  const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
+
   const layoutExports: string[] = [];
-  
+
   if (packageJson.exports) {
     for (const exportPath of Object.keys(packageJson.exports)) {
       // Match patterns like "./layouts/resource-list"
@@ -116,7 +116,7 @@ export function getLayoutsWithExports(): string[] {
       }
     }
   }
-  
+
   return layoutExports.sort();
 }
 
@@ -125,10 +125,10 @@ export function getLayoutsWithExports(): string[] {
  * Dynamically imports and extracts all named exports
  */
 export async function getMainEntryExports(): Promise<string[]> {
-  const module = await import('../../src/index.ts');
-  
+  const module = await import("../../src/index.ts");
+
   // Get all exports except 'default'
   return Object.keys(module)
-    .filter(key => key !== 'default')
+    .filter((key) => key !== "default")
     .sort();
 }

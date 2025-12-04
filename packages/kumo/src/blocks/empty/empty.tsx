@@ -1,13 +1,51 @@
 import { CheckIcon, CopyIcon } from "@phosphor-icons/react";
 import { useState } from "react";
 import { Button } from "../../components/button";
+import { cn } from "../../utils/cn";
 
-export interface EmptyProps {
+export const KUMO_EMPTY_VARIANTS = {
+  size: {
+    sm: {
+      classes: "px-6 py-8 gap-4",
+      description: "Compact empty state for smaller containers",
+    },
+    base: {
+      classes: "px-10 py-16 gap-6",
+      description: "Default empty state size",
+    },
+    lg: {
+      classes: "px-12 py-20 gap-8",
+      description: "Large empty state for prominent placement",
+    },
+  },
+} as const;
+
+export const KUMO_EMPTY_DEFAULT_VARIANTS = {
+  size: "base",
+} as const;
+
+export type KumoEmptySize = keyof typeof KUMO_EMPTY_VARIANTS.size;
+
+export interface KumoEmptyVariantsProps {
+  size?: KumoEmptySize;
+}
+
+export function emptyVariants({
+  size = KUMO_EMPTY_DEFAULT_VARIANTS.size,
+}: KumoEmptyVariantsProps = {}) {
+  return cn(
+    "flex w-full flex-col items-center rounded-xl border border-color bg-secondary text-surface",
+    KUMO_EMPTY_VARIANTS.size[size].classes,
+  );
+}
+
+export interface EmptyProps extends KumoEmptyVariantsProps {
   icon?: React.ReactNode;
   title: string;
   description?: string;
   commandLine?: string;
   contents?: React.ReactNode;
+  className?: string;
 }
 
 export function Empty({
@@ -15,27 +53,32 @@ export function Empty({
   title,
   description,
   commandLine,
-  contents
+  contents,
+  size = "base",
+  className,
 }: EmptyProps) {
   const [emptyStateCopied, setEmptyStateCopied] = useState<boolean>(false);
 
   return (
-    <div className="w-full px-10 py-16 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl flex flex-col gap-6 items-center">
+    <div className={cn(emptyVariants({ size }), className)}>
       {icon}
       <h2 className="text-2xl font-semibold">{title}</h2>
 
       {description && (
-        <p className="text-center max-w-140 text-neutral-600 dark:text-neutral-400">
-          {description}
-        </p>
+        <p className="max-w-140 text-center text-label">{description}</p>
       )}
 
       {commandLine && (
-        <div className="group/cmd relative bg-neutral-50 dark:bg-black rounded-lg h-10 inline-flex items-center gap-2 font-mono pl-3 pr-2 shadow-sm border border-neutral-200/60 dark:border-neutral-800/60 transform-gpu transition-all duration-300 hover:shadow-md hover:border-neutral-300/80 dark:hover:border-neutral-700/80 max-w-8/10">
-          <span className="text-xs text-neutral-400 dark:text-neutral-600 select-none">
-            $
-          </span>
-          <span className="text-[#f6821f] text-[14px] overflow-scroll whitespace-nowrap no-scrollbar">
+        <div
+          className={cn(
+            "group/cmd relative inline-flex h-10 max-w-8/10 transform-gpu items-center gap-2 rounded-lg font-mono shadow-sm",
+            "bg-surface-secondary pr-2 pl-3",
+            "transition-all duration-300 hover:border-hover-border hover:shadow-md",
+            "border border-border-2",
+          )}
+        >
+          <span className="text-xs text-label-inverse select-none">$</span>
+          <span className="no-scrollbar overflow-scroll text-[14px] whitespace-nowrap text-brand">
             {commandLine}
           </span>
           <Button
@@ -53,18 +96,18 @@ export function Empty({
             }}
           >
             {emptyStateCopied ? (
-              <CheckIcon size={16} className="text-green-500 animate-bounce-in" />
+              <CheckIcon size={16} className="animate-bounce-in text-green" />
             ) : (
               <CopyIcon
                 size={16}
-                className="group-hover:text-[#f6821f] text-neutral-400 dark:text-neutral-600"
+                className="text-label-inverse group-hover:text-brand"
               />
             )}
           </Button>
         </div>
       )}
 
-      {contents && contents}
+      {contents}
     </div>
   );
 }

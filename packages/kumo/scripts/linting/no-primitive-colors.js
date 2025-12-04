@@ -1,4 +1,9 @@
 import { defineRule } from "oxlint";
+import { readFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const RULE_NAME = "no-primitive-colors";
 
@@ -41,27 +46,36 @@ export const TAILWIND_COLOR_FAMILIES = new Set([
   "white",
 ]);
 
-// Semantic color families that are backed by kumo-binding.css
-export const SEMANTIC_COLORS = new Set([
-  "surface",
-  "surface-secondary",
-  "surface-active",
-  "primary",
-  "secondary",
-  "secondary-hover",
-  "accent",
-  "destructive",
-  "muted",
-  "input",
-  "active",
-  "border-hover",
-  "color",
-  "color-surface",
-  "color-primary",
-  "color-secondary",
-  "color-destructive",
-  "color-error",
-]);
+// Parse kumo-theme.css to extract valid semantic color tokens.
+// This ensures the allowlist stays in sync with the theme file.
+function parseKumoSemanticColors() {
+  const themePath = resolve(
+    __dirname,
+    "../../src/styles/kumo-theme.css"
+  );
+  const css = readFileSync(themePath, "utf-8");
+
+  const tokens = new Set();
+
+  // Match --color-<name> and --text-color-<name> custom properties.
+  // Excludes Tailwind primitive colors (e.g. --color-red-650, --color-blue-400)
+  // which have numeric suffixes indicating shade values.
+  const colorPropRe = /--(?:text-)?color-([a-z][a-z0-9-]*)(?=\s*:)/gi;
+  let match;
+  while ((match = colorPropRe.exec(css))) {
+    const name = match[1];
+    // Skip Tailwind primitive color definitions (e.g. red-650, blue-400, neutral-50)
+    // These have 2-3 digit shade values. Single digit suffixes like green-2 are valid semantic tokens.
+    if (/^[a-z]+-\d{2,3}$/.test(name)) continue;
+    tokens.add(name);
+  }
+
+  return tokens;
+}
+
+// Valid Kumo semantic color tokens derived from kumo-theme.css.
+// These map to CSS custom properties like --color-surface, --text-color-secondary, etc.
+export const VALID_KUMO_SEMANTIC_COLORS = parseKumoSemanticColors();
 
 function extractStrings(node) {
   if (!node) return [];
@@ -137,7 +151,7 @@ function extractStrings(node) {
   return out;
 }
 
-function hasPrimitiveOrSemanticColor(str) {
+function hasPrimitiveColor(str) {
   if (!str) return false;
 
   TOKEN_RE.lastIndex = 0;
@@ -148,10 +162,21 @@ function hasPrimitiveOrSemanticColor(str) {
 
     if (!fullToken || !colorFamily) continue;
 
-    // Flag both Tailwind primitive families (e.g. blue, slate, red)
-    // and legacy semantic families (e.g. surface, primary, active).
-    if (TAILWIND_COLOR_FAMILIES.has(colorFamily)) return true;
-    if (SEMANTIC_COLORS.has(colorFamily)) return true;
+    // Skip valid Kumo semantic color tokens (e.g. bg-surface, text-secondary,
+    // border-color, text-green-2). These are backed by kumo-theme.css custom properties.
+    if (VALID_KUMO_SEMANTIC_COLORS.has(colorFamily)) continue;
+
+    // Flag Tailwind primitive color families (e.g. blue, slate, red).
+    // Tailwind utilities often use a numeric shade suffix (e.g. neutral-500).
+    // The regex captures the color name which may include a trailing numeric
+    // segment (e.g. "green-2" from text-green-2). Strip trailing -N segments
+    // to get the base family name for checking against Tailwind primitives.
+    const primitiveFamily = colorFamily.replace(/-\d+$/, "");
+
+    // Only flag if it's a Tailwind primitive AND not a valid Kumo semantic token.
+    // This handles cases like "green-2" where "green" is a Tailwind primitive
+    // but "green-2" is a valid Kumo semantic token.
+    if (TAILWIND_COLOR_FAMILIES.has(primitiveFamily) && !VALID_KUMO_SEMANTIC_COLORS.has(colorFamily)) return true;
   }
 
   return false;
@@ -174,7 +199,7 @@ export const noPrimitiveColorsRule = defineRule({
   createOnce(context) {
     function reportIfPrimitiveColor(node, collected) {
       for (const s of collected) {
-        if (hasPrimitiveOrSemanticColor(s)) {
+        if (hasPrimitiveColor(s)) {
           context.report({ node, messageId: RULE_NAME });
           return;
         }
@@ -190,20 +215,6 @@ export const noPrimitiveColorsRule = defineRule({
         if (node.value) {
           const strings = extractStrings(node.value);
           reportIfPrimitiveColor(node, strings);
-        }
-      },
-      Literal(node) {
-        if (
-          typeof node.value === "string" &&
-          hasPrimitiveOrSemanticColor(node.value)
-        ) {
-          context.report({ node, messageId: RULE_NAME });
-        }
-      },
-      TemplateLiteral(node) {
-        const strings = extractStrings(node);
-        if (strings.some(hasPrimitiveOrSemanticColor)) {
-          context.report({ node, messageId: RULE_NAME });
         }
       },
     };

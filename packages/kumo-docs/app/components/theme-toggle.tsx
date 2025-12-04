@@ -12,23 +12,23 @@ export function ThemeToggle({ isDark, onClick, className }: ThemeToggleProps) {
       onClick={onClick}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       className={cn(
-        "w-[20px] h-[20px] overflow-visible cursor-pointer relative",
-        className
+        "relative h-[20px] w-[20px] cursor-pointer overflow-visible",
+        className,
       )}
     >
       <svg
         viewBox="0 0 32 32"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="w-full h-full"
+        className="h-full w-full"
       >
         {/* Sun rays */}
         <g
           className={cn(
-            "transition-all duration-500 origin-center",
+            "origin-center transition-all duration-500",
             isDark
-              ? "opacity-0 scale-0 rotate-90"
-              : "opacity-100 scale-100 rotate-0"
+              ? "scale-0 rotate-90 opacity-0"
+              : "scale-100 rotate-0 opacity-100",
           )}
           style={{
             transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
@@ -102,10 +102,8 @@ export function ThemeToggle({ isDark, onClick, className }: ThemeToggleProps) {
           strokeLinecap="round"
           strokeLinejoin="round"
           className={cn(
-            "transition-all duration-500 origin-center",
-            isDark
-              ? "opacity-0 scale-[0.3]"
-              : "opacity-100 scale-100"
+            "origin-center transition-all duration-500",
+            isDark ? "scale-[0.3] opacity-0" : "scale-100 opacity-100",
           )}
           style={{
             transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
@@ -120,10 +118,10 @@ export function ThemeToggle({ isDark, onClick, className }: ThemeToggleProps) {
           strokeLinecap="round"
           strokeLinejoin="round"
           className={cn(
-            "transition-all duration-500 origin-center",
+            "origin-center transition-all duration-500",
             isDark
-              ? "opacity-100 scale-100 rotate-0"
-              : "opacity-0 scale-[0.3] -rotate-90"
+              ? "scale-100 rotate-0 opacity-100"
+              : "scale-[0.3] -rotate-90 opacity-0",
           )}
           style={{
             transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",

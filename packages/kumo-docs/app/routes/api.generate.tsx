@@ -1,19 +1,22 @@
 /**
  * API Route for AI Code Generation
- * 
+ *
  * Handles requests to generate component code using OpenAI
  */
 
 import type { ActionFunctionArgs } from "react-router";
 import OpenAI from "openai";
-import { generateAIContext, extractRequiredImports } from "~/lib/component-registry";
+import {
+  generateAIContext,
+  extractRequiredImports,
+} from "~/lib/component-registry";
 
 // Initialize OpenAI client
 function getOpenAIClient(apiKey: string) {
   if (!apiKey) {
     throw new Error("OPENAI_API_KEY environment variable is not set");
   }
-  
+
   return new OpenAI({ apiKey });
 }
 
@@ -266,34 +269,40 @@ FULL EXAMPLE - Workers page using ResourceListPage + LayerCard:
  */
 function cleanAIResponse(response: string): string {
   let cleaned = response.trim();
-  
+
   // Remove markdown code blocks if present
-  cleaned = cleaned.replace(/^```(?:tsx?|jsx?|typescript|javascript)?\n?/gm, "");
+  cleaned = cleaned.replace(
+    /^```(?:tsx?|jsx?|typescript|javascript)?\n?/gm,
+    "",
+  );
   cleaned = cleaned.replace(/\n?```$/gm, "");
-  
+
   // Remove any leading/trailing whitespace
   cleaned = cleaned.trim();
-  
+
   // Remove import statements (we'll add them back)
   cleaned = cleaned.replace(/^import\s+.*?from\s+['"].*?['"];?\s*$/gm, "");
-  
+
   return cleaned;
 }
 
 /**
  * Validates the generated code
  */
-function validateGeneratedCode(code: string): { valid: boolean; error?: string } {
+function validateGeneratedCode(code: string): {
+  valid: boolean;
+  error?: string;
+} {
   // Check if code is empty
   if (!code || code.trim().length === 0) {
     return { valid: false, error: "Generated code is empty" };
   }
-  
+
   // Check for basic JSX structure
   if (!code.includes("<") || !code.includes(">")) {
     return { valid: false, error: "Generated code does not contain JSX" };
   }
-  
+
   // Check for dangerous patterns
   const dangerousPatterns = [
     /eval\(/,
@@ -305,16 +314,16 @@ function validateGeneratedCode(code: string): { valid: boolean; error?: string }
     /fetch\(/,
     /XMLHttpRequest/,
   ];
-  
+
   for (const pattern of dangerousPatterns) {
     if (pattern.test(code)) {
-      return { 
-        valid: false, 
-        error: `Generated code contains potentially unsafe pattern: ${pattern.source}` 
+      return {
+        valid: false,
+        error: `Generated code contains potentially unsafe pattern: ${pattern.source}`,
       };
     }
   }
-  
+
   return { valid: true };
 }
 
@@ -322,24 +331,27 @@ export async function action({ request, context }: ActionFunctionArgs) {
   try {
     // Get API key from Cloudflare environment
     const apiKey = context.cloudflare.env.OPENAI_API_KEY;
-    
+
     // Parse request body
-    const body = await request.json() as GenerateRequest;
+    const body = (await request.json()) as GenerateRequest;
     const { prompt } = body;
-    
+
     if (!prompt || prompt.trim().length === 0) {
-      return Response.json({
-        success: false,
-        error: "Prompt is required",
-      } as GenerateResponse, { status: 400 });
+      return Response.json(
+        {
+          success: false,
+          error: "Prompt is required",
+        } as GenerateResponse,
+        { status: 400 },
+      );
     }
-    
+
     // Get component context
     const componentContext = generateAIContext();
-    
+
     // Initialize OpenAI
     const openai = getOpenAIClient(apiKey);
-    
+
     // Generate code
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
@@ -360,46 +372,55 @@ export async function action({ request, context }: ActionFunctionArgs) {
       temperature: 0.7,
       max_tokens: 2000,
     });
-    
+
     const generatedCode = completion.choices[0]?.message?.content;
-    
+
     if (!generatedCode) {
-      return Response.json({
-        success: false,
-        error: "AI did not generate any code",
-      } as GenerateResponse, { status: 500 });
+      return Response.json(
+        {
+          success: false,
+          error: "AI did not generate any code",
+        } as GenerateResponse,
+        { status: 500 },
+      );
     }
-    
+
     // Clean up the response
     const cleanedCode = cleanAIResponse(generatedCode);
-    
+
     // Validate the code
     const validation = validateGeneratedCode(cleanedCode);
     if (!validation.valid) {
-      return Response.json({
-        success: false,
-        error: validation.error,
-      } as GenerateResponse, { status: 400 });
+      return Response.json(
+        {
+          success: false,
+          error: validation.error,
+        } as GenerateResponse,
+        { status: 400 },
+      );
     }
-    
+
     // Extract required imports
     const imports = extractRequiredImports(cleanedCode);
-    
+
     return Response.json({
       success: true,
       code: cleanedCode,
       imports,
     } as GenerateResponse);
-    
   } catch (error) {
     console.error("Error generating code:", error);
-    
-    const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
-    
-    return Response.json({
-      success: false,
-      error: errorMessage,
-    } as GenerateResponse, { status: 500 });
+
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error occurred";
+
+    return Response.json(
+      {
+        success: false,
+        error: errorMessage,
+      } as GenerateResponse,
+      { status: 500 },
+    );
   }
 }
 

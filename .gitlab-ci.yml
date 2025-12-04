@@ -3,13 +3,14 @@ stages:
   - build
   - checks
   - test
+  - review
   - beta-release
   - production-release
 
 variables:
-  PNPM_VERSION: &PNPM_VERSION 'latest-10'
-  NODE_VERSION: &NODE_VERSION '24'
-  PACKAGE_NAME: '@cloudflare/kumo'
+  PNPM_VERSION: &PNPM_VERSION "latest-10"
+  NODE_VERSION: &NODE_VERSION "24"
+  PACKAGE_NAME: "@cloudflare/kumo"
 
 default:
   id_tokens:
@@ -26,10 +27,10 @@ include:
       jobPrefix: build-kumo
       PNPM_VERSION: *PNPM_VERSION
       NODE_VERSION: *NODE_VERSION
-      workDir: 'packages/kumo'
-      artifactDir: 'dist'
+      workDir: "packages/kumo"
+      artifactDir: "dist"
       runOnMR: true
-      runOnBranches: '^main$'
+      runOnBranches: "^main$"
 
   # Build @cloudflare/kumo-docs
   - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/build@~latest
@@ -38,12 +39,12 @@ include:
       jobPrefix: build-kumo-docs
       PNPM_VERSION: *PNPM_VERSION
       NODE_VERSION: *NODE_VERSION
-      workDir: 'packages/kumo-docs'
-      artifactDir: 'build'
+      workDir: "packages/kumo-docs"
+      artifactDir: "build"
       runOnMR: true
-      runOnBranches: '^main$'
+      runOnBranches: "^main$"
 
-# ============= CHECKS STAGE (Runs after build, can use artifacts) =============
+  # ============= CHECKS STAGE (Runs after build, can use artifacts) =============
 
   # Validate lockfile integrity
   - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
@@ -52,7 +53,7 @@ include:
       jobPrefix: lockfile-check
       PNPM_VERSION: *PNPM_VERSION
       NODE_VERSION: *NODE_VERSION
-      PNPM_RUN_TARGET: 'lockfile-check'
+      PNPM_RUN_TARGET: "lockfile-check"
       runOnMR: true
 
   # Type checking across workspace
@@ -62,9 +63,9 @@ include:
       jobPrefix: typecheck
       PNPM_VERSION: *PNPM_VERSION
       NODE_VERSION: *NODE_VERSION
-      PNPM_RUN_TARGET: 'typecheck'
+      PNPM_RUN_TARGET: "typecheck"
       runOnMR: true
-      runOnBranches: '^main$'
+      runOnBranches: "^main$"
 
   # Linting @cloudflare/kumo
   - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/lint@~latest
@@ -73,9 +74,9 @@ include:
       jobPrefix: lint-kumo
       PNPM_VERSION: *PNPM_VERSION
       NODE_VERSION: *NODE_VERSION
-      workDir: 'packages/kumo'
+      workDir: "packages/kumo"
       runOnMR: true
-      runOnBranches: '^main$'
+      runOnBranches: "^main$"
 
   # Changeset validation for @cloudflare/kumo
   - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
@@ -84,25 +85,24 @@ include:
       jobPrefix: validate-changeset
       PNPM_VERSION: *PNPM_VERSION
       NODE_VERSION: *NODE_VERSION
-      PNPM_RUN_TARGET: 'validate:changeset'
-      workDir: 'packages/kumo'
+      PNPM_RUN_TARGET: "validate:changeset"
+      workDir: "packages/kumo"
       runOnMR: true
 
-# ============= TEST STAGE (Uses build artifacts) =============
+  # ============= TEST STAGE (Uses build artifacts) =============
 
-  # Test @cloudflare/kumo
+  # Test @cloudflare/kumo (unit tests + Storybook a11y tests)
   - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/test@~latest
     inputs:
       stage: test
       jobPrefix: test-kumo
       PNPM_VERSION: *PNPM_VERSION
       NODE_VERSION: *NODE_VERSION
-      workDir: 'packages/kumo'
-      # COVERAGE_FOLDER: 'coverage'  # Disabled - enable when using test:coverage script
+      workDir: "packages/kumo"
       runOnMR: true
-      runOnBranches: '^main$'
+      runOnBranches: "^main$"
 
-# ============= BETA RELEASE STAGE (Publishes beta versions to npm) =============
+  # ============= BETA RELEASE STAGE (Publishes beta versions to npm) =============
 
   # Beta release using pnpm component
   - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
@@ -111,11 +111,10 @@ include:
       jobPrefix: publish-beta
       PNPM_VERSION: *PNPM_VERSION
       NODE_VERSION: *NODE_VERSION
-      PNPM_RUN_TARGET: 'publish:beta'
+      PNPM_RUN_TARGET: "publish:beta"
       runOnMR: true
 
-
-# ============= PRODUCTION RELEASE STAGE (Publishes production versions to npm) =============
+  # ============= PRODUCTION RELEASE STAGE (Publishes production versions to npm) =============
 
   # Production release using pnpm component
   - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
@@ -124,9 +123,14 @@ include:
       jobPrefix: prod-release-kumo
       PNPM_VERSION: *PNPM_VERSION
       NODE_VERSION: *NODE_VERSION
-      PNPM_RUN_TARGET: 'release:production'
+      PNPM_RUN_TARGET: "release:production"
       runOnMR: false
-      runOnBranches: 'never'
+      runOnBranches: "never"
+  # ============= REVIEW STAGE (AI-powered code review) =============
+
+  # Claude Code Review
+  # DevTools docs -> https://gitlab.cfdata.org/cloudflare/ci/ai
+  - component: $CI_SERVER_FQDN/cloudflare/ci/ai/review@~latest
 
 # Job overrides for dependencies and additional configuration
 
@@ -143,18 +147,6 @@ typecheck-run:
 lint-kumo-lint:
   needs:
     - build-kumo-build
-  allow_failure: true  # Temporarily allow lint failures
-
-test-kumo-test:
-  needs:
-    - build-kumo-build
-  # Coverage disabled temporarily - enable when test:coverage script is used
-  # coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
-  # artifacts:
-  #   reports:
-  #     coverage_report:
-  #       coverage_format: cobertura
-  #       path: packages/kumo/coverage/cobertura-coverage.xml
 
 publish-beta-run:
   needs:
@@ -164,8 +156,8 @@ publish-beta-run:
     - if: $CI_MERGE_REQUEST_IID
       changes:
         paths:
-           - packages/kumo/**/*
-        compare_to: 'refs/heads/main'
+          - packages/kumo/**/*
+        compare_to: "refs/heads/main"
       when: on_success
     - when: never
   secrets:
@@ -182,9 +174,9 @@ publish-beta-run:
 prod-release-kumo-run:
   allow_failure: false
   variables:
-    PACKAGE_NAME: '@cloudflare/kumo'
-    PACKAGE_PATH: 'packages/kumo'
-    DRY_RUN: 'false'  # Set to 'true' to test without publishing or pushing
+    PACKAGE_NAME: "@cloudflare/kumo"
+    PACKAGE_PATH: "packages/kumo"
+    DRY_RUN: "false" # Set to 'true' to test without publishing or pushing
   before_script:
     # Activate Node.js 24 via nvm (already installed in image at /usr/local/nvm)
     - |

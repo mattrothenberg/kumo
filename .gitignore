@@ -22,7 +22,7 @@ worker-configuration.d.ts
 .react-router
 
 # IDE
-.vscode/
+# .vscode/
 .idea/
 *.swp
 *.swo
@@ -34,3 +34,4 @@ Thumbs.db
 *storybook.log
 *.tsbuildinfo
 .build-complete
+.beads/

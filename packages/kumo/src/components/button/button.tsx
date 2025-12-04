@@ -1,51 +1,97 @@
 import React from "react";
-import { ArrowsClockwiseIcon, type Icon } from "@phosphor-icons/react";
+import { ArrowsClockwise, type Icon } from "@phosphor-icons/react";
 import { Loader } from "../loader/loader";
 import { cn } from "../../utils/cn";
 import { useLinkComponent } from "../../utils/link-provider";
 
-interface KumoButtonVariantsProps {
-  shape?: "base" | "square" | "circle";
-  size?: "base" | "xs" | "sm" | "lg";
-  variant?: "primary" | "secondary" | "ghost" | "destructive" | "outline";
+export const KUMO_BUTTON_VARIANTS = {
+  shape: {
+    base: {
+      classes: "",
+      description: "Default rectangular button shape",
+    },
+    square: {
+      classes: "items-center justify-center p-0",
+      description: "Square button for icon-only actions",
+    },
+    circle: {
+      classes: "items-center justify-center p-0 rounded-full",
+      description: "Circular button for icon-only actions",
+    },
+  },
+  size: {
+    xs: {
+      classes: "h-5 gap-1 rounded-sm px-1.5 text-xs",
+      description: "Extra small button for compact UIs",
+    },
+    sm: {
+      classes: "h-6.5 gap-1 rounded-md px-2 text-xs",
+      description: "Small button for secondary actions",
+    },
+    base: {
+      classes: "h-9 gap-1.5 rounded-lg px-3 text-base",
+      description: "Default button size",
+    },
+    lg: {
+      classes: "h-10 gap-2 rounded-lg px-4 text-base",
+      description: "Large button for primary CTAs",
+    },
+  },
+  compactSize: {
+    xs: { classes: "size-3.5" },
+    sm: { classes: "size-6.5" },
+    base: { classes: "size-9" },
+    lg: { classes: "size-10" },
+  },
+  variant: {
+    primary: {
+      classes:
+        "bg-primary !text-white hover:bg-primary/70 disabled:bg-primary/50 disabled:!text-primary/70",
+      description: "High-emphasis button for primary actions",
+    },
+    secondary: {
+      classes:
+        "bg-secondary !text-secondary ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-secondary/70 ring-border data-[state=open]:bg-subtle",
+      description: "Default button style for most actions",
+    },
+    ghost: {
+      classes: "text-surface hover:bg-accent shadow-none bg-inherit",
+      description: "Minimal button with no background",
+    },
+    destructive: {
+      classes: "bg-destructive !text-white hover:bg-destructive/70",
+      description: "Danger button for destructive actions like delete",
+    },
+    outline: {
+      classes: "bg-surface text-surface ring ring-border",
+      description: "Bordered button with transparent background",
+    },
+  },
+} as const;
+
+export const KUMO_BUTTON_DEFAULT_VARIANTS = {
+  shape: "base",
+  size: "base",
+  variant: "secondary",
+} as const;
+
+// Derived types from KUMO_BUTTON_VARIANTS
+export type KumoButtonShape = keyof typeof KUMO_BUTTON_VARIANTS.shape;
+export type KumoButtonSize = keyof typeof KUMO_BUTTON_VARIANTS.size;
+export type KumoButtonVariant = keyof typeof KUMO_BUTTON_VARIANTS.variant;
+
+export interface KumoButtonVariantsProps {
+  shape?: KumoButtonShape;
+  size?: KumoButtonSize;
+  variant?: KumoButtonVariant;
 }
 
-const sizeStyles = {
-  xs: "h-5 gap-1 rounded-sm px-1.5 text-xs",
-  sm: "h-6.5 gap-1 rounded-md px-2 text-xs",
-  base: "h-9 gap-1.5 rounded-lg px-3 text-base",
-  lg: "h-10 gap-2 rounded-lg px-4 text-base",
-};
-
 export function buttonVariants({
-  variant = "secondary",
-  size = "base",
-  shape = "base",
+  variant = KUMO_BUTTON_DEFAULT_VARIANTS.variant,
+  size = KUMO_BUTTON_DEFAULT_VARIANTS.size,
+  shape = KUMO_BUTTON_DEFAULT_VARIANTS.shape,
 }: KumoButtonVariantsProps = {}) {
-  // Variant-specific styles
-  const variantStyles = {
-    primary:
-      "bg-kumo-primary !text-kumo-primary hover:bg-kumo-primary/70 disabled:bg-kumo-primary/50 disabled:!text-kumo-primary/70",
-    secondary: cn(
-      "bg-kumo-secondary !text-kumo-secondary ring not-disabled:hover:border-kumo-subtle!",
-      "not-disabled:hover:bg-kumo-subtle disabled:bg-kumo-secondary/50 disabled:!text-kumo-secondary/70",
-      'data-[state="open"]:bg-kumo-subtle ring-kumo-border'
-    ),
-    ghost: "text-kumo-surface hover:bg-kumo-accent shadow-none bg-inherit",
-    destructive:
-      "bg-kumo-destructive !text-kumo-destructive hover:bg-kumo-destructive/70",
-    outline: "bg-kumo-surface text-kumo-surface ring ring-kumo-border",
-  };
-
   const isCompactShape = shape === "square" || shape === "circle";
-
-  // Compact shape size mappings
-  const compactSizeStyles = {
-    xs: "size-3.5",
-    sm: "size-6.5",
-    base: "size-9",
-    lg: "size-10",
-  };
 
   return cn(
     // Base styles
@@ -53,14 +99,12 @@ export function buttonVariants({
     "border-0 shadow-xs",
     "cursor-pointer",
     // Disabled state
-    "disabled:text-kumo-muted disabled:cursor-not-allowed",
-    // Apply variant, size styles
-    variantStyles[variant],
-    sizeStyles[size],
-    // Apply shape-specific styles
-    isCompactShape && compactSizeStyles[size],
-    isCompactShape && "p-0 items-center justify-center",
-    shape === "circle" && "rounded-full"
+    "disabled:cursor-not-allowed disabled:text-muted",
+    // Apply variant, size, shape styles from KUMO_BUTTON_VARIANTS
+    KUMO_BUTTON_VARIANTS.variant[variant].classes,
+    KUMO_BUTTON_VARIANTS.size[size].classes,
+    KUMO_BUTTON_VARIANTS.shape[shape].classes,
+    isCompactShape && KUMO_BUTTON_VARIANTS.compactSize[size].classes,
   );
 }
 
@@ -102,7 +146,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       icon: IconComponent,
       ...props
     },
-    ref
+    ref,
   ) => {
     const { type, ...restProps } = props;
     return (
@@ -110,9 +154,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         className={cn(
           buttonVariants({ variant, size, shape }),
-          "focus-visible:ring-kumo-active outline-none focus:opacity-100 focus-visible:ring-1 *:in-focus:opacity-100", // Focus styles
-          disabled && "opacity-50 cursor-not-allowed",
-          className
+          "outline-none focus:opacity-100 focus-visible:ring-1 focus-visible:ring-active *:in-focus:opacity-100", // Focus styles
+          disabled && "cursor-not-allowed opacity-50",
+          className,
         )}
         disabled={loading || disabled}
         type={type ?? "button"}
@@ -124,7 +168,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {children}
       </button>
     );
-  }
+  },
 );
 
 Button.displayName = "Button";
@@ -135,7 +179,7 @@ export const RefreshButton = ({
   ...props
 }: ButtonProps) => (
   <Button shape="square" aria-label={ariaLabel} {...props}>
-    <ArrowsClockwiseIcon
+    <ArrowsClockwise
       className={cn({
         "animate-refresh": loading,
         "size-4.5": props.size === "base" || !props.size,
@@ -160,7 +204,7 @@ export const LinkButton = React.forwardRef<HTMLAnchorElement, LinkButtonProps>(
       // linksExternal = false,
       ...props
     },
-    ref
+    ref,
   ) => {
     const LinkComponent = useLinkComponent();
     const externalProps = external
@@ -173,7 +217,7 @@ export const LinkButton = React.forwardRef<HTMLAnchorElement, LinkButtonProps>(
         className={cn(
           buttonVariants({ variant, size, shape }),
           "flex items-center no-underline!",
-          className
+          className,
         )}
         href={href}
         to={typeof href === "string" ? href : undefined}
@@ -184,7 +228,7 @@ export const LinkButton = React.forwardRef<HTMLAnchorElement, LinkButtonProps>(
         {children}
       </LinkComponent>
     );
-  }
+  },
 );
 
 LinkButton.displayName = "LinkButton";

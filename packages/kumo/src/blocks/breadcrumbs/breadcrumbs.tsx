@@ -3,6 +3,39 @@ import { CheckIcon, CopyIcon } from "@phosphor-icons/react";
 import { Button } from "../../components/button";
 import { SkeletonLine } from "../../components/loader/skeleton-line";
 import { useLinkComponent } from "../../utils/link-provider";
+import { cn } from "../../utils/cn";
+
+export const KUMO_BREADCRUMBS_VARIANTS = {
+  size: {
+    sm: {
+      classes: "text-sm h-10 gap-0.5",
+      description: "Compact breadcrumbs for dense UIs",
+    },
+    base: {
+      classes: "text-base h-12 gap-1",
+      description: "Default breadcrumbs size",
+    },
+  },
+} as const;
+
+export const KUMO_BREADCRUMBS_DEFAULT_VARIANTS = {
+  size: "base",
+} as const;
+
+export type KumoBreadcrumbsSize = keyof typeof KUMO_BREADCRUMBS_VARIANTS.size;
+
+export interface KumoBreadcrumbsVariantsProps {
+  size?: KumoBreadcrumbsSize;
+}
+
+export function breadcrumbsVariants({
+  size = KUMO_BREADCRUMBS_DEFAULT_VARIANTS.size,
+}: KumoBreadcrumbsVariantsProps = {}) {
+  return cn(
+    "group mr-4 hidden min-w-0 grow items-center sm:flex",
+    KUMO_BREADCRUMBS_VARIANTS.size[size].classes,
+  );
+}
 
 interface BreadcrumbsItemProps {
   href: string;
@@ -19,9 +52,9 @@ const Link = ({
   return (
     <LinkComponent
       to={href}
-      className="flex items-center gap-1 min-w-0 text-muted no-underline"
+      className="flex min-w-0 items-center gap-1 text-muted no-underline"
     >
-      {!!icon && <span className="shrink-0 flex items-center">{icon}</span>}
+      {!!icon && <span className="flex shrink-0 items-center">{icon}</span>}
       {children}
     </LinkComponent>
   );
@@ -39,8 +72,8 @@ function Current({
 }: PropsWithChildren<BreadcrumbsCurrentProps>) {
   if (loading) {
     return (
-      <div className="w-[125px] flex items-center gap-1 min-w-0">
-        {icon && <span className="shrink-0 flex items-center">{icon}</span>}
+      <div className="flex w-[125px] min-w-0 items-center gap-1">
+        {icon && <span className="flex shrink-0 items-center">{icon}</span>}
         <SkeletonLine />
       </div>
     );
@@ -48,10 +81,10 @@ function Current({
 
   return (
     <div
-      className="font-medium truncate flex items-center gap-1"
+      className="flex items-center gap-1 truncate font-medium"
       aria-current="page"
     >
-      {icon && <span className="shrink-0 flex items-center">{icon}</span>}
+      {icon && <span className="flex shrink-0 items-center">{icon}</span>}
       {children}
     </div>
   );
@@ -59,10 +92,7 @@ function Current({
 
 function Separator() {
   return (
-    <span
-      className="text-neutral-400 dark:text-neutral-600 flex items-center"
-      aria-hidden="true"
-    >
+    <span className="flex items-center text-label-inverse" aria-hidden="true">
       <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
         <path
           stroke="currentColor"
@@ -102,13 +132,13 @@ function Clipboard({ text }: { text: string }) {
       variant="ghost"
       shape="square"
       size="sm"
-      className="group-hover:opacity-100 opacity-0 transition-[opacity]"
+      className="opacity-0 transition-[opacity] group-hover:opacity-100"
       onClick={handleCopyDeeplink}
       title="Click to copy"
       aria-label="Copy"
     >
       {isCopied ? (
-        <CheckIcon weight="bold" className="text-green-600" />
+        <CheckIcon weight="bold" className="text-green-2" />
       ) : (
         <CopyIcon weight="regular" />
       )}
@@ -116,10 +146,20 @@ function Clipboard({ text }: { text: string }) {
   );
 }
 
-export function Breadcrumb({ children }: PropsWithChildren) {
+export interface BreadcrumbsProps
+  extends PropsWithChildren,
+    KumoBreadcrumbsVariantsProps {
+  className?: string;
+}
+
+export function Breadcrumb({
+  children,
+  size = "base",
+  className,
+}: BreadcrumbsProps) {
   return (
     <nav
-      className="text-base hidden sm:flex grow items-center gap-1 min-w-0 mr-4 h-12 group"
+      className={cn(breadcrumbsVariants({ size }), className)}
       aria-label="breadcrumb"
     >
       {children}

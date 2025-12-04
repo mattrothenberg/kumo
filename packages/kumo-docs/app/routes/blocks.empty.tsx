@@ -1,4 +1,10 @@
-import { CodeIcon, GlobeIcon, PackageIcon, RocketIcon, SquaresFourIcon } from "@phosphor-icons/react";
+import {
+  CodeIcon,
+  GlobeIcon,
+  PackageIcon,
+  RocketIcon,
+  SquaresFourIcon,
+} from "@phosphor-icons/react";
 import { CodeBlock, Button } from "@cloudflare/kumo";
 import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
@@ -25,23 +31,27 @@ export default function EmptyDoc() {
     </div>}
 />`}
         >
-          <Empty 
-              icon={<PackageIcon size={48} />}
-              title="No packages found" 
-              description="Get started by installing your first package." 
-              commandLine="npm install @cloudflare/kumo" 
-              contents={<div className="flex items-center gap-2">
+          <Empty
+            icon={<PackageIcon size={48} />}
+            title="No packages found"
+            description="Get started by installing your first package."
+            commandLine="npm install @cloudflare/kumo"
+            contents={
+              <div className="flex items-center gap-2">
                 <Button icon={<CodeIcon />}>See examples</Button>
-                <Button icon={<GlobeIcon />} variant="primary">View documentation</Button>
-              </div>}
-            />
+                <Button icon={<GlobeIcon />} variant="primary">
+                  View documentation
+                </Button>
+              </div>
+            }
+          />
         </ComponentExample>
       </ComponentSection>
 
       {/* Installation */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Installation</h2>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
+        <h2 className="mb-4 text-2xl font-bold">Installation</h2>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
           Copy and paste the following code into your project.
         </p>
         <CodeBlock
@@ -54,7 +64,7 @@ import { Empty } from "@cloudflare/kumo/blocks/empty";`}
 
       {/* Usage */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Usage</h2>
+        <h2 className="mb-4 text-2xl font-bold">Usage</h2>
         <CodeBlock
           lang="tsx"
           code={`import { Empty } from "@cloudflare/kumo";
@@ -75,11 +85,11 @@ export default function Example() {
 
       {/* Examples */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-6">Examples</h2>
+        <h2 className="mb-6 text-2xl font-bold">Examples</h2>
 
         {/* Basic */}
         <div className="mb-12">
-          <h3 className="text-xl font-semibold mb-4">Basic</h3>
+          <h3 className="mb-4 text-xl font-semibold">Basic</h3>
           <ComponentExample
             code={`<Empty
   title="No results found"
@@ -95,7 +105,7 @@ export default function Example() {
 
         {/* With Icon */}
         <div className="mb-12">
-          <h3 className="text-xl font-semibold mb-4">With Icon</h3>
+          <h3 className="mb-4 text-xl font-semibold">With Icon</h3>
           <ComponentExample
             code={`<Empty
   icon={<RocketIcon size={48} />}
@@ -113,7 +123,7 @@ export default function Example() {
 
         {/* With Command Line */}
         <div className="mb-12">
-          <h3 className="text-xl font-semibold mb-4">With Command Line</h3>
+          <h3 className="mb-4 text-xl font-semibold">With Command Line</h3>
           <ComponentExample
             code={`<Empty
   icon={<PackageIcon size={48} />}
@@ -133,7 +143,7 @@ export default function Example() {
 
         {/* With Custom Content */}
         <div className="mb-12">
-          <h3 className="text-xl font-semibold mb-4">With Custom Content</h3>
+          <h3 className="mb-4 text-xl font-semibold">With Custom Content</h3>
           <ComponentExample
             code={`<Empty
   icon={<PackageIcon size={48} />}
@@ -162,41 +172,41 @@ export default function Example() {
 
       {/* API Reference */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">API Reference</h2>
+        <h2 className="mb-4 text-2xl font-bold">API Reference</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                <th className="text-left py-3 px-4 font-semibold">Prop</th>
-                <th className="text-left py-3 px-4 font-semibold">Type</th>
-                <th className="text-left py-3 px-4 font-semibold">Default</th>
+                <th className="px-4 py-3 text-left font-semibold">Prop</th>
+                <th className="px-4 py-3 text-left font-semibold">Type</th>
+                <th className="px-4 py-3 text-left font-semibold">Default</th>
               </tr>
             </thead>
             <tbody className="text-neutral-600 dark:text-neutral-400">
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                <td className="py-3 px-4 font-mono text-xs">icon</td>
-                <td className="py-3 px-4 font-mono text-xs">React.ReactNode</td>
-                <td className="py-3 px-4 font-mono text-xs">undefined</td>
+                <td className="px-4 py-3 font-mono text-xs">icon</td>
+                <td className="px-4 py-3 font-mono text-xs">React.ReactNode</td>
+                <td className="px-4 py-3 font-mono text-xs">undefined</td>
               </tr>
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                <td className="py-3 px-4 font-mono text-xs">title</td>
-                <td className="py-3 px-4 font-mono text-xs">string</td>
-                <td className="py-3 px-4 font-mono text-xs">required</td>
+                <td className="px-4 py-3 font-mono text-xs">title</td>
+                <td className="px-4 py-3 font-mono text-xs">string</td>
+                <td className="px-4 py-3 font-mono text-xs">required</td>
               </tr>
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                <td className="py-3 px-4 font-mono text-xs">description</td>
-                <td className="py-3 px-4 font-mono text-xs">string</td>
-                <td className="py-3 px-4 font-mono text-xs">undefined</td>
+                <td className="px-4 py-3 font-mono text-xs">description</td>
+                <td className="px-4 py-3 font-mono text-xs">string</td>
+                <td className="px-4 py-3 font-mono text-xs">undefined</td>
               </tr>
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                <td className="py-3 px-4 font-mono text-xs">commandLine</td>
-                <td className="py-3 px-4 font-mono text-xs">string</td>
-                <td className="py-3 px-4 font-mono text-xs">undefined</td>
+                <td className="px-4 py-3 font-mono text-xs">commandLine</td>
+                <td className="px-4 py-3 font-mono text-xs">string</td>
+                <td className="px-4 py-3 font-mono text-xs">undefined</td>
               </tr>
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                <td className="py-3 px-4 font-mono text-xs">contents</td>
-                <td className="py-3 px-4 font-mono text-xs">React.ReactNode</td>
-                <td className="py-3 px-4 font-mono text-xs">undefined</td>
+                <td className="px-4 py-3 font-mono text-xs">contents</td>
+                <td className="px-4 py-3 font-mono text-xs">React.ReactNode</td>
+                <td className="px-4 py-3 font-mono text-xs">undefined</td>
               </tr>
             </tbody>
           </table>

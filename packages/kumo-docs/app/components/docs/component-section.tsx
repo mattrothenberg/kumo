@@ -9,10 +9,9 @@ interface ComponentSectionProps {
 /**
  * A section wrapper for component documentation
  */
-export function ComponentSection({ children, className }: ComponentSectionProps) {
-  return (
-    <section className={cn("mb-12", className)}>
-      {children}
-    </section>
-  );
+export function ComponentSection({
+  children,
+  className,
+}: ComponentSectionProps) {
+  return <section className={cn("mb-12", className)}>{children}</section>;
 }

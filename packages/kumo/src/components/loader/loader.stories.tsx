@@ -1,36 +1,30 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Loader } from './loader';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Loader, KUMO_LOADER_VARIANTS } from "./loader";
+import { propTester } from "../../utils/prop-tester";
 
 const meta = {
-	title: 'Components/Loader',
-	component: Loader,
-	parameters: {
-		layout: 'centered',
-	},
-	tags: ['autodocs'],
+  title: "Components/Loader",
+  component: Loader,
 } satisfies Meta<typeof Loader>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-	args: {},
+export const Sizes: Story = {
+  render: () => (
+    <>
+      {propTester(
+        Object.keys(KUMO_LOADER_VARIANTS.size),
+        "size",
+        <Loader className="text-surface" />,
+      )}
+    </>
+  ),
 };
 
 export const CustomSize: Story = {
-	args: {
-		size: 32,
-	},
-};
-
-export const Sizes: Story = {
-	render: () => (
-		<div className="flex gap-4 items-center">
-			<Loader size={12} />
-			<Loader size={16} />
-			<Loader size={24} />
-			<Loader size={32} />
-			<Loader size={48} />
-		</div>
-	),
+  args: {
+    size: 48,
+    className: "text-surface",
+  },
 };

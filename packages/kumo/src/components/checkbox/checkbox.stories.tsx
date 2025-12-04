@@ -1,22 +1,25 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Checkbox } from "./checkbox";
+import { Checkbox, KUMO_CHECKBOX_VARIANTS } from "./checkbox";
+import { propTester } from "../../utils/prop-tester";
 
 const meta = {
   title: "Components/Checkbox",
   component: Checkbox,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
 } satisfies Meta<typeof Checkbox>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  args: {
-    label: "Checkbox",
-  },
+export const Variants: Story = {
+  render: () => (
+    <>
+      {propTester(
+        Object.keys(KUMO_CHECKBOX_VARIANTS.variant),
+        "variant",
+        <Checkbox label="Checkbox" />,
+      )}
+    </>
+  ),
 };
 
 export const Checked: Story = {
@@ -26,9 +29,9 @@ export const Checked: Story = {
   },
 };
 
-export const Intederminate: Story = {
+export const Indeterminate: Story = {
   args: {
-    label: "Intederminate",
+    label: "Indeterminate",
     indeterminate: true,
   },
 };
@@ -56,15 +59,9 @@ export const IndeterminateDisabled: Story = {
   },
 };
 
-export const Error: Story = {
-  args: {
-    label: "Invalid",
-    variant: "error",
-  },
-};
-
 export const WithoutLabel: Story = {
   args: {
+    label: undefined,
     checked: false,
   },
 };

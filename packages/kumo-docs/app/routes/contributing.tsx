@@ -10,58 +10,61 @@ export default function Contributing() {
     >
       {/* Overview */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Contributing to Kumo</h2>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
-          We welcome contributions to Kumo! This guide will help you get started with adding new components and blocks to the library.
+        <h2 className="mb-4 text-2xl font-bold">Contributing to Kumo</h2>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
+          We welcome contributions to Kumo! This guide will help you get started
+          with adding new components and blocks to the library.
         </p>
       </ComponentSection>
 
       {/* Components vs Blocks vs Layouts */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Components vs Blocks vs Layouts</h2>
-        <div className="grid md:grid-cols-3 gap-6 mb-4">
-          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-4">
-            <h3 className="text-lg font-semibold mb-2">Components</h3>
-            <p className="text-neutral-600 dark:text-neutral-400 text-sm mb-3">
+        <h2 className="mb-4 text-2xl font-bold">
+          Components vs Blocks vs Layouts
+        </h2>
+        <div className="mb-4 grid gap-6 md:grid-cols-3">
+          <div className="rounded-lg border border-neutral-200 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
+            <h3 className="mb-2 text-lg font-semibold">Components</h3>
+            <p className="mb-3 text-sm text-neutral-600 dark:text-neutral-400">
               Atomic, reusable UI elements
             </p>
-            <ul className="list-disc list-inside space-y-1 text-sm text-neutral-700 dark:text-neutral-300">
+            <ul className="list-inside list-disc space-y-1 text-sm text-neutral-700 dark:text-neutral-300">
               <li>Single responsibility</li>
               <li>Highly reusable</li>
               <li>Minimal dependencies</li>
               <li>Style-focused</li>
             </ul>
-            <p className="text-xs text-neutral-500 dark:text-neutral-500 mt-3">
+            <p className="mt-3 text-xs text-neutral-500 dark:text-neutral-500">
               Examples: Button, Input, Badge, Tabs
             </p>
           </div>
-          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-4">
-            <h3 className="text-lg font-semibold mb-2">Blocks</h3>
-            <p className="text-neutral-600 dark:text-neutral-400 text-sm mb-3">
+          <div className="rounded-lg border border-neutral-200 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
+            <h3 className="mb-2 text-lg font-semibold">Blocks</h3>
+            <p className="mb-3 text-sm text-neutral-600 dark:text-neutral-400">
               Composed patterns for page layouts
             </p>
-            <ul className="list-disc list-inside space-y-1 text-sm text-neutral-700 dark:text-neutral-300">
+            <ul className="list-inside list-disc space-y-1 text-sm text-neutral-700 dark:text-neutral-300">
               <li>Compose multiple components</li>
               <li>Implement common patterns</li>
               <li>Layout-focused</li>
               <li>May include business logic</li>
             </ul>
-            <p className="text-xs text-neutral-500 dark:text-neutral-500 mt-3">
+            <p className="mt-3 text-xs text-neutral-500 dark:text-neutral-500">
               Examples: Breadcrumbs, PageHeader, Empty
             </p>
           </div>
-          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-4">
-            <h3 className="text-lg font-semibold mb-2">Layouts</h3>
-            <p className="text-neutral-600 dark:text-neutral-400 text-sm mb-3">
+          <div className="rounded-lg border border-neutral-200 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
+            <h3 className="mb-2 text-lg font-semibold">Layouts</h3>
+            <p className="mb-3 text-sm text-neutral-600 dark:text-neutral-400">
               Page-level structure patterns
             </p>
-            <ul className="list-disc list-inside space-y-1 text-sm text-neutral-700 dark:text-neutral-300">
+            <ul className="list-inside list-disc space-y-1 text-sm text-neutral-700 dark:text-neutral-300">
               <li>Full-page composition</li>
               <li>Consistent structure</li>
               <li>Responsive patterns</li>
               <li>Application-wide use</li>
             </ul>
-            <p className="text-xs text-neutral-500 dark:text-neutral-500 mt-3">
+            <p className="mt-3 text-xs text-neutral-500 dark:text-neutral-500">
               Examples: ResourceListPage, DashboardPage
             </p>
           </div>
@@ -70,13 +73,17 @@ export default function Contributing() {
 
       {/* Component Scaffolding */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Creating New Components</h2>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
-          Kumo includes a scaffolding tool that automates component creation. This ensures all components follow the same structure and are properly configured.
+        <h2 className="mb-4 text-2xl font-bold">Creating New Components</h2>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
+          Kumo includes a scaffolding tool that automates component creation.
+          This ensures all components follow the same structure and are properly
+          configured.
         </p>
-        
-        <h3 className="text-xl font-semibold mb-3 mt-6">Run the Scaffolding Tool</h3>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
+
+        <h3 className="mt-6 mb-3 text-xl font-semibold">
+          Run the Scaffolding Tool
+        </h3>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
           From the workspace root, run:
         </p>
         <CodeBlock
@@ -87,25 +94,62 @@ export default function Contributing() {
 
       {/* What It Does */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">What the Scaffolding Tool Does</h2>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
+        <h2 className="mb-4 text-2xl font-bold">
+          What the Scaffolding Tool Does
+        </h2>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
           The tool automatically creates and updates several files:
         </p>
-        <ul className="list-disc list-inside space-y-2 text-neutral-700 dark:text-neutral-300 mb-4">
-          <li><strong>Component file</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/components/{"{name}"}/{"{name}"}.tsx</code></li>
-          <li><strong>Index file</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/components/{"{name}"}/index.ts</code></li>
-          <li><strong>Story file</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/components/{"{name}"}/{"{name}"}.stories.tsx</code></li>
-          <li><strong>Test file</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/components/{"{name}"}/{"{name}"}.test.tsx</code></li>
-          <li><strong>Main exports</strong> - Updates <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/index.ts</code></li>
-          <li><strong>Build config</strong> - Updates <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">vite.config.ts</code></li>
-          <li><strong>Package exports</strong> - Updates <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">package.json</code></li>
+        <ul className="mb-4 list-inside list-disc space-y-2 text-neutral-700 dark:text-neutral-300">
+          <li>
+            <strong>Component file</strong> -{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              src/components/{"{name}"}/{"{name}"}.tsx
+            </code>
+          </li>
+          <li>
+            <strong>Index file</strong> -{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              src/components/{"{name}"}/index.ts
+            </code>
+          </li>
+          <li>
+            <strong>Story file</strong> -{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              src/components/{"{name}"}/{"{name}"}.stories.tsx
+            </code>
+          </li>
+          <li>
+            <strong>Test file</strong> -{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              src/components/{"{name}"}/{"{name}"}.test.tsx
+            </code>
+          </li>
+          <li>
+            <strong>Main exports</strong> - Updates{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              src/index.ts
+            </code>
+          </li>
+          <li>
+            <strong>Build config</strong> - Updates{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              vite.config.ts
+            </code>
+          </li>
+          <li>
+            <strong>Package exports</strong> - Updates{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              package.json
+            </code>
+          </li>
         </ul>
       </ComponentSection>
 
       {/* Example */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Example</h2>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
+        <h2 className="mb-4 text-2xl font-bold">Example</h2>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
           Here's what the scaffolding process looks like:
         </p>
         <CodeBlock
@@ -133,26 +177,60 @@ export default function Contributing() {
 
       {/* Naming */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Component Naming</h2>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
-          The scaffolding tool handles naming automatically. You can input the name in any format:
+        <h2 className="mb-4 text-2xl font-bold">Component Naming</h2>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
+          The scaffolding tool handles naming automatically. You can input the
+          name in any format:
         </p>
-        <ul className="list-disc list-inside space-y-2 text-neutral-700 dark:text-neutral-300 mb-4">
-          <li><strong>Spaces</strong> - "Alert Banner" → <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">alert-banner</code> directory, <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">AlertBanner</code> component</li>
-          <li><strong>PascalCase</strong> - "AlertBanner" → <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">alert-banner</code> directory, <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">AlertBanner</code> component</li>
-          <li><strong>kebab-case</strong> - "alert-banner" → <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">alert-banner</code> directory, <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">AlertBanner</code> component</li>
+        <ul className="mb-4 list-inside list-disc space-y-2 text-neutral-700 dark:text-neutral-300">
+          <li>
+            <strong>Spaces</strong> - "Alert Banner" →{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              alert-banner
+            </code>{" "}
+            directory,{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              AlertBanner
+            </code>{" "}
+            component
+          </li>
+          <li>
+            <strong>PascalCase</strong> - "AlertBanner" →{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              alert-banner
+            </code>{" "}
+            directory,{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              AlertBanner
+            </code>{" "}
+            component
+          </li>
+          <li>
+            <strong>kebab-case</strong> - "alert-banner" →{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              alert-banner
+            </code>{" "}
+            directory,{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              AlertBanner
+            </code>{" "}
+            component
+          </li>
         </ul>
       </ComponentSection>
 
       {/* Block Scaffolding */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Creating New Blocks</h2>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
-          Blocks are higher-level components that compose multiple base components. Use the block scaffolding tool to create them:
+        <h2 className="mb-4 text-2xl font-bold">Creating New Blocks</h2>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
+          Blocks are higher-level components that compose multiple base
+          components. Use the block scaffolding tool to create them:
         </p>
-        
-        <h3 className="text-xl font-semibold mb-3 mt-6">Run the Block Scaffolding Tool</h3>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
+
+        <h3 className="mt-6 mb-3 text-xl font-semibold">
+          Run the Block Scaffolding Tool
+        </h3>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
           From the workspace root, run:
         </p>
         <CodeBlock
@@ -160,21 +238,62 @@ export default function Contributing() {
           code={`pnpm --filter @cloudflare/kumo new-block`}
         />
 
-        <h3 className="text-xl font-semibold mb-3 mt-6">What It Creates</h3>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
-          The block scaffolding tool creates the same structure as components, but in the <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/blocks</code> directory:
+        <h3 className="mt-6 mb-3 text-xl font-semibold">What It Creates</h3>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
+          The block scaffolding tool creates the same structure as components,
+          but in the{" "}
+          <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+            src/blocks
+          </code>{" "}
+          directory:
         </p>
-        <ul className="list-disc list-inside space-y-2 text-neutral-700 dark:text-neutral-300 mb-4">
-          <li><strong>Block file</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/blocks/{"{name}"}/{"{name}"}.tsx</code></li>
-          <li><strong>Index file</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/blocks/{"{name}"}/index.ts</code></li>
-          <li><strong>Story file</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/blocks/{"{name}"}/{"{name}"}.stories.tsx</code></li>
-          <li><strong>Test file</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/blocks/{"{name}"}/{"{name}"}.test.tsx</code></li>
-          <li><strong>Main exports</strong> - Updates <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/index.ts</code> (Blocks section)</li>
-          <li><strong>Build config</strong> - Updates <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">vite.config.ts</code></li>
-          <li><strong>Package exports</strong> - Updates <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">package.json</code></li>
+        <ul className="mb-4 list-inside list-disc space-y-2 text-neutral-700 dark:text-neutral-300">
+          <li>
+            <strong>Block file</strong> -{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              src/blocks/{"{name}"}/{"{name}"}.tsx
+            </code>
+          </li>
+          <li>
+            <strong>Index file</strong> -{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              src/blocks/{"{name}"}/index.ts
+            </code>
+          </li>
+          <li>
+            <strong>Story file</strong> -{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              src/blocks/{"{name}"}/{"{name}"}.stories.tsx
+            </code>
+          </li>
+          <li>
+            <strong>Test file</strong> -{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              src/blocks/{"{name}"}/{"{name}"}.test.tsx
+            </code>
+          </li>
+          <li>
+            <strong>Main exports</strong> - Updates{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              src/index.ts
+            </code>{" "}
+            (Blocks section)
+          </li>
+          <li>
+            <strong>Build config</strong> - Updates{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              vite.config.ts
+            </code>
+          </li>
+          <li>
+            <strong>Package exports</strong> - Updates{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              package.json
+            </code>
+          </li>
         </ul>
 
-        <h3 className="text-xl font-semibold mb-3 mt-6">Example</h3>
+        <h3 className="mt-6 mb-3 text-xl font-semibold">Example</h3>
         <CodeBlock
           lang="bash"
           code={`? Block name: Navigation Bar
@@ -200,13 +319,16 @@ export default function Contributing() {
 
       {/* Layout Scaffolding */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Creating New Layouts</h2>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
-          Layouts are page-level components that provide consistent structure for common page patterns. Use the layout scaffolding tool:
+        <h2 className="mb-4 text-2xl font-bold">Creating New Layouts</h2>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
+          Layouts are page-level components that provide consistent structure
+          for common page patterns. Use the layout scaffolding tool:
         </p>
-        
-        <h3 className="text-xl font-semibold mb-3 mt-6">Run the Layout Scaffolding Tool</h3>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
+
+        <h3 className="mt-6 mb-3 text-xl font-semibold">
+          Run the Layout Scaffolding Tool
+        </h3>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
           From the workspace root, run:
         </p>
         <CodeBlock
@@ -214,21 +336,62 @@ export default function Contributing() {
           code={`pnpm --filter @cloudflare/kumo new-layout`}
         />
 
-        <h3 className="text-xl font-semibold mb-3 mt-6">What It Creates</h3>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
-          The layout scaffolding tool creates the same structure as components and blocks, but in the <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/layouts</code> directory:
+        <h3 className="mt-6 mb-3 text-xl font-semibold">What It Creates</h3>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
+          The layout scaffolding tool creates the same structure as components
+          and blocks, but in the{" "}
+          <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+            src/layouts
+          </code>{" "}
+          directory:
         </p>
-        <ul className="list-disc list-inside space-y-2 text-neutral-700 dark:text-neutral-300 mb-4">
-          <li><strong>Layout file</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/layouts/{"{name}"}/{"{name}"}.tsx</code></li>
-          <li><strong>Index file</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/layouts/{"{name}"}/index.ts</code></li>
-          <li><strong>Story file</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/layouts/{"{name}"}/{"{name}"}.stories.tsx</code></li>
-          <li><strong>Test file</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/layouts/{"{name}"}/{"{name}"}.test.tsx</code></li>
-          <li><strong>Main exports</strong> - Updates <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/index.ts</code> (Layouts section)</li>
-          <li><strong>Build config</strong> - Updates <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">vite.config.ts</code></li>
-          <li><strong>Package exports</strong> - Updates <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">package.json</code></li>
+        <ul className="mb-4 list-inside list-disc space-y-2 text-neutral-700 dark:text-neutral-300">
+          <li>
+            <strong>Layout file</strong> -{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              src/layouts/{"{name}"}/{"{name}"}.tsx
+            </code>
+          </li>
+          <li>
+            <strong>Index file</strong> -{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              src/layouts/{"{name}"}/index.ts
+            </code>
+          </li>
+          <li>
+            <strong>Story file</strong> -{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              src/layouts/{"{name}"}/{"{name}"}.stories.tsx
+            </code>
+          </li>
+          <li>
+            <strong>Test file</strong> -{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              src/layouts/{"{name}"}/{"{name}"}.test.tsx
+            </code>
+          </li>
+          <li>
+            <strong>Main exports</strong> - Updates{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              src/index.ts
+            </code>{" "}
+            (Layouts section)
+          </li>
+          <li>
+            <strong>Build config</strong> - Updates{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              vite.config.ts
+            </code>
+          </li>
+          <li>
+            <strong>Package exports</strong> - Updates{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              package.json
+            </code>
+          </li>
         </ul>
 
-        <h3 className="text-xl font-semibold mb-3 mt-6">Example</h3>
+        <h3 className="mt-6 mb-3 text-xl font-semibold">Example</h3>
         <CodeBlock
           lang="bash"
           code={`? Layout name: Dashboard Page
@@ -254,24 +417,22 @@ export default function Contributing() {
 
       {/* Development Workflow */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Development Workflow</h2>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
-          After scaffolding a component, block, or layout, choose your development approach:
+        <h2 className="mb-4 text-2xl font-bold">Development Workflow</h2>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
+          After scaffolding a component, block, or layout, choose your
+          development approach:
         </p>
 
-        <div className="grid md:grid-cols-2 gap-6 mb-6">
-          <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-            <h3 className="text-lg font-semibold mb-2 text-blue-900 dark:text-blue-100">
+        <div className="mb-6 grid gap-6 md:grid-cols-2">
+          <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-950/30">
+            <h3 className="mb-2 text-lg font-semibold text-blue-900 dark:text-blue-100">
               Option 1: Storybook (Recommended)
             </h3>
-            <p className="text-sm text-blue-800 dark:text-blue-200 mb-3">
+            <p className="mb-3 text-sm text-blue-800 dark:text-blue-200">
               Best for isolated component development with instant feedback
             </p>
-            <CodeBlock
-              lang="bash"
-              code={`pnpm storybook`}
-            />
-            <ul className="list-disc list-inside space-y-1 text-sm text-blue-900 dark:text-blue-100 mt-3">
+            <CodeBlock lang="bash" code={`pnpm storybook`} />
+            <ul className="mt-3 list-inside list-disc space-y-1 text-sm text-blue-900 dark:text-blue-100">
               <li>Full HMR with React Fast Refresh</li>
               <li>Changes reflect instantly</li>
               <li>Interactive component testing</li>
@@ -279,11 +440,11 @@ export default function Contributing() {
             </ul>
           </div>
 
-          <div className="bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-4">
-            <h3 className="text-lg font-semibold mb-2">
+          <div className="rounded-lg border border-neutral-200 bg-neutral-50 p-4 dark:border-neutral-800 dark:bg-neutral-900">
+            <h3 className="mb-2 text-lg font-semibold">
               Option 2: Watch Build
             </h3>
-            <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">
+            <p className="mb-3 text-sm text-neutral-600 dark:text-neutral-400">
               For testing components in the documentation site
             </p>
             <CodeBlock
@@ -294,7 +455,7 @@ pnpm --filter @cloudflare/kumo dev
 # Terminal 2
 pnpm --filter @cloudflare/kumo-docs dev`}
             />
-            <ul className="list-disc list-inside space-y-1 text-sm text-neutral-700 dark:text-neutral-300 mt-3">
+            <ul className="mt-3 list-inside list-disc space-y-1 text-sm text-neutral-700 dark:text-neutral-300">
               <li>Fast rebuild time</li>
               <li>Validates bundle exports/imports</li>
               <li>Tests actual build output</li>
@@ -302,24 +463,39 @@ pnpm --filter @cloudflare/kumo-docs dev`}
           </div>
         </div>
 
-        <h3 className="text-xl font-semibold mb-3 mt-6">Implementation Steps</h3>
-        <ol className="list-decimal list-inside space-y-3 text-neutral-700 dark:text-neutral-300">
+        <h3 className="mt-6 mb-3 text-xl font-semibold">
+          Implementation Steps
+        </h3>
+        <ol className="list-inside list-decimal space-y-3 text-neutral-700 dark:text-neutral-300">
           <li>
             <strong>Implement the component/block/layout</strong>
-            <p className="ml-6 mt-1 text-neutral-600 dark:text-neutral-400">
-              Edit the generated <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">.tsx</code> file. Start Storybook for rapid iteration with instant HMR.
+            <p className="mt-1 ml-6 text-neutral-600 dark:text-neutral-400">
+              Edit the generated{" "}
+              <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+                .tsx
+              </code>{" "}
+              file. Start Storybook for rapid iteration with instant HMR.
             </p>
           </li>
           <li>
             <strong>Create stories</strong>
-            <p className="ml-6 mt-1 text-neutral-600 dark:text-neutral-400">
-              Add a <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">.stories.tsx</code> file to showcase component variants. Stories serve as living documentation.
+            <p className="mt-1 ml-6 text-neutral-600 dark:text-neutral-400">
+              Add a{" "}
+              <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+                .stories.tsx
+              </code>{" "}
+              file to showcase component variants. Stories serve as living
+              documentation.
             </p>
           </li>
           <li>
             <strong>Write tests</strong>
-            <p className="ml-6 mt-1 text-neutral-600 dark:text-neutral-400">
-              Add tests to the generated <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">.test.tsx</code> file. Run tests in watch mode while developing.
+            <p className="mt-1 ml-6 text-neutral-600 dark:text-neutral-400">
+              Add tests to the generated{" "}
+              <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+                .test.tsx
+              </code>{" "}
+              file. Run tests in watch mode while developing.
             </p>
             <CodeBlock
               lang="bash"
@@ -328,14 +504,16 @@ pnpm --filter @cloudflare/kumo-docs dev`}
           </li>
           <li>
             <strong>Test in documentation site (optional)</strong>
-            <p className="ml-6 mt-1 text-neutral-600 dark:text-neutral-400">
-              Use the two-terminal watch build setup to see your component in the actual docs site. Validates production build output.
+            <p className="mt-1 ml-6 text-neutral-600 dark:text-neutral-400">
+              Use the two-terminal watch build setup to see your component in
+              the actual docs site. Validates production build output.
             </p>
           </li>
           <li>
             <strong>Build the package</strong>
-            <p className="ml-6 mt-1 text-neutral-600 dark:text-neutral-400">
-              Before committing, do a full production build to ensure everything works:
+            <p className="mt-1 ml-6 text-neutral-600 dark:text-neutral-400">
+              Before committing, do a full production build to ensure everything
+              works:
             </p>
             <CodeBlock
               lang="bash"
@@ -344,8 +522,12 @@ pnpm --filter @cloudflare/kumo-docs dev`}
           </li>
           <li>
             <strong>Add documentation</strong>
-            <p className="ml-6 mt-1 text-neutral-600 dark:text-neutral-400">
-              Create a documentation page in <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">kumo-docs/app/routes/</code> showing real-world usage examples.
+            <p className="mt-1 ml-6 text-neutral-600 dark:text-neutral-400">
+              Create a documentation page in{" "}
+              <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+                kumo-docs/app/routes/
+              </code>{" "}
+              showing real-world usage examples.
             </p>
           </li>
         </ol>
@@ -353,47 +535,84 @@ pnpm --filter @cloudflare/kumo-docs dev`}
 
       {/* Storybook Development */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Storybook Development (Recommended)</h2>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
-          Storybook is the recommended way to develop components. It provides instant feedback with full HMR and serves as interactive documentation. Use this for 90% of your component development work.
+        <h2 className="mb-4 text-2xl font-bold">
+          Storybook Development (Recommended)
+        </h2>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
+          Storybook is the recommended way to develop components. It provides
+          instant feedback with full HMR and serves as interactive
+          documentation. Use this for 90% of your component development work.
         </p>
-        
-        <h3 className="text-xl font-semibold mb-3 mt-6">Start Storybook</h3>
+
+        <h3 className="mt-6 mb-3 text-xl font-semibold">Start Storybook</h3>
         <CodeBlock
           lang="bash"
           code={`pnpm --filter @cloudflare/kumo storybook`}
         />
-        <p className="text-neutral-600 dark:text-neutral-400 mt-2 mb-4">
-          Opens at <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">http://localhost:6006</code> with hot module replacement enabled.
+        <p className="mt-2 mb-4 text-neutral-600 dark:text-neutral-400">
+          Opens at{" "}
+          <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+            http://localhost:6006
+          </code>{" "}
+          with hot module replacement enabled.
         </p>
 
-        <h3 className="text-xl font-semibold mb-3 mt-6">Why Storybook is Recommended</h3>
-        <ul className="list-disc list-inside space-y-2 text-neutral-700 dark:text-neutral-300 mb-4">
-          <li><strong>Instant HMR</strong> - Changes reflect immediately without page reload</li>
-          <li><strong>No build step</strong> - Components run directly from source</li>
-          <li><strong>Isolated testing</strong> - Test components without running the full app</li>
-          <li><strong>Interactive playground</strong> - Test all variations and edge cases</li>
-          <li><strong>Auto-generated docs</strong> - Documentation from TypeScript types</li>
-          <li><strong>Shared workflow</strong> - Same tool for designers and developers</li>
+        <h3 className="mt-6 mb-3 text-xl font-semibold">
+          Why Storybook is Recommended
+        </h3>
+        <ul className="mb-4 list-inside list-disc space-y-2 text-neutral-700 dark:text-neutral-300">
+          <li>
+            <strong>Instant HMR</strong> - Changes reflect immediately without
+            page reload
+          </li>
+          <li>
+            <strong>No build step</strong> - Components run directly from source
+          </li>
+          <li>
+            <strong>Isolated testing</strong> - Test components without running
+            the full app
+          </li>
+          <li>
+            <strong>Interactive playground</strong> - Test all variations and
+            edge cases
+          </li>
+          <li>
+            <strong>Auto-generated docs</strong> - Documentation from TypeScript
+            types
+          </li>
+          <li>
+            <strong>Shared workflow</strong> - Same tool for designers and
+            developers
+          </li>
         </ul>
 
-        <h3 className="text-xl font-semibold mb-3 mt-6">When to Use Watch Build Instead</h3>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-2">
+        <h3 className="mt-6 mb-3 text-xl font-semibold">
+          When to Use Watch Build Instead
+        </h3>
+        <p className="mb-2 text-neutral-600 dark:text-neutral-400">
           Only use the watch build mode when you need to:
         </p>
-        <ul className="list-disc list-inside space-y-2 text-neutral-700 dark:text-neutral-300 mb-4">
-          <li>Test components in the actual documentation site with real content</li>
+        <ul className="mb-4 list-inside list-disc space-y-2 text-neutral-700 dark:text-neutral-300">
+          <li>
+            Test components in the actual documentation site with real content
+          </li>
           <li>Validate production build configuration and exports</li>
           <li>Debug issues specific to the build process</li>
           <li>Test integration with other production features</li>
         </ul>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
-          <strong>Note:</strong> Watch build requires manual browser refresh and takes ~400ms per rebuild. Use Storybook for faster iteration during component development.
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
+          <strong>Note:</strong> Watch build requires manual browser refresh and
+          takes ~400ms per rebuild. Use Storybook for faster iteration during
+          component development.
         </p>
 
-        <h3 className="text-xl font-semibold mb-3 mt-6">Creating Stories</h3>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
-          Story files live alongside components and follow the pattern <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">{"{name}"}.stories.tsx</code>:
+        <h3 className="mt-6 mb-3 text-xl font-semibold">Creating Stories</h3>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
+          Story files live alongside components and follow the pattern{" "}
+          <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+            {"{name}"}.stories.tsx
+          </code>
+          :
         </p>
         <CodeBlock
           lang="tsx"
@@ -414,90 +633,177 @@ export const Primary: Story = {
 };`}
         />
 
-        <h3 className="text-xl font-semibold mb-3 mt-6">Story Organization</h3>
-        <ul className="list-disc list-inside space-y-2 text-neutral-700 dark:text-neutral-300 mb-4">
-          <li><strong>Components</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/components/{"{name}"}/{"{name}"}.stories.tsx</code></li>
-          <li><strong>Blocks</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/blocks/{"{name}"}/{"{name}"}.stories.tsx</code></li>
-          <li><strong>Layouts</strong> - <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">src/layouts/{"{name}"}/{"{name}"}.stories.tsx</code></li>
+        <h3 className="mt-6 mb-3 text-xl font-semibold">Story Organization</h3>
+        <ul className="mb-4 list-inside list-disc space-y-2 text-neutral-700 dark:text-neutral-300">
+          <li>
+            <strong>Components</strong> -{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              src/components/{"{name}"}/{"{name}"}.stories.tsx
+            </code>
+          </li>
+          <li>
+            <strong>Blocks</strong> -{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              src/blocks/{"{name}"}/{"{name}"}.stories.tsx
+            </code>
+          </li>
+          <li>
+            <strong>Layouts</strong> -{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              src/layouts/{"{name}"}/{"{name}"}.stories.tsx
+            </code>
+          </li>
         </ul>
 
-        <p className="text-neutral-600 dark:text-neutral-400 mt-4">
-          <strong>Best Practice:</strong> Always create stories for new components, blocks, and layouts. Stories serve as living documentation and make development faster.
+        <p className="mt-4 text-neutral-600 dark:text-neutral-400">
+          <strong>Best Practice:</strong> Always create stories for new
+          components, blocks, and layouts. Stories serve as living documentation
+          and make development faster.
         </p>
 
-        <p className="text-neutral-600 dark:text-neutral-400 mt-4">
-          For comprehensive Storybook documentation, see <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">packages/kumo/STORYBOOK.md</code>
+        <p className="mt-4 text-neutral-600 dark:text-neutral-400">
+          For comprehensive Storybook documentation, see{" "}
+          <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+            packages/kumo/STORYBOOK.md
+          </code>
         </p>
       </ComponentSection>
 
       {/* Testing */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Testing</h2>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
-          The test suite automatically validates your component, block, or layout configuration:
+        <h2 className="mb-4 text-2xl font-bold">Testing</h2>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
+          The test suite automatically validates your component, block, or
+          layout configuration:
         </p>
-        <ul className="list-disc list-inside space-y-2 text-neutral-700 dark:text-neutral-300">
+        <ul className="list-inside list-disc space-y-2 text-neutral-700 dark:text-neutral-300">
           <li>Main entry point exports the component/block/layout</li>
-          <li>Deep import paths work correctly (<code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">@cloudflare/kumo/components/*</code>, <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">@cloudflare/kumo/blocks/*</code>, or <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">@cloudflare/kumo/layouts/*</code>)</li>
+          <li>
+            Deep import paths work correctly (
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              @cloudflare/kumo/components/*
+            </code>
+            ,{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              @cloudflare/kumo/blocks/*
+            </code>
+            , or{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              @cloudflare/kumo/layouts/*
+            </code>
+            )
+          </li>
           <li>Package.json exports are properly configured</li>
           <li>Build configuration is correct</li>
           <li>All files exist in the correct locations</li>
         </ul>
-        <p className="text-neutral-600 dark:text-neutral-400 mt-4">
+        <p className="mt-4 text-neutral-600 dark:text-neutral-400">
           Run the test suite to ensure everything is configured correctly:
         </p>
         <CodeBlock
           lang="bash"
           code={`pnpm --filter @cloudflare/kumo test:run`}
         />
-        <p className="text-neutral-600 dark:text-neutral-400 mt-4">
-          The tests will provide helpful error messages with exact code snippets if any configuration is missing.
+        <p className="mt-4 text-neutral-600 dark:text-neutral-400">
+          The tests will provide helpful error messages with exact code snippets
+          if any configuration is missing.
         </p>
       </ComponentSection>
 
       {/* Component Guidelines */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Component Guidelines</h2>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
+        <h2 className="mb-4 text-2xl font-bold">Component Guidelines</h2>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
           When implementing components, follow these guidelines:
         </p>
-        <ul className="list-disc list-inside space-y-2 text-neutral-700 dark:text-neutral-300">
-          <li><strong>Accessibility</strong> - Include proper ARIA attributes and keyboard navigation</li>
-          <li><strong>TypeScript</strong> - Export prop types and use proper type annotations</li>
-          <li><strong>Styling</strong> - Use Tailwind CSS classes and the <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">cn</code> utility</li>
-          <li><strong>Consistency</strong> - Follow existing component patterns and naming conventions</li>
-          <li><strong>Documentation</strong> - Add clear JSDoc comments and usage examples</li>
-          <li><strong>Testing</strong> - Include unit tests for component behavior</li>
-          <li><strong>Single Responsibility</strong> - Keep components focused on one task</li>
+        <ul className="list-inside list-disc space-y-2 text-neutral-700 dark:text-neutral-300">
+          <li>
+            <strong>Accessibility</strong> - Include proper ARIA attributes and
+            keyboard navigation
+          </li>
+          <li>
+            <strong>TypeScript</strong> - Export prop types and use proper type
+            annotations
+          </li>
+          <li>
+            <strong>Styling</strong> - Use Tailwind CSS classes and the{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              cn
+            </code>{" "}
+            utility
+          </li>
+          <li>
+            <strong>Consistency</strong> - Follow existing component patterns
+            and naming conventions
+          </li>
+          <li>
+            <strong>Documentation</strong> - Add clear JSDoc comments and usage
+            examples
+          </li>
+          <li>
+            <strong>Testing</strong> - Include unit tests for component behavior
+          </li>
+          <li>
+            <strong>Single Responsibility</strong> - Keep components focused on
+            one task
+          </li>
         </ul>
       </ComponentSection>
 
       {/* Block Guidelines */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Block Guidelines</h2>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
+        <h2 className="mb-4 text-2xl font-bold">Block Guidelines</h2>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
           When implementing blocks, follow these additional guidelines:
         </p>
-        <ul className="list-disc list-inside space-y-2 text-neutral-700 dark:text-neutral-300">
-          <li><strong>Composition</strong> - Compose existing components rather than reimplementing functionality</li>
-          <li><strong>Framework Agnostic</strong> - Use <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">LinkProvider</code> for routing to remain framework-agnostic</li>
-          <li><strong>Flexible Props</strong> - Accept both simple and complex props to support various use cases</li>
-          <li><strong>Common Patterns</strong> - Focus on patterns that appear in multiple applications</li>
-          <li><strong>Documentation</strong> - Include JSDoc explaining the block's purpose and when to use it</li>
-          <li><strong>Examples</strong> - Provide clear usage examples showing composition</li>
+        <ul className="list-inside list-disc space-y-2 text-neutral-700 dark:text-neutral-300">
+          <li>
+            <strong>Composition</strong> - Compose existing components rather
+            than reimplementing functionality
+          </li>
+          <li>
+            <strong>Framework Agnostic</strong> - Use{" "}
+            <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+              LinkProvider
+            </code>{" "}
+            for routing to remain framework-agnostic
+          </li>
+          <li>
+            <strong>Flexible Props</strong> - Accept both simple and complex
+            props to support various use cases
+          </li>
+          <li>
+            <strong>Common Patterns</strong> - Focus on patterns that appear in
+            multiple applications
+          </li>
+          <li>
+            <strong>Documentation</strong> - Include JSDoc explaining the
+            block's purpose and when to use it
+          </li>
+          <li>
+            <strong>Examples</strong> - Provide clear usage examples showing
+            composition
+          </li>
         </ul>
-        
-        <h3 className="text-xl font-semibold mb-3 mt-6">When to Create a Block</h3>
-        <ul className="list-disc list-inside space-y-2 text-neutral-700 dark:text-neutral-300">
+
+        <h3 className="mt-6 mb-3 text-xl font-semibold">
+          When to Create a Block
+        </h3>
+        <ul className="list-inside list-disc space-y-2 text-neutral-700 dark:text-neutral-300">
           <li>Pattern appears in multiple places across applications</li>
           <li>Combines 2+ base components</li>
           <li>Implements a common layout or page structure</li>
           <li>Has specific business logic or behavior</li>
         </ul>
 
-        <h3 className="text-xl font-semibold mb-3 mt-6">When NOT to Create a Block</h3>
-        <ul className="list-disc list-inside space-y-2 text-neutral-700 dark:text-neutral-300">
-          <li>Single component with styling variations (use component variants instead)</li>
+        <h3 className="mt-6 mb-3 text-xl font-semibold">
+          When NOT to Create a Block
+        </h3>
+        <ul className="list-inside list-disc space-y-2 text-neutral-700 dark:text-neutral-300">
+          <li>
+            Single component with styling variations (use component variants
+            instead)
+          </li>
           <li>Application-specific logic (keep in application code)</li>
           <li>One-off patterns (wait for reuse before abstracting)</li>
         </ul>
@@ -505,13 +811,27 @@ export const Primary: Story = {
 
       {/* Resources */}
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">Additional Resources</h2>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
+        <h2 className="mb-4 text-2xl font-bold">Additional Resources</h2>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
           For more detailed information, refer to:
         </p>
-        <ul className="list-disc list-inside space-y-2 text-neutral-700 dark:text-neutral-300">
-          <li><a href="https://gitlab.cfdata.org/cloudflare/fe/kumo/" className="text-blue-600 dark:text-blue-400 hover:underline">Gitlab Repository</a></li>
-          <li><a href="https://base-ui.com/" className="text-blue-600 dark:text-blue-400 hover:underline">Base UI Documentation</a></li>
+        <ul className="list-inside list-disc space-y-2 text-neutral-700 dark:text-neutral-300">
+          <li>
+            <a
+              href="https://gitlab.cfdata.org/cloudflare/fe/kumo/"
+              className="text-blue-600 hover:underline dark:text-blue-400"
+            >
+              Gitlab Repository
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://base-ui.com/"
+              className="text-blue-600 hover:underline dark:text-blue-400"
+            >
+              Base UI Documentation
+            </a>
+          </li>
         </ul>
       </ComponentSection>
     </DocLayout>

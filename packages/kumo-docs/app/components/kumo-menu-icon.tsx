@@ -7,10 +7,13 @@ interface KumoMenuIconProps {
 
 export function KumoMenuIcon({ className }: KumoMenuIconProps) {
   const [isHovered, setIsHovered] = useState(false);
-  
+
   return (
-    <div 
-      className={cn("w-[20px] h-[19.8px] overflow-visible cursor-pointer", className)}
+    <div
+      className={cn(
+        "h-[19.8px] w-[20px] cursor-pointer overflow-visible",
+        className,
+      )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -18,7 +21,7 @@ export function KumoMenuIcon({ className }: KumoMenuIconProps) {
         viewBox="0 0 108 107"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="w-full h-full"
+        className="h-full w-full"
       >
         <defs>
           <clipPath id="contentClip">
@@ -29,10 +32,10 @@ export function KumoMenuIcon({ className }: KumoMenuIconProps) {
         {/* Vertical connector - NOT clipped */}
         <path
           className={cn(
-            "transition-all duration-800 origin-center-top",
+            "origin-center-top transition-all duration-800",
             isHovered
               ? "translate-y-[22px] scale-y-0 opacity-0"
-              : "translate-y-0 scale-y-100 opacity-100"
+              : "translate-y-0 scale-y-100 opacity-100",
           )}
           style={{
             transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
@@ -46,10 +49,10 @@ export function KumoMenuIcon({ className }: KumoMenuIconProps) {
         <g clipPath="url(#contentClip)">
           <path
             className={cn(
-            "transition-all duration-800 origin-center-top",
+              "origin-center-top transition-all duration-800",
               isHovered
                 ? "-translate-y-[33px] scale-y-[0.01]"
-                : "translate-y-0 scale-y-100"
+                : "translate-y-0 scale-y-100",
             )}
             style={{
               transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
@@ -60,10 +63,10 @@ export function KumoMenuIcon({ className }: KumoMenuIconProps) {
           />
           <path
             className={cn(
-            "transition-all duration-800 origin-center-top",
+              "origin-center-top transition-all duration-800",
               isHovered
                 ? "-translate-y-[49px] scale-y-[0.01]"
-                : "translate-y-0 scale-y-100"
+                : "translate-y-0 scale-y-100",
             )}
             style={{
               transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
@@ -74,10 +77,10 @@ export function KumoMenuIcon({ className }: KumoMenuIconProps) {
           />
           <path
             className={cn(
-            "transition-all duration-800 origin-center-top",
+              "origin-center-top transition-all duration-800",
               isHovered
                 ? "-translate-y-[51px] scale-y-[0.01]"
-                : "translate-y-0 scale-y-100"
+                : "translate-y-0 scale-y-100",
             )}
             style={{
               transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
@@ -88,10 +91,10 @@ export function KumoMenuIcon({ className }: KumoMenuIconProps) {
           />
           <path
             className={cn(
-            "transition-all duration-800 origin-center-top",
+              "origin-center-top transition-all duration-800",
               isHovered
                 ? "-translate-y-[70px] scale-y-[0.01]"
-                : "translate-y-0 scale-y-100"
+                : "translate-y-0 scale-y-100",
             )}
             style={{
               transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
@@ -102,10 +105,10 @@ export function KumoMenuIcon({ className }: KumoMenuIconProps) {
           />
           <path
             className={cn(
-            "transition-all duration-800 origin-center-top",
+              "origin-center-top transition-all duration-800",
               isHovered
                 ? "translate-y-[25px] scale-y-[0.01]"
-                : "translate-y-0 scale-y-100"
+                : "translate-y-0 scale-y-100",
             )}
             style={{
               transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
@@ -116,10 +119,10 @@ export function KumoMenuIcon({ className }: KumoMenuIconProps) {
           />
           <path
             className={cn(
-            "transition-all duration-800 origin-center-top",
+              "origin-center-top transition-all duration-800",
               isHovered
                 ? "-translate-y-[5px] scale-y-[0.01]"
-                : "translate-y-0 scale-y-100"
+                : "translate-y-0 scale-y-100",
             )}
             style={{
               transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
@@ -130,10 +133,10 @@ export function KumoMenuIcon({ className }: KumoMenuIconProps) {
           />
           <path
             className={cn(
-            "transition-all duration-800 origin-center-top",
+              "origin-center-top transition-all duration-800",
               isHovered
                 ? "-translate-y-[19px] scale-y-[0.01]"
-                : "translate-y-0 scale-y-100"
+                : "translate-y-0 scale-y-100",
             )}
             style={{
               transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
@@ -144,10 +147,10 @@ export function KumoMenuIcon({ className }: KumoMenuIconProps) {
           />
           <path
             className={cn(
-            "transition-all duration-800 origin-center-top",
+              "origin-center-top transition-all duration-800",
               isHovered
                 ? "-translate-y-[19px] scale-y-[0.01]"
-                : "translate-y-0 scale-y-100"
+                : "translate-y-0 scale-y-100",
             )}
             style={{
               transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
@@ -158,10 +161,10 @@ export function KumoMenuIcon({ className }: KumoMenuIconProps) {
           />
           <path
             className={cn(
-            "transition-all duration-800 origin-center-top",
+              "origin-center-top transition-all duration-800",
               isHovered
                 ? "-translate-y-[5px] scale-y-[0.01]"
-                : "translate-y-0 scale-y-100"
+                : "translate-y-0 scale-y-100",
             )}
             style={{
               transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
@@ -172,10 +175,10 @@ export function KumoMenuIcon({ className }: KumoMenuIconProps) {
           />
           <path
             className={cn(
-            "transition-all duration-800 origin-center-top",
+              "origin-center-top transition-all duration-800",
               isHovered
                 ? "translate-y-[9px] scale-y-[0.01]"
-                : "translate-y-0 scale-y-100"
+                : "translate-y-0 scale-y-100",
             )}
             style={{
               transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
@@ -186,10 +189,10 @@ export function KumoMenuIcon({ className }: KumoMenuIconProps) {
           />
           <path
             className={cn(
-            "transition-all duration-800 origin-center-top",
+              "origin-center-top transition-all duration-800",
               isHovered
                 ? "translate-y-[9px] scale-y-[0.01]"
-                : "translate-y-0 scale-y-100"
+                : "translate-y-0 scale-y-100",
             )}
             style={{
               transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
@@ -200,10 +203,10 @@ export function KumoMenuIcon({ className }: KumoMenuIconProps) {
           />
           <path
             className={cn(
-            "transition-all duration-800 origin-center-top",
+              "origin-center-top transition-all duration-800",
               isHovered
                 ? "-translate-y-[60px] scale-y-[0.01]"
-                : "translate-y-0 scale-y-100"
+                : "translate-y-0 scale-y-100",
             )}
             style={{
               transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
@@ -217,8 +220,10 @@ export function KumoMenuIcon({ className }: KumoMenuIconProps) {
         {/* Hamburger lines (on top, not clipped) */}
         <rect
           className={cn(
-            "transition-all duration-800 origin-left-center",
-            isHovered ? "translate-x-[0.36px] translate-y-[24.88px] h-[6px]" : "h-[7px]"
+            "origin-left-center transition-all duration-800",
+            isHovered
+              ? "h-[6px] translate-x-[0.36px] translate-y-[24.88px]"
+              : "h-[7px]",
           )}
           style={{
             transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
@@ -230,10 +235,10 @@ export function KumoMenuIcon({ className }: KumoMenuIconProps) {
         />
         <rect
           className={cn(
-            "transition-all duration-800 origin-left-center",
+            "origin-left-center transition-all duration-800",
             isHovered
-              ? "translate-x-[7.36px] translate-y-[30.88px] scale-x-[0.863] h-[6px]"
-              : "h-[9px]"
+              ? "h-[6px] translate-x-[7.36px] translate-y-[30.88px] scale-x-[0.863]"
+              : "h-[9px]",
           )}
           style={{
             transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
@@ -245,10 +250,10 @@ export function KumoMenuIcon({ className }: KumoMenuIconProps) {
         />
         <rect
           className={cn(
-            "transition-all duration-800 origin-left-center",
+            "origin-left-center transition-all duration-800",
             isHovered
-              ? "-translate-x-[3.64px] -translate-y-[11.12px] scale-x-[1.114] opacity-0 h-[6px]"
-              : "opacity-100 h-[6px]"
+              ? "h-[6px] -translate-x-[3.64px] -translate-y-[11.12px] scale-x-[1.114] opacity-0"
+              : "h-[6px] opacity-100",
           )}
           style={{
             transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
@@ -260,10 +265,10 @@ export function KumoMenuIcon({ className }: KumoMenuIconProps) {
         />
         <rect
           className={cn(
-            "transition-all duration-800 origin-left-center",
+            "origin-left-center transition-all duration-800",
             isHovered
-              ? "translate-x-[9.36px] -translate-y-[5.12px] scale-x-[0.83] h-[6px]"
-              : "h-[6px]"
+              ? "h-[6px] translate-x-[9.36px] -translate-y-[5.12px] scale-x-[0.83]"
+              : "h-[6px]",
           )}
           style={{
             transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",

@@ -1,6 +1,6 @@
 /**
  * Code Editor Component
- * 
+ *
  * Simple textarea-based code editor with syntax highlighting
  */
 
@@ -15,9 +15,9 @@ interface CodeEditorProps {
   readOnly?: boolean;
 }
 
-export function CodeEditor({ 
-  value, 
-  onChange, 
+export function CodeEditor({
+  value,
+  onChange,
   className,
   placeholder = "// Write your code here...",
   readOnly = false,
@@ -25,7 +25,7 @@ export function CodeEditor({
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     onChange(e.target.value);
   };
-  
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     // Handle tab key for indentation
     if (e.key === "Tab") {
@@ -35,16 +35,16 @@ export function CodeEditor({
       const end = target.selectionEnd;
       const newValue = value.substring(0, start) + "  " + value.substring(end);
       onChange(newValue);
-      
+
       // Set cursor position after the inserted spaces
       setTimeout(() => {
         target.selectionStart = target.selectionEnd = start + 2;
       }, 0);
     }
   };
-  
+
   return (
-    <div className={cn("relative w-full h-full", className)}>
+    <div className={cn("relative h-full w-full", className)}>
       <textarea
         value={value}
         onChange={handleChange}
@@ -53,14 +53,14 @@ export function CodeEditor({
         placeholder={placeholder}
         spellCheck={false}
         className={cn(
-          "w-full h-full p-4 font-mono text-sm",
+          "h-full w-full p-4 font-mono text-sm",
           "bg-neutral-50 dark:bg-neutral-900",
           "text-neutral-900 dark:text-neutral-100",
           "border border-neutral-200 dark:border-neutral-800",
-          "rounded-lg resize-none",
-          "focus:outline-none focus:ring-2 focus:ring-blue-500",
+          "resize-none rounded-lg",
+          "focus:ring-2 focus:ring-blue-500 focus:outline-none",
           "placeholder:text-neutral-400",
-          readOnly && "cursor-not-allowed opacity-60"
+          readOnly && "cursor-not-allowed opacity-60",
         )}
         style={{
           lineHeight: "1.5",

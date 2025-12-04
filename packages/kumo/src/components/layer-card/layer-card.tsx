@@ -1,55 +1,64 @@
 import type { FC, PropsWithChildren } from "react";
 import { cn } from "../../utils/cn";
 
-type LayerCardProps = PropsWithChildren<{ className?: string }>;
+export const KUMO_LAYER_CARD_VARIANTS = {
+  // LayerCard currently has no variant options but structure is ready for future additions
+} as const;
 
-function LayerCardRoot({
-    children,
-    className
-}: LayerCardProps) {
-    return (
-        <div className={cn(
-            'w-full text-base ring ring-neutral-950/10 dark:ring-neutral-800 rounded-lg bg-neutral-25 dark:bg-surface flex flex-col',
-            className
-        )}>
-            {children}
-        </div>
-    )
+export const KUMO_LAYER_CARD_DEFAULT_VARIANTS = {} as const;
+
+// Derived types from KUMO_LAYER_CARD_VARIANTS
+export interface KumoLayerCardVariantsProps {}
+
+export function layerCardVariants(_props: KumoLayerCardVariantsProps = {}) {
+  return cn(
+    // Base styles
+    "flex w-full flex-col rounded-lg bg-surface-2 text-base ring ring-border",
+  );
 }
 
-function LayerCardSecondary({
-    children,
-    className
-}: LayerCardProps) {
-    return (
-        <div className={cn('p-2 gap-2 flex items-center font-medium text-neutral-500 text-base', className)}>
-            {children}
-        </div>
-    )
+export type LayerCardProps = PropsWithChildren<
+  KumoLayerCardVariantsProps & { className?: string }
+>;
+
+function LayerCardRoot({ children, className }: LayerCardProps) {
+  return <div className={cn(layerCardVariants(), className)}>{children}</div>;
 }
 
-function LayerCardPrimary({
-    children,
-    className
-}: LayerCardProps) {
-    return (
-        <div className={cn(
-            'flex flex-col p-4 pr-3 gap-2 rounded-lg ring ring-neutral-200 dark:ring-neutral-800 bg-surface dark:bg-neutral-950 text-inherit no-underline',
-            className
-        )}>
-            {children}
-        </div>
-    )
+function LayerCardSecondary({ children, className }: LayerCardProps) {
+  return (
+    <div
+      className={cn(
+        "flex items-center gap-2 p-2 text-base font-medium text-neutral-dim",
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+
+function LayerCardPrimary({ children, className }: LayerCardProps) {
+  return (
+    <div
+      className={cn(
+        "flex flex-col gap-2 rounded-lg bg-surface-2 p-4 pr-3 text-inherit no-underline ring ring-color",
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
 }
 
 type LayerCardComponent = FC<LayerCardProps> & {
-    Primary: FC<LayerCardProps>;
-    Secondary: FC<LayerCardProps>;
+  Primary: FC<LayerCardProps>;
+  Secondary: FC<LayerCardProps>;
 };
 
 const LayerCard = Object.assign(LayerCardRoot, {
-    Primary: LayerCardPrimary,
-    Secondary: LayerCardSecondary
+  Primary: LayerCardPrimary,
+  Secondary: LayerCardSecondary,
 }) as LayerCardComponent;
 
 export { LayerCard };
