@@ -77,8 +77,8 @@ export function Tabs({
             key={tab.value}
             value={tab.value}
             className={cn(
-              "text-kumo-muted-2 relative z-10 my-px flex cursor-pointer items-center rounded-lg bg-transparent px-2.5 text-base whitespace-nowrap transition-colors focus-visible:outline-none",
-              "data-selected:text-kumo-surface",
+              "relative z-10 my-px flex cursor-pointer items-center rounded-lg bg-transparent px-2.5 text-base whitespace-nowrap text-muted-2 transition-colors focus-visible:outline-none",
+              "data-selected:text-surface",
               tab.className,
             )}
           >

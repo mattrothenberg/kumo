@@ -14,9 +14,6 @@ function setupDashMocks(overrides?: DashMockOverrides) {
 const meta: Meta<typeof ActiveSessionsApp> = {
   title: "Pages/Active Sessions",
   component: ActiveSessionsApp,
-  parameters: {
-    layout: "fullscreen",
-  },
   decorators: [
     (Story, context) => {
       setupDashMocks(

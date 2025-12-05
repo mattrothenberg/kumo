@@ -5,9 +5,6 @@ import { Text } from "../text/text";
 const meta = {
   title: "Components/Surface",
   component: Surface,
-  parameters: {
-    layout: "padded",
-  },
 } satisfies Meta<typeof Surface>;
 
 export default meta;

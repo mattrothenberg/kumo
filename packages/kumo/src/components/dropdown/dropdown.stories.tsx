@@ -5,9 +5,6 @@ import { Button } from "../button/button";
 const meta: Meta<typeof DropdownMenu> = {
   title: "Components/Dropdown",
   component: DropdownMenu,
-  parameters: {
-    layout: "padded",
-  },
 };
 
 export default meta;

@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2025-12-04T20:48:25.483Z",
+  "generatedAt": "2025-12-05T14:53:37.450Z",
   "components": {
     "Badge": {
       "name": "Badge",
@@ -1273,6 +1273,7 @@
         "<LayerCard className=\"w-[250px]\">\n      <LayerCard.Secondary className=\"flex items-center justify-between\">\n        <div>Next Steps</div>\n        <Button variant=\"ghost\" size=\"sm\" shape=\"square\">\n          <ArrowRightIcon size={16} />\n        </Button>\n      </LayerCard.Secondary>\n\n      <LayerCard.Primary>\n        <Text>Get started with Kumo</Text>\n      </LayerCard.Primary>\n    </LayerCard>"
       ],
       "colors": [
+        "bg-layer-card-primary",
         "bg-surface-2",
         "ring-border",
         "ring-color",
@@ -1727,7 +1728,9 @@
       "colors": [
         "bg-accent",
         "bg-surface-elevated",
-        "ring-border"
+        "ring-border",
+        "text-muted-2",
+        "text-surface"
       ]
     },
     "Text": {

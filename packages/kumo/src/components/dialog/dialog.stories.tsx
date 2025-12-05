@@ -5,9 +5,6 @@ import { Button } from "../button/button";
 const meta: Meta<typeof Dialog> = {
   title: "Components/Dialog",
   component: Dialog,
-  parameters: {
-    layout: "padded",
-  },
 };
 
 export default meta;

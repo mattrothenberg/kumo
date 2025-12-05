@@ -12,9 +12,6 @@ import { Button } from "../button";
 const meta: Meta<typeof Combobox> = {
   title: "Components/Combobox",
   component: Combobox,
-  parameters: {
-    layout: "padded",
-  },
 };
 
 export default meta;

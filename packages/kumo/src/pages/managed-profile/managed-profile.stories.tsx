@@ -14,9 +14,6 @@ function setupDashMocks(overrides?: DashMockOverrides) {
 const meta: Meta<typeof ManagedProfileApp> = {
   title: "Pages/Managed Profile",
   component: ManagedProfileApp,
-  parameters: {
-    layout: "fullscreen",
-  },
   decorators: [
     (Story, context) => {
       setupDashMocks(

@@ -7,9 +7,6 @@ import { Code } from "../../components/code";
 const meta = {
   title: "Layouts/ResourceListPage",
   component: ResourceListPage,
-  parameters: {
-    layout: "fullscreen",
-  },
 } satisfies Meta<typeof ResourceListPage>;
 
 export default meta;

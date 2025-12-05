@@ -1,7 +1,7 @@
 # Kumo Component Registry
 
 > Auto-generated component metadata for AI/agent consumption.
-> Generated: 2025-12-04T20:48:25.483Z
+> Generated: 2025-12-05T14:53:37.450Z
 
 
 ## Styling Guide
@@ -62,7 +62,7 @@ Most frequently used tokens across Kumo components:
 
 **Text:** `text-alert`, `text-beta`, `text-brand`, `text-calendar-day-range-selected-endpoints`, `text-calendar-day-range-selected-out-of-range`, `text-calendar-reset`, `text-destructive`, `text-disabled`, and 17 more
 
-**Background:** `bg-accent`, `bg-active`, `bg-alert-border`, `bg-alert-selection`, `bg-alert-surface`, `bg-black-icon`, `bg-border`, `bg-calendar`, and 26 more
+**Background:** `bg-accent`, `bg-active`, `bg-alert-border`, `bg-alert-selection`, `bg-alert-surface`, `bg-black-icon`, `bg-border`, `bg-calendar`, and 27 more
 
 **Border:** `border-alert-border`, `border-border`, `border-color`, `border-error-border`, `border-hover`, `border-hover-border`, `border-hover-selected`, `border-info-border`, `border-subtle`, `border-toast-button-hover`
 
@@ -1037,7 +1037,7 @@ LayerCard component
 
 **Colors (kumo tokens used):**
 
-`bg-surface-2`, `ring-border`, `ring-color`, `text-neutral-dim`
+`bg-layer-card-primary`, `bg-surface-2`, `ring-border`, `ring-color`, `text-neutral-dim`
 
 **Sub-Components:**
 
@@ -1443,7 +1443,7 @@ Tabs component
 
 **Colors (kumo tokens used):**
 
-`bg-accent`, `bg-surface-elevated`, `ring-border`
+`bg-accent`, `bg-surface-elevated`, `ring-border`, `text-muted-2`, `text-surface`
 
 **Examples:**
 
