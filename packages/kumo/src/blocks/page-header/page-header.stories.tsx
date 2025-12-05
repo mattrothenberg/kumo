@@ -8,9 +8,6 @@ import { propTester } from "../../utils/prop-tester";
 const meta = {
   title: "Blocks/PageHeader",
   component: PageHeader,
-  parameters: {
-    layout: "fullscreen",
-  },
 } satisfies Meta<typeof PageHeader>;
 
 export default meta;

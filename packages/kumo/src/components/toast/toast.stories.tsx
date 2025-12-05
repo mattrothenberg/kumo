@@ -6,9 +6,6 @@ import { Button } from "../button/button";
 const meta = {
   title: "Components/Toast",
   component: Toasty,
-  parameters: {
-    layout: "padded",
-  },
 } satisfies Meta<typeof Toasty>;
 
 export default meta;

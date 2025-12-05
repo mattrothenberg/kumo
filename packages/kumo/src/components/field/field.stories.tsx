@@ -5,9 +5,6 @@ import { Input } from "../input/input";
 const meta = {
   title: "Components/Field",
   component: Field,
-  parameters: {
-    layout: "padded",
-  },
 } satisfies Meta<typeof Field>;
 
 export default meta;

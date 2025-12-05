@@ -49,10 +49,7 @@ export const TAILWIND_COLOR_FAMILIES = new Set([
 // Parse kumo-theme.css to extract valid semantic color tokens.
 // This ensures the allowlist stays in sync with the theme file.
 function parseKumoSemanticColors() {
-  const themePath = resolve(
-    __dirname,
-    "../../src/styles/kumo-theme.css"
-  );
+  const themePath = resolve(__dirname, "../../src/styles/kumo-theme.css");
   const css = readFileSync(themePath, "utf-8");
 
   const tokens = new Set();
@@ -166,6 +163,10 @@ function hasPrimitiveColor(str) {
     // border-color, text-green-2). These are backed by kumo-theme.css custom properties.
     if (VALID_KUMO_SEMANTIC_COLORS.has(colorFamily)) continue;
 
+    // Flag kumo- prefixed classes (e.g. text-kumo-surface, bg-kumo-muted-2).
+    // These are invalid; use semantic tokens directly (e.g. text-surface, bg-muted-2).
+    if (colorFamily.startsWith("kumo-")) return true;
+
     // Flag Tailwind primitive color families (e.g. blue, slate, red).
     // Tailwind utilities often use a numeric shade suffix (e.g. neutral-500).
     // The regex captures the color name which may include a trailing numeric
@@ -176,7 +177,11 @@ function hasPrimitiveColor(str) {
     // Only flag if it's a Tailwind primitive AND not a valid Kumo semantic token.
     // This handles cases like "green-2" where "green" is a Tailwind primitive
     // but "green-2" is a valid Kumo semantic token.
-    if (TAILWIND_COLOR_FAMILIES.has(primitiveFamily) && !VALID_KUMO_SEMANTIC_COLORS.has(colorFamily)) return true;
+    if (
+      TAILWIND_COLOR_FAMILIES.has(primitiveFamily) &&
+      !VALID_KUMO_SEMANTIC_COLORS.has(colorFamily)
+    )
+      return true;
   }
 
   return false;

@@ -4,9 +4,6 @@ import { Tabs } from "./tabs";
 const meta = {
   title: "Components/Tabs",
   component: Tabs,
-  parameters: {
-    layout: "padded",
-  },
 } satisfies Meta<typeof Tabs>;
 
 export default meta;

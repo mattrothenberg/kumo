@@ -150,7 +150,7 @@ export const TailwindColorTokens: FC<TailwindColorTokensProps> = ({
       : 0;
 
   return (
-    <div className="flex flex-col gap-4 bg-surface p-6 text-surface">
+    <div className="flex flex-col gap-4 bg-surface p-8 text-surface">
       <div className="flex flex-col gap-1">
         <h1 className="text-base font-semibold">
           {display === "text-colors" ? "Text Colors" : "Colors"}

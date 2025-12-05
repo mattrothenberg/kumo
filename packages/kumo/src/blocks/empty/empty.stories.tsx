@@ -11,9 +11,6 @@ import { propTester } from "../../utils/prop-tester";
 const meta = {
   title: "Blocks/Empty",
   component: Empty,
-  parameters: {
-    layout: "padded",
-  },
 } satisfies Meta<typeof Empty>;
 
 export default meta;

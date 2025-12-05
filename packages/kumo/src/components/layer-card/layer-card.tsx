@@ -42,7 +42,7 @@ function LayerCardPrimary({ children, className }: LayerCardProps) {
   return (
     <div
       className={cn(
-        "flex flex-col gap-2 rounded-lg bg-surface-2 p-4 pr-3 text-inherit no-underline ring ring-color",
+        "bg-layer-card-primary flex flex-col gap-2 rounded-lg p-4 pr-3 text-inherit no-underline ring ring-color",
         className,
       )}
     >

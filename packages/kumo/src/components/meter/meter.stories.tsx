@@ -4,9 +4,6 @@ import { Meter } from "./meter";
 const meta = {
   title: "Components/Meter",
   component: Meter,
-  parameters: {
-    layout: "padded",
-  },
 } satisfies Meta<typeof Meter>;
 
 export default meta;

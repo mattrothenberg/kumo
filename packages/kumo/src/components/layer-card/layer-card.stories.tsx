@@ -7,9 +7,6 @@ import { Text } from "../text";
 const meta = {
   title: "Components/LayerCard",
   component: LayerCard,
-  parameters: {
-    layout: "padded",
-  },
 } satisfies Meta<typeof LayerCard>;
 
 export default meta;

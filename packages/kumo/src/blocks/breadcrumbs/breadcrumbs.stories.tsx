@@ -6,9 +6,6 @@ import { propTester } from "../../utils/prop-tester";
 const meta = {
   title: "Blocks/Breadcrumbs",
   component: Breadcrumbs,
-  parameters: {
-    layout: "padded",
-  },
 } satisfies Meta<typeof Breadcrumbs>;
 
 export default meta;

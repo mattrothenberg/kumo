@@ -2,7 +2,12 @@ import { useState, useEffect } from "react";
 import type { Preview } from "@storybook/react-vite";
 import { ModeToggle } from "./mode-toggle";
 import { ThemeSelect, type Theme } from "./theme-select";
+import { cn } from "../src/utils/cn";
+
 import "./preview.css";
+
+const SWITCHER_CLASSES =
+  "fixed top-8 right-12 z-50 flex items-center gap-2 rounded-lg bg-surface-2-secondary p-2 shadow-md";
 
 const preview: Preview = {
   parameters: {
@@ -32,52 +37,85 @@ const preview: Preview = {
   },
   decorators: [
     (Story, context) => {
-      if (
-        context.title.startsWith("Pages/") ||
-        context.title.startsWith("Agents/") ||
-        context.title.startsWith("Design-Tokens/") ||
+      // Determine if this is a component that uses portals (needs mode toggle)
+      const isPortalComponent =
         context.title.startsWith("Components/Combobox") ||
         context.title.startsWith("Components/Dialog") ||
         context.title.startsWith("Components/Dropdown") ||
         context.title.startsWith("Components/Select") ||
         context.title.startsWith("Components/Toast") ||
-        context.title.startsWith("Components/Tooltip")
+        context.title.startsWith("Components/Tooltip");
+
+      // Pages, Agents, Design-Tokens, and portal components get the full PageDecorator
+      if (
+        context.title.startsWith("Pages/") ||
+        context.title.startsWith("Agents/") ||
+        context.title.startsWith("Design-Tokens/") ||
+        isPortalComponent
       ) {
-        return <PageDecorator Story={Story} />;
+        return (
+          <PageDecorator
+            className={isPortalComponent ? "p-12" : ""}
+            Story={Story}
+          />
+        );
       }
 
-      return (
-        <div className="flex">
-          <div className="flex-1 items-center border bg-surface p-6">
-            <div className="mb-2 font-sans text-sm leading-5 tracking-wide text-muted-2 uppercase">
-              Light
-            </div>
-            <div className="flex flex-col flex-wrap gap-4">
-              <Story />
-            </div>
-          </div>
-          <div data-mode="dark" className="flex-1 items-center bg-surface p-6">
-            <div className="mb-2 font-sans text-sm leading-5 tracking-wide text-muted-2 uppercase">
-              Dark
-            </div>
-            <div className="flex flex-col flex-wrap gap-4">
-              <Story />
-            </div>
-          </div>
-        </div>
-      );
+      // Other Components/* get side-by-side light/dark with theme switcher
+      if (context.title.startsWith("Components/")) {
+        return <DualModeDecorator Story={Story} />;
+      }
+
+      // Blocks, Layouts, and other categories get the full decorator with mode toggle
+      return <PageDecorator Story={Story} />;
     },
   ],
 };
 
-function PageDecorator({ Story }: { Story: React.ComponentType }) {
+function DualModeDecorator({ Story }: { Story: React.ComponentType }) {
+  const [theme, setTheme] = useState<Theme>("kumo");
+
+  return (
+    <div data-theme={theme}>
+      <div className={SWITCHER_CLASSES}>
+        <ThemeSelect theme={theme} onThemeChange={setTheme} />
+      </div>
+      <div className="flex">
+        <div className="flex-1 items-center border bg-surface-2 p-12">
+          <div className="mb-8 font-sans text-sm leading-5 tracking-wide text-muted-2 uppercase">
+            Light
+          </div>
+          <div className="flex flex-col flex-wrap gap-4">
+            <Story />
+          </div>
+        </div>
+        <div data-mode="dark" className="flex-1 items-center bg-surface-2 p-12">
+          <div className="mb-8 font-sans text-sm leading-5 tracking-wide text-muted-2 uppercase">
+            Dark
+          </div>
+          <div className="flex flex-col flex-wrap gap-4">
+            <Story />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PageDecorator({
+  Story,
+  className,
+}: {
+  Story: React.ComponentType;
+  className?: string;
+}) {
   const [isDark, setIsDark] = useState(false);
   const [theme, setTheme] = useState<Theme>("kumo");
 
-  // Apply data-mode and bg-surface to document.body so portaled elements (modals, dialogs) inherit the mode
+  // Apply data-mode and bg-surface-2 to document.body so portaled elements (modals, dialogs) inherit the mode
   // and the entire canvas background is styled
   useEffect(() => {
-    document.body.classList.add("bg-surface");
+    document.body.classList.add("bg-surface-2");
     if (isDark) {
       document.body.setAttribute("data-mode", "dark");
     } else {
@@ -85,7 +123,7 @@ function PageDecorator({ Story }: { Story: React.ComponentType }) {
     }
     return () => {
       document.body.removeAttribute("data-mode");
-      document.body.classList.remove("bg-surface");
+      document.body.classList.remove("bg-surface-2");
     };
   }, [isDark]);
 
@@ -101,9 +139,9 @@ function PageDecorator({ Story }: { Story: React.ComponentType }) {
     <div
       data-theme={theme}
       data-mode={isDark ? "dark" : "light"}
-      className="bg-surface"
+      className={cn("bg-surface-2", className)}
     >
-      <div className="fixed top-4 right-4 z-50 flex items-center gap-2 rounded-lg bg-surface-secondary p-2 shadow-md">
+      <div className={SWITCHER_CLASSES}>
         <ThemeSelect theme={theme} onThemeChange={setTheme} />
         <ModeToggle
           isDark={isDark}

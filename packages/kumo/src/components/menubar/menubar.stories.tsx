@@ -11,9 +11,6 @@ import {
 const meta = {
   title: "Components/Menubar",
   component: MenuBar,
-  parameters: {
-    layout: "padded",
-  },
 } satisfies Meta<typeof MenuBar>;
 
 export default meta;

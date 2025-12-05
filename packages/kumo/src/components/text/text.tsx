@@ -175,6 +175,7 @@ function _Text<Variant extends TextVariant = "body">(
     <Component
       ref={ref}
       className={cn(
+        "text-surface",
         KUMO_TEXT_VARIANTS.variant[variant].classes,
         isCopy ? KUMO_TEXT_VARIANTS.size[size].classes : "",
         isCopy && bold ? "font-medium" : "",
