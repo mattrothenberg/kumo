@@ -1,236 +1,240 @@
 {
-  "name": "@cloudflare/kumo",
-  "version": "0.3.0",
-  "private": false,
-  "type": "module",
-  "description": "Kumo - Cloudflare's component library for building modern web applications",
-  "repository": {
-    "type": "git",
-    "url": "https://gitlab.cfdata.org/cloudflare/fe/kumo.git",
-    "directory": "packages/kumo"
-  },
-  "license": "MIT",
-  "keywords": [
-    "react",
-    "components",
-    "ui",
-    "cloudflare",
-    "design-system"
-  ],
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/src/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/src/index.d.ts",
-      "import": "./dist/index.js"
-    },
-    "./components/badge": {
-      "types": "./dist/src/components/badge/index.d.ts",
-      "import": "./dist/components/badge.js"
-    },
-    "./components/banner": {
-      "types": "./dist/src/components/banner/index.d.ts",
-      "import": "./dist/components/banner.js"
-    },
-    "./components/button": {
-      "types": "./dist/src/components/button/index.d.ts",
-      "import": "./dist/components/button.js"
-    },
-    "./components/date-range-picker": {
-      "types": "./dist/src/components/date-range-picker/index.d.ts",
-      "import": "./dist/components/date-range-picker.js"
-    },
-    "./components/checkbox": {
-      "types": "./dist/src/components/checkbox/index.d.ts",
-      "import": "./dist/components/checkbox.js"
-    },
-    "./components/clipboard-text": {
-      "types": "./dist/src/components/clipboard-text/index.d.ts",
-      "import": "./dist/components/clipboard-text.js"
-    },
-    "./components/code": {
-      "types": "./dist/src/components/code/index.d.ts",
-      "import": "./dist/components/code.js"
-    },
-    "./components/combobox": {
-      "types": "./dist/src/components/combobox/index.d.ts",
-      "import": "./dist/components/combobox.js"
-    },
-    "./components/dialog": {
-      "types": "./dist/src/components/dialog/index.d.ts",
-      "import": "./dist/components/dialog.js"
-    },
-    "./components/dropdown": {
-      "types": "./dist/src/components/dropdown/index.d.ts",
-      "import": "./dist/components/dropdown.js"
-    },
-    "./components/expandable": {
-      "types": "./dist/src/components/expandable/index.d.ts",
-      "import": "./dist/components/expandable.js"
-    },
-    "./components/field": {
-      "types": "./dist/src/components/field/index.d.ts",
-      "import": "./dist/components/field.js"
-    },
-    "./components/input": {
-      "types": "./dist/src/components/input/index.d.ts",
-      "import": "./dist/components/input.js"
-    },
-    "./components/layer-card": {
-      "types": "./dist/src/components/layer-card/index.d.ts",
-      "import": "./dist/components/layer-card.js"
-    },
-    "./components/loader": {
-      "types": "./dist/src/components/loader/index.d.ts",
-      "import": "./dist/components/loader.js"
-    },
-    "./components/menubar": {
-      "types": "./dist/src/components/menubar/index.d.ts",
-      "import": "./dist/components/menubar.js"
-    },
-    "./components/meter": {
-      "types": "./dist/src/components/meter/index.d.ts",
-      "import": "./dist/components/meter.js"
-    },
-    "./components/pagination": {
-      "types": "./dist/src/components/pagination/index.d.ts",
-      "import": "./dist/components/pagination.js"
-    },
-    "./components/select": {
-      "types": "./dist/src/components/select/index.d.ts",
-      "import": "./dist/components/select.js"
-    },
-    "./components/surface": {
-      "types": "./dist/src/components/surface/index.d.ts",
-      "import": "./dist/components/surface.js"
-    },
-    "./components/switch": {
-      "types": "./dist/src/components/switch/index.d.ts",
-      "import": "./dist/components/switch.js"
-    },
-    "./components/tabs": {
-      "types": "./dist/src/components/tabs/index.d.ts",
-      "import": "./dist/components/tabs.js"
-    },
-    "./components/text": {
-      "types": "./dist/src/components/text/index.d.ts",
-      "import": "./dist/components/text.js"
-    },
-    "./components/toast": {
-      "types": "./dist/src/components/toast/index.d.ts",
-      "import": "./dist/components/toast.js"
-    },
-    "./components/tooltip": {
-      "types": "./dist/src/components/tooltip/index.d.ts",
-      "import": "./dist/components/tooltip.js"
-    },
-    "./blocks/breadcrumbs": {
-      "types": "./dist/src/blocks/breadcrumbs/index.d.ts",
-      "import": "./dist/blocks/breadcrumbs.js"
-    },
-    "./blocks/empty": {
-      "types": "./dist/src/blocks/empty/index.d.ts",
-      "import": "./dist/blocks/empty.js"
-    },
-    "./blocks/page-header": {
-      "types": "./dist/src/blocks/page-header/index.d.ts",
-      "import": "./dist/blocks/page-header.js"
-    },
-    "./layouts/resource-list": {
-      "types": "./dist/src/layouts/resource-list/index.d.ts",
-      "import": "./dist/layouts/resource-list.js"
-    },
-    "./utils": {
-      "types": "./dist/src/utils/index.d.ts",
-      "import": "./dist/utils.js"
-    },
-    "./styles/tailwind": "./dist/styles/kumo.css",
-    "./styles/standalone": "./dist/styles/kumo-standalone.css",
-    "./styles": "./dist/styles/kumo.css",
-    "./styles/*": "./dist/styles/*.css"
-  },
-  "files": [
-    "dist",
-    "README.md",
-    "LICENSE",
-    "CHANGELOG.md"
-  ],
-  "sideEffects": [
-    "*.css",
-    "dist/styles/*.css"
-  ],
-  "publishConfig": {
-    "access": "restricted",
-    "registry": "https://registry-gateway.cloudflare-ui.workers.dev"
-  },
-  "scripts": {
-    "prepare": "pnpm run prebuild",
-    "build": "pnpm run prebuild && vite build --mode production && tsx scripts/build-css.ts",
-    "prebuild": "pnpm run build:colors && pnpm run build:ai-metadata",
-    "dev": "vite build --watch --mode development",
-    "clean": "rm -rf dist",
-    "lint": "oxlint src/** --type-aware",
-    "prepublishOnly": "pnpm run clean && pnpm run build && pnpm run test:unit",
-    "typecheck": "tsc --noEmit",
-    "test": "CI=true vitest run --project=unit",
-    "test:ui": "vitest --ui",
-    "test:run": "vitest run",
-    "test:unit": "vitest run --project=unit",
-    "test:storybook": "vitest run --project=storybook",
-    "test:coverage": "vitest run --coverage",
-    "new-component": "plop component",
-    "new-block": "plop block",
-    "new-layout": "plop layout",
-    "validate:changeset": "tsx ../../ci/scripts/validate-kumo-changeset.ts",
-    "build:colors": "tsx scripts/color/build-colors-storybook.ts",
-    "storybook": "pnpm run prebuild && storybook dev -p 6006",
-    "build:storybook": "pnpm run prebuild && storybook build",
-    "deploy": "pnpm run build:storybook && wrangler pages deploy",
-    "deploy:ci": "CLOUDFLARE_ACCOUNT_ID=$CLOUDFLARE_ACCOUNT_ID CLOUDFLARE_API_TOKEN=$CLOUDFLARE_API_TOKEN pnpm run build:storybook && wrangler pages deploy",
-    "deploy-prod:ci": "pnpm run deploy:ci --branch main",
-    "build:ai-metadata": "tsx scripts/ai/component-registry.ts"
-  },
-  "peerDependencies": {
-    "@base-ui-components/react": "catalog:",
-    "@phosphor-icons/react": "catalog:",
-    "react": "catalog:",
-    "react-dom": "catalog:"
-  },
-  "dependencies": {
-    "clsx": "catalog:",
-    "remark-gfm": "4.0.1",
-    "tailwind-merge": "catalog:"
-  },
-  "devDependencies": {
-    "@storybook/addon-a11y": "catalog:",
-    "@storybook/addon-docs": "catalog:",
-    "@storybook/addon-mcp": "0.1.4",
-    "@storybook/addon-vitest": "catalog:",
-    "@storybook/react": "catalog:",
-    "@storybook/react-vite": "catalog:",
-    "@tailwindcss/cli": "catalog:",
-    "@tailwindcss/vite": "catalog:",
-    "@types/node": "catalog:",
-    "@types/react": "catalog:",
-    "@types/react-dom": "catalog:",
-    "@vitest/browser": "catalog:",
-    "@vitest/ui": "catalog:",
-    "happy-dom": "catalog:",
-    "oxlint": "1.28.0",
-    "oxlint-tsgolint": "0.6.0",
-    "playwright": "catalog:",
-    "plop": "4.0.4",
-    "react-markdown": "10.1.0",
-    "rollup-plugin-preserve-directives": "0.4.0",
-    "storybook": "catalog:",
-    "tailwindcss": "catalog:",
-    "ts-json-schema-generator": "2.4.0",
-    "tsx": "catalog:",
-    "typescript": "catalog:",
-    "vite": "catalog:",
-    "vite-plugin-dts": "catalog:",
-    "vitest": "catalog:",
-    "wrangler": "catalog:"
-  }
+	"name": "@cloudflare/kumo",
+	"version": "0.3.0",
+	"private": false,
+	"type": "module",
+	"description": "Kumo - Cloudflare's component library for building modern web applications",
+	"repository": {
+		"type": "git",
+		"url": "https://gitlab.cfdata.org/cloudflare/fe/kumo.git",
+		"directory": "packages/kumo"
+	},
+	"license": "MIT",
+	"keywords": [
+		"react",
+		"components",
+		"ui",
+		"cloudflare",
+		"design-system"
+	],
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"types": "./dist/src/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/src/index.d.ts",
+			"import": "./dist/index.js"
+		},
+		"./components/badge": {
+			"types": "./dist/src/components/badge/index.d.ts",
+			"import": "./dist/components/badge.js"
+		},
+		"./components/banner": {
+			"types": "./dist/src/components/banner/index.d.ts",
+			"import": "./dist/components/banner.js"
+		},
+		"./components/button": {
+			"types": "./dist/src/components/button/index.d.ts",
+			"import": "./dist/components/button.js"
+		},
+		"./components/date-range-picker": {
+			"types": "./dist/src/components/date-range-picker/index.d.ts",
+			"import": "./dist/components/date-range-picker.js"
+		},
+		"./components/checkbox": {
+			"types": "./dist/src/components/checkbox/index.d.ts",
+			"import": "./dist/components/checkbox.js"
+		},
+		"./components/clipboard-text": {
+			"types": "./dist/src/components/clipboard-text/index.d.ts",
+			"import": "./dist/components/clipboard-text.js"
+		},
+		"./components/code": {
+			"types": "./dist/src/components/code/index.d.ts",
+			"import": "./dist/components/code.js"
+		},
+		"./components/combobox": {
+			"types": "./dist/src/components/combobox/index.d.ts",
+			"import": "./dist/components/combobox.js"
+		},
+		"./components/dialog": {
+			"types": "./dist/src/components/dialog/index.d.ts",
+			"import": "./dist/components/dialog.js"
+		},
+		"./components/dropdown": {
+			"types": "./dist/src/components/dropdown/index.d.ts",
+			"import": "./dist/components/dropdown.js"
+		},
+		"./components/expandable": {
+			"types": "./dist/src/components/expandable/index.d.ts",
+			"import": "./dist/components/expandable.js"
+		},
+		"./components/field": {
+			"types": "./dist/src/components/field/index.d.ts",
+			"import": "./dist/components/field.js"
+		},
+		"./components/input": {
+			"types": "./dist/src/components/input/index.d.ts",
+			"import": "./dist/components/input.js"
+		},
+		"./components/layer-card": {
+			"types": "./dist/src/components/layer-card/index.d.ts",
+			"import": "./dist/components/layer-card.js"
+		},
+		"./components/loader": {
+			"types": "./dist/src/components/loader/index.d.ts",
+			"import": "./dist/components/loader.js"
+		},
+		"./components/menubar": {
+			"types": "./dist/src/components/menubar/index.d.ts",
+			"import": "./dist/components/menubar.js"
+		},
+		"./components/meter": {
+			"types": "./dist/src/components/meter/index.d.ts",
+			"import": "./dist/components/meter.js"
+		},
+		"./components/pagination": {
+			"types": "./dist/src/components/pagination/index.d.ts",
+			"import": "./dist/components/pagination.js"
+		},
+		"./components/select": {
+			"types": "./dist/src/components/select/index.d.ts",
+			"import": "./dist/components/select.js"
+		},
+		"./components/surface": {
+			"types": "./dist/src/components/surface/index.d.ts",
+			"import": "./dist/components/surface.js"
+		},
+		"./components/switch": {
+			"types": "./dist/src/components/switch/index.d.ts",
+			"import": "./dist/components/switch.js"
+		},
+		"./components/tabs": {
+			"types": "./dist/src/components/tabs/index.d.ts",
+			"import": "./dist/components/tabs.js"
+		},
+		"./components/text": {
+			"types": "./dist/src/components/text/index.d.ts",
+			"import": "./dist/components/text.js"
+		},
+		"./components/toast": {
+			"types": "./dist/src/components/toast/index.d.ts",
+			"import": "./dist/components/toast.js"
+		},
+		"./components/tooltip": {
+			"types": "./dist/src/components/tooltip/index.d.ts",
+			"import": "./dist/components/tooltip.js"
+		},
+		"./blocks/breadcrumbs": {
+			"types": "./dist/src/blocks/breadcrumbs/index.d.ts",
+			"import": "./dist/blocks/breadcrumbs.js"
+		},
+		"./blocks/empty": {
+			"types": "./dist/src/blocks/empty/index.d.ts",
+			"import": "./dist/blocks/empty.js"
+		},
+		"./blocks/page-header": {
+			"types": "./dist/src/blocks/page-header/index.d.ts",
+			"import": "./dist/blocks/page-header.js"
+		},
+		"./layouts/resource-list": {
+			"types": "./dist/src/layouts/resource-list/index.d.ts",
+			"import": "./dist/layouts/resource-list.js"
+		},
+		"./components/sensitive-input": {
+			"types": "./dist/src/components/sensitive-input/index.d.ts",
+			"import": "./dist/components/sensitive-input.js"
+		},
+		"./utils": {
+			"types": "./dist/src/utils/index.d.ts",
+			"import": "./dist/utils.js"
+		},
+		"./styles/tailwind": "./dist/styles/kumo.css",
+		"./styles/standalone": "./dist/styles/kumo-standalone.css",
+		"./styles": "./dist/styles/kumo.css",
+		"./styles/*": "./dist/styles/*.css"
+	},
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE",
+		"CHANGELOG.md"
+	],
+	"sideEffects": [
+		"*.css",
+		"dist/styles/*.css"
+	],
+	"publishConfig": {
+		"access": "restricted",
+		"registry": "https://registry-gateway.cloudflare-ui.workers.dev"
+	},
+	"scripts": {
+		"prepare": "pnpm run prebuild",
+		"build": "pnpm run prebuild && vite build --mode production && tsx scripts/build-css.ts",
+		"prebuild": "pnpm run build:colors && pnpm run build:ai-metadata",
+		"dev": "vite build --watch --mode development",
+		"clean": "rm -rf dist",
+		"lint": "oxlint src/** --type-aware",
+		"prepublishOnly": "pnpm run clean && pnpm run build && pnpm run test:unit",
+		"typecheck": "tsc --noEmit",
+		"test": "CI=true vitest run --project=unit",
+		"test:ui": "vitest --ui",
+		"test:run": "vitest run",
+		"test:unit": "vitest run --project=unit",
+		"test:storybook": "vitest run --project=storybook",
+		"test:coverage": "vitest run --coverage",
+		"new-component": "plop component",
+		"new-block": "plop block",
+		"new-layout": "plop layout",
+		"validate:changeset": "tsx ../../ci/scripts/validate-kumo-changeset.ts",
+		"build:colors": "tsx scripts/color/build-colors-storybook.ts",
+		"storybook": "pnpm run prebuild && storybook dev -p 6006",
+		"build:storybook": "pnpm run prebuild && storybook build",
+		"deploy": "pnpm run build:storybook && wrangler pages deploy",
+		"deploy:ci": "CLOUDFLARE_ACCOUNT_ID=$CLOUDFLARE_ACCOUNT_ID CLOUDFLARE_API_TOKEN=$CLOUDFLARE_API_TOKEN pnpm run build:storybook && wrangler pages deploy",
+		"deploy-prod:ci": "pnpm run deploy:ci --branch main",
+		"build:ai-metadata": "tsx scripts/ai/component-registry.ts"
+	},
+	"peerDependencies": {
+		"@base-ui-components/react": "catalog:",
+		"@phosphor-icons/react": "catalog:",
+		"react": "catalog:",
+		"react-dom": "catalog:"
+	},
+	"dependencies": {
+		"clsx": "catalog:",
+		"remark-gfm": "4.0.1",
+		"tailwind-merge": "catalog:"
+	},
+	"devDependencies": {
+		"@storybook/addon-a11y": "catalog:",
+		"@storybook/addon-docs": "catalog:",
+		"@storybook/addon-mcp": "0.1.4",
+		"@storybook/addon-vitest": "catalog:",
+		"@storybook/react": "catalog:",
+		"@storybook/react-vite": "catalog:",
+		"@tailwindcss/cli": "catalog:",
+		"@tailwindcss/vite": "catalog:",
+		"@types/node": "catalog:",
+		"@types/react": "catalog:",
+		"@types/react-dom": "catalog:",
+		"@vitest/browser": "catalog:",
+		"@vitest/ui": "catalog:",
+		"happy-dom": "catalog:",
+		"oxlint": "1.28.0",
+		"oxlint-tsgolint": "0.6.0",
+		"playwright": "catalog:",
+		"plop": "4.0.4",
+		"react-markdown": "10.1.0",
+		"rollup-plugin-preserve-directives": "0.4.0",
+		"storybook": "catalog:",
+		"tailwindcss": "catalog:",
+		"ts-json-schema-generator": "2.4.0",
+		"tsx": "catalog:",
+		"typescript": "catalog:",
+		"vite": "catalog:",
+		"vite-plugin-dts": "catalog:",
+		"vitest": "catalog:",
+		"wrangler": "catalog:"
+	}
 }

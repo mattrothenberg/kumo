@@ -12,6 +12,7 @@ export default [
   route("components/banner", "routes/components.banner.tsx"),
   route("components/button", "routes/components.button.tsx"),
   route("components/input", "routes/components.input.tsx"),
+  route("components/sensitive-input", "routes/components.sensitive-input.tsx"),
   route("components/checkbox", "routes/components.checkbox.tsx"),
   route("components/select", "routes/components.select.tsx"),
   route("components/switch", "routes/components.switch.tsx"),

@@ -412,6 +412,19 @@ export default function App() {
               </li>
               <li>
                 <Link
+                  to="/components/sensitive-input"
+                  prefetch="intent"
+                  className={cn(
+                    LI_STYLE,
+                    location.pathname === "/components/sensitive-input" &&
+                      LI_ACTIVE_STYLE,
+                  )}
+                >
+                  Sensitive Input
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/components/layer-card"
                   prefetch="intent"
                   className={cn(
