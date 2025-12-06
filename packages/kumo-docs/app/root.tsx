@@ -16,6 +16,7 @@ import { CaretDownIcon } from "@phosphor-icons/react";
 
 import type { Route } from "./+types/root";
 import "./app.css";
+import { ClientOnly } from "./components/client-only";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -56,17 +57,13 @@ export default function App() {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const toggleSidebar = () => setSidebarOpen((v) => !v);
-  const [isDark, setIsDark] = useState(false);
+  
   const [componentsOpen, setComponentsOpen] = useState(true);
   const [blocksOpen, setBlocksOpen] = useState(true);
   const [layoutsOpen, setLayoutsOpen] = useState(true);
   const contentRef = React.useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    // Check if dark mode is enabled
-    const isDarkMode = document.documentElement.dataset.mode === "dark";
-    setIsDark(isDarkMode);
-  }, []);
+  
 
   useEffect(() => {
     if (contentRef.current) {
@@ -78,18 +75,7 @@ export default function App() {
     }
   }, [location.pathname]);
 
-  const toggleTheme = () => {
-    const newIsDark = !isDark;
-    setIsDark(newIsDark);
-
-    if (newIsDark) {
-      document.documentElement.dataset.mode = "dark";
-      localStorage.setItem("mode", "dark");
-    } else {
-      delete document.documentElement.dataset.mode;
-      localStorage.setItem("mode", "light");
-    }
-  };
+  
 
   return (
     <div className="min-h-screen">
@@ -125,14 +111,9 @@ export default function App() {
 
       {/* Theme toggle: fixed in top right corner */}
       <div className="pointer-events-auto fixed top-0 right-2 z-50 flex h-[49px] items-center">
-        <Button
-          variant="ghost"
-          shape="square"
-          aria-label="Toggle theme"
-          onClick={toggleTheme}
-        >
-          <ThemeToggle isDark={isDark} onClick={() => {}} />
-        </Button>
+        <ClientOnly>
+          {() => <ThemeToggle  />}
+        </ClientOnly>
       </div>
 
       {/* Sliding panel that opens to the right of the rail */}
