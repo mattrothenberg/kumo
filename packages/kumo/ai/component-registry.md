@@ -1,7 +1,7 @@
 # Kumo Component Registry
 
 > Auto-generated component metadata for AI/agent consumption.
-> Generated: 2025-12-05T14:53:37.450Z
+> Generated: 2025-12-06T01:52:21.553Z
 
 
 ## Styling Guide
@@ -50,7 +50,7 @@ Most frequently used tokens across Kumo components:
 
 | Category | Top Tokens |
 |----------|------------|
-| **Background** | `bg-surface`, `bg-secondary`, `bg-color-3`, `bg-color`, `bg-accent` |
+| **Background** | `bg-secondary`, `bg-surface`, `bg-color-3`, `bg-color`, `bg-accent` |
 | **Text** | `text-surface`, `text-secondary`, `text-muted`, `text-white`, `text-error` |
 | **Border/Ring** | `ring-border`, `ring-active`, `ring-destructive`, `ring-color` |
 
@@ -1349,6 +1349,119 @@ Option sub-component
 
 ---
 
+### SensitiveInput
+
+SensitiveInput component
+
+**Import:** `import { SensitiveInput } from "@cloudflare/kumo";`
+
+**Category:** Other
+
+**Props:**
+
+- `checked`: boolean
+- `disabled`: boolean
+- `name`: string
+- `placeholder`: string
+- `readOnly`: boolean
+- `required`: boolean
+- `onChange`: React.ChangeEventHandler<HTMLInputElement>
+- `className`: string
+- `id`: string
+- `title`: string
+- `children`: ReactNode
+- `onSubmit`: React.FormEventHandler<HTMLInputElement>
+- `onClick`: React.MouseEventHandler<HTMLInputElement>
+- `value`: string
+  Controlled value
+- `size`: KumoInputSize [default: base]
+  Size variant
+- `variant`: KumoInputVariant [default: default]
+  Style variant
+- `label`: string
+  Accessible label
+- `hideLabel`: boolean
+  Hide label visually (still accessible to screen readers)
+
+**Colors (kumo tokens used):**
+
+`bg-primary`, `bg-secondary`, `outline-active`, `text-muted`, `text-secondary`, `text-surface`, `text-white`
+
+**Examples:**
+
+```tsx
+<SensitiveInput defaultValue="sk_live_abc123xyz789" label="API Key" />
+```
+
+```tsx
+<div className="flex flex-col gap-4">
+      {sizes.map((size) => (
+        <div key={size} className="flex items-center gap-2">
+          <span className="w-12 text-sm text-muted">{size}</span>
+          <SensitiveInput
+            size={size}
+            defaultValue="secret-api-key-123"
+            label={`${size} size`}
+          />
+        </div>
+      ))}
+    </div>
+```
+
+```tsx
+<SensitiveInput placeholder="Enter your secret..." label="Secret" />
+```
+
+```tsx
+<div className="flex flex-col gap-4">
+        <SensitiveInput
+          value={value}
+          onValueChange={setValue}
+          label="Controlled Secret"
+        />
+        <div className="text-sm text-muted">
+          Current value: <code className="text-surface">{value}</code>
+        </div>
+        <div className="flex gap-2">
+          <button
+            onClick={() => setValue("new-secret-" + Date.now())}
+            className="rounded bg-primary px-2 py-1 text-sm text-white"
+          >
+            Change value
+          </button>
+          <button
+            onClick={() => setValue("")}
+            className="rounded bg-secondary px-2 py-1 text-sm text-surface ring ring-border"
+          >
+            Clear
+          </button>
+        </div>
+      </div>
+```
+
+```tsx
+<SensitiveInput variant="error" defaultValue="invalid-key" label="Invalid Key" />
+```
+
+```tsx
+<SensitiveInput defaultValue="cannot-edit" disabled={true} label="Disabled Secret" />
+```
+
+```tsx
+<SensitiveInput defaultValue="view-only-secret-key" readOnly={true} label="Read-only Secret" />
+```
+
+```tsx
+<SensitiveInput defaultValue="my-secret-value" label="Password" hideLabel={false} />
+```
+
+```tsx
+<SensitiveInput defaultValue="copyable-secret-key" label="API Key" onCopy='() => console.log("Value copied!")' />
+```
+
+
+---
+
 ### Surface
 
 Surface component
@@ -1572,4 +1685,5 @@ Tooltip component
 - **Input:** Checkbox, Combobox, DateRangePicker, Field, Input, Select, Switch
 - **Overlay:** Dialog, DropdownMenu, Tooltip
 - **Navigation:** MenuBar, Pagination, Tabs
+- **Other:** SensitiveInput
 - **Layout:** Surface

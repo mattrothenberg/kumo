@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2025-12-05T14:53:37.450Z",
+  "generatedAt": "2025-12-06T01:52:21.553Z",
   "components": {
     "Badge": {
       "name": "Badge",
@@ -1564,6 +1564,114 @@
         }
       }
     },
+    "SensitiveInput": {
+      "name": "SensitiveInput",
+      "description": "SensitiveInput component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Other",
+      "props": {
+        "checked": {
+          "type": "boolean",
+          "optional": true
+        },
+        "disabled": {
+          "type": "boolean",
+          "optional": true
+        },
+        "name": {
+          "type": "string",
+          "optional": true
+        },
+        "placeholder": {
+          "type": "string",
+          "optional": true
+        },
+        "readOnly": {
+          "type": "boolean",
+          "optional": true
+        },
+        "required": {
+          "type": "boolean",
+          "optional": true
+        },
+        "onChange": {
+          "type": "React.ChangeEventHandler<HTMLInputElement>",
+          "optional": true
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "id": {
+          "type": "string",
+          "optional": true
+        },
+        "title": {
+          "type": "string",
+          "optional": true
+        },
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "onSubmit": {
+          "type": "React.FormEventHandler<HTMLInputElement>",
+          "optional": true
+        },
+        "onClick": {
+          "type": "React.MouseEventHandler<HTMLInputElement>",
+          "optional": true
+        },
+        "value": {
+          "type": "string",
+          "optional": true,
+          "description": "Controlled value"
+        },
+        "size": {
+          "type": "KumoInputSize",
+          "optional": true,
+          "description": "Size variant",
+          "default": "base"
+        },
+        "variant": {
+          "type": "KumoInputVariant",
+          "optional": true,
+          "description": "Style variant",
+          "default": "default"
+        },
+        "label": {
+          "type": "string",
+          "optional": true,
+          "description": "Accessible label"
+        },
+        "hideLabel": {
+          "type": "boolean",
+          "optional": true,
+          "description": "Hide label visually (still accessible to screen readers)"
+        }
+      },
+      "examples": [
+        "<SensitiveInput defaultValue=\"sk_live_abc123xyz789\" label=\"API Key\" />",
+        "<div className=\"flex flex-col gap-4\">\n      {sizes.map((size) => (\n        <div key={size} className=\"flex items-center gap-2\">\n          <span className=\"w-12 text-sm text-muted\">{size}</span>\n          <SensitiveInput\n            size={size}\n            defaultValue=\"secret-api-key-123\"\n            label={`${size} size`}\n          />\n        </div>\n      ))}\n    </div>",
+        "<SensitiveInput defaultValue=\"sk_live_abc123xyz789\" label=\"API Key\" />",
+        "<SensitiveInput placeholder=\"Enter your secret...\" label={Secret} />",
+        "<div className=\"flex flex-col gap-4\">\n        <SensitiveInput\n          value={value}\n          onValueChange={setValue}\n          label=\"Controlled Secret\"\n        />\n        <div className=\"text-sm text-muted\">\n          Current value: <code className=\"text-surface\">{value}</code>\n        </div>\n        <div className=\"flex gap-2\">\n          <button\n            onClick={() => setValue(\"new-secret-\" + Date.now())}\n            className=\"rounded bg-primary px-2 py-1 text-sm text-white\"\n          >\n            Change value\n          </button>\n          <button\n            onClick={() => setValue(\"\")}\n            className=\"rounded bg-secondary px-2 py-1 text-sm text-surface ring ring-border\"\n          >\n            Clear\n          </button>\n        </div>\n      </div>",
+        "<SensitiveInput variant=\"error\" defaultValue=\"invalid-key\" label=\"Invalid Key\" />",
+        "<SensitiveInput defaultValue=\"cannot-edit\" disabled={true} label=\"Disabled Secret\" />",
+        "<SensitiveInput defaultValue=\"view-only-secret-key\" readOnly={true} label=\"Read-only Secret\" />",
+        "<SensitiveInput defaultValue=\"my-secret-value\" label={Password} hideLabel={false} />",
+        "<SensitiveInput defaultValue=\"copyable-secret-key\" label=\"API Key\" onCopy='() => console.log(\"Value copied!\")' />"
+      ],
+      "colors": [
+        "bg-primary",
+        "bg-secondary",
+        "outline-active",
+        "text-muted",
+        "text-secondary",
+        "text-surface",
+        "text-white"
+      ]
+    },
     "Surface": {
       "name": "Surface",
       "description": "Surface component",
@@ -1938,6 +2046,9 @@
         "Pagination",
         "Tabs"
       ],
+      "Other": [
+        "SensitiveInput"
+      ],
       "Layout": [
         "Surface"
       ]
@@ -1965,6 +2076,7 @@
       "PageHeader",
       "Pagination",
       "Select",
+      "SensitiveInput",
       "Surface",
       "Switch",
       "Tabs",

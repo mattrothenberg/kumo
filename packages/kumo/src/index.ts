@@ -45,6 +45,12 @@ export { Tabs, type TabsProps, type TabsItem } from "./components/tabs";
 export { Text } from "./components/text";
 export { Toasty, Toast } from "./components/toast";
 export { Tooltip, TooltipProvider } from "./components/tooltip";
+export {
+  SensitiveInput,
+  type SensitiveInputProps,
+  KUMO_SENSITIVE_INPUT_VARIANTS,
+  KUMO_SENSITIVE_INPUT_DEFAULT_VARIANTS,
+} from "./components/sensitive-input";
 // PLOP_INJECT_EXPORT
 
 // Blocks
