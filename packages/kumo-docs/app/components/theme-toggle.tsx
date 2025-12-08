@@ -1,26 +1,13 @@
-import { cn } from "@cloudflare/kumo";
+import { cn, Button } from "@cloudflare/kumo";
+import { useEffect, useState } from "react";
 
-interface ThemeToggleProps {
-  isDark: boolean;
-  onClick: () => void;
-  className?: string;
-}
-
-export function ThemeToggle({ isDark, onClick, className }: ThemeToggleProps) {
+function ThemeIcon ({isDark}: {isDark: boolean}) {
   return (
-    <button
-      onClick={onClick}
-      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-      className={cn(
-        "relative h-[20px] w-[20px] cursor-pointer overflow-visible",
-        className,
-      )}
-    >
-      <svg
+    <svg
         viewBox="0 0 32 32"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="h-full w-full"
+        className="size-5"
       >
         {/* Sun rays */}
         <g
@@ -128,6 +115,41 @@ export function ThemeToggle({ isDark, onClick, className }: ThemeToggleProps) {
           }}
         />
       </svg>
-    </button>
+  )
+}
+
+export function ThemeToggle() {
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    // Check if dark mode is enabled
+    const isDarkMode = document.documentElement.dataset.mode === "dark";
+    setIsDark(isDarkMode);
+  }, []);
+
+  const toggleTheme = () => {
+    const newIsDark = !isDark;
+    setIsDark(newIsDark);
+
+    if (newIsDark) {
+      document.documentElement.dataset.mode = "dark";
+      localStorage.setItem("mode", "dark");
+    } else {
+      delete document.documentElement.dataset.mode;
+      localStorage.setItem("mode", "light");
+    }
+  };
+
+  return (
+    <Button
+      variant="ghost"
+      shape="square"
+      onClick={toggleTheme}
+      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      icon={<ThemeIcon isDark={isDark} />}
+      className="relative cursor-pointer overflow-visible"
+    >
+      
+    </Button>
   );
 }
