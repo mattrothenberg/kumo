@@ -5,10 +5,6 @@ import { SensitiveInput } from "./sensitive-input";
 const meta = {
   title: "Components/SensitiveInput",
   component: SensitiveInput,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
 } satisfies Meta<typeof SensitiveInput>;
 
 export default meta;
@@ -127,8 +123,7 @@ export const ReadOnly: Story = {
   parameters: {
     docs: {
       description: {
-        story:
-          "Read-only mode allows clicking to reveal but prevents editing.",
+        story: "Read-only mode allows clicking to reveal but prevents editing.",
       },
     },
   },
