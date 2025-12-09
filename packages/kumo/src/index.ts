@@ -1,3 +1,4 @@
+// Kumo Component Library
 // Components
 export { Badge, type BadgeVariant } from "./components/badge";
 export { Banner, BannerVariant } from "./components/banner";

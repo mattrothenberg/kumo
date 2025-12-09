@@ -1,7 +1,6 @@
 #!/usr/bin/env tsx
 
-import { execSync } from "child_process";
-import { existsSync, readdirSync, readFileSync } from "fs";
+import { readFileSync } from "fs";
 import { join } from "path";
 import {
   hasChangesInPath,
@@ -138,12 +137,8 @@ function getNewlyAddedChangesets(): ChangesetFile[] {
   // Get newly added files in .changeset directory
   const newFiles = getNewlyAddedFiles(CHANGESET_DIR, { cwd });
 
-  if (newFiles.length === 0) {
-    console.warn(
-      "Warning: Could not determine newly added changesets, falling back to all changesets",
-    );
-    return getChangesets();
-  }
+  // Note: empty array means no new changesets were added in this MR
+  // Do NOT fall back to getChangesets() as that would include existing changesets
 
   const changesets: ChangesetFile[] = [];
 
@@ -182,47 +177,6 @@ function getNewlyAddedChangesets(): ChangesetFile[] {
       console.warn(
         `Warning: Could not parse changeset file ${fileName}: ${error}`,
       );
-    }
-  }
-
-  return changesets;
-}
-
-function getChangesets(): ChangesetFile[] {
-  // Determine working directory (handle both repo root and packages/kumo contexts)
-  const repoRoot = process.cwd().includes("packages/kumo") ? "../.." : ".";
-  const changesetDir = join(repoRoot, CHANGESET_DIR);
-
-  if (!existsSync(changesetDir)) {
-    return [];
-  }
-
-  const changesets: ChangesetFile[] = [];
-  const files = readdirSync(changesetDir);
-
-  for (const file of files) {
-    // Skip config files and README
-    if (
-      file === "config.json" ||
-      file === "README.md" ||
-      file === "USAGE.md" ||
-      !file.endsWith(".md")
-    ) {
-      continue;
-    }
-
-    const filePath = join(changesetDir, file);
-    try {
-      const content = readFileSync(filePath, "utf8");
-      const packages = parseChangesetPackages(content);
-
-      changesets.push({
-        name: file,
-        content,
-        packages,
-      });
-    } catch (error) {
-      console.warn(`Warning: Could not parse changeset file ${file}: ${error}`);
     }
   }
 
