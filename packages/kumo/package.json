@@ -174,7 +174,9 @@
 		"prebuild": "pnpm run build:colors && pnpm run build:ai-metadata",
 		"dev": "vite build --watch --mode development",
 		"clean": "rm -rf dist",
-		"lint": "oxlint src/** --type-aware",
+		"lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
+		"lint:oxlint": "oxlint src/** --type-aware",
+		"lint:eslint": "eslint src/",
 		"prepublishOnly": "pnpm run clean && pnpm run build && pnpm run test:unit",
 		"typecheck": "tsc --noEmit",
 		"test": "CI=true vitest run --project=unit",
@@ -207,6 +209,9 @@
 		"tailwind-merge": "catalog:"
 	},
 	"devDependencies": {
+		"eslint": "^9.17.0",
+		"eslint-plugin-jsx-a11y": "^6.10.2",
+		"typescript-eslint": "^8.18.1",
 		"@storybook/addon-a11y": "catalog:",
 		"@storybook/addon-docs": "catalog:",
 		"@storybook/addon-mcp": "0.1.4",

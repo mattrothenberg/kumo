@@ -69,7 +69,6 @@ export const useMenuNavigation = ({
 
     return () => {
       menuRef.current?.removeEventListener("focusin", handleFocusIn);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
       menuRef.current?.removeEventListener("focusout", handleFocusOut);
       removeKeyListener();
     };
