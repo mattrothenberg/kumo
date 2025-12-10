@@ -1,0 +1,28 @@
+# CODEOWNERS for Kumo Component Library
+# =====================================
+#
+# GitLab CODEOWNERS references:
+# https://docs.gitlab.com/ee/user/project/codeowners/reference.html
+# https://wiki.cfdata.org/display/DEVTOOLS/How+to+manage+CODEOWNERS
+#
+# TODO: Create a GitLab group to avoid duplicating the maintainer list.
+#
+#       1. Create group via Terraform (check with DevTools team for the correct repo/process)
+#          GitLab group: https://gitlab.cfdata.org/groups/cloudflare/fe/kumo/-/group_members
+#       2. Add maintainers: @brayden @bstrittmatter @cgleason @eduardovargas @jonnie @mrothenberg @nanda @rknecht @vin
+#       3. Replace individual @mentions with: @cloudflare/fe/kumo
+#
+#       Example:
+#         [Repo Maintainers][2] @cloudflare/fe/kumo
+#         /*
+
+# Repo Maintainers - require 2 approvals for all changes
+[Repo Maintainers][2] @brayden @bstrittmatter @cgleason @eduardovargas @jonnie @mrothenberg @nanda @rknecht @vin
+/*
+
+# Exclude lock file from requiring maintainer approval
+!pnpm-lock.yaml
+
+# Notify maintainers but don't require approval for lock file
+^[Repo Maintainers Notification] @brayden @bstrittmatter @cgleason @eduardovargas @jonnie @mrothenberg @nanda @rknecht @vin
+pnpm-lock.yaml
