@@ -1,16 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import {
-  Input,
-  KUMO_INPUT_VARIANTS,
-  type KumoInputSize,
-  type KumoInputVariant,
-} from "./input";
+import { InputArea } from "./input-area";
 import { propTester } from "../../utils/prop-tester";
+import { KUMO_INPUT_VARIANTS } from "./input";
 import { Field } from "../field";
 
-const meta: Meta<typeof Input> = {
-  title: "Components/Input",
-  component: Input,
+const meta: Meta<typeof InputArea> = {
+  title: "Components/InputArea",
+  component: InputArea,
 };
 
 export default meta;
@@ -20,9 +16,9 @@ export const Sizes: Story = {
   render: () => (
     <>
       {propTester(
-        Object.keys(KUMO_INPUT_VARIANTS.size) as KumoInputSize[],
+        Object.keys(KUMO_INPUT_VARIANTS.size),
         "size",
-        <Input placeholder="Enter text..." />,
+        <InputArea placeholder="Enter text..." />,
       )}
     </>
   ),
@@ -32,9 +28,9 @@ export const Variants: Story = {
   render: () => (
     <>
       {propTester(
-        Object.keys(KUMO_INPUT_VARIANTS.variant) as KumoInputVariant[],
+        Object.keys(KUMO_INPUT_VARIANTS.variant),
         "variant",
-        <Input placeholder="Enter text..." />,
+        <InputArea placeholder="Enter text..." />,
       )}
     </>
   ),
@@ -46,7 +42,7 @@ export const WithLabel: Story = {
   },
   render: (args) => (
     <Field label="Email">
-      <Input {...args} />
+      <InputArea {...args} />
     </Field>
   ),
 };
@@ -59,7 +55,7 @@ export const Error: Story = {
   },
   render: (args) => (
     <Field label="Email">
-      <Input {...args} />
+      <InputArea {...args} />
     </Field>
   ),
 };
@@ -71,7 +67,7 @@ export const Disabled: Story = {
   },
   render: (args) => (
     <Field label="Disabled Field">
-      <Input {...args} />
+      <InputArea {...args} />
     </Field>
   ),
 };

@@ -1,7 +1,8 @@
 import { inputVariants } from "./input";
 import { cn } from "../../utils/cn";
-import { useCallback, useId } from "react";
+import { useCallback } from "react";
 import * as React from "react";
+import { Field } from "@base-ui-components/react";
 
 export const InputArea = React.forwardRef<HTMLTextAreaElement, InputAreaProps>(
   (props, ref) => {
@@ -11,14 +12,8 @@ export const InputArea = React.forwardRef<HTMLTextAreaElement, InputAreaProps>(
       size = "base",
       variant = "default",
       onChange,
-      label,
-      hideLabel = true,
-      id,
       ...inputProps
     } = props;
-    const generatedId = useId();
-    const textAreaId = id ?? generatedId;
-
     const handleChange = useCallback(
       (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         onChange?.(event);
@@ -28,29 +23,20 @@ export const InputArea = React.forwardRef<HTMLTextAreaElement, InputAreaProps>(
     );
 
     return (
-      <>
-        {label && (
-          <label
-            htmlFor={textAreaId}
-            className={
-              hideLabel ? "sr-only" : "block text-sm font-medium text-surface"
-            }
-          >
-            {label}
-          </label>
-        )}
-        <textarea
-          ref={ref}
-          id={textAreaId}
-          className={cn(
-            inputVariants({ size, variant, focusIndicator: true }),
-            "h-auto py-2", // Input variant always come with size, but it does not apply for textarea
-            className,
-          )}
-          onChange={handleChange}
-          {...inputProps}
-        />
-      </>
+      <Field.Control
+        render={
+          <textarea
+            ref={ref}
+            className={cn(
+              inputVariants({ size, variant, focusIndicator: true }),
+              "h-auto py-2", // Input variant always come with size, but it does not apply for textarea
+              className,
+            )}
+            onChange={handleChange}
+            {...inputProps}
+          />
+        }
+      />
     );
   },
 );
@@ -61,9 +47,6 @@ export type InputAreaProps = {
   onValueChange?: (value: string) => void;
   variant?: "default" | "error";
   size?: "xs" | "sm" | "base" | "lg";
-  label?: string;
-  hideLabel?: boolean;
-
   // Then other custom props
   children?: React.ReactNode;
   className?: string;

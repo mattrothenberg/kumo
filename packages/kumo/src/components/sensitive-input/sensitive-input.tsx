@@ -9,6 +9,7 @@ import {
   type ComponentPropsWithoutRef,
 } from "react";
 import { cn } from "../../utils/cn";
+import { Input as BaseInput } from "@base-ui-components/react/input";
 import {
   inputVariants,
   KUMO_INPUT_VARIANTS,
@@ -42,10 +43,6 @@ export interface SensitiveInputProps
   size?: KumoInputSize;
   /** Style variant */
   variant?: KumoInputVariant;
-  /** Accessible label */
-  label?: string;
-  /** Hide label visually (still accessible to screen readers) */
-  hideLabel?: boolean;
 }
 
 export const SensitiveInput = forwardRef<HTMLInputElement, SensitiveInputProps>(
@@ -58,8 +55,6 @@ export const SensitiveInput = forwardRef<HTMLInputElement, SensitiveInputProps>(
       onCopy,
       size = KUMO_SENSITIVE_INPUT_DEFAULT_VARIANTS.size,
       variant = KUMO_SENSITIVE_INPUT_DEFAULT_VARIANTS.variant,
-      label,
-      hideLabel = true,
       disabled = false,
       readOnly = false,
       id,
@@ -241,16 +236,6 @@ export const SensitiveInput = forwardRef<HTMLInputElement, SensitiveInputProps>(
 
     return (
       <div>
-        {label && (
-          <label
-            htmlFor={inputId}
-            className={
-              hideLabel ? "sr-only" : "block text-sm font-medium text-surface"
-            }
-          >
-            {label}
-          </label>
-        )}
         <div
           ref={containerRef}
           className={cn(
@@ -266,12 +251,12 @@ export const SensitiveInput = forwardRef<HTMLInputElement, SensitiveInputProps>(
           tabIndex={isMaskedWithValue && !disabled ? 0 : undefined}
           aria-label={
             isMaskedWithValue
-              ? `${label ?? "Sensitive value"}, masked. Click to reveal`
+              ? "Sensitive value, masked. Click to reveal"
               : undefined
           }
         >
           {/* Input - defines the width, always rendered */}
-          <input
+          <BaseInput
             ref={mergedRef}
             id={inputId}
             type={mode === "revealed" ? "text" : "password"}
@@ -283,14 +268,13 @@ export const SensitiveInput = forwardRef<HTMLInputElement, SensitiveInputProps>(
             autoComplete={autoComplete}
             tabIndex={isMaskedWithValue ? -1 : 0}
             className={cn(
-              "w-full border-0 bg-transparent p-0 text-secondary outline-none placeholder:text-muted disabled:cursor-not-allowed disabled:text-muted",
+              "w-full border-0 bg-transparent p-0 text-secondary ring-0 outline-none placeholder:text-muted disabled:cursor-not-allowed disabled:text-muted",
               size === "xs" && "pr-5",
               size === "sm" && "pr-6",
               size === "base" && "pr-8",
               size === "lg" && "pr-10",
               isMaskedWithValue && "pointer-events-none text-transparent",
             )}
-            aria-label={hideLabel ? label : undefined}
             aria-hidden={isMaskedWithValue}
             {...inputProps}
           />

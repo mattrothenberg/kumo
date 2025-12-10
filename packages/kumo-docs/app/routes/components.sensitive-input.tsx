@@ -1,4 +1,4 @@
-import { SensitiveInput } from "@cloudflare/kumo";
+import { SensitiveInput, Field } from "@cloudflare/kumo";
 import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";
@@ -13,9 +13,13 @@ export default function SensitiveInputDoc() {
       {/* Demo */}
       <ComponentSection>
         <ComponentExample
-          code={`<SensitiveInput defaultValue="sk_live_abc123xyz789" label="API Key" />`}
+          code={`<Field label="API Key">
+  <SensitiveInput defaultValue="sk_live_abc123xyz789" />
+</Field>`}
         >
-          <SensitiveInput defaultValue="sk_live_abc123xyz789" label="API Key" />
+          <Field label="API Key">
+            <SensitiveInput defaultValue="sk_live_abc123xyz789" />
+          </Field>
         </ComponentExample>
       </ComponentSection>
 
@@ -42,7 +46,11 @@ export default function SensitiveInputDoc() {
           code={`import { SensitiveInput } from "@cloudflare/kumo";
 
 export default function Example() {
-  return <SensitiveInput defaultValue="my-secret-key" label="Secret" />;
+  return (
+    <Field label="Secret">
+      <SensitiveInput defaultValue="my-secret-key" />
+    </Field>
+  );
 }`}
         />
       </ComponentSection>
@@ -58,9 +66,13 @@ export default function Example() {
               When initialized with a value, shows masked dots. Hover to see hint, click to reveal.
             </p>
             <ComponentExample
-              code={`<SensitiveInput defaultValue="sk_live_abc123xyz789" label="API Key" />`}
+              code={`<Field label="API Key">
+  <SensitiveInput defaultValue="sk_live_abc123xyz789" />
+</Field>`}
             >
-              <SensitiveInput defaultValue="sk_live_abc123xyz789" label="API Key" />
+              <Field label="API Key">
+                <SensitiveInput defaultValue="sk_live_abc123xyz789" />
+              </Field>
             </ComponentExample>
           </div>
 
@@ -70,9 +82,13 @@ export default function Example() {
               Empty inputs show placeholder. Type to enter - value is masked. Eye icon appears when there's content.
             </p>
             <ComponentExample
-              code={`<SensitiveInput placeholder="Enter your secret..." label="Secret" />`}
+              code={`<Field label="Secret">
+  <SensitiveInput placeholder="Enter your secret..." />
+</Field>`}
             >
-              <SensitiveInput placeholder="Enter your secret..." label="Secret" />
+              <Field label="Secret">
+                <SensitiveInput placeholder="Enter your secret..." />
+              </Field>
             </ComponentExample>
           </div>
 
@@ -82,36 +98,52 @@ export default function Example() {
               View-only mode - click to reveal but cannot edit.
             </p>
             <ComponentExample
-              code={`<SensitiveInput defaultValue="view-only-secret" readOnly label="Read Only" />`}
+              code={`<Field label="Read Only">
+  <SensitiveInput defaultValue="view-only-secret" readOnly />
+</Field>`}
             >
-              <SensitiveInput defaultValue="view-only-secret" readOnly label="Read Only" />
+              <Field label="Read Only">
+                <SensitiveInput defaultValue="view-only-secret" readOnly />
+              </Field>
             </ComponentExample>
           </div>
 
           <div>
             <h3 className="mb-4 text-xl font-semibold">Error State</h3>
             <ComponentExample
-              code={`<SensitiveInput defaultValue="invalid-key" variant="error" label="Invalid" />`}
+              code={`<Field label="Invalid">
+  <SensitiveInput defaultValue="invalid-key" variant="error" />
+</Field>`}
             >
-              <SensitiveInput defaultValue="invalid-key" variant="error" label="Invalid" />
+              <Field label="Invalid">
+                <SensitiveInput defaultValue="invalid-key" variant="error" />
+              </Field>
             </ComponentExample>
           </div>
 
           <div>
             <h3 className="mb-4 text-xl font-semibold">Disabled</h3>
             <ComponentExample
-              code={`<SensitiveInput defaultValue="cannot-edit" disabled label="Disabled" />`}
+              code={`<Field label="Disabled">
+  <SensitiveInput defaultValue="cannot-edit" disabled />
+</Field>`}
             >
-              <SensitiveInput defaultValue="cannot-edit" disabled label="Disabled" />
+              <Field label="Disabled">
+                <SensitiveInput defaultValue="cannot-edit" disabled />
+              </Field>
             </ComponentExample>
           </div>
 
           <div>
             <h3 className="mb-4 text-xl font-semibold">With Visible Label</h3>
             <ComponentExample
-              code={`<SensitiveInput defaultValue="my-secret" label="Password" hideLabel={false} />`}
+              code={`<Field label="Password">
+  <SensitiveInput defaultValue="my-secret" />
+</Field>`}
             >
-              <SensitiveInput defaultValue="my-secret" label="Password" hideLabel={false} />
+              <Field label="Password">
+                <SensitiveInput defaultValue="my-secret" />
+              </Field>
             </ComponentExample>
           </div>
         </div>
@@ -164,16 +196,6 @@ export default function Example() {
                 <td className="px-4 py-3 font-mono text-xs">disabled</td>
                 <td className="px-4 py-3 font-mono text-xs">boolean</td>
                 <td className="px-4 py-3 font-mono text-xs">false</td>
-              </tr>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs">label</td>
-                <td className="px-4 py-3 font-mono text-xs">string</td>
-                <td className="px-4 py-3 font-mono text-xs">undefined</td>
-              </tr>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs">hideLabel</td>
-                <td className="px-4 py-3 font-mono text-xs">boolean</td>
-                <td className="px-4 py-3 font-mono text-xs">true</td>
               </tr>
             </tbody>
           </table>

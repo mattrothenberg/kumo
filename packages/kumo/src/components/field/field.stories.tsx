@@ -22,6 +22,18 @@ export const Default: Story = {
   ),
 };
 
+export const WithCustomNameAttribute: Story = {
+  args: {
+    label: "Email",
+    children: null,
+  },
+  render: () => (
+    <Field label="Email" description="Enter your email address">
+      <Input name="custom–name" placeholder="email@example.com" />
+    </Field>
+  ),
+};
+
 export const WithError: Story = {
   args: {
     label: "Email",

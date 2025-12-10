@@ -1,7 +1,7 @@
 # Kumo Component Registry
 
 > Auto-generated component metadata for AI/agent consumption.
-> Generated: 2025-12-06T19:40:40.037Z
+> Generated: 2025-12-09T21:14:11.135Z
 
 
 ## Styling Guide
@@ -961,6 +961,12 @@ Field component
 ```
 
 ```tsx
+<Field label="Email" description="Enter your email address">
+      <Input name="custom–name" placeholder="email@example.com" />
+    </Field>
+```
+
+```tsx
 <Field
       label="Email"
       error={{ message: "Invalid email address", match: true }}
@@ -982,8 +988,6 @@ Input component
 
 **Props:**
 
-- `label`: string
-- `hideLabel`: boolean
 - `size`: enum [default: base]
   - `"xs"`: Extra small input for compact UIs
   - `"sm"`: Small input for secondary fields
@@ -996,29 +1000,6 @@ Input component
 **Colors (kumo tokens used):**
 
 `bg-secondary`, `ring-active`, `ring-border`, `ring-destructive`, `text-muted`, `text-surface`
-
-**Examples:**
-
-```tsx
-<Input size="xs" placeholder="Enter text..." />
-```
-
-```tsx
-<Input variant="default" placeholder="Enter text..." />
-```
-
-```tsx
-<Input label="Email" hideLabel={false} placeholder="Enter your email" />
-```
-
-```tsx
-<Input variant="error" placeholder="Invalid input" defaultValue="error@example.com" />
-```
-
-```tsx
-<Input placeholder="Disabled input" disabled={true} />
-```
-
 
 ---
 
@@ -1378,47 +1359,31 @@ SensitiveInput component
   Size variant
 - `variant`: KumoInputVariant [default: default]
   Style variant
-- `label`: string
-  Accessible label
-- `hideLabel`: boolean
-  Hide label visually (still accessible to screen readers)
 
 **Colors (kumo tokens used):**
 
-`bg-primary`, `bg-secondary`, `outline-active`, `text-muted`, `text-secondary`, `text-surface`, `text-white`
+`bg-primary`, `bg-secondary`, `outline-active`, `text-muted`, `text-secondary`, `text-white`
 
 **Examples:**
-
-```tsx
-<SensitiveInput defaultValue="sk_live_abc123xyz789" label="API Key" />
-```
 
 ```tsx
 <div className="flex flex-col gap-4">
       {sizes.map((size) => (
         <div key={size} className="flex items-center gap-2">
           <span className="w-12 text-sm text-muted">{size}</span>
-          <SensitiveInput
-            size={size}
-            defaultValue="secret-api-key-123"
-            label={`${size} size`}
-          />
+          <Field label={`${size} size`}>
+            <SensitiveInput size={size} defaultValue="secret-api-key-123" />
+          </Field>
         </div>
       ))}
     </div>
 ```
 
 ```tsx
-<SensitiveInput placeholder="Enter your secret..." label="Secret" />
-```
-
-```tsx
 <div className="flex flex-col gap-4">
-        <SensitiveInput
-          value={value}
-          onValueChange={setValue}
-          label="Controlled Secret"
-        />
+        <Field label="Controlled Secret">
+          <SensitiveInput value={value} onValueChange={setValue} />
+        </Field>
         <div className="text-sm text-muted">
           Current value: <code className="text-surface">{value}</code>
         </div>
@@ -1437,26 +1402,6 @@ SensitiveInput component
           </button>
         </div>
       </div>
-```
-
-```tsx
-<SensitiveInput variant="error" defaultValue="invalid-key" label="Invalid Key" />
-```
-
-```tsx
-<SensitiveInput defaultValue="cannot-edit" disabled={true} label="Disabled Secret" />
-```
-
-```tsx
-<SensitiveInput defaultValue="view-only-secret-key" readOnly={true} label="Read-only Secret" />
-```
-
-```tsx
-<SensitiveInput defaultValue="my-secret-value" label="Password" hideLabel={false} />
-```
-
-```tsx
-<SensitiveInput defaultValue="copyable-secret-key" label="API Key" onCopy='() => console.log("Value copied!")' />
 ```
 
 

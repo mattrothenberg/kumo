@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2025-12-06T19:40:40.037Z",
+  "generatedAt": "2025-12-09T21:14:11.135Z",
   "components": {
     "Badge": {
       "name": "Badge",
@@ -1182,6 +1182,7 @@
       },
       "examples": [
         "<Field label=\"Email\" description=\"Enter your email address\">\n      <Input placeholder=\"email@example.com\" />\n    </Field>",
+        "<Field label=\"Email\" description=\"Enter your email address\">\n      <Input name=\"custom–name\" placeholder=\"email@example.com\" />\n    </Field>",
         "<Field\n      label=\"Email\"\n      error={{ message: \"Invalid email address\", match: true }}\n    >\n      <Input placeholder=\"email@example.com\" variant=\"error\" />\n    </Field>"
       ],
       "colors": [
@@ -1195,14 +1196,6 @@
       "importPath": "@cloudflare/kumo",
       "category": "Input",
       "props": {
-        "label": {
-          "type": "string",
-          "optional": true
-        },
-        "hideLabel": {
-          "type": "boolean",
-          "optional": true
-        },
         "size": {
           "type": "enum",
           "optional": true,
@@ -1234,17 +1227,7 @@
           "default": "default"
         }
       },
-      "examples": [
-        "<Input size=\"xs\" placeholder=\"Enter text...\" />",
-        "<Input size=\"sm\" placeholder=\"Enter text...\" />",
-        "<Input size=\"base\" placeholder=\"Enter text...\" />",
-        "<Input size=\"lg\" placeholder=\"Enter text...\" />",
-        "<Input variant=\"default\" placeholder=\"Enter text...\" />",
-        "<Input variant=\"error\" placeholder=\"Enter text...\" />",
-        "<Input label={Email} hideLabel={false} placeholder=\"Enter your email\" />",
-        "<Input variant=\"error\" placeholder=\"Invalid input\" defaultValue=\"error@example.com\" />",
-        "<Input placeholder=\"Disabled input\" disabled={true} />"
-      ],
+      "examples": [],
       "colors": [
         "bg-secondary",
         "ring-active",
@@ -1638,29 +1621,11 @@
           "optional": true,
           "description": "Style variant",
           "default": "default"
-        },
-        "label": {
-          "type": "string",
-          "optional": true,
-          "description": "Accessible label"
-        },
-        "hideLabel": {
-          "type": "boolean",
-          "optional": true,
-          "description": "Hide label visually (still accessible to screen readers)"
         }
       },
       "examples": [
-        "<SensitiveInput defaultValue=\"sk_live_abc123xyz789\" label=\"API Key\" />",
-        "<div className=\"flex flex-col gap-4\">\n      {sizes.map((size) => (\n        <div key={size} className=\"flex items-center gap-2\">\n          <span className=\"w-12 text-sm text-muted\">{size}</span>\n          <SensitiveInput\n            size={size}\n            defaultValue=\"secret-api-key-123\"\n            label={`${size} size`}\n          />\n        </div>\n      ))}\n    </div>",
-        "<SensitiveInput defaultValue=\"sk_live_abc123xyz789\" label=\"API Key\" />",
-        "<SensitiveInput placeholder=\"Enter your secret...\" label={Secret} />",
-        "<div className=\"flex flex-col gap-4\">\n        <SensitiveInput\n          value={value}\n          onValueChange={setValue}\n          label=\"Controlled Secret\"\n        />\n        <div className=\"text-sm text-muted\">\n          Current value: <code className=\"text-surface\">{value}</code>\n        </div>\n        <div className=\"flex gap-2\">\n          <button\n            onClick={() => setValue(\"new-secret-\" + Date.now())}\n            className=\"rounded bg-primary px-2 py-1 text-sm text-white\"\n          >\n            Change value\n          </button>\n          <button\n            onClick={() => setValue(\"\")}\n            className=\"rounded bg-secondary px-2 py-1 text-sm text-surface ring ring-border\"\n          >\n            Clear\n          </button>\n        </div>\n      </div>",
-        "<SensitiveInput variant=\"error\" defaultValue=\"invalid-key\" label=\"Invalid Key\" />",
-        "<SensitiveInput defaultValue=\"cannot-edit\" disabled={true} label=\"Disabled Secret\" />",
-        "<SensitiveInput defaultValue=\"view-only-secret-key\" readOnly={true} label=\"Read-only Secret\" />",
-        "<SensitiveInput defaultValue=\"my-secret-value\" label={Password} hideLabel={false} />",
-        "<SensitiveInput defaultValue=\"copyable-secret-key\" label=\"API Key\" onCopy='() => console.log(\"Value copied!\")' />"
+        "<div className=\"flex flex-col gap-4\">\n      {sizes.map((size) => (\n        <div key={size} className=\"flex items-center gap-2\">\n          <span className=\"w-12 text-sm text-muted\">{size}</span>\n          <Field label={`${size} size`}>\n            <SensitiveInput size={size} defaultValue=\"secret-api-key-123\" />\n          </Field>\n        </div>\n      ))}\n    </div>",
+        "<div className=\"flex flex-col gap-4\">\n        <Field label=\"Controlled Secret\">\n          <SensitiveInput value={value} onValueChange={setValue} />\n        </Field>\n        <div className=\"text-sm text-muted\">\n          Current value: <code className=\"text-surface\">{value}</code>\n        </div>\n        <div className=\"flex gap-2\">\n          <button\n            onClick={() => setValue(\"new-secret-\" + Date.now())}\n            className=\"rounded bg-primary px-2 py-1 text-sm text-white\"\n          >\n            Change value\n          </button>\n          <button\n            onClick={() => setValue(\"\")}\n            className=\"rounded bg-secondary px-2 py-1 text-sm text-surface ring ring-border\"\n          >\n            Clear\n          </button>\n        </div>\n      </div>"
       ],
       "colors": [
         "bg-primary",
@@ -1668,7 +1633,6 @@
         "outline-active",
         "text-muted",
         "text-secondary",
-        "text-surface",
         "text-white"
       ]
     },
