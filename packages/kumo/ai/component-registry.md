@@ -1,7 +1,7 @@
 # Kumo Component Registry
 
 > Auto-generated component metadata for AI/agent consumption.
-> Generated: 2025-12-11T18:04:33.231Z
+> Generated: 2025-12-11T21:27:43.884Z
 
 
 ## Styling Guide
@@ -60,7 +60,7 @@ Most frequently used tokens across Kumo components:
 
 > Use the Quick Reference table above for common cases. This section lists all available tokens.
 
-**Text:** `text-alert`, `text-beta`, `text-brand`, `text-calendar-day-range-selected-endpoints`, `text-calendar-day-range-selected-out-of-range`, `text-calendar-reset`, `text-disabled`, `text-error`, and 16 more
+**Text:** `text-alert`, `text-beta`, `text-brand`, `text-calendar-day-range-selected-endpoints`, `text-calendar-day-range-selected-out-of-range`, `text-calendar-reset`, `text-disabled`, `text-error`, and 15 more
 
 **Background:** `bg-accent`, `bg-active`, `bg-alert-border`, `bg-alert-selection`, `bg-alert-surface`, `bg-black-icon`, `bg-border`, `bg-calendar`, and 27 more
 
@@ -153,7 +153,7 @@ Breadcrumbs component
 
 **Colors (kumo tokens used):**
 
-`text-green-2`, `text-label-inverse`, `text-muted`
+`text-green`, `text-label-inverse`, `text-muted`
 
 **Sub-Components:**
 
@@ -244,6 +244,17 @@ Props:
 ```tsx
 <Breadcrumbs>
       <Breadcrumbs.Current>Home</Breadcrumbs.Current>
+    </Breadcrumbs>
+```
+
+```tsx
+<Breadcrumbs>
+      <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Link href="/projects">Projects</Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Current>Current Project</Breadcrumbs.Current>
+      <Breadcrumbs.Clipboard text="https://example.com/projects/current-project" />
     </Breadcrumbs>
 ```
 

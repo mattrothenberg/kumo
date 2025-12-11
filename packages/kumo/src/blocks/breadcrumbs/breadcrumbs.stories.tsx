@@ -84,3 +84,16 @@ export const SingleItem: Story = {
     </Breadcrumbs>
   ),
 };
+
+export const WithClipboard: Story = {
+  render: () => (
+    <Breadcrumbs>
+      <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Link href="/projects">Projects</Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Current>Current Project</Breadcrumbs.Current>
+      <Breadcrumbs.Clipboard text="https://example.com/projects/current-project" />
+    </Breadcrumbs>
+  ),
+};

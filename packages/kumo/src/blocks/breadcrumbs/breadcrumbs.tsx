@@ -138,7 +138,7 @@ function Clipboard({ text }: { text: string }) {
       aria-label="Copy"
     >
       {isCopied ? (
-        <CheckIcon weight="bold" className="text-green-2" />
+        <CheckIcon weight="bold" className="text-green" />
       ) : (
         <CopyIcon weight="regular" />
       )}

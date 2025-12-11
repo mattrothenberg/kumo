@@ -82,11 +82,6 @@
     var(--color-green-500, oklch(72.3% 0.219 149.579))
   );
 
-  --text-color-green-2: light-dark(
-    var(--color-green-600, oklch(62.7% 0.194 149.214)),
-    var(--color-green-600, oklch(62.7% 0.194 149.214))
-  );
-
   --text-color-beta: light-dark(#056dff, #056dff);
 
   --text-color-success: light-dark(

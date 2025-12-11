@@ -160,7 +160,7 @@ function hasPrimitiveColor(str) {
     if (!fullToken || !colorFamily) continue;
 
     // Skip valid Kumo semantic color tokens (e.g. bg-surface, text-secondary,
-    // border-color, text-green-2). These are backed by kumo-theme.css custom properties.
+    // border-color). These are backed by kumo-theme.css custom properties.
     if (VALID_KUMO_SEMANTIC_COLORS.has(colorFamily)) continue;
 
     // Flag kumo- prefixed classes (e.g. text-kumo-surface, bg-kumo-muted-2).
