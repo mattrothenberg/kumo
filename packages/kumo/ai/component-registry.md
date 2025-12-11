@@ -1,7 +1,7 @@
 # Kumo Component Registry
 
 > Auto-generated component metadata for AI/agent consumption.
-> Generated: 2025-12-09T21:14:11.135Z
+> Generated: 2025-12-10T17:44:01.184Z
 
 
 ## Styling Guide
@@ -1000,6 +1000,133 @@ Input component
 **Colors (kumo tokens used):**
 
 `bg-secondary`, `ring-active`, `ring-border`, `ring-destructive`, `text-muted`, `text-surface`
+
+**Examples:**
+
+```tsx
+function InputGroupExamplesRender() {
+    const [username, setUsername] = React.useState("");
+    const [status, setStatus] = React.useState<
+      "idle" | "checking" | "available" | "taken" | "error"
+    >("idle");
+
+    const checkAvailability = () => {
+      if (!username) {
+        setStatus("error");
+        return;
+      }
+      setStatus("checking");
+      // Simulate API call
+      setTimeout(() => {
+        setStatus(username.length > 3 ? "available" : "taken");
+      }, 800);
+    };
+
+    const statusText = {
+      idle: "",
+      checking: "Checking...",
+      available: "✓ Available",
+      taken: "✗ Taken",
+      error: "Please enter a username",
+    };
+
+    return (
+      <div className="space-y-6">
+        {/* Prefix label - common for URLs, usernames, currencies */}
+        <div className="space-y-1">
+          <p className="text-center text-sm text-muted">Prefix label</p>
+          <InputGroup>
+            <InputGroup.Label>https://</InputGroup.Label>
+            <InputGroup.Input placeholder="example.com" />
+          </InputGroup>
+        </div>
+
+        {/* Prefix label with suffix description - common for currency inputs */}
+        <div className="space-y-1">
+          <p className="text-center text-sm text-muted">Label with description</p>
+          <InputGroup>
+            <InputGroup.Label>$</InputGroup.Label>
+            <InputGroup.Input placeholder="0.00" type="number" />
+            <InputGroup.Description>USD</InputGroup.Description>
+          </InputGroup>
+        </div>
+
+        {/* With action button - interactive example */}
+        <div className="space-y-1">
+          <p className="text-center text-sm text-muted">
+            With action button (4+ chars = available, fewer = taken)
+          </p>
+          <InputGroup>
+            <InputGroup.Label>@</InputGroup.Label>
+            <InputGroup.Input
+              placeholder="username"
+              value={username}
+              onChange={(e) => {
+                setUsername(e.target.value);
+                setStatus("idle");
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  checkAvailability();
+                }
+              }}
+            />
+            <InputGroup.Button onClick={checkAvailability}>
+              {status === "checking" ? "Checking..." : "Check"}
+            </InputGroup.Button>
+          </InputGroup>
+          <p
+            aria-live="polite"
+            className={`text-sm ${status === "available" ? "text-success" : status === "error" || status === "taken" ? "text-error" : "text-muted"}`}
+          >
+            {statusText[status]}
+          </p>
+        </div>
+      </div>
+    );
+  }
+```
+
+```tsx
+<div className="space-y-4">
+      <div className="space-y-1">
+        <p className="text-center text-sm text-muted">Size: xs</p>
+        <InputGroup size="xs">
+          <InputGroup.Label>@</InputGroup.Label>
+          <InputGroup.Input placeholder="username" />
+          <InputGroup.Button>Submit</InputGroup.Button>
+        </InputGroup>
+      </div>
+
+      <div className="space-y-1">
+        <p className="text-center text-sm text-muted">Size: sm</p>
+        <InputGroup size="sm">
+          <InputGroup.Label>@</InputGroup.Label>
+          <InputGroup.Input placeholder="username" />
+          <InputGroup.Button>Submit</InputGroup.Button>
+        </InputGroup>
+      </div>
+
+      <div className="space-y-1">
+        <p className="text-center text-sm text-muted">Size: base (default)</p>
+        <InputGroup size="base">
+          <InputGroup.Label>@</InputGroup.Label>
+          <InputGroup.Input placeholder="username" />
+          <InputGroup.Button>Submit</InputGroup.Button>
+        </InputGroup>
+      </div>
+
+      <div className="space-y-1">
+        <p className="text-center text-sm text-muted">Size: lg</p>
+        <InputGroup size="lg">
+          <InputGroup.Label>@</InputGroup.Label>
+          <InputGroup.Input placeholder="username" />
+          <InputGroup.Button>Submit</InputGroup.Button>
+        </InputGroup>
+      </div>
+    </div>
+```
+
 
 ---
 
