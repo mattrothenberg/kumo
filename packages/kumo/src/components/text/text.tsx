@@ -36,7 +36,7 @@ export const KUMO_TEXT_VARIANTS = {
       description: "Success state text",
     },
     error: {
-      classes: "text-destructive",
+      classes: "text-error",
       description: "Error state text",
     },
     mono: {

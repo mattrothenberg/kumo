@@ -94,11 +94,6 @@
     var(--color-blue-500, oklch(62.3% 0.214 259.815))
   );
 
-  --text-color-destructive: light-dark(
-    var(--color-red-600, oklch(57.7% 0.245 27.325)),
-    var(--color-red-600, oklch(57.7% 0.245 27.325))
-  );
-
   --text-color-info: light-dark(
     var(--color-blue-800, oklch(42.4% 0.199 265.638)),
     var(--color-blue-400, oklch(70.7% 0.165 254.624))

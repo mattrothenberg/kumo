@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2025-12-10T17:44:01.184Z",
+  "generatedAt": "2025-12-11T18:04:33.231Z",
   "components": {
     "Badge": {
       "name": "Badge",
@@ -1890,7 +1890,7 @@
         "<Text bold={true}>Bold text</Text>"
       ],
       "colors": [
-        "text-destructive",
+        "text-error",
         "text-muted",
         "text-success",
         "text-surface"
