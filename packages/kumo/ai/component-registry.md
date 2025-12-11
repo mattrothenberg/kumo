@@ -1,7 +1,7 @@
 # Kumo Component Registry
 
 > Auto-generated component metadata for AI/agent consumption.
-> Generated: 2025-12-10T17:44:01.184Z
+> Generated: 2025-12-11T18:04:33.231Z
 
 
 ## Styling Guide
@@ -60,7 +60,7 @@ Most frequently used tokens across Kumo components:
 
 > Use the Quick Reference table above for common cases. This section lists all available tokens.
 
-**Text:** `text-alert`, `text-beta`, `text-brand`, `text-calendar-day-range-selected-endpoints`, `text-calendar-day-range-selected-out-of-range`, `text-calendar-reset`, `text-destructive`, `text-disabled`, and 17 more
+**Text:** `text-alert`, `text-beta`, `text-brand`, `text-calendar-day-range-selected-endpoints`, `text-calendar-day-range-selected-out-of-range`, `text-calendar-reset`, `text-disabled`, `text-error`, and 16 more
 
 **Background:** `bg-accent`, `bg-active`, `bg-alert-border`, `bg-alert-selection`, `bg-alert-surface`, `bg-black-icon`, `bg-border`, `bg-calendar`, and 27 more
 
@@ -1676,7 +1676,7 @@ Text component
 
 **Colors (kumo tokens used):**
 
-`text-destructive`, `text-muted`, `text-success`, `text-surface`
+`text-error`, `text-muted`, `text-success`, `text-surface`
 
 **Examples:**
 

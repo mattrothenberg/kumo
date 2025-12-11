@@ -74,7 +74,6 @@ The color system is defined in `packages/kumo/src/styles/kumo-binding.css`. Colo
 - `text-muted` - Muted/placeholder text
 - `text-white` - Always white text
 - `text-label` - Label text
-- `text-destructive` - Error/destructive text
 - `text-success` - Success text
 - `text-info` - Info text
 - `text-error` - Error text

@@ -245,7 +245,7 @@ function PreferencesView({
               <Button
                 size="sm"
                 variant="outline"
-                className="border-destructive text-destructive hover:bg-destructive/10"
+                className="border-destructive text-error hover:bg-destructive/10"
                 disabled={sso}
               >
                 Delete User
@@ -616,7 +616,7 @@ function DeleteUserWarningContent() {
         <LayerCard>
           <LayerCard.Primary className="flex-row items-center justify-between gap-3">
             <div className="flex items-center gap-2">
-              <AlertTriangleIcon className="text-destructive" />
+              <AlertTriangleIcon className="text-error" />
               <Text variant="body" size="sm">
                 Deletion is permanent and the associated email address cannot be
                 used to create a new Cloudflare account.
