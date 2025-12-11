@@ -214,12 +214,14 @@ export function DateRangePicker({
     <div className={cn(dateRangePickerVariants({ size, variant }), className)}>
       <div className="flex gap-4">
         <div className={cn("relative", sizeConfig.calendarWidth)}>
-          <div
+          <button
+            type="button"
+            aria-label="Previous month"
             className="absolute top-0 left-0 cursor-pointer rounded bg-calendar-day-range-selected/85 p-1.5 hover:bg-calendar-day-range-selected"
             onClick={() => adjustMonth(-1)}
           >
             <CaretLeftIcon size={sizeConfig.iconSize} />
-          </div>
+          </button>
 
           <DateRangeMonthHeader
             month={getMonthName(viewingMonth)}
@@ -313,12 +315,14 @@ export function DateRangePicker({
           </div>
         </div>
         <div className={cn("relative", sizeConfig.calendarWidth)}>
-          <div
+          <button
+            type="button"
+            aria-label="Next month"
             className="absolute top-0 right-0 cursor-pointer rounded bg-calendar-day-range-selected/85 p-1.5 hover:bg-calendar-day-range-selected"
             onClick={() => adjustMonth(1)}
           >
             <CaretRightIcon size={sizeConfig.iconSize} />
-          </div>
+          </button>
 
           <DateRangeMonthHeader
             month={getMonthName(viewingMonth, 1)}
@@ -398,7 +402,7 @@ export function DateRangePicker({
                 }
                 onClick={(date) => {
                   if (!startDate || date < startDate) {
-                    setStartDate(date);
+                    handleStartDateChange(date);
                     setHoveringDate(date);
                   } else {
                     handleEndDateChange(date);
@@ -476,8 +480,35 @@ function DateRangeDayCell({
     }
   }, [mode]);
 
+  const getAriaLabel = useCallback(() => {
+    const dateStr = date.toLocaleDateString("en-US", {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
+    switch (mode) {
+      case DateRangeCellMode.SELECTED_START_NODE:
+        return `${dateStr}, selected as start date`;
+      case DateRangeCellMode.SELECTED_END_NODE:
+        return `${dateStr}, selected as end date`;
+      case DateRangeCellMode.SELECTED:
+        return `${dateStr}, within selected range`;
+      default:
+        return dateStr;
+    }
+  }, [date, mode]);
+
+  const isSelected =
+    mode === DateRangeCellMode.SELECTED_START_NODE ||
+    mode === DateRangeCellMode.SELECTED_END_NODE ||
+    mode === DateRangeCellMode.SELECTED;
+
   return (
-    <div
+    <button
+      type="button"
+      aria-label={getAriaLabel()}
+      aria-selected={isSelected}
       id={date.toDateString()}
       className={cn(
         sizeConfig.cellHeight,
@@ -494,9 +525,10 @@ function DateRangeDayCell({
       )}
       onClick={() => onClick?.(date)}
       onMouseOver={() => isHoveringDate?.(date)}
+      onFocus={() => isHoveringDate?.(date)}
     >
       {getDateNumberFromDate(date)}
-    </div>
+    </button>
   );
 }
 
@@ -516,20 +548,19 @@ function DateRangeMonthHeader({
   return (
     <div>
       <div className="mb-3 text-center">
-        <div
-          contentEditable
-          suppressContentEditableWarning
+        <input
+          key={`${month}-${year}`}
+          aria-label="Edit month and year"
+          defaultValue={`${month} ${year}`}
           className={cn(
-            "rounded-md py-1.5 font-semibold text-secondary transition-all duration-200 select-none focus:outline-none",
+            "w-full rounded-md border-none bg-transparent py-1.5 text-center font-semibold text-secondary transition-all duration-200 focus:outline-none",
             sizeConfig.textSize,
           )}
           onBlur={(e) => {
-            if (e.currentTarget.textContent?.length === 0) return;
-            updateCurrentMonth?.(e.currentTarget.textContent || "");
+            if (e.currentTarget.value.length === 0) return;
+            updateCurrentMonth?.(e.currentTarget.value);
           }}
-        >
-          {month} {year}
-        </div>
+        />
       </div>
 
       <div className="mt-2 grid grid-cols-7 gap-1">
@@ -570,12 +601,13 @@ function DateRangeFooter({
     >
       <GlobeHemisphereWestIcon size={sizeConfig.iconSize} />
       <span className="flex-1">Timezone: {timezone}</span>
-      <span
+      <button
+        type="button"
         onClick={reset}
         className="cursor-pointer font-semibold text-calendar-reset underline underline-offset-2"
       >
         Reset Dates
-      </span>
+      </button>
     </div>
   );
 }
