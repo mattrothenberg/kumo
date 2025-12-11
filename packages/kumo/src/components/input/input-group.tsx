@@ -13,14 +13,24 @@ interface InputGroupRootProps {
   size?: "xs" | "sm" | "base" | "lg" | undefined;
 }
 
-const InputGroupContext = React.createContext<InputGroupRootProps | null>(null);
+interface InputGroupContextValue extends InputGroupRootProps {
+  inputId: string;
+  descriptionId: string;
+}
+
+const InputGroupContext = React.createContext<InputGroupContextValue | null>(null);
 
 function Root({
   size,
   children,
   className,
 }: PropsWithChildren<InputGroupRootProps>) {
-  const contextValue = React.useMemo(() => ({ size }), [size]);
+  const inputId = React.useId();
+  const descriptionId = React.useId();
+  const contextValue = React.useMemo(
+    () => ({ size, inputId, descriptionId }),
+    [size, inputId, descriptionId],
+  );
 
   return (
     <InputGroupContext.Provider value={contextValue}>
@@ -38,27 +48,15 @@ function Root({
 }
 
 function Label({ children }: PropsWithChildren<{}>) {
-  // Using standard DOM API for direct access without React context
-  // This approach allows us to maintain simplicity by avoiding unnecessary state management
-  // while still providing the expected UX behavior when clicking on labels
-  const onLabelClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    const rootElement = event.currentTarget.parentElement;
-
-    if (rootElement) {
-      const inputElement = rootElement.querySelector("input");
-      if (inputElement) {
-        inputElement.focus();
-      }
-    }
-  };
+  const context = useContext(InputGroupContext);
 
   return (
-    <div
+    <label
+      htmlFor={context?.inputId}
       className="flex h-full items-center p-0 px-2 text-muted"
-      onClick={onLabelClick}
     >
       {children}
-    </div>
+    </label>
   );
 }
 
@@ -67,15 +65,30 @@ function Input(props: InputProps) {
 
   return (
     <InputExternal
+      id={context?.inputId}
+      aria-describedby={context?.descriptionId}
       size={context?.size}
       {...props}
       className={cn(
-        "flex h-full items-center rounded-none border-0 bg-surface font-sans first:pl-2 last:pr-2",
+        "flex h-full items-center rounded-none border-0 bg-surface font-sans",
         "focus:border-color",
-        "grow px-0",
+        "grow px-2",
         props.className,
       )}
     />
+  );
+}
+
+function Description({ children }: PropsWithChildren<{}>) {
+  const context = useContext(InputGroupContext);
+
+  return (
+    <span
+      id={context?.descriptionId}
+      className="flex h-full items-center p-0 px-2 text-muted"
+    >
+      {children}
+    </span>
   );
 }
 
@@ -100,4 +113,4 @@ function Button({
   );
 }
 
-export const InputGroup = Object.assign(Root, { Label, Input, Button });
+export const InputGroup = Object.assign(Root, { Label, Input, Button, Description });
