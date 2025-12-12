@@ -1,4 +1,4 @@
-import { Switch as BaseSwitch } from "@base-ui-components/react/switch";
+import { Switch as BaseSwitch } from "@base-ui/react/switch";
 import { type ButtonHTMLAttributes, type Ref, useId } from "react";
 import { cn } from "../../utils/cn";
 

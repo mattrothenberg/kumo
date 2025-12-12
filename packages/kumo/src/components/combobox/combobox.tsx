@@ -1,4 +1,4 @@
-import { Combobox as ComboboxBase } from "@base-ui-components/react/combobox";
+import { Combobox as ComboboxBase } from "@base-ui/react/combobox";
 import { CaretDownIcon, CheckIcon, XIcon } from "@phosphor-icons/react";
 import { Fragment, type PropsWithChildren, type ReactNode } from "react";
 import { inputVariants } from "../input/input";
@@ -39,10 +39,9 @@ export function comboboxVariants({
 export type ComboboxInputSide = KumoComboboxInputSide;
 
 export type ComboboxRootProps<
-  ItemValue = unknown,
-  SelectedValue = ItemValue,
+  Value = unknown,
   Multiple extends boolean | undefined = false,
-> = ComboboxBase.Root.Props<ItemValue, SelectedValue, Multiple>;
+> = ComboboxBase.Root.Props<Value, Multiple>;
 
 // Simplified props type for AI/documentation (non-generic)
 export interface ComboboxProps extends KumoComboboxVariantsProps {
@@ -61,10 +60,9 @@ export interface ComboboxProps extends KumoComboboxVariantsProps {
 }
 
 function Root<
-  ItemValue,
-  SelectedValue = ItemValue,
+  Value,
   Multiple extends boolean | undefined = false,
->(props: ComboboxBase.Root.Props<ItemValue, SelectedValue, Multiple>) {
+>(props: ComboboxBase.Root.Props<Value, Multiple>) {
   return <ComboboxBase.Root {...props} />;
 }
 

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Tabs as TabsPrimitive } from "@base-ui-components/react/tabs";
+import { Tabs as TabsPrimitive } from "@base-ui/react/tabs";
 import { cn } from "../../utils/cn";
 
 export const KUMO_TABS_VARIANTS = {

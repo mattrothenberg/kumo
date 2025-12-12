@@ -14,7 +14,6 @@
   },
   "dependencies": {
     "@babel/standalone": "^7.28.5",
-    "@base-ui-components/react": "catalog:",
     "@cloudflare/kumo": "workspace:*",
     "@codesandbox/sandpack-react": "^2.20.0",
     "@phosphor-icons/react": "catalog:",

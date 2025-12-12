@@ -96,7 +96,7 @@ export const Multiple: StoryObj<{
             value={value}
             onValueChange={setValue}
             items={botList}
-            isItemEqualToValue={(bot, selectedValue) =>
+            isItemEqualToValue={(bot: BotType, selectedValue: BotType) =>
               bot.value === selectedValue.value
             }
             multiple
@@ -153,7 +153,7 @@ export const MultipleWithPreselectedChips: Story = {
         value={value}
         onValueChange={setValue}
         items={INITIAL_BOT_LIST}
-        isItemEqualToValue={(bot, selectedValue) =>
+        isItemEqualToValue={(bot: BotType, selectedValue: BotType) =>
           bot.value === selectedValue.value
         }
         multiple

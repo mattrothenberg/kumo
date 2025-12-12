@@ -1,6 +1,6 @@
 import { cn } from "../../utils/cn";
 import { forwardRef, type ComponentPropsWithoutRef } from "react";
-import { Input as BaseInput } from "@base-ui-components/react/input";
+import { Input as BaseInput } from "@base-ui/react/input";
 
 export const KUMO_INPUT_VARIANTS = {
   size: {

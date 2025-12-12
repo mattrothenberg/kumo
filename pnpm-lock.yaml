@@ -6,9 +6,9 @@ settings:
 
 catalogs:
   default:
-    '@base-ui-components/react':
-      specifier: ^1.0.0-beta.4
-      version: 1.0.0-beta.4
+    '@base-ui/react':
+      specifier: ^1.0.0
+      version: 1.0.0
     '@cloudflare/vite-plugin':
       specifier: ^1.15.3
       version: 1.15.3
@@ -140,9 +140,9 @@ importers:
 
   packages/kumo:
     dependencies:
-      '@base-ui-components/react':
+      '@base-ui/react':
         specifier: 'catalog:'
-        version: 1.0.0-beta.4(@types/react@19.2.4)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+        version: 1.0.0(@types/react@19.2.4)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@phosphor-icons/react':
         specifier: 'catalog:'
         version: 2.1.10(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -264,9 +264,6 @@ importers:
       '@babel/standalone':
         specifier: ^7.28.5
         version: 7.28.5
-      '@base-ui-components/react':
-        specifier: 'catalog:'
-        version: 1.0.0-beta.4(@types/react@19.2.4)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@cloudflare/kumo':
         specifier: workspace:*
         version: link:../kumo
@@ -483,8 +480,8 @@ packages:
     resolution: {integrity: sha512-qQ5m48eI/MFLQ5PxQj4PFaprjyCTLI37ElWMmNs0K8Lk3dVeOdNpB3ks8jc7yM5CDmVC73eMVk/trk3fgmrUpA==}
     engines: {node: '>=6.9.0'}
 
-  '@base-ui-components/react@1.0.0-beta.4':
-    resolution: {integrity: sha512-sPYKj26gbFHD2ZsrMYqQshXnMuomBodzPn+d0dDxWieTj232XCQ9QGt9fU9l5SDGC9hi8s24lDlg9FXPSI7T8A==}
+  '@base-ui/react@1.0.0':
+    resolution: {integrity: sha512-4USBWz++DUSLTuIYpbYkSgy1F9ZmNG9S/lXvlUN6qMK0P0RlW+6eQmDUB4DgZ7HVvtXl4pvi4z5J2fv6Z3+9hg==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       '@types/react': ^17 || ^18 || ^19
@@ -494,8 +491,8 @@ packages:
       '@types/react':
         optional: true
 
-  '@base-ui-components/utils@0.1.2':
-    resolution: {integrity: sha512-aEitDGpMsYO2qnSpYOwZNykn9Rzn2ioyEVk2fyDRH7t+TIHVKpp9CeV7SPTq43M9mMSDxQ+7UeZJVkrj2dCVIQ==}
+  '@base-ui/utils@0.2.3':
+    resolution: {integrity: sha512-/CguQ2PDaOzeVOkllQR8nocJ0FFIDqsWIcURsVmm53QGo8NhFNpePjNlyPIB41luxfOqnG7PU0xicMEw3ls7XQ==}
     peerDependencies:
       '@types/react': ^17 || ^18 || ^19
       react: ^17 || ^18 || ^19
@@ -2493,6 +2490,10 @@ packages:
 
   cookie@1.0.2:
     resolution: {integrity: sha512-9Kr/j4O16ISv8zBBhJoi4bXOYNTkFLOqSL3UDB0njXxCXNezjeyVrJyGOWtgfs/q2km1gwBcfH8q1yEGoMYunA==}
+    engines: {node: '>=18'}
+
+  cookie@1.1.1:
+    resolution: {integrity: sha512-ei8Aos7ja0weRpFzJnEA9UHJ/7XQmqglbRwnf2ATjcB9Wq874VKH9kfjjirM6UhU2/E5fFYadylyhFldcqSidQ==}
     engines: {node: '>=18'}
 
   crelt@1.0.6:
@@ -4691,8 +4692,8 @@ packages:
     resolution: {integrity: sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w==}
     engines: {node: '>=10'}
 
-  type-fest@5.2.0:
-    resolution: {integrity: sha512-xxCJm+Bckc6kQBknN7i9fnP/xobQRsRQxR01CztFkp/h++yfVxUUcmMgfR2HttJx/dpWjS9ubVuyspJv24Q9DA==}
+  type-fest@5.3.1:
+    resolution: {integrity: sha512-VCn+LMHbd4t6sF3wfU/+HKT63C9OoyrSIf4b+vtWHpt2U7/4InZG467YDNMFMR70DdHjAdpPWmw2lzRdg0Xqqg==}
     engines: {node: '>=20'}
 
   type@2.7.3:
@@ -5273,10 +5274,10 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
 
-  '@base-ui-components/react@1.0.0-beta.4(@types/react@19.2.4)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
+  '@base-ui/react@1.0.0(@types/react@19.2.4)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
     dependencies:
       '@babel/runtime': 7.28.4
-      '@base-ui-components/utils': 0.1.2(@types/react@19.2.4)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@base-ui/utils': 0.2.3(@types/react@19.2.4)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@floating-ui/react-dom': 2.1.6(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@floating-ui/utils': 0.2.10
       react: 19.2.0
@@ -5287,7 +5288,7 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.2.4
 
-  '@base-ui-components/utils@0.1.2(@types/react@19.2.4)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
+  '@base-ui/utils@0.2.3(@types/react@19.2.4)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
     dependencies:
       '@babel/runtime': 7.28.4
       '@floating-ui/utils': 0.2.10
@@ -7354,6 +7355,9 @@ snapshots:
 
   cookie@1.0.2: {}
 
+  cookie@1.1.1:
+    optional: true
+
   crelt@1.0.6: {}
 
   cross-spawn@7.0.6:
@@ -8911,7 +8915,7 @@ snapshots:
       '@mswjs/interceptors': 0.40.0
       '@open-draft/deferred-promise': 2.2.0
       '@types/statuses': 2.0.6
-      cookie: 1.0.2
+      cookie: 1.1.1
       graphql: 16.12.0
       headers-polyfill: 4.0.3
       is-node-process: 1.2.0
@@ -8922,7 +8926,7 @@ snapshots:
       statuses: 2.0.2
       strict-event-emitter: 0.5.1
       tough-cookie: 6.0.0
-      type-fest: 5.2.0
+      type-fest: 5.3.1
       until-async: 3.0.2
       yargs: 17.7.2
     optionalDependencies:
@@ -9934,7 +9938,7 @@ snapshots:
 
   type-fest@0.21.3: {}
 
-  type-fest@5.2.0:
+  type-fest@5.3.1:
     dependencies:
       tagged-tag: 1.0.0
     optional: true

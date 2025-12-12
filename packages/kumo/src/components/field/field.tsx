@@ -1,4 +1,4 @@
-import { Field as FieldBase } from "@base-ui-components/react/field";
+import { Field as FieldBase } from "@base-ui/react/field";
 import type { ReactNode } from "react";
 import { cn } from "../../utils/cn";
 

@@ -1466,7 +1466,7 @@ function generatePropsFromType(
 /**
  * Documentation for pass-through sub-components from base-ui.
  * These provide props, descriptions, and usage examples for components
- * that are directly re-exported from @base-ui-components/react.
+ * that are directly re-exported from @base-ui/react.
  */
 interface PassthroughDoc {
   description: string;

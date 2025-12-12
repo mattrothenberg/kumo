@@ -1,5 +1,5 @@
 import type { CSSProperties, FC, ReactNode } from "react";
-import { Dialog as DialogBase } from "@base-ui-components/react";
+import { Dialog as DialogBase } from "@base-ui/react/dialog";
 import { Surface } from "../surface";
 import { cn } from "../../utils/cn";
 

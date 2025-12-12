@@ -78,6 +78,18 @@ include:
       runOnMR: true
       runOnBranches: "^main$"
 
+  # Validate @cloudflare/kumo build output (primitives, exports, bundling)
+  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
+    inputs:
+      stage: checks
+      jobPrefix: validate-build
+      PNPM_VERSION: *PNPM_VERSION
+      NODE_VERSION: *NODE_VERSION
+      PNPM_RUN_TARGET: "validate:build"
+      workDir: "packages/kumo"
+      runOnMR: true
+      runOnBranches: "^main$"
+
   # Changeset validation for @cloudflare/kumo
   - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
     inputs:
@@ -145,6 +157,10 @@ typecheck-run:
     - build-kumo-docs-build
 
 lint-kumo-lint:
+  needs:
+    - build-kumo-build
+
+validate-build-run:
   needs:
     - build-kumo-build
 

@@ -61,6 +61,19 @@ export default function Installation() {
             <CodeBlock lang="bash" code={`yarn add @cloudflare/kumo`} />
           </div>
         </div>
+        <div className="mt-4">
+          <p className="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+            Peer Dependencies
+          </p>
+          <p className="mb-3 text-sm text-neutral-600 dark:text-neutral-400">
+            Kumo requires the following peer dependencies. Most React projects will already have these installed:
+          </p>
+          <CodeBlock
+            lang="bash"
+            code={`# Required peer dependencies
+pnpm add react react-dom @phosphor-icons/react`}
+          />
+        </div>
       </ComponentSection>
 
       {/* Import Components */}
@@ -89,6 +102,76 @@ export default function Installation() {
               code={`import { Button } from "@cloudflare/kumo/components/button";
 import { Input } from "@cloudflare/kumo/components/input";`}
             />
+          </div>
+        </div>
+      </ComponentSection>
+
+      {/* Base UI Primitives */}
+      <ComponentSection>
+        <h2 className="mb-4 text-2xl font-bold">Base UI Primitives</h2>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
+          Kumo is built on top of{" "}
+          <a
+            href="https://base-ui.com"
+            className="text-blue-600 dark:text-blue-400 hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Base UI
+          </a>
+          , a library of unstyled, accessible React components. For advanced use cases
+          where you need access to the underlying primitives, Kumo re-exports all 37 Base UI
+          components with both barrel and granular imports:
+        </p>
+        <div className="space-y-4">
+          <div>
+            <p className="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+              Barrel Import (Convenient)
+            </p>
+            <CodeBlock
+              lang="tsx"
+              code={`// Import multiple primitives at once
+import { Popover, Slider, Accordion } from "@cloudflare/kumo/primitives";`}
+            />
+          </div>
+          <div>
+            <p className="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+              Granular Imports (Recommended for Performance)
+            </p>
+            <CodeBlock
+              lang="tsx"
+              code={`// Import individual primitives for better tree-shaking
+import { Popover } from "@cloudflare/kumo/primitives/popover";
+import { Slider } from "@cloudflare/kumo/primitives/slider";
+import { Accordion } from "@cloudflare/kumo/primitives/accordion";`}
+            />
+            <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-500">
+              Granular imports result in smaller bundle sizes by only including the
+              primitives you actually use.
+            </p>
+          </div>
+        </div>
+        <div className="mt-4 space-y-3">
+          <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-950">
+            <p className="text-sm text-blue-800 dark:text-blue-200">
+              <strong>Available Primitives (37 total):</strong>
+            </p>
+            <ul className="mt-2 space-y-1 text-sm text-blue-700 dark:text-blue-300">
+              <li><strong>Layout:</strong> Accordion, Collapsible, Separator, ScrollArea, Toolbar</li>
+              <li><strong>Overlays:</strong> AlertDialog, Dialog, Popover, PreviewCard, Tooltip, Toast</li>
+              <li><strong>Menus:</strong> Menu, Menubar, ContextMenu, NavigationMenu</li>
+              <li><strong>Form Controls:</strong> Autocomplete, Button, Checkbox, CheckboxGroup, Combobox, Input, NumberField, Radio, RadioGroup, Select, Slider, Switch, Toggle, ToggleGroup</li>
+              <li><strong>Form Structure:</strong> Field, Fieldset, Form</li>
+              <li><strong>Display:</strong> Avatar, Meter, Progress, Tabs</li>
+            </ul>
+          </div>
+          <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-950">
+            <p className="text-sm text-amber-800 dark:text-amber-200">
+              <strong>Note:</strong> Prefer using styled Kumo components when available.
+              Primitives are intended for building custom components that aren't yet
+              available in Kumo, or for cases requiring fine-grained control over styling
+              and behavior.
+            </p>
           </div>
         </div>
       </ComponentSection>
@@ -191,46 +274,6 @@ export default function App() {
             />
           </div>
         </div>
-      </ComponentSection>
-
-      {/* Available Components */}
-      <ComponentSection>
-        <h2 className="mb-4 text-2xl font-bold">Available Components</h2>
-        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
-          The following components are currently available in Kumo:
-        </p>
-        <ul className="list-inside list-disc space-y-2 text-neutral-700 dark:text-neutral-300">
-          <li>
-            <strong>Badge</strong> - Display status indicators and labels
-          </li>
-          <li>
-            <strong>Button</strong> - Interactive buttons with multiple variants
-          </li>
-          <li>
-            <strong>Input</strong> - Text input fields with validation support
-          </li>
-          <li>
-            <strong>InputArea</strong> - Multi-line textarea with Input styling
-          </li>
-          <li>
-            <strong>InputGroup</strong> - Compound component for grouped inputs
-            and buttons
-          </li>
-          <li>
-            <strong>Loader</strong> - Loading spinners and indicators
-          </li>
-          <li>
-            <strong>SkeletonLine</strong> - Animated skeleton loading
-            placeholders
-          </li>
-          <li>
-            <strong>Surface</strong> - Container component for content
-          </li>
-        </ul>
-        <p className="mt-4 text-neutral-600 dark:text-neutral-400">
-          More components are being added regularly. Check the Components
-          section for detailed documentation.
-        </p>
       </ComponentSection>
 
       {/* Utilities */}
