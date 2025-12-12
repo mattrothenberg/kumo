@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2025-12-11T23:58:23.893Z",
+  "generatedAt": "2025-12-12T17:19:16.066Z",
   "components": {
     "Badge": {
       "name": "Badge",
@@ -49,7 +49,7 @@
         "bg-surface-inverse",
         "border-color",
         "border-primary",
-        "text-beta",
+        "text-info",
         "text-surface",
         "text-surface-inverse",
         "text-white"
@@ -1155,7 +1155,7 @@
       ],
       "colors": [
         "border-color",
-        "text-success"
+        "text-info"
       ]
     },
     "Field": {
@@ -1229,7 +1229,7 @@
         }
       },
       "examples": [
-        "function InputGroupExamplesRender() {\n    const [username, setUsername] = React.useState(\"\");\n    const [status, setStatus] = React.useState<\n      \"idle\" | \"checking\" | \"available\" | \"taken\" | \"error\"\n    >(\"idle\");\n\n    const checkAvailability = () => {\n      if (!username) {\n        setStatus(\"error\");\n        return;\n      }\n      setStatus(\"checking\");\n      // Simulate API call\n      setTimeout(() => {\n        setStatus(username.length > 3 ? \"available\" : \"taken\");\n      }, 800);\n    };\n\n    const statusText = {\n      idle: \"\",\n      checking: \"Checking...\",\n      available: \"✓ Available\",\n      taken: \"✗ Taken\",\n      error: \"Please enter a username\",\n    };\n\n    return (\n      <div className=\"space-y-6\">\n        {/* Prefix label - common for URLs, usernames, currencies */}\n        <div className=\"space-y-1\">\n          <p className=\"text-center text-sm text-muted\">Prefix label</p>\n          <InputGroup>\n            <InputGroup.Label>https://</InputGroup.Label>\n            <InputGroup.Input placeholder=\"example.com\" />\n          </InputGroup>\n        </div>\n\n        {/* Prefix label with suffix description - common for currency inputs */}\n        <div className=\"space-y-1\">\n          <p className=\"text-center text-sm text-muted\">Label with description</p>\n          <InputGroup>\n            <InputGroup.Label>$</InputGroup.Label>\n            <InputGroup.Input placeholder=\"0.00\" type=\"number\" />\n            <InputGroup.Description>USD</InputGroup.Description>\n          </InputGroup>\n        </div>\n\n        {/* With action button - interactive example */}\n        <div className=\"space-y-1\">\n          <p className=\"text-center text-sm text-muted\">\n            With action button (4+ chars = available, fewer = taken)\n          </p>\n          <InputGroup>\n            <InputGroup.Label>@</InputGroup.Label>\n            <InputGroup.Input\n              placeholder=\"username\"\n              value={username}\n              onChange={(e) => {\n                setUsername(e.target.value);\n                setStatus(\"idle\");\n              }}\n              onKeyDown={(e) => {\n                if (e.key === \"Enter\") {\n                  checkAvailability();\n                }\n              }}\n            />\n            <InputGroup.Button onClick={checkAvailability}>\n              {status === \"checking\" ? \"Checking...\" : \"Check\"}\n            </InputGroup.Button>\n          </InputGroup>\n          <p\n            aria-live=\"polite\"\n            className={`text-sm ${status === \"available\" ? \"text-success\" : status === \"error\" || status === \"taken\" ? \"text-error\" : \"text-muted\"}`}\n          >\n            {statusText[status]}\n          </p>\n        </div>\n      </div>\n    );\n  }",
+        "function InputGroupExamplesRender() {\n    const [username, setUsername] = React.useState(\"\");\n    const [status, setStatus] = React.useState<\n      \"idle\" | \"checking\" | \"available\" | \"taken\" | \"error\"\n    >(\"idle\");\n\n    const checkAvailability = () => {\n      if (!username) {\n        setStatus(\"error\");\n        return;\n      }\n      setStatus(\"checking\");\n      // Simulate API call\n      setTimeout(() => {\n        setStatus(username.length > 3 ? \"available\" : \"taken\");\n      }, 800);\n    };\n\n    const statusText = {\n      idle: \"\",\n      checking: \"Checking...\",\n      available: \"✓ Available\",\n      taken: \"✗ Taken\",\n      error: \"Please enter a username\",\n    };\n\n    return (\n      <div className=\"space-y-6\">\n        {/* Prefix label - common for URLs, usernames, currencies */}\n        <div className=\"space-y-1\">\n          <p className=\"text-center text-sm text-muted\">Prefix label</p>\n          <InputGroup>\n            <InputGroup.Label>https://</InputGroup.Label>\n            <InputGroup.Input placeholder=\"example.com\" />\n          </InputGroup>\n        </div>\n\n        {/* Prefix label with suffix description - common for currency inputs */}\n        <div className=\"space-y-1\">\n          <p className=\"text-center text-sm text-muted\">\n            Label with description\n          </p>\n          <InputGroup>\n            <InputGroup.Label>$</InputGroup.Label>\n            <InputGroup.Input placeholder=\"0.00\" type=\"number\" />\n            <InputGroup.Description>USD</InputGroup.Description>\n          </InputGroup>\n        </div>\n\n        {/* With action button - interactive example */}\n        <div className=\"space-y-1\">\n          <p className=\"text-center text-sm text-muted\">\n            With action button (4+ chars = available, fewer = taken)\n          </p>\n          <InputGroup>\n            <InputGroup.Label>@</InputGroup.Label>\n            <InputGroup.Input\n              placeholder=\"username\"\n              value={username}\n              onChange={(e) => {\n                setUsername(e.target.value);\n                setStatus(\"idle\");\n              }}\n              onKeyDown={(e) => {\n                if (e.key === \"Enter\") {\n                  checkAvailability();\n                }\n              }}\n            />\n            <InputGroup.Button onClick={checkAvailability}>\n              {status === \"checking\" ? \"Checking...\" : \"Check\"}\n            </InputGroup.Button>\n          </InputGroup>\n          <p\n            aria-live=\"polite\"\n            className={`text-sm ${status === \"available\" ? \"text-info\" : status === \"error\" || status === \"taken\" ? \"text-error\" : \"text-muted\"}`}\n          >\n            {statusText[status]}\n          </p>\n        </div>\n      </div>\n    );\n  }",
         "<div className=\"space-y-4\">\n      <div className=\"space-y-1\">\n        <p className=\"text-center text-sm text-muted\">Size: xs</p>\n        <InputGroup size=\"xs\">\n          <InputGroup.Label>@</InputGroup.Label>\n          <InputGroup.Input placeholder=\"username\" />\n          <InputGroup.Button>Submit</InputGroup.Button>\n        </InputGroup>\n      </div>\n\n      <div className=\"space-y-1\">\n        <p className=\"text-center text-sm text-muted\">Size: sm</p>\n        <InputGroup size=\"sm\">\n          <InputGroup.Label>@</InputGroup.Label>\n          <InputGroup.Input placeholder=\"username\" />\n          <InputGroup.Button>Submit</InputGroup.Button>\n        </InputGroup>\n      </div>\n\n      <div className=\"space-y-1\">\n        <p className=\"text-center text-sm text-muted\">Size: base (default)</p>\n        <InputGroup size=\"base\">\n          <InputGroup.Label>@</InputGroup.Label>\n          <InputGroup.Input placeholder=\"username\" />\n          <InputGroup.Button>Submit</InputGroup.Button>\n        </InputGroup>\n      </div>\n\n      <div className=\"space-y-1\">\n        <p className=\"text-center text-sm text-muted\">Size: lg</p>\n        <InputGroup size=\"lg\">\n          <InputGroup.Label>@</InputGroup.Label>\n          <InputGroup.Input placeholder=\"username\" />\n          <InputGroup.Button>Submit</InputGroup.Button>\n        </InputGroup>\n      </div>\n    </div>"
       ],
       "colors": [
@@ -1892,8 +1892,8 @@
       ],
       "colors": [
         "text-error",
+        "text-info",
         "text-muted",
-        "text-success",
         "text-surface"
       ]
     },

@@ -58,17 +58,17 @@ export const WithAdditionalContent: Story = {
         <h3 className="mb-2 font-semibold">Resources</h3>
         <ul className="space-y-2 text-sm">
           <li>
-            <a href="#" className="text-success hover:underline">
+            <a href="#" className="text-info hover:underline">
               Documentation
             </a>
           </li>
           <li>
-            <a href="#" className="text-success hover:underline">
+            <a href="#" className="text-info hover:underline">
               Examples
             </a>
           </li>
           <li>
-            <a href="#" className="text-success hover:underline">
+            <a href="#" className="text-info hover:underline">
               Community
             </a>
           </li>

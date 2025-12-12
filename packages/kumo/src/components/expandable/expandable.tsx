@@ -14,7 +14,7 @@ export interface KumoExpandableVariantsProps {}
 export function expandableVariants(_props: KumoExpandableVariantsProps = {}) {
   return cn(
     // Base styles for the trigger
-    "flex cursor-pointer items-center gap-1 text-sm text-success select-none",
+    "flex cursor-pointer items-center gap-1 text-sm text-info select-none",
   );
 }
 
@@ -41,7 +41,7 @@ export function Expandable({
   return (
     <div>
       <div
-        className="flex cursor-pointer items-center gap-1 text-sm text-success select-none"
+        className="flex cursor-pointer items-center gap-1 text-sm text-info select-none"
         onClick={handleOpen}
       >
         {title}{" "}

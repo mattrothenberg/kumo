@@ -128,7 +128,9 @@ export const InputGroupExamples: Story = {
 
         {/* Prefix label with suffix description - common for currency inputs */}
         <div className="space-y-1">
-          <p className="text-center text-sm text-muted">Label with description</p>
+          <p className="text-center text-sm text-muted">
+            Label with description
+          </p>
           <InputGroup>
             <InputGroup.Label>$</InputGroup.Label>
             <InputGroup.Input placeholder="0.00" type="number" />
@@ -162,7 +164,7 @@ export const InputGroupExamples: Story = {
           </InputGroup>
           <p
             aria-live="polite"
-            className={`text-sm ${status === "available" ? "text-success" : status === "error" || status === "taken" ? "text-error" : "text-muted"}`}
+            className={`text-sm ${status === "available" ? "text-info" : status === "error" || status === "taken" ? "text-error" : "text-muted"}`}
           >
             {statusText[status]}
           </p>

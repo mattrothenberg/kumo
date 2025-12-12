@@ -230,8 +230,7 @@ export function generateStyleGuideMarkdown(
 |-------|------------|------|-------------|
 | **Error** | \`bg-error-surface\` | \`text-error\` | \`ring-destructive\` |
 | **Warning** | \`bg-alert-surface\` | \`text-alert\` | \`ring-alert-border\` |
-| **Success** | — | \`text-success\` | — |
-| **Info** | \`bg-info-surface\` | \`text-info\` | \`ring-info-border\` |
+| **Success** | — | \`text-info\` | — |
 
 ### Surface Hierarchy
 
