@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
   type ComponentPropsWithoutRef,
+  type ReactNode,
 } from "react";
 import { cn } from "../../utils/cn";
 import { Input as BaseInput } from "@base-ui/react/input";
@@ -16,6 +17,7 @@ import {
   type KumoInputSize,
   type KumoInputVariant,
 } from "../input/input";
+import { Field, type FieldErrorMatch } from "../field/field";
 
 export const KUMO_SENSITIVE_INPUT_VARIANTS = KUMO_INPUT_VARIANTS;
 
@@ -26,6 +28,12 @@ export const KUMO_SENSITIVE_INPUT_DEFAULT_VARIANTS = {
 
 type Mode = "masked" | "revealed" | "editing";
 
+/**
+ * SensitiveInput component props
+ * @property {string} [label] - Label text for the input (enables Field wrapper)
+ * @property {ReactNode} [description] - Helper text displayed below the input
+ * @property {string | { message: ReactNode, match: FieldErrorMatch }} [error] - Error message or validation error object
+ */
 export interface SensitiveInputProps
   extends Omit<
     ComponentPropsWithoutRef<"input">,
@@ -43,6 +51,12 @@ export interface SensitiveInputProps
   size?: KumoInputSize;
   /** Style variant */
   variant?: KumoInputVariant;
+  /** Label text for the input (enables Field wrapper) */
+  label?: string;
+  /** Helper text displayed below the input */
+  description?: ReactNode;
+  /** Error message or validation error object */
+  error?: string | { message: ReactNode; match: FieldErrorMatch };
 }
 
 export const SensitiveInput = forwardRef<HTMLInputElement, SensitiveInputProps>(
@@ -60,6 +74,9 @@ export const SensitiveInput = forwardRef<HTMLInputElement, SensitiveInputProps>(
       id,
       autoComplete = "off",
       className,
+      label,
+      description,
+      error,
       ...inputProps
     },
     ref,
@@ -234,7 +251,7 @@ export const SensitiveInput = forwardRef<HTMLInputElement, SensitiveInputProps>(
     // Icon sizes matching input sizes
     const iconSize = size === "xs" || size === "sm" ? "size-3" : "size-4";
 
-    return (
+    const input = (
       <div>
         <div
           ref={containerRef}
@@ -370,6 +387,28 @@ export const SensitiveInput = forwardRef<HTMLInputElement, SensitiveInputProps>(
         </span>
       </div>
     );
+
+    // Render with Field wrapper if label is provided
+    if (label) {
+      return (
+        <Field
+          label={label}
+          description={description}
+          error={
+            error
+              ? typeof error === "string"
+                ? { message: error, match: true }
+                : error
+              : undefined
+          }
+        >
+          {input}
+        </Field>
+      );
+    }
+
+    // Render bare input without Field wrapper
+    return input;
   },
 );
 

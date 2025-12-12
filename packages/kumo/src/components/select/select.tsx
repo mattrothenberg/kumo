@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { cn } from "../../utils/cn";
 import { buttonVariants } from "../button";
 import { SkeletonLine } from "../loader";
+import { Field, type FieldErrorMatch } from "../field/field";
 
 export const KUMO_SELECT_VARIANTS = {
   // Select currently has no variant options but structure is ready for future additions
@@ -35,16 +36,23 @@ type SelectPropsGeneric<
     hideLabel?: boolean;
     placeholder?: string;
     loading?: boolean;
+    /** Helper text displayed below the select */
+    description?: ReactNode;
+    /** Error message or validation error object */
+    error?: string | { message: ReactNode; match: FieldErrorMatch };
   };
 
 /**
  * Props for the Select component.
  * @description A dropdown select component for choosing from a list of options.
+ * @property {string} [label] - Label text for the select (enables Field wrapper)
+ * @property {ReactNode} [description] - Helper text displayed below the select
+ * @property {string | { message: ReactNode, match: FieldErrorMatch }} [error] - Error message or validation error object
  */
 export interface SelectProps {
   /** Additional CSS classes */
   className?: string;
-  /** Label text for the select */
+  /** Label text for the select (enables Field wrapper) */
   label?: string;
   /** Whether to visually hide the label (still accessible to screen readers) */
   hideLabel?: boolean;
@@ -64,6 +72,10 @@ export interface SelectProps {
   multiple?: boolean;
   /** Child elements (Select.Option components) */
   children?: ReactNode;
+  /** Helper text displayed below the select */
+  description?: ReactNode;
+  /** Error message or validation error object */
+  error?: string | { message: ReactNode; match: FieldErrorMatch };
 }
 
 export function Select<T, Multiple extends boolean | undefined = false>({
@@ -74,6 +86,8 @@ export function Select<T, Multiple extends boolean | undefined = false>({
   hideLabel = true,
   placeholder,
   loading,
+  description,
+  error,
   ...props
 }: SelectPropsGeneric<T, Multiple>) {
   const labelId = useId();
@@ -81,7 +95,12 @@ export function Select<T, Multiple extends boolean | undefined = false>({
   const ariaLabel = propLookup["aria-label"] as string | undefined;
   const ariaLabelledby = propLookup["aria-labelledby"] as string | undefined;
   const fallbackLabel = label ?? placeholder;
-  const triggerLabelledBy = ariaLabelledby ?? (label ? labelId : undefined);
+
+  // Use Field wrapper when label is provided and not hidden
+  const useFieldWrapper = label && !hideLabel;
+  const triggerLabelledBy = useFieldWrapper
+    ? undefined
+    : (ariaLabelledby ?? (label ? labelId : undefined));
   const triggerAriaLabel =
     ariaLabel ?? (!triggerLabelledBy ? fallbackLabel : undefined);
 
@@ -118,57 +137,77 @@ export function Select<T, Multiple extends boolean | undefined = false>({
     }
   }
 
+  const selectControl = (
+    <SelectBase.Root
+      {...props}
+      items={items}
+      disabled={loading || props.disabled}
+    >
+      <SelectBase.Trigger
+        className={cn(
+          buttonVariants(),
+          "justify-between font-normal",
+          "outline-none focus:opacity-100 focus-visible:ring-1 focus-visible:ring-active *:in-focus:opacity-100",
+          props.disabled && "cursor-not-allowed opacity-50",
+          className,
+        )}
+        aria-label={triggerAriaLabel}
+        aria-labelledby={triggerLabelledBy}
+      >
+        {loading ? (
+          <SkeletonLine className="w-32" />
+        ) : (
+          <SelectBase.Value>{renderValue}</SelectBase.Value>
+        )}
+        <SelectBase.Icon>
+          <CaretUpDownIcon />
+        </SelectBase.Icon>
+      </SelectBase.Trigger>
+      <SelectBase.Portal>
+        <SelectBase.Positioner className="z-50">
+          <SelectBase.Popup
+            className={cn(
+              "z-50 overflow-hidden bg-secondary text-surface", // background
+              "rounded-lg shadow-lg ring ring-border", // border part
+              // 3px adjustment to account for padding + border differences
+              "min-w-[calc(var(--anchor-width)+3px)] p-1.5", // spacing
+            )}
+          >
+            {children}
+          </SelectBase.Popup>
+        </SelectBase.Positioner>
+      </SelectBase.Portal>
+    </SelectBase.Root>
+  );
+
+  // Use Field wrapper when label is provided and not hidden
+  if (useFieldWrapper) {
+    return (
+      <Field
+        label={label}
+        description={description}
+        error={
+          error
+            ? typeof error === "string"
+              ? { message: error, match: true }
+              : error
+            : undefined
+        }
+      >
+        {selectControl}
+      </Field>
+    );
+  }
+
+  // Render with standalone label when label is hidden (sr-only)
   return (
     <>
       {label && (
-        <span
-          id={labelId}
-          className={
-            hideLabel ? "sr-only" : "block text-sm font-medium text-surface"
-          }
-        >
+        <span id={labelId} className="sr-only">
           {label}
         </span>
       )}
-      <SelectBase.Root
-        {...props}
-        items={items}
-        disabled={loading || props.disabled}
-      >
-        <SelectBase.Trigger
-          className={cn(
-            buttonVariants(),
-            "justify-between font-normal",
-            "outline-none focus:opacity-100 focus-visible:ring-1 focus-visible:ring-active *:in-focus:opacity-100",
-            className,
-          )}
-          aria-label={triggerAriaLabel}
-          aria-labelledby={triggerLabelledBy}
-        >
-          {loading ? (
-            <SkeletonLine />
-          ) : (
-            <SelectBase.Value>{renderValue}</SelectBase.Value>
-          )}
-          <SelectBase.Icon>
-            <CaretUpDownIcon />
-          </SelectBase.Icon>
-        </SelectBase.Trigger>
-        <SelectBase.Portal>
-          <SelectBase.Positioner className="z-50">
-            <SelectBase.Popup
-              className={cn(
-                "z-50 overflow-hidden bg-secondary text-surface", // background
-                "rounded-lg shadow-lg ring ring-border", // border part
-                // 3px adjustment to account for padding + border differences
-                "min-w-[calc(var(--anchor-width)+3px)] p-1.5", // spacing
-              )}
-            >
-              {children}
-            </SelectBase.Popup>
-          </SelectBase.Positioner>
-        </SelectBase.Portal>
-      </SelectBase.Root>
+      {selectControl}
     </>
   );
 }

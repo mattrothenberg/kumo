@@ -25,7 +25,14 @@ export {
 } from "./components/dialog";
 export { DropdownMenu } from "./components/dropdown";
 export { Expandable } from "./components/expandable";
-export { Field } from "./components/field";
+export {
+  Field,
+  type FieldProps,
+  type FieldErrorMatch,
+  fieldVariants,
+  KUMO_FIELD_VARIANTS,
+  KUMO_FIELD_DEFAULT_VARIANTS,
+} from "./components/field";
 export {
   Input,
   inputVariants,

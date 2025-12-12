@@ -1,4 +1,6 @@
-import { SensitiveInput, Field } from "@cloudflare/kumo";
+import { SensitiveInput } from "@cloudflare/kumo";
+// Field is now an internal component - SensitiveInput will have built-in field support
+// import { Field } from "@cloudflare/kumo/components/field";
 import { DocLayout } from "~/components/docs/doc-layout";
 import { ComponentExample } from "~/components/docs/component-example";
 import { ComponentSection } from "~/components/docs/component-section";
@@ -13,13 +15,9 @@ export default function SensitiveInputDoc() {
       {/* Demo */}
       <ComponentSection>
         <ComponentExample
-          code={`<Field label="API Key">
-  <SensitiveInput defaultValue="sk_live_abc123xyz789" />
-</Field>`}
+          code={`<SensitiveInput defaultValue="sk_live_abc123xyz789" />`}
         >
-          <Field label="API Key">
-            <SensitiveInput defaultValue="sk_live_abc123xyz789" />
-          </Field>
+          <SensitiveInput defaultValue="sk_live_abc123xyz789" />
         </ComponentExample>
       </ComponentSection>
 
@@ -47,9 +45,7 @@ export default function SensitiveInputDoc() {
 
 export default function Example() {
   return (
-    <Field label="Secret">
-      <SensitiveInput defaultValue="my-secret-key" />
-    </Field>
+    <SensitiveInput label="Secret" defaultValue="my-secret-key" />
   );
 }`}
         />
@@ -61,34 +57,30 @@ export default function Example() {
 
         <div className="space-y-8">
           <div>
-            <h3 className="mb-4 text-xl font-semibold">Existing Value (Masked)</h3>
+            <h3 className="mb-4 text-xl font-semibold">
+              Existing Value (Masked)
+            </h3>
             <p className="mb-4 text-sm text-secondary">
-              When initialized with a value, shows masked dots. Hover to see hint, click to reveal.
+              When initialized with a value, shows masked dots. Hover to see
+              hint, click to reveal.
             </p>
             <ComponentExample
-              code={`<Field label="API Key">
-  <SensitiveInput defaultValue="sk_live_abc123xyz789" />
-</Field>`}
+              code={`<SensitiveInput label="API Key" defaultValue="sk_live_abc123xyz789" />`}
             >
-              <Field label="API Key">
-                <SensitiveInput defaultValue="sk_live_abc123xyz789" />
-              </Field>
+              <SensitiveInput label="API Key" defaultValue="sk_live_abc123xyz789" />
             </ComponentExample>
           </div>
 
           <div>
             <h3 className="mb-4 text-xl font-semibold">Empty (New Input)</h3>
             <p className="mb-4 text-sm text-secondary">
-              Empty inputs show placeholder. Type to enter - value is masked. Eye icon appears when there's content.
+              Empty inputs show placeholder. Type to enter - value is masked.
+              Eye icon appears when there's content.
             </p>
             <ComponentExample
-              code={`<Field label="Secret">
-  <SensitiveInput placeholder="Enter your secret..." />
-</Field>`}
+              code={`<SensitiveInput label="Secret" placeholder="Enter your secret..." />`}
             >
-              <Field label="Secret">
-                <SensitiveInput placeholder="Enter your secret..." />
-              </Field>
+              <SensitiveInput label="Secret" placeholder="Enter your secret..." />
             </ComponentExample>
           </div>
 
@@ -98,52 +90,54 @@ export default function Example() {
               View-only mode - click to reveal but cannot edit.
             </p>
             <ComponentExample
-              code={`<Field label="Read Only">
-  <SensitiveInput defaultValue="view-only-secret" readOnly />
-</Field>`}
+              code={`<SensitiveInput label="Read Only" defaultValue="view-only-secret" readOnly />`}
             >
-              <Field label="Read Only">
-                <SensitiveInput defaultValue="view-only-secret" readOnly />
-              </Field>
+              <SensitiveInput label="Read Only" defaultValue="view-only-secret" readOnly />
             </ComponentExample>
           </div>
 
           <div>
             <h3 className="mb-4 text-xl font-semibold">Error State</h3>
             <ComponentExample
-              code={`<Field label="Invalid">
-  <SensitiveInput defaultValue="invalid-key" variant="error" />
-</Field>`}
+              code={`<SensitiveInput label="Invalid" defaultValue="invalid-key" variant="error" />`}
             >
-              <Field label="Invalid">
-                <SensitiveInput defaultValue="invalid-key" variant="error" />
-              </Field>
+              <SensitiveInput label="Invalid" defaultValue="invalid-key" variant="error" />
             </ComponentExample>
           </div>
 
           <div>
             <h3 className="mb-4 text-xl font-semibold">Disabled</h3>
             <ComponentExample
-              code={`<Field label="Disabled">
-  <SensitiveInput defaultValue="cannot-edit" disabled />
-</Field>`}
+              code={`<SensitiveInput label="Disabled" defaultValue="cannot-edit" disabled />`}
             >
-              <Field label="Disabled">
-                <SensitiveInput defaultValue="cannot-edit" disabled />
-              </Field>
+              <SensitiveInput label="Disabled" defaultValue="cannot-edit" disabled />
             </ComponentExample>
           </div>
 
           <div>
-            <h3 className="mb-4 text-xl font-semibold">With Visible Label</h3>
+            <h3 className="mb-4 text-xl font-semibold">Default</h3>
             <ComponentExample
-              code={`<Field label="Password">
-  <SensitiveInput defaultValue="my-secret" />
-</Field>`}
+              code={`<SensitiveInput defaultValue="sk_live_abc123xyz789" />`}
             >
-              <Field label="Password">
-                <SensitiveInput defaultValue="my-secret" />
-              </Field>
+              <SensitiveInput defaultValue="sk_live_abc123xyz789" />
+            </ComponentExample>
+          </div>
+
+          <div>
+            <h3 className="mb-4 text-xl font-semibold">Empty State</h3>
+            <ComponentExample
+              code={`<SensitiveInput placeholder="Enter API key..." />`}
+            >
+              <SensitiveInput placeholder="Enter API key..." />
+            </ComponentExample>
+          </div>
+
+          <div>
+            <h3 className="mb-4 text-xl font-semibold">Read Only</h3>
+            <ComponentExample
+              code={`<SensitiveInput defaultValue="sk_live_abc123xyz789" readOnly />`}
+            >
+              <SensitiveInput defaultValue="sk_live_abc123xyz789" readOnly />
             </ComponentExample>
           </div>
         </div>
@@ -174,17 +168,23 @@ export default function Example() {
               </tr>
               <tr className="border-b border-border">
                 <td className="px-4 py-3 font-mono text-xs">onValueChange</td>
-                <td className="px-4 py-3 font-mono text-xs">(value: string) =&gt; void</td>
+                <td className="px-4 py-3 font-mono text-xs">
+                  (value: string) =&gt; void
+                </td>
                 <td className="px-4 py-3 font-mono text-xs">undefined</td>
               </tr>
               <tr className="border-b border-border">
                 <td className="px-4 py-3 font-mono text-xs">size</td>
-                <td className="px-4 py-3 font-mono text-xs">"xs" | "sm" | "base" | "lg"</td>
+                <td className="px-4 py-3 font-mono text-xs">
+                  "xs" | "sm" | "base" | "lg"
+                </td>
                 <td className="px-4 py-3 font-mono text-xs">"base"</td>
               </tr>
               <tr className="border-b border-border">
                 <td className="px-4 py-3 font-mono text-xs">variant</td>
-                <td className="px-4 py-3 font-mono text-xs">"default" | "error"</td>
+                <td className="px-4 py-3 font-mono text-xs">
+                  "default" | "error"
+                </td>
                 <td className="px-4 py-3 font-mono text-xs">"default"</td>
               </tr>
               <tr className="border-b border-border">

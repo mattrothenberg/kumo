@@ -5,7 +5,6 @@ import {
   Checkbox,
   Select,
   Switch,
-  Field,
   Dialog,
   DropdownMenu,
   Tooltip,
@@ -145,7 +144,7 @@ export default function Home() {
       name: "Switch",
       Component: (
         <Switch
-          toggled={switchToggled}
+          checked={switchToggled}
           onClick={() => {
             setSwitchToggled(!switchToggled);
           }}
@@ -153,18 +152,19 @@ export default function Home() {
       ),
     },
     {
-      name: "Field",
+      name: "Input",
       Component: (
-        <Field
+        <Input
           label="Email"
+          placeholder="name@example.com"
+          type="email"
+          variant="error"
           error={{
             message: "Please enter a valid email.",
             match: "typeMismatch",
           }}
           description="The email to send notifications to."
-        >
-          <Input placeholder="name@example.com" type="email" />
-        </Field>
+        />
       ),
     },
     {

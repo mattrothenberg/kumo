@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type { Preview } from "@storybook/react-vite";
+import type { Preview, StoryContext } from "@storybook/react-vite";
 import { ModeToggle } from "./mode-toggle";
 import { ThemeSelect, type Theme } from "./theme-select";
 import { cn } from "../src/utils/cn";
@@ -34,6 +34,9 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
+    docs: {
+      codePanel: true,
+    },
   },
   decorators: [
     (Story, context) => {
@@ -61,9 +64,9 @@ const preview: Preview = {
         );
       }
 
-      // Other Components/* get side-by-side light/dark with theme switcher
+      // Other Components/* get side-by-side light/dark with theme switcher + code
       if (context.title.startsWith("Components/")) {
-        return <DualModeDecorator Story={Story} />;
+        return <DualModeDecorator Story={Story} context={context} />;
       }
 
       // Blocks, Layouts, and other categories get the full decorator with mode toggle
@@ -72,7 +75,12 @@ const preview: Preview = {
   ],
 };
 
-function DualModeDecorator({ Story }: { Story: React.ComponentType }) {
+interface DualModeDecoratorProps {
+  Story: React.ComponentType;
+  context: StoryContext;
+}
+
+function DualModeDecorator({ Story, context }: DualModeDecoratorProps) {
   const [theme, setTheme] = useState<Theme>("kumo");
 
   return (

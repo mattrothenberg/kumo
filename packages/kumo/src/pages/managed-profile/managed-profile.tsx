@@ -12,7 +12,6 @@ import {
   DialogClose,
 } from "../../components/dialog/dialog";
 import { Banner } from "../../components/banner/banner";
-import { Field } from "../../components/field/field";
 import { LayerCard } from "../../components/layer-card/layer-card";
 import { Input } from "../../components/input/input";
 import { Checkbox } from "../../components/checkbox/checkbox";
@@ -481,22 +480,15 @@ function UpdateEmailDialog({ currentEmail }: { currentEmail: string }) {
         </DialogClose>
       </div>
       <div className="space-y-4 p-4">
-        <Field label="Current Email">
-          <Input
-            value={currentEmail}
-            disabled
-            className="bg-surface-secondary"
-          />
-        </Field>
-        <Field label="Updated Email">
-          <Input placeholder="" />
-        </Field>
-        <Field label="Confirm Updated Email">
-          <Input placeholder="" />
-        </Field>
-        <Field label="Password">
-          <Input type="password" placeholder="" />
-        </Field>
+        <Input
+          label="Current Email"
+          value={currentEmail}
+          disabled
+          className="bg-surface-secondary"
+        />
+        <Input label="Updated Email" placeholder="" />
+        <Input label="Confirm Updated Email" placeholder="" />
+        <Input label="Password" type="password" placeholder="" />
       </div>
       <div className="flex justify-end gap-2 p-4">
         <DialogClose
@@ -642,15 +634,9 @@ function DeleteUserFormContent() {
   return (
     <>
       <div className="space-y-4 p-4">
-        <Field label="Enter email">
-          <Input placeholder="" />
-        </Field>
-        <Field label="Enter password">
-          <Input type="password" placeholder="" />
-        </Field>
-        <Field label="Type DELETE to confirm">
-          <Input placeholder="" />
-        </Field>
+        <Input label="Enter email" placeholder="" />
+        <Input label="Enter password" type="password" placeholder="" />
+        <Input label="Type DELETE to confirm" placeholder="" />
         <Text variant="secondary" size="sm">
           Note: It could take up to 12 months to delete your information
           completely. Cloudflare will purge your personal information within a

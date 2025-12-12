@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import { SensitiveInput } from "./sensitive-input";
-import { Field } from "../field";
 
 const meta = {
   title: "Components/SensitiveInput",
@@ -12,13 +11,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {
-    defaultValue: "sk_live_abc123xyz789",
-  },
-  render: (args) => (
-    <Field label="API Key">
-      <SensitiveInput {...args} />
-    </Field>
+  render: () => (
+    <SensitiveInput label="API Key" defaultValue="sk_live_abc123xyz789" />
   ),
 };
 
@@ -30,9 +24,11 @@ export const Sizes: Story = {
       {sizes.map((size) => (
         <div key={size} className="flex items-center gap-2">
           <span className="w-12 text-sm text-muted">{size}</span>
-          <Field label={`${size} size`}>
-            <SensitiveInput size={size} defaultValue="secret-api-key-123" />
-          </Field>
+          <SensitiveInput
+            label={`${size} size`}
+            size={size}
+            defaultValue="secret-api-key-123"
+          />
         </div>
       ))}
     </div>
@@ -40,9 +36,6 @@ export const Sizes: Story = {
 };
 
 export const ExistingValue: Story = {
-  args: {
-    defaultValue: "sk_live_abc123xyz789",
-  },
   parameters: {
     docs: {
       description: {
@@ -51,17 +44,12 @@ export const ExistingValue: Story = {
       },
     },
   },
-  render: (args) => (
-    <Field label="API Key">
-      <SensitiveInput {...args} />
-    </Field>
+  render: () => (
+    <SensitiveInput label="API Key" defaultValue="sk_live_abc123xyz789" />
   ),
 };
 
 export const EmptyInput: Story = {
-  args: {
-    placeholder: "Enter your secret...",
-  },
   parameters: {
     docs: {
       description: {
@@ -70,10 +58,8 @@ export const EmptyInput: Story = {
       },
     },
   },
-  render: (args) => (
-    <Field label="Secret">
-      <SensitiveInput {...args} />
-    </Field>
+  render: () => (
+    <SensitiveInput label="Secret" placeholder="Enter your secret..." />
   ),
 };
 
@@ -82,9 +68,11 @@ export const Controlled: Story = {
     const [value, setValue] = useState("initial-secret");
     return (
       <div className="flex flex-col gap-4">
-        <Field label="Controlled Secret">
-          <SensitiveInput value={value} onValueChange={setValue} />
-        </Field>
+        <SensitiveInput
+          label="Controlled Secret"
+          value={value}
+          onValueChange={setValue}
+        />
         <div className="text-sm text-muted">
           Current value: <code className="text-surface">{value}</code>
         </div>
@@ -107,35 +95,28 @@ export const Controlled: Story = {
   },
 };
 
-export const ErrorState: Story = {
-  args: {
-    variant: "error",
-    defaultValue: "invalid-key",
-  },
-  render: (args) => (
-    <Field label="Invalid Key">
-      <SensitiveInput {...args} />
-    </Field>
+export const WithError: Story = {
+  render: () => (
+    <SensitiveInput
+      label="Invalid Key"
+      variant="error"
+      defaultValue="invalid-key"
+      error="This API key is not valid"
+    />
   ),
 };
 
 export const Disabled: Story = {
-  args: {
-    defaultValue: "cannot-edit",
-    disabled: true,
-  },
-  render: (args) => (
-    <Field label="Disabled Secret">
-      <SensitiveInput {...args} />
-    </Field>
+  render: () => (
+    <SensitiveInput
+      label="Disabled Secret"
+      defaultValue="cannot-edit"
+      disabled
+    />
   ),
 };
 
 export const ReadOnly: Story = {
-  args: {
-    defaultValue: "view-only-secret-key",
-    readOnly: true,
-  },
   parameters: {
     docs: {
       description: {
@@ -143,29 +124,26 @@ export const ReadOnly: Story = {
       },
     },
   },
-  render: (args) => (
-    <Field label="Read-only Secret">
-      <SensitiveInput {...args} />
-    </Field>
+  render: () => (
+    <SensitiveInput
+      label="Read-only Secret"
+      defaultValue="view-only-secret-key"
+      readOnly
+    />
   ),
 };
 
-export const WithVisibleLabel: Story = {
-  args: {
-    defaultValue: "my-secret-value",
-  },
-  render: (args) => (
-    <Field label="Password">
-      <SensitiveInput {...args} />
-    </Field>
+export const WithDescription: Story = {
+  render: () => (
+    <SensitiveInput
+      label="Password"
+      defaultValue="my-secret-value"
+      description="Keep this password secure and don't share it"
+    />
   ),
 };
 
 export const WithCopyCallback: Story = {
-  args: {
-    defaultValue: "copyable-secret-key",
-    onCopy: () => console.log("Value copied!"),
-  },
   parameters: {
     docs: {
       description: {
@@ -174,9 +152,20 @@ export const WithCopyCallback: Story = {
       },
     },
   },
-  render: (args) => (
-    <Field label="API Key">
-      <SensitiveInput {...args} />
-    </Field>
+  render: () => (
+    <SensitiveInput
+      label="API Key"
+      defaultValue="copyable-secret-key"
+      onCopy={() => console.log("Value copied!")}
+    />
+  ),
+};
+
+export const BareInput: Story = {
+  render: () => (
+    <SensitiveInput
+      defaultValue="sk_live_abc123xyz789"
+      placeholder="Input without Field wrapper"
+    />
   ),
 };

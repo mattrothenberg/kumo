@@ -8,7 +8,6 @@ import {
 } from "./input";
 import { InputGroup } from "./input-group";
 import { propTester } from "../../utils/prop-tester";
-import { Field } from "../field";
 
 const meta: Meta<typeof Input> = {
   title: "Components/Input",
@@ -43,38 +42,45 @@ export const Variants: Story = {
 };
 
 export const WithLabel: Story = {
-  args: {
-    placeholder: "Enter your email",
-  },
-  render: (args) => (
-    <Field label="Email">
-      <Input {...args} />
-    </Field>
+  render: () => (
+    <Input
+      label="Email"
+      placeholder="Enter your email"
+      description="We'll never share your email with anyone else"
+    />
   ),
 };
 
-export const Error: Story = {
-  args: {
-    variant: "error",
-    placeholder: "Invalid input",
-    defaultValue: "error@example.com",
-  },
-  render: (args) => (
-    <Field label="Email">
-      <Input {...args} />
-    </Field>
+export const WithError: Story = {
+  render: () => (
+    <Input
+      label="Email"
+      placeholder="Invalid input"
+      defaultValue="error@example.com"
+      variant="error"
+      error="Please enter a valid email address"
+    />
+  ),
+};
+
+export const WithValidationError: Story = {
+  render: () => (
+    <Input
+      label="Email"
+      placeholder="Enter your email"
+      defaultValue="not-an-email"
+      variant="error"
+      error={{
+        message: "Please enter a valid email address",
+        match: "typeMismatch",
+      }}
+    />
   ),
 };
 
 export const Disabled: Story = {
-  args: {
-    placeholder: "Disabled input",
-    disabled: true,
-  },
-  render: (args) => (
-    <Field label="Disabled Field">
-      <Input {...args} />
-    </Field>
+  render: () => (
+    <Input label="Disabled Field" placeholder="Disabled input" disabled />
   ),
 };
 
@@ -218,4 +224,8 @@ export const InputGroupSizes: Story = {
       </div>
     </div>
   ),
+};
+
+export const BareInput: Story = {
+  render: () => <Input placeholder="Input without Field wrapper" />,
 };

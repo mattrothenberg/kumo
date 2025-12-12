@@ -14,14 +14,20 @@ export interface ComponentInfo {
 
 /**
  * Discover all component directories in src/components
+ * Excludes internal-only components that should not be exported
  */
 export function discoverComponents(): string[] {
   const componentsDir = join(__dirname, "../../src/components");
   const entries = readdirSync(componentsDir);
 
+  // Internal-only components that should not have package.json exports
+  const internalComponents = ["field"];
+
   return entries.filter((entry: string) => {
     const fullPath = join(componentsDir, entry);
-    return statSync(fullPath).isDirectory();
+    return (
+      statSync(fullPath).isDirectory() && !internalComponents.includes(entry)
+    );
   });
 }
 

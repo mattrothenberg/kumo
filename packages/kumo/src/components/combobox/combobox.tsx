@@ -3,6 +3,7 @@ import { CaretDownIcon, CheckIcon, XIcon } from "@phosphor-icons/react";
 import { Fragment, type PropsWithChildren, type ReactNode } from "react";
 import { inputVariants } from "../input/input";
 import { cn } from "../../utils/cn";
+import { Field, type FieldErrorMatch } from "../field/field";
 
 export const KUMO_COMBOBOX_VARIANTS = {
   inputSide: {
@@ -57,13 +58,50 @@ export interface ComboboxProps extends KumoComboboxVariantsProps {
   children: ReactNode;
   /** Additional CSS classes */
   className?: string;
+  /** Label text for the combobox (enables Field wrapper) */
+  label?: string;
+  /** Helper text displayed below the combobox */
+  description?: ReactNode;
+  /** Error message or validation error object */
+  error?: string | { message: ReactNode; match: FieldErrorMatch };
 }
 
-function Root<
-  Value,
-  Multiple extends boolean | undefined = false,
->(props: ComboboxBase.Root.Props<Value, Multiple>) {
-  return <ComboboxBase.Root {...props} />;
+function Root<Value, Multiple extends boolean | undefined = false>({
+  label,
+  description,
+  error,
+  children,
+  ...props
+}: ComboboxBase.Root.Props<Value, Multiple> & {
+  label?: string;
+  description?: ReactNode;
+  error?: string | { message: ReactNode; match: FieldErrorMatch };
+}) {
+  const comboboxControl = (
+    <ComboboxBase.Root {...props}>{children}</ComboboxBase.Root>
+  );
+
+  // Render with Field wrapper if label and (description or error) are provided
+  if (label && (description || error)) {
+    return (
+      <Field
+        label={label}
+        description={description}
+        error={
+          error
+            ? typeof error === "string"
+              ? { message: error, match: true }
+              : error
+            : undefined
+        }
+      >
+        {comboboxControl}
+      </Field>
+    );
+  }
+
+  // Render bare combobox without Field wrapper
+  return comboboxControl;
 }
 
 function Content({
@@ -126,7 +164,9 @@ function TriggerValue({
 
 function TriggerInput(props: ComboboxBase.Input.Props) {
   return (
-    <div className={cn("relative inline-block", props.className)}>
+    <div
+      className={cn("relative inline-block w-full max-w-xs", props.className)}
+    >
       <ComboboxBase.Input
         {...props}
         className={cn(inputVariants(), "w-full pr-12")}
