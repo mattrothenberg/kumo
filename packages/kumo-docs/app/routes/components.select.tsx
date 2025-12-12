@@ -42,7 +42,7 @@ function App() {
   const [value, setValue] = useState("Apple");
 
   return (
-    <Select className="w-[200px]" value={value} onValueChange={setValue}>
+    <Select className="w-[200px]" value={value} onValueChange={(v) => setValue(v ?? "Apple")}>
       <Select.Option value="Apple">Apple</Select.Option>
       <Select.Option value="Banana">Banana</Select.Option>
       <Select.Option value="Cherry">Cherry</Select.Option>
@@ -53,7 +53,7 @@ function App() {
         <Select
           className="w-[200px]"
           value={value}
-          onValueChange={setValue}
+          onValueChange={(v) => setValue(v ?? "Apple")}
           placeholder="Please select"
         >
           <Select.Option value="Apple">Apple</Select.Option>
@@ -90,7 +90,7 @@ function App() {
     <Select
       className="w-[200px]"
       value={value}
-      onValueChange={setValue}
+      onValueChange={(v) => setValue(v ?? "bug")}
       items={{
         bug: "Bug",
         documentation: "Documentation",
@@ -112,7 +112,7 @@ function App() {
     <Select
       className="w-[200px]"
       value={value}
-      onValueChange={setValue}
+      onValueChange={(v) => setValue(v as any)}
       items={[
         {value: "bug", label: "Bug"},
         {value: "documentation", label: "Documentation"},
@@ -130,7 +130,7 @@ function App() {
         <Select
           className="w-[200px]"
           value={value}
-          onValueChange={setValue}
+          onValueChange={(v) => setValue(v as any)}
           items={{
             bug: "Bug",
             documentation: "Documentation",
@@ -191,7 +191,7 @@ function App() {
         </span>
       )}
       value={value}
-      onValueChange={setValue}
+      onValueChange={(v) => setValue(v as any)}
     >
       {languges.map((language) => (
         <Select.Option key={language.value} value={language}>
@@ -211,7 +211,7 @@ function App() {
             </span>
           )}
           value={value}
-          onValueChange={setValue}
+          onValueChange={(v) => setValue(v as any)}
         >
           {languges.map((language) => (
             <Select.Option key={language.value} value={language}>
@@ -256,7 +256,7 @@ function App() {
         </span>
       )}
       value={value}
-      onValueChange={setValue}
+      onValueChange={(v) => setValue(v as any)}
     >
       {languges.map((language) => (
         <Select.Option key={language.value} value={language}>
@@ -297,7 +297,7 @@ function App() {
         </span>
       )}
       value={value}
-      onValueChange={setValue}
+      onValueChange={(v) => setValue(v as any)}
       // ✅ Provides custom comparison logic
       isItemEqualToValue={(item, value) => item.value === value.value}
     >
@@ -354,7 +354,7 @@ function App() {
   return (
     <Select
       className="w-[200px]"
-      onValueChange={setValue}
+      onValueChange={(v) => setValue(v as any)}
       value={value}
       isItemEqualToValue={(item, value) => item?.id === value?.id}
       renderValue={(author) => {
@@ -376,7 +376,7 @@ function App() {
       >
         <Select
           className="w-[200px]"
-          onValueChange={setValue}
+          onValueChange={(v) => setValue(v as any)}
           value={value}
           isItemEqualToValue={(item, value) => item?.id === value?.id}
           renderValue={(author) => {
@@ -421,7 +421,7 @@ function App() {
     <Select
       className="w-[200px]"
       value={value}
-      onValueChange={setValue}
+      onValueChange={(v) => setValue(v as any)}
       items={[
         // ✅ Placeholder
         { value: null, label: "Please select" },
@@ -444,7 +444,7 @@ function App2() {
     <Select
       className="w-[200px]"
       value={value}
-      onValueChange={setValue}
+      onValueChange={(v) => setValue(v as any)}
       placeholder="Please select"
       items={[
         { value: "bug", label: "Bug" },
@@ -463,7 +463,7 @@ function App2() {
         <Select
           className="w-[200px]"
           value={value}
-          onValueChange={setValue}
+          onValueChange={(v) => setValue(v as any)}
           items={[
             // ✅ Placeholder
             { value: null, label: "Please select" },
@@ -500,7 +500,7 @@ function ExampleLoading() {
   const { data, isLoading } = useQuery({...});
 
   const (
-    <Select value={value} onValueChange={setValue} loading={isLoading}>
+    <Select value={value} onValueChange={(v) => setValue(v as any)} loading={isLoading}>
       {data?.map((item) => (
         <Select.Option key={item.id} value={item.id}>
           {item.name}
@@ -547,7 +547,7 @@ function ExampleLoadingData() {
       className="w-[200px]"
       loading={loading}
       value={value}
-      onValueChange={setValue}
+      onValueChange={(v) => setValue(v as any)}
       placeholder="Please select"
     >
       {data?.map((item) => (
@@ -587,7 +587,7 @@ function ExampleMultipleItem() {
             return <span>{value.join(", ")}</span>;
           }}
           value={value}
-          onValueChange={setValue}
+          onValueChange={(v) => setValue(v as any)}
         >
           <Select.Option value="Name">Name</Select.Option>
           <Select.Option value="Location">Location</Select.Option>

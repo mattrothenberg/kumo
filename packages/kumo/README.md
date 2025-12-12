@@ -2,6 +2,99 @@
 
 Cloudflare's component library for building modern web applications.
 
+## Installation
+
+```bash
+pnpm add @cloudflare/kumo
+```
+
+### Peer Dependencies
+
+Kumo requires the following peer dependencies:
+
+```bash
+pnpm add react react-dom @phosphor-icons/react
+```
+
+## Usage
+
+### Import Components
+
+```tsx
+// Main package import
+import { Button, Input, Surface } from "@cloudflare/kumo";
+
+// Granular imports (recommended for tree-shaking)
+import { Button } from "@cloudflare/kumo/components/button";
+```
+
+### Import Styles
+
+```css
+/* For Tailwind CSS users */
+@import "tailwindcss";
+@import "@cloudflare/kumo/styles/tailwind";
+
+/* For non-Tailwind users */
+@import "@cloudflare/kumo/styles/standalone";
+```
+
+### Base UI Primitives
+
+Kumo bundles [Base UI](https://base-ui.com) and re-exports all primitives for advanced use cases:
+
+```tsx
+// Barrel import - imports all primitives (convenient but larger bundle)
+import { Popover, Slider, Accordion } from "@cloudflare/kumo/primitives";
+
+// Granular imports - tree-shakeable, smaller bundles (recommended)
+import { Popover } from "@cloudflare/kumo/primitives/popover";
+import { Slider } from "@cloudflare/kumo/primitives/slider";
+import { Accordion } from "@cloudflare/kumo/primitives/accordion";
+```
+
+> **Note:** Prefer styled Kumo components when available. Primitives are for custom components not yet in Kumo or cases requiring fine-grained control.
+>
+> **Performance tip:** Use granular imports (`@cloudflare/kumo/primitives/{name}`) for better tree-shaking and smaller bundle sizes.
+
+#### Updating Primitives
+
+Primitive exports are automatically generated from Base UI. After upgrading `@base-ui/react`:
+
+```bash
+# Regenerate primitive files to sync with new Base UI version
+pnpm build:primitives
+
+# Review changes (new/removed primitives)
+git diff src/primitives/
+
+# Commit if primitives changed
+git add src/primitives/ package.json
+git commit -m "chore: update primitives for base-ui@x.x.x"
+```
+
+The `build:primitives` script:
+- Generates individual primitive files in `src/primitives/*.ts`
+- Updates barrel export in `src/primitives/index.ts`
+- Updates `package.json` with granular export paths
+- Runs automatically before every build via the `prebuild` script
+
+#### Validating Build Output
+
+After building, validate the primitives output:
+
+```bash
+# Run post-build validation (checks dist/ structure)
+pnpm validate:build
+```
+
+This validates:
+- All primitive JS files exist in `dist/primitives/`
+- All type definitions exist in `dist/src/primitives/`
+- Base UI is bundled (not externalized)
+- Import paths reference bundled modules
+- Source maps are present
+
 ## Development
 
 ### Creating New Components

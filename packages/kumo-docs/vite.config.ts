@@ -17,7 +17,6 @@ export default defineConfig({
         manualChunks: {
           sandpack: ["@codesandbox/sandpack-react"],
           phosphor: ["@phosphor-icons/react"],
-          "base-ui": ["@base-ui-components/react"],
         },
       },
     },

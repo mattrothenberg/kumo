@@ -1,4 +1,4 @@
-import { Menu as DropdownMenuPrimitive } from "@base-ui-components/react/menu";
+import { Menu as DropdownMenuPrimitive } from "@base-ui/react/menu";
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { useLinkComponent } from "../../utils/link-provider";

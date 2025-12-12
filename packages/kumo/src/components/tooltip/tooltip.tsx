@@ -1,4 +1,4 @@
-import { Tooltip as TooltipBase } from "@base-ui-components/react/tooltip";
+import { Tooltip as TooltipBase } from "@base-ui/react/tooltip";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import { cn } from "../../utils/cn";
 
@@ -81,7 +81,7 @@ export function Tooltip({
         className={className}
         render={asChild ? (children as TriggerProps["render"]) : undefined}
       >
-        {asChild ? undefined : children}
+        {asChild ? undefined : (children as ReactNode)}
       </TooltipBase.Trigger>
       <TooltipBase.Portal>
         <TooltipBase.Positioner align={align} side={side} sideOffset={10}>

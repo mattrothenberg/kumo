@@ -102,9 +102,10 @@ describe.skipIf(!isBuilt)("Export Path Validation (Post-Build)", () => {
             }
           } else if (
             !importPath.includes("index.js") &&
-            !typesPath.includes("index.d.ts")
+            !typesPath.includes("index.d.ts") &&
+            !exportPath.startsWith("./primitives/")
           ) {
-            // For non-standard paths, just warn
+            // For non-standard paths, just warn (skip primitives - they use a simpler structure)
             console.warn(`\n⚠️  Non-standard path structure for ${exportPath}`);
             console.warn(`   Import: ${importPath}`);
             console.warn(`   Types:  ${typesPath}`);
@@ -118,6 +119,127 @@ describe.skipIf(!isBuilt)("Export Path Validation (Post-Build)", () => {
       }
 
       expect(inconsistencies).toEqual([]);
+    });
+  });
+
+  describe("Primitives build output validation", () => {
+    it("should have all primitive JS files in dist/primitives/", () => {
+      const primitivesDir = join(__dirname, "../../dist/primitives");
+      const primitiveExports = Object.keys(packageJson.exports).filter((key) =>
+        key.startsWith("./primitives/")
+      );
+
+      const missingFiles: string[] = [];
+      for (const exportKey of primitiveExports) {
+        const primitiveName = exportKey.replace("./primitives/", "");
+        const jsPath = join(primitivesDir, `${primitiveName}.js`);
+
+        if (!existsSync(jsPath)) {
+          missingFiles.push(`${primitiveName}.js`);
+        }
+      }
+
+      if (missingFiles.length > 0) {
+        console.error("\n❌ Missing primitive JS files in dist/primitives/:");
+        missingFiles.forEach((f) => console.error(`   - ${f}`));
+      }
+
+      expect(missingFiles).toEqual([]);
+    });
+
+    it("should have all primitive .d.ts files in dist/src/primitives/", () => {
+      const typesDir = join(__dirname, "../../dist/src/primitives");
+      const primitiveExports = Object.keys(packageJson.exports).filter((key) =>
+        key.startsWith("./primitives/")
+      );
+
+      const missingFiles: string[] = [];
+      for (const exportKey of primitiveExports) {
+        const primitiveName = exportKey.replace("./primitives/", "");
+        const dtsPath = join(typesDir, `${primitiveName}.d.ts`);
+
+        if (!existsSync(dtsPath)) {
+          missingFiles.push(`${primitiveName}.d.ts`);
+        }
+      }
+
+      if (missingFiles.length > 0) {
+        console.error("\n❌ Missing primitive type files in dist/src/primitives/:");
+        missingFiles.forEach((f) => console.error(`   - ${f}`));
+      }
+
+      expect(missingFiles).toEqual([]);
+    });
+
+    it("should have barrel export files", () => {
+      const barrelJs = join(__dirname, "../../dist/primitives.js");
+      const barrelDts = join(__dirname, "../../dist/src/primitives/index.d.ts");
+
+      expect(existsSync(barrelJs)).toBe(true);
+      expect(existsSync(barrelDts)).toBe(true);
+    });
+
+    it("should have base-ui bundled in dist (not externalized)", () => {
+      // With preserveModules: false, dependencies are bundled into chunk files
+      // Check that node_modules directory does NOT exist (proper bundling)
+      const nodeModulesDir = join(__dirname, "../../dist/node_modules");
+      
+      if (existsSync(nodeModulesDir)) {
+        console.error("\n❌ node_modules/ found in dist - dependencies not properly bundled");
+        console.error("   This creates nested paths that break Jest in downstream apps");
+        console.error("   Check vite.config.ts preserveModules setting");
+      }
+
+      // Should NOT have node_modules in dist
+      expect(existsSync(nodeModulesDir)).toBe(false);
+      
+      // Verify chunk files exist instead (bundled dependencies)
+      const distFiles = require("fs").readdirSync(join(__dirname, "../../dist"));
+      const hasChunkFiles = distFiles.some((file: string) => 
+        file.endsWith(".js") && (file.includes(".parts-") || file.startsWith("vendor-"))
+      );
+      
+      if (!hasChunkFiles) {
+        console.error("\n❌ No chunk files found - dependencies may not be bundled");
+      }
+      
+      expect(hasChunkFiles).toBe(true);
+    });
+
+    it("should have source maps for primitives", () => {
+      const primitivesDir = join(__dirname, "../../dist/primitives");
+      const primitiveExports = Object.keys(packageJson.exports).filter((key) =>
+        key.startsWith("./primitives/")
+      );
+
+      const missingMaps: string[] = [];
+      for (const exportKey of primitiveExports) {
+        const primitiveName = exportKey.replace("./primitives/", "");
+        const mapPath = join(primitivesDir, `${primitiveName}.js.map`);
+
+        if (!existsSync(mapPath)) {
+          missingMaps.push(`${primitiveName}.js.map`);
+        }
+      }
+
+      // Source maps are nice-to-have, just warn if missing
+      if (missingMaps.length > 0) {
+        console.warn(`\n⚠️  ${missingMaps.length} primitive source maps missing`);
+      }
+
+      // We expect source maps in production builds
+      expect(missingMaps.length).toBeLessThan(primitiveExports.length / 2);
+    });
+
+    it("primitive JS files should import from bundled chunks", async () => {
+      const sliderJs = join(__dirname, "../../dist/primitives/slider.js");
+      const content = readFileSync(sliderJs, "utf-8");
+
+      // Should import from bundled chunk files (e.g., index.parts-*.js), not external packages
+      expect(content).toMatch(/from\s+["']\.\.\/.+\.js["']/);
+      
+      // Should NOT import directly from @base-ui-components (would indicate externalization)
+      expect(content).not.toMatch(/from\s+['"]@base-ui-components\/react/);
     });
   });
 

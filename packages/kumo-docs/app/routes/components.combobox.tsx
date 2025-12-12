@@ -52,7 +52,7 @@ function App() {
   const [value, setValue] = useState<string | null>("Apple");
 
   return (
-    <Combobox value={value} onValueChange={setValue} items={fruits}>  
+    <Combobox value={value} onValueChange={(v) => setValue(v as any)} items={fruits}>  
       <Combobox.TriggerInput placeholder="Please select" />
       <Combobox.Content>
         <Combobox.Empty />
@@ -83,7 +83,7 @@ const fruits = [
 ];
 `}
       >
-        <Combobox value={value} onValueChange={setValue} items={fruits}>
+        <Combobox value={value} onValueChange={(v) => setValue(v as any)} items={fruits}>
           <Combobox.TriggerInput placeholder="Please select" />
           <Combobox.Content>
             <Combobox.Empty />
@@ -115,12 +115,12 @@ function ExampleInputInsidePopup() {
       </p>
       <ComponentExample
         code={`function App() {
-  const [value, setValue] = useState<string | null>("option2");
+  const [value, setValue] = useState<Language | null>(languages[0]);
 
   return (
     <Combobox
       value={value}
-      onValueChange={setValue}
+      onValueChange={(v) => setValue(v)}
       items={languages}
     >
       <Combobox.TriggerValue className="w-[200px]" />
@@ -155,7 +155,7 @@ const languages: Language[] = [
 ];
 `}
       >
-        <Combobox value={value} onValueChange={setValue} items={languages}>
+        <Combobox value={value} onValueChange={(v) => setValue(v as any)} items={languages}>
           <Combobox.TriggerValue className="w-[200px]" />
           <Combobox.Content>
             <Combobox.Input placeholder="Please select" />
@@ -227,7 +227,7 @@ function App() {
   const [value, setValue] = useState<string | null>("singapore");
 
   return (
-    <Combobox value={value} onValueChange={setValue} items={server}>
+    <Combobox value={value} onValueChange={(v) => setValue(v as any)} items={server}>
       <Combobox.TriggerValue className="w-[200px]" />
       <Combobox.Content>
         <Combobox.Empty />
@@ -282,7 +282,7 @@ interface ServerLocationGroup {
 }
 `}
       >
-        <Combobox value={value} onValueChange={setValue} items={server}>
+        <Combobox value={value} onValueChange={(v) => setValue(v as any)} items={server}>
           <Combobox.TriggerInput
             className="w-[200px]"
             placeholder="Select server"
@@ -330,7 +330,7 @@ function App() {
   const [value, setValue] = useState<string[]>(["Apple", "Orange"]);
   
   return (
-    <Combobox multiple value={value} onValueChange={setValue} items={fruits}>
+    <Combobox multiple value={value} onValueChange={(v) => setValue(v as any)} items={fruits}>
       <Combobox.TriggerMultipleInput 
         placeholder="Select fruit"
         renderItem={(selected: string) => (
@@ -367,7 +367,7 @@ const fruits = [
       >
         <Combobox
           value={value}
-          onValueChange={setValue}
+          onValueChange={(v) => setValue(v as any)}
           items={fruits}
           multiple
         >
@@ -428,7 +428,7 @@ function ExampleMultiple2() {
       <ComponentExample code={``}>
         <Combobox
           value={value}
-          onValueChange={setValue}
+          onValueChange={(v) => setValue(v as any)}
           items={botList}
           isItemEqualToValue={(bot, selectedValue) =>
             bot.value === selectedValue.value

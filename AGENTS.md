@@ -325,7 +325,7 @@ Button.displayName = "Button";
 Components are built on Base UI primitives:
 
 ```tsx
-import { Dialog as DialogBase } from "@base-ui-components/react";
+import { Dialog as DialogBase } from "@base-ui/react/dialog";
 
 function DialogContent({ children }) {
   return (

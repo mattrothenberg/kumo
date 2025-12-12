@@ -1,12 +1,33 @@
 import { defineConfig } from "vite";
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
+import { readdirSync } from "fs";
 import dts from "vite-plugin-dts";
 import preserveDirectives from "rollup-plugin-preserve-directives";
 import { rebuildSignalPlugin } from "./vite-plugin-rebuild-signal";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+// Dynamically discover primitive files
+function getPrimitiveEntries() {
+  const primitivesDir = resolve(__dirname, "src/primitives");
+  const entries: Record<string, string> = {};
+  
+  try {
+    const files = readdirSync(primitivesDir);
+    for (const file of files) {
+      if (file.endsWith(".ts") && file !== "index.ts") {
+        const name = file.replace(".ts", "");
+        entries[`primitives/${name}`] = resolve(primitivesDir, file);
+      }
+    }
+  } catch (e) {
+    // Primitives directory doesn't exist yet (first build)
+  }
+  
+  return entries;
+}
 
 export default defineConfig(({ mode }) => {
   const isDev = mode === "development";
@@ -29,6 +50,8 @@ export default defineConfig(({ mode }) => {
         entry: {
           // Main entry point
           index: resolve(__dirname, "src/index.ts"),
+          // Dynamically add primitive entries
+          ...getPrimitiveEntries(),
           // Component entry points
           "components/badge": resolve(
             __dirname,
@@ -142,6 +165,8 @@ export default defineConfig(({ mode }) => {
           // PLOP_INJECT_LAYOUT_ENTRY
           // Utils entry point
           utils: resolve(__dirname, "src/utils/index.ts"),
+          // Primitives entry point (base-ui re-exports)
+          primitives: resolve(__dirname, "src/primitives/index.ts"),
         },
         formats: ["es"],
         fileName: (format, entryName) => {
@@ -151,15 +176,55 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         // Externalize dependencies that shouldn't be bundled
         external: (id) => {
-          // Externalize all node_modules dependencies
-          return !id.startsWith(".") && !id.startsWith("/");
+          // Only externalize peer dependencies - bundle everything else
+          switch (true) {
+            case id === "react":
+            case id.startsWith("react/"):
+            case id === "react-dom":
+            case id.startsWith("react-dom/"):
+            case id === "@phosphor-icons/react":
+              return true;
+            default:
+              // Bundle all node_modules dependencies (don't externalize them)
+              // This includes @base-ui-components and its transitive deps (tabbable, floating-ui, etc)
+              return false;
+          }
         },
         output: {
-          // Preserve module structure for better tree-shaking and debugging
-          preserveModules: true,
-          preserveModulesRoot: "src",
+          // Don't preserve modules - bundle dependencies into flat output
+          // This avoids nested node_modules/.pnpm/ paths in dist that break Jest
+          preserveModules: false,
           // Hoist "use client" directives to the top of chunks
           hoistTransitiveImports: false,
+          // Add "use client" directive to all output chunks
+          // This is necessary because rollup-plugin-preserve-directives only works with preserveModules: true
+          banner: (chunk) => {
+            // Add "use client" to all chunks since this is a client-side component library
+            // RSC apps will need this directive on all components that use hooks/events
+            return '"use client";\n';
+          },
+          // Manual chunks for better code splitting
+          manualChunks: (id) => {
+            // Vendor chunks for large dependencies
+            if (id.includes('node_modules')) {
+              // clsx + tailwind-merge utilities
+              if (id.includes('clsx') || id.includes('tailwind-merge')) {
+                return 'vendor-styling';
+              }
+              // Floating UI positioning libraries
+              if (id.includes('@floating-ui')) {
+                return 'vendor-floating-ui';
+              }
+              // Base UI components
+              if (id.includes('@base-ui')) {
+                return 'vendor-base-ui';
+              }
+              // Other vendor dependencies
+              if (id.includes('tabbable') || id.includes('use-sync-external-store') || id.includes('reselect')) {
+                return 'vendor-utils';
+              }
+            }
+          },
           // Global variables for UMD build (if needed)
           globals: {
             react: "React",
@@ -167,7 +232,9 @@ export default defineConfig(({ mode }) => {
             "react/jsx-runtime": "jsxRuntime",
           },
         },
-        plugins: [preserveDirectives()],
+        // Note: preserveDirectives plugin removed - it only works with preserveModules: true
+        // We use output.banner instead to add "use client" to all chunks
+        plugins: [],
         // Enable Rollup caching for faster rebuilds
         cache: isDev,
       },

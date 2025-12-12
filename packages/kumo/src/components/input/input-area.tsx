@@ -2,7 +2,7 @@ import { inputVariants } from "./input";
 import { cn } from "../../utils/cn";
 import { useCallback } from "react";
 import * as React from "react";
-import { Field } from "@base-ui-components/react";
+import { Field } from "@base-ui/react/field";
 
 export const InputArea = React.forwardRef<HTMLTextAreaElement, InputAreaProps>(
   (props, ref) => {
