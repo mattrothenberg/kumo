@@ -20,7 +20,7 @@ export const KUMO_BADGE_VARIANTS = {
       description: "Bordered badge with transparent background",
     },
     beta: {
-      classes: "border border-dashed border-primary bg-transparent text-beta",
+      classes: "border border-dashed border-primary bg-transparent text-info",
       description: "Indicates beta or experimental features",
     },
   },

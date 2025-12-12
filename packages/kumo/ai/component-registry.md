@@ -1,7 +1,7 @@
 # Kumo Component Registry
 
 > Auto-generated component metadata for AI/agent consumption.
-> Generated: 2025-12-11T23:58:23.893Z
+> Generated: 2025-12-12T17:19:16.066Z
 
 
 ## Styling Guide
@@ -30,8 +30,7 @@
 |-------|------------|------|-------------|
 | **Error** | `bg-error-surface` | `text-error` | `ring-destructive` |
 | **Warning** | `bg-alert-surface` | `text-alert` | `ring-alert-border` |
-| **Success** | — | `text-success` | — |
-| **Info** | `bg-info-surface` | `text-info` | `ring-info-border` |
+| **Success** | — | `text-info` | — |
 
 ### Surface Hierarchy
 
@@ -51,7 +50,7 @@ Most frequently used tokens across Kumo components:
 | Category | Top Tokens |
 |----------|------------|
 | **Background** | `bg-secondary`, `bg-surface`, `bg-color-3`, `bg-color`, `bg-accent` |
-| **Text** | `text-surface`, `text-secondary`, `text-muted`, `text-white`, `text-error` |
+| **Text** | `text-surface`, `text-secondary`, `text-muted`, `text-info`, `text-white` |
 | **Border/Ring** | `ring-border`, `ring-active`, `ring-destructive`, `ring-color` |
 
 ---
@@ -60,7 +59,7 @@ Most frequently used tokens across Kumo components:
 
 > Use the Quick Reference table above for common cases. This section lists all available tokens.
 
-**Text:** `text-alert`, `text-beta`, `text-brand`, `text-calendar-day-range-selected-endpoints`, `text-calendar-day-range-selected-out-of-range`, `text-calendar-reset`, `text-disabled`, `text-error`, and 15 more
+**Text:** `text-alert`, `text-brand`, `text-calendar-day-range-selected-endpoints`, `text-calendar-day-range-selected-out-of-range`, `text-calendar-reset`, `text-disabled`, `text-error`, `text-green`, and 13 more
 
 **Background:** `bg-accent`, `bg-active`, `bg-alert-border`, `bg-alert-selection`, `bg-alert-surface`, `bg-black-icon`, `bg-border`, `bg-calendar`, and 27 more
 
@@ -93,7 +92,7 @@ Badge component
 
 **Colors (kumo tokens used):**
 
-`bg-color`, `bg-destructive`, `bg-surface-inverse`, `border-color`, `border-primary`, `text-beta`, `text-surface`, `text-surface-inverse`, `text-white`
+`bg-color`, `bg-destructive`, `bg-surface-inverse`, `border-color`, `border-primary`, `text-info`, `text-surface`, `text-surface-inverse`, `text-white`
 
 **Examples:**
 
@@ -931,7 +930,7 @@ Expandable component
 
 **Colors (kumo tokens used):**
 
-`border-color`, `text-success`
+`border-color`, `text-info`
 
 **Examples:**
 
@@ -1054,7 +1053,9 @@ function InputGroupExamplesRender() {
 
         {/* Prefix label with suffix description - common for currency inputs */}
         <div className="space-y-1">
-          <p className="text-center text-sm text-muted">Label with description</p>
+          <p className="text-center text-sm text-muted">
+            Label with description
+          </p>
           <InputGroup>
             <InputGroup.Label>$</InputGroup.Label>
             <InputGroup.Input placeholder="0.00" type="number" />
@@ -1088,7 +1089,7 @@ function InputGroupExamplesRender() {
           </InputGroup>
           <p
             aria-live="polite"
-            className={`text-sm ${status === "available" ? "text-success" : status === "error" || status === "taken" ? "text-error" : "text-muted"}`}
+            className={`text-sm ${status === "available" ? "text-info" : status === "error" || status === "taken" ? "text-error" : "text-muted"}`}
           >
             {statusText[status]}
           </p>
@@ -1687,7 +1688,7 @@ Text component
 
 **Colors (kumo tokens used):**
 
-`text-error`, `text-muted`, `text-success`, `text-surface`
+`text-error`, `text-info`, `text-muted`, `text-surface`
 
 **Examples:**
 
