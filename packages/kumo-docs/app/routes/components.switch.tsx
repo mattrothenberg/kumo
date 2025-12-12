@@ -13,9 +13,9 @@ export default function SwitchDoc() {
       {/* Demo */}
       <ComponentSection>
         <ComponentExample
-          code={`<Switch toggled={false} onClick={() => {}} />`}
+          code={`<Switch label="Switch" checked={false} onCheckedChange={() => {}} />`}
         >
-          <Switch toggled={false} onClick={() => {}} />
+          <Switch label="Switch" checked={false} onCheckedChange={() => {}} />
         </ComponentExample>
       </ComponentSection>
 
@@ -43,12 +43,12 @@ export default function SwitchDoc() {
 import { useState } from "react";
 
 export default function Example() {
-  const [toggled, setToggled] = useState(false);
+  const [checked, setChecked] = useState(false);
   
   return (
     <Switch 
-      toggled={toggled} 
-      onClick={() => setToggled(!toggled)} 
+      checked={checked} 
+      onCheckedChange={(val) => setChecked(val)} 
     />
   );
 }`}
@@ -63,18 +63,18 @@ export default function Example() {
           <div>
             <h3 className="mb-4 text-xl font-semibold">Off State</h3>
             <ComponentExample
-              code={`<Switch toggled={false} onClick={() => {}} />`}
+              code={`<Switch label="Switch" checked={false} onCheckedChange={() => {}} />`}
             >
-              <Switch toggled={false} onClick={() => {}} />
+              <Switch label="Switch" checked={false} onCheckedChange={() => {}} />
             </ComponentExample>
           </div>
 
           <div>
             <h3 className="mb-4 text-xl font-semibold">On State</h3>
             <ComponentExample
-              code={`<Switch toggled={true} onClick={() => {}} />`}
+              code={`<Switch label="Switch" checked={true} onCheckedChange={() => {}} />`}
             >
-              <Switch toggled={true} onClick={() => {}} />
+              <Switch label="Switch" checked={true} onCheckedChange={() => {}} />
             </ComponentExample>
           </div>
         </div>
@@ -94,7 +94,7 @@ export default function Example() {
             </thead>
             <tbody className="text-neutral-600 dark:text-neutral-400">
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                <td className="px-4 py-3 font-mono text-xs">toggled</td>
+                <td className="px-4 py-3 font-mono text-xs">checked</td>
                 <td className="px-4 py-3 font-mono text-xs">boolean</td>
                 <td className="px-4 py-3 font-mono text-xs">false</td>
               </tr>

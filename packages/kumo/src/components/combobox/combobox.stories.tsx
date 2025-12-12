@@ -184,3 +184,136 @@ export const MultipleWithPreselectedChips: Story = {
     );
   },
 };
+
+export const WithLabel: Story = {
+  render: () => {
+    const items = useMemo(() => {
+      return [
+        { value: "us", label: "United States" },
+        { value: "uk", label: "United Kingdom" },
+        { value: "ca", label: "Canada" },
+        { value: "au", label: "Australia" },
+        { value: "de", label: "Germany" },
+        { value: "fr", label: "France" },
+      ];
+    }, []);
+
+    const [value, setValue] = useState<(typeof items)[number] | null>(null);
+
+    return (
+      <Combobox
+        items={items}
+        value={value}
+        onValueChange={setValue}
+        label="Country"
+        description="Select your country of residence"
+      >
+        <Combobox.TriggerInput placeholder="Select country" />
+        <Combobox.Content>
+          <Combobox.Empty />
+          <Combobox.List>
+            {(item: (typeof items)[number]) => {
+              return (
+                <Combobox.Item key={item.value} value={item}>
+                  {item.label}
+                </Combobox.Item>
+              );
+            }}
+          </Combobox.List>
+        </Combobox.Content>
+      </Combobox>
+    );
+  },
+};
+
+export const WithError: Story = {
+  render: () => {
+    const items = useMemo(() => {
+      return [
+        { value: "starter", label: "Starter Plan" },
+        { value: "professional", label: "Professional Plan" },
+        { value: "enterprise", label: "Enterprise Plan" },
+      ];
+    }, []);
+
+    const [value, setValue] = useState<(typeof items)[number] | null>(null);
+
+    return (
+      <Combobox
+        items={items}
+        value={value}
+        onValueChange={setValue}
+        label="Subscription Plan"
+        description="Choose a plan that fits your needs"
+        error={{ message: "Please select a plan to continue", match: true }}
+      >
+        <Combobox.TriggerInput placeholder="Select plan" />
+        <Combobox.Content>
+          <Combobox.Empty />
+          <Combobox.List>
+            {(item: (typeof items)[number]) => {
+              return (
+                <Combobox.Item key={item.value} value={item}>
+                  {item.label}
+                </Combobox.Item>
+              );
+            }}
+          </Combobox.List>
+        </Combobox.Content>
+      </Combobox>
+    );
+  },
+};
+
+export const MultipleWithLabel: Story = {
+  render: () => {
+    const botList = useMemo(
+      () => [
+        { label: "Amazonbot", author: "Amazon", value: "amazonbot" },
+        { label: "Googlebot", author: "Google", value: "googlebot" },
+        { label: "BingBot", author: "Bing", value: "bingbot" },
+        { label: "CCBot", author: "Common Crawl", value: "ccbot" },
+        { label: "DuckDuckBot", author: "DuckDuckGo", value: "duckduckbot" },
+      ],
+      [],
+    );
+
+    const [value, setValue] = useState<BotType[]>([]);
+
+    return (
+      <Combobox
+        value={value}
+        onValueChange={setValue}
+        items={botList}
+        isItemEqualToValue={(bot, selectedValue) =>
+          bot.value === selectedValue.value
+        }
+        multiple
+        label="Bot Management"
+        description="Select which bots are allowed to crawl your site"
+      >
+        <Combobox.TriggerMultipleWithInput
+          className="w-[400px]"
+          placeholder="Select bots"
+          renderItem={(selected: BotType) => (
+            <Combobox.Chip key={selected.value}>{selected.label}</Combobox.Chip>
+          )}
+          inputSide="right"
+        />
+        <Combobox.Content className="max-h-[200px] min-w-auto overflow-y-auto">
+          <Combobox.Empty />
+          <Combobox.List>
+            {(item: BotType) => (
+              <Combobox.Item key={item.value} value={item}>
+                <div className="flex gap-2">
+                  <Text>{item.label}</Text>
+                  <Text variant="secondary">{item.author}</Text>
+                </div>
+              </Combobox.Item>
+            )}
+          </Combobox.List>
+        </Combobox.Content>
+      </Combobox>
+    );
+  },
+};

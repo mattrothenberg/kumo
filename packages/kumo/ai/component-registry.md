@@ -1,7 +1,7 @@
 # Kumo Component Registry
 
 > Auto-generated component metadata for AI/agent consumption.
-> Generated: 2025-12-12T17:19:16.066Z
+> Generated: 2025-12-12T17:42:40.768Z
 
 
 ## Styling Guide
@@ -49,8 +49,8 @@ Most frequently used tokens across Kumo components:
 
 | Category | Top Tokens |
 |----------|------------|
-| **Background** | `bg-secondary`, `bg-surface`, `bg-color-3`, `bg-color`, `bg-accent` |
-| **Text** | `text-surface`, `text-secondary`, `text-muted`, `text-info`, `text-white` |
+| **Background** | `bg-secondary`, `bg-surface`, `bg-color-3`, `bg-color`, `bg-destructive` |
+| **Text** | `text-surface`, `text-muted`, `text-secondary`, `text-error`, `text-info` |
 | **Border/Ring** | `ring-border`, `ring-active`, `ring-destructive`, `ring-color` |
 
 ---
@@ -346,16 +346,12 @@ Checkbox component
   - `"default"`: Default checkbox appearance
   - `"error"`: Error state for validation failures
 - `label`: string
+  Label text for the checkbox (enables built-in Field wrapper)
+- `controlFirst`: boolean
+  When true (default), checkbox appears before label. When false, label appears before checkbox.
 - `checked`: boolean
 - `indeterminate`: boolean
 - `disabled`: boolean
-- `children`: ReactNode
-- `onChange`: React.ChangeEventHandler<HTMLInputElement>
-- `onSubmit`: React.FormEventHandler<HTMLInputElement>
-- `onClick`: React.MouseEventHandler<HTMLInputElement>
-- `className`: string
-- `id`: string
-- `title`: string
 - `name`: string
 - `placeholder`: string
 - `readOnly`: boolean
@@ -363,35 +359,321 @@ Checkbox component
 - `size`: number
 - `type`: React.HTMLInputTypeAttribute
 - `value`: string | string[] | number
+- `onChange`: React.ChangeEventHandler<HTMLInputElement>
+- `className`: string
+- `id`: string
+- `title`: string
+- `onSubmit`: React.FormEventHandler<HTMLInputElement>
+- `onClick`: React.MouseEventHandler<HTMLInputElement>
 
 **Colors (kumo tokens used):**
 
-`bg-surface`, `bg-surface-inverse`, `ring-active`, `ring-border`, `ring-destructive`, `text-surface`, `text-surface-inverse`
+`bg-surface`, `bg-surface-inverse`, `border-border`, `ring-active`, `ring-border`, `ring-destructive`, `text-error`, `text-muted`, `text-surface`, `text-surface-inverse`
+
+**Sub-Components:**
+
+This is a compound component. Use these sub-components:
+
+#### Checkbox.Item
+
+Item sub-component
+
+#### Checkbox.Group
+
+Group sub-component
+
+Props:
+- `legend`: string (required)
+- `children`: ReactNode (required)
+- `error`: string
+- `description`: ReactNode
+- `value`: string[]
+- `allValues`: string[]
+- `disabled`: boolean
+- `controlFirst`: boolean
+- `className`: string
+
 
 **Examples:**
 
 ```tsx
-<Checkbox variant="default" label="Checkbox" />
+<div className="flex flex-col gap-4">
+      {Object.keys(KUMO_CHECKBOX_VARIANTS.variant).map((variant) => (
+        <div
+          key={variant}
+          className="border border-dotted border-color bg-surface p-4"
+        >
+          <div className="mb-2 font-sans text-sm leading-5 font-light tracking-wide text-muted-2 uppercase">
+            {variant}
+          </div>
+          <Checkbox label="Checkbox variant" variant={variant as any} />
+        </div>
+      ))}
+    </div>
 ```
 
 ```tsx
-<Checkbox label="Checked" checked={true} />
+<Checkbox label="I'm checked" checked={true} />
 ```
 
 ```tsx
-<Checkbox label="Indeterminate" indeterminate={true} />
+<Checkbox label="Indeterminate state" indeterminate={true} />
 ```
 
 ```tsx
-<Checkbox label="Disabled" disabled={true} />
+<div className="flex flex-col gap-4">
+      {[false, true, "indeterminate"].map((state) => (
+        <Checkbox
+          key={String(state)}
+          label={`Disabled (${state === "indeterminate" ? "indeterminate" : state ? "checked" : "unchecked"})`}
+          checked={state === true}
+          indeterminate={state === "indeterminate"}
+          disabled
+        />
+      ))}
+    </div>
 ```
 
 ```tsx
-<Checkbox label="Checked & Disabled" checked={true} disabled={true} />
+<div className="flex flex-col gap-4">
+      {[false, true].map((checked) => (
+        <Checkbox
+          key={String(checked)}
+          label={`Error (${checked ? "checked" : "unchecked"})`}
+          variant="error"
+          checked={checked}
+        />
+      ))}
+    </div>
 ```
 
 ```tsx
-<Checkbox label="Indeterminate & Disabled" indeterminate={true} disabled={true} />
+<Checkbox label="Label first" controlFirst={false} />
+```
+
+```tsx
+<Checkbox.Group legend="Choose your preferences">
+      <Checkbox.Item label="Email notifications" name="preferences" />
+      <Checkbox.Item label="SMS notifications" name="preferences" />
+      <Checkbox.Item label="Push notifications" name="preferences" />
+    </Checkbox.Group>
+```
+
+```tsx
+<Checkbox.Group
+      legend="Required preferences"
+      error="You must select at least one notification method"
+    >
+      <Checkbox.Item label="Email notifications" name="preferences" />
+      <Checkbox.Item label="SMS notifications" name="preferences" />
+      <Checkbox.Item label="Push notifications" name="preferences" />
+    </Checkbox.Group>
+```
+
+```tsx
+<Checkbox.Group
+      legend="Notification settings"
+      description="Choose how you want to be notified about important updates"
+    >
+      <Checkbox.Item label="Email notifications" value="email" />
+      <Checkbox.Item label="SMS notifications" value="sms" />
+      <Checkbox.Item label="Push notifications" value="push" />
+    </Checkbox.Group>
+```
+
+```tsx
+<Checkbox.Group
+      legend="Marketing preferences"
+      description="Pre-selected with email notifications enabled"
+      defaultValue={["email"]}
+    >
+      <Checkbox.Item label="Email notifications" value="email" />
+      <Checkbox.Item label="SMS notifications" value="sms" />
+      <Checkbox.Item label="Push notifications" value="push" />
+    </Checkbox.Group>
+```
+
+```tsx
+<div className="flex flex-col gap-4">
+        <Checkbox.Group
+          legend="Notification preferences"
+          description="Controlled state - selected values shown below"
+          value={value}
+          onValueChange={setValue}
+        >
+          <Checkbox.Item label="Email notifications" value="email" />
+          <Checkbox.Item label="SMS notifications" value="sms" />
+          <Checkbox.Item label="Push notifications" value="push" />
+        </Checkbox.Group>
+        <div className="rounded-md bg-surface-elevated p-4">
+          <div className="mb-2 text-sm font-medium text-surface">Selected:</div>
+          <code className="text-sm text-muted">{JSON.stringify(value)}</code>
+        </div>
+      </div>
+```
+
+```tsx
+<div className="flex flex-col gap-8">
+      {/* English (LTR) - Control First: Checkbox → Label */}
+      <fieldset className="rounded border border-border p-4">
+        <legend className="px-2 text-base font-semibold text-surface">
+          English (Checkbox → Label)
+        </legend>
+        <div className="mt-4 flex flex-col gap-4">
+          <Checkbox label="Checkbox is unchecked" controlFirst={true} />
+          <Checkbox
+            label="Checkbox is unchecked and disabled"
+            disabled
+            controlFirst={true}
+          />
+          <Checkbox label="Checkbox is checked" checked controlFirst={true} />
+          <Checkbox
+            label="Checkbox is checked and disabled"
+            checked
+            disabled
+            controlFirst={true}
+          />
+        </div>
+      </fieldset>
+
+      {/* Spanish (LTR) - Label First: Label → Checkbox */}
+      <fieldset className="rounded border border-border p-4">
+        <legend className="px-2 text-base font-semibold text-surface">
+          Español (Etiqueta → Casilla de verificación)
+        </legend>
+        <div className="mt-4 flex flex-col gap-4">
+          <Checkbox label="La casilla está desmarcada" controlFirst={false} />
+          <Checkbox
+            label="La casilla está desmarcada y deshabilitada"
+            disabled
+            controlFirst={false}
+          />
+          <Checkbox
+            label="La casilla está marcada"
+            checked
+            controlFirst={false}
+          />
+          <Checkbox
+            label="La casilla está marcada y deshabilitada"
+            checked
+            disabled
+            controlFirst={false}
+          />
+        </div>
+      </fieldset>
+
+      {/* Arabic (RTL) - Control First: Checkbox → Label */}
+      <fieldset className="rounded border border-border p-4" dir="rtl">
+        <legend className="px-2 text-base font-semibold text-surface">
+          العربية (مربع الاختيار ← التسمية)
+        </legend>
+        <div className="mt-4 flex flex-col gap-4">
+          <Checkbox label="مربع الاختيار غير محدد" controlFirst={true} />
+          <Checkbox
+            label="مربع الاختيار غير محدد ومعطل"
+            disabled
+            controlFirst={true}
+          />
+          <Checkbox label="مربع الاختيار محدد" checked controlFirst={true} />
+          <Checkbox
+            label="مربع الاختيار محدد ومعطل"
+            checked
+            disabled
+            controlFirst={true}
+          />
+        </div>
+      </fieldset>
+
+      {/* Hebrew (RTL) - Label First: Label → Checkbox */}
+      <fieldset className="rounded border border-border p-4" dir="rtl">
+        <legend className="px-2 text-base font-semibold text-surface">
+          עברית (תווית ← תיבת סימון)
+        </legend>
+        <div className="mt-4 flex flex-col gap-4">
+          <Checkbox label="תיבת הסימון לא מסומנת" controlFirst={false} />
+          <Checkbox
+            label="תיבת הסימון לא מסומנת ומושבתת"
+            disabled
+            controlFirst={false}
+          />
+          <Checkbox label="תיבת הסימון מסומנת" checked controlFirst={false} />
+          <Checkbox
+            label="תיבת הסימון מסומנת ומושבתת"
+            checked
+            disabled
+            controlFirst={false}
+          />
+        </div>
+      </fieldset>
+    </div>
+```
+
+```tsx
+<div className="flex flex-col gap-8">
+      {/* English (LTR) - Control First: Checkbox → Label */}
+      <div>
+        <Checkbox.Group legend="English (Checkbox → Label)" controlFirst={true}>
+          <Checkbox.Item label="Email notifications" value="email" />
+          <Checkbox.Item label="SMS notifications" value="sms" />
+          <Checkbox.Item label="Push notifications" value="push" />
+          <Checkbox.Item label="In-app notifications" value="in-app" disabled />
+        </Checkbox.Group>
+      </div>
+
+      {/* Spanish (LTR) - Label First: Label → Checkbox */}
+      <div>
+        <Checkbox.Group
+          legend="Español (Etiqueta → Casilla de verificación)"
+          controlFirst={false}
+        >
+          <Checkbox.Item
+            label="Notificaciones por correo electrónico"
+            value="email"
+          />
+          <Checkbox.Item label="Notificaciones por SMS" value="sms" />
+          <Checkbox.Item label="Notificaciones push" value="push" />
+          <Checkbox.Item
+            label="Notificaciones en la aplicación"
+            value="in-app"
+            disabled
+          />
+        </Checkbox.Group>
+      </div>
+
+      {/* Arabic (RTL) - Control First: Checkbox → Label */}
+      <div dir="rtl">
+        <Checkbox.Group
+          legend="العربية (مربع الاختيار ← التسمية)"
+          controlFirst={true}
+        >
+          <Checkbox.Item label="إشعارات البريد الإلكتروني" value="email" />
+          <Checkbox.Item label="إشعارات الرسائل القصيرة" value="sms" />
+          <Checkbox.Item label="الإشعارات الفورية" value="push" />
+          <Checkbox.Item
+            label="الإشعارات داخل التطبيق"
+            value="in-app"
+            disabled
+          />
+        </Checkbox.Group>
+      </div>
+
+      {/* Hebrew (RTL) - Label First: Label → Checkbox */}
+      <div dir="rtl">
+        <Checkbox.Group
+          legend="עברית (תווית ← תיבת סימון)"
+          controlFirst={false}
+        >
+          <Checkbox.Item label="התראות אימייל" value="email" />
+          <Checkbox.Item label="התראות SMS" value="sms" />
+          <Checkbox.Item label="התראות דחיפה" value="push" />
+          <Checkbox.Item
+            label="התראות בתוך האפליקציה"
+            value="in-app"
+            disabled
+          />
+        </Checkbox.Group>
+      </div>
+    </div>
 ```
 
 
@@ -495,6 +777,12 @@ Combobox component
   Combobox content (trigger, content, items)
 - `className`: string
   Additional CSS classes
+- `label`: string
+  Label text for the combobox (enables Field wrapper)
+- `description`: ReactNode
+  Helper text displayed below the combobox
+- `error`: string | object
+  Error message or validation error object
 - `onValueChange`: (value: T | T[]) => void
   Callback when selection changes
 - `multiple`: boolean
@@ -595,6 +883,55 @@ Usage:
 ```tsx
 <Combobox items={items} value={value} onValueChange={setValue}>
         <Combobox.TriggerInput placeholder="Please select database" />
+        <Combobox.Content>
+          <Combobox.Empty />
+          <Combobox.List>
+            {(item: (typeof items)[number]) => {
+              return (
+                <Combobox.Item key={item.value} value={item}>
+                  {item.label}
+                </Combobox.Item>
+              );
+            }}
+          </Combobox.List>
+        </Combobox.Content>
+      </Combobox>
+```
+
+```tsx
+<Combobox
+        items={items}
+        value={value}
+        onValueChange={setValue}
+        label="Country"
+        description="Select your country of residence"
+      >
+        <Combobox.TriggerInput placeholder="Select country" />
+        <Combobox.Content>
+          <Combobox.Empty />
+          <Combobox.List>
+            {(item: (typeof items)[number]) => {
+              return (
+                <Combobox.Item key={item.value} value={item}>
+                  {item.label}
+                </Combobox.Item>
+              );
+            }}
+          </Combobox.List>
+        </Combobox.Content>
+      </Combobox>
+```
+
+```tsx
+<Combobox
+        items={items}
+        value={value}
+        onValueChange={setValue}
+        label="Subscription Plan"
+        description="Choose a plan that fits your needs"
+        error={{ message: "Please select a plan to continue", match: true }}
+      >
+        <Combobox.TriggerInput placeholder="Select plan" />
         <Combobox.Content>
           <Combobox.Empty />
           <Combobox.List>
@@ -953,6 +1290,8 @@ Field component
 
 **Props:**
 
+- `controlFirst`: boolean
+  When true, places the control (checkbox/switch) before the label visually. When false (default), places the label before the control. Used to support different layout patterns (e.g., iOS-style toggles on the right).
 - `children`: ReactNode
 - `label`: string (required)
 - `error`: object
@@ -960,31 +1299,7 @@ Field component
 
 **Colors (kumo tokens used):**
 
-`text-error`, `text-muted`
-
-**Examples:**
-
-```tsx
-<Field label="Email" description="Enter your email address">
-      <Input placeholder="email@example.com" />
-    </Field>
-```
-
-```tsx
-<Field label="Email" description="Enter your email address">
-      <Input name="custom–name" placeholder="email@example.com" />
-    </Field>
-```
-
-```tsx
-<Field
-      label="Email"
-      error={{ message: "Invalid email address", match: true }}
-    >
-      <Input placeholder="email@example.com" variant="error" />
-    </Field>
-```
-
+`text-error`, `text-muted`, `text-surface`
 
 ---
 
@@ -998,6 +1313,12 @@ Input component
 
 **Props:**
 
+- `label`: string
+  Label text for the input (enables Field wrapper)
+- `description`: ReactNode
+  Helper text displayed below the input
+- `error`: string | object
+  Error message or validation error object
 - `size`: enum [default: base]
   - `"xs"`: Extra small input for compact UIs
   - `"sm"`: Small input for secondary fields
@@ -1012,6 +1333,28 @@ Input component
 `bg-secondary`, `ring-active`, `ring-border`, `ring-destructive`, `text-muted`, `text-surface`
 
 **Examples:**
+
+```tsx
+<Input
+      label="Email"
+      placeholder="Enter your email"
+      description="We'll never share your email with anyone else"
+    />
+```
+
+```tsx
+<Input
+      label="Email"
+      placeholder="Invalid input"
+      defaultValue="error@example.com"
+      variant="error"
+      error="Please enter a valid email address"
+    />
+```
+
+```tsx
+<Input label="Disabled Field" placeholder="Disabled input" disabled />
+```
 
 ```tsx
 function InputGroupExamplesRender() {
@@ -1137,6 +1480,10 @@ function InputGroupExamplesRender() {
         </InputGroup>
       </div>
     </div>
+```
+
+```tsx
+<Input placeholder="Input without Field wrapper" />
 ```
 
 
@@ -1425,7 +1772,7 @@ Select component
 - `className`: string
   Additional CSS classes
 - `label`: string
-  Label text for the select
+  Label text for the select (enables Field wrapper)
 - `hideLabel`: boolean
   Whether to visually hide the label (still accessible to screen readers)
 - `placeholder`: string
@@ -1438,6 +1785,10 @@ Select component
   The currently selected value
 - `children`: ReactNode
   Child elements (Select.Option components)
+- `description`: ReactNode
+  Helper text displayed below the select
+- `error`: string | object
+  Error message or validation error object
 - `onValueChange`: (value: string) => void
   Callback when selection changes
 - `defaultValue`: string
@@ -1463,6 +1814,67 @@ Option sub-component
       <Select.Option value="1">Option 1</Select.Option>
       <Select.Option value="2">Option 2</Select.Option>
       <Select.Option value="3">Option 3</Select.Option>
+    </Select>
+```
+
+```tsx
+<Select
+      label="Country"
+      hideLabel={false}
+      placeholder="Select a country"
+      description="Choose your country of residence"
+    >
+      <Select.Option value="us">United States</Select.Option>
+      <Select.Option value="uk">United Kingdom</Select.Option>
+      <Select.Option value="ca">Canada</Select.Option>
+      <Select.Option value="au">Australia</Select.Option>
+    </Select>
+```
+
+```tsx
+<Select
+      label="Account Type"
+      hideLabel={false}
+      placeholder="Select an account type"
+      error="Please select an account type to continue"
+    >
+      <Select.Option value="personal">Personal</Select.Option>
+      <Select.Option value="business">Business</Select.Option>
+      <Select.Option value="enterprise">Enterprise</Select.Option>
+    </Select>
+```
+
+```tsx
+<Select label="Language" hideLabel={true} placeholder="Select language">
+      <Select.Option value="en">English</Select.Option>
+      <Select.Option value="es">Spanish</Select.Option>
+      <Select.Option value="fr">French</Select.Option>
+      <Select.Option value="de">German</Select.Option>
+    </Select>
+```
+
+```tsx
+<Select
+      label="Options"
+      hideLabel={false}
+      placeholder="Loading options..."
+      loading
+    >
+      <Select.Option value="1">Option 1</Select.Option>
+      <Select.Option value="2">Option 2</Select.Option>
+    </Select>
+```
+
+```tsx
+<Select
+      label="Status"
+      hideLabel={false}
+      placeholder="Select status"
+      disabled
+      defaultValue="active"
+    >
+      <Select.Option value="active">Active</Select.Option>
+      <Select.Option value="inactive">Inactive</Select.Option>
     </Select>
 ```
 
@@ -1498,6 +1910,12 @@ SensitiveInput component
   Size variant
 - `variant`: KumoInputVariant [default: default]
   Style variant
+- `label`: string
+  Label text for the input (enables Field wrapper)
+- `description`: ReactNode
+  Helper text displayed below the input
+- `error`: string | object
+  Error message or validation error object
 
 **Colors (kumo tokens used):**
 
@@ -1506,23 +1924,35 @@ SensitiveInput component
 **Examples:**
 
 ```tsx
+<SensitiveInput label="API Key" defaultValue="sk_live_abc123xyz789" />
+```
+
+```tsx
 <div className="flex flex-col gap-4">
       {sizes.map((size) => (
         <div key={size} className="flex items-center gap-2">
           <span className="w-12 text-sm text-muted">{size}</span>
-          <Field label={`${size} size`}>
-            <SensitiveInput size={size} defaultValue="secret-api-key-123" />
-          </Field>
+          <SensitiveInput
+            label={`${size} size`}
+            size={size}
+            defaultValue="secret-api-key-123"
+          />
         </div>
       ))}
     </div>
 ```
 
 ```tsx
+<SensitiveInput label="Secret" placeholder="Enter your secret..." />
+```
+
+```tsx
 <div className="flex flex-col gap-4">
-        <Field label="Controlled Secret">
-          <SensitiveInput value={value} onValueChange={setValue} />
-        </Field>
+        <SensitiveInput
+          label="Controlled Secret"
+          value={value}
+          onValueChange={setValue}
+        />
         <div className="text-sm text-muted">
           Current value: <code className="text-surface">{value}</code>
         </div>
@@ -1541,6 +1971,38 @@ SensitiveInput component
           </button>
         </div>
       </div>
+```
+
+```tsx
+<SensitiveInput
+      label="Invalid Key"
+      variant="error"
+      defaultValue="invalid-key"
+      error="This API key is not valid"
+    />
+```
+
+```tsx
+<SensitiveInput
+      label="Password"
+      defaultValue="my-secret-value"
+      description="Keep this password secure and don't share it"
+    />
+```
+
+```tsx
+<SensitiveInput
+      label="API Key"
+      defaultValue="copyable-secret-key"
+      onCopy={() => console.log("Value copied!")}
+    />
+```
+
+```tsx
+<SensitiveInput
+      defaultValue="sk_live_abc123xyz789"
+      placeholder="Input without Field wrapper"
+    />
 ```
 
 
@@ -1582,38 +2044,296 @@ Switch component
 
 **Props:**
 
-- `onClick`: (event: React.MouseEvent) => void (required)
-  Callback when switch is clicked
+- `variant`: enum [default: default]
+  - `"default"`: Default switch appearance
+  - `"error"`: Error state for validation failures
+- `label`: string
+  Label text for the switch (Field wrapper is built-in). Optional when used standalone for visual-only purposes.
+- `controlFirst`: boolean
+  When true (default), switch appears before label. When false, label appears before switch.
 - `size`: enum [default: base]
   - `"sm"`: Small switch for compact UIs
   - `"base"`: Default switch size
   - `"lg"`: Large switch for prominent toggles
-- `toggled`: boolean (required)
-- `transitioning`: boolean
-- `label`: string
-- `hideLabel`: boolean
+- `checked`: boolean
 - `disabled`: boolean
+- `transitioning`: boolean
 - `name`: string
+- `type`: enum
 - `value`: string | string[] | number
 - `className`: string
 - `id`: string
 - `title`: string
-- `children`: ReactNode
 - `onChange`: React.FormEventHandler<HTMLButtonElement>
 - `onSubmit`: React.FormEventHandler<HTMLButtonElement>
+- `onClick`: (event: React.MouseEvent) => void
+  Callback when switch is clicked
 
 **Colors (kumo tokens used):**
 
-`bg-hover`, `bg-hover-selected`, `bg-selected`, `bg-surface-3`, `bg-white`, `text-surface`
+`bg-destructive`, `bg-hover`, `bg-hover-selected`, `bg-selected`, `bg-surface-3`, `bg-white`, `border-border`, `ring-destructive`, `text-error`, `text-muted`, `text-surface`
+
+**Sub-Components:**
+
+This is a compound component. Use these sub-components:
+
+#### Switch.Item
+
+Item sub-component
+
+#### Switch.Group
+
+Group sub-component
+
+Props:
+- `legend`: string (required)
+- `children`: ReactNode (required)
+- `error`: string
+- `description`: ReactNode
+- `disabled`: boolean
+- `controlFirst`: boolean
+- `className`: string
+
 
 **Examples:**
 
 ```tsx
-<Switch label="Toggle switch" onClick={() => {}} toggled={false} />
+<div className="flex flex-col gap-4">
+      {Object.keys(KUMO_SWITCH_VARIANTS.variant).map((variant) => (
+        <div
+          key={variant}
+          className="border border-dotted border-color bg-surface p-4"
+        >
+          <div className="mb-2 font-sans text-sm leading-5 font-light tracking-wide text-muted-2 uppercase">
+            {variant}
+          </div>
+          <Switch label="Switch variant" variant={variant as any} />
+        </div>
+      ))}
+    </div>
 ```
 
 ```tsx
-<Switch label="Disabled" onClick={() => {}} toggled={false} disabled={true} />
+<Switch label="I'm checked" checked={true} />
+```
+
+```tsx
+<div className="flex flex-col gap-4">
+      {[false, true].map((checked) => (
+        <Switch
+          key={String(checked)}
+          label={`Disabled (${checked ? "checked" : "unchecked"})`}
+          checked={checked}
+          disabled
+        />
+      ))}
+    </div>
+```
+
+```tsx
+<div className="flex flex-col gap-4">
+      {[false, true].map((checked) => (
+        <Switch
+          key={String(checked)}
+          label={`Error (${checked ? "checked" : "unchecked"})`}
+          variant="error"
+          checked={checked}
+        />
+      ))}
+    </div>
+```
+
+```tsx
+<Switch label="Label first" controlFirst={false} />
+```
+
+```tsx
+<div className="flex flex-col gap-4">
+        <Switch
+          label="Controlled switch"
+          checked={checked}
+          onCheckedChange={setChecked}
+        />
+        <div className="rounded-md bg-surface-elevated p-4">
+          <div className="mb-2 text-sm font-medium text-surface">State:</div>
+          <code className="text-sm text-muted">
+            {checked ? "checked" : "unchecked"}
+          </code>
+        </div>
+      </div>
+```
+
+```tsx
+<Switch.Group legend="Privacy settings">
+      <Switch.Item label="Email notifications" />
+      <Switch.Item label="SMS notifications" />
+      <Switch.Item label="Push notifications" />
+    </Switch.Group>
+```
+
+```tsx
+<Switch.Group
+      legend="Required settings"
+      error="You must enable at least one notification method"
+    >
+      <Switch.Item label="Email notifications" />
+      <Switch.Item label="SMS notifications" />
+      <Switch.Item label="Push notifications" />
+    </Switch.Group>
+```
+
+```tsx
+<Switch.Group
+      legend="Notification settings"
+      description="Choose how you want to be notified about important updates"
+    >
+      <Switch.Item label="Email notifications" checked />
+      <Switch.Item label="SMS notifications" />
+      <Switch.Item label="Push notifications" checked />
+    </Switch.Group>
+```
+
+```tsx
+<Switch.Group legend="Notification preferences" controlFirst={false}>
+      <Switch.Item label="Email notifications" checked />
+      <Switch.Item label="SMS notifications" />
+      <Switch.Item label="Push notifications" checked />
+    </Switch.Group>
+```
+
+```tsx
+<div className="flex flex-col gap-8">
+      {/* English (LTR) - Control First: Switch → Label */}
+      <fieldset className="rounded border border-border p-4">
+        <legend className="px-2 text-base font-semibold text-surface">
+          English (Switch → Label)
+        </legend>
+        <div className="mt-4 flex flex-col gap-4">
+          <Switch label="Switch is unchecked" controlFirst={true} />
+          <Switch
+            label="Switch is unchecked and disabled"
+            disabled
+            controlFirst={true}
+          />
+          <Switch label="Switch is checked" checked controlFirst={true} />
+          <Switch
+            label="Switch is checked and disabled"
+            checked
+            disabled
+            controlFirst={true}
+          />
+        </div>
+      </fieldset>
+
+      {/* Spanish (LTR) - Label First: Label → Switch */}
+      <fieldset className="rounded border border-border p-4">
+        <legend className="px-2 text-base font-semibold text-surface">
+          Español (Etiqueta → Interruptor)
+        </legend>
+        <div className="mt-4 flex flex-col gap-4">
+          <Switch label="El interruptor está desmarcado" controlFirst={false} />
+          <Switch
+            label="El interruptor está desmarcado y deshabilitado"
+            disabled
+            controlFirst={false}
+          />
+          <Switch
+            label="El interruptor está marcado"
+            checked
+            controlFirst={false}
+          />
+          <Switch
+            label="El interruptor está marcado y deshabilitado"
+            checked
+            disabled
+            controlFirst={false}
+          />
+        </div>
+      </fieldset>
+
+      {/* Arabic (RTL) - Control First: Switch → Label */}
+      <fieldset className="rounded border border-border p-4" dir="rtl">
+        <legend className="px-2 text-base font-semibold text-surface">
+          العربية (المفتاح ← التسمية)
+        </legend>
+        <div className="mt-4 flex flex-col gap-4">
+          <Switch label="المفتاح غير محدد" controlFirst={true} />
+          <Switch label="المفتاح غير محدد ومعطل" disabled controlFirst={true} />
+          <Switch label="المفتاح محدد" checked controlFirst={true} />
+          <Switch
+            label="المفتاح محدد ومعطل"
+            checked
+            disabled
+            controlFirst={true}
+          />
+        </div>
+      </fieldset>
+
+      {/* Hebrew (RTL) - Label First: Label → Switch */}
+      <fieldset className="rounded border border-border p-4" dir="rtl">
+        <legend className="px-2 text-base font-semibold text-surface">
+          עברית (תווית ← מתג)
+        </legend>
+        <div className="mt-4 flex flex-col gap-4">
+          <Switch label="המתג לא מסומן" controlFirst={false} />
+          <Switch label="המתג לא מסומן ומושבת" disabled controlFirst={false} />
+          <Switch label="המתג מסומן" checked controlFirst={false} />
+          <Switch
+            label="המתג מסומן ומושבת"
+            checked
+            disabled
+            controlFirst={false}
+          />
+        </div>
+      </fieldset>
+    </div>
+```
+
+```tsx
+<div className="flex flex-col gap-8">
+      {/* English (LTR) - Control First: Switch → Label */}
+      <div>
+        <Switch.Group legend="English (Switch → Label)" controlFirst={true}>
+          <Switch.Item label="Email notifications" checked />
+          <Switch.Item label="SMS notifications" />
+          <Switch.Item label="Push notifications" checked />
+          <Switch.Item label="In-app notifications" disabled />
+        </Switch.Group>
+      </div>
+
+      {/* Spanish (LTR) - Label First: Label → Switch */}
+      <div>
+        <Switch.Group
+          legend="Español (Etiqueta → Interruptor)"
+          controlFirst={false}
+        >
+          <Switch.Item label="Notificaciones por correo electrónico" checked />
+          <Switch.Item label="Notificaciones por SMS" />
+          <Switch.Item label="Notificaciones push" checked />
+          <Switch.Item label="Notificaciones en la aplicación" disabled />
+        </Switch.Group>
+      </div>
+
+      {/* Arabic (RTL) - Control First: Switch → Label */}
+      <div dir="rtl">
+        <Switch.Group legend="العربية (المفتاح ← التسمية)" controlFirst={true}>
+          <Switch.Item label="إشعارات البريد الإلكتروني" checked />
+          <Switch.Item label="إشعارات الرسائل القصيرة" />
+          <Switch.Item label="الإشعارات الفورية" checked />
+          <Switch.Item label="الإشعارات داخل التطبيق" disabled />
+        </Switch.Group>
+      </div>
+
+      {/* Hebrew (RTL) - Label First: Label → Switch */}
+      <div dir="rtl">
+        <Switch.Group legend="עברית (תווית ← מתג)" controlFirst={false}>
+          <Switch.Item label="התראות אימייל" checked />
+          <Switch.Item label="התראות SMS" />
+          <Switch.Item label="התראות דחיפה" checked />
+          <Switch.Item label="התראות בתוך האפליקציה" disabled />
+        </Switch.Group>
+      </div>
+    </div>
 ```
 
 

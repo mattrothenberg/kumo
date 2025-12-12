@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { InputArea } from "./input-area";
 import { propTester } from "../../utils/prop-tester";
 import { KUMO_INPUT_VARIANTS } from "./input";
-import { Field } from "../field";
 
 const meta: Meta<typeof InputArea> = {
   title: "Components/InputArea",
@@ -37,37 +36,33 @@ export const Variants: Story = {
 };
 
 export const WithLabel: Story = {
-  args: {
-    placeholder: "Enter your email",
-  },
-  render: (args) => (
-    <Field label="Email">
-      <InputArea {...args} />
-    </Field>
+  render: () => (
+    <InputArea
+      label="Email"
+      placeholder="Enter your email"
+      description="We'll never share your email with anyone else"
+    />
   ),
 };
 
-export const Error: Story = {
-  args: {
-    variant: "error",
-    placeholder: "Invalid input",
-    defaultValue: "error@example.com",
-  },
-  render: (args) => (
-    <Field label="Email">
-      <InputArea {...args} />
-    </Field>
+export const WithError: Story = {
+  render: () => (
+    <InputArea
+      label="Email"
+      placeholder="Invalid input"
+      defaultValue="error@example.com"
+      variant="error"
+      error="Please enter a valid email address"
+    />
   ),
 };
 
 export const Disabled: Story = {
-  args: {
-    placeholder: "Disabled input",
-    disabled: true,
-  },
-  render: (args) => (
-    <Field label="Disabled Field">
-      <InputArea {...args} />
-    </Field>
+  render: () => (
+    <InputArea label="Disabled Field" placeholder="Disabled input" disabled />
   ),
+};
+
+export const BareTextarea: Story = {
+  render: () => <InputArea placeholder="Textarea without Field wrapper" />,
 };

@@ -19,11 +19,49 @@ export interface ChangedFilesOptions {
 
 /**
  * Gets the base and head refs for the current CI context
- * Uses GitLab CI variables
+ * Uses GitLab CI variables with fallback for shallow clones
  */
 export function getGitRefs(): GitRefs {
   const baseRef = process.env.CI_MERGE_REQUEST_DIFF_BASE_SHA;
   const headRef = process.env.CI_MERGE_REQUEST_DIFF_TARGET_SHA || "HEAD";
+  const targetBranch = process.env.CI_MERGE_REQUEST_TARGET_BRANCH_NAME;
+
+  // If baseRef exists, verify it's available in the shallow clone
+  if (baseRef) {
+    try {
+      execSync(`git rev-parse --verify ${baseRef}^{commit}`, {
+        encoding: "utf8",
+        stdio: "pipe",
+      });
+      return { baseRef, headRef };
+    } catch {
+      console.warn(
+        `⚠️  Base ref ${baseRef} not found in shallow clone, falling back to target branch`,
+      );
+    }
+  }
+
+  // Fallback to origin/{target_branch} for shallow clones
+  // Must fetch the target branch first since GitLab CI only fetches the MR ref
+  if (targetBranch) {
+    try {
+      console.log(`Fetching target branch: ${targetBranch}`);
+      execSync(
+        `git fetch origin ${targetBranch}:refs/remotes/origin/${targetBranch}`,
+        {
+          encoding: "utf8",
+          stdio: "pipe",
+        },
+      );
+      const fallbackRef = `origin/${targetBranch}`;
+      console.log(`Using fallback ref: ${fallbackRef}`);
+      return { baseRef: fallbackRef, headRef };
+    } catch (error) {
+      console.warn(
+        `⚠️  Could not fetch target branch ${targetBranch}: ${error}`,
+      );
+    }
+  }
 
   return { baseRef, headRef };
 }
@@ -45,8 +83,10 @@ export function getChangedFiles(
       return null;
     }
 
+    // Use two-dot diff for shallow clones (no merge base needed)
+    // Two dots compares the tips directly: baseRef..headRef
     const changedFiles = execSync(
-      `git diff --name-only ${baseRef}...${headRef}`,
+      `git diff --name-only ${baseRef}..${headRef}`,
       {
         encoding: "utf8",
         cwd: options.cwd || process.cwd(),
@@ -109,9 +149,10 @@ export function getNewlyAddedFiles(
 
     // Use execFileSync with array arguments to prevent command injection
     // This passes arguments directly to git without shell interpretation
+    // Use two-dot diff for shallow clones (no merge base needed)
     const newFiles = execFileSync(
       "git",
-      ["diff", "--name-status", `${baseRef}...${headRef}`, "--", directory],
+      ["diff", "--name-status", `${baseRef}..${headRef}`, "--", directory],
       {
         encoding: "utf8",
         cwd: options.cwd || process.cwd(),

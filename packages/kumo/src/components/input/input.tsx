@@ -1,6 +1,11 @@
 import { cn } from "../../utils/cn";
-import { forwardRef, type ComponentPropsWithoutRef } from "react";
+import {
+  forwardRef,
+  type ComponentPropsWithoutRef,
+  type ReactNode,
+} from "react";
 import { Input as BaseInput } from "@base-ui/react/input";
+import { Field, type FieldErrorMatch } from "../field/field";
 
 export const KUMO_INPUT_VARIANTS = {
   size: {
@@ -78,22 +83,104 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     className,
     size = "base",
     variant = "default",
+    label,
+    description,
+    error,
     ...inputProps
   } = props;
 
-  return (
-      <BaseInput
-        ref={ref}
-        className={cn(
-          inputVariants({ size, variant, focusIndicator: true }),
-          className,
-        )}
-        {...inputProps}
-      />
+  // A11y enforcement: warn in dev if no accessible name provided
+  if (process.env.NODE_ENV !== "production") {
+    const hasLabel = Boolean(label);
+    const hasPlaceholderAndAriaLabel = Boolean(
+      inputProps.placeholder && inputProps["aria-label"],
+    );
+    const hasAriaLabelledBy = Boolean(inputProps["aria-labelledby"]);
+
+    if (!hasLabel && !hasPlaceholderAndAriaLabel && !hasAriaLabelledBy) {
+      console.warn(
+        "[Kumo Input]: Input must have an accessible name. Provide either:\n" +
+          "  - label prop: <Input label='Email' />\n" +
+          "  - placeholder + aria-label: <Input placeholder='Email' aria-label='Email address' />\n" +
+          "  - aria-labelledby for custom label association",
+      );
+    }
+  }
+
+  const input = (
+    <BaseInput
+      ref={ref}
+      className={cn(
+        inputVariants({ size, variant, focusIndicator: true }),
+        className,
+      )}
+      {...inputProps}
+    />
   );
+
+  // Render with Field wrapper if label is provided
+  if (label) {
+    return (
+      <Field
+        label={label}
+        description={description}
+        error={
+          error
+            ? typeof error === "string"
+              ? { message: error, match: true }
+              : error
+            : undefined
+        }
+      >
+        {input}
+      </Field>
+    );
+  }
+
+  // Render bare input without Field wrapper
+  return input;
 });
 
 Input.displayName = "Input";
 
+/**
+ * Input component props with accessibility guidance.
+ *
+ * **Accessible Name Required:** Input should have one of:
+ * 1. `label` prop (recommended) - enables Field wrapper with label/description/error
+ * 2. `placeholder` + `aria-label` - for bare inputs with visual placeholder
+ * 3. `aria-labelledby` - for custom label association
+ *
+ * Missing accessible names will trigger console warnings in development.
+ *
+ * @example
+ * // Recommended: Built-in Field wrapper
+ * <Input label="Email" placeholder="you@example.com" />
+ *
+ * @example
+ * // Bare input with placeholder and aria-label
+ * <Input placeholder="Search..." aria-label="Search products" />
+ *
+ * @example
+ * // Custom label association
+ * <label id="email-label">Email</label>
+ * <Input aria-labelledby="email-label" />
+ *
+ * @example
+ * // With description and error
+ * <Input
+ *   label="Password"
+ *   description="Must be at least 8 characters"
+ *   error="Password is too short"
+ *   variant="error"
+ * />
+ */
 export type InputProps = Pick<KumoInputVariantsProps, "size" | "variant"> &
-  BaseInputProps;
+  BaseInputProps & {
+    /** Label text for the input (enables Field wrapper) */
+    label?: string;
+    /** Helper text displayed below the input */
+    description?: ReactNode;
+    /** Error message or validation error object */
+    error?: string | { message: ReactNode; match: FieldErrorMatch };
+  };

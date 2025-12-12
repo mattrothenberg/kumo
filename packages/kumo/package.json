@@ -69,10 +69,6 @@
       "types": "./dist/src/components/expandable/index.d.ts",
       "import": "./dist/components/expandable.js"
     },
-    "./components/field": {
-      "types": "./dist/src/components/field/index.d.ts",
-      "import": "./dist/components/field.js"
-    },
     "./components/input": {
       "types": "./dist/src/components/input/index.d.ts",
       "import": "./dist/components/input.js"
@@ -363,9 +359,6 @@
     "tailwind-merge": "catalog:"
   },
   "devDependencies": {
-    "eslint": "^9.17.0",
-    "eslint-plugin-jsx-a11y": "^6.10.2",
-    "typescript-eslint": "^8.18.1",
     "@storybook/addon-a11y": "catalog:",
     "@storybook/addon-docs": "catalog:",
     "@storybook/addon-mcp": "0.1.4",
@@ -379,6 +372,8 @@
     "@types/react-dom": "catalog:",
     "@vitest/browser": "catalog:",
     "@vitest/ui": "catalog:",
+    "eslint": "^9.17.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
     "happy-dom": "catalog:",
     "oxlint": "1.28.0",
     "oxlint-tsgolint": "0.6.0",
@@ -391,6 +386,7 @@
     "ts-json-schema-generator": "2.4.0",
     "tsx": "catalog:",
     "typescript": "catalog:",
+    "typescript-eslint": "^8.18.1",
     "vite": "catalog:",
     "vite-plugin-dts": "catalog:",
     "vitest": "catalog:",
