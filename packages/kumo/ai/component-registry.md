@@ -1,7 +1,7 @@
 # Kumo Component Registry
 
 > Auto-generated component metadata for AI/agent consumption.
-> Generated: 2025-12-12T17:42:40.768Z
+> Generated: 2025-12-15T17:32:07.144Z
 
 
 ## Styling Guide
@@ -50,7 +50,7 @@ Most frequently used tokens across Kumo components:
 | Category | Top Tokens |
 |----------|------------|
 | **Background** | `bg-secondary`, `bg-surface`, `bg-color-3`, `bg-color`, `bg-destructive` |
-| **Text** | `text-surface`, `text-muted`, `text-secondary`, `text-error`, `text-info` |
+| **Text** | `text-surface`, `text-muted`, `text-error`, `text-secondary`, `text-info` |
 | **Border/Ring** | `ring-border`, `ring-active`, `ring-destructive`, `ring-color` |
 
 ---
@@ -301,7 +301,7 @@ Button component
 
 **Colors (kumo tokens used):**
 
-`bg-accent`, `bg-destructive`, `bg-primary`, `bg-secondary`, `bg-subtle`, `bg-surface`, `border-subtle`, `ring-active`, `ring-border`, `text-muted`, `text-primary`, `text-secondary`, `text-surface`, `text-white`
+`bg-accent`, `bg-destructive`, `bg-primary`, `bg-secondary`, `bg-subtle`, `bg-surface`, `border-subtle`, `ring-active`, `ring-border`, `text-error`, `text-muted`, `text-secondary`, `text-surface`, `text-white`
 
 **Examples:**
 

@@ -46,7 +46,7 @@ export const KUMO_BUTTON_VARIANTS = {
   variant: {
     primary: {
       classes:
-        "bg-primary !text-white hover:bg-primary/70 disabled:bg-primary/50 disabled:!text-primary/70",
+        "bg-primary !text-white hover:bg-primary/70 disabled:bg-primary/50",
       description: "High-emphasis button for primary actions",
     },
     secondary: {
@@ -61,6 +61,12 @@ export const KUMO_BUTTON_VARIANTS = {
     destructive: {
       classes: "bg-destructive !text-white hover:bg-destructive/70",
       description: "Danger button for destructive actions like delete",
+    },
+    "secondary-destructive": {
+      classes:
+        "bg-secondary !text-error ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-error/70 ring-border data-[state=open]:bg-subtle",
+      description:
+        "Secondary button with destructive text for less prominent dangerous actions",
     },
     outline: {
       classes: "bg-surface text-surface ring ring-border",
