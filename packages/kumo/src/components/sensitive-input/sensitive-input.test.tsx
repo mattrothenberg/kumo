@@ -24,7 +24,6 @@ describe("SensitiveInput", () => {
       size: "base" as const,
       variant: "default" as const,
       label: "API Key",
-      hideLabel: false,
       disabled: false,
       readOnly: false,
       id: "api-key-input",
