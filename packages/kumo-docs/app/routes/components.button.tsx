@@ -104,6 +104,19 @@ export default function Example() {
                 <Button variant="outline">Outline</Button>
               </ComponentExample>
             </div>
+
+            <div>
+              <h4 className="mb-3 text-base font-medium">
+                Secondary Destructive
+              </h4>
+              <ComponentExample
+                code={`<Button variant="secondary-destructive">Secondary Destructive</Button>`}
+              >
+                <Button variant="secondary-destructive">
+                  Secondary Destructive
+                </Button>
+              </ComponentExample>
+            </div>
           </div>
         </div>
 
@@ -206,7 +219,8 @@ export default function Example() {
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
                 <td className="px-4 py-3 font-mono text-xs">variant</td>
                 <td className="px-4 py-3 font-mono text-xs">
-                  "primary" | "secondary" | "ghost" | "destructive" | "outline"
+                  "primary" | "secondary" | "ghost" | "destructive" |
+                  "secondary-destructive" | "outline"
                 </td>
                 <td className="px-4 py-3 font-mono text-xs">"secondary"</td>
               </tr>
