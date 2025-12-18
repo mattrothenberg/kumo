@@ -171,11 +171,13 @@ function TriggerInput(props: ComboboxBase.Input.Props) {
         {...props}
         className={cn(inputVariants(), "w-full pr-12")}
       />
-      <ComboboxBase.Clear className="absolute top-1/2 right-8 -translate-y-1/2 cursor-pointer">
+
+      <ComboboxBase.Clear className="absolute top-1/2 right-8 flex -translate-y-1/2 cursor-pointer bg-transparent p-0">
         <XIcon />
       </ComboboxBase.Clear>
-      <ComboboxBase.Trigger>
-        <ComboboxBase.Icon className="absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer">
+
+      <ComboboxBase.Trigger className="p-0">
+        <ComboboxBase.Icon className="absolute top-1/2 right-2 flex -translate-y-1/2 cursor-pointer">
           <CaretDownIcon className="fill-active" />
         </ComboboxBase.Icon>
       </ComboboxBase.Trigger>
