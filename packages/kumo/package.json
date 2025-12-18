@@ -53,6 +53,10 @@
       "types": "./dist/src/components/code/index.d.ts",
       "import": "./dist/components/code.js"
     },
+    "./components/collapsible": {
+      "types": "./dist/src/components/collapsible/index.d.ts",
+      "import": "./dist/components/collapsible.js"
+    },
     "./components/combobox": {
       "types": "./dist/src/components/combobox/index.d.ts",
       "import": "./dist/components/combobox.js"
@@ -64,10 +68,6 @@
     "./components/dropdown": {
       "types": "./dist/src/components/dropdown/index.d.ts",
       "import": "./dist/components/dropdown.js"
-    },
-    "./components/expandable": {
-      "types": "./dist/src/components/expandable/index.d.ts",
-      "import": "./dist/components/expandable.js"
     },
     "./components/input": {
       "types": "./dist/src/components/input/index.d.ts",

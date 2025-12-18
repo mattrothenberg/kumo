@@ -90,9 +90,9 @@ export default defineConfig(({ mode }) => {
             __dirname,
             "src/components/dropdown/index.ts",
           ),
-          "components/expandable": resolve(
+          "components/collapsible": resolve(
             __dirname,
-            "src/components/expandable/index.ts",
+            "src/components/collapsible/index.ts",
           ),
           "components/field": resolve(
             __dirname,

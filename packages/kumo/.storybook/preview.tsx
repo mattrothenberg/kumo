@@ -18,6 +18,7 @@ const preview: Preview = {
     layout: "fullscreen",
     options: {
       storySort: {
+        method: "alphabetical",
         order: [
           "Agents",
           "Design-Tokens",

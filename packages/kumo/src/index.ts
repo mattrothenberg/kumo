@@ -24,7 +24,7 @@ export {
   DialogClose,
 } from "./components/dialog";
 export { DropdownMenu } from "./components/dropdown";
-export { Expandable } from "./components/expandable";
+export { Collapsible } from "./components/collapsible";
 export {
   Field,
   type FieldProps,

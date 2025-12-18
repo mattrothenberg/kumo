@@ -1,7 +1,7 @@
 # Kumo Component Registry
 
 > Auto-generated component metadata for AI/agent consumption.
-> Generated: 2025-12-15T17:32:07.144Z
+> Generated: 2025-12-17T20:47:15.177Z
 
 
 ## Styling Guide
@@ -756,6 +756,36 @@ Simple code component without syntax highlighting
 
 ---
 
+### Collapsible
+
+Collapsible component
+
+**Import:** `import { Collapsible } from "@cloudflare/kumo";`
+
+**Category:** Other
+
+**Props:**
+
+- `children`: ReactNode
+- `label`: string (required)
+- `open`: boolean
+- `className`: string
+
+**Colors (kumo tokens used):**
+
+`border-color`, `text-info`
+
+**Examples:**
+
+```tsx
+<Collapsible label="Click to expand" open={open} onOpenChange={setOpen}>
+        <Text>This is the collapsible content that can be shown or hidden.</Text>
+      </Collapsible>
+```
+
+
+---
+
 ### Combobox
 
 Combobox component
@@ -1243,38 +1273,6 @@ Empty component
 
 ```tsx
 <Empty title="Nothing here" />
-```
-
-
----
-
-### Expandable
-
-Expandable component
-
-**Import:** `import { Expandable } from "@cloudflare/kumo";`
-
-**Category:** Display
-
-**Props:**
-
-- `children`: ReactNode
-- `title`: string (required)
-- `open`: boolean
-- `className`: string
-- `onOpenChange`: (open: boolean) => void
-  Callback when expanded state changes
-
-**Colors (kumo tokens used):**
-
-`border-color`, `text-info`
-
-**Examples:**
-
-```tsx
-<Expandable title="Click to expand" open={open} onOpenChange={setOpen}>
-        <Text>This is the expandable content that can be shown or hidden.</Text>
-      </Expandable>
 ```
 
 
@@ -1911,7 +1909,7 @@ SensitiveInput component
 - `variant`: KumoInputVariant [default: default]
   Style variant
 - `label`: string
-  Label text for the input (enables Field wrapper)
+  Label text for the input (enables Field wrapper and sets masked state label)
 - `description`: ReactNode
   Helper text displayed below the input
 - `error`: string | object
@@ -2482,12 +2480,12 @@ Tooltip component
 ## Quick Reference
 
 **Components by Category:**
-- **Display:** Badge, Code, Expandable, LayerCard, Meter, Text
+- **Display:** Badge, Code, LayerCard, Meter, Text
 - **Feedback:** Banner, Loader, Toasty
 - **Block:** Breadcrumbs, Empty, PageHeader
 - **Action:** Button, ClipboardText
 - **Input:** Checkbox, Combobox, DateRangePicker, Field, Input, Select, Switch
+- **Other:** Collapsible, SensitiveInput
 - **Overlay:** Dialog, DropdownMenu, Tooltip
 - **Navigation:** MenuBar, Pagination, Tabs
-- **Other:** SensitiveInput
 - **Layout:** Surface

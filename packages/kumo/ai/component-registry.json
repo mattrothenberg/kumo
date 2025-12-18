@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2025-12-15T17:32:07.144Z",
+  "generatedAt": "2025-12-17T20:47:15.177Z",
   "components": {
     "Badge": {
       "name": "Badge",
@@ -611,6 +611,37 @@
         "text-neutral-subtle"
       ]
     },
+    "Collapsible": {
+      "name": "Collapsible",
+      "description": "Collapsible component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Other",
+      "props": {
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "label": {
+          "type": "string",
+          "required": true
+        },
+        "open": {
+          "type": "boolean",
+          "optional": true
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        }
+      },
+      "examples": [
+        "<Collapsible label=\"Click to expand\" open={open} onOpenChange={setOpen}>\n        <Text>This is the collapsible content that can be shown or hidden.</Text>\n      </Collapsible>"
+      ],
+      "colors": [
+        "border-color",
+        "text-info"
+      ]
+    },
     "Combobox": {
       "name": "Combobox",
       "description": "Combobox component",
@@ -1200,41 +1231,6 @@
         "text-surface"
       ]
     },
-    "Expandable": {
-      "name": "Expandable",
-      "description": "Expandable component",
-      "importPath": "@cloudflare/kumo",
-      "category": "Display",
-      "props": {
-        "children": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "title": {
-          "type": "string",
-          "required": true
-        },
-        "open": {
-          "type": "boolean",
-          "optional": true
-        },
-        "className": {
-          "type": "string",
-          "optional": true
-        },
-        "onOpenChange": {
-          "type": "(open: boolean) => void",
-          "description": "Callback when expanded state changes"
-        }
-      },
-      "examples": [
-        "<Expandable title=\"Click to expand\" open={open} onOpenChange={setOpen}>\n        <Text>This is the expandable content that can be shown or hidden.</Text>\n      </Expandable>"
-      ],
-      "colors": [
-        "border-color",
-        "text-info"
-      ]
-    },
     "Field": {
       "name": "Field",
       "description": "Field component",
@@ -1743,7 +1739,7 @@
         "label": {
           "type": "string",
           "optional": true,
-          "description": "Label text for the input (enables Field wrapper)"
+          "description": "Label text for the input (enables Field wrapper and sets masked state label)"
         },
         "description": {
           "type": "ReactNode",
@@ -2190,7 +2186,6 @@
       "Display": [
         "Badge",
         "Code",
-        "Expandable",
         "LayerCard",
         "Meter",
         "Text"
@@ -2218,6 +2213,10 @@
         "Select",
         "Switch"
       ],
+      "Other": [
+        "Collapsible",
+        "SensitiveInput"
+      ],
       "Overlay": [
         "Dialog",
         "DropdownMenu",
@@ -2227,9 +2226,6 @@
         "MenuBar",
         "Pagination",
         "Tabs"
-      ],
-      "Other": [
-        "SensitiveInput"
       ],
       "Layout": [
         "Surface"
@@ -2243,12 +2239,12 @@
       "Checkbox",
       "ClipboardText",
       "Code",
+      "Collapsible",
       "Combobox",
       "DateRangePicker",
       "Dialog",
       "DropdownMenu",
       "Empty",
-      "Expandable",
       "Field",
       "Input",
       "LayerCard",
