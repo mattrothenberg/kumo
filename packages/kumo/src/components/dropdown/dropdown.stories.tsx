@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DropdownMenu, KUMO_DROPDOWN_VARIANTS } from "./dropdown";
 import { Button } from "../button/button";
 

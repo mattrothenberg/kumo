@@ -516,7 +516,7 @@ pnpm storybook  # Runs at http://localhost:6006
 Stories follow this pattern:
 
 ```tsx
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Button } from "./button";
 
 const meta: Meta<typeof Button> = {

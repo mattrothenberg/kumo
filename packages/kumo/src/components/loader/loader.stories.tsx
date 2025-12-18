@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Loader, KUMO_LOADER_VARIANTS } from "./loader";
 import { propTester } from "../../utils/prop-tester";
 

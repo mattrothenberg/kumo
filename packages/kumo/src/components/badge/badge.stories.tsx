@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Badge, KUMO_BADGE_VARIANTS } from "./badge";
 import { propTester } from "../../utils/prop-tester";
 

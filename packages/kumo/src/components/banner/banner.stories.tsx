@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { InfoIcon } from "@phosphor-icons/react";
 import { Banner, KUMO_BANNER_VARIANTS } from "./banner";
 import { propTester } from "../../utils/prop-tester";

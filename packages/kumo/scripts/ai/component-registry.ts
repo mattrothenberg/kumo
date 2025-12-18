@@ -1005,7 +1005,6 @@ interface ComponentSchema {
 
 interface ComponentRegistry {
   version: string;
-  generatedAt: string;
   components: Record<string, ComponentSchema>;
   // MCP-friendly helpers
   search: {
@@ -1927,7 +1926,6 @@ async function generateRegistry(): Promise<GenerateRegistryResult> {
   return {
     registry: {
       version: "1.0.0",
-      generatedAt: new Date().toISOString(),
       components,
       search: {
         byCategory,
@@ -2090,7 +2088,6 @@ function generateAIContext(
   let context = `# Kumo Component Registry
 
 > Auto-generated component metadata for AI/agent consumption.
-> Generated: ${registry.generatedAt}
 
 ${styleGuide}`;
 

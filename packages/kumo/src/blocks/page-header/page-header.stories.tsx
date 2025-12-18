@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { PageHeader, KUMO_PAGE_HEADER_VARIANTS } from "./page-header";
 import { Breadcrumbs } from "../breadcrumbs";
 import { Button } from "../../components/button";

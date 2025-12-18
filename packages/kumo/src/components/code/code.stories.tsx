@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Code, CodeBlock, KUMO_CODE_VARIANTS } from "./code";
 import { propTester } from "../../utils/prop-tester";
 

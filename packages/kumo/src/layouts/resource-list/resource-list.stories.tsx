@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ResourceListPage } from "./resource-list";
 import { DatabaseIcon } from "@phosphor-icons/react";
 import { Surface } from "../../components/surface";

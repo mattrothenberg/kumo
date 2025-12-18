@@ -1,6 +1,5 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2025-12-17T20:47:15.177Z",
   "components": {
     "Badge": {
       "name": "Badge",
@@ -615,7 +614,7 @@
       "name": "Collapsible",
       "description": "Collapsible component",
       "importPath": "@cloudflare/kumo",
-      "category": "Other",
+      "category": "Display",
       "props": {
         "children": {
           "type": "ReactNode",
@@ -632,6 +631,10 @@
         "className": {
           "type": "string",
           "optional": true
+        },
+        "onOpenChange": {
+          "type": "(open: boolean) => void",
+          "description": "Callback when collapsed state changes"
         }
       },
       "examples": [
@@ -2186,6 +2189,7 @@
       "Display": [
         "Badge",
         "Code",
+        "Collapsible",
         "LayerCard",
         "Meter",
         "Text"
@@ -2213,10 +2217,6 @@
         "Select",
         "Switch"
       ],
-      "Other": [
-        "Collapsible",
-        "SensitiveInput"
-      ],
       "Overlay": [
         "Dialog",
         "DropdownMenu",
@@ -2226,6 +2226,9 @@
         "MenuBar",
         "Pagination",
         "Tabs"
+      ],
+      "Other": [
+        "SensitiveInput"
       ],
       "Layout": [
         "Surface"

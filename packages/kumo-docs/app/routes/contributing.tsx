@@ -616,7 +616,7 @@ pnpm --filter @cloudflare/kumo-docs dev`}
         </p>
         <CodeBlock
           lang="tsx"
-          code={`import type { Meta, StoryObj } from '@storybook/react';
+          code={`import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button } from './button';
 
 const meta = {

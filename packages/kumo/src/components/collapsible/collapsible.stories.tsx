@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { Collapsible } from "./collapsible";
 import { Text } from "../text";
@@ -19,7 +19,9 @@ export const Default: Story = {
     const [open, setOpen] = useState(false);
     return (
       <Collapsible label="Click to expand" open={open} onOpenChange={setOpen}>
-        <Text>This is the collapsible content that can be shown or hidden.</Text>
+        <Text>
+          This is the collapsible content that can be shown or hidden.
+        </Text>
       </Collapsible>
     );
   },

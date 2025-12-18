@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ClipboardText, KUMO_CLIPBOARD_TEXT_VARIANTS } from "./clipboard-text";
 import { propTester } from "../../utils/prop-tester";
 
