@@ -499,16 +499,10 @@ function DateRangeDayCell({
     }
   }, [date, mode]);
 
-  const isSelected =
-    mode === DateRangeCellMode.SELECTED_START_NODE ||
-    mode === DateRangeCellMode.SELECTED_END_NODE ||
-    mode === DateRangeCellMode.SELECTED;
-
   return (
     <button
       type="button"
       aria-label={getAriaLabel()}
-      aria-selected={isSelected}
       id={date.toDateString()}
       className={cn(
         sizeConfig.cellHeight,

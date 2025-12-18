@@ -2,7 +2,7 @@
   "jsPlugins": ["./scripts/linting/kumo-plugin.js"],
   "plugins": ["eslint", "typescript", "unicorn", "oxc", "jsx-a11y"],
   "categories": {
-    "correctness": "warn",
+    "correctness": "error",
     "suspicious": "warn"
   },
   "rules": {

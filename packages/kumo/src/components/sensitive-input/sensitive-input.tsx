@@ -401,6 +401,9 @@ export const SensitiveInput = forwardRef<HTMLInputElement, SensitiveInputProps>(
         {isMaskedWithValue ? (
           <div
             ref={containerRef}
+            // Cannot use <button> here because containerContent contains interactive button elements (Copy, Reveal).
+            // Using role="button" with proper keyboard handling instead.
+            // oxlint-disable-next-line prefer-tag-over-role
             role="button"
             tabIndex={disabled ? -1 : 0}
             className={containerClassName}
