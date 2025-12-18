@@ -14,6 +14,8 @@ type LinkComponentProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
 
 const DefaultLinkComponent = forwardRef<HTMLAnchorElement, LinkComponentProps>(
   function DefaultAnchor({ to, href, ...rest }, ref) {
+    // Children and other content props are passed via ...rest spread
+    // oxlint-disable-next-line anchor-has-content
     return <a ref={ref} href={href ?? to ?? undefined} {...rest} />;
   },
 );

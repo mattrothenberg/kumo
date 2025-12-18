@@ -33,25 +33,25 @@ export default [// jsx-a11y rules only
     // ============================================
 
     // Validates ARIA state and property values
-    "jsx-a11y/aria-proptypes": "warn",
+    "jsx-a11y/aria-proptypes": "error",
 
     // Interactive elements must be focusable
-    "jsx-a11y/interactive-supports-focus": "warn",
+    "jsx-a11y/interactive-supports-focus": "error",
 
     // Don't assign non-interactive roles to interactive elements
-    "jsx-a11y/no-interactive-element-to-noninteractive-role": "warn",
+    "jsx-a11y/no-interactive-element-to-noninteractive-role": "error",
 
     // Non-interactive elements should not have event handlers
-    "jsx-a11y/no-noninteractive-element-interactions": "warn",
+    "jsx-a11y/no-noninteractive-element-interactions": "error",
 
     // Don't assign interactive roles to non-interactive elements
-    "jsx-a11y/no-noninteractive-element-to-interactive-role": "warn",
+    "jsx-a11y/no-noninteractive-element-to-interactive-role": "error",
 
     // Static elements (div, span) should not have event handlers
-    "jsx-a11y/no-static-element-interactions": "warn",
+    "jsx-a11y/no-static-element-interactions": "error",
 
     // Note: control-has-associated-label is not in jsx-a11y's recommended set
-    // but is valuable for ensuring controls have label associations
+    // due to false positives (doesn't detect aria-label, aria-labelledby, etc.)
     "jsx-a11y/control-has-associated-label": "warn",
   },
 }, // Ignore patterns
