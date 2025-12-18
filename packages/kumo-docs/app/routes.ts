@@ -19,7 +19,7 @@ export default [
   route("components/dialog", "routes/components.dialog.tsx"),
   route("components/tooltip", "routes/components.tooltip.tsx"),
   route("components/dropdown", "routes/components.dropdown.tsx"),
-  route("components/expandable", "routes/components.expandable.tsx"),
+  route("components/collapsible", "routes/components.collapsible.tsx"),
   route("components/combobox", "routes/components.combobox.tsx"),
   route("components/loader", "routes/components.loader.tsx"),
   route("components/skeleton-line", "routes/components.skeleton-line.tsx"),

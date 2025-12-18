@@ -13,7 +13,7 @@ import {
   Toasty,
   Toast,
   ClipboardText,
-  Expandable,
+  Collapsible,
   Combobox,
   CodeBlock,
   Banner,
@@ -207,11 +207,11 @@ export default function Home() {
       ),
     },
     {
-      name: "Expandable",
+      name: "Collapsible",
       Component: (
-        <Expandable title="What is Kumo?">
+        <Collapsible label="What is Kumo?">
           Kumo is Cloudflare's new design system.
-        </Expandable>
+        </Collapsible>
       ),
     },
     {

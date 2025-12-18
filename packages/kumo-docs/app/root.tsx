@@ -354,15 +354,15 @@ export default function App() {
               </li>
               <li>
                 <Link
-                  to="/components/expandable"
+                  to="/components/collapsible"
                   prefetch="intent"
                   className={cn(
                     LI_STYLE,
-                    location.pathname === "/components/expandable" &&
+                    location.pathname === "/components/collapsible" &&
                       LI_ACTIVE_STYLE,
                   )}
                 >
-                  Expandable
+                  Collapsible
                 </Link>
               </li>
               <li>

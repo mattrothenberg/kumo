@@ -105,7 +105,7 @@ const CATEGORY_MAP: Record<string, string> = {
   // Display
   badge: "Display",
   code: "Display",
-  expandable: "Display",
+  collapsible: "Display",
   "layer-card": "Display",
   meter: "Display",
   text: "Display",
@@ -1703,10 +1703,10 @@ const ADDITIONAL_COMPONENT_PROPS: Record<string, Record<string, PropSchema>> = {
       description: "Callback when active tab changes",
     },
   },
-  Expandable: {
+  Collapsible: {
     onOpenChange: {
       type: "(open: boolean) => void",
-      description: "Callback when expanded state changes",
+      description: "Callback when collapsed state changes",
     },
   },
 };
