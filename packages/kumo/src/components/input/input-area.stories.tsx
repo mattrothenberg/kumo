@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { InputArea } from "./input-area";
 import { propTester } from "../../utils/prop-tester";
 import { KUMO_INPUT_VARIANTS } from "./input";

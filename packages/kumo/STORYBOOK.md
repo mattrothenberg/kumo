@@ -100,7 +100,7 @@ src/
 ### Basic Story Structure
 
 ```typescript
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Button } from "./button";
 
 const meta = {
@@ -305,7 +305,7 @@ When creating a new component, block, or layout:
 ### Story Template
 
 ```typescript
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { YourComponent } from "./your-component";
 
 const meta = {

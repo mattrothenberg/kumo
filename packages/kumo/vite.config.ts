@@ -13,7 +13,7 @@ const __dirname = dirname(__filename);
 function getPrimitiveEntries() {
   const primitivesDir = resolve(__dirname, "src/primitives");
   const entries: Record<string, string> = {};
-  
+
   try {
     const files = readdirSync(primitivesDir);
     for (const file of files) {
@@ -25,7 +25,7 @@ function getPrimitiveEntries() {
   } catch (e) {
     // Primitives directory doesn't exist yet (first build)
   }
-  
+
   return entries;
 }
 
@@ -144,8 +144,11 @@ export default defineConfig(({ mode }) => {
             __dirname,
             "src/components/tooltip/index.ts",
           ),
-          'components/sensitive-input': resolve(__dirname, 'src/components/sensitive-input/index.ts'),
-        // PLOP_INJECT_COMPONENT_ENTRY
+          "components/sensitive-input": resolve(
+            __dirname,
+            "src/components/sensitive-input/index.ts",
+          ),
+          // PLOP_INJECT_COMPONENT_ENTRY
           // Block entry points
           "blocks/breadcrumbs": resolve(
             __dirname,
@@ -206,22 +209,26 @@ export default defineConfig(({ mode }) => {
           // Manual chunks for better code splitting
           manualChunks: (id) => {
             // Vendor chunks for large dependencies
-            if (id.includes('node_modules')) {
+            if (id.includes("node_modules")) {
               // clsx + tailwind-merge utilities
-              if (id.includes('clsx') || id.includes('tailwind-merge')) {
-                return 'vendor-styling';
+              if (id.includes("clsx") || id.includes("tailwind-merge")) {
+                return "vendor-styling";
               }
               // Floating UI positioning libraries
-              if (id.includes('@floating-ui')) {
-                return 'vendor-floating-ui';
+              if (id.includes("@floating-ui")) {
+                return "vendor-floating-ui";
               }
               // Base UI components
-              if (id.includes('@base-ui')) {
-                return 'vendor-base-ui';
+              if (id.includes("@base-ui")) {
+                return "vendor-base-ui";
               }
               // Other vendor dependencies
-              if (id.includes('tabbable') || id.includes('use-sync-external-store') || id.includes('reselect')) {
-                return 'vendor-utils';
+              if (
+                id.includes("tabbable") ||
+                id.includes("use-sync-external-store") ||
+                id.includes("reselect")
+              ) {
+                return "vendor-utils";
               }
             }
           },

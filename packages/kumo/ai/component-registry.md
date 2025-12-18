@@ -1,7 +1,6 @@
 # Kumo Component Registry
 
 > Auto-generated component metadata for AI/agent consumption.
-> Generated: 2025-12-17T20:47:15.177Z
 
 
 ## Styling Guide
@@ -762,7 +761,7 @@ Collapsible component
 
 **Import:** `import { Collapsible } from "@cloudflare/kumo";`
 
-**Category:** Other
+**Category:** Display
 
 **Props:**
 
@@ -770,6 +769,8 @@ Collapsible component
 - `label`: string (required)
 - `open`: boolean
 - `className`: string
+- `onOpenChange`: (open: boolean) => void
+  Callback when collapsed state changes
 
 **Colors (kumo tokens used):**
 
@@ -2480,12 +2481,12 @@ Tooltip component
 ## Quick Reference
 
 **Components by Category:**
-- **Display:** Badge, Code, LayerCard, Meter, Text
+- **Display:** Badge, Code, Collapsible, LayerCard, Meter, Text
 - **Feedback:** Banner, Loader, Toasty
 - **Block:** Breadcrumbs, Empty, PageHeader
 - **Action:** Button, ClipboardText
 - **Input:** Checkbox, Combobox, DateRangePicker, Field, Input, Select, Switch
-- **Other:** Collapsible, SensitiveInput
 - **Overlay:** Dialog, DropdownMenu, Tooltip
 - **Navigation:** MenuBar, Pagination, Tabs
+- **Other:** SensitiveInput
 - **Layout:** Surface

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Breadcrumbs, KUMO_BREADCRUMBS_VARIANTS } from "../breadcrumbs";
 import { House, Folder, File } from "@phosphor-icons/react";
 import { propTester } from "../../utils/prop-tester";
