@@ -63,6 +63,40 @@ export function getGitRefs(): GitRefs {
     }
   }
 
+  // Local development fallback: use merge-base with origin/main
+  // This ensures we only see changes introduced by the branch, not changes on main
+  if (!process.env.CI) {
+    // First verify origin/main exists
+    try {
+      execSync("git rev-parse --verify origin/main", {
+        encoding: "utf8",
+        stdio: "pipe",
+      });
+    } catch {
+      console.error(
+        "⚠️  Error: origin/main ref not found. Please fetch the main branch:",
+      );
+      console.error("   git fetch origin main");
+      return { baseRef: undefined, headRef: "HEAD" };
+    }
+
+    // Try to find merge-base
+    try {
+      const mergeBase = execSync("git merge-base origin/main HEAD", {
+        encoding: "utf8",
+        stdio: "pipe",
+      }).trim();
+      console.log(
+        `Using local fallback ref (merge-base): ${mergeBase.slice(0, 8)}`,
+      );
+      return { baseRef: mergeBase, headRef: "HEAD" };
+    } catch {
+      // Merge-base failed (e.g., no common ancestor), use origin/main directly
+      console.log("Using local fallback ref: origin/main");
+      return { baseRef: "origin/main", headRef: "HEAD" };
+    }
+  }
+
   return { baseRef, headRef };
 }
 

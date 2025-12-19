@@ -28,10 +28,14 @@
     "version": "changeset version",
     "version:beta": "./ci/versioning/version-beta.sh"
   },
+  "pnpm": {
+    "onlyBuiltDependencies": ["lefthook"]
+  },
   "devDependencies": {
     "@changesets/cli": "2.29.7",
     "@gitbeaker/rest": "^42.5.0",
     "@types/node": "catalog:",
+    "lefthook": "2.0.12",
     "prettier": "3.6.2",
     "prettier-plugin-tailwindcss": "0.7.1",
     "tsx": "catalog:",

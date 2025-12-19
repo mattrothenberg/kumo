@@ -533,15 +533,109 @@ export const Primary: Story = {
 };
 ```
 
-## Releases
+## Changesets & Version Management
 
-Uses [Changesets](https://github.com/changesets/changesets) for versioning:
+Kumo uses [Changesets](https://github.com/changesets/changesets) for version management with automated validation and releases.
+
+### ⚠️ IMPORTANT: AI Agents - Do NOT Version or Publish
+
+**AI agents should NEVER run these commands:**
+- ❌ `pnpm version` - Versions packages (human-only)
+- ❌ `pnpm release` - Publishes to npm (human-only)
+- ❌ `pnpm publish:beta` - Publishes beta versions (CI-only)
+- ❌ `pnpm release:production` - Production release script (human-only)
+
+**AI agents SHOULD:**
+- ✅ Create changesets: `pnpm changeset`
+- ✅ Validate changesets exist
+- ✅ Build and test: `pnpm build`, `pnpm test`
+
+**Reasoning:** Versioning and publishing are sensitive operations that require human oversight and proper npm credentials. Beta releases are automated via CI. Production releases require manual verification.
+
+### Creating Changesets
+
+**CRITICAL:** Changes to `packages/kumo/` **require** a changeset. Pre-push hooks enforce this locally, and CI validates in merge requests.
 
 ```bash
-pnpm changeset              # Create a changeset
-pnpm version                # Apply changesets and bump versions
-pnpm release                # Build and publish
+pnpm changeset
 ```
+
+1. Select `@cloudflare/kumo` from the package list
+2. Choose change type:
+   - **patch** (`0.0.1`) - Bug fixes, small updates
+   - **minor** (`0.1.0`) - New components, backwards-compatible features
+   - **major** (`1.0.0`) - Breaking changes, removed components
+3. Write a clear description (appears in CHANGELOG.md)
+4. Commit the generated `.changeset/*.md` file
+
+### Pre-Push Validation
+
+Lefthook enforces changeset validation before pushing:
+
+```bash
+# Push normally - validation runs automatically
+git push
+
+# Skip validation if needed (use sparingly)
+git push --no-verify
+LEFTHOOK=0 git push
+LEFTHOOK_EXCLUDE=validate-changeset git push
+```
+
+**What it validates:**
+- Detects changes to `packages/kumo/` via `git merge-base origin/main HEAD`
+- Ensures a **new** changeset exists targeting `@cloudflare/kumo`
+- Blocks push with clear instructions if validation fails
+
+**Troubleshooting:**
+- **Missing origin/main**: Run `git fetch origin main`
+- **GUI clients (Tower, SourceTree)**: Configure PATH in client settings
+- **Hook not installed**: Run `pnpm lefthook install`
+
+### Beta Releases (Automated)
+
+Beta versions are automatically published for merge requests:
+
+**Format:** `{version}-beta.{commit-hash}` (e.g., `0.1.0-beta.a1b2c3d`)
+
+**Process:**
+1. Create MR with changeset
+2. CI validates changeset exists
+3. CI publishes beta version with `beta` tag
+4. MR receives comment with installation instructions
+
+**Install beta:**
+```bash
+pnpm add @cloudflare/kumo@0.1.0-beta.a1b2c3d
+```
+
+### Production Releases
+
+```bash
+# 1. Ensure on main with latest changes
+git checkout main && git pull
+
+# 2. Version packages (consumes changesets)
+pnpm version
+
+# 3. Build all packages
+pnpm build:all
+
+# 4. Publish to npm
+pnpm release
+
+# 5. Commit and push
+git add .
+git commit -m "chore: release @cloudflare/kumo@{version}"
+git push --follow-tags
+```
+
+**What happens:**
+- Updates `package.json` version
+- Generates/updates `CHANGELOG.md`
+- Removes consumed changeset files
+- Publishes to npm registry
+- Creates git tags
 
 ## Code Review Guidelines
 
