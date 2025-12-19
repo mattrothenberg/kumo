@@ -40,6 +40,45 @@ Install pnpm globally if you haven't already:
 npm install -g pnpm
 ```
 
+### Git Hooks
+
+This repository uses [Lefthook](https://github.com/evilmartians/lefthook) to enforce changeset validation before pushing. Hooks are automatically installed when you run `pnpm install`.
+
+**What the pre-push hook does:**
+- Validates that changes to `packages/kumo/` include a changeset
+- Prevents pushing without proper version documentation
+- Provides clear instructions if validation fails
+
+**Skip mechanisms:**
+```bash
+# Skip all hooks
+git push --no-verify
+
+# Skip specific hook
+LEFTHOOK_EXCLUDE=validate-changeset git push
+
+# Disable lefthook entirely
+LEFTHOOK=0 git push
+```
+
+**Troubleshooting:**
+
+If you're using a Git GUI client (Tower, SourceTree, GitKraken, VS Code) and hooks aren't working:
+
+1. **PATH issues**: GUI clients may not inherit your shell's PATH. Configure PATH in your client's settings to include:
+   - `/Users/{username}/Library/pnpm` (or wherever `pnpm` is installed)
+   - `/opt/homebrew/bin` or `/usr/local/bin`
+
+2. **Missing origin/main**: If you get an error about missing `origin/main`, fetch it:
+   ```bash
+   git fetch origin main
+   ```
+
+3. **Manual hook installation**: If hooks didn't install automatically:
+   ```bash
+   pnpm lefthook install
+   ```
+
 ### NPM Registry Configuration
 
 Follow the steps at [Getting started with the private NPM registry](https://wiki.cfdata.org/display/FE/Getting+started+with+the+private+NPM+registry) to configure your `NPM_TOKEN`.

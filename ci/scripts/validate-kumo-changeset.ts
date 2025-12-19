@@ -27,20 +27,22 @@ interface ChangesetFile {
 function main() {
   console.log(`🔍 Validating changeset for kumo package: ${KUMO_PACKAGE_NAME}`);
 
-  // Check if we're in a merge request context
-  const isMR = isMergeRequestContext();
+  // Check if we're in a validation context (CI MR or local pre-push)
+  const shouldValidate = isMergeRequestContext() || isLocalContext();
 
   // Log detection method for transparency
-  if (isMR) {
+  if (isMergeRequestContext()) {
     logMergeRequestContext();
+  } else if (isLocalContext()) {
+    console.log("Detected context: Local pre-push hook");
   }
 
-  if (!isMR) {
-    console.log("Not a merge request context, skipping changeset validation");
+  if (!shouldValidate) {
+    console.log("Not a validation context, skipping changeset validation");
     return;
   }
 
-  console.log("Running in MR context - validating changesets...");
+  console.log("Validating changesets...");
 
   // Check if kumo files have been modified
   const hasKumoChanges = checkForKumoChanges();
@@ -60,12 +62,16 @@ function main() {
   );
 
   if (newKumoChangesets.length === 0) {
-    // Use GitLab CI collapsible section for better visibility
-    console.error(
-      "\x1b[0Ksection_start:" +
-        Date.now() +
-        ":changeset_error\r\x1b[0K\x1b[31;1m❌ CHANGESET VALIDATION FAILED\x1b[0m",
-    );
+    // Use GitLab CI collapsible section for better visibility (CI only)
+    if (process.env.CI) {
+      console.error(
+        "\x1b[0Ksection_start:" +
+          Date.now() +
+          ":changeset_error\r\x1b[0K\x1b[31;1m❌ CHANGESET VALIDATION FAILED\x1b[0m",
+      );
+    } else {
+      console.error("\x1b[31;1m❌ CHANGESET VALIDATION FAILED\x1b[0m");
+    }
     console.error("");
 
     // Check if there are any new changesets at all
@@ -100,9 +106,11 @@ function main() {
       "This ensures proper versioning and changelog generation for the kumo package.",
     );
     console.error("");
-    console.error(
-      "\x1b[0Ksection_end:" + Date.now() + ":changeset_error\r\x1b[0K",
-    );
+    if (process.env.CI) {
+      console.error(
+        "\x1b[0Ksection_end:" + Date.now() + ":changeset_error\r\x1b[0K",
+      );
+    }
 
     process.exit(1);
   }
@@ -209,6 +217,13 @@ function parseChangesetPackages(content: string): string[] {
   }
 
   return packages;
+}
+
+/**
+ * Checks if we're running in a local development context (not CI)
+ */
+function isLocalContext(): boolean {
+  return !process.env.CI;
 }
 
 // Run if this is the main module (ES module compatible check)

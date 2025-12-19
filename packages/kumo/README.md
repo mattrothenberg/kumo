@@ -30,14 +30,34 @@ import { Button } from "@cloudflare/kumo/components/button";
 
 ### Import Styles
 
-```css
-/* For Tailwind CSS users */
-@import "tailwindcss";
-@import "@cloudflare/kumo/styles/tailwind";
+#### For Tailwind CSS Users
 
-/* For non-Tailwind users */
-@import "@cloudflare/kumo/styles/standalone";
+```js
+// Explicit import (recommended)
+import "@cloudflare/kumo/styles/tailwind";
+
+// Or use the default export (same as above)
+import "@cloudflare/kumo/styles";
 ```
+
+This imports the raw CSS with Tailwind directives (`@theme`, `@layer`, etc.) that your Tailwind setup will process.
+
+#### For Non-Tailwind Users (Standalone)
+
+```js
+import "@cloudflare/kumo/styles/standalone";
+```
+
+This imports a fully compiled CSS file with all Tailwind utilities and Kumo styles pre-compiled. No Tailwind configuration needed!
+
+**What's included in standalone:**
+- All Tailwind utility classes used by Kumo components
+- Kumo component styles
+- Dark mode support (via `data-mode="dark"` attribute)
+- All animations and keyframes
+- Responsive utilities
+
+**Note:** The standalone CSS is minified and optimized, but will be larger than the Tailwind version since it includes all utilities.
 
 ### Base UI Primitives
 
