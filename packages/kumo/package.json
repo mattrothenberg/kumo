@@ -375,8 +375,10 @@
     "@types/react-dom": "catalog:",
     "@vitest/browser": "catalog:",
     "@vitest/ui": "catalog:",
+    "esbuild": "0.27.2",
     "eslint": "catalog:",
     "eslint-plugin-jsx-a11y": "catalog:",
+    "eslint-plugin-storybook": "catalog:",
     "happy-dom": "catalog:",
     "oxlint": "1.28.0",
     "oxlint-tsgolint": "0.6.0",
@@ -394,7 +396,6 @@
     "vite": "catalog:",
     "vite-plugin-dts": "catalog:",
     "vitest": "catalog:",
-    "wrangler": "catalog:",
-    "eslint-plugin-storybook": "catalog:"
+    "wrangler": "catalog:"
   }
 }

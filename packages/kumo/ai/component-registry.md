@@ -780,7 +780,9 @@ Collapsible component
 
 ```tsx
 <Collapsible label="Click to expand" open={open} onOpenChange={setOpen}>
-        <Text>This is the collapsible content that can be shown or hidden.</Text>
+        <Text>
+          This is the collapsible content that can be shown or hidden.
+        </Text>
       </Collapsible>
 ```
 
