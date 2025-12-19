@@ -20,6 +20,9 @@
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/src/index.d.ts",
+  "bin": {
+    "kumo": "./dist/cli/cli.js"
+  },
   "exports": {
     ".": {
       "types": "./dist/src/index.d.ts",
@@ -304,6 +307,7 @@
   },
   "files": [
     "dist",
+    "ai",
     "README.md",
     "LICENSE",
     "CHANGELOG.md"
@@ -318,7 +322,8 @@
   },
   "scripts": {
     "prepare": "pnpm run prebuild",
-    "build": "pnpm run prebuild && vite build --mode production && tsx scripts/build-css.ts",
+    "build": "pnpm run prebuild && vite build --mode production && tsx scripts/build-css.ts && pnpm run build:cli",
+    "build:cli": "tsx scripts/ai/build-cli.ts",
     "prebuild": "pnpm run build:primitives && pnpm run build:colors && pnpm run build:ai-metadata",
     "dev": "vite build --watch --mode development",
     "clean": "rm -rf dist",
