@@ -130,13 +130,109 @@ function formatProp(name: string, prop: PropInfo): string {
 }
 
 /**
- * Get documentation for a component
+ * Format documentation for a single component
  */
-export function doc(componentName: string): void {
+function formatComponentDoc(component: ComponentInfo): string {
+  const lines: string[] = [];
+
+  lines.push(`# ${component.name}\n`);
+  lines.push(`${component.description}\n`);
+  lines.push(
+    `**Import:** \`import { ${component.name} } from "${component.importPath}";\`\n`,
+  );
+  lines.push(`**Category:** ${component.category}\n`);
+
+  // Props
+  const propEntries = Object.entries(component.props);
+  if (propEntries.length > 0) {
+    lines.push("## Props\n");
+    for (const [propName, propInfo] of propEntries) {
+      lines.push(formatProp(propName, propInfo));
+      lines.push("");
+    }
+  }
+
+  // Sub-components
+  if (component.subComponents) {
+    lines.push("## Sub-Components\n");
+    for (const [subName, subInfo] of Object.entries(component.subComponents)) {
+      lines.push(`### ${component.name}.${subName}`);
+      if (subInfo.description) {
+        lines.push(subInfo.description);
+      }
+      if (subInfo.renderElement) {
+        lines.push(`Renders: ${subInfo.renderElement}`);
+      }
+      if (subInfo.props) {
+        lines.push("Props:");
+        for (const [propName, propInfo] of Object.entries(subInfo.props)) {
+          const required = propInfo.required ? "(required)" : "";
+          lines.push(`  - ${propName}: ${propInfo.type} ${required}`);
+        }
+      }
+      lines.push("");
+    }
+  }
+
+  // Examples
+  if (component.examples && component.examples.length > 0) {
+    lines.push("## Examples\n");
+    for (const example of component.examples.slice(0, 3)) {
+      lines.push("```tsx");
+      lines.push(example);
+      lines.push("```\n");
+    }
+    if (component.examples.length > 3) {
+      lines.push(
+        `(${component.examples.length - 3} more examples available in Storybook)`,
+      );
+    }
+  }
+
+  // Colors (semantic tokens used)
+  if (component.colors && component.colors.length > 0) {
+    lines.push("\n## Semantic Tokens Used\n");
+    lines.push(component.colors.join(", "));
+  }
+
+  return lines.join("\n");
+}
+
+/**
+ * Output documentation for all components
+ */
+export function docs(): void {
+  try {
+    const registry = loadRegistry();
+    const components = Object.values(registry.components);
+
+    console.log(`# Kumo Component Documentation\n`);
+    console.log(`${components.length} components available\n`);
+    console.log("---\n");
+
+    for (const component of components) {
+      console.log(formatComponentDoc(component));
+      console.log("\n---\n");
+    }
+  } catch (error) {
+    if (error instanceof Error && "code" in error && error.code === "ENOENT") {
+      console.error(
+        "Error: Component registry not found. Run `pnpm build:ai-metadata` first.",
+      );
+      process.exit(1);
+    }
+    throw error;
+  }
+}
+
+/**
+ * Get documentation for a specific component
+ */
+export function doc(componentName?: string): void {
+  // If no component name provided, show all docs
   if (!componentName) {
-    console.error("Usage: kumo doc <ComponentName>");
-    console.error("Example: kumo doc Button");
-    process.exit(1);
+    docs();
+    return;
   }
 
   try {
@@ -153,68 +249,7 @@ export function doc(componentName: string): void {
       process.exit(1);
     }
 
-    // Output component documentation
-    console.log(`# ${component.name}\n`);
-    console.log(`${component.description}\n`);
-    console.log(
-      `**Import:** \`import { ${component.name} } from "${component.importPath}";\`\n`,
-    );
-    console.log(`**Category:** ${component.category}\n`);
-
-    // Props
-    const propEntries = Object.entries(component.props);
-    if (propEntries.length > 0) {
-      console.log("## Props\n");
-      for (const [propName, propInfo] of propEntries) {
-        console.log(formatProp(propName, propInfo));
-        console.log();
-      }
-    }
-
-    // Sub-components
-    if (component.subComponents) {
-      console.log("## Sub-Components\n");
-      for (const [subName, subInfo] of Object.entries(
-        component.subComponents,
-      )) {
-        console.log(`### ${component.name}.${subName}`);
-        if (subInfo.description) {
-          console.log(subInfo.description);
-        }
-        if (subInfo.renderElement) {
-          console.log(`Renders: ${subInfo.renderElement}`);
-        }
-        if (subInfo.props) {
-          console.log("Props:");
-          for (const [propName, propInfo] of Object.entries(subInfo.props)) {
-            const required = propInfo.required ? "(required)" : "";
-            console.log(`  - ${propName}: ${propInfo.type} ${required}`);
-          }
-        }
-        console.log();
-      }
-    }
-
-    // Examples
-    if (component.examples && component.examples.length > 0) {
-      console.log("## Examples\n");
-      for (const example of component.examples.slice(0, 3)) {
-        console.log("```tsx");
-        console.log(example);
-        console.log("```\n");
-      }
-      if (component.examples.length > 3) {
-        console.log(
-          `(${component.examples.length - 3} more examples available in Storybook)`,
-        );
-      }
-    }
-
-    // Colors (semantic tokens used)
-    if (component.colors && component.colors.length > 0) {
-      console.log("\n## Semantic Tokens Used\n");
-      console.log(component.colors.join(", "));
-    }
+    console.log(formatComponentDoc(component));
   } catch (error) {
     if (error instanceof Error && "code" in error && error.code === "ENOENT") {
       console.error(

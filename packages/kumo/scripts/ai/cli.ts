@@ -5,6 +5,7 @@
  * Usage:
  *   kumo ls              List all components
  *   kumo doc <name>      Get documentation for a component
+ *   kumo docs            Get documentation for all components
  *   kumo help            Show this help message
  */
 
@@ -17,12 +18,14 @@ Kumo CLI - Component registry for AI agents
 Usage:
   kumo ls              List all components with categories
   kumo doc <name>      Get detailed documentation for a component
+  kumo docs            Get documentation for all components
   kumo help            Show this help message
 
 Examples:
   kumo ls
   kumo doc Button
   kumo doc Dialog
+  kumo docs
 `;
 
 function main(): void {
@@ -37,6 +40,7 @@ function main(): void {
 
     case "doc":
     case "docs":
+      // If no component name, show all docs; otherwise show specific component
       doc(args[1]);
       break;
 
