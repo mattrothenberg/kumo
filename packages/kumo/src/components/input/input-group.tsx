@@ -8,7 +8,31 @@ import {
 } from "./input";
 import { type ButtonProps, Button as ButtonExternal } from "../button/button";
 
-interface InputGroupRootProps {
+export const KUMO_INPUT_GROUP_VARIANTS = {
+  focusMode: {
+    container: {
+      classes: "",
+      description: "Focus indicator on container (default behavior)",
+    },
+    individual: {
+      classes: "",
+      description: "Focus indicators on individual elements",
+    },
+  },
+} as const;
+
+export const KUMO_INPUT_GROUP_DEFAULT_VARIANTS = {
+  focusMode: "container",
+} as const;
+
+export type KumoInputGroupFocusMode =
+  keyof typeof KUMO_INPUT_GROUP_VARIANTS.focusMode;
+
+export interface KumoInputGroupVariantsProps {
+  focusMode?: KumoInputGroupFocusMode;
+}
+
+interface InputGroupRootProps extends KumoInputGroupVariantsProps {
   className?: string;
   size?: "xs" | "sm" | "base" | "lg" | undefined;
 }
@@ -18,26 +42,34 @@ interface InputGroupContextValue extends InputGroupRootProps {
   descriptionId: string;
 }
 
-const InputGroupContext = React.createContext<InputGroupContextValue | null>(null);
+const InputGroupContext = React.createContext<InputGroupContextValue | null>(
+  null,
+);
 
 function Root({
   size,
   children,
   className,
+  focusMode = KUMO_INPUT_GROUP_DEFAULT_VARIANTS.focusMode,
 }: PropsWithChildren<InputGroupRootProps>) {
   const inputId = React.useId();
   const descriptionId = React.useId();
   const contextValue = React.useMemo(
-    () => ({ size, inputId, descriptionId }),
-    [size, inputId, descriptionId],
+    () => ({ size, inputId, descriptionId, focusMode }),
+    [size, inputId, descriptionId, focusMode],
   );
+
+  const isIndividualFocus = focusMode === "individual";
 
   return (
     <InputGroupContext.Provider value={contextValue}>
       <div
         className={cn(
-          inputVariants({ size, parentFocusIndicator: true }),
-          "flex w-full gap-0 overflow-hidden border-0 px-0 shadow-xs ring ring-border focus-within:ring-active",
+          inputVariants({ size, parentFocusIndicator: !isIndividualFocus }),
+          "flex w-full gap-0 border-0 px-0",
+          isIndividualFocus
+            ? "overflow-visible"
+            : "overflow-hidden shadow-xs ring ring-border focus-within:ring-active",
           className,
         )}
       >
@@ -49,11 +81,16 @@ function Root({
 
 function Label({ children }: PropsWithChildren<{}>) {
   const context = useContext(InputGroupContext);
+  const isIndividualFocus = context?.focusMode === "individual";
 
   return (
     <label
       htmlFor={context?.inputId}
-      className="flex h-full items-center p-0 px-2 text-muted"
+      className={cn(
+        "flex h-full items-center p-0 px-2 text-muted",
+        isIndividualFocus &&
+          "first:rounded-l-[inherit] last:rounded-r-[inherit]",
+      )}
     >
       {children}
     </label>
@@ -62,6 +99,7 @@ function Label({ children }: PropsWithChildren<{}>) {
 
 function Input(props: InputProps) {
   const context = useContext(InputGroupContext);
+  const isIndividualFocus = context?.focusMode === "individual";
 
   return (
     <InputExternal
@@ -71,8 +109,10 @@ function Input(props: InputProps) {
       {...props}
       className={cn(
         "flex h-full items-center rounded-none border-0 bg-surface font-sans",
-        "focus:border-color",
         "grow px-2",
+        isIndividualFocus
+          ? "relative ring ring-border first:rounded-l-[inherit] last:rounded-r-[inherit] focus:z-10 focus:outline"
+          : "focus:border-color",
         props.className,
       )}
     />
@@ -81,11 +121,16 @@ function Input(props: InputProps) {
 
 function Description({ children }: PropsWithChildren<{}>) {
   const context = useContext(InputGroupContext);
+  const isIndividualFocus = context?.focusMode === "individual";
 
   return (
     <span
       id={context?.descriptionId}
-      className="flex h-full items-center p-0 px-2 text-muted"
+      className={cn(
+        "flex h-full items-center p-0 px-2 text-muted",
+        isIndividualFocus &&
+          "first:rounded-l-[inherit] last:rounded-r-[inherit]",
+      )}
     >
       {children}
     </span>
@@ -98,6 +143,7 @@ function Button({
   ...props
 }: PropsWithChildren<ButtonProps>) {
   const context = useContext(InputGroupContext);
+  const isIndividualFocus = context?.focusMode === "individual";
 
   return (
     <ButtonExternal
@@ -105,6 +151,8 @@ function Button({
       size={context?.size}
       className={cn(
         "h-full! rounded-none disabled:bg-surface-secondary disabled:text-disabled!",
+        isIndividualFocus &&
+          "relative ring ring-border first:rounded-l-[inherit] last:rounded-r-[inherit] focus:z-10 focus:outline",
         className,
       )}
     >
@@ -113,4 +161,9 @@ function Button({
   );
 }
 
-export const InputGroup = Object.assign(Root, { Label, Input, Button, Description });
+export const InputGroup = Object.assign(Root, {
+  Label,
+  Input,
+  Button,
+  Description,
+});

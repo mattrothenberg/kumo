@@ -9,18 +9,37 @@ import {
 import { cn } from "../../utils/cn";
 
 export const KUMO_PAGINATION_VARIANTS = {
-  // Pagination currently has no variant options but structure is ready for future additions
+  controls: {
+    full: {
+      classes: "",
+      description:
+        "Full pagination controls with first, previous, page input, next, and last buttons",
+    },
+    simple: {
+      classes: "",
+      description:
+        "Simple pagination controls with only previous and next buttons",
+    },
+  },
 } as const;
 
-export const KUMO_PAGINATION_DEFAULT_VARIANTS = {} as const;
+export type KumoPaginationControls =
+  keyof typeof KUMO_PAGINATION_VARIANTS.controls;
 
-// Derived types from KUMO_PAGINATION_VARIANTS
-export interface KumoPaginationVariantsProps {}
+export const KUMO_PAGINATION_DEFAULT_VARIANTS = {
+  controls: "full",
+} as const;
 
-export function paginationVariants(_props: KumoPaginationVariantsProps = {}) {
+export interface KumoPaginationVariantsProps {
+  controls?: KumoPaginationControls;
+}
+
+export function paginationVariants({
+  controls = KUMO_PAGINATION_DEFAULT_VARIANTS.controls,
+}: KumoPaginationVariantsProps = {}) {
   return cn(
-    // Base styles
     "flex items-center justify-between gap-2",
+    KUMO_PAGINATION_VARIANTS.controls[controls].classes,
   );
 }
 
@@ -36,6 +55,7 @@ export function Pagination({
   perPage,
   totalCount,
   setPage,
+  controls = KUMO_PAGINATION_DEFAULT_VARIANTS.controls,
 }: PaginationProps) {
   const [editingPage, setEditingPage] = useState<number>(1);
 
@@ -66,18 +86,20 @@ export function Pagination({
           : null}
       </div>
       <div>
-        <InputGroup>
-          <InputGroup.Button
-            variant="secondary"
-            aria-label="First page"
-            disabled={page <= 1}
-            onClick={() => {
-              setPage(1);
-              setEditingPage(1);
-            }}
-          >
-            <CaretDoubleLeftIcon size={16} />
-          </InputGroup.Button>
+        <InputGroup focusMode="individual">
+          {controls === "full" && (
+            <InputGroup.Button
+              variant="secondary"
+              aria-label="First page"
+              disabled={page <= 1}
+              onClick={() => {
+                setPage(1);
+                setEditingPage(1);
+              }}
+            >
+              <CaretDoubleLeftIcon size={16} />
+            </InputGroup.Button>
+          )}
           <InputGroup.Button
             variant="secondary"
             aria-label="Previous page"
@@ -90,21 +112,23 @@ export function Pagination({
           >
             <CaretLeftIcon size={16} />
           </InputGroup.Button>
-          <InputGroup.Input
-            style={{ width: 50 }}
-            className="text-center"
-            aria-label="Page number"
-            value={editingPage}
-            onValueChange={(value) => {
-              setEditingPage(Number(value));
-            }}
-            onBlur={() => {
-              let number = Math.max(editingPage, 1);
-              number = Math.min(number, maxPage);
-              setPage(number);
-              setEditingPage(number);
-            }}
-          />
+          {controls === "full" && (
+            <InputGroup.Input
+              style={{ width: 50 }}
+              className="text-center"
+              aria-label="Page number"
+              value={editingPage}
+              onValueChange={(value: string) => {
+                setEditingPage(Number(value));
+              }}
+              onBlur={() => {
+                let number = Math.max(editingPage, 1);
+                number = Math.min(number, maxPage);
+                setPage(number);
+                setEditingPage(number);
+              }}
+            />
+          )}
           <InputGroup.Button
             variant="secondary"
             aria-label="Next page"
@@ -117,17 +141,19 @@ export function Pagination({
           >
             <CaretRightIcon size={16} />
           </InputGroup.Button>
-          <InputGroup.Button
-            variant="secondary"
-            aria-label="Last page"
-            disabled={page === maxPage}
-            onClick={() => {
-              setPage(maxPage);
-              setEditingPage(maxPage);
-            }}
-          >
-            <CaretDoubleRightIcon size={16} />
-          </InputGroup.Button>
+          {controls === "full" && (
+            <InputGroup.Button
+              variant="secondary"
+              aria-label="Last page"
+              disabled={page === maxPage}
+              onClick={() => {
+                setPage(maxPage);
+                setEditingPage(maxPage);
+              }}
+            >
+              <CaretDoubleRightIcon size={16} />
+            </InputGroup.Button>
+          )}
         </InputGroup>
       </div>
     </div>

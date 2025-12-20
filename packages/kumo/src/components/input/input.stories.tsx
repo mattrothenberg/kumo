@@ -8,6 +8,12 @@ import {
 } from "./input";
 import { InputGroup } from "./input-group";
 import { propTester } from "../../utils/prop-tester";
+import {
+  CaretDoubleLeftIcon,
+  CaretDoubleRightIcon,
+  CaretLeftIcon,
+  CaretRightIcon,
+} from "@phosphor-icons/react";
 
 const meta: Meta<typeof Input> = {
   title: "Components/Input",
@@ -174,6 +180,28 @@ export const InputGroupExamples: Story = {
           >
             {statusText[status]}
           </p>
+        </div>
+
+        {/* With multiple inputs - used for  */}
+        <div className="space-y-1">
+          <p className="text-center text-sm text-muted">
+            A group of multiple inputs using individualFocus
+          </p>
+          <InputGroup focusMode={"individual"}>
+            <InputGroup.Button onClick={checkAvailability}>
+              <CaretDoubleLeftIcon size={16} />
+            </InputGroup.Button>
+            <InputGroup.Button onClick={checkAvailability}>
+              <CaretLeftIcon size={16} />
+            </InputGroup.Button>
+            <InputGroup.Input placeholder="page" value={0} />
+            <InputGroup.Button onClick={checkAvailability}>
+              <CaretRightIcon size={16} />
+            </InputGroup.Button>
+            <InputGroup.Button onClick={checkAvailability}>
+              <CaretDoubleRightIcon size={16} />
+            </InputGroup.Button>
+          </InputGroup>
         </div>
       </div>
     );
