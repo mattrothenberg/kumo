@@ -21,7 +21,7 @@ export default function TextDoc() {
   </div>
   <div className="flex flex-col gap-1 rounded-lg border border-border bg-surface p-4 justify-end">
     <Text variant="heading2">Heading 2</Text>
-    <p className="text-xs text-muted font-mono">  
+    <p className="text-xs text-muted font-mono">
       text-2xl (24px)
     </p>
   </div>
@@ -110,7 +110,7 @@ export default function TextDoc() {
             </div>
             <div className="flex flex-col gap-1 rounded-lg border border-border bg-surface p-4 justify-end">
               <Text variant="heading2">Heading 2</Text>
-              <p className="text-xs text-muted font-mono">  
+              <p className="text-xs text-muted font-mono">
                 text-2xl (24px)
               </p>
             </div>
