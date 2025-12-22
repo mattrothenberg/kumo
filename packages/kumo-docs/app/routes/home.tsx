@@ -43,12 +43,35 @@ import {
   WarningOctagonIcon,
 } from "@phosphor-icons/react";
 import { useState } from "react";
+import { Link } from "react-router";
+import routes from "../routes";
 
 export function meta({}: Route.MetaArgs) {
   return [
     { title: "Kumo" },
     { name: "description", content: "Kumo – a modern component library" },
   ];
+}
+
+// Build a map of component names to their documentation routes from the routes config
+function buildComponentRoutes(): Map<string, string> {
+  const componentRoutes = new Map<string, string>();
+  routes.forEach((route) => {
+    if (!route.path) return;
+    const { path } = route;
+    if (!path.match(/^(components|blocks|layouts)\//)) return;
+    const componentSlug = path.split("/").pop()!;
+    componentRoutes.set(componentSlug, `/${path}`);
+  });
+  return componentRoutes;
+}
+
+// Map component names to their documentation routes
+function getComponentRoute(
+  name: string,
+  componentRoutes: Map<string, string>,
+): string | null {
+  return componentRoutes.get(name) || null;
 }
 
 function ToastTriggerButton() {
@@ -72,9 +95,12 @@ export default function Home() {
   const [switchToggled, setSwitchToggled] = useState(true);
   const [checked, setChecked] = useState(true);
 
+  const componentRoutes = buildComponentRoutes();
+
   const components = [
     {
       name: "Button",
+      id: "button",
       Component: (
         <div className="grid gap-3">
           <Button icon={PlusIcon}>Create Worker</Button>
@@ -87,6 +113,7 @@ export default function Home() {
     },
     {
       name: "Input",
+      id: "input",
       Component: (
         <div className="grid gap-3">
           <Input placeholder="Type something..." />
@@ -96,6 +123,7 @@ export default function Home() {
     },
     {
       name: "Select",
+      id: "select",
       Component: (
         <Select
           className="w-[200px]"
@@ -117,6 +145,7 @@ export default function Home() {
     },
     {
       name: "Combobox",
+      id: "combobox",
       Component: (
         <Combobox
           items={[
@@ -142,6 +171,7 @@ export default function Home() {
     },
     {
       name: "Switch",
+      id: "switch",
       Component: (
         <Switch
           checked={switchToggled}
@@ -152,7 +182,8 @@ export default function Home() {
       ),
     },
     {
-      name: "Input",
+      name: "Input (with validation)",
+      id: "input",
       Component: (
         <Input
           label="Email"
@@ -169,6 +200,7 @@ export default function Home() {
     },
     {
       name: "Dialog",
+      id: "dialog",
       Component: (
         <Dialog.Root>
           <Dialog.Trigger render={(p) => <Button {...p}>Click me!</Button>} />
@@ -181,6 +213,7 @@ export default function Home() {
     },
     {
       name: "Tooltip",
+      id: "tooltip",
       Component: (
         <TooltipProvider>
           <div className="flex gap-2">
@@ -196,6 +229,7 @@ export default function Home() {
     },
     {
       name: "Dropdown",
+      id: "dropdown",
       Component: (
         <DropdownMenu open modal={false}>
           <DropdownMenu.Trigger render={<Button icon={PlusIcon}>Add</Button>} />
@@ -208,6 +242,7 @@ export default function Home() {
     },
     {
       name: "Collapsible",
+      id: "collapsible",
       Component: (
         <Collapsible label="What is Kumo?">
           Kumo is Cloudflare's new design system.
@@ -216,6 +251,7 @@ export default function Home() {
     },
     {
       name: "Checkbox",
+      id: "checkbox",
       Component: (
         <Checkbox
           label="Max bandwidth"
@@ -228,6 +264,7 @@ export default function Home() {
     },
     {
       name: "LayerCard",
+      id: "layer-card",
       Component: (
         <LayerCard className="w-[200px]">
           <LayerCard.Secondary>Next Steps</LayerCard.Secondary>
@@ -237,10 +274,12 @@ export default function Home() {
     },
     {
       name: "Loader",
+      id: "loader",
       Component: <Loader />,
     },
     {
       name: "SkeletonLine",
+      id: "skeleton-line",
       Component: (
         <div className="flex w-[200px] flex-col gap-2">
           <SkeletonLine minWidth={50} maxWidth={100} />
@@ -251,6 +290,7 @@ export default function Home() {
     },
     {
       name: "Surface",
+      id: "surface",
       Component: (
         <Surface className="flex h-24 w-40 items-center justify-center rounded-lg bg-surface text-sm text-neutral-500">
           <em>To put things over.</em>
@@ -259,12 +299,14 @@ export default function Home() {
     },
     {
       name: "Code",
+      id: "code",
       Component: (
         <CodeBlock lang="ts" code={`const a = callMyFunction("hello")`} />
       ),
     },
     {
       name: "Banner",
+      id: "banner",
       Component: (
         <div className="flex flex-col gap-2">
           <Banner text="This is a default banner." />
@@ -283,6 +325,7 @@ export default function Home() {
     },
     {
       name: "Tabs",
+      id: "tabs",
       Component: (
         <Tabs
           tabs={[
@@ -295,6 +338,7 @@ export default function Home() {
     },
     {
       name: "Badge",
+      id: "badge",
       Component: (
         <div className="flex flex-col gap-2">
           <Badge variant="primary">Primary</Badge>
@@ -312,6 +356,7 @@ export default function Home() {
     },
     {
       name: "Toast",
+      id: "toast",
       Component: (
         <Toasty>
           <ToastTriggerButton />
@@ -320,6 +365,7 @@ export default function Home() {
     },
     {
       name: "Pagination",
+      id: "pagination",
       Component: (
         <Pagination
           page={1}
@@ -332,11 +378,13 @@ export default function Home() {
       ),
     },
     {
-      name: "Input Area",
+      name: "InputArea",
+      id: "input-area",
       Component: <InputArea placeholder="Enter your name" />,
     },
     {
       name: "Meter",
+      id: "meter",
       Component: (
         <div className="w-full px-4">
           <Meter value={75} label="My meter" customValue="100 / 5,000" />
@@ -358,14 +406,24 @@ export default function Home() {
         <div className="mx-auto w-full grow border-r border-neutral-200 dark:border-neutral-800">
           <ul className="grid auto-rows-min grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {components.map((c) => {
+              const route = getComponentRoute(c.id, componentRoutes);
               return (
                 <li
                   className="relative flex aspect-square items-center justify-center bg-surface-secondary ring-1 ring-neutral-200 dark:ring-neutral-800"
                   key={c.name}
                 >
-                  <span className="absolute top-4 left-4 text-base font-medium text-neutral-500">
-                    {c.name}
-                  </span>
+                  {route ? (
+                    <Link
+                      to={route}
+                      className="absolute top-4 left-4 text-base font-medium text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300"
+                    >
+                      {c.name}
+                    </Link>
+                  ) : (
+                    <span className="absolute top-4 left-4 text-base font-medium text-neutral-400 italic dark:text-neutral-600">
+                      {c.name}
+                    </span>
+                  )}
                   {c.Component ?? (
                     <p className="text-base font-medium text-neutral-400">
                       TBD
