@@ -638,7 +638,7 @@
         }
       },
       "examples": [
-        "<Collapsible label=\"Click to expand\" open={open} onOpenChange={setOpen}>\n        <Text>This is the collapsible content that can be shown or hidden.</Text>\n      </Collapsible>"
+        "<Collapsible label=\"Click to expand\" open={open} onOpenChange={setOpen}>\n        <Text>\n          This is the collapsible content that can be shown or hidden.\n        </Text>\n      </Collapsible>"
       ],
       "colors": [
         "border-color",

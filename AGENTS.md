@@ -71,7 +71,28 @@ kumo/
 - `packages/kumo/ai/component-registry.json` - Machine-readable (28 components)
 - `packages/kumo/ai/component-registry.md` - Human-readable (1575 lines)
 
-**Query examples:**
+### CLI Commands
+
+The Kumo CLI provides quick access to component documentation, especially useful when `node_modules` is gitignored:
+
+```bash
+# List all components grouped by category
+npx @cloudflare/kumo ls
+
+# Get documentation for a specific component
+npx @cloudflare/kumo doc Button
+npx @cloudflare/kumo doc Dialog
+
+# Get documentation for ALL components
+npx @cloudflare/kumo docs
+
+# Show help
+npx @cloudflare/kumo help
+```
+
+**Note:** `kumo doc` (without a component name) is equivalent to `kumo docs`.
+
+### Query examples (using jq):
 
 ```bash
 # Get Button props

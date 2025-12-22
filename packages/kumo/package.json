@@ -20,6 +20,9 @@
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/src/index.d.ts",
+  "bin": {
+    "kumo": "./dist/cli/cli.js"
+  },
   "exports": {
     ".": {
       "types": "./dist/src/index.d.ts",
@@ -304,6 +307,7 @@
   },
   "files": [
     "dist",
+    "ai",
     "README.md",
     "LICENSE",
     "CHANGELOG.md"
@@ -318,7 +322,8 @@
   },
   "scripts": {
     "prepare": "pnpm run prebuild",
-    "build": "pnpm run prebuild && vite build --mode production && tsx scripts/build-css.ts",
+    "build": "pnpm run prebuild && vite build --mode production && tsx scripts/build-css.ts && pnpm run build:cli",
+    "build:cli": "tsx scripts/ai/build-cli.ts",
     "prebuild": "pnpm run build:primitives && pnpm run build:colors && pnpm run build:ai-metadata",
     "dev": "vite build --watch --mode development",
     "clean": "rm -rf dist",
@@ -370,8 +375,10 @@
     "@types/react-dom": "catalog:",
     "@vitest/browser": "catalog:",
     "@vitest/ui": "catalog:",
+    "esbuild": "0.27.2",
     "eslint": "catalog:",
     "eslint-plugin-jsx-a11y": "catalog:",
+    "eslint-plugin-storybook": "catalog:",
     "happy-dom": "catalog:",
     "oxlint": "1.28.0",
     "oxlint-tsgolint": "0.6.0",
@@ -389,7 +396,6 @@
     "vite": "catalog:",
     "vite-plugin-dts": "catalog:",
     "vitest": "catalog:",
-    "wrangler": "catalog:",
-    "eslint-plugin-storybook": "catalog:"
+    "wrangler": "catalog:"
   }
 }

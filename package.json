@@ -24,6 +24,7 @@
     "release:beta": "changeset publish --no-git-tag --tag beta",
     "release:production": "bash ci/versioning/release-production.sh",
     "storybook": "pnpm --filter @cloudflare/kumo storybook",
+    "kumo": "node packages/kumo/dist/cli/cli.js",
     "typecheck": "pnpm -r typecheck",
     "version": "changeset version",
     "version:beta": "./ci/versioning/version-beta.sh"
