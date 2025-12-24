@@ -15,12 +15,8 @@
   --color-neutral-925: oklch(0.175 0 0);
 
   /* text colors */
-  --text-color-surface: light-dark(
-    var(--color-black, #000),
-    var(--color-neutral-50, oklch(98.5% 0 0))
-  );
 
-  --text-color-secondary: light-dark(
+  --text-color-surface: light-dark(
     var(--color-neutral-900, oklch(21% 0.006 285.885)),
     var(--color-neutral-100, oklch(97% 0 0))
   );
@@ -30,14 +26,9 @@
     var(--color-neutral-900, oklch(20.5% 0 0))
   );
 
-  --text-color-neutral-subtle: light-dark(
-    var(--color-neutral-700, oklch(37.1% 0 0)),
-    var(--color-neutral-300, oklch(87% 0 0))
-  );
-
-  --text-color-white: light-dark(
-    var(--color-neutral-50, oklch(98.5% 0 0)),
-    var(--color-neutral-50, oklch(98.5% 0 0))
+  --text-color-label: light-dark(
+    var(--color-neutral-600, oklch(43.9% 0 0)),
+    var(--color-neutral-400, oklch(70.8% 0 0))
   );
 
   --text-color-muted: light-dark(
@@ -45,34 +36,9 @@
     var(--color-neutral-50, oklch(98.5% 0 0))
   );
 
-  --text-color-muted-2: light-dark(
-    var(--color-neutral-500, oklch(55.6% 0 0)),
-    var(--color-neutral-400, oklch(70.8% 0 0))
-  );
-
   --text-color-disabled: light-dark(
     var(--color-neutral-400, oklch(70.8% 0 0)),
     var(--color-neutral-400, oklch(70.8% 0 0))
-  );
-
-  --text-color-neutral-dim: light-dark(
-    var(--color-neutral-500, oklch(55.6% 0 0)),
-    var(--color-neutral-500, oklch(55.6% 0 0))
-  );
-
-  --text-color-neutral-dim-2: light-dark(
-    var(--color-neutral-600, oklch(43.9% 0 0)),
-    var(--color-neutral-600, oklch(43.9% 0 0))
-  );
-
-  --text-color-label: light-dark(
-    var(--color-neutral-600, oklch(43.9% 0 0)),
-    var(--color-neutral-400, oklch(70.8% 0 0))
-  );
-
-  --text-color-label-inverse: light-dark(
-    var(--color-neutral-400, oklch(70.8% 0 0)),
-    var(--color-neutral-600, oklch(43.9% 0 0))
   );
 
   --text-color-brand: light-dark(#f6821f, #f6821f);
@@ -298,21 +264,6 @@
     var(--color-neutral-800, oklch(26.9% 0 0))
   );
 
-  --text-color-calendar-day-range-selected-endpoints: light-dark(
-    var(--color-neutral-200, oklch(92.2% 0 0)),
-    var(--color-neutral-800, oklch(26.9% 0 0))
-  );
-
-  --text-color-calendar-day-range-selected-out-of-range: light-dark(
-    var(--color-neutral-300, oklch(87% 0 0)),
-    var(--color-neutral-700, oklch(37.1% 0 0))
-  );
-
-  --text-color-calendar-reset: light-dark(
-    var(--color-neutral-800, oklch(26.9% 0 0)),
-    var(--color-neutral-200, oklch(92.2% 0 0))
-  );
-
   /* toast */
   --color-toast: light-dark(
     var(--color-neutral-50, oklch(0.985 0 0)),
@@ -322,11 +273,6 @@
   --color-toast-button-hover: light-dark(
     var(--color-neutral-100, oklch(97% 0 0)),
     var(--color-neutral-100, oklch(97% 0 0))
-  );
-
-  --text-color-toast-button-hover: light-dark(
-    var(--color-neutral-700, oklch(37.1% 0 0)),
-    var(--color-neutral-700, oklch(37.1% 0 0))
   );
 
   /* meter */

@@ -16,7 +16,7 @@ export const Default: Story = {
   args: {
     title: "Databases",
     description: "Manage your database instances and configurations",
-    icon: <DatabaseIcon size={32} className="text-neutral-subtle" />,
+    icon: <DatabaseIcon size={32} className="text-label" />,
     children: (
       <Surface className="p-6">
         <p>Main content area - your resource list would go here</p>
@@ -87,7 +87,7 @@ export const Complete: Story = {
   args: {
     title: "KV Namespaces",
     description: "Store key-value data globally with low-latency access",
-    icon: <DatabaseIcon size={32} className="text-neutral-subtle" />,
+    icon: <DatabaseIcon size={32} className="text-label" />,
     usage: (
       <Surface className="p-4">
         <h3 className="mb-2 font-semibold">Usage Example</h3>

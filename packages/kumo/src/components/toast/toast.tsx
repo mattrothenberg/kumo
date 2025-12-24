@@ -55,10 +55,10 @@ function ToastList() {
       )}
     >
       <Toast.Content className="overflow-hidden transition-opacity [transition-duration:250ms] data-[behind]:pointer-events-none data-[behind]:opacity-0 data-[expanded]:pointer-events-auto data-[expanded]:opacity-100">
-        <Toast.Title className="text-[0.975rem] leading-5 font-medium text-secondary" />
-        <Toast.Description className="text-[0.925rem] leading-5 text-muted-2" />
+        <Toast.Title className="text-[0.975rem] leading-5 font-medium text-surface" />
+        <Toast.Description className="text-[0.925rem] leading-5 text-muted" />
         <Toast.Close
-          className="absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded border-none bg-transparent text-neutral-dim hover:bg-toast-button-hover hover:text-toast-button-hover"
+          className="absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded border-none bg-transparent text-muted hover:bg-toast-button-hover hover:text-label"
           aria-label="Close"
         >
           <XIcon className="h-4 w-4" />

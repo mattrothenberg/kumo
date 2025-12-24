@@ -77,7 +77,7 @@ export function Empty({
             "border border-border-2",
           )}
         >
-          <span className="text-xs text-label-inverse select-none">$</span>
+          <span className="text-xs text-disabled select-none">$</span>
           <span className="no-scrollbar overflow-scroll text-[14px] whitespace-nowrap text-brand">
             {commandLine}
           </span>
@@ -100,7 +100,7 @@ export function Empty({
             ) : (
               <CopyIcon
                 size={16}
-                className="text-label-inverse group-hover:text-brand"
+                className="text-disabled group-hover:text-brand"
               />
             )}
           </Button>

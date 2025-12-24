@@ -299,7 +299,7 @@ export const SensitiveInput = forwardRef<HTMLInputElement, SensitiveInputProps>(
           autoComplete={autoComplete}
           tabIndex={isMaskedWithValue ? -1 : 0}
           className={cn(
-            "w-full border-0 bg-transparent p-0 text-secondary ring-0 outline-none placeholder:text-muted disabled:cursor-not-allowed disabled:text-muted",
+            "w-full border-0 bg-transparent p-0 text-surface ring-0 outline-none placeholder:text-muted disabled:cursor-not-allowed disabled:text-muted",
             size === "xs" && "pr-5",
             size === "sm" && "pr-6",
             size === "base" && "pr-8",
@@ -328,8 +328,8 @@ export const SensitiveInput = forwardRef<HTMLInputElement, SensitiveInputProps>(
             !isMaskedWithValue && "invisible",
             // When masked: enable pointer events
             isMaskedWithValue && "pointer-events-auto",
-            // Text color - use text-secondary to contrast with bg-secondary input background
-            "text-secondary",
+            // Text color - use text-surface to contrast with bg-secondary input background
+            "text-surface",
             // Hover state - pure CSS, no React state (group for children)
             "group/mask",
           )}
@@ -362,7 +362,7 @@ export const SensitiveInput = forwardRef<HTMLInputElement, SensitiveInputProps>(
           aria-label={mode === "revealed" ? "Hide value" : "Reveal value"}
           tabIndex={showEyeButton ? 0 : -1}
           className={cn(
-            "absolute top-1/2 right-0 -translate-y-1/2 cursor-pointer text-muted outline-none hover:text-secondary focus:text-secondary",
+            "absolute top-1/2 right-0 -translate-y-1/2 cursor-pointer text-muted outline-none hover:text-surface focus:text-surface",
             // Match right padding from inputVariants
             size === "xs" && "right-1.5",
             size === "sm" && "right-2",

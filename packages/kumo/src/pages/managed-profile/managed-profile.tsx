@@ -56,7 +56,7 @@ export function ManagedProfileApp({ view }: { view: ManagedProfileView }) {
   >(initialTab);
 
   return (
-    <div className="min-h-[100vh] bg-surface p-8 text-secondary">
+    <div className="min-h-[100vh] bg-surface p-8 text-surface">
       <div className="mx-auto max-w-4xl">
         {/* Header */}
         <div className="mb-2">
@@ -322,7 +322,7 @@ function NotificationsView({
                     onValueChange={(checked) =>
                       updateNotificationSubscription(value, checked)
                     }
-                    className="text-sm font-medium text-secondary"
+                    className="text-sm font-medium text-surface"
                   />
                   <Text
                     variant="secondary"
@@ -459,10 +459,10 @@ function UpdateEmailDialog({ currentEmail }: { currentEmail: string }) {
   return (
     <Dialog className="w-[400px]">
       <div className="flex items-center justify-between p-4">
-        <DialogTitle className="text-base font-semibold text-secondary">
+        <DialogTitle className="text-base font-semibold text-surface">
           Update Email
         </DialogTitle>
-        <DialogClose className="text-muted-foreground hover:text-secondary">
+        <DialogClose className="text-muted-foreground hover:text-surface">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
@@ -556,10 +556,10 @@ function DeleteUserDialog({
   return (
     <Dialog className="w-[400px]">
       <div className="flex items-center justify-between p-4">
-        <DialogTitle className="text-base font-semibold text-secondary">
+        <DialogTitle className="text-base font-semibold text-surface">
           Delete User
         </DialogTitle>
-        <DialogClose className="text-muted-foreground hover:text-secondary">
+        <DialogClose className="text-muted-foreground hover:text-surface">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"

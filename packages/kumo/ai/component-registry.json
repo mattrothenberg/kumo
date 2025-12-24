@@ -50,8 +50,7 @@
         "border-primary",
         "text-info",
         "text-surface",
-        "text-surface-inverse",
-        "text-white"
+        "text-surface-inverse"
       ]
     },
     "Banner": {
@@ -146,8 +145,8 @@
         "<Breadcrumbs>\n      <Breadcrumbs.Link href=\"/\">Home</Breadcrumbs.Link>\n      <Breadcrumbs.Separator />\n      <Breadcrumbs.Link href=\"/projects\">Projects</Breadcrumbs.Link>\n      <Breadcrumbs.Separator />\n      <Breadcrumbs.Current>Current Project</Breadcrumbs.Current>\n      <Breadcrumbs.Clipboard text=\"https://example.com/projects/current-project\" />\n    </Breadcrumbs>"
       ],
       "colors": [
+        "text-disabled",
         "text-green",
-        "text-label-inverse",
         "text-muted"
       ],
       "subComponents": {
@@ -346,9 +345,7 @@
         "ring-border",
         "text-error",
         "text-muted",
-        "text-secondary",
-        "text-surface",
-        "text-white"
+        "text-surface"
       ]
     },
     "Checkbox": {
@@ -447,7 +444,7 @@
         }
       },
       "examples": [
-        "<div className=\"flex flex-col gap-4\">\n      {Object.keys(KUMO_CHECKBOX_VARIANTS.variant).map((variant) => (\n        <div\n          key={variant}\n          className=\"border border-dotted border-color bg-surface p-4\"\n        >\n          <div className=\"mb-2 font-sans text-sm leading-5 font-light tracking-wide text-muted-2 uppercase\">\n            {variant}\n          </div>\n          <Checkbox label=\"Checkbox variant\" variant={variant as any} />\n        </div>\n      ))}\n    </div>",
+        "<div className=\"flex flex-col gap-4\">\n      {Object.keys(KUMO_CHECKBOX_VARIANTS.variant).map((variant) => (\n        <div\n          key={variant}\n          className=\"border border-dotted border-color bg-surface p-4\"\n        >\n          <div className=\"mb-2 font-sans text-sm leading-5 font-light tracking-wide text-muted uppercase\">\n            {variant}\n          </div>\n          <Checkbox label=\"Checkbox variant\" variant={variant as any} />\n        </div>\n      ))}\n    </div>",
         "<Checkbox label=\"I'm checked\" checked={true} />",
         "<Checkbox label=\"Indeterminate state\" indeterminate={true} />",
         "<div className=\"flex flex-col gap-4\">\n      {[false, true, \"indeterminate\"].map((state) => (\n        <Checkbox\n          key={String(state)}\n          label={`Disabled (${state === \"indeterminate\" ? \"indeterminate\" : state ? \"checked\" : \"unchecked\"})`}\n          checked={state === true}\n          indeterminate={state === \"indeterminate\"}\n          disabled\n        />\n      ))}\n    </div>",
@@ -607,7 +604,7 @@
       "colors": [
         "bg-surface",
         "border-color",
-        "text-neutral-subtle"
+        "text-label"
       ]
     },
     "Collapsible": {
@@ -726,7 +723,6 @@
         "bg-secondary",
         "fill-active",
         "ring-border",
-        "text-neutral-dim-2",
         "text-surface"
       ],
       "subComponents": {
@@ -903,12 +899,10 @@
         "bg-calendar-day-range-selected-out-of-range",
         "bg-hover",
         "bg-surface",
-        "text-calendar-day-range-selected-endpoints",
-        "text-calendar-day-range-selected-out-of-range",
-        "text-calendar-reset",
-        "text-neutral-dim",
-        "text-neutral-subtle",
-        "text-secondary"
+        "text-label",
+        "text-muted",
+        "text-surface",
+        "text-surface-inverse"
       ]
     },
     "Dialog": {
@@ -949,7 +943,7 @@
       "colors": [
         "bg-color-3",
         "bg-surface",
-        "text-secondary"
+        "text-surface"
       ],
       "subComponents": {
         "Root": {
@@ -1093,7 +1087,6 @@
         "bg-secondary",
         "ring-border",
         "text-error",
-        "text-secondary",
         "text-surface"
       ],
       "subComponents": {
@@ -1228,9 +1221,9 @@
         "border-color",
         "border-hover-border",
         "text-brand",
+        "text-disabled",
         "text-green",
         "text-label",
-        "text-label-inverse",
         "text-surface"
       ]
     },
@@ -1362,7 +1355,7 @@
         "bg-surface-2",
         "ring-border",
         "ring-color",
-        "text-neutral-dim"
+        "text-label"
       ],
       "subComponents": {
         "Primary": {
@@ -1487,7 +1480,7 @@
       "colors": [
         "bg-color",
         "text-label",
-        "text-secondary"
+        "text-surface"
       ]
     },
     "PageHeader": {
@@ -1773,8 +1766,7 @@
         "bg-secondary",
         "outline-active",
         "text-muted",
-        "text-secondary",
-        "text-white"
+        "text-surface"
       ]
     },
     "Surface": {
@@ -1907,7 +1899,7 @@
         }
       },
       "examples": [
-        "<div className=\"flex flex-col gap-4\">\n      {Object.keys(KUMO_SWITCH_VARIANTS.variant).map((variant) => (\n        <div\n          key={variant}\n          className=\"border border-dotted border-color bg-surface p-4\"\n        >\n          <div className=\"mb-2 font-sans text-sm leading-5 font-light tracking-wide text-muted-2 uppercase\">\n            {variant}\n          </div>\n          <Switch label=\"Switch variant\" variant={variant as any} />\n        </div>\n      ))}\n    </div>",
+        "<div className=\"flex flex-col gap-4\">\n      {Object.keys(KUMO_SWITCH_VARIANTS.variant).map((variant) => (\n        <div\n          key={variant}\n          className=\"border border-dotted border-color bg-surface p-4\"\n        >\n          <div className=\"mb-2 font-sans text-sm leading-5 font-light tracking-wide text-muted uppercase\">\n            {variant}\n          </div>\n          <Switch label=\"Switch variant\" variant={variant as any} />\n        </div>\n      ))}\n    </div>",
         "<Switch label=\"I'm checked\" checked={true} />",
         "<Switch label=\"I'm unchecked\" checked={false} />",
         "<div className=\"flex flex-col gap-4\">\n      {[false, true].map((checked) => (\n        <Switch\n          key={String(checked)}\n          label={`Disabled (${checked ? \"checked\" : \"unchecked\"})`}\n          checked={checked}\n          disabled\n        />\n      ))}\n    </div>",
@@ -1927,7 +1919,6 @@
         "bg-hover-selected",
         "bg-selected",
         "bg-surface-3",
-        "bg-white",
         "border-border",
         "ring-destructive",
         "text-error",
@@ -2017,8 +2008,8 @@
       "colors": [
         "bg-accent",
         "bg-surface-elevated",
-        "ring-border",
-        "text-muted-2",
+        "ring-color-2",
+        "text-label",
         "text-surface"
       ]
     },
@@ -2126,10 +2117,9 @@
         "bg-toast",
         "bg-toast-button-hover",
         "border-color",
-        "text-muted-2",
-        "text-neutral-dim",
-        "text-secondary",
-        "text-toast-button-hover"
+        "text-label",
+        "text-muted",
+        "text-surface"
       ]
     },
     "Tooltip": {
@@ -2179,8 +2169,7 @@
       "colors": [
         "bg-black-icon",
         "fill-black-icon",
-        "fill-icon-path",
-        "text-white"
+        "fill-icon-path"
       ]
     }
   },

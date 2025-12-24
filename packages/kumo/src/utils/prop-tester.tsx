@@ -15,7 +15,7 @@ export function propTester<
         key={`${testProp}-${prop}`}
         className="my-4 border border-dotted border-color bg-surface p-4"
       >
-        <div className="mb-2 font-sans text-sm leading-5 font-light tracking-wide text-muted-2 uppercase">
+        <div className="mb-2 font-sans text-sm leading-5 font-light tracking-wide text-label uppercase">
           {`${prop}`}
         </div>
         {React.cloneElement(Component, {

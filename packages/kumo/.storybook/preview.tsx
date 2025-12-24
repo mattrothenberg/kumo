@@ -91,7 +91,7 @@ function DualModeDecorator({ Story, context }: DualModeDecoratorProps) {
       </div>
       <div className="flex">
         <div className="flex-1 items-center border bg-surface-2 p-12">
-          <div className="mb-8 font-sans text-sm leading-5 tracking-wide text-muted-2 uppercase">
+          <div className="mb-8 font-sans text-sm leading-5 tracking-wide text-muted uppercase">
             Light
           </div>
           <div className="flex flex-col flex-wrap gap-4">
@@ -99,7 +99,7 @@ function DualModeDecorator({ Story, context }: DualModeDecoratorProps) {
           </div>
         </div>
         <div data-mode="dark" className="flex-1 items-center bg-surface-2 p-12">
-          <div className="mb-8 font-sans text-sm leading-5 tracking-wide text-muted-2 uppercase">
+          <div className="mb-8 font-sans text-sm leading-5 tracking-wide text-muted uppercase">
             Dark
           </div>
           <div className="flex flex-col flex-wrap gap-4">
@@ -155,7 +155,7 @@ function PageDecorator({
         <ModeToggle
           isDark={isDark}
           onClick={() => setIsDark(!isDark)}
-          className="text-secondary"
+          className="text-surface"
         />
       </div>
       <Story />
