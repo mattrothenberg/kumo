@@ -42,7 +42,7 @@ export function codeVariants({
 }: KumoCodeVariantsProps = {}) {
   return cn(
     // Base styles
-    "m-0 w-auto rounded-none border-none bg-transparent p-0 font-mono text-sm leading-[20px] text-neutral-subtle",
+    "m-0 w-auto rounded-none border-none bg-transparent p-0 font-mono text-sm leading-[20px] text-label",
     // Apply lang-specific styles (currently none, but extensible)
     KUMO_CODE_VARIANTS.lang[lang].classes,
   );

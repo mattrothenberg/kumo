@@ -19,7 +19,7 @@ export const Variants: Story = {
           key={variant}
           className="border border-dotted border-color bg-surface p-4"
         >
-          <div className="mb-2 font-sans text-sm leading-5 font-light tracking-wide text-muted-2 uppercase">
+          <div className="mb-2 font-sans text-sm leading-5 font-light tracking-wide text-muted uppercase">
             {variant}
           </div>
           <Checkbox label="Checkbox variant" variant={variant as any} />

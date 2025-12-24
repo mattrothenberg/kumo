@@ -40,7 +40,7 @@ export function dialogVariants({
 }: KumoDialogVariantsProps = {}) {
   return cn(
     // Base styles
-    "shadow-m z-modal fixed top-1/2 left-1/2 max-w-[calc(100vw-3rem)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl bg-surface text-secondary duration-150 data-ending-style:scale-90 data-ending-style:opacity-0 data-starting-style:scale-90 data-starting-style:opacity-0",
+    "shadow-m z-modal fixed top-1/2 left-1/2 max-w-[calc(100vw-3rem)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl bg-surface text-surface duration-150 data-ending-style:scale-90 data-ending-style:opacity-0 data-starting-style:scale-90 data-starting-style:opacity-0",
     // Apply size from KUMO_DIALOG_VARIANTS
     KUMO_DIALOG_VARIANTS.size[size].classes,
   );

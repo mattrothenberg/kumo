@@ -92,7 +92,7 @@ function Current({
 
 function Separator() {
   return (
-    <span className="flex items-center text-label-inverse" aria-hidden="true">
+    <span className="flex items-center text-disabled" aria-hidden="true">
       <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
         <path
           stroke="currentColor"

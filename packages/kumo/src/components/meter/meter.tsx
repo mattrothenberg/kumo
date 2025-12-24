@@ -49,13 +49,13 @@ export function Meter({
           {label}
         </BaseMeter.Label>
         {customValue ? (
-          <span className="text-sm font-medium text-secondary tabular-nums">
+          <span className="text-sm font-medium text-surface tabular-nums">
             {customValue}
           </span>
         ) : (
           <>
             {showValue && (
-              <BaseMeter.Value className="text-sm font-medium text-secondary tabular-nums" />
+              <BaseMeter.Value className="text-sm font-medium text-surface tabular-nums" />
             )}
           </>
         )}

@@ -49,7 +49,7 @@ Most frequently used tokens across Kumo components:
 | Category | Top Tokens |
 |----------|------------|
 | **Background** | `bg-secondary`, `bg-surface`, `bg-color-3`, `bg-color`, `bg-destructive` |
-| **Text** | `text-surface`, `text-muted`, `text-error`, `text-secondary`, `text-info` |
+| **Text** | `text-surface`, `text-muted`, `text-label`, `text-error`, `text-info` |
 | **Border/Ring** | `ring-border`, `ring-active`, `ring-destructive`, `ring-color` |
 
 ---
@@ -58,7 +58,7 @@ Most frequently used tokens across Kumo components:
 
 > Use the Quick Reference table above for common cases. This section lists all available tokens.
 
-**Text:** `text-alert`, `text-brand`, `text-calendar-day-range-selected-endpoints`, `text-calendar-day-range-selected-out-of-range`, `text-calendar-reset`, `text-disabled`, `text-error`, `text-green`, and 13 more
+**Text:** `text-alert`, `text-brand`, `text-disabled`, `text-error`, `text-green`, `text-info`, `text-label`, `text-muted`, and 2 more
 
 **Background:** `bg-accent`, `bg-active`, `bg-alert-border`, `bg-alert-selection`, `bg-alert-surface`, `bg-black-icon`, `bg-border`, `bg-calendar`, and 27 more
 
@@ -91,7 +91,7 @@ Badge component
 
 **Colors (kumo tokens used):**
 
-`bg-color`, `bg-destructive`, `bg-surface-inverse`, `border-color`, `border-primary`, `text-info`, `text-surface`, `text-surface-inverse`, `text-white`
+`bg-color`, `bg-destructive`, `bg-surface-inverse`, `border-color`, `border-primary`, `text-info`, `text-surface`, `text-surface-inverse`
 
 **Examples:**
 
@@ -151,7 +151,7 @@ Breadcrumbs component
 
 **Colors (kumo tokens used):**
 
-`text-green`, `text-label-inverse`, `text-muted`
+`text-disabled`, `text-green`, `text-muted`
 
 **Sub-Components:**
 
@@ -300,7 +300,7 @@ Button component
 
 **Colors (kumo tokens used):**
 
-`bg-accent`, `bg-destructive`, `bg-primary`, `bg-secondary`, `bg-subtle`, `bg-surface`, `border-subtle`, `ring-active`, `ring-border`, `text-error`, `text-muted`, `text-secondary`, `text-surface`, `text-white`
+`bg-accent`, `bg-destructive`, `bg-primary`, `bg-secondary`, `bg-subtle`, `bg-surface`, `border-subtle`, `ring-active`, `ring-border`, `text-error`, `text-muted`, `text-surface`
 
 **Examples:**
 
@@ -402,7 +402,7 @@ Props:
           key={variant}
           className="border border-dotted border-color bg-surface p-4"
         >
-          <div className="mb-2 font-sans text-sm leading-5 font-light tracking-wide text-muted-2 uppercase">
+          <div className="mb-2 font-sans text-sm leading-5 font-light tracking-wide text-muted uppercase">
             {variant}
           </div>
           <Checkbox label="Checkbox variant" variant={variant as any} />
@@ -735,7 +735,7 @@ Simple code component without syntax highlighting
 
 **Colors (kumo tokens used):**
 
-`bg-surface`, `border-color`, `text-neutral-subtle`
+`bg-surface`, `border-color`, `text-label`
 
 **Examples:**
 
@@ -825,7 +825,7 @@ Combobox component
 
 **Colors (kumo tokens used):**
 
-`bg-color-2`, `bg-color-3`, `bg-secondary`, `fill-active`, `ring-border`, `text-neutral-dim-2`, `text-surface`
+`bg-color-2`, `bg-color-3`, `bg-secondary`, `fill-active`, `ring-border`, `text-surface`
 
 **Sub-Components:**
 
@@ -1011,7 +1011,7 @@ DateRangePicker component
 
 **Colors (kumo tokens used):**
 
-`bg-calendar`, `bg-calendar-day-range-selected`, `bg-calendar-day-range-selected-endpoints`, `bg-calendar-day-range-selected-out-of-range`, `bg-hover`, `bg-surface`, `text-calendar-day-range-selected-endpoints`, `text-calendar-day-range-selected-out-of-range`, `text-calendar-reset`, `text-neutral-dim`, `text-neutral-subtle`, `text-secondary`
+`bg-calendar`, `bg-calendar-day-range-selected`, `bg-calendar-day-range-selected-endpoints`, `bg-calendar-day-range-selected-out-of-range`, `bg-hover`, `bg-surface`, `text-label`, `text-muted`, `text-surface`, `text-surface-inverse`
 
 **Examples:**
 
@@ -1050,7 +1050,7 @@ Dialog component
 
 **Colors (kumo tokens used):**
 
-`bg-color-3`, `bg-surface`, `text-secondary`
+`bg-color-3`, `bg-surface`, `text-surface`
 
 **Sub-Components:**
 
@@ -1171,7 +1171,7 @@ DropdownMenu component
 
 **Colors (kumo tokens used):**
 
-`bg-accent`, `bg-color-3`, `bg-destructive-2`, `bg-muted`, `bg-secondary`, `ring-border`, `text-error`, `text-secondary`, `text-surface`
+`bg-accent`, `bg-color-3`, `bg-destructive-2`, `bg-muted`, `bg-secondary`, `ring-border`, `text-error`, `text-surface`
 
 **Sub-Components:**
 
@@ -1251,7 +1251,7 @@ Empty component
 
 **Colors (kumo tokens used):**
 
-`bg-secondary`, `bg-surface-secondary`, `border-border-2`, `border-color`, `border-hover-border`, `text-brand`, `text-green`, `text-label`, `text-label-inverse`, `text-surface`
+`bg-secondary`, `bg-surface-secondary`, `border-border-2`, `border-color`, `border-hover-border`, `text-brand`, `text-disabled`, `text-green`, `text-label`, `text-surface`
 
 **Examples:**
 
@@ -1505,7 +1505,7 @@ LayerCard component
 
 **Colors (kumo tokens used):**
 
-`bg-layer-card-primary`, `bg-surface-2`, `ring-border`, `ring-color`, `text-neutral-dim`
+`bg-layer-card-primary`, `bg-surface-2`, `ring-border`, `ring-color`, `text-label`
 
 **Sub-Components:**
 
@@ -1610,7 +1610,7 @@ Meter component
 
 **Colors (kumo tokens used):**
 
-`bg-color`, `text-label`, `text-secondary`
+`bg-color`, `text-label`, `text-surface`
 
 **Examples:**
 
@@ -1920,7 +1920,7 @@ SensitiveInput component
 
 **Colors (kumo tokens used):**
 
-`bg-primary`, `bg-secondary`, `outline-active`, `text-muted`, `text-secondary`, `text-white`
+`bg-primary`, `bg-secondary`, `outline-active`, `text-muted`, `text-surface`
 
 **Examples:**
 
@@ -2072,7 +2072,7 @@ Switch component
 
 **Colors (kumo tokens used):**
 
-`bg-destructive`, `bg-hover`, `bg-hover-selected`, `bg-selected`, `bg-surface-3`, `bg-white`, `border-border`, `ring-destructive`, `text-error`, `text-muted`, `text-surface`
+`bg-destructive`, `bg-hover`, `bg-hover-selected`, `bg-selected`, `bg-surface-3`, `border-border`, `ring-destructive`, `text-error`, `text-muted`, `text-surface`
 
 **Sub-Components:**
 
@@ -2105,7 +2105,7 @@ Props:
           key={variant}
           className="border border-dotted border-color bg-surface p-4"
         >
-          <div className="mb-2 font-sans text-sm leading-5 font-light tracking-wide text-muted-2 uppercase">
+          <div className="mb-2 font-sans text-sm leading-5 font-light tracking-wide text-muted uppercase">
             {variant}
           </div>
           <Switch label="Switch variant" variant={variant as any} />
@@ -2361,7 +2361,7 @@ Tabs component
 
 **Colors (kumo tokens used):**
 
-`bg-accent`, `bg-surface-elevated`, `ring-border`, `text-muted-2`, `text-surface`
+`bg-accent`, `bg-surface-elevated`, `ring-color-2`, `text-label`, `text-surface`
 
 **Examples:**
 
@@ -2442,7 +2442,7 @@ Toasty component
 
 **Colors (kumo tokens used):**
 
-`bg-toast`, `bg-toast-button-hover`, `border-color`, `text-muted-2`, `text-neutral-dim`, `text-secondary`, `text-toast-button-hover`
+`bg-toast`, `bg-toast-button-hover`, `border-color`, `text-label`, `text-muted`, `text-surface`
 
 ---
 
@@ -2469,7 +2469,7 @@ Tooltip component
 
 **Colors (kumo tokens used):**
 
-`bg-black-icon`, `fill-black-icon`, `fill-icon-path`, `text-white`
+`bg-black-icon`, `fill-black-icon`, `fill-icon-path`
 
 **Examples:**
 

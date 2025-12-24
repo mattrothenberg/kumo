@@ -77,7 +77,7 @@ export function Tabs({
             key={tab.value}
             value={tab.value}
             className={cn(
-              "relative z-10 my-px flex cursor-pointer items-center rounded-lg bg-transparent px-2.5 text-base whitespace-nowrap text-muted-2 transition-colors focus-visible:outline-none",
+              "relative z-10 my-px flex cursor-pointer items-center rounded-lg bg-transparent px-2.5 text-base whitespace-nowrap text-label transition-colors focus-visible:outline-none",
               "data-selected:text-surface",
               tab.className,
             )}
@@ -87,7 +87,7 @@ export function Tabs({
         ))}
         <TabsPrimitive.Indicator
           className={cn(
-            "absolute z-0 rounded-lg bg-surface-elevated shadow ring ring-border transition-[left,width,transform] duration-200 ease-out",
+            "absolute z-0 rounded-lg bg-surface-elevated shadow-sm ring ring-color-2 transition-[left,width,transform] duration-200 ease-out",
             "data-[rendered=false]:scale-90 data-[rendered=false]:opacity-0",
             "top-(--active-tab-top) left-(--active-tab-left) h-(--active-tab-height) w-(--active-tab-width)",
             indicatorClassName,

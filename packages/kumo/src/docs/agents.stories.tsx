@@ -5,6 +5,9 @@ const meta = {
   component: ComponentRegistryView,
   title: "Agents/Component Registry",
   tags: ["!autodocs"],
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
 } satisfies Meta<typeof ComponentRegistryView>;
 
 export default meta;

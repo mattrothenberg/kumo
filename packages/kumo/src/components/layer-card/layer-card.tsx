@@ -29,7 +29,7 @@ function LayerCardSecondary({ children, className }: LayerCardProps) {
   return (
     <div
       className={cn(
-        "flex items-center gap-2 p-2 text-base font-medium text-neutral-dim",
+        "flex items-center gap-2 p-2 text-base font-medium text-label",
         className,
       )}
     >
@@ -42,7 +42,7 @@ function LayerCardPrimary({ children, className }: LayerCardProps) {
   return (
     <div
       className={cn(
-        "bg-layer-card-primary flex flex-col gap-2 rounded-lg p-4 pr-3 text-inherit no-underline ring ring-color",
+        "flex flex-col gap-2 rounded-lg bg-layer-card-primary p-4 pr-3 text-inherit no-underline ring ring-color",
         className,
       )}
     >

@@ -40,10 +40,8 @@ export const TAILWIND_COLOR_FAMILIES = new Set([
   "zinc",
   "neutral",
   "stone",
-  // common utility color keywords (note: "transparent" is intentionally
-  // excluded so utilities like bg-transparent / ring-transparent are allowed)
-  "black",
-  "white",
+  // Note: "black", "white", and "transparent" are intentionally excluded
+  // so utilities like bg-white, text-black, ring-transparent are allowed.
 ]);
 
 // Parse kumo-theme.css to extract valid semantic color tokens.

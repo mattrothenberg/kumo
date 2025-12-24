@@ -471,12 +471,12 @@ function DateRangeDayCell({
     switch (mode) {
       case DateRangeCellMode.OUT_OF_RANGE:
       case DateRangeCellMode.SELECTED_OUT_OF_RANGE:
-        return "!text-calendar-day-range-selected-out-of-range";
+        return "!text-label";
       case DateRangeCellMode.SELECTED_START_NODE:
       case DateRangeCellMode.SELECTED_END_NODE:
-        return "!text-calendar-day-range-selected-endpoints";
+        return "!text-surface-inverse";
       default:
-        return "text-secondary";
+        return "text-surface";
     }
   }, [mode]);
 
@@ -508,7 +508,7 @@ function DateRangeDayCell({
         sizeConfig.cellHeight,
         sizeConfig.cellWidth,
         sizeConfig.textSize,
-        "cursor-pointer text-center text-secondary transition-all duration-[50]",
+        "cursor-pointer text-center text-surface transition-all duration-[50]",
         `leading-[${sizeConfig.cellHeight.replace("h-[", "").replace("]", "")}]`,
         mode !== DateRangeCellMode.OUT_OF_RANGE &&
           mode !== DateRangeCellMode.SELECTED_OUT_OF_RANGE
@@ -547,7 +547,7 @@ function DateRangeMonthHeader({
           aria-label="Edit month and year"
           defaultValue={`${month} ${year}`}
           className={cn(
-            "w-full rounded-md border-none bg-transparent py-1.5 text-center font-semibold text-secondary transition-all duration-200 focus:outline-none",
+            "w-full rounded-md border-none bg-transparent py-1.5 text-center font-semibold text-surface transition-all duration-200 focus:outline-none",
             sizeConfig.textSize,
           )}
           onBlur={(e) => {
@@ -562,7 +562,7 @@ function DateRangeMonthHeader({
           <div
             key={day}
             className={cn(
-              "h-[22px] text-center text-neutral-dim",
+              "h-[22px] text-center text-muted",
               sizeConfig.cellWidth,
               sizeConfig.textSize,
             )}
@@ -588,17 +588,14 @@ function DateRangeFooter({
 
   return (
     <div
-      className={cn(
-        "flex items-center gap-2 text-neutral-subtle",
-        sizeConfig.textSize,
-      )}
+      className={cn("flex items-center gap-2 text-label", sizeConfig.textSize)}
     >
       <GlobeHemisphereWestIcon size={sizeConfig.iconSize} />
       <span className="flex-1">Timezone: {timezone}</span>
       <button
         type="button"
         onClick={reset}
-        className="cursor-pointer font-semibold text-calendar-reset underline underline-offset-2"
+        className="cursor-pointer font-semibold text-surface underline underline-offset-2"
       >
         Reset Dates
       </button>

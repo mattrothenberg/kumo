@@ -348,6 +348,7 @@
     "deploy": "pnpm run build:storybook && wrangler pages deploy",
     "deploy:ci": "CLOUDFLARE_ACCOUNT_ID=$CLOUDFLARE_ACCOUNT_ID CLOUDFLARE_API_TOKEN=$CLOUDFLARE_API_TOKEN pnpm run build:storybook && wrangler pages deploy",
     "deploy-prod:ci": "pnpm run deploy:ci --branch main",
+    "chromatic": "chromatic --exit-zero-on-changes",
     "build:ai-metadata": "tsx scripts/ai/component-registry.ts",
     "build:primitives": "tsx scripts/generate-primitives.ts",
     "validate:build": "vitest run --project=unit tests/imports/export-path-validation.test.ts"
@@ -396,6 +397,7 @@
     "vite": "catalog:",
     "vite-plugin-dts": "catalog:",
     "vitest": "catalog:",
-    "wrangler": "catalog:"
+    "wrangler": "catalog:",
+    "chromatic": "^11.25.2"
   }
 }
