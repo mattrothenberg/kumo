@@ -12,7 +12,7 @@ export const KUMO_BADGE_VARIANTS = {
       description: "Subtle badge for secondary information",
     },
     destructive: {
-      classes: "bg-destructive text-white",
+      classes: "bg-error text-white",
       description: "Error or danger state indicator",
     },
     outline: {

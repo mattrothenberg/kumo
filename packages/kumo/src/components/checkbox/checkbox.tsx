@@ -22,7 +22,7 @@ export const KUMO_CHECKBOX_VARIANTS = {
       description: "Default checkbox appearance",
     },
     error: {
-      classes: "[&>span]:ring-destructive",
+      classes: "[&>span]:ring-error",
       description: "Error state for validation failures",
     },
   },
@@ -248,7 +248,7 @@ const CheckboxBase = forwardRef<HTMLInputElement, CheckboxProps>(
           aria-hidden
           className={cn(
             "flex h-4 w-4 items-center justify-center rounded-sm border-0 bg-surface ring",
-            variant === "error" ? "ring-destructive" : "ring-border",
+            variant === "error" ? "ring-error" : "ring-border",
             !disabled && "peer-hover:ring-active peer-focus:ring-active",
             (checked || indeterminate) && "bg-surface-inverse",
           )}
@@ -320,7 +320,7 @@ const CheckboxItem = forwardRef<HTMLButtonElement, CheckboxItemProps>(
           onCheckedChange={onValueChange}
           className={cn(
             "peer flex h-4 w-4 items-center justify-center rounded-sm border-0 bg-surface ring",
-            variant === "error" ? "ring-destructive" : "ring-border",
+            variant === "error" ? "ring-error" : "ring-border",
             !disabled && "hover:ring-active focus-visible:ring-active",
             "data-[checked]:bg-surface-inverse",
           )}

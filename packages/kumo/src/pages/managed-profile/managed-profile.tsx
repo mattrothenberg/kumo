@@ -244,7 +244,7 @@ function PreferencesView({
               <Button
                 size="sm"
                 variant="outline"
-                className="border-destructive text-error hover:bg-destructive/10"
+                className="border-error text-error hover:bg-error/10"
                 disabled={sso}
               >
                 Delete User
@@ -637,7 +637,7 @@ function DeleteUserWarningContent() {
         <Button
           size="sm"
           variant="primary"
-          className="bg-destructive hover:bg-destructive/90"
+          className="bg-error hover:bg-error/90"
         >
           Delete user
         </Button>
@@ -672,7 +672,7 @@ function DeleteUserFormContent() {
         <Button
           size="sm"
           variant="primary"
-          className="bg-destructive hover:bg-destructive/90"
+          className="bg-error hover:bg-error/90"
         >
           Delete user
         </Button>

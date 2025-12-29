@@ -44,7 +44,7 @@ export const ComponentRegistryView: FC = () => {
 
   return (
     <div className="mx-auto max-w-4xl bg-surface p-8 text-surface">
-      <div className="bg-info/10 mb-6 rounded-lg border border-info-border p-4">
+      <div className="mb-6 rounded-lg border border-info bg-info/20 p-4">
         <div className="mb-2 flex items-center justify-between gap-4">
           <h2 className="text-lg font-semibold text-info">AI Agent Context</h2>
           <Button
@@ -81,7 +81,7 @@ export const ComponentRegistryView: FC = () => {
           // Lists
           "[&_li]:my-1 [&_li]:marker:text-muted [&_ul]:my-3 [&_ul]:list-disc [&_ul]:pl-6",
           // Blockquotes
-          "[&_blockquote]:border-info [&_blockquote]:my-4 [&_blockquote]:border-l-4 [&_blockquote]:pl-4 [&_blockquote]:text-muted [&_blockquote]:italic",
+          "[&_blockquote]:my-4 [&_blockquote]:border-l-4 [&_blockquote]:border-info [&_blockquote]:pl-4 [&_blockquote]:text-muted [&_blockquote]:italic",
           // Code
           "[&_code]:rounded [&_code]:bg-surface-secondary [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-xs",
           "[&_pre]:my-4 [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:bg-surface-secondary [&_pre]:p-4 [&_pre_code]:bg-transparent [&_pre_code]:p-0",

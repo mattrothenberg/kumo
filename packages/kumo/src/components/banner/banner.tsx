@@ -4,18 +4,17 @@ import { cn } from "../../utils/cn";
 export const KUMO_BANNER_VARIANTS = {
   variant: {
     default: {
-      classes:
-        "bg-info-surface border-info-border text-info selection:bg-info-selection",
+      classes: "bg-info/20 border-info text-info selection:bg-info-selection",
       description: "Informational banner for general messages",
     },
     alert: {
       classes:
-        "bg-alert-surface border-alert-border text-alert selection:bg-alert-selection",
+        "bg-alert/20 border-alert text-alert selection:bg-alert-selection",
       description: "Warning banner for cautionary messages",
     },
     error: {
       classes:
-        "bg-error-surface border-error-border text-error selection:bg-error-selection",
+        "bg-error/20 border-error text-error selection:bg-error-selection",
       description: "Error banner for critical issues",
     },
   },

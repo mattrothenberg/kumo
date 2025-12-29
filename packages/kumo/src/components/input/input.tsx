@@ -32,7 +32,7 @@ export const KUMO_INPUT_VARIANTS = {
       description: "Default input appearance",
     },
     error: {
-      classes: "!ring-destructive focus:ring-destructive",
+      classes: "!ring-error focus:ring-error",
       description: "Error state for validation failures",
     },
   },

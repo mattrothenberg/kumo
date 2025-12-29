@@ -44,7 +44,7 @@
       ],
       "colors": [
         "bg-color",
-        "bg-destructive",
+        "bg-error",
         "bg-surface-inverse",
         "border-color",
         "border-primary",
@@ -93,15 +93,15 @@
         "<Banner variant=\"error\" text=\"This is a banner message\" icon={<InfoIcon size={16} />} />"
       ],
       "colors": [
+        "bg-alert",
         "bg-alert-selection",
-        "bg-alert-surface",
+        "bg-error",
         "bg-error-selection",
-        "bg-error-surface",
+        "bg-info",
         "bg-info-selection",
-        "bg-info-surface",
-        "border-alert-border",
-        "border-error-border",
-        "border-info-border",
+        "border-alert",
+        "border-error",
+        "border-info",
         "text-alert",
         "text-error",
         "text-info"
@@ -335,7 +335,7 @@
       ],
       "colors": [
         "bg-accent",
-        "bg-destructive",
+        "bg-error",
         "bg-primary",
         "bg-secondary",
         "bg-subtle",
@@ -473,7 +473,7 @@
         "border-border",
         "ring-active",
         "ring-border",
-        "ring-destructive",
+        "ring-error",
         "text-error",
         "text-muted",
         "text-surface",
@@ -1101,7 +1101,7 @@
       "colors": [
         "bg-accent",
         "bg-color-3",
-        "bg-destructive-2",
+        "bg-error-selection",
         "bg-muted",
         "bg-secondary",
         "ring-border",
@@ -1367,7 +1367,7 @@
         "bg-secondary",
         "ring-active",
         "ring-border",
-        "ring-destructive",
+        "ring-error",
         "text-muted",
         "text-surface"
       ]
@@ -2148,13 +2148,13 @@
         "<div className=\"flex flex-col gap-8\">\n      {/* English (LTR) - Control First: Switch → Label */}\n      <div>\n        <Switch.Group legend=\"English (Switch → Label)\" controlFirst={true}>\n          <Switch.Item label=\"Email notifications\" checked />\n          <Switch.Item label=\"SMS notifications\" />\n          <Switch.Item label=\"Push notifications\" checked />\n          <Switch.Item label=\"In-app notifications\" disabled />\n        </Switch.Group>\n      </div>\n\n      {/* Spanish (LTR) - Label First: Label → Switch */}\n      <div>\n        <Switch.Group\n          legend=\"Español (Etiqueta → Interruptor)\"\n          controlFirst={false}\n        >\n          <Switch.Item label=\"Notificaciones por correo electrónico\" checked />\n          <Switch.Item label=\"Notificaciones por SMS\" />\n          <Switch.Item label=\"Notificaciones push\" checked />\n          <Switch.Item label=\"Notificaciones en la aplicación\" disabled />\n        </Switch.Group>\n      </div>\n\n      {/* Arabic (RTL) - Control First: Switch → Label */}\n      <div dir=\"rtl\">\n        <Switch.Group legend=\"العربية (المفتاح ← التسمية)\" controlFirst={true}>\n          <Switch.Item label=\"إشعارات البريد الإلكتروني\" checked />\n          <Switch.Item label=\"إشعارات الرسائل القصيرة\" />\n          <Switch.Item label=\"الإشعارات الفورية\" checked />\n          <Switch.Item label=\"الإشعارات داخل التطبيق\" disabled />\n        </Switch.Group>\n      </div>\n\n      {/* Hebrew (RTL) - Label First: Label → Switch */}\n      <div dir=\"rtl\">\n        <Switch.Group legend=\"עברית (תווית ← מתג)\" controlFirst={false}>\n          <Switch.Item label=\"התראות אימייל\" checked />\n          <Switch.Item label=\"התראות SMS\" />\n          <Switch.Item label=\"התראות דחיפה\" checked />\n          <Switch.Item label=\"התראות בתוך האפליקציה\" disabled />\n        </Switch.Group>\n      </div>\n    </div>"
       ],
       "colors": [
-        "bg-destructive",
+        "bg-error",
         "bg-hover",
         "bg-hover-selected",
-        "bg-selected",
+        "bg-primary",
         "bg-surface-3",
         "border-border",
-        "ring-destructive",
+        "ring-error",
         "text-error",
         "text-muted",
         "text-surface"

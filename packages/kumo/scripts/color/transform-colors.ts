@@ -5,9 +5,25 @@ import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// Tailwind color utility prefixes that use --color-* tokens
+const COLOR_PREFIXES = [
+  "bg",
+  "border",
+  "ring",
+  "fill",
+  "outline",
+  "shadow",
+  "divide",
+  "from",
+  "via",
+  "to",
+] as const;
+
 // | Old Token | → New Token |
-const classNameTransforms: Record<string, string> = {
-  // // ============ KEEP AS-IS (canonical tokens) ============
+// Maps the color token name (without prefix) to its consolidated replacement
+const colorTokenTransforms: Record<string, string> = {
+  // // ============ TEXT COLOR TRANSFORMS (previous analysis) ============
+  // // KEEP AS-IS (canonical tokens)
   // "text-surface": "text-surface", // 44 uses - primary text
   // "text-secondary": "text-secondary", // 25 uses - KEEP! L=21% vs 0% is visible
   // "text-muted": "text-muted", // 34 uses - FIX dark value 98.5% → 70.8%
@@ -21,33 +37,87 @@ const classNameTransforms: Record<string, string> = {
   // "text-error": "text-error", // 14 uses
   // "text-alert": "text-alert", // 1 use
 
-  // // ============ CONSOLIDATIONS (low frequency) ============
+  // // CONSOLIDATIONS (low frequency)
+  // "text-neutral-subtle": "text-label", // neutral-subtle (4) → label
+  // "text-muted-2": "text-muted", // muted-2 (4) → muted
+  // "text-neutral-dim": "text-muted", // neutral-dim (3) → muted
+  // "text-label-inverse": "text-disabled", // label-inverse (3) → disabled
+  // "text-neutral-dim-2": "text-label", // neutral-dim-2 (1) → label
 
-  // // neutral-subtle (4) → label - both adaptive, similar role
-  // "text-neutral-subtle": "text-label",
-
-  // // muted-2 (4) → muted - identical light, muted gets fixed dark value
-  // "text-muted-2": "text-muted",
-
-  // // neutral-dim (3) → muted - identical light L=55.6%
-  // "text-neutral-dim": "text-muted",
-
-  // // label-inverse (3) → disabled - same light L=70.8%
-  // "text-label-inverse": "text-disabled",
-
-  // // neutral-dim-2 (1) → label - identical light L=43.9%
-  // "text-neutral-dim-2": "text-label",
-
-  // // ============ CALENDAR (1 each) → USE EXISTING ============
+  // // CALENDAR (1 each) → USE EXISTING
   // "text-calendar-day-range-selected-endpoints": "text-white",
   // "text-calendar-day-range-selected-out-of-range": "text-label",
   // "text-calendar-reset": "text-surface-inverse",
-  // // ============ TOAST (1) → USE EXISTING ============
+
+  // // TOAST (1) → USE EXISTING
   // "text-toast-button-hover": "text-label",
 
-  // ============ NEW TOKENS (1 each) → USE EXISTING ============
-  "text-secondary": "text-surface",
+  // ============ COLOR TOKEN CONSOLIDATIONS (from color analysis) ============
+  // Based on quantitative hue grouping, ΔE similarity metrics, and usage analysis
+  // Source: kumo-theme.css lines 68-282, 43 tokens → ~25 core tokens
+
+  // ============ NEUTRALS - MERGE CANDIDATES (ΔE < 0.02) ============
+
+  // layer-card-primary (1 use) → surface - identical light L=100%, dark differs slightly
+  "layer-card-primary": "surface",
+
+  // color-4 (2 uses) → color - ΔE=0.022, nearly identical
+  "color-4": "color",
+
+  // border-2 (1 use) → color - ΔE=0.000, identical values (just different alpha)
+  "border-2": "color",
+
+  // calendar-day-range-selected-out-of-range (1 use) → color - ΔE=0.000, identical
+  "calendar-day-range-selected-out-of-range": "color",
+
+  // hover-border (1 use) → hover - ΔE=0.000, identical (ignoring alpha)
+  "hover-border": "hover",
+
+  // calendar-day-range-selected (5 uses) → hover - ΔE=0.000, identical L=87%/37.1%
+  "calendar-day-range-selected": "hover",
+
+  // toast (2 uses) → subtle - ΔE=0.015, both L≈98.5% light
+  toast: "subtle",
+
+  // calendar (1 use) → color-3 - ΔE=0.015, both L=97% light
+  calendar: "color-3",
+
+  // toast-button-hover (1 use) → color-3 - same L=97% light/dark
+  "toast-button-hover": "color-3",
+
+  // ============ BLUES - MERGE CANDIDATES ============
+
+  // meter-500 (2 uses) → info-surface - ΔE=0.000, identical blue-500
+  "meter-500": "info-surface",
+
+  // selected (3 uses) → primary - ΔE=0.014, nearly identical
+  // Note: keeping selected as separate for semantic clarity, but they're visually identical
+  // Uncomment to merge: "selected": "primary",
+
+  // ============ REDS - NO MERGES RECOMMENDED ============
+  // destructive, error-surface, error-border are semantically distinct despite similarity
+
+  // ============ YELLOWS - NO MERGES RECOMMENDED ============
+  // alert-surface, alert-selection, alert-border are semantically distinct
 };
+
+// Generate full class name transforms for all color prefixes
+const classNameTransforms: Record<string, string> = {};
+
+for (const [oldToken, newToken] of Object.entries(colorTokenTransforms)) {
+  // Handle text-* classes (already have prefix in the key)
+  if (oldToken.startsWith("text-")) {
+    classNameTransforms[oldToken] = newToken;
+    continue;
+  }
+
+  // Generate transforms for each color prefix
+  for (const prefix of COLOR_PREFIXES) {
+    const oldClass = `${prefix}-${oldToken}`;
+    const newClass = `${prefix}-${newToken}`;
+    classNameTransforms[oldClass] = newClass;
+  }
+}
 
 // Filter to only transforms that actually change the class name
 const activeTransforms = Object.fromEntries(

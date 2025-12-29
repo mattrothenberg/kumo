@@ -199,7 +199,7 @@ export const TailwindColorTokens: FC<TailwindColorTokensProps> = ({
             key={token.name}
             className={`flex items-center gap-3 rounded-md border bg-surface px-3 py-2 text-xs ${
               token.theme !== "kumo"
-                ? "border-2 border-info-border ring-1 ring-info-border/30"
+                ? "border-2 border-info ring-1 ring-info/30"
                 : "border-color"
             }`}
           >

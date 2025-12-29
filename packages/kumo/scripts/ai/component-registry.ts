@@ -344,16 +344,18 @@ function discoverDirs(sourceDir: string): string[] {
 /**
  * Discover all component directories in src/components/
  * Returns array of directory names (kebab-case)
+ * @deprecated Use discoverDirs(componentsDir) directly
  */
-function discoverComponentDirs(): string[] {
+function _discoverComponentDirs(): string[] {
   return discoverDirs(componentsDir);
 }
 
 /**
  * Discover all block directories in src/blocks/
  * Returns array of directory names (kebab-case)
+ * @deprecated Use discoverDirs(blocksDir) directly
  */
-function discoverBlockDirs(): string[] {
+function _discoverBlockDirs(): string[] {
   return discoverDirs(blocksDir);
 }
 
