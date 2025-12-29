@@ -36,9 +36,11 @@ Thumbs.db
 *storybook.log
 *.tsbuildinfo
 .build-complete
-.beads/
+# Swarm Tools - git-backed work item tracking
+.hive/
 
-# bv (beads viewer) local config and caches
+# Legacy beads (deprecated, use .hive/)
+.beads/
 .bv/
 
 # wrangler project
