@@ -1020,11 +1020,11 @@ interface ComponentRegistry {
 // =============================================================================
 
 /**
- * Parse kumo-theme.css to extract semantic color names from --color-* and --text-color-* variables.
+ * Parse theme-kumo.css to extract semantic color names from --color-* and --text-color-* variables.
  * Excludes raw palette colors (e.g., --color-red-650, --color-neutral-50) which have numeric suffixes.
  */
 function parseSemanticColorNames(): string[] {
-  const themePath = join(__dirname, "../../src/styles/kumo-theme.css");
+  const themePath = join(__dirname, "../../src/styles/theme-kumo.css");
   const content = readFileSync(themePath, "utf-8");
 
   const colorNames = new Set<string>();
@@ -1043,7 +1043,6 @@ function parseSemanticColorNames(): string[] {
   return [...colorNames].sort();
 }
 
-// Semantic color names derived from kumo-theme.css (--color-* and --text-color-*)
 const SEMANTIC_COLOR_NAMES = parseSemanticColorNames();
 
 // Utility prefixes that use color tokens

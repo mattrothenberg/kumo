@@ -54,7 +54,6 @@ const colorTokenTransforms: Record<string, string> = {
 
   // ============ COLOR TOKEN CONSOLIDATIONS (from color analysis) ============
   // Based on quantitative hue grouping, ΔE similarity metrics, and usage analysis
-  // Source: kumo-theme.css lines 68-282, 43 tokens → ~25 core tokens
 
   // ============ NEUTRALS - MERGE CANDIDATES (ΔE < 0.02) ============
 

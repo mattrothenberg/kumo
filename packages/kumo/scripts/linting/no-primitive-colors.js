@@ -44,10 +44,10 @@ export const TAILWIND_COLOR_FAMILIES = new Set([
   // so utilities like bg-white, text-black, ring-transparent are allowed.
 ]);
 
-// Parse kumo-theme.css to extract valid semantic color tokens.
+// Parse theme-kumo.css to extract valid semantic color tokens.
 // This ensures the allowlist stays in sync with the theme file.
 function parseKumoSemanticColors() {
-  const themePath = resolve(__dirname, "../../src/styles/kumo-theme.css");
+  const themePath = resolve(__dirname, "../../src/styles/theme-kumo.css");
   const css = readFileSync(themePath, "utf-8");
 
   const tokens = new Set();
@@ -68,7 +68,7 @@ function parseKumoSemanticColors() {
   return tokens;
 }
 
-// Valid Kumo semantic color tokens derived from kumo-theme.css.
+// Valid Kumo semantic color tokens derived from theme-kumo.css.
 // These map to CSS custom properties like --color-surface, --text-color-secondary, etc.
 export const VALID_KUMO_SEMANTIC_COLORS = parseKumoSemanticColors();
 
@@ -158,7 +158,7 @@ function hasPrimitiveColor(str) {
     if (!fullToken || !colorFamily) continue;
 
     // Skip valid Kumo semantic color tokens (e.g. bg-surface, text-secondary,
-    // border-color). These are backed by kumo-theme.css custom properties.
+    // border-color). These are backed by theme-kumo.css custom properties.
     if (VALID_KUMO_SEMANTIC_COLORS.has(colorFamily)) continue;
 
     // Flag kumo- prefixed classes (e.g. text-kumo-surface, bg-kumo-muted-2).

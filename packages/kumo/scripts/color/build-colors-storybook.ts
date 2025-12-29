@@ -13,7 +13,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 async function main() {
-  const themeCssPath = resolve(__dirname, "../../src/styles/kumo-theme.css");
+  const themeCssPath = resolve(__dirname, "../../src/styles/theme-kumo.css");
   const bindingCssPath = resolve(
     __dirname,
     "../../src/styles/kumo-binding.css",
@@ -29,7 +29,7 @@ async function main() {
 
   const colors: KumoColor[] = [];
 
-  // Parse base theme colors from kumo-theme.css (default kumo theme)
+  // Parse base theme colors from theme-kumo.css (default kumo theme)
   for (const match of themeCss.matchAll(colorRegex)) {
     const [, name, argsRaw] = match;
     const parsed = parseLightDarkArgs(argsRaw);

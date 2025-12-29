@@ -188,6 +188,11 @@ const DropdownMenuItem = React.forwardRef<
       );
     }, [href, IconComponent, children, selected, variant, LinkComponent]);
 
+    // When href is provided, content already contains children via innerContent
+    // When render prop is provided, caller controls children rendering
+    // Only pass children directly when neither href nor render is used
+    const useRenderProp = href || render;
+
     return (
       <DropdownMenuPrimitive.Item
         ref={ref}
@@ -200,7 +205,7 @@ const DropdownMenuItem = React.forwardRef<
         render={href ? content : render}
         {...props}
       >
-        {children}
+        {useRenderProp ? undefined : children}
       </DropdownMenuPrimitive.Item>
     );
   },

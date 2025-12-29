@@ -1,4 +1,5 @@
-@import "./kumo-theme.css";
+@import "./theme-kumo.css";
+@import "./theme-fedramp.css";
 
 @layer base {
   :root {
@@ -7,12 +8,6 @@
 
   [data-mode="dark"] {
     color-scheme: dark;
-  }
-
-  [data-theme="fedramp"] {
-    --color-surface: light-dark(#5b697c, #5b697c);
-    --color-active: light-dark(#c8d4e5, #c8d4e5);
-    --text-color-surface: light-dark(#ffffff, #ffffff);
   }
 }
 

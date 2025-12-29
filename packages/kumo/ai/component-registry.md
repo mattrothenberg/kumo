@@ -38,6 +38,7 @@ Kumo uses CSS custom properties with `light-dark()` for automatic dark mode supp
 
 **Theme Variants (`data-theme`):**
 
+- Default theme (no `data-theme` attribute needed)
 - `data-theme="fedramp"` - Overrides: surface, active, surface
 
 **Never use `dark:` variants** - semantic tokens handle dark mode automatically.

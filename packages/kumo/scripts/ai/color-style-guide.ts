@@ -1,11 +1,11 @@
 /**
  * Kumo Color Style Guide Generator
  *
- * Dynamically analyzes kumo-theme.css and component source files to generate
+ * Dynamically analyzes theme-kumo.css and component source files to generate
  * a comprehensive, data-driven color style guide for AI agents.
  *
  * This module:
- * 1. Parses kumo-theme.css to extract all semantic color tokens
+ * 1. Parses theme-kumo.css to extract all semantic color tokens
  * 2. Categorizes tokens by purpose (text, background, border, state, etc.)
  * 3. Scans component files to find actual usage patterns
  * 4. Generates markdown documentation with usage context
@@ -18,7 +18,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const themePath = join(__dirname, "../../src/styles/kumo-theme.css");
+const themePath = join(__dirname, "../../src/styles/theme-kumo.css");
 const bindingPath = join(__dirname, "../../src/styles/kumo-binding.css");
 const srcDir = join(__dirname, "../../src");
 
@@ -67,7 +67,7 @@ interface ThemeOverride {
 }
 
 // =============================================================================
-// Parse kumo-theme.css
+// Parse theme-kumo.css
 // =============================================================================
 
 /**
@@ -192,7 +192,7 @@ function categorizeToken(name: string, isTextColor: boolean): TokenCategory {
 }
 
 /**
- * Parse kumo-theme.css to extract all semantic color tokens.
+ * Parse theme-kumo.css to extract all semantic color tokens.
  */
 export function parseSemanticTokens(): SemanticToken[] {
   const content = readFileSync(themePath, "utf-8");

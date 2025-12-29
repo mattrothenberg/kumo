@@ -1,0 +1,19 @@
+/**
+ * FedRAMP Theme Overrides
+ *
+ * Government compliance styling that overrides semantic tokens.
+ * Applied via data-theme="fedramp" on a parent element.
+ *
+ * @example
+ * <html data-theme="fedramp">
+ *   <!-- All Kumo components use FedRAMP styling -->
+ * </html>
+ */
+
+@layer base {
+  [data-theme="fedramp"] {
+    --color-surface: light-dark(#5b697c, #5b697c);
+    --color-active: light-dark(#c8d4e5, #c8d4e5);
+    --text-color-surface: light-dark(#ffffff, #ffffff);
+  }
+}
