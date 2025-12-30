@@ -87,7 +87,7 @@ const colorTokenTransforms: Record<string, string> = {
   // ============ BLUES - MERGE CANDIDATES ============
 
   // meter-500 (2 uses) → info-surface - ΔE=0.000, identical blue-500
-  "meter-500": "info-surface",
+  // "meter-500": "info-surface",
 
   // selected (3 uses) → primary - ΔE=0.014, nearly identical
   // Note: keeping selected as separate for semantic clarity, but they're visually identical
