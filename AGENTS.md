@@ -637,6 +637,71 @@ git push --follow-tags
 - Publishes to npm registry
 - Creates git tags
 
+## Figma Token Sync
+
+Kumo provides scripts to sync semantic color tokens from CSS to Figma design variables, ensuring design tokens stay in sync between code and design.
+
+### Purpose
+
+The Figma sync script automates synchronization of Kumo's semantic color tokens (defined in `packages/kumo/src/styles/theme-kumo.css`) to Figma variables:
+
+1. Parses CSS tokens from `theme-kumo.css`
+2. Extracts light and dark mode values from `light-dark()` functions
+3. Resolves color values (oklch, hex, rgb) to Figma RGB format
+4. Pushes tokens to Figma via the Variables API
+
+This enables:
+
+- Designers to use semantic tokens in Figma
+- Automatic updates when tokens change in code
+- Single source of truth for color values
+
+### Environment Setup
+
+1. **Get a Figma personal access token:**
+   - Go to [Figma Settings > Personal Access Tokens](https://www.figma.com/developers/api#authentication)
+   - Create a new token with a descriptive name (e.g., "Kumo Token Sync")
+   - Copy the token (you won't see it again)
+
+2. **Copy `.env.example` to `.env`:**
+
+   ```bash
+   cp packages/kumo/scripts/figma/.env.example packages/kumo/scripts/figma/.env
+   ```
+
+3. **Add your token to `.env`:**
+   ```bash
+   FIGMA_TOKEN=your-token-here
+   FIGMA_FILE_KEY=sKKZc6pC6W1TtzWBLxDGSU
+   FIGMA_COLLECTION_NAME=kumo-semantic-tokens
+   ```
+
+### Running the Sync
+
+```bash
+# With environment variable
+FIGMA_TOKEN="your-token" npx tsx packages/kumo/scripts/figma/sync-tokens-to-figma.ts
+
+# Or load from .env
+source packages/kumo/scripts/figma/.env
+npx tsx packages/kumo/scripts/figma/sync-tokens-to-figma.ts
+```
+
+### Security Warning
+
+**⚠️ NEVER commit your Figma token to the repository.**
+
+- `.env` is gitignored by default
+- Always use environment variables for tokens
+- Rotate tokens if accidentally exposed
+
+### Future Support
+
+- **FedRAMP Theme**: Will support syncing `theme-fedramp.css` to a separate collection
+- **Custom Themes**: Support for syncing additional theme variants
+
+For detailed documentation, see `packages/kumo/scripts/figma/README.md`.
+
 ## Code Review Guidelines
 
 When reviewing code, focus on:
