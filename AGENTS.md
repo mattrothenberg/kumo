@@ -140,61 +140,33 @@ grep "bg-surface" component-registry.md
 
 The color system is defined in `packages/kumo/src/styles/kumo-binding.css`. Colors automatically adapt to light/dark mode via CSS `light-dark()` function.
 
-**Full reference:** See `component-registry.md` lines 1-72 for complete styling guide with tables and examples.
+**Full token reference:** See `packages/kumo/ai/component-registry.md` - the "Kumo Color System" section contains all available tokens with usage counts, organized by category (surfaces, text, state, interactive, borders).
 
-### Core Tokens
-
-**Backgrounds:**
-
-- `bg-surface` - Main background (pages, cards)
-- `bg-surface-2` - Secondary surface
-- `bg-surface-elevated` - Elevated surfaces (modals, dropdowns, popovers, cards)
-- `bg-secondary` - Secondary elements / Interactive elements (buttons, inputs)
-- `bg-accent` - Accent backgrounds / Selected/active state (tabs, selections)
-- `bg-primary` - Primary action backgrounds
-- `bg-destructive` - Destructive action backgrounds
-- `bg-subtle` - Subtle backgrounds / Hover state backgrounds
-- `bg-color` - Border-like backgrounds
-
-**Text:**
-
-- `text-surface` - Primary text (body, headings)
-- `text-secondary` - Secondary text (descriptions, hints)
-- `text-muted` - Muted/placeholder text (placeholders, disabled)
-- `text-white` - Always white text
-- `text-label` - Label text
-- `text-destructive` - Error/destructive text
-- `text-info` - Success text
-- `text-error` - Error text (validation messages)
-
-**Borders:**
-
-- `border-border` - Default borders (cards, dividers)
-- `border-color` - Alternative borders
-- `ring-border` - Ring borders
-- `ring-active` - Active/focus rings (keyboard navigation)
-- `ring-destructive` - Error state rings
-
-### Example Usage
+### Key Patterns
 
 ```tsx
 // ✅ CORRECT - Using Kumo semantic tokens
-<button className="bg-primary text-white hover:bg-primary/70">
-  Submit
-</button>
+<div className="bg-surface border border-border rounded-lg">        // Card
+<button className="bg-primary text-white">Primary</button>          // Primary button
+<button className="bg-secondary text-surface ring ring-border">    // Secondary button
+<input className="bg-secondary text-surface ring ring-border" />   // Form input
+<div className="bg-error/20 border-error text-error">Error</div>   // Error state
 
-<div className="bg-surface border border-border text-surface">
-  Content
-</div>
+// ❌ WRONG - Raw Tailwind colors break theming
+<button className="bg-blue-500 text-white">Submit</button>
+<div className="bg-white dark:bg-gray-900">Content</div>
+```
 
-// ❌ WRONG - Using raw Tailwind colors
-<button className="bg-blue-500 text-white hover:bg-blue-600">
-  Submit
-</button>
+### Dark Mode
 
-<div className="bg-white dark:bg-gray-900 border border-gray-200">
-  Content
-</div>
+**NEVER use Tailwind's `dark:` variant**. Semantic tokens handle dark mode automatically via `light-dark()`.
+
+```tsx
+// ❌ WRONG
+<div className="bg-white dark:bg-black" />
+
+// ✅ CORRECT
+<div className="bg-surface text-surface" />
 ```
 
 ### Dark Mode
@@ -216,7 +188,7 @@ All semantic tokens use `light-dark()` internally. **Never use `dark:` variant.*
 Use layered surfaces for visual depth:
 
 ```
-bg-surface → bg-surface-elevated → bg-surface-2
+bg-surface → bg-surface-2 → bg-surface-3
 ```
 
 ### Mode & Theme System
@@ -561,12 +533,14 @@ Kumo uses [Changesets](https://github.com/changesets/changesets) for version man
 ### ⚠️ IMPORTANT: AI Agents - Do NOT Version or Publish
 
 **AI agents should NEVER run these commands:**
+
 - ❌ `pnpm version` - Versions packages (human-only)
 - ❌ `pnpm release` - Publishes to npm (human-only)
 - ❌ `pnpm publish:beta` - Publishes beta versions (CI-only)
 - ❌ `pnpm release:production` - Production release script (human-only)
 
 **AI agents SHOULD:**
+
 - ✅ Create changesets: `pnpm changeset`
 - ✅ Validate changesets exist
 - ✅ Build and test: `pnpm build`, `pnpm test`
@@ -604,11 +578,13 @@ LEFTHOOK_EXCLUDE=validate-changeset git push
 ```
 
 **What it validates:**
+
 - Detects changes to `packages/kumo/` via `git merge-base origin/main HEAD`
 - Ensures a **new** changeset exists targeting `@cloudflare/kumo`
 - Blocks push with clear instructions if validation fails
 
 **Troubleshooting:**
+
 - **Missing origin/main**: Run `git fetch origin main`
 - **GUI clients (Tower, SourceTree)**: Configure PATH in client settings
 - **Hook not installed**: Run `pnpm lefthook install`
@@ -620,12 +596,14 @@ Beta versions are automatically published for merge requests:
 **Format:** `{version}-beta.{commit-hash}` (e.g., `0.1.0-beta.a1b2c3d`)
 
 **Process:**
+
 1. Create MR with changeset
 2. CI validates changeset exists
 3. CI publishes beta version with `beta` tag
 4. MR receives comment with installation instructions
 
 **Install beta:**
+
 ```bash
 pnpm add @cloudflare/kumo@0.1.0-beta.a1b2c3d
 ```
@@ -652,6 +630,7 @@ git push --follow-tags
 ```
 
 **What happens:**
+
 - Updates `package.json` version
 - Generates/updates `CHANGELOG.md`
 - Removes consumed changeset files
