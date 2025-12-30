@@ -1,4 +1,4 @@
-import { oklch, rgb, type Oklch, type Rgb } from "culori";
+import { rgb, type Oklch } from "culori";
 
 /**
  * Figma color format with RGB values in 0-1 range

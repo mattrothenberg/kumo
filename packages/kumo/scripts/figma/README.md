@@ -1,21 +1,61 @@
 # Figma Token Sync
 
-Syncs Kumo semantic color tokens from CSS to Figma design variables.
+Unidirectional sync from code to Figma design variables.
 
-## Purpose
+## Single Source of Truth
 
-This script automates the synchronization of Kumo's semantic color tokens (defined in `src/styles/theme-kumo.css`) to Figma design variables. It:
+**The codebase is the single source of truth.** Running sync will:
 
-1. Parses CSS tokens from `theme-kumo.css`
-2. Extracts light and dark mode values from `light-dark()` functions
-3. Resolves color values (oklch, hex, rgb) to Figma RGB format
-4. Pushes tokens to Figma via the Variables API
+1. **PURGE** all existing variables in the Figma file
+2. **CREATE** fresh variables from the CSS
 
-This ensures design tokens stay in sync between code and design, enabling:
+Designers can fork the Figma file for their own use, but this file is always kept in sync with code.
 
-- Designers to use semantic tokens in Figma
-- Automatic updates when tokens change in code
-- Single source of truth for color values
+## Structure
+
+The sync creates two collections:
+
+```
+kumo-colors (collection)
+├── Light (mode)      - Light theme values
+├── Dark (mode)       - Dark theme values
+└── fedramp (extension collection)
+    ├── Light         - FedRAMP light overrides
+    └── Dark          - FedRAMP dark overrides
+
+kumo-typography (collection)
+└── Desktop (mode)    - Typography values (font sizes, line heights)
+```
+
+## Token Sources
+
+### Color Tokens
+
+| Source         | CSS File            | Description                                 |
+| -------------- | ------------------- | ------------------------------------------- |
+| kumo           | `theme-kumo.css`    | Core semantic tokens (46 tokens)            |
+| fedramp-global | `theme-fedramp.css` | Global FedRAMP tokens (`--color-fedramp-*`) |
+
+### Typography Tokens
+
+| Source | CSS File         | Description                                         |
+| ------ | ---------------- | --------------------------------------------------- |
+| kumo   | `theme-kumo.css` | Typography tokens (26 tokens: sizes + line heights) |
+
+Typography tokens include:
+
+- `text-xs` through `text-9xl` - Font sizes in pixels
+- `text-xs--line-height` through `text-9xl--line-height` - Line height ratios
+
+## Extended Modes
+
+Extended modes inherit all base tokens and can override specific values:
+
+| Mode    | Override Source                   | Description             |
+| ------- | --------------------------------- | ----------------------- |
+| fedramp | `theme-fedramp.css` `@layer base` | FedRAMP theme overrides |
+
+When overrides are commented out (as they currently are), the extended mode mirrors the Light values.
 
 ## Prerequisites
 
@@ -43,88 +83,88 @@ You need **edit access** to the target Figma file. The default file key is `sKKZ
    ```bash
    FIGMA_TOKEN=your-token-here
    FIGMA_FILE_KEY=sKKZc6pC6W1TtzWBLxDGSU
-   FIGMA_COLLECTION_NAME=kumo-semantic-tokens
    ```
 
 3. **Ensure `.env` is gitignored** (it is by default)
 
 ## Usage
 
-### Run with environment variable:
+### Sync tokens (purge + create):
 
 ```bash
 FIGMA_TOKEN="your-token" npx tsx packages/kumo/scripts/figma/sync-tokens-to-figma.ts
 ```
 
-### Or with `.env` file:
+### Get existing Figma variables:
 
 ```bash
-# Load from .env
+FIGMA_TOKEN="your-token" npx tsx packages/kumo/scripts/figma/sync-tokens-to-figma.ts get
+```
+
+### With `.env` file:
+
+```bash
 source packages/kumo/scripts/figma/.env
 npx tsx packages/kumo/scripts/figma/sync-tokens-to-figma.ts
 ```
 
-### With custom configuration:
+### CLI Help:
 
 ```bash
-FIGMA_TOKEN="your-token" \
-FIGMA_FILE_KEY="custom-file-key" \
-FIGMA_COLLECTION_NAME="my-tokens" \
-npx tsx packages/kumo/scripts/figma/sync-tokens-to-figma.ts
+npx tsx packages/kumo/scripts/figma/sync-tokens-to-figma.ts --help
 ```
 
-## What It Does
+## Adding Overrides
 
-The sync process:
-
-1. **Parses CSS** - Reads `theme-kumo.css` and extracts `@theme` blocks
-2. **Extracts tokens** - Finds all CSS variables with `light-dark()` values
-3. **Resolves colors** - Converts oklch/hex/rgb values to Figma RGB format (0-1 range)
-4. **Creates collection** - Creates or updates the Figma variable collection
-5. **Syncs variables** - Pushes all tokens with light/dark mode values
-
-### Example Token
-
-**CSS:**
+To add FedRAMP-specific color overrides, uncomment the tokens in `theme-fedramp.css`:
 
 ```css
-@theme {
-  --text-color-surface: light-dark(
-    oklch(21% 0.006 285.885),
-    oklch(98% 0.003 285.885)
-  );
+@layer base {
+  [data-theme="fedramp"] {
+    /* Uncomment to override: */
+    --color-surface: var(--color-fedramp-surface);
+    --color-active: var(--color-fedramp-active);
+    --text-color-surface: light-dark(#ffffff, #ffffff);
+  }
 }
 ```
 
-**Figma Result:**
+Then run sync again - the `fedramp` mode will have these overrides applied.
 
-- Variable name: `text-color-surface`
-- Light mode: `rgb(49, 49, 56)`
-- Dark mode: `rgb(248, 248, 251)`
+## Adding New Extended Modes
 
-## Future Support
+1. Add the mode config to `EXTENDED_MODES` in `sync-tokens-to-figma.ts`:
 
-- **FedRAMP Theme**: Will support syncing `theme-fedramp.css` to a separate collection
-- **Custom themes**: Support for syncing additional theme variants
+```typescript
+const EXTENDED_MODES = [
+  // ... existing modes
+  {
+    name: "mycompany",
+    overrideCssPath: resolve(__dirname, "../../src/styles/theme-mycompany.css"),
+  },
+];
+```
+
+2. Create the CSS file with `@layer base` overrides
+3. Run sync
 
 ## Architecture
 
 ### Files
 
-- **`sync-tokens-to-figma.ts`** - Main entry point, orchestrates the sync
+- **`sync-tokens-to-figma.ts`** - Main CLI entry point
 - **`parse-css.ts`** - Parses CSS and extracts `light-dark()` tokens
 - **`color-utils.ts`** - Converts oklch/hex/rgb to Figma RGB format
-- **`figma-api.ts`** - Figma Variables API client
-- **`design-tokens.ts`** - Type definitions
+- **`figma-api.ts`** - Figma Variables API client (purge + create)
 
 ### Token Flow
 
 ```
-theme-kumo.css
-  → parseCssTokensFromFile()
-  → resolveColor() (for light + dark)
-  → buildFigmaPayload()
-  → syncToFigma()
+theme-*.css
+  → parseCssTokensFromFile()      (color tokens with light-dark())
+  → parseTypographyTokensFromFile() (typography tokens)
+  → resolveColor() / resolveTypographyToken()
+  → syncAllToFigma()
   → Figma Variables API
 ```
 
@@ -149,13 +189,6 @@ The file key is incorrect. Check the URL in Figma:
 https://www.figma.com/file/{FILE_KEY}/...
                            ^^^^^^^^^^^
 ```
-
-### Color parsing errors
-
-If colors fail to parse, check that:
-
-- Values are valid oklch/hex/rgb formats
-- `light-dark()` syntax is correct
 
 ## Security
 
