@@ -135,13 +135,19 @@ function buildFigmaPayload(
   };
 }
 
+export type SyncResult = {
+  success: boolean;
+  error?: string;
+  tempIdToRealId?: Record<string, string>;
+};
+
 /**
  * Sync resolved tokens to Figma via Variables API
  */
 export async function syncToFigma(
   tokens: ResolvedToken[],
   config: FigmaConfig,
-): Promise<{ success: boolean; error?: string }> {
+): Promise<SyncResult> {
   const { fileKey, token, collectionName } = config;
 
   if (!tokens.length) {
@@ -161,16 +167,24 @@ export async function syncToFigma(
       body: JSON.stringify(payload),
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      let errorMessage: string;
+    const responseText = await response.text();
+    let responseJson: unknown;
 
-      try {
-        const errorJson = JSON.parse(errorText);
-        errorMessage = errorJson.message || errorJson.error || errorText;
-      } catch {
-        errorMessage = errorText;
-      }
+    try {
+      responseJson = JSON.parse(responseText);
+    } catch {
+      responseJson = null;
+    }
+
+    if (!response.ok) {
+      const errorMessage =
+        responseJson &&
+        typeof responseJson === "object" &&
+        responseJson !== null
+          ? (responseJson as Record<string, unknown>).message ||
+            (responseJson as Record<string, unknown>).error ||
+            responseText
+          : responseText;
 
       return {
         success: false,
@@ -178,7 +192,100 @@ export async function syncToFigma(
       };
     }
 
-    return { success: true };
+    // Extract tempIdToRealId mapping from successful response
+    const meta =
+      responseJson &&
+      typeof responseJson === "object" &&
+      responseJson !== null &&
+      "meta" in responseJson
+        ? (
+            responseJson as {
+              meta: { tempIdToRealId?: Record<string, string> };
+            }
+          ).meta
+        : null;
+
+    return {
+      success: true,
+      tempIdToRealId: meta?.tempIdToRealId,
+    };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    return { success: false, error: `Network error: ${message}` };
+  }
+}
+
+/**
+ * Get local variables from a Figma file
+ */
+export async function getLocalVariables(
+  fileKey: string,
+  token: string,
+): Promise<{
+  success: boolean;
+  error?: string;
+  data?: {
+    variables: Record<string, unknown>;
+    variableCollections: Record<string, unknown>;
+  };
+}> {
+  const url = `https://api.figma.com/v1/files/${fileKey}/variables/local`;
+
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "X-Figma-Token": token,
+      },
+    });
+
+    const responseText = await response.text();
+    let responseJson: unknown;
+
+    try {
+      responseJson = JSON.parse(responseText);
+    } catch {
+      return {
+        success: false,
+        error: `Failed to parse response: ${responseText}`,
+      };
+    }
+
+    if (!response.ok) {
+      const errorMessage =
+        responseJson &&
+        typeof responseJson === "object" &&
+        responseJson !== null
+          ? (responseJson as Record<string, unknown>).message ||
+            (responseJson as Record<string, unknown>).error ||
+            responseText
+          : responseText;
+
+      return {
+        success: false,
+        error: `Figma API error (${response.status}): ${errorMessage}`,
+      };
+    }
+
+    const meta =
+      responseJson &&
+      typeof responseJson === "object" &&
+      responseJson !== null &&
+      "meta" in responseJson
+        ? (
+            responseJson as {
+              meta: {
+                variables: Record<string, unknown>;
+                variableCollections: Record<string, unknown>;
+              };
+            }
+          ).meta
+        : null;
+
+    return {
+      success: true,
+      data: meta ?? { variables: {}, variableCollections: {} },
+    };
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     return { success: false, error: `Network error: ${message}` };

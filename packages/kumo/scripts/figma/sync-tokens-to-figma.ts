@@ -15,16 +15,34 @@
 
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { readFileSync, existsSync } from "node:fs";
 import { parseCssTokensFromFile, type ParsedToken } from "./parse-css.js";
 import { resolveColor } from "./color-utils.js";
 import {
   syncToFigma,
+  getLocalVariables,
   type ResolvedToken,
   type FigmaConfig,
 } from "./figma-api.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const CSS_PATH = resolve(__dirname, "../../src/styles/theme-kumo.css");
+const ENV_PATH = resolve(__dirname, ".env");
+
+// Load .env file if it exists
+if (existsSync(ENV_PATH)) {
+  const envContent = readFileSync(ENV_PATH, "utf-8");
+  for (const line of envContent.split("\n")) {
+    const trimmed = line.trim();
+    if (trimmed && !trimmed.startsWith("#")) {
+      const [key, ...valueParts] = trimmed.split("=");
+      const value = valueParts.join("=").replace(/^["']|["']$/g, "");
+      if (key && value && !process.env[key]) {
+        process.env[key] = value;
+      }
+    }
+  }
+}
 
 // Read environment variables
 const FIGMA_TOKEN = process.env.FIGMA_TOKEN;
@@ -83,16 +101,38 @@ async function main() {
     token: FIGMA_TOKEN,
   };
 
-  try {
-    await syncToFigma(resolvedTokens, config);
-    console.log(
-      `✅ Successfully synced ${resolvedTokens.length} tokens to Figma!`,
-    );
-    console.log(`   Collection: "${COLLECTION_NAME}"`);
-  } catch (error) {
+  const result = await syncToFigma(resolvedTokens, config);
+
+  if (!result.success) {
     console.error("❌ Failed to sync tokens to Figma:");
-    console.error(error instanceof Error ? error.message : String(error));
+    console.error(result.error);
     process.exit(1);
+  }
+
+  console.log(
+    `✅ Successfully synced ${resolvedTokens.length} tokens to Figma!`,
+  );
+  console.log(`   Collection: "${COLLECTION_NAME}"`);
+
+  if (result.tempIdToRealId) {
+    const mappingCount = Object.keys(result.tempIdToRealId).length;
+    console.log(`   Created ${mappingCount} new Figma IDs`);
+  }
+
+  // Verify the sync by fetching local variables
+  console.log("\n🔍 Verifying sync...");
+  const verification = await getLocalVariables(FIGMA_FILE_KEY, FIGMA_TOKEN);
+
+  if (!verification.success) {
+    console.warn("⚠️  Could not verify sync:", verification.error);
+  } else if (verification.data) {
+    const collectionCount = Object.keys(
+      verification.data.variableCollections,
+    ).length;
+    const variableCount = Object.keys(verification.data.variables).length;
+    console.log(
+      `✅ Verified: ${collectionCount} collection(s), ${variableCount} variable(s) in file`,
+    );
   }
 }
 

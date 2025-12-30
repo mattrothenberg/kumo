@@ -84,10 +84,11 @@ function convertOklchToFigma(oklchString: string): FigmaColor {
     throw new Error(`Failed to convert OKLCH to RGB: ${oklchString}`);
   }
 
+  // Clamp RGB values to 0-1 range (OKLCH can produce out-of-gamut colors)
   const result: FigmaColor = {
-    r: rgbColor.r,
-    g: rgbColor.g,
-    b: rgbColor.b,
+    r: Math.max(0, Math.min(1, rgbColor.r)),
+    g: Math.max(0, Math.min(1, rgbColor.g)),
+    b: Math.max(0, Math.min(1, rgbColor.b)),
   };
 
   if (alpha !== undefined) {
