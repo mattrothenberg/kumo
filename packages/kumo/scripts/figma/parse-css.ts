@@ -400,10 +400,83 @@ export function parseTypographyTokens(
     });
   }
 
-  // Sort tokens by name for consistent ordering
-  tokens.sort((a, b) => a.name.localeCompare(b.name));
+  // Sort tokens by semantic size order
+  tokens.sort(compareTypographyTokens);
 
   return tokens;
+}
+
+/**
+ * Size order for typography tokens (smallest to largest)
+ */
+const TYPOGRAPHY_SIZE_ORDER = [
+  "xs",
+  "sm",
+  "base",
+  "lg",
+  "xl",
+  "2xl",
+  "3xl",
+  "4xl",
+  "5xl",
+  "6xl",
+  "7xl",
+  "8xl",
+  "9xl",
+];
+
+/**
+ * Extracts the size key from a typography token name
+ * @example "text-xs" → "xs"
+ * @example "text-2xl--line-height" → "2xl"
+ */
+function extractTypographySize(name: string): string | null {
+  // Match text-{size} or text-{size}--line-height
+  const match = name.match(/^text-([\w]+)/);
+  if (!match) return null;
+
+  const size = match[1];
+  // Handle line-height suffix by extracting just the size part
+  return size.replace(/--.*$/, "");
+}
+
+/**
+ * Compares two typography tokens for sorting
+ * Orders by size (xs → 9xl), with line-height following its font-size
+ */
+function compareTypographyTokens(
+  a: ParsedTypographyToken,
+  b: ParsedTypographyToken,
+): number {
+  const sizeA = extractTypographySize(a.name);
+  const sizeB = extractTypographySize(b.name);
+
+  // If either doesn't match our pattern, fall back to alphabetical
+  if (!sizeA || !sizeB) {
+    return a.name.localeCompare(b.name);
+  }
+
+  const indexA = TYPOGRAPHY_SIZE_ORDER.indexOf(sizeA);
+  const indexB = TYPOGRAPHY_SIZE_ORDER.indexOf(sizeB);
+
+  // If either size isn't in our order list, fall back to alphabetical
+  if (indexA === -1 || indexB === -1) {
+    return a.name.localeCompare(b.name);
+  }
+
+  // Different sizes: sort by size order
+  if (indexA !== indexB) {
+    return indexA - indexB;
+  }
+
+  // Same size: font-size comes before line-height
+  const isLineHeightA = a.name.includes("--line-height");
+  const isLineHeightB = b.name.includes("--line-height");
+
+  if (isLineHeightA && !isLineHeightB) return 1;
+  if (!isLineHeightA && isLineHeightB) return -1;
+
+  return 0;
 }
 
 /**
