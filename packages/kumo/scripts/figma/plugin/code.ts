@@ -7,26 +7,85 @@
  * Target file: sKKZc6pC6W1TtzWBLxDGSU (kumo-ai)
  */
 
+import { generateBadgeComponents } from "./generators/badge";
+import { generateButtonTextComponents } from "./generators/button-text";
+
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore - __html__ is provided by Figma plugin API
 figma.showUI(__html__, { width: 400, height: 300 });
 
+/**
+ * Find or create the Components page
+ */
+function getOrCreateComponentsPage(): PageNode {
+  let componentsPage = figma.root.children.find(
+    (page) => page.type === "PAGE" && page.name === "Components",
+  ) as PageNode | undefined;
+
+  if (!componentsPage) {
+    componentsPage = figma.createPage();
+    componentsPage.name = "Components";
+  }
+
+  return componentsPage;
+}
+
+/**
+ * Purge existing generated content before regenerating
+ * Deletes all children in Components page
+ */
+function purgeExistingContent(): void {
+  // Find and delete Components page sections
+  const componentsPage = figma.root.children.find(
+    (page) => page.type === "PAGE" && page.name === "Components",
+  ) as PageNode | undefined;
+
+  if (componentsPage) {
+    // Remove all children (sections, component sets, etc.)
+    const children = [...componentsPage.children];
+    for (const node of children) {
+      node.remove();
+    }
+  }
+
+  console.log("✅ Purged existing generated content");
+}
+
+/**
+ * Starting Y position for first section
+ */
+const START_Y = 100;
+
 figma.ui.onmessage = async (msg: { type: string }) => {
   if (msg.type === "generate") {
     try {
-      figma.notify("Kumo UI Kit Generator loaded successfully!");
+      figma.notify("Starting Kumo UI Kit generation...");
 
-      // TODO Phase 1: Parse component-registry.json
-      // TODO Phase 1: Extract opacity modifiers from source files
-      // TODO Phase 1: Generate opacity-* variables
+      // Step 1: Purge existing content (destructive sync)
+      purgeExistingContent();
 
-      // TODO Phase 2: Generate Badge components
-      // TODO Phase 3: Generate Button (text) components
-      // TODO Phase 4: Generate Button (icon) components
+      // Step 2: Get or create Components page
+      const componentsPage = getOrCreateComponentsPage();
+      figma.currentPage = componentsPage;
 
-      figma.closePlugin("Generation complete");
+      // Track Y position for sequential section placement
+      let nextY = START_Y;
+
+      // Step 3: Generate Badge components
+      figma.notify("Generating Badge components...");
+      nextY = await generateBadgeComponents(nextY);
+
+      // Step 4: Generate Button components (all variants and sizes)
+      figma.notify("Generating Button components...");
+      await generateButtonTextComponents(componentsPage, nextY);
+
+      figma.notify("✅ Generation complete!", { timeout: 3000 });
+      figma.closePlugin(
+        "Generation complete - created Badge and Button components",
+      );
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
+      console.error("Generation error:", error);
       figma.notify(`Error: ${message}`, { error: true });
       figma.closePlugin();
     }

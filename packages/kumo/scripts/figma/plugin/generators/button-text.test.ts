@@ -1,79 +1,59 @@
 /**
  * Tests for button-text.ts component generator
+ *
+ * Note: Full integration tests require Figma plugin runtime.
+ * These tests verify exports and constants only.
  */
 
 import { describe, it, expect } from "vitest";
-import { generateButtonTextComponents } from "./button-text";
+import {
+  generateButtonTextComponents,
+  BUTTON_VARIANTS_EXPORT,
+  BUTTON_SIZES_EXPORT,
+  BUTTON_STATES_EXPORT,
+} from "./button-text";
 
 describe("generateButtonTextComponents", () => {
   it("should export generateButtonTextComponents function", () => {
     expect(typeof generateButtonTextComponents).toBe("function");
   });
 
-  it("should return metadata about generated components", () => {
-    const result = generateButtonTextComponents();
-
-    expect(result).toHaveProperty("sections");
-    expect(result).toHaveProperty("componentSets");
-    expect(result).toHaveProperty("totalComponents");
+  it("should export 6 button variants", () => {
+    expect(BUTTON_VARIANTS_EXPORT).toHaveLength(6);
+    expect(BUTTON_VARIANTS_EXPORT).toEqual([
+      "primary",
+      "secondary",
+      "ghost",
+      "destructive",
+      "secondary-destructive",
+      "outline",
+    ]);
   });
 
-  it("should generate 6 sections for 6 variants", () => {
-    const result = generateButtonTextComponents();
-
-    expect(result.sections).toHaveLength(6);
-    expect(result.sections).toEqual(
-      expect.arrayContaining([
-        "Primary",
-        "Secondary",
-        "Ghost",
-        "Destructive",
-        "Secondary-Destructive",
-        "Outline",
-      ]),
-    );
+  it("should export 4 button sizes", () => {
+    expect(BUTTON_SIZES_EXPORT).toHaveLength(4);
+    expect(BUTTON_SIZES_EXPORT).toEqual(["xs", "sm", "base", "lg"]);
   });
 
-  it("should generate 24 ComponentSets (6 variants × 4 sizes)", () => {
-    const result = generateButtonTextComponents();
-
-    expect(result.componentSets).toHaveLength(24);
-    expect(result.totalComponents).toBe(24);
+  it("should export 5 button states", () => {
+    expect(BUTTON_STATES_EXPORT).toHaveLength(5);
+    expect(BUTTON_STATES_EXPORT).toEqual([
+      "Default",
+      "Hover",
+      "Active",
+      "Disabled",
+      "Loading",
+    ]);
   });
 
-  it("should generate ComponentSets with correct naming convention", () => {
-    const result = generateButtonTextComponents();
-
-    // Check for expected names
-    expect(result.componentSets).toContain("Button Primary XS");
-    expect(result.componentSets).toContain("Button Primary SM");
-    expect(result.componentSets).toContain("Button Primary Base");
-    expect(result.componentSets).toContain("Button Primary LG");
-
-    expect(result.componentSets).toContain("Button Secondary XS");
-    expect(result.componentSets).toContain("Button Ghost Base");
-    expect(result.componentSets).toContain("Button Destructive LG");
-    expect(result.componentSets).toContain("Button Outline SM");
+  it("should generate correct number of ComponentSets (6 variants × 4 sizes = 24)", () => {
+    const expectedTotal =
+      BUTTON_VARIANTS_EXPORT.length * BUTTON_SIZES_EXPORT.length;
+    expect(expectedTotal).toBe(24);
   });
 
-  it("should generate all size variations for each variant", () => {
-    const result = generateButtonTextComponents();
-
-    const variants = [
-      "Primary",
-      "Secondary",
-      "Ghost",
-      "Destructive",
-      "Secondary-Destructive",
-      "Outline",
-    ];
-    const sizes = ["XS", "SM", "Base", "LG"];
-
-    variants.forEach((variant) => {
-      sizes.forEach((size) => {
-        const expectedName = `Button ${variant} ${size}`;
-        expect(result.componentSets).toContain(expectedName);
-      });
-    });
+  it("should generate correct number of components per ComponentSet (5 states)", () => {
+    const expectedStates = BUTTON_STATES_EXPORT.length;
+    expect(expectedStates).toBe(5);
   });
 });

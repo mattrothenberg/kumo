@@ -16,12 +16,15 @@ interface PluginAPI {
   ui: {
     onmessage: ((msg: any) => void) | ((msg: any) => Promise<void>);
   };
+  root: DocumentNode;
   createFrame(): FrameNode;
   createText(): TextNode;
   createComponent(): ComponentNode;
   createComponentSet(): ComponentSetNode;
   createSection(): SectionNode;
+  createPage(): PageNode;
   createRectangle(): RectangleNode;
+  createEllipse(): EllipseNode;
   loadFontAsync(font: { family: string; style: string }): Promise<void>;
   variables: {
     getLocalVariableCollections(): VariableCollection[];
@@ -31,6 +34,18 @@ interface PluginAPI {
       collection: VariableCollection,
       type: "COLOR" | "FLOAT" | "STRING",
     ): Variable;
+    /**
+     * Binds a variable to a paint's color property
+     * @param paint - The paint to bind the variable to
+     * @param field - The field to bind (currently only 'color' is supported)
+     * @param variable - The variable to bind
+     * @returns A new paint with the variable bound
+     */
+    setBoundVariableForPaint(
+      paint: SolidPaint,
+      field: "color",
+      variable: Variable,
+    ): SolidPaint;
   };
   currentPage: PageNode;
 }
@@ -40,14 +55,21 @@ interface BaseNode {
   type: string;
   appendChild(child: SceneNode): void;
   findChild(callback: (node: BaseNode) => boolean): BaseNode | null;
+  remove(): void;
+}
+
+interface DocumentNode {
+  children: readonly PageNode[];
 }
 
 interface PageNode extends BaseNode {
   type: "PAGE";
+  children: readonly SceneNode[];
 }
 
 interface SectionNode extends BaseNode {
   type: "SECTION";
+  children: readonly SceneNode[];
 }
 
 interface SceneNode extends BaseNode {
@@ -87,6 +109,15 @@ interface RectangleNode extends SceneNode {
   cornerRadius: number;
 }
 
+interface EllipseNode extends SceneNode {
+  type: "ELLIPSE";
+  resize(width: number, height: number): void;
+  x: number;
+  y: number;
+  strokeAlign: "CENTER" | "INSIDE" | "OUTSIDE";
+  dashPattern: number[];
+}
+
 interface ComponentNode extends SceneNode {
   type: "COMPONENT";
 }
@@ -104,6 +135,14 @@ interface Paint {
 interface SolidPaint extends Paint {
   type: "SOLID";
   color: RGB;
+  boundVariables?: {
+    color?: VariableAlias;
+  };
+}
+
+interface VariableAlias {
+  type: "VARIABLE_ALIAS";
+  id: string;
 }
 
 interface RGB {

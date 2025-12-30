@@ -24,6 +24,13 @@
             "outline": "Bordered badge with transparent background",
             "beta": "Indicates beta or experimental features"
           },
+          "classes": {
+            "primary": "bg-surface-inverse text-surface-inverse",
+            "secondary": "bg-color text-surface",
+            "destructive": "bg-error text-white",
+            "outline": "border border-color bg-transparent text-surface",
+            "beta": "border border-dashed border-primary bg-transparent text-info"
+          },
           "default": "primary"
         },
         "className": {
@@ -80,6 +87,11 @@
             "alert": "Warning banner for cautionary messages",
             "error": "Error banner for critical issues"
           },
+          "classes": {
+            "default": "bg-info/20 border-info text-info selection:bg-info-selection",
+            "alert": "bg-alert/20 border-alert text-alert selection:bg-alert-selection",
+            "error": "bg-error/20 border-error text-error selection:bg-error-selection"
+          },
           "default": "default"
         },
         "className": {
@@ -123,6 +135,10 @@
           "descriptions": {
             "sm": "Compact breadcrumbs for dense UIs",
             "base": "Default breadcrumbs size"
+          },
+          "classes": {
+            "sm": "text-sm h-10 gap-0.5",
+            "base": "text-base h-12 gap-1"
           },
           "default": "base"
         },
@@ -230,6 +246,10 @@
             "square": "Square button for icon-only actions",
             "circle": "Circular button for icon-only actions"
           },
+          "classes": {
+            "square": "items-center justify-center p-0",
+            "circle": "items-center justify-center p-0 rounded-full"
+          },
           "default": "base"
         },
         "size": {
@@ -246,6 +266,12 @@
             "sm": "Small button for secondary actions",
             "base": "Default button size",
             "lg": "Large button for primary CTAs"
+          },
+          "classes": {
+            "xs": "h-5 gap-1 rounded-sm px-1.5 text-xs",
+            "sm": "h-6.5 gap-1 rounded-md px-2 text-xs",
+            "base": "h-9 gap-1.5 rounded-lg px-3 text-base",
+            "lg": "h-10 gap-2 rounded-lg px-4 text-base"
           },
           "default": "base"
         },
@@ -265,6 +291,13 @@
             "ghost": "Minimal button with no background",
             "destructive": "Danger button for destructive actions like delete",
             "outline": "Bordered button with transparent background"
+          },
+          "classes": {
+            "primary": "bg-primary !text-white hover:bg-primary/70 disabled:bg-primary/50",
+            "secondary": "bg-secondary !text-surface ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-surface/70 ring-border data-[state=open]:bg-subtle",
+            "ghost": "text-surface hover:bg-accent shadow-none bg-inherit",
+            "destructive": "bg-error !text-white hover:bg-error/70",
+            "outline": "bg-surface text-surface ring ring-border"
           },
           "default": "secondary"
         },
@@ -365,6 +398,10 @@
           "descriptions": {
             "default": "Default checkbox appearance",
             "error": "Error state for validation failures"
+          },
+          "classes": {
+            "default": "[&:focus-within>span]:ring-active [&:hover>span]:ring-active",
+            "error": "[&>span]:ring-error"
           },
           "default": "default"
         },
@@ -547,6 +584,11 @@
             "sm": "Small clipboard text for compact UIs",
             "base": "Default clipboard text size",
             "lg": "Large clipboard text for prominent display"
+          },
+          "classes": {
+            "sm": "text-xs",
+            "base": "text-sm",
+            "lg": "text-sm"
           },
           "default": "lg"
         },
@@ -869,6 +911,11 @@
             "base": "Default calendar size",
             "lg": "Large calendar for prominent date selection"
           },
+          "classes": {
+            "sm": "p-3 gap-2",
+            "base": "p-4 gap-2.5",
+            "lg": "p-5 gap-3"
+          },
           "default": "base"
         },
         "variant": {
@@ -881,6 +928,10 @@
           "descriptions": {
             "default": "Default calendar appearance",
             "subtle": "Subtle calendar with minimal background"
+          },
+          "classes": {
+            "default": "bg-calendar",
+            "subtle": "bg-surface"
           },
           "default": "default"
         },
@@ -952,6 +1003,12 @@
             "sm": "Small dialog for simple confirmations",
             "lg": "Large dialog for complex content",
             "xl": "Extra large dialog for detailed views"
+          },
+          "classes": {
+            "base": "min-w-96",
+            "sm": "min-w-72",
+            "lg": "min-w-[32rem]",
+            "xl": "min-w-[48rem]"
           },
           "default": "base"
         }
@@ -1094,6 +1151,9 @@
             "default": "Default dropdown item appearance",
             "danger": "Destructive action item"
           },
+          "classes": {
+            "danger": "text-error data-highlighted:bg-error-selection data-highlighted:text-error"
+          },
           "default": "default"
         }
       },
@@ -1195,6 +1255,11 @@
             "sm": "Compact empty state for smaller containers",
             "base": "Default empty state size",
             "lg": "Large empty state for prominent placement"
+          },
+          "classes": {
+            "sm": "px-6 py-8 gap-4",
+            "base": "px-10 py-16 gap-6",
+            "lg": "px-12 py-20 gap-8"
           },
           "default": "base"
         },
@@ -1333,6 +1398,12 @@
             "base": "Default input size",
             "lg": "Large input for prominent fields"
           },
+          "classes": {
+            "xs": "h-5 gap-1 rounded-sm px-1.5 text-xs",
+            "sm": "h-6.5 gap-1 rounded-md px-2 text-xs",
+            "base": "h-9 gap-1.5 rounded-lg px-3 text-base",
+            "lg": "h-10 gap-2 rounded-lg px-4 text-base"
+          },
           "default": "base"
         },
         "variant": {
@@ -1345,6 +1416,10 @@
           "descriptions": {
             "default": "Default input appearance",
             "error": "Error state for validation failures"
+          },
+          "classes": {
+            "default": "focus:ring-active",
+            "error": "!ring-error focus:ring-error"
           },
           "default": "default"
         }
@@ -1587,6 +1662,11 @@
             "compact": "Compact spacing between header elements",
             "base": "Default spacing between header elements",
             "relaxed": "Relaxed spacing for more prominent headers"
+          },
+          "classes": {
+            "compact": "gap-1",
+            "base": "gap-2",
+            "relaxed": "gap-4"
           },
           "default": "base"
         },
@@ -2036,6 +2116,9 @@
             "default": "Default switch appearance",
             "error": "Error state for validation failures"
           },
+          "classes": {
+            "error": "ring-error"
+          },
           "default": "default"
         },
         "label": {
@@ -2070,6 +2153,11 @@
             "sm": "Small switch for compact UIs",
             "base": "Default switch size",
             "lg": "Large switch for prominent toggles"
+          },
+          "classes": {
+            "sm": "h-5.5 w-8.5",
+            "base": "h-6.5 w-10.5",
+            "lg": "h-7.5 w-12.5"
           },
           "default": "base"
         },
@@ -2400,6 +2488,16 @@
             "error": "Error state text",
             "mono": "Monospace text for code"
           },
+          "classes": {
+            "heading1": "text-3xl font-semibold",
+            "heading2": "text-2xl font-semibold",
+            "heading3": "text-lg font-semibold",
+            "body": "text-surface",
+            "secondary": "text-muted",
+            "success": "text-info",
+            "error": "text-error",
+            "mono": "font-mono"
+          },
           "default": "body"
         },
         "size": {
@@ -2417,6 +2515,12 @@
             "sm": "Small text",
             "base": "Default text size",
             "lg": "Large text"
+          },
+          "classes": {
+            "xs": "text-xs",
+            "sm": "text-sm",
+            "base": "text-base",
+            "lg": "text-lg"
           },
           "default": "base"
         },

@@ -21,11 +21,12 @@ export type PlaceholderComponents = {
 };
 
 /**
- * Creates a simple circular icon placeholder component
+ * Creates a placeholder icon component
+ * Uses a simple rounded rectangle that represents an icon slot
  *
  * @param size - Icon size in pixels (12, 16, or 20)
  * @param name - Component name
- * @returns ComponentNode with a centered circle vector
+ * @returns ComponentNode with a simple icon placeholder
  */
 function createPlaceholderIcon(size: number, name: string): ComponentNode {
   const component = figma.createComponent();
@@ -33,18 +34,19 @@ function createPlaceholderIcon(size: number, name: string): ComponentNode {
   // @ts-ignore - ComponentNode has resize at runtime
   component.resize(size, size);
 
-  // Create centered circle vector
-  // @ts-ignore - createEllipse exists on figma at runtime
-  const circle = figma.createEllipse();
-  circle.resize(size, size);
-  circle.x = 0;
-  circle.y = 0;
+  // Create a rounded rectangle as the icon placeholder
+  // @ts-ignore - createRectangle exists on figma at runtime
+  const rect = figma.createRectangle();
+  rect.resize(size, size);
+  rect.x = 0;
+  rect.y = 0;
+  rect.cornerRadius = size * 0.2; // Slightly rounded corners
 
-  // Fill with neutral gray color
-  circle.fills = [{ type: "SOLID", color: { r: 0.6, g: 0.6, b: 0.6 } }];
+  // Use a medium gray fill
+  rect.fills = [{ type: "SOLID", color: { r: 0.6, g: 0.6, b: 0.6 } }];
 
-  // @ts-ignore - appendChild accepts EllipseNode at runtime
-  component.appendChild(circle);
+  // @ts-ignore - appendChild accepts RectangleNode at runtime
+  component.appendChild(rect);
 
   return component;
 }

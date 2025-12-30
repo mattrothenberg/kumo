@@ -484,8 +484,11 @@ function parseVariantsObject(
       const descMatch = variantBlock.match(
         /description\s*:\s*["']([^"']*)["']/,
       );
+      // Extract classes if present (for Figma plugin consumption)
+      const classesMatch = variantBlock.match(/classes\s*:\s*["']([^"']*)["']/);
       variants[variantName] = {
         description: descMatch ? descMatch[1] : undefined,
+        ...(classesMatch && { classes: classesMatch[1] }),
       };
     }
 
@@ -977,6 +980,8 @@ interface PropSchema {
   description?: string;
   values?: readonly string[];
   descriptions?: Record<string, string>;
+  /** Tailwind classes for each variant value (for Figma plugin) */
+  classes?: Record<string, string>;
 }
 
 interface SubComponentSchema {
@@ -1150,20 +1155,27 @@ function convertToPropSchema(
     prop.values = def.enum as string[];
   }
 
-  // Enrich with variant descriptions if this prop is a variant
+  // Enrich with variant descriptions and classes if this prop is a variant
   if (variants && propName in variants) {
     const variantDef = variants[propName];
     prop.values = Object.keys(variantDef);
     prop.type = "enum";
 
     const descriptions: Record<string, string> = {};
+    const classes: Record<string, string> = {};
     for (const [key, val] of Object.entries(variantDef)) {
       if (val.description) {
         descriptions[key] = val.description;
       }
+      if (val.classes) {
+        classes[key] = val.classes;
+      }
     }
     if (Object.keys(descriptions).length > 0) {
       prop.descriptions = descriptions;
+    }
+    if (Object.keys(classes).length > 0) {
+      prop.classes = classes;
     }
   }
 

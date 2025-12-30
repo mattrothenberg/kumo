@@ -141,16 +141,21 @@ export function bindFillToVariable(
 ): void {
   if (!("fills" in node)) return;
 
-  const fill: SolidPaint = {
+  const variable = figma.variables.getVariableById(variableId);
+  if (!variable) {
+    console.warn(`Variable not found: ${variableId}`);
+    return;
+  }
+
+  // Create a base fill
+  let fill: SolidPaint = {
     type: "SOLID",
     color: { r: 1, g: 1, b: 1 },
-    opacity: opacity ?? 1,
+    opacity: opacity !== undefined ? opacity : 1,
   };
 
-  node.setBoundVariable("fills", {
-    type: "VARIABLE_ALIAS",
-    id: variableId,
-  });
+  // Bind the variable to the fill's color property
+  fill = figma.variables.setBoundVariableForPaint(fill, "color", variable);
 
   node.fills = [fill];
 }
@@ -174,15 +179,20 @@ export function bindStrokeToVariable(
 ): void {
   if (!("strokes" in node)) return;
 
-  const stroke: SolidPaint = {
+  const variable = figma.variables.getVariableById(variableId);
+  if (!variable) {
+    console.warn(`Variable not found: ${variableId}`);
+    return;
+  }
+
+  // Create a base stroke
+  let stroke: SolidPaint = {
     type: "SOLID",
     color: { r: 1, g: 1, b: 1 },
   };
 
-  node.setBoundVariable("strokes", {
-    type: "VARIABLE_ALIAS",
-    id: variableId,
-  });
+  // Bind the variable to the stroke's color property
+  stroke = figma.variables.setBoundVariableForPaint(stroke, "color", variable);
 
   node.strokes = [stroke];
   node.strokeWeight = weight;
@@ -255,11 +265,23 @@ export function getVariableByName(variableName: string): Variable | undefined {
 }
 
 /**
- * Get or create a section node on a page
+ * Section configuration for consistent styling
+ */
+export const SECTION_CONFIG = {
+  /** Padding inside section */
+  padding: 48,
+  /** Minimum width */
+  minWidth: 400,
+  /** Minimum height */
+  minHeight: 200,
+} as const;
+
+/**
+ * Get or create a section node on a page with white background
  *
  * @param page - Page to create section on
  * @param sectionName - Section name
- * @returns Section node
+ * @returns Section node with white fill and padding
  *
  * @example
  * const page = figma.currentPage;
@@ -276,6 +298,15 @@ export function getOrCreateSection(
 
   const section = figma.createSection();
   section.name = sectionName;
+
+  // Set white background fill
+  section.fills = [
+    {
+      type: "SOLID",
+      color: { r: 1, g: 1, b: 1 }, // White
+    },
+  ];
+
   page.appendChild(section);
 
   return section;

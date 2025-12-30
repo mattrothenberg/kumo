@@ -67,7 +67,7 @@ type ButtonShape = (typeof BUTTON_SHAPES)[number];
  * From button.tsx KUMO_BUTTON_VARIANTS.compactSize
  */
 const ICON_BUTTON_SIZES: Record<ButtonSize, number> = {
-  xs: 14, // size-3.5 = 14px
+  xs: 20, // size-5 = 20px (adjusted for visibility)
   sm: 26, // size-6.5 = 26px
   base: 36, // size-9 = 36px
   lg: 40, // size-10 = 40px
@@ -144,51 +144,56 @@ type VariantStyle = {
   stroke?: string;
 };
 
+/**
+ * Variable names must match Figma kumo-colors collection
+ * Format: "color-{name}" for fills, "text-color-{name}" for text, "color-border" for strokes
+ * Note: opacity-* variables are Figma-only and need to be generated separately
+ */
 const VARIANT_STYLES: Record<ButtonVariant, VariantStyle> = {
   primary: {
-    fill: "primary",
-    fillHover: "opacity-primary-70",
-    fillActive: "opacity-primary-70",
-    fillDisabled: "opacity-primary-50",
-    text: "white", // white is a kumo token
+    fill: "color-primary",
+    fillHover: "color-primary", // TODO: opacity-primary-70 needs to be generated
+    fillActive: "color-primary",
+    fillDisabled: "color-primary",
+    text: "text-color-surface-inverse", // white text on primary
   },
   secondary: {
-    fill: "secondary",
-    fillHover: "secondary",
-    fillActive: "secondary",
-    fillDisabled: "opacity-secondary-50",
-    text: "surface",
-    stroke: "border",
+    fill: "color-secondary",
+    fillHover: "color-secondary",
+    fillActive: "color-secondary",
+    fillDisabled: "color-secondary",
+    text: "text-color-surface",
+    stroke: "color-border",
   },
   ghost: {
     fill: "transparent", // inherit background
-    fillHover: "accent",
-    fillActive: "accent",
+    fillHover: "color-accent",
+    fillActive: "color-accent",
     fillDisabled: "transparent",
-    text: "surface",
+    text: "text-color-surface",
   },
   destructive: {
-    fill: "error",
-    fillHover: "opacity-error-70",
-    fillActive: "opacity-error-70",
-    fillDisabled: "opacity-error-50",
-    text: "white",
+    fill: "color-error",
+    fillHover: "color-error",
+    fillActive: "color-error",
+    fillDisabled: "color-error",
+    text: "text-color-surface-inverse", // white text on error
   },
   "secondary-destructive": {
-    fill: "secondary",
-    fillHover: "secondary",
-    fillActive: "secondary",
-    fillDisabled: "opacity-secondary-50",
-    text: "error",
-    stroke: "border",
+    fill: "color-secondary",
+    fillHover: "color-secondary",
+    fillActive: "color-secondary",
+    fillDisabled: "color-secondary",
+    text: "text-color-error",
+    stroke: "color-border",
   },
   outline: {
-    fill: "surface",
-    fillHover: "surface",
-    fillActive: "surface",
-    fillDisabled: "surface",
-    text: "surface",
-    stroke: "border",
+    fill: "color-surface",
+    fillHover: "color-surface",
+    fillActive: "color-surface",
+    fillDisabled: "color-surface",
+    text: "text-color-surface",
+    stroke: "color-border",
   },
 };
 
@@ -268,32 +273,21 @@ function createIconButtonComponent(
     (component as any).opacity = 0.5;
   }
 
-  // Add icon instance
-  const placeholderIcon = getPlaceholderIconForSize(size, placeholders);
-  if (placeholderIcon) {
-    const iconInstance = (placeholderIcon as any).createInstance();
-    component.appendChild(iconInstance);
-
-    // Bind icon color to text color variable
-    const textVar = getVariableByName(style.text);
-    if (textVar) {
-      bindFillToVariable(iconInstance as any, textVar.id);
-    }
-  }
-
-  // Add loader for Loading state
+  // Add icon or loader based on state
   if (state === "Loading" && placeholders.loader) {
+    // Loading state: show loader instead of icon
     const loaderInstance = (placeholders.loader as any).createInstance();
     component.appendChild(loaderInstance);
 
     // Scale loader to fit button size
     const loaderSize = size === "lg" ? 16 : 14;
     (loaderInstance as any).resize(loaderSize, loaderSize);
-
-    // Bind loader color to text color variable
-    const textVar = getVariableByName(style.text);
-    if (textVar) {
-      bindFillToVariable(loaderInstance as any, textVar.id);
+  } else {
+    // Normal states: show icon placeholder
+    const placeholderIcon = getPlaceholderIconForSize(size, placeholders);
+    if (placeholderIcon) {
+      const iconInstance = (placeholderIcon as any).createInstance();
+      component.appendChild(iconInstance);
     }
   }
 
@@ -313,17 +307,7 @@ function createIconButtonComponentSet(
   size: ButtonSize,
   placeholders: PlaceholderRefs,
 ): ComponentSetNode {
-  const componentSet = figma.createComponentSet();
-
-  // ComponentSet name: "Button Primary Icon Base"
-  const variantName = variant
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-  const sizeName = size.charAt(0).toUpperCase() + size.slice(1);
-  componentSet.name = `Button ${variantName} Icon ${sizeName}`;
-
-  // Generate all state × shape combinations
+  // Generate all state × shape combinations as individual components first
   const components: ComponentNode[] = [];
   for (const state of BUTTON_STATES) {
     for (const shape of BUTTON_SHAPES) {
@@ -338,13 +322,31 @@ function createIconButtonComponentSet(
     }
   }
 
-  // Append components to ComponentSet
-  for (const component of components) {
-    componentSet.appendChild(component);
-  }
+  // Combine components into a ComponentSet using combineAsVariants
+  // This properly creates the ComponentSet and positions it
+  // @ts-ignore - combineAsVariants works with PageNode at runtime
+  const componentSet = figma.combineAsVariants(components, figma.currentPage);
+
+  // Set ComponentSet name: "Button Primary Icon Base"
+  const variantName = variant
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+  const sizeName = size.charAt(0).toUpperCase() + size.slice(1);
+  componentSet.name = `Button ${variantName} Icon ${sizeName}`;
 
   return componentSet;
 }
+
+/**
+ * Section padding for component display
+ */
+const SECTION_PADDING = 48;
+
+/**
+ * Gap between sections on the page
+ */
+const SECTION_GAP = 48;
 
 /**
  * Generate all button icon components
@@ -354,11 +356,18 @@ function createIconButtonComponentSet(
  *
  * @param page - Target page for components
  * @param placeholders - Placeholder component references
+ * @param startY - Y position to start placing sections
+ * @returns The Y position after all sections (for next section placement)
  */
 export async function generateButtonIconComponents(
   page: PageNode,
   placeholders: PlaceholderRefs,
-): Promise<void> {
+  startY: number = 100,
+): Promise<number> {
+  figma.currentPage = page;
+
+  let sectionY = startY;
+
   // Generate ComponentSets for each variant
   for (const variant of BUTTON_VARIANTS) {
     // Create section for this variant
@@ -366,9 +375,10 @@ export async function generateButtonIconComponents(
       .split("-")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
-    const section = getOrCreateSection(page, `${variantName} Icon`);
+    const section = getOrCreateSection(page, `Button ${variantName} Icon`);
 
     // Generate ComponentSets for each size
+    const componentSets: ComponentSetNode[] = [];
     for (const size of BUTTON_SIZES) {
       const componentSet = createIconButtonComponentSet(
         variant,
@@ -376,8 +386,34 @@ export async function generateButtonIconComponents(
         placeholders,
       );
       section.appendChild(componentSet);
+      componentSets.push(componentSet);
     }
+
+    // Position ComponentSets in a row with padding
+    let xOffset = SECTION_PADDING;
+    const spacing = 32;
+
+    for (const cs of componentSets) {
+      cs.x = xOffset;
+      cs.y = SECTION_PADDING;
+      xOffset += cs.width + spacing;
+    }
+
+    // Resize section to fit content
+    const totalWidth = xOffset + SECTION_PADDING;
+    const maxHeight = Math.max(...componentSets.map((cs) => cs.height));
+    section.resizeWithoutConstraints(
+      totalWidth,
+      maxHeight + SECTION_PADDING * 2,
+    );
+
+    // Position section on page
+    section.x = 100;
+    section.y = sectionY;
+    sectionY += section.height + SECTION_GAP;
   }
 
-  figma.notify("Generated 24 button icon ComponentSets (240 components total)");
+  console.log("✅ Generated 24 button icon ComponentSets (240 components)");
+
+  return sectionY;
 }
