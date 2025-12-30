@@ -367,19 +367,6 @@ export default function App() {
               </li>
               <li>
                 <Link
-                  to="/components/field"
-                  prefetch="intent"
-                  className={cn(
-                    LI_STYLE,
-                    location.pathname === "/components/field" &&
-                      LI_ACTIVE_STYLE,
-                  )}
-                >
-                  Field
-                </Link>
-              </li>
-              <li>
-                <Link
                   to="/components/input"
                   prefetch="intent"
                   className={cn(
