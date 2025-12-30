@@ -1,19 +1,55 @@
 /**
- * FedRAMP Theme Overrides
+ * FedRAMP Theme
  *
- * Government compliance styling that overrides semantic tokens.
- * Applied via data-theme="fedramp" on a parent element.
+ * Government compliance colors available in two ways:
+ *
+ * ## 1. Global Tokens (Explicit Opt-In)
+ *
+ * Colors are exposed globally via `@theme`, available as Tailwind classes
+ * (e.g., `bg-fedramp-surface`). Use these when you want to apply FedRAMP
+ * styling to specific elements without affecting the component tree.
  *
  * @example
- * <html data-theme="fedramp">
- *   <!-- All Kumo components use FedRAMP styling -->
- * </html>
+ * // Explicit FedRAMP styling on specific elements
+ * <header className="bg-fedramp-surface text-white">
+ *   FedRAMP Header
+ * </header>
+ *
+ * // Mix with standard Kumo tokens
+ * <div className="bg-surface">
+ *   <Badge className="bg-fedramp-active">FedRAMP</Badge>
+ * </div>
+ *
+ * ## 2. Semantic Overrides (Cascading Theme)
+ *
+ * Override semantic tokens via `data-theme="fedramp"` on a parent element.
+ * All Kumo components within that subtree will automatically use FedRAMP
+ * colors without any className changes.
+ *
+ * @example
+ * // All children use FedRAMP colors automatically
+ * <div data-theme="fedramp">
+ *   <Button>Uses FedRAMP primary</Button>
+ *   <Input placeholder="Uses FedRAMP surface" />
+ * </div>
+ *
+ * To enable cascading overrides, uncomment the semantic token overrides
+ * in the `@layer base` block below.
  */
+@theme {
+  --color-fedramp-surface: light-dark(#5b697c, #5b697c);
+  --color-fedramp-active: light-dark(#c8d4e5, #c8d4e5);
+}
 
 @layer base {
   [data-theme="fedramp"] {
-    --color-surface: light-dark(#5b697c, #5b697c);
-    --color-active: light-dark(#c8d4e5, #c8d4e5);
-    --text-color-surface: light-dark(#ffffff, #ffffff);
+    /**
+     * Uncomment to override semantic tokens for cascading theme behavior.
+     * When enabled, all Kumo components inside [data-theme="fedramp"]
+     * will use these colors automatically.
+     */
+    /* --color-surface: var(--color-fedramp-surface);
+    --color-active: var(--color-fedramp-active);
+    --text-color-surface: light-dark(#ffffff, #ffffff); */
   }
 }
