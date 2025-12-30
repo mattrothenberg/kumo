@@ -379,6 +379,7 @@
     "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
+    "@figma/plugin-typings": "1.121.0",
     "@storybook/addon-a11y": "catalog:",
     "@storybook/addon-docs": "catalog:",
     "@storybook/addon-mcp": "0.1.4",
