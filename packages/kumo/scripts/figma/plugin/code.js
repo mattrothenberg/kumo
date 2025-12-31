@@ -448,13 +448,7 @@
           variant: {
             type: "enum",
             optional: true,
-            values: [
-              "primary",
-              "secondary",
-              "destructive",
-              "outline",
-              "beta"
-            ],
+            values: ["primary", "secondary", "destructive", "outline", "beta"],
             descriptions: {
               primary: "Default high-emphasis badge for important labels",
               secondary: "Subtle badge for secondary information",
@@ -515,11 +509,7 @@
           variant: {
             type: "enum",
             optional: true,
-            values: [
-              "default",
-              "alert",
-              "error"
-            ],
+            values: ["default", "alert", "error"],
             descriptions: {
               default: "Informational banner for general messages",
               alert: "Warning banner for cautionary messages",
@@ -566,10 +556,7 @@
           size: {
             type: "enum",
             optional: true,
-            values: [
-              "sm",
-              "base"
-            ],
+            values: ["sm", "base"],
             descriptions: {
               sm: "Compact breadcrumbs for dense UIs",
               base: "Default breadcrumbs size"
@@ -598,11 +585,7 @@
           "<Breadcrumbs>\n      <Breadcrumbs.Current>Home</Breadcrumbs.Current>\n    </Breadcrumbs>",
           '<Breadcrumbs>\n      <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>\n      <Breadcrumbs.Separator />\n      <Breadcrumbs.Link href="/projects">Projects</Breadcrumbs.Link>\n      <Breadcrumbs.Separator />\n      <Breadcrumbs.Current>Current Project</Breadcrumbs.Current>\n      <Breadcrumbs.Clipboard text="https://example.com/projects/current-project" />\n    </Breadcrumbs>'
         ],
-        colors: [
-          "text-disabled",
-          "text-green",
-          "text-muted"
-        ],
+        colors: ["text-disabled", "text-green", "text-muted"],
         subComponents: {
           Link: {
             name: "Link",
@@ -674,11 +657,7 @@
           shape: {
             type: "enum",
             optional: true,
-            values: [
-              "base",
-              "square",
-              "circle"
-            ],
+            values: ["base", "square", "circle"],
             descriptions: {
               base: "Default rectangular button shape",
               square: "Square button for icon-only actions",
@@ -693,12 +672,7 @@
           size: {
             type: "enum",
             optional: true,
-            values: [
-              "xs",
-              "sm",
-              "base",
-              "lg"
-            ],
+            values: ["xs", "sm", "base", "lg"],
             descriptions: {
               xs: "Extra small button for compact UIs",
               sm: "Small button for secondary actions",
@@ -773,11 +747,7 @@
           type: {
             type: "enum",
             optional: true,
-            values: [
-              "submit",
-              "reset",
-              "button"
-            ]
+            values: ["submit", "reset", "button"]
           },
           value: {
             type: "string | string[] | number",
@@ -834,10 +804,7 @@
             type: "enum",
             optional: true,
             description: 'Visual variant: "default" or "error" for validation failures (visual only, no error text)',
-            values: [
-              "default",
-              "error"
-            ],
+            values: ["default", "error"],
             descriptions: {
               default: "Default checkbox appearance",
               error: "Error state for validation failures"
@@ -1006,32 +973,14 @@
         styling: {
           dimensions: "h-4 w-4",
           borderRadius: "rounded-sm",
-          baseTokens: [
-            "bg-surface",
-            "ring-border"
-          ],
+          baseTokens: ["bg-surface", "ring-border"],
           states: {
-            checked: [
-              "bg-surface-inverse",
-              "text-surface-inverse"
-            ],
-            indeterminate: [
-              "bg-surface-inverse",
-              "text-surface-inverse"
-            ],
-            error: [
-              "ring-error"
-            ],
-            hover: [
-              "ring-active"
-            ],
-            focus: [
-              "ring-active"
-            ],
-            disabled: [
-              "opacity-50",
-              "cursor-not-allowed"
-            ]
+            checked: ["bg-surface-inverse", "text-surface-inverse"],
+            indeterminate: ["bg-surface-inverse", "text-surface-inverse"],
+            error: ["ring-error"],
+            hover: ["ring-active"],
+            focus: ["ring-active"],
+            disabled: ["opacity-50", "cursor-not-allowed"]
           },
           icons: [
             {
@@ -1056,11 +1005,7 @@
           size: {
             type: "enum",
             optional: true,
-            values: [
-              "sm",
-              "base",
-              "lg"
-            ],
+            values: ["sm", "base", "lg"],
             descriptions: {
               sm: "Small clipboard text for compact UIs",
               base: "Default clipboard text size",
@@ -1092,10 +1037,7 @@
           '<ClipboardText text="This is a much longer text that demonstrates how the clipboard text component handles overflow with extended content" />',
           '<ClipboardText text="npx create-cloudflare@latest my-app --template kumo" size="base" />'
         ],
-        colors: [
-          "bg-surface",
-          "border-color"
-        ]
+        colors: ["bg-surface", "border-color"]
       },
       Code: {
         name: "Code",
@@ -1119,8 +1061,25 @@
             description: "Additional CSS classes"
           },
           lang: {
-            type: "'ts' | 'tsx' | 'jsonc' | 'bash' | 'css'",
-            description: "Language for syntax highlighting"
+            type: "enum",
+            optional: true,
+            description: "Language for syntax highlighting metadata",
+            values: ["ts", "tsx", "jsonc", "bash", "css"],
+            descriptions: {
+              ts: "TypeScript code",
+              tsx: "TypeScript JSX code",
+              jsonc: "JSON with comments",
+              bash: "Shell/Bash commands",
+              css: "CSS styles"
+            },
+            classes: {
+              ts: "",
+              tsx: "",
+              jsonc: "",
+              bash: "",
+              css: ""
+            },
+            default: "ts"
           }
         },
         examples: [
@@ -1130,14 +1089,49 @@
           `<Code lang="bash" code='const hello = "world";' />`,
           `<Code lang="css" code='const hello = "world";' />`,
           '<Code lang="ts" code={`\\`interface User {\n  name: string;\n  email: string;\n}\n\nconst user: User = {\n  name: "John",\n  email: "john@example.com"\n};\\``} />',
-          '<Code lang="bash" code="npm install @cloudflare/kumo" />',
-          '<CodeBlock\n      lang="tsx"\n      code={`<Button variant="primary">\n  Click me\n</Button>`}\n    />'
+          '<Code lang="bash" code="npm install @cloudflare/kumo" />'
         ],
-        colors: [
-          "bg-surface",
-          "border-color",
-          "text-label"
-        ]
+        colors: ["bg-transparent", "text-label"]
+      },
+      CodeBlock: {
+        name: "CodeBlock",
+        description: "Code block with container styling",
+        importPath: "@cloudflare/kumo",
+        category: "Display",
+        props: {
+          code: {
+            type: "string",
+            required: true,
+            description: "The code content to display"
+          },
+          lang: {
+            type: "enum",
+            optional: true,
+            description: "Language for syntax highlighting metadata",
+            values: ["ts", "tsx", "jsonc", "bash", "css"],
+            descriptions: {
+              ts: "TypeScript code",
+              tsx: "TypeScript JSX code",
+              jsonc: "JSON with comments",
+              bash: "Shell/Bash commands",
+              css: "CSS styles"
+            },
+            classes: {
+              ts: "",
+              tsx: "",
+              jsonc: "",
+              bash: "",
+              css: ""
+            },
+            default: "ts"
+          }
+        },
+        examples: [
+          '<CodeBlock\n      lang="tsx"\n      code={`<Button variant="primary">\n  Click me\n</Button>`}\n    />',
+          '<CodeBlock lang="bash" code="npm install @cloudflare/kumo" />',
+          '<CodeBlock lang="ts" code={`interface User {\n  name: string;\n  email: string;\n}`} />'
+        ],
+        colors: ["bg-surface", "border-color", "text-label"]
       },
       Collapsible: {
         name: "Collapsible",
@@ -1169,10 +1163,7 @@
         examples: [
           '<Collapsible label="Click to expand" open={open} onOpenChange={setOpen}>\n        <Text>\n          This is the collapsible content that can be shown or hidden.\n        </Text>\n      </Collapsible>'
         ],
-        colors: [
-          "border-color",
-          "text-info"
-        ]
+        colors: ["border-color", "text-info"]
       },
       Combobox: {
         name: "Combobox",
@@ -1183,10 +1174,7 @@
           inputSide: {
             type: "enum",
             optional: true,
-            values: [
-              "right",
-              "top"
-            ],
+            values: ["right", "top"],
             descriptions: {
               right: "Input positioned inline to the right of chips",
               top: "Input positioned above chips"
@@ -1372,11 +1360,7 @@
           size: {
             type: "enum",
             optional: true,
-            values: [
-              "sm",
-              "base",
-              "lg"
-            ],
+            values: ["sm", "base", "lg"],
             descriptions: {
               sm: "Compact calendar for tight spaces",
               base: "Default calendar size",
@@ -1392,10 +1376,7 @@
           variant: {
             type: "enum",
             optional: true,
-            values: [
-              "default",
-              "subtle"
-            ],
+            values: ["default", "subtle"],
             descriptions: {
               default: "Default calendar appearance",
               subtle: "Subtle calendar with minimal background"
@@ -1463,12 +1444,7 @@
           size: {
             type: "enum",
             optional: true,
-            values: [
-              "base",
-              "sm",
-              "lg",
-              "xl"
-            ],
+            values: ["base", "sm", "lg", "xl"],
             descriptions: {
               base: "Default dialog width",
               sm: "Small dialog for simple confirmations",
@@ -1487,11 +1463,7 @@
         examples: [
           '<Dialog.Root>\n      <Dialog.Trigger render={<Button>Open Dialog</Button>} />\n      <Dialog className="p-6">\n        <Dialog.Title className="mb-2 text-xl font-semibold">\n          Dialog Title\n        </Dialog.Title>\n        <Dialog.Description className="mb-4">\n          This is a dialog description with some content.\n        </Dialog.Description>\n        <Dialog.Close render={<Button>Close</Button>} />\n      </Dialog>\n    </Dialog.Root>'
         ],
-        colors: [
-          "bg-color-3",
-          "bg-surface",
-          "text-surface"
-        ],
+        colors: ["bg-color-3", "bg-surface", "text-surface"],
         subComponents: {
           Root: {
             name: "Root",
@@ -1614,10 +1586,7 @@
           variant: {
             type: "enum",
             optional: true,
-            values: [
-              "default",
-              "danger"
-            ],
+            values: ["default", "danger"],
             descriptions: {
               default: "Default dropdown item appearance",
               danger: "Destructive action item"
@@ -1717,11 +1686,7 @@
           size: {
             type: "enum",
             optional: true,
-            values: [
-              "sm",
-              "base",
-              "lg"
-            ],
+            values: ["sm", "base", "lg"],
             descriptions: {
               sm: "Compact empty state for smaller containers",
               base: "Default empty state size",
@@ -1811,11 +1776,7 @@
           }
         },
         examples: [],
-        colors: [
-          "text-error",
-          "text-muted",
-          "text-surface"
-        ]
+        colors: ["text-error", "text-muted", "text-surface"]
       },
       Icon: {
         name: "Icon",
@@ -1836,13 +1797,7 @@
           size: {
             type: "enum",
             optional: true,
-            values: [
-              "xs",
-              "sm",
-              "base",
-              "lg",
-              "xl"
-            ],
+            values: ["xs", "sm", "base", "lg", "xl"],
             descriptions: {
               xs: "12px - small UI elements",
               sm: "16px - standard inline icons",
@@ -1894,11 +1849,7 @@
           crossOrigin: {
             type: "enum",
             optional: true,
-            values: [
-              "anonymous",
-              "use-credentials",
-              ""
-            ]
+            values: ["anonymous", "use-credentials", ""]
           },
           accentHeight: {
             type: "number | string",
@@ -1907,18 +1858,12 @@
           accumulate: {
             type: "enum",
             optional: true,
-            values: [
-              "none",
-              "sum"
-            ]
+            values: ["none", "sum"]
           },
           additive: {
             type: "enum",
             optional: true,
-            values: [
-              "replace",
-              "sum"
-            ]
+            values: ["replace", "sum"]
           },
           alignmentBaseline: {
             type: "enum",
@@ -1942,10 +1887,7 @@
           allowReorder: {
             type: "enum",
             optional: true,
-            values: [
-              "no",
-              "yes"
-            ]
+            values: ["no", "yes"]
           },
           alphabetic: {
             type: "number | string",
@@ -1958,12 +1900,7 @@
           arabicForm: {
             type: "enum",
             optional: true,
-            values: [
-              "initial",
-              "medial",
-              "terminal",
-              "isolated"
-            ]
+            values: ["initial", "medial", "terminal", "isolated"]
           },
           ascent: {
             type: "number | string",
@@ -2044,12 +1981,7 @@
           colorInterpolationFilters: {
             type: "enum",
             optional: true,
-            values: [
-              "auto",
-              "sRGB",
-              "linearRGB",
-              "inherit"
-            ]
+            values: ["auto", "sRGB", "linearRGB", "inherit"]
           },
           colorProfile: {
             type: "number | string",
@@ -2173,11 +2105,7 @@
           fillRule: {
             type: "enum",
             optional: true,
-            values: [
-              "nonzero",
-              "evenodd",
-              "inherit"
-            ]
+            values: ["nonzero", "evenodd", "inherit"]
           },
           filter: {
             type: "string",
@@ -2678,22 +2606,12 @@
           strokeLinecap: {
             type: "enum",
             optional: true,
-            values: [
-              "butt",
-              "round",
-              "square",
-              "inherit"
-            ]
+            values: ["butt", "round", "square", "inherit"]
           },
           strokeLinejoin: {
             type: "enum",
             optional: true,
-            values: [
-              "miter",
-              "round",
-              "bevel",
-              "inherit"
-            ]
+            values: ["miter", "round", "bevel", "inherit"]
           },
           strokeMiterlimit: {
             type: "number | string",
@@ -2730,12 +2648,7 @@
           textAnchor: {
             type: "enum",
             optional: true,
-            values: [
-              "start",
-              "middle",
-              "end",
-              "inherit"
-            ]
+            values: ["start", "middle", "end", "inherit"]
           },
           textDecoration: {
             type: "number | string",
@@ -2956,11 +2869,7 @@
           '<Icon glyph="ph-check" title={Success} />',
           '<div className="flex gap-4">\n      <Icon glyph="ph-check" className="text-green" size="lg" />\n      <Icon glyph="ph-warning" className="text-alert" size="lg" />\n      <Icon glyph="ph-x" className="text-error" size="lg" />\n      <Icon glyph="ph-info" className="text-info" size="lg" />\n      <Icon glyph="ph-check" className="text-brand" size="lg" />\n      <Icon glyph="ph-gear" className="text-label" size="lg" />\n      <Icon\n        glyph="cf-cloudflare-workers-outline"\n        className="text-green"\n        size="lg"\n      />\n      <Icon\n        glyph="cf-security-shield-protection-1-outline"\n        className="text-alert"\n        size="lg"\n      />\n      <Icon\n        glyph="cf-cloudflare-pages-outline"\n        className="text-error"\n        size="lg"\n      />\n      <Icon\n        glyph="cf-cloudflare-zero-trust-outline"\n        className="text-info"\n        size="lg"\n      />\n      <Icon glyph="cf-r2-outline" className="text-brand" size="lg" />\n      <Icon glyph="cf-d1-outline" className="text-label" size="lg" />\n    </div>'
         ],
-        colors: [
-          "text-brand",
-          "text-error",
-          "text-green"
-        ]
+        colors: ["text-brand", "text-error", "text-green"]
       },
       Input: {
         name: "Input",
@@ -2986,12 +2895,7 @@
           size: {
             type: "enum",
             optional: true,
-            values: [
-              "xs",
-              "sm",
-              "base",
-              "lg"
-            ],
+            values: ["xs", "sm", "base", "lg"],
             descriptions: {
               xs: "Extra small input for compact UIs",
               sm: "Small input for secondary fields",
@@ -3009,10 +2913,7 @@
           variant: {
             type: "enum",
             optional: true,
-            values: [
-              "default",
-              "error"
-            ],
+            values: ["default", "error"],
             descriptions: {
               default: "Default input appearance",
               error: "Error state for validation failures"
@@ -3097,11 +2998,7 @@
           size: {
             type: "enum",
             optional: true,
-            values: [
-              "sm",
-              "base",
-              "lg"
-            ],
+            values: ["sm", "base", "lg"],
             descriptions: {
               sm: "Small loader for inline use",
               base: "Default loader size",
@@ -3142,11 +3039,7 @@
           }
         },
         examples: [],
-        colors: [
-          "bg-color",
-          "bg-surface",
-          "border-color"
-        ]
+        colors: ["bg-color", "bg-surface", "border-color"]
       },
       Meter: {
         name: "Meter",
@@ -3191,11 +3084,7 @@
           "<Meter label={Progress} value={50} max={100} />",
           '<div className="flex w-64 flex-col gap-4">\n      <Meter label="Low" value={25} max={100} />\n      <Meter label="Medium" value={50} max={100} />\n      <Meter label="High" value={75} max={100} />\n      <Meter label="Complete" value={100} max={100} />\n    </div>'
         ],
-        colors: [
-          "bg-color",
-          "text-label",
-          "text-surface"
-        ]
+        colors: ["bg-color", "text-label", "text-surface"]
       },
       PageHeader: {
         name: "PageHeader",
@@ -3206,11 +3095,7 @@
           spacing: {
             type: "enum",
             optional: true,
-            values: [
-              "compact",
-              "base",
-              "relaxed"
-            ],
+            values: ["compact", "base", "relaxed"],
             descriptions: {
               compact: "Compact spacing between header elements",
               base: "Default spacing between header elements",
@@ -3252,9 +3137,7 @@
           '<PageHeader\n      breadcrumbs={\n        <Breadcrumbs>\n          <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Current>Settings</Breadcrumbs.Current>\n        </Breadcrumbs>\n      }\n      tabs={[\n        { label: "General", value: "general" },\n        { label: "Security", value: "security" },\n        { label: "Notifications", value: "notifications" },\n        { label: "Billing", value: "billing" },\n      ]}\n      defaultTab="general"\n    />',
           '<PageHeader\n      breadcrumbs={\n        <Breadcrumbs>\n          <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Link href="/projects">Projects</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Current>My Project</Breadcrumbs.Current>\n        </Breadcrumbs>\n      }\n      tabs={[\n        { label: "Overview", value: "overview" },\n        { label: "Analytics", value: "analytics" },\n        { label: "Settings", value: "settings" },\n      ]}\n      defaultTab="overview"\n    >\n      <Button variant="outline" size="sm">\n        Export\n      </Button>\n      <Button variant="primary" size="sm">\n        <PlusIcon size={16} />\n        New Item\n      </Button>\n    </PageHeader>'
         ],
-        colors: [
-          "border-color-4"
-        ]
+        colors: ["border-color-4"]
       },
       Pagination: {
         name: "Pagination",
@@ -3284,9 +3167,7 @@
           '<Pagination page={1} perPage={10} totalCount={100} setPage="() => {}" />',
           '<Pagination page={5} perPage={10} totalCount={100} setPage="() => {}" />'
         ],
-        colors: [
-          "text-label"
-        ]
+        colors: ["text-label"]
       },
       Select: {
         name: "Select",
@@ -3514,12 +3395,8 @@
             description: "Child elements"
           }
         },
-        examples: [
-          "<Surface  />"
-        ],
-        colors: [
-          "ring-border"
-        ]
+        examples: ["<Surface  />"],
+        colors: ["ring-border"]
       },
       Switch: {
         name: "Switch",
@@ -3531,10 +3408,7 @@
             type: "enum",
             optional: true,
             description: 'Visual variant: "default" or "error" for validation failures (visual only, no error text)',
-            values: [
-              "default",
-              "error"
-            ],
+            values: ["default", "error"],
             descriptions: {
               default: "Default switch appearance",
               error: "Error state for validation failures"
@@ -3557,11 +3431,7 @@
           size: {
             type: "enum",
             optional: true,
-            values: [
-              "sm",
-              "base",
-              "lg"
-            ],
+            values: ["sm", "base", "lg"],
             descriptions: {
               sm: "Small switch for compact UIs",
               base: "Default switch size",
@@ -3593,11 +3463,7 @@
           type: {
             type: "enum",
             optional: true,
-            values: [
-              "submit",
-              "reset",
-              "button"
-            ]
+            values: ["submit", "reset", "button"]
           },
           value: {
             type: "string | string[] | number",
@@ -3793,12 +3659,7 @@
             type: "enum",
             optional: true,
             description: "Text size (only applies to body/secondary/success/error variants)",
-            values: [
-              "xs",
-              "sm",
-              "base",
-              "lg"
-            ],
+            values: ["xs", "sm", "base", "lg"],
             descriptions: {
               xs: "Extra small text",
               sm: "Small text",
@@ -3845,12 +3706,7 @@
           '<Text size="lg">Sample text</Text>',
           "<Text bold={true}>Bold text</Text>"
         ],
-        colors: [
-          "text-error",
-          "text-info",
-          "text-muted",
-          "text-surface"
-        ]
+        colors: ["text-error", "text-info", "text-muted", "text-surface"]
       },
       Toasty: {
         name: "Toasty",
@@ -3894,12 +3750,7 @@
           side: {
             type: "enum",
             optional: true,
-            values: [
-              "top",
-              "bottom",
-              "left",
-              "right"
-            ],
+            values: ["top", "bottom", "left", "right"],
             descriptions: {
               top: "Tooltip appears above the trigger",
               bottom: "Tooltip appears below the trigger",
@@ -3917,37 +3768,15 @@
         examples: [
           '<Tooltip content="This is a tooltip" asChild>\n      <Button>Hover me</Button>\n    </Tooltip>'
         ],
-        colors: [
-          "bg-black-icon",
-          "fill-black-icon",
-          "fill-icon-path"
-        ]
+        colors: ["bg-black-icon", "fill-black-icon", "fill-icon-path"]
       }
     },
     search: {
       byCategory: {
-        Display: [
-          "Badge",
-          "Code",
-          "Collapsible",
-          "LayerCard",
-          "Meter",
-          "Text"
-        ],
-        Feedback: [
-          "Banner",
-          "Loader",
-          "Toasty"
-        ],
-        Block: [
-          "Breadcrumbs",
-          "Empty",
-          "PageHeader"
-        ],
-        Action: [
-          "Button",
-          "ClipboardText"
-        ],
+        Display: ["Badge", "Code", "Collapsible", "LayerCard", "Meter", "Text"],
+        Feedback: ["Banner", "Loader", "Toasty"],
+        Block: ["Breadcrumbs", "Empty", "PageHeader"],
+        Action: ["Button", "ClipboardText"],
         Input: [
           "Checkbox",
           "Combobox",
@@ -3957,23 +3786,10 @@
           "Select",
           "Switch"
         ],
-        Overlay: [
-          "Dialog",
-          "DropdownMenu",
-          "Tooltip"
-        ],
-        Other: [
-          "Icon",
-          "SensitiveInput"
-        ],
-        Navigation: [
-          "MenuBar",
-          "Pagination",
-          "Tabs"
-        ],
-        Layout: [
-          "Surface"
-        ]
+        Overlay: ["Dialog", "DropdownMenu", "Tooltip"],
+        Other: ["Icon", "SensitiveInput"],
+        Navigation: ["MenuBar", "Pagination", "Tabs"],
+        Layout: ["Surface"]
       },
       byName: [
         "Badge",
@@ -5222,12 +5038,277 @@
     });
   }
 
+  // scripts/figma/plugin/generators/code.ts
+  var codeProps = component_registry_default.components.Code.props;
+  var langProp = codeProps.lang;
+  var SECTION_PADDING6 = 48;
+  var SECTION_GAP6 = 160;
+  var CODE_BASE_CLASS = "m-0 w-auto rounded-none border-none bg-transparent p-0 font-mono text-sm leading-[20px] text-label";
+  function getPlaceholderText(lang) {
+    if (lang === "bash") {
+      return "npm install @cloudflare/kumo";
+    }
+    if (lang === "jsonc") {
+      return '{ "key": "value" }';
+    }
+    if (lang === "css") {
+      return ".class { color: blue; }";
+    }
+    if (lang === "tsx") {
+      return "<Button>Click</Button>";
+    }
+    return 'const hello = "world";';
+  }
+  function createCodeComponent(lang) {
+    return __async(this, null, function* () {
+      const langClasses = langProp.classes[lang] || "";
+      const langDesc = langProp.descriptions[lang] || "";
+      const combinedClasses = `${CODE_BASE_CLASS} ${langClasses}`.trim();
+      const styles = parseTailwindClasses(combinedClasses);
+      const component = figma.createComponent();
+      component.name = "lang=" + lang;
+      component.description = langDesc;
+      component.layoutMode = "HORIZONTAL";
+      component.primaryAxisAlignItems = "MIN";
+      component.counterAxisAlignItems = "MIN";
+      component.primaryAxisSizingMode = "AUTO";
+      component.counterAxisSizingMode = "AUTO";
+      component.fills = [];
+      const fontSize = styles.fontSize || 14;
+      const fontWeight = 400;
+      const textNode = yield createTextNode(
+        getPlaceholderText(lang),
+        fontSize,
+        fontWeight
+      );
+      textNode.name = "Text";
+      yield figma.loadFontAsync({ family: "SF Mono", style: "Regular" });
+      textNode.fontName = { family: "SF Mono", style: "Regular" };
+      const labelVar = getVariableByName("text-color-label");
+      if (labelVar) {
+        bindTextColorToVariable(textNode, labelVar.id);
+      }
+      component.appendChild(textNode);
+      return component;
+    });
+  }
+  function generateCodeComponents(page, startY) {
+    return __async(this, null, function* () {
+      if (startY === void 0) startY = 100;
+      figma.currentPage = page;
+      const langs = langProp.values;
+      const components = [];
+      const rowLabels = [];
+      const rowHeight = 50;
+      const labelColumnWidth = 160;
+      let currentRow = 0;
+      for (let i = 0; i < langs.length; i++) {
+        const lang = langs[i];
+        rowLabels.push({
+          y: currentRow * rowHeight,
+          text: "lang=" + lang
+        });
+        const component = yield createCodeComponent(lang);
+        component.x = labelColumnWidth;
+        component.y = currentRow * rowHeight;
+        components.push(component);
+        currentRow++;
+      }
+      const componentSet = figma.combineAsVariants(components, page);
+      componentSet.name = "Code";
+      componentSet.description = "Code component with lang property for displaying code snippets";
+      componentSet.layoutMode = "NONE";
+      const contentWidth = componentSet.width + labelColumnWidth;
+      const contentHeight = componentSet.height;
+      const lightSection = createModeSection(page, "Code", "light");
+      lightSection.frame.resize(
+        contentWidth + SECTION_PADDING6 * 2,
+        contentHeight + SECTION_PADDING6 * 2
+      );
+      const darkSection = createModeSection(page, "Code", "dark");
+      darkSection.frame.resize(
+        contentWidth + SECTION_PADDING6 * 2,
+        contentHeight + SECTION_PADDING6 * 2
+      );
+      lightSection.frame.appendChild(componentSet);
+      componentSet.x = SECTION_PADDING6 + labelColumnWidth;
+      componentSet.y = SECTION_PADDING6;
+      for (const label of rowLabels) {
+        const labelNode = yield createRowLabel(
+          label.text,
+          SECTION_PADDING6,
+          SECTION_PADDING6 + label.y + 8
+          // +8 to vertically center with text
+        );
+        lightSection.frame.appendChild(labelNode);
+      }
+      for (const component of components) {
+        const instance = component.createInstance();
+        instance.x = component.x + SECTION_PADDING6 + labelColumnWidth;
+        instance.y = component.y + SECTION_PADDING6;
+        darkSection.frame.appendChild(instance);
+      }
+      for (const label of rowLabels) {
+        const labelNode = yield createRowLabel(
+          label.text,
+          SECTION_PADDING6,
+          SECTION_PADDING6 + label.y + 8
+        );
+        darkSection.frame.appendChild(labelNode);
+      }
+      const totalWidth = contentWidth + SECTION_PADDING6 * 2;
+      const totalHeight = contentHeight + SECTION_PADDING6 * 2;
+      lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+      darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+      lightSection.section.x = 100;
+      lightSection.section.y = startY;
+      darkSection.section.x = 100 + totalWidth + 50;
+      darkSection.section.y = startY;
+      console.log(
+        "\u2705 Generated Code ComponentSet with " + components.length + " variants (light + dark)"
+      );
+      return startY + totalHeight + SECTION_GAP6;
+    });
+  }
+  var CODE_LANGS_EXPORT = langProp.values;
+
+  // scripts/figma/plugin/generators/code-block.ts
+  var codeBlockProps = component_registry_default.components.CodeBlock.props;
+  var langProp2 = codeBlockProps.lang;
+  var CODE_BLOCK_WRAPPER_STYLES = "min-w-0 rounded-md border border-color bg-surface";
+  var CODE_INNER_PADDING = 10;
+  function createCodeBlockComponent(lang) {
+    return __async(this, null, function* () {
+      const _classes = langProp2.classes[lang] || "";
+      const description = langProp2.descriptions[lang] || "";
+      const wrapperStyles = parseTailwindClasses(CODE_BLOCK_WRAPPER_STYLES);
+      const component = figma.createComponent();
+      component.name = "lang=" + lang;
+      component.description = description;
+      component.layoutMode = "VERTICAL";
+      component.primaryAxisAlignItems = "MIN";
+      component.counterAxisAlignItems = "MIN";
+      component.paddingLeft = CODE_INNER_PADDING;
+      component.paddingRight = CODE_INNER_PADDING;
+      component.paddingTop = CODE_INNER_PADDING;
+      component.paddingBottom = CODE_INNER_PADDING;
+      component.primaryAxisSizingMode = "AUTO";
+      component.counterAxisSizingMode = "AUTO";
+      component.cornerRadius = wrapperStyles.borderRadius || 6;
+      if (wrapperStyles.fillVariable) {
+        const fillVar = getVariableByName(wrapperStyles.fillVariable);
+        if (fillVar) {
+          bindFillToVariable(component, fillVar.id);
+        }
+      }
+      if (wrapperStyles.strokeVariable) {
+        const strokeVar = getVariableByName(wrapperStyles.strokeVariable);
+        if (strokeVar) {
+          bindStrokeToVariable(component, strokeVar.id, 1);
+        }
+      }
+      const textNode = yield createTextNode(
+        'const hello = "world";',
+        14,
+        // text-sm = 14px
+        400
+        // normal weight
+      );
+      textNode.name = "Code";
+      yield figma.loadFontAsync({ family: "Inter", style: "Regular" });
+      textNode.fontName = { family: "Inter", style: "Regular" };
+      const labelVar = getVariableByName("text-color-label");
+      if (labelVar) {
+        bindTextColorToVariable(textNode, labelVar.id);
+      }
+      textNode.lineHeight = { value: 20, unit: "PIXELS" };
+      component.appendChild(textNode);
+      return component;
+    });
+  }
+  var SECTION_PADDING7 = 48;
+  var SECTION_GAP7 = 160;
+  function generateCodeBlockComponents(page, startY) {
+    return __async(this, null, function* () {
+      if (startY === void 0) startY = 100;
+      figma.currentPage = page;
+      const langs = langProp2.values;
+      const components = [];
+      const rowLabels = [];
+      const rowGap = 40;
+      const labelColumnWidth = 160;
+      let currentY = 0;
+      for (let i = 0; i < langs.length; i++) {
+        const lang = langs[i];
+        const component = yield createCodeBlockComponent(lang);
+        rowLabels.push({ y: currentY, text: "lang=" + lang });
+        component.x = labelColumnWidth;
+        component.y = currentY;
+        currentY += component.height + rowGap;
+        components.push(component);
+      }
+      const componentSet = figma.combineAsVariants(components, page);
+      componentSet.name = "CodeBlock";
+      componentSet.description = "CodeBlock component with lang variants";
+      const contentWidth = componentSet.width + labelColumnWidth;
+      const contentHeight = componentSet.height;
+      const lightSection = createModeSection(page, "CodeBlock", "light");
+      lightSection.frame.resize(
+        contentWidth + SECTION_PADDING7 * 2,
+        contentHeight + SECTION_PADDING7 * 2
+      );
+      const darkSection = createModeSection(page, "CodeBlock", "dark");
+      darkSection.frame.resize(
+        contentWidth + SECTION_PADDING7 * 2,
+        contentHeight + SECTION_PADDING7 * 2
+      );
+      lightSection.frame.appendChild(componentSet);
+      componentSet.x = SECTION_PADDING7 + labelColumnWidth;
+      componentSet.y = SECTION_PADDING7;
+      for (const label of rowLabels) {
+        const labelNode = yield createRowLabel(
+          label.text,
+          SECTION_PADDING7,
+          SECTION_PADDING7 + label.y + 8
+          // +8 to vertically center with code block
+        );
+        lightSection.frame.appendChild(labelNode);
+      }
+      for (const component of components) {
+        const instance = component.createInstance();
+        instance.x = component.x + SECTION_PADDING7 + labelColumnWidth;
+        instance.y = component.y + SECTION_PADDING7;
+        darkSection.frame.appendChild(instance);
+      }
+      for (const label of rowLabels) {
+        const labelNode = yield createRowLabel(
+          label.text,
+          SECTION_PADDING7,
+          SECTION_PADDING7 + label.y + 8
+        );
+        darkSection.frame.appendChild(labelNode);
+      }
+      const totalWidth = contentWidth + SECTION_PADDING7 * 2;
+      const totalHeight = contentHeight + SECTION_PADDING7 * 2;
+      lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+      darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+      lightSection.section.x = 100;
+      lightSection.section.y = startY;
+      darkSection.section.x = 100 + totalWidth + 50;
+      darkSection.section.y = startY;
+      console.log(
+        "\u2705 Generated CodeBlock ComponentSet with " + langs.length + " variants (light + dark)"
+      );
+      return startY + totalHeight + SECTION_GAP7;
+    });
+  }
+
   // scripts/figma/plugin/generators/link-button.ts
   var buttonProps2 = component_registry_default.components.Button.props;
   var variantProp5 = buttonProps2.variant;
   var sizeProp3 = buttonProps2.size;
-  var SECTION_PADDING6 = 48;
-  var SECTION_GAP6 = 160;
+  var SECTION_PADDING8 = 48;
+  var SECTION_GAP8 = 160;
   function createLinkButtonComponent(variant, size, hasIcon) {
     return __async(this, null, function* () {
       var variantClasses = variantProp5.classes[variant] || "";
@@ -5347,58 +5428,58 @@
       var contentHeight = componentSet.height + headerRowHeight;
       var lightSection = createModeSection(page, "LinkButton", "light");
       lightSection.frame.resize(
-        contentWidth + SECTION_PADDING6 * 2,
-        contentHeight + SECTION_PADDING6 * 2
+        contentWidth + SECTION_PADDING8 * 2,
+        contentHeight + SECTION_PADDING8 * 2
       );
       var darkSection = createModeSection(page, "LinkButton", "dark");
       darkSection.frame.resize(
-        contentWidth + SECTION_PADDING6 * 2,
-        contentHeight + SECTION_PADDING6 * 2
+        contentWidth + SECTION_PADDING8 * 2,
+        contentHeight + SECTION_PADDING8 * 2
       );
       lightSection.frame.appendChild(componentSet);
-      componentSet.x = SECTION_PADDING6 + labelColumnWidth;
-      componentSet.y = SECTION_PADDING6 + headerRowHeight;
+      componentSet.x = SECTION_PADDING8 + labelColumnWidth;
+      componentSet.y = SECTION_PADDING8 + headerRowHeight;
       yield createColumnHeaders(
         columnHeaders.map(function(h) {
-          return { x: h.x + SECTION_PADDING6, text: h.text };
+          return { x: h.x + SECTION_PADDING8, text: h.text };
         }),
-        SECTION_PADDING6,
+        SECTION_PADDING8,
         lightSection.frame
       );
       for (var li = 0; li < rowLabels.length; li++) {
         var label = rowLabels[li];
         var labelNode = yield createRowLabel(
           label.text,
-          SECTION_PADDING6,
-          SECTION_PADDING6 + label.y + 12
+          SECTION_PADDING8,
+          SECTION_PADDING8 + label.y + 12
         );
         lightSection.frame.appendChild(labelNode);
       }
       for (var i = 0; i < components.length; i++) {
         var comp = components[i];
         var instance = comp.createInstance();
-        instance.x = comp.x + SECTION_PADDING6 + labelColumnWidth;
-        instance.y = comp.y + SECTION_PADDING6 + headerRowHeight;
+        instance.x = comp.x + SECTION_PADDING8 + labelColumnWidth;
+        instance.y = comp.y + SECTION_PADDING8 + headerRowHeight;
         darkSection.frame.appendChild(instance);
       }
       yield createColumnHeaders(
         columnHeaders.map(function(h) {
-          return { x: h.x + SECTION_PADDING6, text: h.text };
+          return { x: h.x + SECTION_PADDING8, text: h.text };
         }),
-        SECTION_PADDING6,
+        SECTION_PADDING8,
         darkSection.frame
       );
       for (var di = 0; di < rowLabels.length; di++) {
         var darkLabel = rowLabels[di];
         var darkLabelNode = yield createRowLabel(
           darkLabel.text,
-          SECTION_PADDING6,
-          SECTION_PADDING6 + darkLabel.y + 12
+          SECTION_PADDING8,
+          SECTION_PADDING8 + darkLabel.y + 12
         );
         darkSection.frame.appendChild(darkLabelNode);
       }
-      var totalWidth = contentWidth + SECTION_PADDING6 * 2;
-      var totalHeight = contentHeight + SECTION_PADDING6 * 2;
+      var totalWidth = contentWidth + SECTION_PADDING8 * 2;
+      var totalHeight = contentHeight + SECTION_PADDING8 * 2;
       lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
       darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
       lightSection.section.x = 100;
@@ -5409,7 +5490,7 @@
       console.log(
         "\u2705 Generated LinkButton ComponentSet with " + totalComponents + " variants (light + dark)"
       );
-      return startY + totalHeight + SECTION_GAP6;
+      return startY + totalHeight + SECTION_GAP8;
     });
   }
   var LINK_BUTTON_VARIANTS_EXPORT = variantProp5.values;
@@ -5439,8 +5520,8 @@
     var parsed = parseTailwindClasses(sizeClasses);
     return parsed.borderRadius !== void 0 ? parsed.borderRadius : BORDER_RADIUS.lg;
   }
-  var SECTION_PADDING7 = 48;
-  var SECTION_GAP7 = 160;
+  var SECTION_PADDING9 = 48;
+  var SECTION_GAP9 = 160;
   function createRefreshButtonComponent(size, loading) {
     var variant = variantProp6.default;
     var variantClasses = variantProp6.classes[variant] || "";
@@ -5521,44 +5602,44 @@
       var contentHeight = componentSet.height;
       var lightSection = createModeSection(page, "RefreshButton", "light");
       lightSection.frame.resize(
-        contentWidth + SECTION_PADDING7 * 2,
-        contentHeight + SECTION_PADDING7 * 2
+        contentWidth + SECTION_PADDING9 * 2,
+        contentHeight + SECTION_PADDING9 * 2
       );
       var darkSection = createModeSection(page, "RefreshButton", "dark");
       darkSection.frame.resize(
-        contentWidth + SECTION_PADDING7 * 2,
-        contentHeight + SECTION_PADDING7 * 2
+        contentWidth + SECTION_PADDING9 * 2,
+        contentHeight + SECTION_PADDING9 * 2
       );
       lightSection.frame.appendChild(componentSet);
-      componentSet.x = SECTION_PADDING7 + labelColumnWidth;
-      componentSet.y = SECTION_PADDING7;
+      componentSet.x = SECTION_PADDING9 + labelColumnWidth;
+      componentSet.y = SECTION_PADDING9;
       for (var li = 0; li < rowLabels.length; li++) {
         var label = rowLabels[li];
         var labelNode = yield createRowLabel(
           label.text,
-          SECTION_PADDING7,
-          SECTION_PADDING7 + label.y + 10
+          SECTION_PADDING9,
+          SECTION_PADDING9 + label.y + 10
         );
         lightSection.frame.appendChild(labelNode);
       }
       for (var i = 0; i < components.length; i++) {
         var comp = components[i];
         var instance = comp.createInstance();
-        instance.x = comp.x + SECTION_PADDING7 + labelColumnWidth;
-        instance.y = comp.y + SECTION_PADDING7;
+        instance.x = comp.x + SECTION_PADDING9 + labelColumnWidth;
+        instance.y = comp.y + SECTION_PADDING9;
         darkSection.frame.appendChild(instance);
       }
       for (var di = 0; di < rowLabels.length; di++) {
         var darkLabel = rowLabels[di];
         var darkLabelNode = yield createRowLabel(
           darkLabel.text,
-          SECTION_PADDING7,
-          SECTION_PADDING7 + darkLabel.y + 10
+          SECTION_PADDING9,
+          SECTION_PADDING9 + darkLabel.y + 10
         );
         darkSection.frame.appendChild(darkLabelNode);
       }
-      var totalWidth = contentWidth + SECTION_PADDING7 * 2;
-      var totalHeight = contentHeight + SECTION_PADDING7 * 2;
+      var totalWidth = contentWidth + SECTION_PADDING9 * 2;
+      var totalHeight = contentHeight + SECTION_PADDING9 * 2;
       lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
       darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
       lightSection.section.x = 100;
@@ -5569,7 +5650,7 @@
       console.log(
         "\u2705 Generated RefreshButton ComponentSet with " + totalComponents + " variants (light + dark)"
       );
-      return startY + totalHeight + SECTION_GAP7;
+      return startY + totalHeight + SECTION_GAP9;
     });
   }
   var REFRESH_BUTTON_SIZES_EXPORT = sizeProp4.values;
@@ -5578,8 +5659,8 @@
   var textProps = component_registry_default.components.Text.props;
   var variantProp7 = textProps.variant;
   var sizeProp5 = textProps.size;
-  var SECTION_PADDING8 = 48;
-  var SECTION_GAP8 = 160;
+  var SECTION_PADDING10 = 48;
+  var SECTION_GAP10 = 160;
   var TEXT_BASE_CLASS = "text-surface";
   var COPY_VARIANTS = ["body", "secondary", "success", "error"];
   var MONO_VARIANTS = ["mono", "mono-secondary"];
@@ -5589,7 +5670,7 @@
   function isMonoVariant(variant) {
     return MONO_VARIANTS.includes(variant);
   }
-  function getPlaceholderText(variant) {
+  function getPlaceholderText2(variant) {
     if (variant.startsWith("heading")) {
       return variant.charAt(0).toUpperCase() + variant.slice(1).replace(/(\d)/, " $1");
     }
@@ -5640,7 +5721,7 @@
       }
       const fontSize = styles.fontSize || 16;
       const textNode = yield createTextNode(
-        getPlaceholderText(variant),
+        getPlaceholderText2(variant),
         fontSize,
         fontWeight
       );
@@ -5725,52 +5806,52 @@
       const contentHeight = componentSet.height + headerRowHeight;
       const lightSection = createModeSection(page, "Text", "light");
       lightSection.frame.resize(
-        contentWidth + SECTION_PADDING8 * 2,
-        contentHeight + SECTION_PADDING8 * 2
+        contentWidth + SECTION_PADDING10 * 2,
+        contentHeight + SECTION_PADDING10 * 2
       );
       const darkSection = createModeSection(page, "Text", "dark");
       darkSection.frame.resize(
-        contentWidth + SECTION_PADDING8 * 2,
-        contentHeight + SECTION_PADDING8 * 2
+        contentWidth + SECTION_PADDING10 * 2,
+        contentHeight + SECTION_PADDING10 * 2
       );
       lightSection.frame.appendChild(componentSet);
-      componentSet.x = SECTION_PADDING8 + labelColumnWidth;
-      componentSet.y = SECTION_PADDING8 + headerRowHeight;
+      componentSet.x = SECTION_PADDING10 + labelColumnWidth;
+      componentSet.y = SECTION_PADDING10 + headerRowHeight;
       yield createColumnHeaders(
-        columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING8, text: h.text })),
-        SECTION_PADDING8,
+        columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING10, text: h.text })),
+        SECTION_PADDING10,
         lightSection.frame
       );
       for (const label of rowLabels) {
         const labelNode = yield createRowLabel(
           label.text,
-          SECTION_PADDING8,
-          SECTION_PADDING8 + label.y + 8
+          SECTION_PADDING10,
+          SECTION_PADDING10 + label.y + 8
           // +8 to vertically center with text
         );
         lightSection.frame.appendChild(labelNode);
       }
       for (const component of components) {
         const instance = component.createInstance();
-        instance.x = component.x + SECTION_PADDING8 + labelColumnWidth;
-        instance.y = component.y + SECTION_PADDING8 + headerRowHeight;
+        instance.x = component.x + SECTION_PADDING10 + labelColumnWidth;
+        instance.y = component.y + SECTION_PADDING10 + headerRowHeight;
         darkSection.frame.appendChild(instance);
       }
       yield createColumnHeaders(
-        columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING8, text: h.text })),
-        SECTION_PADDING8,
+        columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING10, text: h.text })),
+        SECTION_PADDING10,
         darkSection.frame
       );
       for (const label of rowLabels) {
         const labelNode = yield createRowLabel(
           label.text,
-          SECTION_PADDING8,
-          SECTION_PADDING8 + label.y + 8
+          SECTION_PADDING10,
+          SECTION_PADDING10 + label.y + 8
         );
         darkSection.frame.appendChild(labelNode);
       }
-      const totalWidth = contentWidth + SECTION_PADDING8 * 2;
-      const totalHeight = contentHeight + SECTION_PADDING8 * 2;
+      const totalWidth = contentWidth + SECTION_PADDING10 * 2;
+      const totalHeight = contentHeight + SECTION_PADDING10 * 2;
       lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
       darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
       lightSection.section.x = 100;
@@ -5780,7 +5861,7 @@
       console.log(
         "\u2705 Generated Text ComponentSet with " + components.length + " variants (light + dark)"
       );
-      return startY + totalHeight + SECTION_GAP8;
+      return startY + totalHeight + SECTION_GAP10;
     });
   }
   var TEXT_VARIANTS_EXPORT = variantProp7.values;
@@ -8759,10 +8840,14 @@
         figma.notify("Generating Text components...");
         nextY = yield generateTextComponents(componentsPage, nextY);
         figma.notify("Generating ClipboardText components...");
-        yield generateClipboardTextComponents(nextY);
+        nextY = yield generateClipboardTextComponents(nextY);
+        figma.notify("Generating Code components...");
+        nextY = yield generateCodeComponents(componentsPage, nextY);
+        figma.notify("Generating CodeBlock components...");
+        nextY = yield generateCodeBlockComponents(componentsPage, nextY);
         figma.notify("\u2705 Generation complete!", { timeout: 3e3 });
         figma.closePlugin(
-          "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, LinkButton, RefreshButton, Text components, and Icon Library"
+          "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, LinkButton, RefreshButton, Text components, and Icon Library"
         );
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);

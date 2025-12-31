@@ -12,6 +12,8 @@ import { generateBannerComponents } from "./generators/banner";
 import { generateButtonComponents } from "./generators/button";
 import { generateCheckboxComponents } from "./generators/checkbox";
 import { generateClipboardTextComponents } from "./generators/clipboard-text";
+import { generateCodeComponents } from "./generators/code";
+import { generateCodeBlockComponents } from "./generators/code-block";
 import { generateLinkButtonComponents } from "./generators/link-button";
 import { generateRefreshButtonComponents } from "./generators/refresh-button";
 import { generateTextComponents } from "./generators/text";
@@ -119,11 +121,19 @@ figma.ui.onmessage = async (msg: { type: string }) => {
 
       // Step 11: Generate ClipboardText components
       figma.notify("Generating ClipboardText components...");
-      await generateClipboardTextComponents(nextY);
+      nextY = await generateClipboardTextComponents(nextY);
+
+      // Step 12: Generate Code components
+      figma.notify("Generating Code components...");
+      nextY = await generateCodeComponents(componentsPage, nextY);
+
+      // Step 13: Generate CodeBlock components
+      figma.notify("Generating CodeBlock components...");
+      nextY = await generateCodeBlockComponents(componentsPage, nextY);
 
       figma.notify("✅ Generation complete!", { timeout: 3000 });
       figma.closePlugin(
-        "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, LinkButton, RefreshButton, Text components, and Icon Library",
+        "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, LinkButton, RefreshButton, Text components, and Icon Library",
       );
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
