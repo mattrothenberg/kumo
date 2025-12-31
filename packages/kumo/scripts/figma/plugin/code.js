@@ -16,26 +16,6 @@
       }
     return a;
   };
-  var __async = (__this, __arguments, generator) => {
-    return new Promise((resolve, reject) => {
-      var fulfilled = (value) => {
-        try {
-          step(generator.next(value));
-        } catch (e) {
-          reject(e);
-        }
-      };
-      var rejected = (value) => {
-        try {
-          step(generator.throw(value));
-        } catch (e) {
-          reject(e);
-        }
-      };
-      var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
-      step((generator = generator.apply(__this, __arguments)).next());
-    });
-  };
 
   // scripts/figma/plugin/generators/shared.ts
   var BORDER_RADIUS = {
@@ -86,58 +66,52 @@
     node.strokes = [stroke];
     node.strokeWeight = weight;
   }
-  function createTextNode(text, fontSize, fontWeight = 400) {
-    return __async(this, null, function* () {
-      const textNode = figma.createText();
-      yield figma.loadFontAsync({ family: "Inter", style: "Regular" });
-      textNode.characters = text;
-      textNode.fontSize = fontSize;
-      textNode.fontName = { family: "Inter", style: "Regular" };
-      if (fontWeight >= 600) {
-        yield figma.loadFontAsync({ family: "Inter", style: "Semi Bold" });
-        textNode.fontName = { family: "Inter", style: "Semi Bold" };
-      } else if (fontWeight >= 500) {
-        yield figma.loadFontAsync({ family: "Inter", style: "Medium" });
-        textNode.fontName = { family: "Inter", style: "Medium" };
-      }
-      return textNode;
-    });
-  }
-  function createRowLabel(text, x, y) {
-    return __async(this, null, function* () {
-      const textNode = figma.createText();
-      yield figma.loadFontAsync({ family: "Inter", style: "Medium" });
-      textNode.characters = text;
-      textNode.fontSize = 12;
+  async function createTextNode(text, fontSize, fontWeight = 400) {
+    const textNode = figma.createText();
+    await figma.loadFontAsync({ family: "Inter", style: "Regular" });
+    textNode.characters = text;
+    textNode.fontSize = fontSize;
+    textNode.fontName = { family: "Inter", style: "Regular" };
+    if (fontWeight >= 600) {
+      await figma.loadFontAsync({ family: "Inter", style: "Semi Bold" });
+      textNode.fontName = { family: "Inter", style: "Semi Bold" };
+    } else if (fontWeight >= 500) {
+      await figma.loadFontAsync({ family: "Inter", style: "Medium" });
       textNode.fontName = { family: "Inter", style: "Medium" };
-      const mutedVar = getVariableByName("text-color-muted");
-      if (mutedVar) {
-        let fill = {
+    }
+    return textNode;
+  }
+  async function createRowLabel(text, x, y) {
+    const textNode = figma.createText();
+    await figma.loadFontAsync({ family: "Inter", style: "Medium" });
+    textNode.characters = text;
+    textNode.fontSize = 12;
+    textNode.fontName = { family: "Inter", style: "Medium" };
+    const mutedVar = getVariableByName("text-color-muted");
+    if (mutedVar) {
+      let fill = {
+        type: "SOLID",
+        color: { r: 0.5, g: 0.5, b: 0.5 }
+      };
+      fill = figma.variables.setBoundVariableForPaint(fill, "color", mutedVar);
+      textNode.fills = [fill];
+    } else {
+      textNode.fills = [
+        {
           type: "SOLID",
           color: { r: 0.5, g: 0.5, b: 0.5 }
-        };
-        fill = figma.variables.setBoundVariableForPaint(fill, "color", mutedVar);
-        textNode.fills = [fill];
-      } else {
-        textNode.fills = [
-          {
-            type: "SOLID",
-            color: { r: 0.5, g: 0.5, b: 0.5 }
-          }
-        ];
-      }
-      textNode.x = x;
-      textNode.y = y;
-      return textNode;
-    });
+        }
+      ];
+    }
+    textNode.x = x;
+    textNode.y = y;
+    return textNode;
   }
-  function createColumnHeaders(headers, y, frame) {
-    return __async(this, null, function* () {
-      for (const header of headers) {
-        const labelNode = yield createRowLabel(header.text, header.x, y);
-        frame.appendChild(labelNode);
-      }
-    });
+  async function createColumnHeaders(headers, y, frame) {
+    for (const header of headers) {
+      const labelNode = await createRowLabel(header.text, header.x, y);
+      frame.appendChild(labelNode);
+    }
   }
   function getVariableByName(variableName) {
     const collections = figma.variables.getLocalVariableCollections();
@@ -313,6 +287,7 @@
     "text-info": "text-color-info",
     "text-alert": "text-color-alert",
     "text-muted": "text-color-muted",
+    "text-label": "text-color-label",
     "!text-white": null,
     // Hardcoded white (important)
     "!text-surface": "text-color-surface",
@@ -448,7 +423,13 @@
           variant: {
             type: "enum",
             optional: true,
-            values: ["primary", "secondary", "destructive", "outline", "beta"],
+            values: [
+              "primary",
+              "secondary",
+              "destructive",
+              "outline",
+              "beta"
+            ],
             descriptions: {
               primary: "Default high-emphasis badge for important labels",
               secondary: "Subtle badge for secondary information",
@@ -509,7 +490,11 @@
           variant: {
             type: "enum",
             optional: true,
-            values: ["default", "alert", "error"],
+            values: [
+              "default",
+              "alert",
+              "error"
+            ],
             descriptions: {
               default: "Informational banner for general messages",
               alert: "Warning banner for cautionary messages",
@@ -556,7 +541,10 @@
           size: {
             type: "enum",
             optional: true,
-            values: ["sm", "base"],
+            values: [
+              "sm",
+              "base"
+            ],
             descriptions: {
               sm: "Compact breadcrumbs for dense UIs",
               base: "Default breadcrumbs size"
@@ -585,7 +573,11 @@
           "<Breadcrumbs>\n      <Breadcrumbs.Current>Home</Breadcrumbs.Current>\n    </Breadcrumbs>",
           '<Breadcrumbs>\n      <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>\n      <Breadcrumbs.Separator />\n      <Breadcrumbs.Link href="/projects">Projects</Breadcrumbs.Link>\n      <Breadcrumbs.Separator />\n      <Breadcrumbs.Current>Current Project</Breadcrumbs.Current>\n      <Breadcrumbs.Clipboard text="https://example.com/projects/current-project" />\n    </Breadcrumbs>'
         ],
-        colors: ["text-disabled", "text-green", "text-muted"],
+        colors: [
+          "text-disabled",
+          "text-green",
+          "text-muted"
+        ],
         subComponents: {
           Link: {
             name: "Link",
@@ -657,7 +649,11 @@
           shape: {
             type: "enum",
             optional: true,
-            values: ["base", "square", "circle"],
+            values: [
+              "base",
+              "square",
+              "circle"
+            ],
             descriptions: {
               base: "Default rectangular button shape",
               square: "Square button for icon-only actions",
@@ -672,7 +668,12 @@
           size: {
             type: "enum",
             optional: true,
-            values: ["xs", "sm", "base", "lg"],
+            values: [
+              "xs",
+              "sm",
+              "base",
+              "lg"
+            ],
             descriptions: {
               xs: "Extra small button for compact UIs",
               sm: "Small button for secondary actions",
@@ -732,6 +733,10 @@
             type: "string",
             optional: true
           },
+          lang: {
+            type: "string",
+            optional: true
+          },
           title: {
             type: "string",
             optional: true
@@ -747,7 +752,11 @@
           type: {
             type: "enum",
             optional: true,
-            values: ["submit", "reset", "button"]
+            values: [
+              "submit",
+              "reset",
+              "button"
+            ]
           },
           value: {
             type: "string | string[] | number",
@@ -804,7 +813,10 @@
             type: "enum",
             optional: true,
             description: 'Visual variant: "default" or "error" for validation failures (visual only, no error text)',
-            values: ["default", "error"],
+            values: [
+              "default",
+              "error"
+            ],
             descriptions: {
               default: "Default checkbox appearance",
               error: "Error state for validation failures"
@@ -874,6 +886,10 @@
             optional: true
           },
           id: {
+            type: "string",
+            optional: true
+          },
+          lang: {
             type: "string",
             optional: true
           },
@@ -973,14 +989,32 @@
         styling: {
           dimensions: "h-4 w-4",
           borderRadius: "rounded-sm",
-          baseTokens: ["bg-surface", "ring-border"],
+          baseTokens: [
+            "bg-surface",
+            "ring-border"
+          ],
           states: {
-            checked: ["bg-surface-inverse", "text-surface-inverse"],
-            indeterminate: ["bg-surface-inverse", "text-surface-inverse"],
-            error: ["ring-error"],
-            hover: ["ring-active"],
-            focus: ["ring-active"],
-            disabled: ["opacity-50", "cursor-not-allowed"]
+            checked: [
+              "bg-surface-inverse",
+              "text-surface-inverse"
+            ],
+            indeterminate: [
+              "bg-surface-inverse",
+              "text-surface-inverse"
+            ],
+            error: [
+              "ring-error"
+            ],
+            hover: [
+              "ring-active"
+            ],
+            focus: [
+              "ring-active"
+            ],
+            disabled: [
+              "opacity-50",
+              "cursor-not-allowed"
+            ]
           },
           icons: [
             {
@@ -1005,7 +1039,11 @@
           size: {
             type: "enum",
             optional: true,
-            values: ["sm", "base", "lg"],
+            values: [
+              "sm",
+              "base",
+              "lg"
+            ],
             descriptions: {
               sm: "Small clipboard text for compact UIs",
               base: "Default clipboard text size",
@@ -1037,7 +1075,10 @@
           '<ClipboardText text="This is a much longer text that demonstrates how the clipboard text component handles overflow with extended content" />',
           '<ClipboardText text="npx create-cloudflare@latest my-app --template kumo" size="base" />'
         ],
-        colors: ["bg-surface", "border-color"]
+        colors: [
+          "bg-surface",
+          "border-color"
+        ]
       },
       Code: {
         name: "Code",
@@ -1045,6 +1086,25 @@
         importPath: "@cloudflare/kumo",
         category: "Display",
         props: {
+          lang: {
+            type: "enum",
+            optional: true,
+            values: [
+              "ts",
+              "tsx",
+              "jsonc",
+              "bash",
+              "css"
+            ],
+            descriptions: {
+              ts: "TypeScript code",
+              tsx: "TypeScript JSX code",
+              jsonc: "JSON with comments",
+              bash: "Shell/Bash commands",
+              css: "CSS styles"
+            },
+            default: "ts"
+          },
           code: {
             type: "string",
             required: true,
@@ -1059,27 +1119,6 @@
             type: "string",
             optional: true,
             description: "Additional CSS classes"
-          },
-          lang: {
-            type: "enum",
-            optional: true,
-            description: "Language for syntax highlighting metadata",
-            values: ["ts", "tsx", "jsonc", "bash", "css"],
-            descriptions: {
-              ts: "TypeScript code",
-              tsx: "TypeScript JSX code",
-              jsonc: "JSON with comments",
-              bash: "Shell/Bash commands",
-              css: "CSS styles"
-            },
-            classes: {
-              ts: "",
-              tsx: "",
-              jsonc: "",
-              bash: "",
-              css: ""
-            },
-            default: "ts"
           }
         },
         examples: [
@@ -1089,49 +1128,14 @@
           `<Code lang="bash" code='const hello = "world";' />`,
           `<Code lang="css" code='const hello = "world";' />`,
           '<Code lang="ts" code={`\\`interface User {\n  name: string;\n  email: string;\n}\n\nconst user: User = {\n  name: "John",\n  email: "john@example.com"\n};\\``} />',
-          '<Code lang="bash" code="npm install @cloudflare/kumo" />'
+          '<Code lang="bash" code="npm install @cloudflare/kumo" />',
+          '<CodeBlock\n      lang="tsx"\n      code={`<Button variant="primary">\n  Click me\n</Button>`}\n    />'
         ],
-        colors: ["bg-transparent", "text-label"]
-      },
-      CodeBlock: {
-        name: "CodeBlock",
-        description: "Code block with container styling",
-        importPath: "@cloudflare/kumo",
-        category: "Display",
-        props: {
-          code: {
-            type: "string",
-            required: true,
-            description: "The code content to display"
-          },
-          lang: {
-            type: "enum",
-            optional: true,
-            description: "Language for syntax highlighting metadata",
-            values: ["ts", "tsx", "jsonc", "bash", "css"],
-            descriptions: {
-              ts: "TypeScript code",
-              tsx: "TypeScript JSX code",
-              jsonc: "JSON with comments",
-              bash: "Shell/Bash commands",
-              css: "CSS styles"
-            },
-            classes: {
-              ts: "",
-              tsx: "",
-              jsonc: "",
-              bash: "",
-              css: ""
-            },
-            default: "ts"
-          }
-        },
-        examples: [
-          '<CodeBlock\n      lang="tsx"\n      code={`<Button variant="primary">\n  Click me\n</Button>`}\n    />',
-          '<CodeBlock lang="bash" code="npm install @cloudflare/kumo" />',
-          '<CodeBlock lang="ts" code={`interface User {\n  name: string;\n  email: string;\n}`} />'
-        ],
-        colors: ["bg-surface", "border-color", "text-label"]
+        colors: [
+          "bg-surface",
+          "border-color",
+          "text-label"
+        ]
       },
       Collapsible: {
         name: "Collapsible",
@@ -1163,7 +1167,10 @@
         examples: [
           '<Collapsible label="Click to expand" open={open} onOpenChange={setOpen}>\n        <Text>\n          This is the collapsible content that can be shown or hidden.\n        </Text>\n      </Collapsible>'
         ],
-        colors: ["border-color", "text-info"]
+        colors: [
+          "border-color",
+          "text-info"
+        ]
       },
       Combobox: {
         name: "Combobox",
@@ -1174,7 +1181,10 @@
           inputSide: {
             type: "enum",
             optional: true,
-            values: ["right", "top"],
+            values: [
+              "right",
+              "top"
+            ],
             descriptions: {
               right: "Input positioned inline to the right of chips",
               top: "Input positioned above chips"
@@ -1360,7 +1370,11 @@
           size: {
             type: "enum",
             optional: true,
-            values: ["sm", "base", "lg"],
+            values: [
+              "sm",
+              "base",
+              "lg"
+            ],
             descriptions: {
               sm: "Compact calendar for tight spaces",
               base: "Default calendar size",
@@ -1376,7 +1390,10 @@
           variant: {
             type: "enum",
             optional: true,
-            values: ["default", "subtle"],
+            values: [
+              "default",
+              "subtle"
+            ],
             descriptions: {
               default: "Default calendar appearance",
               subtle: "Subtle calendar with minimal background"
@@ -1444,7 +1461,12 @@
           size: {
             type: "enum",
             optional: true,
-            values: ["base", "sm", "lg", "xl"],
+            values: [
+              "base",
+              "sm",
+              "lg",
+              "xl"
+            ],
             descriptions: {
               base: "Default dialog width",
               sm: "Small dialog for simple confirmations",
@@ -1463,7 +1485,11 @@
         examples: [
           '<Dialog.Root>\n      <Dialog.Trigger render={<Button>Open Dialog</Button>} />\n      <Dialog className="p-6">\n        <Dialog.Title className="mb-2 text-xl font-semibold">\n          Dialog Title\n        </Dialog.Title>\n        <Dialog.Description className="mb-4">\n          This is a dialog description with some content.\n        </Dialog.Description>\n        <Dialog.Close render={<Button>Close</Button>} />\n      </Dialog>\n    </Dialog.Root>'
         ],
-        colors: ["bg-color-3", "bg-surface", "text-surface"],
+        colors: [
+          "bg-color-3",
+          "bg-surface",
+          "text-surface"
+        ],
         subComponents: {
           Root: {
             name: "Root",
@@ -1586,7 +1612,10 @@
           variant: {
             type: "enum",
             optional: true,
-            values: ["default", "danger"],
+            values: [
+              "default",
+              "danger"
+            ],
             descriptions: {
               default: "Default dropdown item appearance",
               danger: "Destructive action item"
@@ -1686,7 +1715,11 @@
           size: {
             type: "enum",
             optional: true,
-            values: ["sm", "base", "lg"],
+            values: [
+              "sm",
+              "base",
+              "lg"
+            ],
             descriptions: {
               sm: "Compact empty state for smaller containers",
               base: "Default empty state size",
@@ -1776,7 +1809,11 @@
           }
         },
         examples: [],
-        colors: ["text-error", "text-muted", "text-surface"]
+        colors: [
+          "text-error",
+          "text-muted",
+          "text-surface"
+        ]
       },
       Icon: {
         name: "Icon",
@@ -1797,7 +1834,13 @@
           size: {
             type: "enum",
             optional: true,
-            values: ["xs", "sm", "base", "lg", "xl"],
+            values: [
+              "xs",
+              "sm",
+              "base",
+              "lg",
+              "xl"
+            ],
             descriptions: {
               xs: "12px - small UI elements",
               sm: "16px - standard inline icons",
@@ -1838,6 +1881,10 @@
             type: "string",
             optional: true
           },
+          lang: {
+            type: "string",
+            optional: true
+          },
           name: {
             type: "string",
             optional: true
@@ -1849,7 +1896,11 @@
           crossOrigin: {
             type: "enum",
             optional: true,
-            values: ["anonymous", "use-credentials", ""]
+            values: [
+              "anonymous",
+              "use-credentials",
+              ""
+            ]
           },
           accentHeight: {
             type: "number | string",
@@ -1858,12 +1909,18 @@
           accumulate: {
             type: "enum",
             optional: true,
-            values: ["none", "sum"]
+            values: [
+              "none",
+              "sum"
+            ]
           },
           additive: {
             type: "enum",
             optional: true,
-            values: ["replace", "sum"]
+            values: [
+              "replace",
+              "sum"
+            ]
           },
           alignmentBaseline: {
             type: "enum",
@@ -1887,7 +1944,10 @@
           allowReorder: {
             type: "enum",
             optional: true,
-            values: ["no", "yes"]
+            values: [
+              "no",
+              "yes"
+            ]
           },
           alphabetic: {
             type: "number | string",
@@ -1900,7 +1960,12 @@
           arabicForm: {
             type: "enum",
             optional: true,
-            values: ["initial", "medial", "terminal", "isolated"]
+            values: [
+              "initial",
+              "medial",
+              "terminal",
+              "isolated"
+            ]
           },
           ascent: {
             type: "number | string",
@@ -1981,7 +2046,12 @@
           colorInterpolationFilters: {
             type: "enum",
             optional: true,
-            values: ["auto", "sRGB", "linearRGB", "inherit"]
+            values: [
+              "auto",
+              "sRGB",
+              "linearRGB",
+              "inherit"
+            ]
           },
           colorProfile: {
             type: "number | string",
@@ -2105,7 +2175,11 @@
           fillRule: {
             type: "enum",
             optional: true,
-            values: ["nonzero", "evenodd", "inherit"]
+            values: [
+              "nonzero",
+              "evenodd",
+              "inherit"
+            ]
           },
           filter: {
             type: "string",
@@ -2606,12 +2680,22 @@
           strokeLinecap: {
             type: "enum",
             optional: true,
-            values: ["butt", "round", "square", "inherit"]
+            values: [
+              "butt",
+              "round",
+              "square",
+              "inherit"
+            ]
           },
           strokeLinejoin: {
             type: "enum",
             optional: true,
-            values: ["miter", "round", "bevel", "inherit"]
+            values: [
+              "miter",
+              "round",
+              "bevel",
+              "inherit"
+            ]
           },
           strokeMiterlimit: {
             type: "number | string",
@@ -2648,7 +2732,12 @@
           textAnchor: {
             type: "enum",
             optional: true,
-            values: ["start", "middle", "end", "inherit"]
+            values: [
+              "start",
+              "middle",
+              "end",
+              "inherit"
+            ]
           },
           textDecoration: {
             type: "number | string",
@@ -2869,7 +2958,11 @@
           '<Icon glyph="ph-check" title={Success} />',
           '<div className="flex gap-4">\n      <Icon glyph="ph-check" className="text-green" size="lg" />\n      <Icon glyph="ph-warning" className="text-alert" size="lg" />\n      <Icon glyph="ph-x" className="text-error" size="lg" />\n      <Icon glyph="ph-info" className="text-info" size="lg" />\n      <Icon glyph="ph-check" className="text-brand" size="lg" />\n      <Icon glyph="ph-gear" className="text-label" size="lg" />\n      <Icon\n        glyph="cf-cloudflare-workers-outline"\n        className="text-green"\n        size="lg"\n      />\n      <Icon\n        glyph="cf-security-shield-protection-1-outline"\n        className="text-alert"\n        size="lg"\n      />\n      <Icon\n        glyph="cf-cloudflare-pages-outline"\n        className="text-error"\n        size="lg"\n      />\n      <Icon\n        glyph="cf-cloudflare-zero-trust-outline"\n        className="text-info"\n        size="lg"\n      />\n      <Icon glyph="cf-r2-outline" className="text-brand" size="lg" />\n      <Icon glyph="cf-d1-outline" className="text-label" size="lg" />\n    </div>'
         ],
-        colors: ["text-brand", "text-error", "text-green"]
+        colors: [
+          "text-brand",
+          "text-error",
+          "text-green"
+        ]
       },
       Input: {
         name: "Input",
@@ -2895,7 +2988,12 @@
           size: {
             type: "enum",
             optional: true,
-            values: ["xs", "sm", "base", "lg"],
+            values: [
+              "xs",
+              "sm",
+              "base",
+              "lg"
+            ],
             descriptions: {
               xs: "Extra small input for compact UIs",
               sm: "Small input for secondary fields",
@@ -2913,7 +3011,10 @@
           variant: {
             type: "enum",
             optional: true,
-            values: ["default", "error"],
+            values: [
+              "default",
+              "error"
+            ],
             descriptions: {
               default: "Default input appearance",
               error: "Error state for validation failures"
@@ -2998,7 +3099,11 @@
           size: {
             type: "enum",
             optional: true,
-            values: ["sm", "base", "lg"],
+            values: [
+              "sm",
+              "base",
+              "lg"
+            ],
             descriptions: {
               sm: "Small loader for inline use",
               base: "Default loader size",
@@ -3039,7 +3144,11 @@
           }
         },
         examples: [],
-        colors: ["bg-color", "bg-surface", "border-color"]
+        colors: [
+          "bg-color",
+          "bg-surface",
+          "border-color"
+        ]
       },
       Meter: {
         name: "Meter",
@@ -3084,7 +3193,11 @@
           "<Meter label={Progress} value={50} max={100} />",
           '<div className="flex w-64 flex-col gap-4">\n      <Meter label="Low" value={25} max={100} />\n      <Meter label="Medium" value={50} max={100} />\n      <Meter label="High" value={75} max={100} />\n      <Meter label="Complete" value={100} max={100} />\n    </div>'
         ],
-        colors: ["bg-color", "text-label", "text-surface"]
+        colors: [
+          "bg-color",
+          "text-label",
+          "text-surface"
+        ]
       },
       PageHeader: {
         name: "PageHeader",
@@ -3095,7 +3208,11 @@
           spacing: {
             type: "enum",
             optional: true,
-            values: ["compact", "base", "relaxed"],
+            values: [
+              "compact",
+              "base",
+              "relaxed"
+            ],
             descriptions: {
               compact: "Compact spacing between header elements",
               base: "Default spacing between header elements",
@@ -3137,7 +3254,9 @@
           '<PageHeader\n      breadcrumbs={\n        <Breadcrumbs>\n          <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Current>Settings</Breadcrumbs.Current>\n        </Breadcrumbs>\n      }\n      tabs={[\n        { label: "General", value: "general" },\n        { label: "Security", value: "security" },\n        { label: "Notifications", value: "notifications" },\n        { label: "Billing", value: "billing" },\n      ]}\n      defaultTab="general"\n    />',
           '<PageHeader\n      breadcrumbs={\n        <Breadcrumbs>\n          <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Link href="/projects">Projects</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Current>My Project</Breadcrumbs.Current>\n        </Breadcrumbs>\n      }\n      tabs={[\n        { label: "Overview", value: "overview" },\n        { label: "Analytics", value: "analytics" },\n        { label: "Settings", value: "settings" },\n      ]}\n      defaultTab="overview"\n    >\n      <Button variant="outline" size="sm">\n        Export\n      </Button>\n      <Button variant="primary" size="sm">\n        <PlusIcon size={16} />\n        New Item\n      </Button>\n    </PageHeader>'
         ],
-        colors: ["border-color-4"]
+        colors: [
+          "border-color-4"
+        ]
       },
       Pagination: {
         name: "Pagination",
@@ -3167,7 +3286,9 @@
           '<Pagination page={1} perPage={10} totalCount={100} setPage="() => {}" />',
           '<Pagination page={5} perPage={10} totalCount={100} setPage="() => {}" />'
         ],
-        colors: ["text-label"]
+        colors: [
+          "text-label"
+        ]
       },
       Select: {
         name: "Select",
@@ -3299,6 +3420,10 @@
             type: "string",
             optional: true
           },
+          lang: {
+            type: "string",
+            optional: true
+          },
           title: {
             type: "string",
             optional: true
@@ -3321,15 +3446,25 @@
             description: "Controlled value"
           },
           size: {
-            type: "KumoInputSize",
+            type: "enum",
             optional: true,
             description: "Size variant",
+            values: [
+              "xs",
+              "sm",
+              "base",
+              "lg"
+            ],
             default: "base"
           },
           variant: {
-            type: "KumoInputVariant",
+            type: "enum",
             optional: true,
             description: "Style variant",
+            values: [
+              "default",
+              "error"
+            ],
             default: "default"
           },
           label: {
@@ -3395,8 +3530,12 @@
             description: "Child elements"
           }
         },
-        examples: ["<Surface  />"],
-        colors: ["ring-border"]
+        examples: [
+          "<Surface  />"
+        ],
+        colors: [
+          "ring-border"
+        ]
       },
       Switch: {
         name: "Switch",
@@ -3408,7 +3547,10 @@
             type: "enum",
             optional: true,
             description: 'Visual variant: "default" or "error" for validation failures (visual only, no error text)',
-            values: ["default", "error"],
+            values: [
+              "default",
+              "error"
+            ],
             descriptions: {
               default: "Default switch appearance",
               error: "Error state for validation failures"
@@ -3431,7 +3573,11 @@
           size: {
             type: "enum",
             optional: true,
-            values: ["sm", "base", "lg"],
+            values: [
+              "sm",
+              "base",
+              "lg"
+            ],
             descriptions: {
               sm: "Small switch for compact UIs",
               base: "Default switch size",
@@ -3463,7 +3609,11 @@
           type: {
             type: "enum",
             optional: true,
-            values: ["submit", "reset", "button"]
+            values: [
+              "submit",
+              "reset",
+              "button"
+            ]
           },
           value: {
             type: "string | string[] | number",
@@ -3474,6 +3624,10 @@
             optional: true
           },
           id: {
+            type: "string",
+            optional: true
+          },
+          lang: {
             type: "string",
             optional: true
           },
@@ -3659,7 +3813,12 @@
             type: "enum",
             optional: true,
             description: "Text size (only applies to body/secondary/success/error variants)",
-            values: ["xs", "sm", "base", "lg"],
+            values: [
+              "xs",
+              "sm",
+              "base",
+              "lg"
+            ],
             descriptions: {
               xs: "Extra small text",
               sm: "Small text",
@@ -3706,7 +3865,12 @@
           '<Text size="lg">Sample text</Text>',
           "<Text bold={true}>Bold text</Text>"
         ],
-        colors: ["text-error", "text-info", "text-muted", "text-surface"]
+        colors: [
+          "text-error",
+          "text-info",
+          "text-muted",
+          "text-surface"
+        ]
       },
       Toasty: {
         name: "Toasty",
@@ -3736,8 +3900,13 @@
         category: "Overlay",
         props: {
           align: {
-            type: "TooltipAlign",
-            optional: true
+            type: "enum",
+            optional: true,
+            values: [
+              "start",
+              "center",
+              "end"
+            ]
           },
           asChild: {
             type: "boolean",
@@ -3750,7 +3919,12 @@
           side: {
             type: "enum",
             optional: true,
-            values: ["top", "bottom", "left", "right"],
+            values: [
+              "top",
+              "bottom",
+              "left",
+              "right"
+            ],
             descriptions: {
               top: "Tooltip appears above the trigger",
               bottom: "Tooltip appears below the trigger",
@@ -3768,15 +3942,37 @@
         examples: [
           '<Tooltip content="This is a tooltip" asChild>\n      <Button>Hover me</Button>\n    </Tooltip>'
         ],
-        colors: ["bg-black-icon", "fill-black-icon", "fill-icon-path"]
+        colors: [
+          "bg-black-icon",
+          "fill-black-icon",
+          "fill-icon-path"
+        ]
       }
     },
     search: {
       byCategory: {
-        Display: ["Badge", "Code", "Collapsible", "LayerCard", "Meter", "Text"],
-        Feedback: ["Banner", "Loader", "Toasty"],
-        Block: ["Breadcrumbs", "Empty", "PageHeader"],
-        Action: ["Button", "ClipboardText"],
+        Display: [
+          "Badge",
+          "Code",
+          "Collapsible",
+          "LayerCard",
+          "Meter",
+          "Text"
+        ],
+        Feedback: [
+          "Banner",
+          "Loader",
+          "Toasty"
+        ],
+        Block: [
+          "Breadcrumbs",
+          "Empty",
+          "PageHeader"
+        ],
+        Action: [
+          "Button",
+          "ClipboardText"
+        ],
         Input: [
           "Checkbox",
           "Combobox",
@@ -3786,10 +3982,23 @@
           "Select",
           "Switch"
         ],
-        Overlay: ["Dialog", "DropdownMenu", "Tooltip"],
-        Other: ["Icon", "SensitiveInput"],
-        Navigation: ["MenuBar", "Pagination", "Tabs"],
-        Layout: ["Surface"]
+        Overlay: [
+          "Dialog",
+          "DropdownMenu",
+          "Tooltip"
+        ],
+        Other: [
+          "Icon",
+          "SensitiveInput"
+        ],
+        Navigation: [
+          "MenuBar",
+          "Pagination",
+          "Tabs"
+        ],
+        Layout: [
+          "Surface"
+        ]
       },
       byName: [
         "Badge",
@@ -3830,143 +4039,139 @@
   var badgeProps = component_registry_default.components.Badge.props;
   var variantProp = badgeProps.variant;
   var BADGE_BASE_STYLES = "rounded-full px-2 py-0.5 text-xs";
-  function createBadgeComponent(variant) {
-    return __async(this, null, function* () {
-      const classes = variantProp.classes[variant] || "";
-      const description = variantProp.descriptions[variant] || "";
-      const baseStyles = parseTailwindClasses(BADGE_BASE_STYLES);
-      const variantStyles = parseTailwindClasses(classes);
-      const component = figma.createComponent();
-      component.name = "variant=" + variant;
-      component.description = description;
-      component.layoutMode = "HORIZONTAL";
-      component.primaryAxisAlignItems = "CENTER";
-      component.counterAxisAlignItems = "CENTER";
-      component.paddingLeft = baseStyles.paddingX || 8;
-      component.paddingRight = baseStyles.paddingX || 8;
-      component.paddingTop = baseStyles.paddingY || 2;
-      component.paddingBottom = baseStyles.paddingY || 2;
-      component.primaryAxisSizingMode = "AUTO";
-      component.counterAxisSizingMode = "AUTO";
-      component.cornerRadius = baseStyles.borderRadius || 9999;
-      if (variantStyles.fillVariable) {
-        const fillVar = getVariableByName(variantStyles.fillVariable);
-        if (fillVar) {
-          bindFillToVariable(component, fillVar.id);
-        }
-      } else {
-        component.fills = [];
+  async function createBadgeComponent(variant) {
+    const classes = variantProp.classes[variant] || "";
+    const description = variantProp.descriptions[variant] || "";
+    const baseStyles = parseTailwindClasses(BADGE_BASE_STYLES);
+    const variantStyles = parseTailwindClasses(classes);
+    const component = figma.createComponent();
+    component.name = "variant=" + variant;
+    component.description = description;
+    component.layoutMode = "HORIZONTAL";
+    component.primaryAxisAlignItems = "CENTER";
+    component.counterAxisAlignItems = "CENTER";
+    component.paddingLeft = baseStyles.paddingX || 8;
+    component.paddingRight = baseStyles.paddingX || 8;
+    component.paddingTop = baseStyles.paddingY || 2;
+    component.paddingBottom = baseStyles.paddingY || 2;
+    component.primaryAxisSizingMode = "AUTO";
+    component.counterAxisSizingMode = "AUTO";
+    component.cornerRadius = baseStyles.borderRadius || 9999;
+    if (variantStyles.fillVariable) {
+      const fillVar = getVariableByName(variantStyles.fillVariable);
+      if (fillVar) {
+        bindFillToVariable(component, fillVar.id);
       }
-      if (variantStyles.hasBorder && variantStyles.strokeVariable) {
-        const strokeVar = getVariableByName(variantStyles.strokeVariable);
-        if (strokeVar) {
-          bindStrokeToVariable(component, strokeVar.id, 1);
-          if (variantStyles.borderStyle === "dashed") {
-            component.dashPattern = [4, 4];
-          }
+    } else {
+      component.fills = [];
+    }
+    if (variantStyles.hasBorder && variantStyles.strokeVariable) {
+      const strokeVar = getVariableByName(variantStyles.strokeVariable);
+      if (strokeVar) {
+        bindStrokeToVariable(component, strokeVar.id, 1);
+        if (variantStyles.borderStyle === "dashed") {
+          component.dashPattern = [4, 4];
         }
       }
-      const textNode = yield createTextNode(
-        "Badge",
-        baseStyles.fontSize || 12,
-        500
-        // font-medium
-      );
-      textNode.name = "Label";
-      if (variantStyles.isWhiteText) {
-        setWhiteTextColor(textNode);
-      } else if (variantStyles.textVariable) {
-        const textVar = getVariableByName(variantStyles.textVariable);
-        if (textVar) {
-          bindTextColorToVariable(textNode, textVar.id);
-        }
+    }
+    const textNode = await createTextNode(
+      "Badge",
+      baseStyles.fontSize || 12,
+      500
+      // font-medium
+    );
+    textNode.name = "Label";
+    if (variantStyles.isWhiteText) {
+      setWhiteTextColor(textNode);
+    } else if (variantStyles.textVariable) {
+      const textVar = getVariableByName(variantStyles.textVariable);
+      if (textVar) {
+        bindTextColorToVariable(textNode, textVar.id);
       }
-      component.appendChild(textNode);
-      return component;
-    });
+    }
+    component.appendChild(textNode);
+    return component;
   }
   var SECTION_PADDING = 48;
   var SECTION_GAP = 160;
-  function generateBadgeComponents(startY) {
-    return __async(this, null, function* () {
-      if (startY === void 0) startY = 100;
-      let componentsPage = figma.root.children.find(function(page) {
-        return page.type === "PAGE" && page.name === "Components";
-      });
-      if (!componentsPage) {
-        componentsPage = figma.createPage();
-        componentsPage.name = "Components";
-      }
-      figma.currentPage = componentsPage;
-      const variants = variantProp.values;
-      const components = [];
-      const rowLabels = [];
-      const rowGap = 40;
-      const labelColumnWidth = 180;
-      let currentY = 0;
-      for (let i = 0; i < variants.length; i++) {
-        const variant = variants[i];
-        const component = yield createBadgeComponent(variant);
-        rowLabels.push({ y: currentY, text: "variant=" + variant });
-        component.x = labelColumnWidth;
-        component.y = currentY;
-        currentY += component.height + rowGap;
-        components.push(component);
-      }
-      const componentSet = figma.combineAsVariants(components, componentsPage);
-      componentSet.name = "Badge";
-      componentSet.description = "Badge component with variant styles";
-      const contentWidth = componentSet.width + labelColumnWidth;
-      const contentHeight = componentSet.height;
-      const lightSection = createModeSection(componentsPage, "Badge", "light");
-      lightSection.frame.resize(
-        contentWidth + SECTION_PADDING * 2,
-        contentHeight + SECTION_PADDING * 2
-      );
-      const darkSection = createModeSection(componentsPage, "Badge", "dark");
-      darkSection.frame.resize(
-        contentWidth + SECTION_PADDING * 2,
-        contentHeight + SECTION_PADDING * 2
-      );
-      lightSection.frame.appendChild(componentSet);
-      componentSet.x = SECTION_PADDING + labelColumnWidth;
-      componentSet.y = SECTION_PADDING;
-      for (const label of rowLabels) {
-        const labelNode = yield createRowLabel(
-          label.text,
-          SECTION_PADDING,
-          SECTION_PADDING + label.y + 4
-          // +4 to vertically center with badge
-        );
-        lightSection.frame.appendChild(labelNode);
-      }
-      for (const component of components) {
-        const instance = component.createInstance();
-        instance.x = component.x + SECTION_PADDING + labelColumnWidth;
-        instance.y = component.y + SECTION_PADDING;
-        darkSection.frame.appendChild(instance);
-      }
-      for (const label of rowLabels) {
-        const labelNode = yield createRowLabel(
-          label.text,
-          SECTION_PADDING,
-          SECTION_PADDING + label.y + 4
-        );
-        darkSection.frame.appendChild(labelNode);
-      }
-      const totalWidth = contentWidth + SECTION_PADDING * 2;
-      const totalHeight = contentHeight + SECTION_PADDING * 2;
-      lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-      darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-      lightSection.section.x = 100;
-      lightSection.section.y = startY;
-      darkSection.section.x = 100 + totalWidth + 50;
-      darkSection.section.y = startY;
-      console.log(
-        "\u2705 Generated Badge ComponentSet with " + variants.length + " variants (light + dark)"
-      );
-      return startY + totalHeight + SECTION_GAP;
+  async function generateBadgeComponents(startY) {
+    if (startY === void 0) startY = 100;
+    let componentsPage = figma.root.children.find(function(page) {
+      return page.type === "PAGE" && page.name === "Components";
     });
+    if (!componentsPage) {
+      componentsPage = figma.createPage();
+      componentsPage.name = "Components";
+    }
+    figma.currentPage = componentsPage;
+    const variants = variantProp.values;
+    const components = [];
+    const rowLabels = [];
+    const rowGap = 40;
+    const labelColumnWidth = 180;
+    let currentY = 0;
+    for (let i = 0; i < variants.length; i++) {
+      const variant = variants[i];
+      const component = await createBadgeComponent(variant);
+      rowLabels.push({ y: currentY, text: "variant=" + variant });
+      component.x = labelColumnWidth;
+      component.y = currentY;
+      currentY += component.height + rowGap;
+      components.push(component);
+    }
+    const componentSet = figma.combineAsVariants(components, componentsPage);
+    componentSet.name = "Badge";
+    componentSet.description = "Badge component with variant styles";
+    const contentWidth = componentSet.width + labelColumnWidth;
+    const contentHeight = componentSet.height;
+    const lightSection = createModeSection(componentsPage, "Badge", "light");
+    lightSection.frame.resize(
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
+    );
+    const darkSection = createModeSection(componentsPage, "Badge", "dark");
+    darkSection.frame.resize(
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
+    );
+    lightSection.frame.appendChild(componentSet);
+    componentSet.x = SECTION_PADDING + labelColumnWidth;
+    componentSet.y = SECTION_PADDING;
+    for (const label of rowLabels) {
+      const labelNode = await createRowLabel(
+        label.text,
+        SECTION_PADDING,
+        SECTION_PADDING + label.y + 4
+        // +4 to vertically center with badge
+      );
+      lightSection.frame.appendChild(labelNode);
+    }
+    for (const component of components) {
+      const instance = component.createInstance();
+      instance.x = component.x + SECTION_PADDING + labelColumnWidth;
+      instance.y = component.y + SECTION_PADDING;
+      darkSection.frame.appendChild(instance);
+    }
+    for (const label of rowLabels) {
+      const labelNode = await createRowLabel(
+        label.text,
+        SECTION_PADDING,
+        SECTION_PADDING + label.y + 4
+      );
+      darkSection.frame.appendChild(labelNode);
+    }
+    const totalWidth = contentWidth + SECTION_PADDING * 2;
+    const totalHeight = contentHeight + SECTION_PADDING * 2;
+    lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    lightSection.section.x = 100;
+    lightSection.section.y = startY;
+    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.y = startY;
+    console.log(
+      "\u2705 Generated Badge ComponentSet with " + variants.length + " variants (light + dark)"
+    );
+    return startY + totalHeight + SECTION_GAP;
   }
 
   // scripts/figma/plugin/generators/icon-utils.ts
@@ -4114,167 +4319,163 @@
   var bannerProps = component_registry_default.components.Banner.props;
   var variantProp2 = bannerProps.variant;
   var BANNER_BASE_STYLES = "flex w-full items-center gap-2 rounded-lg border px-4 py-1.5 text-base";
-  function createBannerComponent(variant) {
-    return __async(this, null, function* () {
-      const classes = variantProp2.classes[variant] || "";
-      const description = variantProp2.descriptions[variant] || "";
-      const baseStyles = parseTailwindClasses(BANNER_BASE_STYLES);
-      const variantStyles = parseTailwindClasses(classes);
-      const component = figma.createComponent();
-      component.name = "variant=" + variant;
-      component.description = description;
-      component.layoutMode = "HORIZONTAL";
-      component.primaryAxisAlignItems = "CENTER";
-      component.counterAxisAlignItems = "CENTER";
-      component.itemSpacing = baseStyles.gap || 8;
-      component.paddingLeft = baseStyles.paddingX || 16;
-      component.paddingRight = baseStyles.paddingX || 16;
-      component.paddingTop = baseStyles.paddingY || 6;
-      component.paddingBottom = baseStyles.paddingY || 6;
-      component.primaryAxisSizingMode = "AUTO";
-      component.counterAxisSizingMode = "AUTO";
-      component.cornerRadius = baseStyles.borderRadius || 8;
-      if (variantStyles.fillVariable) {
-        const fillVar = getVariableByName(variantStyles.fillVariable);
-        if (fillVar) {
-          bindFillToVariable(component, fillVar.id);
-        }
-      } else {
-        component.fills = [];
+  async function createBannerComponent(variant) {
+    const classes = variantProp2.classes[variant] || "";
+    const description = variantProp2.descriptions[variant] || "";
+    const baseStyles = parseTailwindClasses(BANNER_BASE_STYLES);
+    const variantStyles = parseTailwindClasses(classes);
+    const component = figma.createComponent();
+    component.name = "variant=" + variant;
+    component.description = description;
+    component.layoutMode = "HORIZONTAL";
+    component.primaryAxisAlignItems = "CENTER";
+    component.counterAxisAlignItems = "CENTER";
+    component.itemSpacing = baseStyles.gap || 8;
+    component.paddingLeft = baseStyles.paddingX || 16;
+    component.paddingRight = baseStyles.paddingX || 16;
+    component.paddingTop = baseStyles.paddingY || 6;
+    component.paddingBottom = baseStyles.paddingY || 6;
+    component.primaryAxisSizingMode = "AUTO";
+    component.counterAxisSizingMode = "AUTO";
+    component.cornerRadius = baseStyles.borderRadius || 8;
+    if (variantStyles.fillVariable) {
+      const fillVar = getVariableByName(variantStyles.fillVariable);
+      if (fillVar) {
+        bindFillToVariable(component, fillVar.id);
       }
-      if (variantStyles.strokeVariable) {
-        const strokeVar = getVariableByName(variantStyles.strokeVariable);
-        if (strokeVar) {
-          bindStrokeToVariable(component, strokeVar.id, 1);
-        }
+    } else {
+      component.fills = [];
+    }
+    if (variantStyles.strokeVariable) {
+      const strokeVar = getVariableByName(variantStyles.strokeVariable);
+      if (strokeVar) {
+        bindStrokeToVariable(component, strokeVar.id, 1);
       }
-      const BANNER_ICONS = {
-        default: "ph-info",
-        alert: "ph-warning",
-        error: "ph-warning"
-      };
-      const iconId = BANNER_ICONS[variant] || "ph-info";
-      const iconSize = 16;
-      const iconInstance = createIconInstance(iconId, iconSize);
-      if (iconInstance) {
-        iconInstance.name = "Icon";
-        if (variantStyles.textVariable) {
-          bindIconColor(iconInstance, variantStyles.textVariable);
-        }
-        component.appendChild(iconInstance);
-      } else {
-        const iconPlaceholder = figma.createRectangle();
-        iconPlaceholder.name = "Icon (placeholder)";
-        iconPlaceholder.resize(iconSize, iconSize);
-        iconPlaceholder.cornerRadius = 2;
-        if (variantStyles.textVariable) {
-          const iconColorVar = getVariableByName(variantStyles.textVariable);
-          if (iconColorVar) {
-            bindFillToVariable(iconPlaceholder, iconColorVar.id);
-          }
-        }
-        component.appendChild(iconPlaceholder);
-      }
-      const textNode = yield createTextNode(
-        "This is a banner message",
-        baseStyles.fontSize || 16,
-        // text-base = 16px
-        400
-        // normal weight
-      );
-      textNode.name = "Text";
+    }
+    const BANNER_ICONS = {
+      default: "ph-info",
+      alert: "ph-warning",
+      error: "ph-warning"
+    };
+    const iconId = BANNER_ICONS[variant] || "ph-info";
+    const iconSize = 16;
+    const iconInstance = createIconInstance(iconId, iconSize);
+    if (iconInstance) {
+      iconInstance.name = "Icon";
       if (variantStyles.textVariable) {
-        const textVar = getVariableByName(variantStyles.textVariable);
-        if (textVar) {
-          bindTextColorToVariable(textNode, textVar.id);
+        bindIconColor(iconInstance, variantStyles.textVariable);
+      }
+      component.appendChild(iconInstance);
+    } else {
+      const iconPlaceholder = figma.createRectangle();
+      iconPlaceholder.name = "Icon (placeholder)";
+      iconPlaceholder.resize(iconSize, iconSize);
+      iconPlaceholder.cornerRadius = 2;
+      if (variantStyles.textVariable) {
+        const iconColorVar = getVariableByName(variantStyles.textVariable);
+        if (iconColorVar) {
+          bindFillToVariable(iconPlaceholder, iconColorVar.id);
         }
       }
-      component.appendChild(textNode);
-      return component;
-    });
+      component.appendChild(iconPlaceholder);
+    }
+    const textNode = await createTextNode(
+      "This is a banner message",
+      baseStyles.fontSize || 16,
+      // text-base = 16px
+      400
+      // normal weight
+    );
+    textNode.name = "Text";
+    if (variantStyles.textVariable) {
+      const textVar = getVariableByName(variantStyles.textVariable);
+      if (textVar) {
+        bindTextColorToVariable(textNode, textVar.id);
+      }
+    }
+    component.appendChild(textNode);
+    return component;
   }
   var SECTION_PADDING2 = 48;
   var SECTION_GAP2 = 160;
-  function generateBannerComponents(startY) {
-    return __async(this, null, function* () {
-      if (startY === void 0) startY = 100;
-      let componentsPage = figma.root.children.find(function(page) {
-        return page.type === "PAGE" && page.name === "Components";
-      });
-      if (!componentsPage) {
-        componentsPage = figma.createPage();
-        componentsPage.name = "Components";
-      }
-      figma.currentPage = componentsPage;
-      const variants = variantProp2.values;
-      const components = [];
-      const rowLabels = [];
-      const rowGap = 48;
-      const labelColumnWidth = 160;
-      let currentY = 0;
-      for (let i = 0; i < variants.length; i++) {
-        const variant = variants[i];
-        const component = yield createBannerComponent(variant);
-        rowLabels.push({ y: currentY, text: "variant=" + variant });
-        component.x = labelColumnWidth;
-        component.y = currentY;
-        currentY += component.height + rowGap;
-        components.push(component);
-      }
-      const componentSet = figma.combineAsVariants(components, componentsPage);
-      componentSet.name = "Banner";
-      componentSet.description = "Banner component with variant styles";
-      const contentWidth = componentSet.width + labelColumnWidth;
-      const contentHeight = componentSet.height;
-      const lightSection = createModeSection(componentsPage, "Banner", "light");
-      lightSection.frame.resize(
-        contentWidth + SECTION_PADDING2 * 2,
-        contentHeight + SECTION_PADDING2 * 2
-      );
-      const darkSection = createModeSection(componentsPage, "Banner", "dark");
-      darkSection.frame.resize(
-        contentWidth + SECTION_PADDING2 * 2,
-        contentHeight + SECTION_PADDING2 * 2
-      );
-      lightSection.frame.appendChild(componentSet);
-      componentSet.x = SECTION_PADDING2 + labelColumnWidth;
-      componentSet.y = SECTION_PADDING2;
-      for (const label of rowLabels) {
-        const labelNode = yield createRowLabel(
-          label.text,
-          SECTION_PADDING2,
-          SECTION_PADDING2 + label.y + 8
-          // +8 to vertically center with banner
-        );
-        lightSection.frame.appendChild(labelNode);
-      }
-      for (const component of components) {
-        const instance = component.createInstance();
-        instance.x = component.x + SECTION_PADDING2 + labelColumnWidth;
-        instance.y = component.y + SECTION_PADDING2;
-        darkSection.frame.appendChild(instance);
-      }
-      for (const label of rowLabels) {
-        const labelNode = yield createRowLabel(
-          label.text,
-          SECTION_PADDING2,
-          SECTION_PADDING2 + label.y + 8
-        );
-        darkSection.frame.appendChild(labelNode);
-      }
-      const totalWidth = contentWidth + SECTION_PADDING2 * 2;
-      const totalHeight = contentHeight + SECTION_PADDING2 * 2;
-      lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-      darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-      lightSection.section.x = 100;
-      lightSection.section.y = startY;
-      darkSection.section.x = 100 + totalWidth + 50;
-      darkSection.section.y = startY;
-      console.log(
-        "\u2705 Generated Banner ComponentSet with " + variants.length + " variants (light + dark)"
-      );
-      return startY + totalHeight + SECTION_GAP2;
+  async function generateBannerComponents(startY) {
+    if (startY === void 0) startY = 100;
+    let componentsPage = figma.root.children.find(function(page) {
+      return page.type === "PAGE" && page.name === "Components";
     });
+    if (!componentsPage) {
+      componentsPage = figma.createPage();
+      componentsPage.name = "Components";
+    }
+    figma.currentPage = componentsPage;
+    const variants = variantProp2.values;
+    const components = [];
+    const rowLabels = [];
+    const rowGap = 48;
+    const labelColumnWidth = 160;
+    let currentY = 0;
+    for (let i = 0; i < variants.length; i++) {
+      const variant = variants[i];
+      const component = await createBannerComponent(variant);
+      rowLabels.push({ y: currentY, text: "variant=" + variant });
+      component.x = labelColumnWidth;
+      component.y = currentY;
+      currentY += component.height + rowGap;
+      components.push(component);
+    }
+    const componentSet = figma.combineAsVariants(components, componentsPage);
+    componentSet.name = "Banner";
+    componentSet.description = "Banner component with variant styles";
+    const contentWidth = componentSet.width + labelColumnWidth;
+    const contentHeight = componentSet.height;
+    const lightSection = createModeSection(componentsPage, "Banner", "light");
+    lightSection.frame.resize(
+      contentWidth + SECTION_PADDING2 * 2,
+      contentHeight + SECTION_PADDING2 * 2
+    );
+    const darkSection = createModeSection(componentsPage, "Banner", "dark");
+    darkSection.frame.resize(
+      contentWidth + SECTION_PADDING2 * 2,
+      contentHeight + SECTION_PADDING2 * 2
+    );
+    lightSection.frame.appendChild(componentSet);
+    componentSet.x = SECTION_PADDING2 + labelColumnWidth;
+    componentSet.y = SECTION_PADDING2;
+    for (const label of rowLabels) {
+      const labelNode = await createRowLabel(
+        label.text,
+        SECTION_PADDING2,
+        SECTION_PADDING2 + label.y + 8
+        // +8 to vertically center with banner
+      );
+      lightSection.frame.appendChild(labelNode);
+    }
+    for (const component of components) {
+      const instance = component.createInstance();
+      instance.x = component.x + SECTION_PADDING2 + labelColumnWidth;
+      instance.y = component.y + SECTION_PADDING2;
+      darkSection.frame.appendChild(instance);
+    }
+    for (const label of rowLabels) {
+      const labelNode = await createRowLabel(
+        label.text,
+        SECTION_PADDING2,
+        SECTION_PADDING2 + label.y + 8
+      );
+      darkSection.frame.appendChild(labelNode);
+    }
+    const totalWidth = contentWidth + SECTION_PADDING2 * 2;
+    const totalHeight = contentHeight + SECTION_PADDING2 * 2;
+    lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    lightSection.section.x = 100;
+    lightSection.section.y = startY;
+    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.y = startY;
+    console.log(
+      "\u2705 Generated Banner ComponentSet with " + variants.length + " variants (light + dark)"
+    );
+    return startY + totalHeight + SECTION_GAP2;
   }
 
   // scripts/figma/plugin/generators/button.ts
@@ -4294,94 +4495,92 @@
   };
   var SECTION_PADDING3 = 48;
   var SECTION_GAP3 = 160;
-  function createButtonComponent(variant, size, shape, disabled, loading) {
-    return __async(this, null, function* () {
-      var variantClasses = variantProp3.classes[variant] || "";
-      var sizeClasses = sizeProp.classes[size] || "";
-      var variantStyles = parseTailwindClasses(variantClasses);
-      var sizeStyles = parseTailwindClasses(sizeClasses);
-      var component = figma.createComponent();
-      component.name = "variant=" + variant + ", size=" + size + ", shape=" + shape + ", disabled=" + disabled + ", loading=" + loading;
-      var isCompactShape = shape === "square" || shape === "circle";
-      component.layoutMode = "HORIZONTAL";
-      component.primaryAxisAlignItems = "CENTER";
-      component.counterAxisAlignItems = "CENTER";
-      if (isCompactShape) {
-        var buttonSize = COMPACT_SIZE_MAP_LOCAL[size] || 36;
-        component.primaryAxisSizingMode = "FIXED";
-        component.counterAxisSizingMode = "FIXED";
-        component.resize(buttonSize, buttonSize);
-        component.paddingLeft = 0;
-        component.paddingRight = 0;
+  async function createButtonComponent(variant, size, shape, disabled, loading) {
+    var variantClasses = variantProp3.classes[variant] || "";
+    var sizeClasses = sizeProp.classes[size] || "";
+    var variantStyles = parseTailwindClasses(variantClasses);
+    var sizeStyles = parseTailwindClasses(sizeClasses);
+    var component = figma.createComponent();
+    component.name = "variant=" + variant + ", size=" + size + ", shape=" + shape + ", disabled=" + disabled + ", loading=" + loading;
+    var isCompactShape = shape === "square" || shape === "circle";
+    component.layoutMode = "HORIZONTAL";
+    component.primaryAxisAlignItems = "CENTER";
+    component.counterAxisAlignItems = "CENTER";
+    if (isCompactShape) {
+      var buttonSize = COMPACT_SIZE_MAP_LOCAL[size] || 36;
+      component.primaryAxisSizingMode = "FIXED";
+      component.counterAxisSizingMode = "FIXED";
+      component.resize(buttonSize, buttonSize);
+      component.paddingLeft = 0;
+      component.paddingRight = 0;
+    } else {
+      component.primaryAxisSizingMode = "AUTO";
+      component.counterAxisSizingMode = "FIXED";
+      component.paddingLeft = sizeStyles.paddingX || 12;
+      component.paddingRight = sizeStyles.paddingX || 12;
+      component.resize(100, sizeStyles.height || 36);
+    }
+    component.paddingTop = 0;
+    component.paddingBottom = 0;
+    component.itemSpacing = sizeStyles.gap || 6;
+    if (shape === "circle") {
+      component.cornerRadius = BORDER_RADIUS.full;
+    } else {
+      component.cornerRadius = sizeStyles.borderRadius !== void 0 ? sizeStyles.borderRadius : BORDER_RADIUS.lg;
+    }
+    if (variantStyles.fillVariable) {
+      var fillVar = getVariableByName(variantStyles.fillVariable);
+      if (fillVar) {
+        bindFillToVariable(component, fillVar.id);
+      }
+    } else {
+      component.fills = [];
+    }
+    if (variantStyles.hasBorder && variantStyles.strokeVariable) {
+      var strokeVar = getVariableByName(variantStyles.strokeVariable);
+      if (strokeVar) {
+        bindStrokeToVariable(component, strokeVar.id, 1);
+      }
+    }
+    if (disabled) {
+      component.opacity = 0.5;
+    }
+    if (loading) {
+      var loaderSize = size === "lg" ? 16 : 14;
+      var loader = createLoader(loaderSize);
+      component.appendChild(loader);
+    }
+    if (isCompactShape && !loading) {
+      var icon = getButtonIcon(DEFAULT_ICONS.plus, size);
+      if (variantStyles.isWhiteText) {
+        bindIconColor(icon, "text-white");
+      } else if (variantStyles.textVariable) {
+        bindIconColor(icon, variantStyles.textVariable);
       } else {
-        component.primaryAxisSizingMode = "AUTO";
-        component.counterAxisSizingMode = "FIXED";
-        component.paddingLeft = sizeStyles.paddingX || 12;
-        component.paddingRight = sizeStyles.paddingX || 12;
-        component.resize(100, sizeStyles.height || 36);
+        bindIconColor(icon, "text-surface");
       }
-      component.paddingTop = 0;
-      component.paddingBottom = 0;
-      component.itemSpacing = sizeStyles.gap || 6;
-      if (shape === "circle") {
-        component.cornerRadius = BORDER_RADIUS.full;
-      } else {
-        component.cornerRadius = sizeStyles.borderRadius !== void 0 ? sizeStyles.borderRadius : BORDER_RADIUS.lg;
-      }
-      if (variantStyles.fillVariable) {
-        var fillVar = getVariableByName(variantStyles.fillVariable);
-        if (fillVar) {
-          bindFillToVariable(component, fillVar.id);
-        }
-      } else {
-        component.fills = [];
-      }
-      if (variantStyles.hasBorder && variantStyles.strokeVariable) {
-        var strokeVar = getVariableByName(variantStyles.strokeVariable);
-        if (strokeVar) {
-          bindStrokeToVariable(component, strokeVar.id, 1);
+      component.appendChild(icon);
+    }
+    if (shape === "base") {
+      var fontWeight = 500;
+      var labelText = loading ? "Loading..." : "Button";
+      var textNode = await createTextNode(
+        labelText,
+        sizeStyles.fontSize || 16,
+        fontWeight
+      );
+      textNode.name = "Label";
+      if (variantStyles.isWhiteText) {
+        setWhiteTextColor(textNode);
+      } else if (variantStyles.textVariable) {
+        var textVar = getVariableByName(variantStyles.textVariable);
+        if (textVar) {
+          bindTextColorToVariable(textNode, textVar.id);
         }
       }
-      if (disabled) {
-        component.opacity = 0.5;
-      }
-      if (loading) {
-        var loaderSize = size === "lg" ? 16 : 14;
-        var loader = createLoader(loaderSize);
-        component.appendChild(loader);
-      }
-      if (isCompactShape && !loading) {
-        var icon = getButtonIcon(DEFAULT_ICONS.plus, size);
-        if (variantStyles.isWhiteText) {
-          bindIconColor(icon, "text-white");
-        } else if (variantStyles.textVariable) {
-          bindIconColor(icon, variantStyles.textVariable);
-        } else {
-          bindIconColor(icon, "text-surface");
-        }
-        component.appendChild(icon);
-      }
-      if (shape === "base") {
-        var fontWeight = 500;
-        var labelText = loading ? "Loading..." : "Button";
-        var textNode = yield createTextNode(
-          labelText,
-          sizeStyles.fontSize || 16,
-          fontWeight
-        );
-        textNode.name = "Label";
-        if (variantStyles.isWhiteText) {
-          setWhiteTextColor(textNode);
-        } else if (variantStyles.textVariable) {
-          var textVar = getVariableByName(variantStyles.textVariable);
-          if (textVar) {
-            bindTextColorToVariable(textNode, textVar.id);
-          }
-        }
-        component.appendChild(textNode);
-      }
-      return component;
-    });
+      component.appendChild(textNode);
+    }
+    return component;
   }
   function shouldGenerateVariant(variant, size, shape, disabled, loading) {
     if (shape === "base" && !disabled && !loading) {
@@ -4398,183 +4597,181 @@
     }
     return false;
   }
-  function generateButtonComponents(page, startY) {
-    return __async(this, null, function* () {
-      if (startY === void 0) startY = 100;
-      figma.currentPage = page;
-      var variants = variantProp3.values;
-      var sizes = sizeProp.values;
-      var shapes = shapeProp.values;
-      var disabledOptions = [false, true];
-      var loadingOptions = [false, true];
-      var components = [];
-      var rowLabels = [];
-      var componentGap = 16;
-      var rowGap = 80;
-      var headerRowHeight = 24;
-      var labelColumnWidth = 220;
-      var rowComponents = /* @__PURE__ */ new Map();
-      var rowLabelTexts = /* @__PURE__ */ new Map();
-      var columnHeaders = [];
-      for (var vi = 0; vi < variants.length; vi++) {
-        var variant = variants[vi];
-        for (var shi = 0; shi < shapes.length; shi++) {
-          var shape = shapes[shi];
-          for (var di = 0; di < disabledOptions.length; di++) {
-            var disabled = disabledOptions[di];
-            for (var li = 0; li < loadingOptions.length; li++) {
-              var loading = loadingOptions[li];
-              for (var si = 0; si < sizes.length; si++) {
-                var size = sizes[si];
-                if (!shouldGenerateVariant(variant, size, shape, disabled, loading)) {
-                  continue;
-                }
-                var component = yield createButtonComponent(
-                  variant,
-                  size,
-                  shape,
-                  disabled,
-                  loading
-                );
-                var rowIndex;
-                if (shape === "base") {
-                  rowIndex = variants.indexOf(variant);
-                  rowLabelTexts.set(rowIndex, "variant=" + variant);
-                } else if (shape === "square") {
-                  rowIndex = variants.length;
-                  rowLabelTexts.set(rowIndex, "shape=square");
-                } else {
-                  rowIndex = variants.length + 1;
-                  rowLabelTexts.set(rowIndex, "shape=circle");
-                }
-                if (!rowComponents.has(rowIndex)) {
-                  rowComponents.set(rowIndex, []);
-                }
-                rowComponents.get(rowIndex).push(component);
-                components.push(component);
+  async function generateButtonComponents(page, startY) {
+    if (startY === void 0) startY = 100;
+    figma.currentPage = page;
+    var variants = variantProp3.values;
+    var sizes = sizeProp.values;
+    var shapes = shapeProp.values;
+    var disabledOptions = [false, true];
+    var loadingOptions = [false, true];
+    var components = [];
+    var rowLabels = [];
+    var componentGap = 16;
+    var rowGap = 80;
+    var headerRowHeight = 24;
+    var labelColumnWidth = 220;
+    var rowComponents = /* @__PURE__ */ new Map();
+    var rowLabelTexts = /* @__PURE__ */ new Map();
+    var columnHeaders = [];
+    for (var vi = 0; vi < variants.length; vi++) {
+      var variant = variants[vi];
+      for (var shi = 0; shi < shapes.length; shi++) {
+        var shape = shapes[shi];
+        for (var di = 0; di < disabledOptions.length; di++) {
+          var disabled = disabledOptions[di];
+          for (var li = 0; li < loadingOptions.length; li++) {
+            var loading = loadingOptions[li];
+            for (var si = 0; si < sizes.length; si++) {
+              var size = sizes[si];
+              if (!shouldGenerateVariant(variant, size, shape, disabled, loading)) {
+                continue;
               }
+              var component = await createButtonComponent(
+                variant,
+                size,
+                shape,
+                disabled,
+                loading
+              );
+              var rowIndex;
+              if (shape === "base") {
+                rowIndex = variants.indexOf(variant);
+                rowLabelTexts.set(rowIndex, "variant=" + variant);
+              } else if (shape === "square") {
+                rowIndex = variants.length;
+                rowLabelTexts.set(rowIndex, "shape=square");
+              } else {
+                rowIndex = variants.length + 1;
+                rowLabelTexts.set(rowIndex, "shape=circle");
+              }
+              if (!rowComponents.has(rowIndex)) {
+                rowComponents.set(rowIndex, []);
+              }
+              rowComponents.get(rowIndex).push(component);
+              components.push(component);
             }
           }
         }
       }
-      var yOffset = headerRowHeight;
-      var totalRows = variants.length + 2;
-      var columnHeadersRecorded = false;
-      for (var i = 0; i < totalRows; i++) {
-        var row = rowComponents.get(i) || [];
-        var xOffset = labelColumnWidth;
-        var labelText = rowLabelTexts.get(i);
-        if (labelText && row.length > 0) {
-          rowLabels.push({ y: yOffset, text: labelText });
-        }
-        for (var j = 0; j < row.length; j++) {
-          var comp = row[j];
-          comp.x = xOffset;
-          comp.y = yOffset;
-          if (i === 0 && !columnHeadersRecorded) {
-            var nameParts = comp.name.split(", ");
-            var sizeMatch = nameParts.find(function(p) {
-              return p.startsWith("size=");
-            });
-            var disabledMatch = nameParts.find(function(p) {
-              return p.startsWith("disabled=true");
-            });
-            var loadingMatch = nameParts.find(function(p) {
-              return p.startsWith("loading=true");
-            });
-            var headerText = "";
-            if (disabledMatch) {
-              headerText = "disabled";
-            } else if (loadingMatch) {
-              headerText = "loading";
-            } else if (sizeMatch) {
-              headerText = sizeMatch;
-            }
-            if (headerText) {
-              columnHeaders.push({ x: xOffset, text: headerText });
-            }
+    }
+    var yOffset = headerRowHeight;
+    var totalRows = variants.length + 2;
+    var columnHeadersRecorded = false;
+    for (var i = 0; i < totalRows; i++) {
+      var row = rowComponents.get(i) || [];
+      var xOffset = labelColumnWidth;
+      var labelText = rowLabelTexts.get(i);
+      if (labelText && row.length > 0) {
+        rowLabels.push({ y: yOffset, text: labelText });
+      }
+      for (var j = 0; j < row.length; j++) {
+        var comp = row[j];
+        comp.x = xOffset;
+        comp.y = yOffset;
+        if (i === 0 && !columnHeadersRecorded) {
+          var nameParts = comp.name.split(", ");
+          var sizeMatch = nameParts.find(function(p) {
+            return p.startsWith("size=");
+          });
+          var disabledMatch = nameParts.find(function(p) {
+            return p.startsWith("disabled=true");
+          });
+          var loadingMatch = nameParts.find(function(p) {
+            return p.startsWith("loading=true");
+          });
+          var headerText = "";
+          if (disabledMatch) {
+            headerText = "disabled";
+          } else if (loadingMatch) {
+            headerText = "loading";
+          } else if (sizeMatch) {
+            headerText = sizeMatch;
           }
-          xOffset += comp.width + componentGap;
+          if (headerText) {
+            columnHeaders.push({ x: xOffset, text: headerText });
+          }
         }
-        if (i === 0 && row.length > 0) {
-          columnHeadersRecorded = true;
-        }
-        if (row.length > 0) {
-          yOffset += rowGap;
-        }
+        xOffset += comp.width + componentGap;
       }
-      var componentSet = figma.combineAsVariants(components, page);
-      componentSet.name = "Button";
-      componentSet.description = "Button component with variant, size, shape, disabled, and loading properties";
-      componentSet.layoutMode = "NONE";
-      var contentWidth = componentSet.width + labelColumnWidth;
-      var contentHeight = componentSet.height + headerRowHeight;
-      var lightSection = createModeSection(page, "Button", "light");
-      lightSection.frame.resize(
-        contentWidth + SECTION_PADDING3 * 2,
-        contentHeight + SECTION_PADDING3 * 2
-      );
-      var darkSection = createModeSection(page, "Button", "dark");
-      darkSection.frame.resize(
-        contentWidth + SECTION_PADDING3 * 2,
-        contentHeight + SECTION_PADDING3 * 2
-      );
-      lightSection.frame.appendChild(componentSet);
-      componentSet.x = SECTION_PADDING3 + labelColumnWidth;
-      componentSet.y = SECTION_PADDING3 + headerRowHeight;
-      yield createColumnHeaders(
-        columnHeaders.map(function(h) {
-          return { x: h.x + SECTION_PADDING3, text: h.text };
-        }),
+      if (i === 0 && row.length > 0) {
+        columnHeadersRecorded = true;
+      }
+      if (row.length > 0) {
+        yOffset += rowGap;
+      }
+    }
+    var componentSet = figma.combineAsVariants(components, page);
+    componentSet.name = "Button";
+    componentSet.description = "Button component with variant, size, shape, disabled, and loading properties";
+    componentSet.layoutMode = "NONE";
+    var contentWidth = componentSet.width + labelColumnWidth;
+    var contentHeight = componentSet.height + headerRowHeight;
+    var lightSection = createModeSection(page, "Button", "light");
+    lightSection.frame.resize(
+      contentWidth + SECTION_PADDING3 * 2,
+      contentHeight + SECTION_PADDING3 * 2
+    );
+    var darkSection = createModeSection(page, "Button", "dark");
+    darkSection.frame.resize(
+      contentWidth + SECTION_PADDING3 * 2,
+      contentHeight + SECTION_PADDING3 * 2
+    );
+    lightSection.frame.appendChild(componentSet);
+    componentSet.x = SECTION_PADDING3 + labelColumnWidth;
+    componentSet.y = SECTION_PADDING3 + headerRowHeight;
+    await createColumnHeaders(
+      columnHeaders.map(function(h) {
+        return { x: h.x + SECTION_PADDING3, text: h.text };
+      }),
+      SECTION_PADDING3,
+      lightSection.frame
+    );
+    for (var li = 0; li < rowLabels.length; li++) {
+      var label = rowLabels[li];
+      var labelNode = await createRowLabel(
+        label.text,
         SECTION_PADDING3,
-        lightSection.frame
+        SECTION_PADDING3 + label.y + 12
+        // +12 to vertically center with button
       );
-      for (var li = 0; li < rowLabels.length; li++) {
-        var label = rowLabels[li];
-        var labelNode = yield createRowLabel(
-          label.text,
-          SECTION_PADDING3,
-          SECTION_PADDING3 + label.y + 12
-          // +12 to vertically center with button
-        );
-        lightSection.frame.appendChild(labelNode);
-      }
-      for (var k = 0; k < components.length; k++) {
-        var origComp = components[k];
-        var instance = origComp.createInstance();
-        instance.x = origComp.x + SECTION_PADDING3 + labelColumnWidth;
-        instance.y = origComp.y + SECTION_PADDING3 + headerRowHeight;
-        darkSection.frame.appendChild(instance);
-      }
-      yield createColumnHeaders(
-        columnHeaders.map(function(h) {
-          return { x: h.x + SECTION_PADDING3, text: h.text };
-        }),
+      lightSection.frame.appendChild(labelNode);
+    }
+    for (var k = 0; k < components.length; k++) {
+      var origComp = components[k];
+      var instance = origComp.createInstance();
+      instance.x = origComp.x + SECTION_PADDING3 + labelColumnWidth;
+      instance.y = origComp.y + SECTION_PADDING3 + headerRowHeight;
+      darkSection.frame.appendChild(instance);
+    }
+    await createColumnHeaders(
+      columnHeaders.map(function(h) {
+        return { x: h.x + SECTION_PADDING3, text: h.text };
+      }),
+      SECTION_PADDING3,
+      darkSection.frame
+    );
+    for (var di = 0; di < rowLabels.length; di++) {
+      var darkLabel = rowLabels[di];
+      var darkLabelNode = await createRowLabel(
+        darkLabel.text,
         SECTION_PADDING3,
-        darkSection.frame
+        SECTION_PADDING3 + darkLabel.y + 12
       );
-      for (var di = 0; di < rowLabels.length; di++) {
-        var darkLabel = rowLabels[di];
-        var darkLabelNode = yield createRowLabel(
-          darkLabel.text,
-          SECTION_PADDING3,
-          SECTION_PADDING3 + darkLabel.y + 12
-        );
-        darkSection.frame.appendChild(darkLabelNode);
-      }
-      var totalWidth = contentWidth + SECTION_PADDING3 * 2;
-      var totalHeight = contentHeight + SECTION_PADDING3 * 2;
-      lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-      darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-      lightSection.section.x = 100;
-      lightSection.section.y = startY;
-      darkSection.section.x = 100 + totalWidth + 50;
-      darkSection.section.y = startY;
-      console.log(
-        "\u2705 Generated Button ComponentSet with " + components.length + " variants (light + dark)"
-      );
-      return startY + totalHeight + SECTION_GAP3;
-    });
+      darkSection.frame.appendChild(darkLabelNode);
+    }
+    var totalWidth = contentWidth + SECTION_PADDING3 * 2;
+    var totalHeight = contentHeight + SECTION_PADDING3 * 2;
+    lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    lightSection.section.x = 100;
+    lightSection.section.y = startY;
+    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.y = startY;
+    console.log(
+      "\u2705 Generated Button ComponentSet with " + components.length + " variants (light + dark)"
+    );
+    return startY + totalHeight + SECTION_GAP3;
   }
   var BUTTON_VARIANTS_EXPORT = variantProp3.values;
   var BUTTON_SIZES_EXPORT = sizeProp.values;
@@ -4624,32 +4821,30 @@
     }
     return box;
   }
-  function createCheckboxComponent(state, variant, disabled, labelText) {
-    return __async(this, null, function* () {
-      const component = figma.createComponent();
-      component.name = `state=${state}, variant=${variant}, disabled=${disabled}`;
-      const variantDesc = variantProp4.descriptions[variant] || "";
-      component.description = variantDesc;
-      component.layoutMode = "HORIZONTAL";
-      component.primaryAxisAlignItems = "MIN";
-      component.counterAxisAlignItems = "CENTER";
-      component.primaryAxisSizingMode = "AUTO";
-      component.counterAxisSizingMode = "AUTO";
-      component.itemSpacing = CHECKBOX_LABEL_GAP;
-      component.fills = [];
-      const checkboxBox = createCheckboxBox(state, variant, disabled);
-      component.appendChild(checkboxBox);
-      const label = yield createTextNode(labelText, FONT_SIZE.base, 500);
-      const textVar = getVariableByName("text-color-surface");
-      if (textVar) {
-        bindTextColorToVariable(label, textVar.id);
-      }
-      component.appendChild(label);
-      if (disabled) {
-        component.opacity = 0.5;
-      }
-      return component;
-    });
+  async function createCheckboxComponent(state, variant, disabled, labelText) {
+    const component = figma.createComponent();
+    component.name = `state=${state}, variant=${variant}, disabled=${disabled}`;
+    const variantDesc = variantProp4.descriptions[variant] || "";
+    component.description = variantDesc;
+    component.layoutMode = "HORIZONTAL";
+    component.primaryAxisAlignItems = "MIN";
+    component.counterAxisAlignItems = "CENTER";
+    component.primaryAxisSizingMode = "AUTO";
+    component.counterAxisSizingMode = "AUTO";
+    component.itemSpacing = CHECKBOX_LABEL_GAP;
+    component.fills = [];
+    const checkboxBox = createCheckboxBox(state, variant, disabled);
+    component.appendChild(checkboxBox);
+    const label = await createTextNode(labelText, FONT_SIZE.base, 500);
+    const textVar = getVariableByName("text-color-surface");
+    if (textVar) {
+      bindTextColorToVariable(label, textVar.id);
+    }
+    component.appendChild(label);
+    if (disabled) {
+      component.opacity = 0.5;
+    }
+    return component;
   }
   function getStateLabel(state, variant, disabled) {
     const parts = [];
@@ -4668,133 +4863,131 @@
     }
     return parts.join(" - ");
   }
-  function generateCheckboxComponents(page, startY = 100) {
-    return __async(this, null, function* () {
-      figma.currentPage = page;
-      const states = ["unchecked", "checked", "indeterminate"];
-      const components = [];
-      const rowLabels = [];
-      const componentGap = 24;
-      const rowGap = 48;
-      const labelColumnWidth = 180;
-      let currentY = 0;
-      rowLabels.push({ y: currentY, text: "variant=default" });
-      let currentX = labelColumnWidth;
-      for (const state of states) {
-        const labelText = getStateLabel(state, "default", false);
-        const component = yield createCheckboxComponent(
-          state,
-          "default",
-          false,
-          labelText
-        );
-        component.x = currentX;
-        component.y = currentY;
-        currentX += component.width + componentGap;
-        components.push(component);
-      }
-      currentY += rowGap;
-      rowLabels.push({ y: currentY, text: "variant=default, disabled=true" });
-      currentX = labelColumnWidth;
-      for (const state of states) {
-        const labelText = getStateLabel(state, "default", true);
-        const component = yield createCheckboxComponent(
-          state,
-          "default",
-          true,
-          labelText
-        );
-        component.x = currentX;
-        component.y = currentY;
-        currentX += component.width + componentGap;
-        components.push(component);
-      }
-      currentY += rowGap;
-      rowLabels.push({ y: currentY, text: "variant=error" });
-      currentX = labelColumnWidth;
-      for (const state of ["unchecked", "checked"]) {
-        const labelText = getStateLabel(state, "error", false);
-        const component = yield createCheckboxComponent(
-          state,
-          "error",
-          false,
-          labelText
-        );
-        component.x = currentX;
-        component.y = currentY;
-        currentX += component.width + componentGap;
-        components.push(component);
-      }
-      currentY += rowGap;
-      rowLabels.push({ y: currentY, text: "variant=error, disabled=true" });
-      currentX = labelColumnWidth;
-      {
-        const labelText = getStateLabel("unchecked", "error", true);
-        const component = yield createCheckboxComponent(
-          "unchecked",
-          "error",
-          true,
-          labelText
-        );
-        component.x = currentX;
-        component.y = currentY;
-        components.push(component);
-      }
-      const componentSet = figma.combineAsVariants(components, page);
-      componentSet.name = "Checkbox";
-      componentSet.description = "Checkbox component with state (unchecked/checked/indeterminate), variant (default/error), and disabled properties. Includes label text.";
-      componentSet.layoutMode = "NONE";
-      const contentWidth = componentSet.width + labelColumnWidth;
-      const contentHeight = componentSet.height;
-      const lightSection = createModeSection(page, "Checkbox", "light");
-      lightSection.frame.resize(
-        contentWidth + SECTION_PADDING4 * 2,
-        contentHeight + SECTION_PADDING4 * 2
+  async function generateCheckboxComponents(page, startY = 100) {
+    figma.currentPage = page;
+    const states = ["unchecked", "checked", "indeterminate"];
+    const components = [];
+    const rowLabels = [];
+    const componentGap = 24;
+    const rowGap = 48;
+    const labelColumnWidth = 180;
+    let currentY = 0;
+    rowLabels.push({ y: currentY, text: "variant=default" });
+    let currentX = labelColumnWidth;
+    for (const state of states) {
+      const labelText = getStateLabel(state, "default", false);
+      const component = await createCheckboxComponent(
+        state,
+        "default",
+        false,
+        labelText
       );
-      const darkSection = createModeSection(page, "Checkbox", "dark");
-      darkSection.frame.resize(
-        contentWidth + SECTION_PADDING4 * 2,
-        contentHeight + SECTION_PADDING4 * 2
+      component.x = currentX;
+      component.y = currentY;
+      currentX += component.width + componentGap;
+      components.push(component);
+    }
+    currentY += rowGap;
+    rowLabels.push({ y: currentY, text: "variant=default, disabled=true" });
+    currentX = labelColumnWidth;
+    for (const state of states) {
+      const labelText = getStateLabel(state, "default", true);
+      const component = await createCheckboxComponent(
+        state,
+        "default",
+        true,
+        labelText
       );
-      lightSection.frame.appendChild(componentSet);
-      componentSet.x = SECTION_PADDING4 + labelColumnWidth;
-      componentSet.y = SECTION_PADDING4;
-      for (const label of rowLabels) {
-        const labelNode = yield createRowLabel(
-          label.text,
-          SECTION_PADDING4,
-          SECTION_PADDING4 + label.y + 4
-          // +4 to vertically center with checkbox
-        );
-        lightSection.frame.appendChild(labelNode);
-      }
-      for (const component of components) {
-        const instance = component.createInstance();
-        instance.x = component.x + SECTION_PADDING4 + labelColumnWidth;
-        instance.y = component.y + SECTION_PADDING4;
-        darkSection.frame.appendChild(instance);
-      }
-      for (const label of rowLabels) {
-        const labelNode = yield createRowLabel(
-          label.text,
-          SECTION_PADDING4,
-          SECTION_PADDING4 + label.y + 4
-        );
-        darkSection.frame.appendChild(labelNode);
-      }
-      const totalWidth = contentWidth + SECTION_PADDING4 * 2;
-      const totalHeight = contentHeight + SECTION_PADDING4 * 2;
-      lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-      darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-      lightSection.section.x = 100;
-      lightSection.section.y = startY;
-      darkSection.section.x = 100 + totalWidth + 50;
-      darkSection.section.y = startY;
-      console.log(
-        `\u2705 Generated Checkbox ComponentSet with ${components.length} variants (light + dark)`
+      component.x = currentX;
+      component.y = currentY;
+      currentX += component.width + componentGap;
+      components.push(component);
+    }
+    currentY += rowGap;
+    rowLabels.push({ y: currentY, text: "variant=error" });
+    currentX = labelColumnWidth;
+    for (const state of ["unchecked", "checked"]) {
+      const labelText = getStateLabel(state, "error", false);
+      const component = await createCheckboxComponent(
+        state,
+        "error",
+        false,
+        labelText
       );
-      return startY + totalHeight + SECTION_GAP4;
-    });
+      component.x = currentX;
+      component.y = currentY;
+      currentX += component.width + componentGap;
+      components.push(component);
+    }
+    currentY += rowGap;
+    rowLabels.push({ y: currentY, text: "variant=error, disabled=true" });
+    currentX = labelColumnWidth;
+    {
+      const labelText = getStateLabel("unchecked", "error", true);
+      const component = await createCheckboxComponent(
+        "unchecked",
+        "error",
+        true,
+        labelText
+      );
+      component.x = currentX;
+      component.y = currentY;
+      components.push(component);
+    }
+    const componentSet = figma.combineAsVariants(components, page);
+    componentSet.name = "Checkbox";
+    componentSet.description = "Checkbox component with state (unchecked/checked/indeterminate), variant (default/error), and disabled properties. Includes label text.";
+    componentSet.layoutMode = "NONE";
+    const contentWidth = componentSet.width + labelColumnWidth;
+    const contentHeight = componentSet.height;
+    const lightSection = createModeSection(page, "Checkbox", "light");
+    lightSection.frame.resize(
+      contentWidth + SECTION_PADDING4 * 2,
+      contentHeight + SECTION_PADDING4 * 2
+    );
+    const darkSection = createModeSection(page, "Checkbox", "dark");
+    darkSection.frame.resize(
+      contentWidth + SECTION_PADDING4 * 2,
+      contentHeight + SECTION_PADDING4 * 2
+    );
+    lightSection.frame.appendChild(componentSet);
+    componentSet.x = SECTION_PADDING4 + labelColumnWidth;
+    componentSet.y = SECTION_PADDING4;
+    for (const label of rowLabels) {
+      const labelNode = await createRowLabel(
+        label.text,
+        SECTION_PADDING4,
+        SECTION_PADDING4 + label.y + 4
+        // +4 to vertically center with checkbox
+      );
+      lightSection.frame.appendChild(labelNode);
+    }
+    for (const component of components) {
+      const instance = component.createInstance();
+      instance.x = component.x + SECTION_PADDING4 + labelColumnWidth;
+      instance.y = component.y + SECTION_PADDING4;
+      darkSection.frame.appendChild(instance);
+    }
+    for (const label of rowLabels) {
+      const labelNode = await createRowLabel(
+        label.text,
+        SECTION_PADDING4,
+        SECTION_PADDING4 + label.y + 4
+      );
+      darkSection.frame.appendChild(labelNode);
+    }
+    const totalWidth = contentWidth + SECTION_PADDING4 * 2;
+    const totalHeight = contentHeight + SECTION_PADDING4 * 2;
+    lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    lightSection.section.x = 100;
+    lightSection.section.y = startY;
+    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.y = startY;
+    console.log(
+      `\u2705 Generated Checkbox ComponentSet with ${components.length} variants (light + dark)`
+    );
+    return startY + totalHeight + SECTION_GAP4;
   }
   var CHECKBOX_VARIANTS_EXPORT = variantProp4.values;
 
@@ -4816,226 +5009,222 @@
   };
   var SECTION_PADDING5 = 48;
   var SECTION_GAP5 = 160;
-  function createClipboardTextComponent(size) {
-    return __async(this, null, function* () {
-      const sizeClasses = sizeProp2.classes[size] || "";
-      const description = sizeProp2.descriptions[size] || "";
-      const buttonSize = SIZE_TO_BUTTON_SIZE[size] || "base";
-      const inputSizeClasses = INPUT_SIZE_CLASSES[buttonSize] || INPUT_SIZE_CLASSES.base;
-      const inputBaseStyles = parseTailwindClasses(INPUT_BASE_STYLES);
-      const inputSizeStyles = parseTailwindClasses(inputSizeClasses);
-      const clipboardStyles = parseTailwindClasses(CLIPBOARD_TEXT_BASE_STYLES);
-      const textSizeStyles = parseTailwindClasses(sizeClasses);
-      const component = figma.createComponent();
-      component.name = "size=" + size;
-      component.description = description;
-      component.layoutMode = "HORIZONTAL";
-      component.primaryAxisAlignItems = "CENTER";
-      component.counterAxisAlignItems = "CENTER";
-      component.itemSpacing = 0;
-      component.paddingLeft = 0;
-      component.paddingRight = 0;
-      component.paddingTop = 0;
-      component.paddingBottom = 0;
-      component.primaryAxisSizingMode = "AUTO";
-      component.counterAxisSizingMode = "AUTO";
-      component.cornerRadius = inputSizeStyles.borderRadius || 8;
-      if (clipboardStyles.fillVariable) {
-        const fillVar = getVariableByName(clipboardStyles.fillVariable);
-        if (fillVar) {
-          bindFillToVariable(component, fillVar.id);
-        }
-      } else if (inputBaseStyles.fillVariable) {
-        const fillVar = getVariableByName(inputBaseStyles.fillVariable);
-        if (fillVar) {
-          bindFillToVariable(component, fillVar.id);
-        }
+  async function createClipboardTextComponent(size) {
+    const sizeClasses = sizeProp2.classes[size] || "";
+    const description = sizeProp2.descriptions[size] || "";
+    const buttonSize = SIZE_TO_BUTTON_SIZE[size] || "base";
+    const inputSizeClasses = INPUT_SIZE_CLASSES[buttonSize] || INPUT_SIZE_CLASSES.base;
+    const inputBaseStyles = parseTailwindClasses(INPUT_BASE_STYLES);
+    const inputSizeStyles = parseTailwindClasses(inputSizeClasses);
+    const clipboardStyles = parseTailwindClasses(CLIPBOARD_TEXT_BASE_STYLES);
+    const textSizeStyles = parseTailwindClasses(sizeClasses);
+    const component = figma.createComponent();
+    component.name = "size=" + size;
+    component.description = description;
+    component.layoutMode = "HORIZONTAL";
+    component.primaryAxisAlignItems = "CENTER";
+    component.counterAxisAlignItems = "CENTER";
+    component.itemSpacing = 0;
+    component.paddingLeft = 0;
+    component.paddingRight = 0;
+    component.paddingTop = 0;
+    component.paddingBottom = 0;
+    component.primaryAxisSizingMode = "AUTO";
+    component.counterAxisSizingMode = "AUTO";
+    component.cornerRadius = inputSizeStyles.borderRadius || 8;
+    if (clipboardStyles.fillVariable) {
+      const fillVar = getVariableByName(clipboardStyles.fillVariable);
+      if (fillVar) {
+        bindFillToVariable(component, fillVar.id);
       }
-      if (inputBaseStyles.strokeVariable) {
-        const strokeVar = getVariableByName(inputBaseStyles.strokeVariable);
-        if (strokeVar) {
-          bindStrokeToVariable(component, strokeVar.id, 1);
-        }
+    } else if (inputBaseStyles.fillVariable) {
+      const fillVar = getVariableByName(inputBaseStyles.fillVariable);
+      if (fillVar) {
+        bindFillToVariable(component, fillVar.id);
       }
-      const textFrame = figma.createFrame();
-      textFrame.name = "TextContainer";
-      textFrame.layoutMode = "HORIZONTAL";
-      textFrame.primaryAxisAlignItems = "CENTER";
-      textFrame.counterAxisAlignItems = "CENTER";
-      textFrame.primaryAxisSizingMode = "AUTO";
-      textFrame.counterAxisSizingMode = "FIXED";
-      textFrame.fills = [];
-      textFrame.paddingLeft = inputSizeStyles.paddingX || 16;
-      textFrame.paddingRight = inputSizeStyles.paddingX || 16;
-      const heights = {
-        xs: 20,
-        sm: 26,
-        base: 36,
-        lg: 40
-      };
-      textFrame.resize(100, heights[buttonSize] || 36);
-      const fontSize = textSizeStyles.fontSize || inputSizeStyles.fontSize || 14;
-      const textNode = figma.createText();
-      yield figma.loadFontAsync({ family: "Roboto Mono", style: "Regular" });
-      textNode.characters = "npm install @cloudflare/kumo";
-      textNode.fontSize = fontSize;
-      textNode.fontName = { family: "Roboto Mono", style: "Regular" };
-      textNode.name = "Text";
-      if (inputBaseStyles.textVariable) {
-        const textVar = getVariableByName(inputBaseStyles.textVariable);
-        if (textVar) {
-          bindTextColorToVariable(textNode, textVar.id);
-        }
+    }
+    if (inputBaseStyles.strokeVariable) {
+      const strokeVar = getVariableByName(inputBaseStyles.strokeVariable);
+      if (strokeVar) {
+        bindStrokeToVariable(component, strokeVar.id, 1);
       }
-      textFrame.appendChild(textNode);
-      component.appendChild(textFrame);
-      const buttonFrame = figma.createFrame();
-      buttonFrame.name = "CopyButton";
-      buttonFrame.layoutMode = "HORIZONTAL";
-      buttonFrame.primaryAxisAlignItems = "CENTER";
-      buttonFrame.counterAxisAlignItems = "CENTER";
-      buttonFrame.primaryAxisSizingMode = "FIXED";
-      buttonFrame.counterAxisSizingMode = "FIXED";
-      buttonFrame.fills = [];
-      const buttonPadding = 12;
-      buttonFrame.paddingLeft = buttonPadding;
-      buttonFrame.paddingRight = buttonPadding;
-      buttonFrame.resize(
-        buttonPadding * 2 + 16,
-        // padding + icon size
-        heights[buttonSize] || 36
-      );
-      const borderColorVar = getVariableByName("color-color");
-      if (borderColorVar) {
-        buttonFrame.strokeLeftWeight = 1;
-        buttonFrame.strokeTopWeight = 0;
-        buttonFrame.strokeRightWeight = 0;
-        buttonFrame.strokeBottomWeight = 0;
-        buttonFrame.strokes = [
-          {
-            type: "SOLID",
-            color: { r: 0.8, g: 0.8, b: 0.8 }
-          }
-        ];
-        var stroke = {
+    }
+    const textFrame = figma.createFrame();
+    textFrame.name = "TextContainer";
+    textFrame.layoutMode = "HORIZONTAL";
+    textFrame.primaryAxisAlignItems = "CENTER";
+    textFrame.counterAxisAlignItems = "CENTER";
+    textFrame.primaryAxisSizingMode = "AUTO";
+    textFrame.counterAxisSizingMode = "FIXED";
+    textFrame.fills = [];
+    textFrame.paddingLeft = inputSizeStyles.paddingX || 16;
+    textFrame.paddingRight = inputSizeStyles.paddingX || 16;
+    const heights = {
+      xs: 20,
+      sm: 26,
+      base: 36,
+      lg: 40
+    };
+    textFrame.resize(100, heights[buttonSize] || 36);
+    const fontSize = textSizeStyles.fontSize || inputSizeStyles.fontSize || 14;
+    const textNode = figma.createText();
+    await figma.loadFontAsync({ family: "Roboto Mono", style: "Regular" });
+    textNode.characters = "npm install @cloudflare/kumo";
+    textNode.fontSize = fontSize;
+    textNode.fontName = { family: "Roboto Mono", style: "Regular" };
+    textNode.name = "Text";
+    if (inputBaseStyles.textVariable) {
+      const textVar = getVariableByName(inputBaseStyles.textVariable);
+      if (textVar) {
+        bindTextColorToVariable(textNode, textVar.id);
+      }
+    }
+    textFrame.appendChild(textNode);
+    component.appendChild(textFrame);
+    const buttonFrame = figma.createFrame();
+    buttonFrame.name = "CopyButton";
+    buttonFrame.layoutMode = "HORIZONTAL";
+    buttonFrame.primaryAxisAlignItems = "CENTER";
+    buttonFrame.counterAxisAlignItems = "CENTER";
+    buttonFrame.primaryAxisSizingMode = "FIXED";
+    buttonFrame.counterAxisSizingMode = "FIXED";
+    buttonFrame.fills = [];
+    const buttonPadding = 12;
+    buttonFrame.paddingLeft = buttonPadding;
+    buttonFrame.paddingRight = buttonPadding;
+    buttonFrame.resize(
+      buttonPadding * 2 + 16,
+      // padding + icon size
+      heights[buttonSize] || 36
+    );
+    const borderColorVar = getVariableByName("color-color");
+    if (borderColorVar) {
+      buttonFrame.strokeLeftWeight = 1;
+      buttonFrame.strokeTopWeight = 0;
+      buttonFrame.strokeRightWeight = 0;
+      buttonFrame.strokeBottomWeight = 0;
+      buttonFrame.strokes = [
+        {
           type: "SOLID",
           color: { r: 0.8, g: 0.8, b: 0.8 }
-        };
-        stroke = figma.variables.setBoundVariableForPaint(
-          stroke,
-          "color",
-          borderColorVar
-        );
-        buttonFrame.strokes = [stroke];
-      }
-      const iconSize = 16;
-      const iconInstance = createIconInstance("ph-clipboard", iconSize);
-      if (iconInstance) {
-        iconInstance.name = "Icon";
-        bindIconColor(iconInstance, "text-color-surface");
-        buttonFrame.appendChild(iconInstance);
-      } else {
-        const iconPlaceholder = figma.createRectangle();
-        iconPlaceholder.name = "Icon (placeholder)";
-        iconPlaceholder.resize(iconSize, iconSize);
-        iconPlaceholder.cornerRadius = 2;
-        iconPlaceholder.fills = [
-          { type: "SOLID", color: { r: 0.5, g: 0.5, b: 0.5 } }
-        ];
-        buttonFrame.appendChild(iconPlaceholder);
-      }
-      component.appendChild(buttonFrame);
-      return component;
-    });
+        }
+      ];
+      var stroke = {
+        type: "SOLID",
+        color: { r: 0.8, g: 0.8, b: 0.8 }
+      };
+      stroke = figma.variables.setBoundVariableForPaint(
+        stroke,
+        "color",
+        borderColorVar
+      );
+      buttonFrame.strokes = [stroke];
+    }
+    const iconSize = 16;
+    const iconInstance = createIconInstance("ph-clipboard", iconSize);
+    if (iconInstance) {
+      iconInstance.name = "Icon";
+      bindIconColor(iconInstance, "text-color-surface");
+      buttonFrame.appendChild(iconInstance);
+    } else {
+      const iconPlaceholder = figma.createRectangle();
+      iconPlaceholder.name = "Icon (placeholder)";
+      iconPlaceholder.resize(iconSize, iconSize);
+      iconPlaceholder.cornerRadius = 2;
+      iconPlaceholder.fills = [
+        { type: "SOLID", color: { r: 0.5, g: 0.5, b: 0.5 } }
+      ];
+      buttonFrame.appendChild(iconPlaceholder);
+    }
+    component.appendChild(buttonFrame);
+    return component;
   }
-  function generateClipboardTextComponents(startY) {
-    return __async(this, null, function* () {
-      if (startY === void 0) startY = 100;
-      let componentsPage = figma.root.children.find(function(page) {
-        return page.type === "PAGE" && page.name === "Components";
-      });
-      if (!componentsPage) {
-        componentsPage = figma.createPage();
-        componentsPage.name = "Components";
-      }
-      figma.currentPage = componentsPage;
-      const sizes = sizeProp2.values;
-      const components = [];
-      const rowLabels = [];
-      const rowGap = 24;
-      const labelColumnWidth = 140;
-      let currentY = 0;
-      for (let i = 0; i < sizes.length; i++) {
-        const size = sizes[i];
-        const component = yield createClipboardTextComponent(size);
-        rowLabels.push({ y: currentY, text: "size=" + size });
-        component.x = labelColumnWidth;
-        component.y = currentY;
-        currentY += component.height + rowGap;
-        components.push(component);
-      }
-      const componentSet = figma.combineAsVariants(components, componentsPage);
-      componentSet.name = "ClipboardText";
-      componentSet.description = "ClipboardText component for displaying and copying text";
-      const contentWidth = componentSet.width + labelColumnWidth;
-      const contentHeight = componentSet.height;
-      const lightSection = createModeSection(
-        componentsPage,
-        "ClipboardText",
-        "light"
-      );
-      lightSection.frame.resize(
-        contentWidth + SECTION_PADDING5 * 2,
-        contentHeight + SECTION_PADDING5 * 2
-      );
-      const darkSection = createModeSection(
-        componentsPage,
-        "ClipboardText",
-        "dark"
-      );
-      darkSection.frame.resize(
-        contentWidth + SECTION_PADDING5 * 2,
-        contentHeight + SECTION_PADDING5 * 2
-      );
-      lightSection.frame.appendChild(componentSet);
-      componentSet.x = SECTION_PADDING5 + labelColumnWidth;
-      componentSet.y = SECTION_PADDING5;
-      for (const label of rowLabels) {
-        const labelNode = yield createRowLabel(
-          label.text,
-          SECTION_PADDING5,
-          SECTION_PADDING5 + label.y + 8
-          // +8 to vertically center
-        );
-        lightSection.frame.appendChild(labelNode);
-      }
-      for (const component of components) {
-        const instance = component.createInstance();
-        instance.x = component.x + SECTION_PADDING5 + labelColumnWidth;
-        instance.y = component.y + SECTION_PADDING5;
-        darkSection.frame.appendChild(instance);
-      }
-      for (const label of rowLabels) {
-        const labelNode = yield createRowLabel(
-          label.text,
-          SECTION_PADDING5,
-          SECTION_PADDING5 + label.y + 8
-        );
-        darkSection.frame.appendChild(labelNode);
-      }
-      const totalWidth = contentWidth + SECTION_PADDING5 * 2;
-      const totalHeight = contentHeight + SECTION_PADDING5 * 2;
-      lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-      darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-      lightSection.section.x = 100;
-      lightSection.section.y = startY;
-      darkSection.section.x = 100 + totalWidth + 50;
-      darkSection.section.y = startY;
-      console.log(
-        "\u2705 Generated ClipboardText ComponentSet with " + sizes.length + " sizes (light + dark)"
-      );
-      return startY + totalHeight + SECTION_GAP5;
+  async function generateClipboardTextComponents(startY) {
+    if (startY === void 0) startY = 100;
+    let componentsPage = figma.root.children.find(function(page) {
+      return page.type === "PAGE" && page.name === "Components";
     });
+    if (!componentsPage) {
+      componentsPage = figma.createPage();
+      componentsPage.name = "Components";
+    }
+    figma.currentPage = componentsPage;
+    const sizes = sizeProp2.values;
+    const components = [];
+    const rowLabels = [];
+    const rowGap = 24;
+    const labelColumnWidth = 140;
+    let currentY = 0;
+    for (let i = 0; i < sizes.length; i++) {
+      const size = sizes[i];
+      const component = await createClipboardTextComponent(size);
+      rowLabels.push({ y: currentY, text: "size=" + size });
+      component.x = labelColumnWidth;
+      component.y = currentY;
+      currentY += component.height + rowGap;
+      components.push(component);
+    }
+    const componentSet = figma.combineAsVariants(components, componentsPage);
+    componentSet.name = "ClipboardText";
+    componentSet.description = "ClipboardText component for displaying and copying text";
+    const contentWidth = componentSet.width + labelColumnWidth;
+    const contentHeight = componentSet.height;
+    const lightSection = createModeSection(
+      componentsPage,
+      "ClipboardText",
+      "light"
+    );
+    lightSection.frame.resize(
+      contentWidth + SECTION_PADDING5 * 2,
+      contentHeight + SECTION_PADDING5 * 2
+    );
+    const darkSection = createModeSection(
+      componentsPage,
+      "ClipboardText",
+      "dark"
+    );
+    darkSection.frame.resize(
+      contentWidth + SECTION_PADDING5 * 2,
+      contentHeight + SECTION_PADDING5 * 2
+    );
+    lightSection.frame.appendChild(componentSet);
+    componentSet.x = SECTION_PADDING5 + labelColumnWidth;
+    componentSet.y = SECTION_PADDING5;
+    for (const label of rowLabels) {
+      const labelNode = await createRowLabel(
+        label.text,
+        SECTION_PADDING5,
+        SECTION_PADDING5 + label.y + 8
+        // +8 to vertically center
+      );
+      lightSection.frame.appendChild(labelNode);
+    }
+    for (const component of components) {
+      const instance = component.createInstance();
+      instance.x = component.x + SECTION_PADDING5 + labelColumnWidth;
+      instance.y = component.y + SECTION_PADDING5;
+      darkSection.frame.appendChild(instance);
+    }
+    for (const label of rowLabels) {
+      const labelNode = await createRowLabel(
+        label.text,
+        SECTION_PADDING5,
+        SECTION_PADDING5 + label.y + 8
+      );
+      darkSection.frame.appendChild(labelNode);
+    }
+    const totalWidth = contentWidth + SECTION_PADDING5 * 2;
+    const totalHeight = contentHeight + SECTION_PADDING5 * 2;
+    lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    lightSection.section.x = 100;
+    lightSection.section.y = startY;
+    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.y = startY;
+    console.log(
+      "\u2705 Generated ClipboardText ComponentSet with " + sizes.length + " sizes (light + dark)"
+    );
+    return startY + totalHeight + SECTION_GAP5;
   }
 
   // scripts/figma/plugin/generators/code.ts
@@ -5058,120 +5247,121 @@
     }
     return 'const hello = "world";';
   }
-  function createCodeComponent(lang) {
-    return __async(this, null, function* () {
-      var langDesc = langProp.descriptions[lang] || "";
-      var component = figma.createComponent();
-      component.name = "lang=" + lang;
-      component.description = langDesc;
-      component.layoutMode = "HORIZONTAL";
-      component.primaryAxisAlignItems = "MIN";
-      component.counterAxisAlignItems = "MIN";
-      component.primaryAxisSizingMode = "AUTO";
-      component.counterAxisSizingMode = "AUTO";
-      component.fills = [];
-      var fontSize = 14;
-      var fontWeight = 400;
-      var textNode = yield createTextNode(
-        getPlaceholderText(lang),
-        fontSize,
-        fontWeight
-      );
-      textNode.name = "Text";
-      yield figma.loadFontAsync({ family: "SF Mono", style: "Regular" });
-      textNode.fontName = { family: "SF Mono", style: "Regular" };
-      var labelVar = getVariableByName("text-color-label");
-      if (labelVar) {
-        bindTextColorToVariable(textNode, labelVar.id);
+  async function createCodeComponent(lang) {
+    var langDesc = langProp.descriptions[lang] || "";
+    var component = figma.createComponent();
+    component.name = "lang=" + lang;
+    component.description = langDesc;
+    component.layoutMode = "HORIZONTAL";
+    component.primaryAxisAlignItems = "MIN";
+    component.counterAxisAlignItems = "MIN";
+    component.primaryAxisSizingMode = "AUTO";
+    component.counterAxisSizingMode = "AUTO";
+    component.fills = [];
+    var fontSize = 14;
+    var fontWeight = 400;
+    var textNode = await createTextNode(
+      getPlaceholderText(lang),
+      fontSize,
+      fontWeight
+    );
+    textNode.name = "Text";
+    await figma.loadFontAsync({ family: "Roboto Mono", style: "Regular" });
+    textNode.fontName = { family: "Roboto Mono", style: "Regular" };
+    var labelVar = getVariableByName("text-color-label");
+    if (labelVar) {
+      bindTextColorToVariable(textNode, labelVar.id);
+    } else {
+      var surfaceVar = getVariableByName("text-color-surface");
+      if (surfaceVar) {
+        bindTextColorToVariable(textNode, surfaceVar.id);
       }
-      component.appendChild(textNode);
-      return component;
-    });
+    }
+    component.appendChild(textNode);
+    return component;
   }
-  function generateCodeComponents(page, startY) {
-    return __async(this, null, function* () {
-      if (startY === void 0) startY = 100;
-      figma.currentPage = page;
-      var langs = langProp.values;
-      var components = [];
-      var rowLabels = [];
-      var rowHeight = 40;
-      var labelColumnWidth = 160;
-      for (var i = 0; i < langs.length; i++) {
-        var lang = langs[i];
-        rowLabels.push({
-          y: i * rowHeight,
-          text: "lang=" + lang
-        });
-        var component = yield createCodeComponent(lang);
-        component.x = labelColumnWidth;
-        component.y = i * rowHeight;
-        components.push(component);
-      }
-      var componentSet = figma.combineAsVariants(components, page);
-      componentSet.name = "Code";
-      componentSet.description = "Code component with lang property for displaying code snippets";
-      componentSet.layoutMode = "NONE";
-      var contentWidth = componentSet.width + labelColumnWidth;
-      var contentHeight = componentSet.height;
-      var lightSection = createModeSection(page, "Code", "light");
-      lightSection.frame.resize(
-        contentWidth + SECTION_PADDING6 * 2,
-        contentHeight + SECTION_PADDING6 * 2
+  async function generateCodeComponents(page, startY) {
+    if (startY === void 0) startY = 100;
+    figma.currentPage = page;
+    var langs = langProp.values;
+    var components = [];
+    var rowLabels = [];
+    var rowHeight = 40;
+    var labelColumnWidth = 160;
+    for (var i = 0; i < langs.length; i++) {
+      var lang = langs[i];
+      rowLabels.push({
+        y: i * rowHeight,
+        text: "lang=" + lang
+      });
+      var component = await createCodeComponent(lang);
+      component.x = labelColumnWidth;
+      component.y = i * rowHeight;
+      components.push(component);
+    }
+    var componentSet = figma.combineAsVariants(components, page);
+    componentSet.name = "Code";
+    componentSet.description = "Code component with lang property for displaying code snippets";
+    componentSet.layoutMode = "NONE";
+    var contentWidth = componentSet.width + labelColumnWidth;
+    var contentHeight = componentSet.height;
+    var lightSection = createModeSection(page, "Code", "light");
+    lightSection.frame.resize(
+      contentWidth + SECTION_PADDING6 * 2,
+      contentHeight + SECTION_PADDING6 * 2
+    );
+    var darkSection = createModeSection(page, "Code", "dark");
+    darkSection.frame.resize(
+      contentWidth + SECTION_PADDING6 * 2,
+      contentHeight + SECTION_PADDING6 * 2
+    );
+    lightSection.frame.appendChild(componentSet);
+    componentSet.x = SECTION_PADDING6 + labelColumnWidth;
+    componentSet.y = SECTION_PADDING6;
+    for (var li = 0; li < rowLabels.length; li++) {
+      var label = rowLabels[li];
+      var labelNode = await createRowLabel(
+        label.text,
+        SECTION_PADDING6,
+        SECTION_PADDING6 + label.y + 8
+        // +8 to vertically center with text
       );
-      var darkSection = createModeSection(page, "Code", "dark");
-      darkSection.frame.resize(
-        contentWidth + SECTION_PADDING6 * 2,
-        contentHeight + SECTION_PADDING6 * 2
+      lightSection.frame.appendChild(labelNode);
+    }
+    for (var ci = 0; ci < components.length; ci++) {
+      var comp = components[ci];
+      var instance = comp.createInstance();
+      instance.x = comp.x + SECTION_PADDING6 + labelColumnWidth;
+      instance.y = comp.y + SECTION_PADDING6;
+      darkSection.frame.appendChild(instance);
+    }
+    for (var di = 0; di < rowLabels.length; di++) {
+      var darkLabel = rowLabels[di];
+      var darkLabelNode = await createRowLabel(
+        darkLabel.text,
+        SECTION_PADDING6,
+        SECTION_PADDING6 + darkLabel.y + 8
       );
-      lightSection.frame.appendChild(componentSet);
-      componentSet.x = SECTION_PADDING6 + labelColumnWidth;
-      componentSet.y = SECTION_PADDING6;
-      for (var li = 0; li < rowLabels.length; li++) {
-        var label = rowLabels[li];
-        var labelNode = yield createRowLabel(
-          label.text,
-          SECTION_PADDING6,
-          SECTION_PADDING6 + label.y + 8
-          // +8 to vertically center with text
-        );
-        lightSection.frame.appendChild(labelNode);
-      }
-      for (var ci = 0; ci < components.length; ci++) {
-        var comp = components[ci];
-        var instance = comp.createInstance();
-        instance.x = comp.x + SECTION_PADDING6 + labelColumnWidth;
-        instance.y = comp.y + SECTION_PADDING6;
-        darkSection.frame.appendChild(instance);
-      }
-      for (var di = 0; di < rowLabels.length; di++) {
-        var darkLabel = rowLabels[di];
-        var darkLabelNode = yield createRowLabel(
-          darkLabel.text,
-          SECTION_PADDING6,
-          SECTION_PADDING6 + darkLabel.y + 8
-        );
-        darkSection.frame.appendChild(darkLabelNode);
-      }
-      var totalWidth = contentWidth + SECTION_PADDING6 * 2;
-      var totalHeight = contentHeight + SECTION_PADDING6 * 2;
-      lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-      darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-      lightSection.section.x = 100;
-      lightSection.section.y = startY;
-      darkSection.section.x = 100 + totalWidth + 50;
-      darkSection.section.y = startY;
-      console.log(
-        "\u2705 Generated Code ComponentSet with " + components.length + " variants (light + dark)"
-      );
-      return startY + totalHeight + SECTION_GAP6;
-    });
+      darkSection.frame.appendChild(darkLabelNode);
+    }
+    var totalWidth = contentWidth + SECTION_PADDING6 * 2;
+    var totalHeight = contentHeight + SECTION_PADDING6 * 2;
+    lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    lightSection.section.x = 100;
+    lightSection.section.y = startY;
+    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.y = startY;
+    console.log(
+      "\u2705 Generated Code ComponentSet with " + components.length + " variants (light + dark)"
+    );
+    return startY + totalHeight + SECTION_GAP6;
   }
   var CODE_LANGS_EXPORT = langProp.values;
 
   // scripts/figma/plugin/generators/code-block.ts
-  var codeBlockProps = component_registry_default.components.CodeBlock.props;
-  var langProp2 = codeBlockProps.lang;
+  var codeProps2 = component_registry_default.components.Code.props;
+  var langProp2 = codeProps2.lang;
   var CODE_BLOCK_WRAPPER_STYLES = "min-w-0 rounded-md border border-color bg-surface";
   var CODE_INNER_PADDING = 10;
   var SECTION_PADDING7 = 48;
@@ -5191,128 +5381,125 @@
     }
     return 'const hello = "world";';
   }
-  function createCodeBlockComponent(lang) {
-    return __async(this, null, function* () {
-      var description = langProp2.descriptions[lang] || "";
-      var wrapperStyles = parseTailwindClasses(CODE_BLOCK_WRAPPER_STYLES);
-      var component = figma.createComponent();
-      component.name = "lang=" + lang;
-      component.description = description;
-      component.layoutMode = "VERTICAL";
-      component.primaryAxisAlignItems = "MIN";
-      component.counterAxisAlignItems = "MIN";
-      component.paddingLeft = CODE_INNER_PADDING;
-      component.paddingRight = CODE_INNER_PADDING;
-      component.paddingTop = CODE_INNER_PADDING;
-      component.paddingBottom = CODE_INNER_PADDING;
-      component.primaryAxisSizingMode = "AUTO";
-      component.counterAxisSizingMode = "AUTO";
-      component.cornerRadius = wrapperStyles.borderRadius || 6;
-      if (wrapperStyles.fillVariable) {
-        var fillVar = getVariableByName(wrapperStyles.fillVariable);
-        if (fillVar) {
-          bindFillToVariable(component, fillVar.id);
-        }
+  async function createCodeBlockComponent(lang) {
+    var description = langProp2.descriptions[lang] || "";
+    var wrapperStyles = parseTailwindClasses(CODE_BLOCK_WRAPPER_STYLES);
+    var component = figma.createComponent();
+    component.name = "lang=" + lang;
+    component.description = description;
+    component.layoutMode = "VERTICAL";
+    component.primaryAxisAlignItems = "MIN";
+    component.counterAxisAlignItems = "MIN";
+    component.paddingLeft = CODE_INNER_PADDING;
+    component.paddingRight = CODE_INNER_PADDING;
+    component.paddingTop = CODE_INNER_PADDING;
+    component.paddingBottom = CODE_INNER_PADDING;
+    component.primaryAxisSizingMode = "AUTO";
+    component.counterAxisSizingMode = "AUTO";
+    component.cornerRadius = wrapperStyles.borderRadius || 6;
+    if (wrapperStyles.fillVariable) {
+      var fillVar = getVariableByName(wrapperStyles.fillVariable);
+      if (fillVar) {
+        bindFillToVariable(component, fillVar.id);
       }
-      if (wrapperStyles.strokeVariable) {
-        var strokeVar = getVariableByName(wrapperStyles.strokeVariable);
-        if (strokeVar) {
-          bindStrokeToVariable(component, strokeVar.id, 1);
-        }
+    }
+    if (wrapperStyles.strokeVariable) {
+      var strokeVar = getVariableByName(wrapperStyles.strokeVariable);
+      if (strokeVar) {
+        bindStrokeToVariable(component, strokeVar.id, 1);
       }
-      var textNode = yield createTextNode(
-        getPlaceholderText2(lang),
-        14,
-        400
-      );
-      textNode.name = "Code";
-      yield figma.loadFontAsync({ family: "SF Mono", style: "Regular" });
-      textNode.fontName = { family: "SF Mono", style: "Regular" };
-      var labelVar = getVariableByName("text-color-label");
-      if (labelVar) {
-        bindTextColorToVariable(textNode, labelVar.id);
+    }
+    var textNode = await createTextNode(getPlaceholderText2(lang), 14, 400);
+    textNode.name = "Code";
+    await figma.loadFontAsync({ family: "Roboto Mono", style: "Regular" });
+    textNode.fontName = { family: "Roboto Mono", style: "Regular" };
+    var labelVar = getVariableByName("text-color-label");
+    if (labelVar) {
+      bindTextColorToVariable(textNode, labelVar.id);
+    } else {
+      var surfaceVar = getVariableByName("text-color-surface");
+      if (surfaceVar) {
+        bindTextColorToVariable(textNode, surfaceVar.id);
       }
-      textNode.lineHeight = { value: 20, unit: "PIXELS" };
-      component.appendChild(textNode);
-      return component;
-    });
+    }
+    textNode.lineHeight = { value: 20, unit: "PIXELS" };
+    component.appendChild(textNode);
+    return component;
   }
-  function generateCodeBlockComponents(page, startY) {
-    return __async(this, null, function* () {
-      if (startY === void 0) startY = 100;
-      figma.currentPage = page;
-      var langs = langProp2.values;
-      var components = [];
-      var rowLabels = [];
-      var rowGap = 50;
-      var labelColumnWidth = 160;
-      var currentY = 0;
-      for (var i = 0; i < langs.length; i++) {
-        var lang = langs[i];
-        var component = yield createCodeBlockComponent(lang);
-        rowLabels.push({ y: currentY, text: "lang=" + lang });
-        component.x = labelColumnWidth;
-        component.y = currentY;
-        currentY = currentY + component.height + rowGap;
-        components.push(component);
-      }
-      var componentSet = figma.combineAsVariants(components, page);
-      componentSet.name = "CodeBlock";
-      componentSet.description = "CodeBlock component with lang variants";
-      componentSet.layoutMode = "NONE";
-      var contentWidth = componentSet.width + labelColumnWidth;
-      var contentHeight = componentSet.height;
-      var lightSection = createModeSection(page, "CodeBlock", "light");
-      lightSection.frame.resize(
-        contentWidth + SECTION_PADDING7 * 2,
-        contentHeight + SECTION_PADDING7 * 2
+  async function generateCodeBlockComponents(page, startY) {
+    if (startY === void 0) startY = 100;
+    figma.currentPage = page;
+    var langs = langProp2.values;
+    var components = [];
+    var rowLabels = [];
+    var rowGap = 50;
+    var labelColumnWidth = 160;
+    var currentY = 0;
+    for (var i = 0; i < langs.length; i++) {
+      var lang = langs[i];
+      var component = await createCodeBlockComponent(lang);
+      rowLabels.push({ y: currentY, text: "lang=" + lang });
+      component.x = labelColumnWidth;
+      component.y = currentY;
+      currentY = currentY + component.height + rowGap;
+      components.push(component);
+    }
+    var componentSet = figma.combineAsVariants(components, page);
+    componentSet.name = "CodeBlock";
+    componentSet.description = "CodeBlock component with lang variants";
+    componentSet.layoutMode = "NONE";
+    var contentWidth = componentSet.width + labelColumnWidth;
+    var contentHeight = componentSet.height;
+    var lightSection = createModeSection(page, "CodeBlock", "light");
+    lightSection.frame.resize(
+      contentWidth + SECTION_PADDING7 * 2,
+      contentHeight + SECTION_PADDING7 * 2
+    );
+    var darkSection = createModeSection(page, "CodeBlock", "dark");
+    darkSection.frame.resize(
+      contentWidth + SECTION_PADDING7 * 2,
+      contentHeight + SECTION_PADDING7 * 2
+    );
+    lightSection.frame.appendChild(componentSet);
+    componentSet.x = SECTION_PADDING7 + labelColumnWidth;
+    componentSet.y = SECTION_PADDING7;
+    for (var li = 0; li < rowLabels.length; li++) {
+      var label = rowLabels[li];
+      var labelNode = await createRowLabel(
+        label.text,
+        SECTION_PADDING7,
+        SECTION_PADDING7 + label.y + 8
       );
-      var darkSection = createModeSection(page, "CodeBlock", "dark");
-      darkSection.frame.resize(
-        contentWidth + SECTION_PADDING7 * 2,
-        contentHeight + SECTION_PADDING7 * 2
+      lightSection.frame.appendChild(labelNode);
+    }
+    for (var ci = 0; ci < components.length; ci++) {
+      var comp = components[ci];
+      var instance = comp.createInstance();
+      instance.x = comp.x + SECTION_PADDING7 + labelColumnWidth;
+      instance.y = comp.y + SECTION_PADDING7;
+      darkSection.frame.appendChild(instance);
+    }
+    for (var di = 0; di < rowLabels.length; di++) {
+      var darkLabel = rowLabels[di];
+      var darkLabelNode = await createRowLabel(
+        darkLabel.text,
+        SECTION_PADDING7,
+        SECTION_PADDING7 + darkLabel.y + 8
       );
-      lightSection.frame.appendChild(componentSet);
-      componentSet.x = SECTION_PADDING7 + labelColumnWidth;
-      componentSet.y = SECTION_PADDING7;
-      for (var li = 0; li < rowLabels.length; li++) {
-        var label = rowLabels[li];
-        var labelNode = yield createRowLabel(
-          label.text,
-          SECTION_PADDING7,
-          SECTION_PADDING7 + label.y + 8
-        );
-        lightSection.frame.appendChild(labelNode);
-      }
-      for (var ci = 0; ci < components.length; ci++) {
-        var comp = components[ci];
-        var instance = comp.createInstance();
-        instance.x = comp.x + SECTION_PADDING7 + labelColumnWidth;
-        instance.y = comp.y + SECTION_PADDING7;
-        darkSection.frame.appendChild(instance);
-      }
-      for (var di = 0; di < rowLabels.length; di++) {
-        var darkLabel = rowLabels[di];
-        var darkLabelNode = yield createRowLabel(
-          darkLabel.text,
-          SECTION_PADDING7,
-          SECTION_PADDING7 + darkLabel.y + 8
-        );
-        darkSection.frame.appendChild(darkLabelNode);
-      }
-      var totalWidth = contentWidth + SECTION_PADDING7 * 2;
-      var totalHeight = contentHeight + SECTION_PADDING7 * 2;
-      lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-      darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-      lightSection.section.x = 100;
-      lightSection.section.y = startY;
-      darkSection.section.x = 100 + totalWidth + 50;
-      darkSection.section.y = startY;
-      console.log(
-        "\u2705 Generated CodeBlock ComponentSet with " + langs.length + " variants (light + dark)"
-      );
-      return startY + totalHeight + SECTION_GAP7;
-    });
+      darkSection.frame.appendChild(darkLabelNode);
+    }
+    var totalWidth = contentWidth + SECTION_PADDING7 * 2;
+    var totalHeight = contentHeight + SECTION_PADDING7 * 2;
+    lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    lightSection.section.x = 100;
+    lightSection.section.y = startY;
+    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.y = startY;
+    console.log(
+      "\u2705 Generated CodeBlock ComponentSet with " + langs.length + " variants (light + dark)"
+    );
+    return startY + totalHeight + SECTION_GAP7;
   }
 
   // scripts/figma/plugin/generators/link-button.ts
@@ -5321,189 +5508,185 @@
   var sizeProp3 = buttonProps2.size;
   var SECTION_PADDING8 = 48;
   var SECTION_GAP8 = 160;
-  function createLinkButtonComponent(variant, size, hasIcon) {
-    return __async(this, null, function* () {
-      var variantClasses = variantProp5.classes[variant] || "";
-      var sizeClasses = sizeProp3.classes[size] || "";
-      var variantDesc = variantProp5.descriptions[variant] || "";
-      var sizeDesc = sizeProp3.descriptions[size] || "";
-      var variantStyles = parseTailwindClasses(variantClasses);
-      var sizeStyles = parseTailwindClasses(sizeClasses);
-      var component = figma.createComponent();
-      component.name = "variant=" + variant + ", size=" + size + ", hasIcon=" + hasIcon;
-      component.description = variantDesc + ". " + sizeDesc;
-      component.layoutMode = "HORIZONTAL";
-      component.primaryAxisAlignItems = "CENTER";
-      component.counterAxisAlignItems = "CENTER";
-      component.paddingLeft = sizeStyles.paddingX || 12;
-      component.paddingRight = sizeStyles.paddingX || 12;
-      component.paddingTop = 0;
-      component.paddingBottom = 0;
-      component.itemSpacing = sizeStyles.gap || 6;
-      component.primaryAxisSizingMode = "AUTO";
-      component.counterAxisSizingMode = "FIXED";
-      component.resize(100, sizeStyles.height || 36);
-      var cornerRadius = sizeStyles.borderRadius !== void 0 ? sizeStyles.borderRadius : 8;
-      component.cornerRadius = cornerRadius;
-      if (variantStyles.fillVariable) {
-        var fillVar = getVariableByName(variantStyles.fillVariable);
-        if (fillVar) {
-          bindFillToVariable(component, fillVar.id);
-        }
-      } else {
-        component.fills = [];
+  async function createLinkButtonComponent(variant, size, hasIcon) {
+    var variantClasses = variantProp5.classes[variant] || "";
+    var sizeClasses = sizeProp3.classes[size] || "";
+    var variantDesc = variantProp5.descriptions[variant] || "";
+    var sizeDesc = sizeProp3.descriptions[size] || "";
+    var variantStyles = parseTailwindClasses(variantClasses);
+    var sizeStyles = parseTailwindClasses(sizeClasses);
+    var component = figma.createComponent();
+    component.name = "variant=" + variant + ", size=" + size + ", hasIcon=" + hasIcon;
+    component.description = variantDesc + ". " + sizeDesc;
+    component.layoutMode = "HORIZONTAL";
+    component.primaryAxisAlignItems = "CENTER";
+    component.counterAxisAlignItems = "CENTER";
+    component.paddingLeft = sizeStyles.paddingX || 12;
+    component.paddingRight = sizeStyles.paddingX || 12;
+    component.paddingTop = 0;
+    component.paddingBottom = 0;
+    component.itemSpacing = sizeStyles.gap || 6;
+    component.primaryAxisSizingMode = "AUTO";
+    component.counterAxisSizingMode = "FIXED";
+    component.resize(100, sizeStyles.height || 36);
+    var cornerRadius = sizeStyles.borderRadius !== void 0 ? sizeStyles.borderRadius : 8;
+    component.cornerRadius = cornerRadius;
+    if (variantStyles.fillVariable) {
+      var fillVar = getVariableByName(variantStyles.fillVariable);
+      if (fillVar) {
+        bindFillToVariable(component, fillVar.id);
       }
-      if (variantStyles.hasBorder && variantStyles.strokeVariable) {
-        var strokeVar = getVariableByName(variantStyles.strokeVariable);
-        if (strokeVar) {
-          bindStrokeToVariable(component, strokeVar.id, 1);
-        }
+    } else {
+      component.fills = [];
+    }
+    if (variantStyles.hasBorder && variantStyles.strokeVariable) {
+      var strokeVar = getVariableByName(variantStyles.strokeVariable);
+      if (strokeVar) {
+        bindStrokeToVariable(component, strokeVar.id, 1);
       }
-      if (hasIcon) {
-        var icon = getButtonIcon(DEFAULT_ICONS.arrowRight, size);
-        if (variantStyles.isWhiteText) {
-          bindIconColor(icon, "text-white");
-        } else if (variantStyles.textVariable) {
-          bindIconColor(icon, variantStyles.textVariable);
-        } else {
-          bindIconColor(icon, "text-surface");
-        }
-        component.appendChild(icon);
-      }
-      var fontWeight = 500;
-      var textNode = yield createTextNode(
-        "Link Button",
-        sizeStyles.fontSize || 16,
-        fontWeight
-      );
-      textNode.name = "Label";
+    }
+    if (hasIcon) {
+      var icon = getButtonIcon(DEFAULT_ICONS.arrowRight, size);
       if (variantStyles.isWhiteText) {
-        setWhiteTextColor(textNode);
+        bindIconColor(icon, "text-white");
       } else if (variantStyles.textVariable) {
-        var textVar = getVariableByName(variantStyles.textVariable);
-        if (textVar) {
-          bindTextColorToVariable(textNode, textVar.id);
-        }
+        bindIconColor(icon, variantStyles.textVariable);
+      } else {
+        bindIconColor(icon, "text-surface");
       }
-      component.appendChild(textNode);
-      return component;
-    });
+      component.appendChild(icon);
+    }
+    var fontWeight = 500;
+    var textNode = await createTextNode(
+      "Link Button",
+      sizeStyles.fontSize || 16,
+      fontWeight
+    );
+    textNode.name = "Label";
+    if (variantStyles.isWhiteText) {
+      setWhiteTextColor(textNode);
+    } else if (variantStyles.textVariable) {
+      var textVar = getVariableByName(variantStyles.textVariable);
+      if (textVar) {
+        bindTextColorToVariable(textNode, textVar.id);
+      }
+    }
+    component.appendChild(textNode);
+    return component;
   }
-  function generateLinkButtonComponents(page, startY) {
-    return __async(this, null, function* () {
-      if (startY === void 0) startY = 100;
-      figma.currentPage = page;
-      var variants = variantProp5.values;
-      var sizes = sizeProp3.values;
-      var hasIconOptions = [false, true];
-      var components = [];
-      var rowLabels = [];
-      var columnHeaders = [];
-      var columnHeadersRecorded = false;
-      var componentGap = 20;
-      var iconGap = 40;
-      var rowGap = 80;
-      var headerRowHeight = 24;
-      var labelColumnWidth = 220;
-      for (var v = 0; v < variants.length; v++) {
-        rowLabels.push({
-          y: v * rowGap + headerRowHeight,
-          text: "variant=" + variants[v]
-        });
-        for (var hi = 0; hi < hasIconOptions.length; hi++) {
-          var currentX = labelColumnWidth + hi * (sizes.length * 140 + iconGap);
-          for (var sz = 0; sz < sizes.length; sz++) {
-            var component = yield createLinkButtonComponent(
-              variants[v],
-              sizes[sz],
-              hasIconOptions[hi]
-            );
-            component.x = currentX;
-            component.y = v * rowGap + headerRowHeight;
-            if (!columnHeadersRecorded) {
-              var headerText = "size=" + sizes[sz] + (hasIconOptions[hi] ? " +icon" : "");
-              columnHeaders.push({ x: currentX, text: headerText });
-            }
-            currentX = currentX + component.width + componentGap;
-            components.push(component);
+  async function generateLinkButtonComponents(page, startY) {
+    if (startY === void 0) startY = 100;
+    figma.currentPage = page;
+    var variants = variantProp5.values;
+    var sizes = sizeProp3.values;
+    var hasIconOptions = [false, true];
+    var components = [];
+    var rowLabels = [];
+    var columnHeaders = [];
+    var columnHeadersRecorded = false;
+    var componentGap = 20;
+    var iconGap = 40;
+    var rowGap = 80;
+    var headerRowHeight = 24;
+    var labelColumnWidth = 220;
+    for (var v = 0; v < variants.length; v++) {
+      rowLabels.push({
+        y: v * rowGap + headerRowHeight,
+        text: "variant=" + variants[v]
+      });
+      for (var hi = 0; hi < hasIconOptions.length; hi++) {
+        var currentX = labelColumnWidth + hi * (sizes.length * 140 + iconGap);
+        for (var sz = 0; sz < sizes.length; sz++) {
+          var component = await createLinkButtonComponent(
+            variants[v],
+            sizes[sz],
+            hasIconOptions[hi]
+          );
+          component.x = currentX;
+          component.y = v * rowGap + headerRowHeight;
+          if (!columnHeadersRecorded) {
+            var headerText = "size=" + sizes[sz] + (hasIconOptions[hi] ? " +icon" : "");
+            columnHeaders.push({ x: currentX, text: headerText });
           }
+          currentX = currentX + component.width + componentGap;
+          components.push(component);
         }
-        if (!columnHeadersRecorded) {
-          columnHeadersRecorded = true;
-        }
       }
-      var componentSet = figma.combineAsVariants(components, page);
-      componentSet.name = "LinkButton";
-      componentSet.description = "LinkButton component for navigation with variant, size, and icon options";
-      componentSet.layoutMode = "NONE";
-      var contentWidth = componentSet.width + labelColumnWidth;
-      var contentHeight = componentSet.height + headerRowHeight;
-      var lightSection = createModeSection(page, "LinkButton", "light");
-      lightSection.frame.resize(
-        contentWidth + SECTION_PADDING8 * 2,
-        contentHeight + SECTION_PADDING8 * 2
-      );
-      var darkSection = createModeSection(page, "LinkButton", "dark");
-      darkSection.frame.resize(
-        contentWidth + SECTION_PADDING8 * 2,
-        contentHeight + SECTION_PADDING8 * 2
-      );
-      lightSection.frame.appendChild(componentSet);
-      componentSet.x = SECTION_PADDING8 + labelColumnWidth;
-      componentSet.y = SECTION_PADDING8 + headerRowHeight;
-      yield createColumnHeaders(
-        columnHeaders.map(function(h) {
-          return { x: h.x + SECTION_PADDING8, text: h.text };
-        }),
+      if (!columnHeadersRecorded) {
+        columnHeadersRecorded = true;
+      }
+    }
+    var componentSet = figma.combineAsVariants(components, page);
+    componentSet.name = "LinkButton";
+    componentSet.description = "LinkButton component for navigation with variant, size, and icon options";
+    componentSet.layoutMode = "NONE";
+    var contentWidth = componentSet.width + labelColumnWidth;
+    var contentHeight = componentSet.height + headerRowHeight;
+    var lightSection = createModeSection(page, "LinkButton", "light");
+    lightSection.frame.resize(
+      contentWidth + SECTION_PADDING8 * 2,
+      contentHeight + SECTION_PADDING8 * 2
+    );
+    var darkSection = createModeSection(page, "LinkButton", "dark");
+    darkSection.frame.resize(
+      contentWidth + SECTION_PADDING8 * 2,
+      contentHeight + SECTION_PADDING8 * 2
+    );
+    lightSection.frame.appendChild(componentSet);
+    componentSet.x = SECTION_PADDING8 + labelColumnWidth;
+    componentSet.y = SECTION_PADDING8 + headerRowHeight;
+    await createColumnHeaders(
+      columnHeaders.map(function(h) {
+        return { x: h.x + SECTION_PADDING8, text: h.text };
+      }),
+      SECTION_PADDING8,
+      lightSection.frame
+    );
+    for (var li = 0; li < rowLabels.length; li++) {
+      var label = rowLabels[li];
+      var labelNode = await createRowLabel(
+        label.text,
         SECTION_PADDING8,
-        lightSection.frame
+        SECTION_PADDING8 + label.y + 12
       );
-      for (var li = 0; li < rowLabels.length; li++) {
-        var label = rowLabels[li];
-        var labelNode = yield createRowLabel(
-          label.text,
-          SECTION_PADDING8,
-          SECTION_PADDING8 + label.y + 12
-        );
-        lightSection.frame.appendChild(labelNode);
-      }
-      for (var i = 0; i < components.length; i++) {
-        var comp = components[i];
-        var instance = comp.createInstance();
-        instance.x = comp.x + SECTION_PADDING8 + labelColumnWidth;
-        instance.y = comp.y + SECTION_PADDING8 + headerRowHeight;
-        darkSection.frame.appendChild(instance);
-      }
-      yield createColumnHeaders(
-        columnHeaders.map(function(h) {
-          return { x: h.x + SECTION_PADDING8, text: h.text };
-        }),
+      lightSection.frame.appendChild(labelNode);
+    }
+    for (var i = 0; i < components.length; i++) {
+      var comp = components[i];
+      var instance = comp.createInstance();
+      instance.x = comp.x + SECTION_PADDING8 + labelColumnWidth;
+      instance.y = comp.y + SECTION_PADDING8 + headerRowHeight;
+      darkSection.frame.appendChild(instance);
+    }
+    await createColumnHeaders(
+      columnHeaders.map(function(h) {
+        return { x: h.x + SECTION_PADDING8, text: h.text };
+      }),
+      SECTION_PADDING8,
+      darkSection.frame
+    );
+    for (var di = 0; di < rowLabels.length; di++) {
+      var darkLabel = rowLabels[di];
+      var darkLabelNode = await createRowLabel(
+        darkLabel.text,
         SECTION_PADDING8,
-        darkSection.frame
+        SECTION_PADDING8 + darkLabel.y + 12
       );
-      for (var di = 0; di < rowLabels.length; di++) {
-        var darkLabel = rowLabels[di];
-        var darkLabelNode = yield createRowLabel(
-          darkLabel.text,
-          SECTION_PADDING8,
-          SECTION_PADDING8 + darkLabel.y + 12
-        );
-        darkSection.frame.appendChild(darkLabelNode);
-      }
-      var totalWidth = contentWidth + SECTION_PADDING8 * 2;
-      var totalHeight = contentHeight + SECTION_PADDING8 * 2;
-      lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-      darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-      lightSection.section.x = 100;
-      lightSection.section.y = startY;
-      darkSection.section.x = 100 + totalWidth + 50;
-      darkSection.section.y = startY;
-      var totalComponents = variants.length * sizes.length * hasIconOptions.length;
-      console.log(
-        "\u2705 Generated LinkButton ComponentSet with " + totalComponents + " variants (light + dark)"
-      );
-      return startY + totalHeight + SECTION_GAP8;
-    });
+      darkSection.frame.appendChild(darkLabelNode);
+    }
+    var totalWidth = contentWidth + SECTION_PADDING8 * 2;
+    var totalHeight = contentHeight + SECTION_PADDING8 * 2;
+    lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    lightSection.section.x = 100;
+    lightSection.section.y = startY;
+    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.y = startY;
+    var totalComponents = variants.length * sizes.length * hasIconOptions.length;
+    console.log(
+      "\u2705 Generated LinkButton ComponentSet with " + totalComponents + " variants (light + dark)"
+    );
+    return startY + totalHeight + SECTION_GAP8;
   }
   var LINK_BUTTON_VARIANTS_EXPORT = variantProp5.values;
   var LINK_BUTTON_SIZES_EXPORT = sizeProp3.values;
@@ -5581,89 +5764,87 @@
     }
     return component;
   }
-  function generateRefreshButtonComponents(page, startY) {
-    return __async(this, null, function* () {
-      if (startY === void 0) startY = 100;
-      figma.currentPage = page;
-      var sizes = sizeProp4.values;
-      var loadingOptions = [false, true];
-      var components = [];
-      var rowLabels = [];
-      var componentGap = 20;
-      var rowGap = 60;
-      var labelColumnWidth = 140;
-      var currentY = 0;
-      for (var lo = 0; lo < loadingOptions.length; lo++) {
-        var loading = loadingOptions[lo];
-        rowLabels.push({ y: currentY, text: "loading=" + loading });
-        var currentX = labelColumnWidth;
-        for (var sz = 0; sz < sizes.length; sz++) {
-          var component = createRefreshButtonComponent(sizes[sz], loading);
-          component.x = currentX;
-          component.y = currentY;
-          currentX = currentX + component.width + componentGap;
-          components.push(component);
-        }
-        currentY += rowGap;
+  async function generateRefreshButtonComponents(page, startY) {
+    if (startY === void 0) startY = 100;
+    figma.currentPage = page;
+    var sizes = sizeProp4.values;
+    var loadingOptions = [false, true];
+    var components = [];
+    var rowLabels = [];
+    var componentGap = 20;
+    var rowGap = 60;
+    var labelColumnWidth = 140;
+    var currentY = 0;
+    for (var lo = 0; lo < loadingOptions.length; lo++) {
+      var loading = loadingOptions[lo];
+      rowLabels.push({ y: currentY, text: "loading=" + loading });
+      var currentX = labelColumnWidth;
+      for (var sz = 0; sz < sizes.length; sz++) {
+        var component = createRefreshButtonComponent(sizes[sz], loading);
+        component.x = currentX;
+        component.y = currentY;
+        currentX = currentX + component.width + componentGap;
+        components.push(component);
       }
-      var componentSet = figma.combineAsVariants(components, page);
-      componentSet.name = "RefreshButton";
-      componentSet.description = "RefreshButton component with size and loading state";
-      componentSet.layoutMode = "NONE";
-      var contentWidth = componentSet.width + labelColumnWidth;
-      var contentHeight = componentSet.height;
-      var lightSection = createModeSection(page, "RefreshButton", "light");
-      lightSection.frame.resize(
-        contentWidth + SECTION_PADDING9 * 2,
-        contentHeight + SECTION_PADDING9 * 2
+      currentY += rowGap;
+    }
+    var componentSet = figma.combineAsVariants(components, page);
+    componentSet.name = "RefreshButton";
+    componentSet.description = "RefreshButton component with size and loading state";
+    componentSet.layoutMode = "NONE";
+    var contentWidth = componentSet.width + labelColumnWidth;
+    var contentHeight = componentSet.height;
+    var lightSection = createModeSection(page, "RefreshButton", "light");
+    lightSection.frame.resize(
+      contentWidth + SECTION_PADDING9 * 2,
+      contentHeight + SECTION_PADDING9 * 2
+    );
+    var darkSection = createModeSection(page, "RefreshButton", "dark");
+    darkSection.frame.resize(
+      contentWidth + SECTION_PADDING9 * 2,
+      contentHeight + SECTION_PADDING9 * 2
+    );
+    lightSection.frame.appendChild(componentSet);
+    componentSet.x = SECTION_PADDING9 + labelColumnWidth;
+    componentSet.y = SECTION_PADDING9;
+    for (var li = 0; li < rowLabels.length; li++) {
+      var label = rowLabels[li];
+      var labelNode = await createRowLabel(
+        label.text,
+        SECTION_PADDING9,
+        SECTION_PADDING9 + label.y + 10
       );
-      var darkSection = createModeSection(page, "RefreshButton", "dark");
-      darkSection.frame.resize(
-        contentWidth + SECTION_PADDING9 * 2,
-        contentHeight + SECTION_PADDING9 * 2
+      lightSection.frame.appendChild(labelNode);
+    }
+    for (var i = 0; i < components.length; i++) {
+      var comp = components[i];
+      var instance = comp.createInstance();
+      instance.x = comp.x + SECTION_PADDING9 + labelColumnWidth;
+      instance.y = comp.y + SECTION_PADDING9;
+      darkSection.frame.appendChild(instance);
+    }
+    for (var di = 0; di < rowLabels.length; di++) {
+      var darkLabel = rowLabels[di];
+      var darkLabelNode = await createRowLabel(
+        darkLabel.text,
+        SECTION_PADDING9,
+        SECTION_PADDING9 + darkLabel.y + 10
       );
-      lightSection.frame.appendChild(componentSet);
-      componentSet.x = SECTION_PADDING9 + labelColumnWidth;
-      componentSet.y = SECTION_PADDING9;
-      for (var li = 0; li < rowLabels.length; li++) {
-        var label = rowLabels[li];
-        var labelNode = yield createRowLabel(
-          label.text,
-          SECTION_PADDING9,
-          SECTION_PADDING9 + label.y + 10
-        );
-        lightSection.frame.appendChild(labelNode);
-      }
-      for (var i = 0; i < components.length; i++) {
-        var comp = components[i];
-        var instance = comp.createInstance();
-        instance.x = comp.x + SECTION_PADDING9 + labelColumnWidth;
-        instance.y = comp.y + SECTION_PADDING9;
-        darkSection.frame.appendChild(instance);
-      }
-      for (var di = 0; di < rowLabels.length; di++) {
-        var darkLabel = rowLabels[di];
-        var darkLabelNode = yield createRowLabel(
-          darkLabel.text,
-          SECTION_PADDING9,
-          SECTION_PADDING9 + darkLabel.y + 10
-        );
-        darkSection.frame.appendChild(darkLabelNode);
-      }
-      var totalWidth = contentWidth + SECTION_PADDING9 * 2;
-      var totalHeight = contentHeight + SECTION_PADDING9 * 2;
-      lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-      darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-      lightSection.section.x = 100;
-      lightSection.section.y = startY;
-      darkSection.section.x = 100 + totalWidth + 50;
-      darkSection.section.y = startY;
-      var totalComponents = sizes.length * loadingOptions.length;
-      console.log(
-        "\u2705 Generated RefreshButton ComponentSet with " + totalComponents + " variants (light + dark)"
-      );
-      return startY + totalHeight + SECTION_GAP9;
-    });
+      darkSection.frame.appendChild(darkLabelNode);
+    }
+    var totalWidth = contentWidth + SECTION_PADDING9 * 2;
+    var totalHeight = contentHeight + SECTION_PADDING9 * 2;
+    lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    lightSection.section.x = 100;
+    lightSection.section.y = startY;
+    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.y = startY;
+    var totalComponents = sizes.length * loadingOptions.length;
+    console.log(
+      "\u2705 Generated RefreshButton ComponentSet with " + totalComponents + " variants (light + dark)"
+    );
+    return startY + totalHeight + SECTION_GAP9;
   }
   var REFRESH_BUTTON_SIZES_EXPORT = sizeProp4.values;
 
@@ -5691,190 +5872,186 @@
     }
     return "Text content";
   }
-  function createTextComponent(variant, size) {
-    return __async(this, null, function* () {
-      const variantClasses = variantProp7.classes[variant] || "";
-      const variantDesc = variantProp7.descriptions[variant] || "";
-      let effectiveSizeClasses = "";
-      let sizeDesc = "";
-      if (isCopyVariant(variant) && size) {
-        effectiveSizeClasses = sizeProp5.classes[size] || "";
-        sizeDesc = sizeProp5.descriptions[size] || "";
-      } else if (isMonoVariant(variant)) {
-        if (size === "lg") {
-          effectiveSizeClasses = sizeProp5.classes["base"] || "";
-          sizeDesc = "Large text (optically adjusted to base)";
-        } else {
-          effectiveSizeClasses = sizeProp5.classes["sm"] || "";
-          sizeDesc = "Default text (optically adjusted to small)";
-        }
-      }
-      const combinedClasses = `${TEXT_BASE_CLASS} ${variantClasses} ${effectiveSizeClasses}`.trim();
-      const styles = parseTailwindClasses(combinedClasses);
-      const component = figma.createComponent();
-      if (size) {
-        component.name = "variant=" + variant + ", size=" + size;
-        component.description = variantDesc + ". " + sizeDesc;
+  async function createTextComponent(variant, size) {
+    const variantClasses = variantProp7.classes[variant] || "";
+    const variantDesc = variantProp7.descriptions[variant] || "";
+    let effectiveSizeClasses = "";
+    let sizeDesc = "";
+    if (isCopyVariant(variant) && size) {
+      effectiveSizeClasses = sizeProp5.classes[size] || "";
+      sizeDesc = sizeProp5.descriptions[size] || "";
+    } else if (isMonoVariant(variant)) {
+      if (size === "lg") {
+        effectiveSizeClasses = sizeProp5.classes["base"] || "";
+        sizeDesc = "Large text (optically adjusted to base)";
       } else {
-        component.name = "variant=" + variant;
-        component.description = variantDesc;
+        effectiveSizeClasses = sizeProp5.classes["sm"] || "";
+        sizeDesc = "Default text (optically adjusted to small)";
       }
-      component.layoutMode = "HORIZONTAL";
-      component.primaryAxisAlignItems = "MIN";
-      component.counterAxisAlignItems = "MIN";
-      component.primaryAxisSizingMode = "AUTO";
-      component.counterAxisSizingMode = "AUTO";
-      component.fills = [];
-      let fontWeight = 400;
-      if (variantClasses.includes("font-semibold")) {
-        fontWeight = 600;
-      } else if (variantClasses.includes("font-medium")) {
-        fontWeight = 500;
+    }
+    const combinedClasses = `${TEXT_BASE_CLASS} ${variantClasses} ${effectiveSizeClasses}`.trim();
+    const styles = parseTailwindClasses(combinedClasses);
+    const component = figma.createComponent();
+    if (size) {
+      component.name = "variant=" + variant + ", size=" + size;
+      component.description = variantDesc + ". " + sizeDesc;
+    } else {
+      component.name = "variant=" + variant;
+      component.description = variantDesc;
+    }
+    component.layoutMode = "HORIZONTAL";
+    component.primaryAxisAlignItems = "MIN";
+    component.counterAxisAlignItems = "MIN";
+    component.primaryAxisSizingMode = "AUTO";
+    component.counterAxisSizingMode = "AUTO";
+    component.fills = [];
+    let fontWeight = 400;
+    if (variantClasses.includes("font-semibold")) {
+      fontWeight = 600;
+    } else if (variantClasses.includes("font-medium")) {
+      fontWeight = 500;
+    }
+    const fontSize = styles.fontSize || 16;
+    const textNode = await createTextNode(
+      getPlaceholderText3(variant),
+      fontSize,
+      fontWeight
+    );
+    textNode.name = "Text";
+    if (styles.textVariable) {
+      const textVar = getVariableByName(styles.textVariable);
+      if (textVar) {
+        bindTextColorToVariable(textNode, textVar.id);
       }
-      const fontSize = styles.fontSize || 16;
-      const textNode = yield createTextNode(
-        getPlaceholderText3(variant),
-        fontSize,
-        fontWeight
-      );
-      textNode.name = "Text";
-      if (styles.textVariable) {
-        const textVar = getVariableByName(styles.textVariable);
-        if (textVar) {
-          bindTextColorToVariable(textNode, textVar.id);
-        }
-      } else {
-        const surfaceVar = getVariableByName("text-color-surface");
-        if (surfaceVar) {
-          bindTextColorToVariable(textNode, surfaceVar.id);
-        }
+    } else {
+      const surfaceVar = getVariableByName("text-color-surface");
+      if (surfaceVar) {
+        bindTextColorToVariable(textNode, surfaceVar.id);
       }
-      component.appendChild(textNode);
-      return component;
-    });
+    }
+    component.appendChild(textNode);
+    return component;
   }
-  function generateTextComponents(page, startY) {
-    return __async(this, null, function* () {
-      if (startY === void 0) startY = 100;
-      figma.currentPage = page;
-      const variants = variantProp7.values;
-      const sizes = sizeProp5.values;
-      const components = [];
-      const rowLabels = [];
-      const columnHeaders = [];
-      let columnHeadersRecorded = false;
-      const componentGap = 20;
-      const rowHeight = 50;
-      const headerRowHeight = 24;
-      const labelColumnWidth = 160;
-      let currentRow = 0;
-      for (let i = 0; i < variants.length; i++) {
-        const variant = variants[i];
-        rowLabels.push({
-          y: currentRow * rowHeight + headerRowHeight,
-          text: "variant=" + variant
-        });
-        if (isCopyVariant(variant)) {
-          let currentX = labelColumnWidth;
-          for (let j = 0; j < sizes.length; j++) {
-            const component = yield createTextComponent(variant, sizes[j]);
-            component.x = currentX;
-            component.y = currentRow * rowHeight + headerRowHeight;
-            if (!columnHeadersRecorded) {
-              columnHeaders.push({ x: currentX, text: "size=" + sizes[j] });
-            }
-            currentX = currentX + component.width + componentGap;
-            components.push(component);
-          }
-          if (!columnHeadersRecorded) {
-            columnHeadersRecorded = true;
-          }
-          currentRow++;
-        } else if (isMonoVariant(variant)) {
-          let currentX = labelColumnWidth;
-          const defaultComponent = yield createTextComponent(variant, null);
-          defaultComponent.x = currentX;
-          defaultComponent.y = currentRow * rowHeight + headerRowHeight;
-          currentX = currentX + defaultComponent.width + componentGap;
-          components.push(defaultComponent);
-          const lgComponent = yield createTextComponent(variant, "lg");
-          lgComponent.x = currentX;
-          lgComponent.y = currentRow * rowHeight + headerRowHeight;
-          components.push(lgComponent);
-          currentRow++;
-        } else {
-          const component = yield createTextComponent(variant, null);
-          component.x = labelColumnWidth;
+  async function generateTextComponents(page, startY) {
+    if (startY === void 0) startY = 100;
+    figma.currentPage = page;
+    const variants = variantProp7.values;
+    const sizes = sizeProp5.values;
+    const components = [];
+    const rowLabels = [];
+    const columnHeaders = [];
+    let columnHeadersRecorded = false;
+    const componentGap = 20;
+    const rowHeight = 50;
+    const headerRowHeight = 24;
+    const labelColumnWidth = 160;
+    let currentRow = 0;
+    for (let i = 0; i < variants.length; i++) {
+      const variant = variants[i];
+      rowLabels.push({
+        y: currentRow * rowHeight + headerRowHeight,
+        text: "variant=" + variant
+      });
+      if (isCopyVariant(variant)) {
+        let currentX = labelColumnWidth;
+        for (let j = 0; j < sizes.length; j++) {
+          const component = await createTextComponent(variant, sizes[j]);
+          component.x = currentX;
           component.y = currentRow * rowHeight + headerRowHeight;
+          if (!columnHeadersRecorded) {
+            columnHeaders.push({ x: currentX, text: "size=" + sizes[j] });
+          }
+          currentX = currentX + component.width + componentGap;
           components.push(component);
-          currentRow++;
         }
+        if (!columnHeadersRecorded) {
+          columnHeadersRecorded = true;
+        }
+        currentRow++;
+      } else if (isMonoVariant(variant)) {
+        let currentX = labelColumnWidth;
+        const defaultComponent = await createTextComponent(variant, null);
+        defaultComponent.x = currentX;
+        defaultComponent.y = currentRow * rowHeight + headerRowHeight;
+        currentX = currentX + defaultComponent.width + componentGap;
+        components.push(defaultComponent);
+        const lgComponent = await createTextComponent(variant, "lg");
+        lgComponent.x = currentX;
+        lgComponent.y = currentRow * rowHeight + headerRowHeight;
+        components.push(lgComponent);
+        currentRow++;
+      } else {
+        const component = await createTextComponent(variant, null);
+        component.x = labelColumnWidth;
+        component.y = currentRow * rowHeight + headerRowHeight;
+        components.push(component);
+        currentRow++;
       }
-      const componentSet = figma.combineAsVariants(components, page);
-      componentSet.name = "Text";
-      componentSet.description = "Text component with variant and size properties for typography";
-      componentSet.layoutMode = "NONE";
-      const contentWidth = componentSet.width + labelColumnWidth;
-      const contentHeight = componentSet.height + headerRowHeight;
-      const lightSection = createModeSection(page, "Text", "light");
-      lightSection.frame.resize(
-        contentWidth + SECTION_PADDING10 * 2,
-        contentHeight + SECTION_PADDING10 * 2
-      );
-      const darkSection = createModeSection(page, "Text", "dark");
-      darkSection.frame.resize(
-        contentWidth + SECTION_PADDING10 * 2,
-        contentHeight + SECTION_PADDING10 * 2
-      );
-      lightSection.frame.appendChild(componentSet);
-      componentSet.x = SECTION_PADDING10 + labelColumnWidth;
-      componentSet.y = SECTION_PADDING10 + headerRowHeight;
-      yield createColumnHeaders(
-        columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING10, text: h.text })),
+    }
+    const componentSet = figma.combineAsVariants(components, page);
+    componentSet.name = "Text";
+    componentSet.description = "Text component with variant and size properties for typography";
+    componentSet.layoutMode = "NONE";
+    const contentWidth = componentSet.width + labelColumnWidth;
+    const contentHeight = componentSet.height + headerRowHeight;
+    const lightSection = createModeSection(page, "Text", "light");
+    lightSection.frame.resize(
+      contentWidth + SECTION_PADDING10 * 2,
+      contentHeight + SECTION_PADDING10 * 2
+    );
+    const darkSection = createModeSection(page, "Text", "dark");
+    darkSection.frame.resize(
+      contentWidth + SECTION_PADDING10 * 2,
+      contentHeight + SECTION_PADDING10 * 2
+    );
+    lightSection.frame.appendChild(componentSet);
+    componentSet.x = SECTION_PADDING10 + labelColumnWidth;
+    componentSet.y = SECTION_PADDING10 + headerRowHeight;
+    await createColumnHeaders(
+      columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING10, text: h.text })),
+      SECTION_PADDING10,
+      lightSection.frame
+    );
+    for (const label of rowLabels) {
+      const labelNode = await createRowLabel(
+        label.text,
         SECTION_PADDING10,
-        lightSection.frame
+        SECTION_PADDING10 + label.y + 8
+        // +8 to vertically center with text
       );
-      for (const label of rowLabels) {
-        const labelNode = yield createRowLabel(
-          label.text,
-          SECTION_PADDING10,
-          SECTION_PADDING10 + label.y + 8
-          // +8 to vertically center with text
-        );
-        lightSection.frame.appendChild(labelNode);
-      }
-      for (const component of components) {
-        const instance = component.createInstance();
-        instance.x = component.x + SECTION_PADDING10 + labelColumnWidth;
-        instance.y = component.y + SECTION_PADDING10 + headerRowHeight;
-        darkSection.frame.appendChild(instance);
-      }
-      yield createColumnHeaders(
-        columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING10, text: h.text })),
+      lightSection.frame.appendChild(labelNode);
+    }
+    for (const component of components) {
+      const instance = component.createInstance();
+      instance.x = component.x + SECTION_PADDING10 + labelColumnWidth;
+      instance.y = component.y + SECTION_PADDING10 + headerRowHeight;
+      darkSection.frame.appendChild(instance);
+    }
+    await createColumnHeaders(
+      columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING10, text: h.text })),
+      SECTION_PADDING10,
+      darkSection.frame
+    );
+    for (const label of rowLabels) {
+      const labelNode = await createRowLabel(
+        label.text,
         SECTION_PADDING10,
-        darkSection.frame
+        SECTION_PADDING10 + label.y + 8
       );
-      for (const label of rowLabels) {
-        const labelNode = yield createRowLabel(
-          label.text,
-          SECTION_PADDING10,
-          SECTION_PADDING10 + label.y + 8
-        );
-        darkSection.frame.appendChild(labelNode);
-      }
-      const totalWidth = contentWidth + SECTION_PADDING10 * 2;
-      const totalHeight = contentHeight + SECTION_PADDING10 * 2;
-      lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-      darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-      lightSection.section.x = 100;
-      lightSection.section.y = startY;
-      darkSection.section.x = 100 + totalWidth + 50;
-      darkSection.section.y = startY;
-      console.log(
-        "\u2705 Generated Text ComponentSet with " + components.length + " variants (light + dark)"
-      );
-      return startY + totalHeight + SECTION_GAP10;
-    });
+      darkSection.frame.appendChild(labelNode);
+    }
+    const totalWidth = contentWidth + SECTION_PADDING10 * 2;
+    const totalHeight = contentHeight + SECTION_PADDING10 * 2;
+    lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    lightSection.section.x = 100;
+    lightSection.section.y = startY;
+    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.y = startY;
+    console.log(
+      "\u2705 Generated Text ComponentSet with " + components.length + " variants (light + dark)"
+    );
+    return startY + totalHeight + SECTION_GAP10;
   }
   var TEXT_VARIANTS_EXPORT = variantProp7.values;
   var TEXT_SIZES_EXPORT = sizeProp5.values;
@@ -8567,114 +8744,110 @@
     showSizeExamples: true,
     sizeExampleDimensions: [16, 20, 24]
   };
-  function createIconComponent(iconData, size) {
-    return __async(this, null, function* () {
-      const component = figma.createComponent();
-      component.name = `Icon/${iconData.id}`;
-      component.description = `Icon: ${iconData.id}`;
-      component.resize(size, size);
-      component.layoutMode = "HORIZONTAL";
-      component.primaryAxisAlignItems = "CENTER";
-      component.counterAxisAlignItems = "CENTER";
-      component.primaryAxisSizingMode = "FIXED";
-      component.counterAxisSizingMode = "FIXED";
-      component.fills = [];
-      const padding = 2;
-      component.paddingTop = padding;
-      component.paddingRight = padding;
-      component.paddingBottom = padding;
-      component.paddingLeft = padding;
-      const svgString = `<svg viewBox="${iconData.viewBox}" xmlns="http://www.w3.org/2000/svg">${iconData.content}</svg>`;
-      try {
-        const svgNode = figma.createNodeFromSvg(svgString);
-        svgNode.name = "Vector";
-        const vectorSize = size - padding * 2;
-        svgNode.resize(vectorSize, vectorSize);
-        svgNode.constraints = {
-          horizontal: "SCALE",
-          vertical: "SCALE"
+  async function createIconComponent(iconData, size) {
+    const component = figma.createComponent();
+    component.name = `Icon/${iconData.id}`;
+    component.description = `Icon: ${iconData.id}`;
+    component.resize(size, size);
+    component.layoutMode = "HORIZONTAL";
+    component.primaryAxisAlignItems = "CENTER";
+    component.counterAxisAlignItems = "CENTER";
+    component.primaryAxisSizingMode = "FIXED";
+    component.counterAxisSizingMode = "FIXED";
+    component.fills = [];
+    const padding = 2;
+    component.paddingTop = padding;
+    component.paddingRight = padding;
+    component.paddingBottom = padding;
+    component.paddingLeft = padding;
+    const svgString = `<svg viewBox="${iconData.viewBox}" xmlns="http://www.w3.org/2000/svg">${iconData.content}</svg>`;
+    try {
+      const svgNode = figma.createNodeFromSvg(svgString);
+      svgNode.name = "Vector";
+      const vectorSize = size - padding * 2;
+      svgNode.resize(vectorSize, vectorSize);
+      svgNode.constraints = {
+        horizontal: "SCALE",
+        vertical: "SCALE"
+      };
+      if ("children" in svgNode) {
+        const applyScaleConstraints = (node) => {
+          if ("constraints" in node) {
+            node.constraints = {
+              horizontal: "SCALE",
+              vertical: "SCALE"
+            };
+          }
+          if ("children" in node && Array.isArray(node.children)) {
+            for (const child of node.children) {
+              applyScaleConstraints(child);
+            }
+          }
         };
-        if ("children" in svgNode) {
-          const applyScaleConstraints = (node) => {
-            if ("constraints" in node) {
-              node.constraints = {
-                horizontal: "SCALE",
-                vertical: "SCALE"
-              };
-            }
-            if ("children" in node && Array.isArray(node.children)) {
-              for (const child of node.children) {
-                applyScaleConstraints(child);
-              }
-            }
-          };
-          applyScaleConstraints(svgNode);
-        }
-        const textColorVar = getVariableByName("text-color-surface");
-        if (textColorVar && "fills" in svgNode) {
-          const bindFillRecursive = (node) => {
-            if ("fills" in node && node.type === "VECTOR") {
-              try {
-                bindFillToVariable(node, textColorVar.id);
-              } catch (e) {
-                console.warn(`Failed to bind fill for ${iconData.id}:`, e);
-              }
-            }
-            if ("children" in node && Array.isArray(node.children)) {
-              for (const child of node.children) {
-                bindFillRecursive(child);
-              }
-            }
-          };
-          bindFillRecursive(svgNode);
-        }
-        component.appendChild(svgNode);
-        return component;
-      } catch (error) {
-        console.error(`Failed to create SVG node for ${iconData.id}:`, error);
-        component.name = `Icon/${iconData.id} (ERROR)`;
-        return component;
+        applyScaleConstraints(svgNode);
       }
-    });
+      const textColorVar = getVariableByName("text-color-surface");
+      if (textColorVar && "fills" in svgNode) {
+        const bindFillRecursive = (node) => {
+          if ("fills" in node && node.type === "VECTOR") {
+            try {
+              bindFillToVariable(node, textColorVar.id);
+            } catch (e) {
+              console.warn(`Failed to bind fill for ${iconData.id}:`, e);
+            }
+          }
+          if ("children" in node && Array.isArray(node.children)) {
+            for (const child of node.children) {
+              bindFillRecursive(child);
+            }
+          }
+        };
+        bindFillRecursive(svgNode);
+      }
+      component.appendChild(svgNode);
+      return component;
+    } catch (error) {
+      console.error(`Failed to create SVG node for ${iconData.id}:`, error);
+      component.name = `Icon/${iconData.id} (ERROR)`;
+      return component;
+    }
   }
-  function createSizeExamplesFrame(sampleIcon, sizes) {
-    return __async(this, null, function* () {
-      const frame = figma.createFrame();
-      frame.name = "Size Examples";
-      frame.layoutMode = "HORIZONTAL";
-      frame.primaryAxisAlignItems = "CENTER";
-      frame.counterAxisAlignItems = "CENTER";
-      frame.itemSpacing = 32;
-      frame.paddingTop = 24;
-      frame.paddingRight = 24;
-      frame.paddingBottom = 24;
-      frame.paddingLeft = 24;
-      frame.fills = [
+  async function createSizeExamplesFrame(sampleIcon, sizes) {
+    const frame = figma.createFrame();
+    frame.name = "Size Examples";
+    frame.layoutMode = "HORIZONTAL";
+    frame.primaryAxisAlignItems = "CENTER";
+    frame.counterAxisAlignItems = "CENTER";
+    frame.itemSpacing = 32;
+    frame.paddingTop = 24;
+    frame.paddingRight = 24;
+    frame.paddingBottom = 24;
+    frame.paddingLeft = 24;
+    frame.fills = [
+      {
+        type: "SOLID",
+        color: { r: 0.95, g: 0.95, b: 0.95 }
+        // Light gray background
+      }
+    ];
+    frame.cornerRadius = 8;
+    for (const size of sizes) {
+      const exampleComponent = await createIconComponent(sampleIcon, size);
+      const instance = exampleComponent.createInstance();
+      frame.appendChild(instance);
+      const label = figma.createText();
+      await figma.loadFontAsync({ family: "Inter", style: "Regular" });
+      label.characters = `${size}px`;
+      label.fontSize = 12;
+      label.fills = [
         {
           type: "SOLID",
-          color: { r: 0.95, g: 0.95, b: 0.95 }
-          // Light gray background
+          color: { r: 0.4, g: 0.4, b: 0.4 }
         }
       ];
-      frame.cornerRadius = 8;
-      for (const size of sizes) {
-        const exampleComponent = yield createIconComponent(sampleIcon, size);
-        const instance = exampleComponent.createInstance();
-        frame.appendChild(instance);
-        const label = figma.createText();
-        yield figma.loadFontAsync({ family: "Inter", style: "Regular" });
-        label.characters = `${size}px`;
-        label.fontSize = 12;
-        label.fills = [
-          {
-            type: "SOLID",
-            color: { r: 0.4, g: 0.4, b: 0.4 }
-          }
-        ];
-        exampleComponent.remove();
-      }
-      return frame;
-    });
+      exampleComponent.remove();
+    }
+    return frame;
   }
   function countExistingIcons(pageName) {
     const iconPage = figma.root.children.find(
@@ -8697,105 +8870,103 @@
     }
     return count;
   }
-  function generateIconLibrary(config) {
-    return __async(this, null, function* () {
-      const finalConfig = __spreadValues(__spreadValues({}, DEFAULT_CONFIG), config);
-      console.log("\u{1F4D6} Loading icon data...");
-      const icons = icon_data_default;
-      console.log(`\u2705 Found ${icons.length} icons in sprite`);
-      const existingCount = countExistingIcons(finalConfig.pageName);
-      if (existingCount === icons.length) {
-        console.log(
-          `\u23ED\uFE0F Skipping Icon Library generation - ${existingCount} icons already exist`
-        );
-        figma.notify(`Icon Library up to date (${existingCount} icons)`, {
-          timeout: 2e3
-        });
-        return;
-      }
+  async function generateIconLibrary(config) {
+    const finalConfig = __spreadValues(__spreadValues({}, DEFAULT_CONFIG), config);
+    console.log("\u{1F4D6} Loading icon data...");
+    const icons = icon_data_default;
+    console.log(`\u2705 Found ${icons.length} icons in sprite`);
+    const existingCount = countExistingIcons(finalConfig.pageName);
+    if (existingCount === icons.length) {
       console.log(
-        `\u{1F504} Regenerating Icon Library: ${existingCount} existing \u2192 ${icons.length} icons`
+        `\u23ED\uFE0F Skipping Icon Library generation - ${existingCount} icons already exist`
       );
-      let iconPage = figma.root.children.find(
-        (page) => page.type === "PAGE" && page.name === finalConfig.pageName
+      figma.notify(`Icon Library up to date (${existingCount} icons)`, {
+        timeout: 2e3
+      });
+      return;
+    }
+    console.log(
+      `\u{1F504} Regenerating Icon Library: ${existingCount} existing \u2192 ${icons.length} icons`
+    );
+    let iconPage = figma.root.children.find(
+      (page) => page.type === "PAGE" && page.name === finalConfig.pageName
+    );
+    if (!iconPage) {
+      iconPage = figma.createPage();
+      iconPage.name = finalConfig.pageName;
+      console.log(`\u2705 Created page: ${finalConfig.pageName}`);
+    } else {
+      console.log(`\u2705 Found existing page: ${finalConfig.pageName}`);
+    }
+    figma.currentPage = iconPage;
+    const existingChildren = [...iconPage.children];
+    for (const child of existingChildren) {
+      child.remove();
+    }
+    const containerFrame = figma.createFrame();
+    containerFrame.name = "Icons";
+    containerFrame.fills = [
+      {
+        type: "SOLID",
+        color: { r: 1, g: 1, b: 1 }
+        // White background
+      }
+    ];
+    const gridWidth = finalConfig.iconsPerRow * (finalConfig.defaultIconSize + finalConfig.iconSpacing) - finalConfig.iconSpacing + 200;
+    const numRows = Math.ceil(icons.length / finalConfig.iconsPerRow);
+    const gridHeight = numRows * (finalConfig.defaultIconSize + finalConfig.iconSpacing) - finalConfig.iconSpacing + 400;
+    containerFrame.resize(gridWidth, gridHeight);
+    containerFrame.x = 0;
+    containerFrame.y = 0;
+    iconPage.appendChild(containerFrame);
+    if (finalConfig.showSizeExamples && icons.length > 0) {
+      console.log("\u{1F3A8} Creating size examples...");
+      const sampleIcon = icons.find((icon) => icon.id === "ph-check") || icons[0];
+      const sizeExamplesFrame = await createSizeExamplesFrame(
+        sampleIcon,
+        finalConfig.sizeExampleDimensions
       );
-      if (!iconPage) {
-        iconPage = figma.createPage();
-        iconPage.name = finalConfig.pageName;
-        console.log(`\u2705 Created page: ${finalConfig.pageName}`);
-      } else {
-        console.log(`\u2705 Found existing page: ${finalConfig.pageName}`);
-      }
-      figma.currentPage = iconPage;
-      const existingChildren = [...iconPage.children];
-      for (const child of existingChildren) {
-        child.remove();
-      }
-      const containerFrame = figma.createFrame();
-      containerFrame.name = "Icons";
-      containerFrame.fills = [
-        {
-          type: "SOLID",
-          color: { r: 1, g: 1, b: 1 }
-          // White background
-        }
-      ];
-      const gridWidth = finalConfig.iconsPerRow * (finalConfig.defaultIconSize + finalConfig.iconSpacing) - finalConfig.iconSpacing + 200;
-      const numRows = Math.ceil(icons.length / finalConfig.iconsPerRow);
-      const gridHeight = numRows * (finalConfig.defaultIconSize + finalConfig.iconSpacing) - finalConfig.iconSpacing + 400;
-      containerFrame.resize(gridWidth, gridHeight);
-      containerFrame.x = 0;
-      containerFrame.y = 0;
-      iconPage.appendChild(containerFrame);
-      if (finalConfig.showSizeExamples && icons.length > 0) {
-        console.log("\u{1F3A8} Creating size examples...");
-        const sampleIcon = icons.find((icon) => icon.id === "ph-check") || icons[0];
-        const sizeExamplesFrame = yield createSizeExamplesFrame(
-          sampleIcon,
-          finalConfig.sizeExampleDimensions
+      sizeExamplesFrame.x = 100;
+      sizeExamplesFrame.y = 100;
+      containerFrame.appendChild(sizeExamplesFrame);
+      console.log("\u2705 Size examples created");
+    }
+    const startY = finalConfig.showSizeExamples ? 300 : 100;
+    console.log(`\u{1F3A8} Generating ${icons.length} icon components...`);
+    const components = [];
+    let currentX = 100;
+    let currentY = startY;
+    let iconsInCurrentRow = 0;
+    for (let i = 0; i < icons.length; i++) {
+      const iconData = icons[i];
+      try {
+        const component = await createIconComponent(
+          iconData,
+          finalConfig.defaultIconSize
         );
-        sizeExamplesFrame.x = 100;
-        sizeExamplesFrame.y = 100;
-        containerFrame.appendChild(sizeExamplesFrame);
-        console.log("\u2705 Size examples created");
-      }
-      const startY = finalConfig.showSizeExamples ? 300 : 100;
-      console.log(`\u{1F3A8} Generating ${icons.length} icon components...`);
-      const components = [];
-      let currentX = 100;
-      let currentY = startY;
-      let iconsInCurrentRow = 0;
-      for (let i = 0; i < icons.length; i++) {
-        const iconData = icons[i];
-        try {
-          const component = yield createIconComponent(
-            iconData,
-            finalConfig.defaultIconSize
-          );
-          component.x = currentX;
-          component.y = currentY;
-          components.push(component);
-          containerFrame.appendChild(component);
-          iconsInCurrentRow++;
-          if (iconsInCurrentRow >= finalConfig.iconsPerRow) {
-            currentX = 100;
-            currentY += finalConfig.defaultIconSize + finalConfig.iconSpacing;
-            iconsInCurrentRow = 0;
-          } else {
-            currentX += finalConfig.defaultIconSize + finalConfig.iconSpacing;
-          }
-          if ((i + 1) % 50 === 0) {
-            console.log(`  Generated ${i + 1}/${icons.length} icons...`);
-          }
-        } catch (error) {
-          console.error(`\u274C Failed to create icon ${iconData.id}:`, error);
+        component.x = currentX;
+        component.y = currentY;
+        components.push(component);
+        containerFrame.appendChild(component);
+        iconsInCurrentRow++;
+        if (iconsInCurrentRow >= finalConfig.iconsPerRow) {
+          currentX = 100;
+          currentY += finalConfig.defaultIconSize + finalConfig.iconSpacing;
+          iconsInCurrentRow = 0;
+        } else {
+          currentX += finalConfig.defaultIconSize + finalConfig.iconSpacing;
         }
+        if ((i + 1) % 50 === 0) {
+          console.log(`  Generated ${i + 1}/${icons.length} icons...`);
+        }
+      } catch (error) {
+        console.error(`\u274C Failed to create icon ${iconData.id}:`, error);
       }
-      console.log(`\u2705 Generated ${components.length} icon components`);
-      figma.notify(
-        `\u2705 Icon Library generated: ${components.length} icons on "${finalConfig.pageName}" page`
-      );
-    });
+    }
+    console.log(`\u2705 Generated ${components.length} icon components`);
+    figma.notify(
+      `\u2705 Icon Library generated: ${components.length} icons on "${finalConfig.pageName}" page`
+    );
   }
 
   // scripts/figma/plugin/code.ts
@@ -8827,7 +8998,7 @@
     console.log("\u2705 Purged existing generated content");
   }
   var START_Y = 100;
-  figma.ui.onmessage = (msg) => __async(null, null, function* () {
+  figma.ui.onmessage = async (msg) => {
     if (msg.type === "generate") {
       try {
         figma.notify("Starting Kumo UI Kit generation...");
@@ -8836,27 +9007,27 @@
         figma.currentPage = componentsPage;
         let nextY = START_Y;
         figma.notify("Generating Badge components...");
-        nextY = yield generateBadgeComponents(nextY);
+        nextY = await generateBadgeComponents(nextY);
         figma.notify("Generating Banner components...");
-        nextY = yield generateBannerComponents(nextY);
+        nextY = await generateBannerComponents(nextY);
         figma.notify("Generating Icon Library...");
-        yield generateIconLibrary();
+        await generateIconLibrary();
         figma.notify("Generating Button components...");
-        nextY = yield generateButtonComponents(componentsPage, nextY);
+        nextY = await generateButtonComponents(componentsPage, nextY);
         figma.notify("Generating LinkButton components...");
-        nextY = yield generateLinkButtonComponents(componentsPage, nextY);
+        nextY = await generateLinkButtonComponents(componentsPage, nextY);
         figma.notify("Generating RefreshButton components...");
-        nextY = yield generateRefreshButtonComponents(componentsPage, nextY);
+        nextY = await generateRefreshButtonComponents(componentsPage, nextY);
         figma.notify("Generating Checkbox components...");
-        nextY = yield generateCheckboxComponents(componentsPage, nextY);
+        nextY = await generateCheckboxComponents(componentsPage, nextY);
         figma.notify("Generating Text components...");
-        nextY = yield generateTextComponents(componentsPage, nextY);
+        nextY = await generateTextComponents(componentsPage, nextY);
         figma.notify("Generating ClipboardText components...");
-        nextY = yield generateClipboardTextComponents(nextY);
+        nextY = await generateClipboardTextComponents(nextY);
         figma.notify("Generating Code components...");
-        nextY = yield generateCodeComponents(componentsPage, nextY);
+        nextY = await generateCodeComponents(componentsPage, nextY);
         figma.notify("Generating CodeBlock components...");
-        nextY = yield generateCodeBlockComponents(componentsPage, nextY);
+        nextY = await generateCodeBlockComponents(componentsPage, nextY);
         figma.notify("\u2705 Generation complete!", { timeout: 3e3 });
         figma.closePlugin(
           "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, LinkButton, RefreshButton, Text components, and Icon Library"
@@ -8871,5 +9042,5 @@
     if (msg.type === "cancel") {
       figma.closePlugin();
     }
-  });
+  };
 })();

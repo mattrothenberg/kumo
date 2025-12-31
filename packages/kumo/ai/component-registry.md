@@ -370,6 +370,7 @@ Button component
 - `onSubmit`: React.FormEventHandler<HTMLButtonElement>
 - `onClick`: React.MouseEventHandler<HTMLButtonElement>
 - `id`: string
+- `lang`: string
 - `title`: string
 - `disabled`: boolean
 - `name`: string
@@ -446,6 +447,7 @@ Checkbox component
 - `onChange`: React.ChangeEventHandler<HTMLInputElement>
 - `className`: string
 - `id`: string
+- `lang`: string
 - `title`: string
 - `onSubmit`: React.FormEventHandler<HTMLInputElement>
 - `onClick`: React.MouseEventHandler<HTMLInputElement>
@@ -840,14 +842,18 @@ Simple code component without syntax highlighting
 
 **Props:**
 
+- `lang`: enum [default: ts]
+  - `"ts"`: TypeScript code
+  - `"tsx"`: TypeScript JSX code
+  - `"jsonc"`: JSON with comments
+  - `"bash"`: Shell/Bash commands
+  - `"css"`: CSS styles
 - `code`: string (required)
   The code content to display
 - `values`: Record<string, { value: string; highlight?: boolean }>
   Template values for interpolation
 - `className`: string
   Additional CSS classes
-- `lang`: 'ts' | 'tsx' | 'jsonc' | 'bash' | 'css'
-  Language for syntax highlighting
 
 **Colors (kumo tokens used):**
 
@@ -1464,7 +1470,280 @@ Field component
 
 Icon component variants configuration / export const KUMO\*ICON_VARIANTS = { size: { xs: { classes: "size-3", description: "12px - small UI elements", }, sm: { classes: "size-4", description: "16px - standard inline icons", }, base: { classes: "size-5", description: "20px - default size", }, lg: { classes: "size-6", description: "24px - prominent icons", }, xl: { classes: "size-8", description: "32px - hero sections", }, }, } as const; /** Default variant values for Icon component / export const KUMO_ICON_DEFAULT_VARIANTS = { size: "base", } as const; /** Generate className string for icon variants / export function iconVariants({ size = KUMO_ICON_DEFAULT_VARIANTS.size, }: KumoIconVariantsProps = {}) { return cn( // Base styles - no default color, inherits currentColor from parent // This matches Phosphor icon behavior "inline-block shrink-0 fill-current", // Apply size variant KUMO_ICON_VARIANTS.size[size].classes, ); } /\*\* Icon component using SVG sprite with <use> pattern Color is inherited from parent's text color (currentColor), matching Phosphor icon behavior. Override with text-\_ classes when needed. `tsx // Basic usage - inherits color from parent <Icon glyph="ph-check" /> // With explicit color and size <Icon glyph="ph-arrow-right" className="text-brand" size="lg" /> // Accessible icon with title <Icon glyph="cf-cloudflare-workers-outline" title="Cloudflare Workers" /> // Error state <Icon glyph="ph-warning" className="text-error" /> // Success state <Icon glyph="ph-check" className="text-green" /> `
 
-````
+**Import:** `import { Icon } from "@cloudflare/kumo";`
+
+**Category:** Other
+
+**Props:**
+
+- `glyph`: IconGlyph (required)
+  Icon glyph identifier (e.g., "ph-check", "cf-workers")
+- `title`: string
+  Accessible title for the icon (makes it non-decorative)
+- `size`: enum [default: base]
+  - `"xs"`: 12px - small UI elements
+  - `"sm"`: 16px - standard inline icons
+  - `"base"`: 20px - default size
+  - `"lg"`: 24px - prominent icons
+  - `"xl"`: 32px - hero sections
+- `children`: ReactNode
+- `onChange`: React.FormEventHandler<SVGSVGElement>
+- `onSubmit`: React.FormEventHandler<SVGSVGElement>
+- `onClick`: React.MouseEventHandler<SVGSVGElement>
+- `className`: string
+- `id`: string
+- `lang`: string
+- `name`: string
+- `type`: string
+- `crossOrigin`: enum
+- `accentHeight`: number | string
+- `accumulate`: enum
+- `additive`: enum
+- `alignmentBaseline`: enum
+- `allowReorder`: enum
+- `alphabetic`: number | string
+- `amplitude`: number | string
+- `arabicForm`: enum
+- `ascent`: number | string
+- `attributeName`: string
+- `attributeType`: string
+- `autoReverse`: Booleanish
+- `azimuth`: number | string
+- `baseFrequency`: number | string
+- `baselineShift`: number | string
+- `baseProfile`: number | string
+- `bbox`: number | string
+- `begin`: number | string
+- `bias`: number | string
+- `by`: number | string
+- `calcMode`: number | string
+- `capHeight`: number | string
+- `clip`: number | string
+- `clipPath`: string
+- `clipPathUnits`: number | string
+- `clipRule`: number | string
+- `colorInterpolation`: number | string
+- `colorInterpolationFilters`: enum
+- `colorProfile`: number | string
+- `colorRendering`: number | string
+- `contentScriptType`: number | string
+- `contentStyleType`: number | string
+- `cursor`: number | string
+- `cx`: number | string
+- `cy`: number | string
+- `d`: string
+- `decelerate`: number | string
+- `descent`: number | string
+- `diffuseConstant`: number | string
+- `direction`: number | string
+- `display`: number | string
+- `divisor`: number | string
+- `dominantBaseline`: enum
+- `dur`: number | string
+- `dx`: number | string
+- `dy`: number | string
+- `edgeMode`: number | string
+- `elevation`: number | string
+- `enableBackground`: number | string
+- `end`: number | string
+- `exponent`: number | string
+- `externalResourcesRequired`: Booleanish
+- `fill`: string
+- `fillOpacity`: number | string
+- `fillRule`: enum
+- `filter`: string
+- `filterRes`: number | string
+- `filterUnits`: number | string
+- `floodColor`: number | string
+- `floodOpacity`: number | string
+- `focusable`: Booleanish | string
+- `fontFamily`: string
+- `fontSize`: number | string
+- `fontSizeAdjust`: number | string
+- `fontStretch`: number | string
+- `fontStyle`: number | string
+- `fontVariant`: number | string
+- `fontWeight`: number | string
+- `format`: number | string
+- `fr`: number | string
+- `from`: number | string
+- `fx`: number | string
+- `fy`: number | string
+- `g1`: number | string
+- `g2`: number | string
+- `glyphName`: number | string
+- `glyphOrientationHorizontal`: number | string
+- `glyphOrientationVertical`: number | string
+- `glyphRef`: number | string
+- `gradientTransform`: string
+- `gradientUnits`: string
+- `hanging`: number | string
+- `horizAdvX`: number | string
+- `horizOriginX`: number | string
+- `href`: string
+- `ideographic`: number | string
+- `imageRendering`: number | string
+- `in2`: number | string
+- `in`: string
+- `intercept`: number | string
+- `k1`: number | string
+- `k2`: number | string
+- `k3`: number | string
+- `k4`: number | string
+- `k`: number | string
+- `kernelMatrix`: number | string
+- `kernelUnitLength`: number | string
+- `kerning`: number | string
+- `keyPoints`: number | string
+- `keySplines`: number | string
+- `keyTimes`: number | string
+- `lengthAdjust`: number | string
+- `letterSpacing`: number | string
+- `lightingColor`: number | string
+- `limitingConeAngle`: number | string
+- `local`: number | string
+- `markerEnd`: string
+- `markerHeight`: number | string
+- `markerMid`: string
+- `markerStart`: string
+- `markerUnits`: number | string
+- `markerWidth`: number | string
+- `mask`: string
+- `maskContentUnits`: number | string
+- `maskUnits`: number | string
+- `mathematical`: number | string
+- `mode`: number | string
+- `numOctaves`: number | string
+- `offset`: number | string
+- `opacity`: number | string
+- `operator`: number | string
+- `order`: number | string
+- `orient`: number | string
+- `orientation`: number | string
+- `origin`: number | string
+- `overflow`: number | string
+- `overlinePosition`: number | string
+- `overlineThickness`: number | string
+- `paintOrder`: number | string
+- `panose1`: number | string
+- `path`: string
+- `pathLength`: number | string
+- `patternContentUnits`: string
+- `patternTransform`: number | string
+- `patternUnits`: string
+- `pointerEvents`: number | string
+- `points`: string
+- `pointsAtX`: number | string
+- `pointsAtY`: number | string
+- `pointsAtZ`: number | string
+- `preserveAlpha`: Booleanish
+- `preserveAspectRatio`: string
+- `primitiveUnits`: number | string
+- `r`: number | string
+- `radius`: number | string
+- `refX`: number | string
+- `refY`: number | string
+- `renderingIntent`: number | string
+- `repeatCount`: number | string
+- `repeatDur`: number | string
+- `requiredExtensions`: number | string
+- `requiredFeatures`: number | string
+- `restart`: number | string
+- `result`: string
+- `rotate`: number | string
+- `rx`: number | string
+- `ry`: number | string
+- `scale`: number | string
+- `seed`: number | string
+- `shapeRendering`: number | string
+- `slope`: number | string
+- `spacing`: number | string
+- `specularConstant`: number | string
+- `specularExponent`: number | string
+- `speed`: number | string
+- `spreadMethod`: string
+- `startOffset`: number | string
+- `stdDeviation`: number | string
+- `stemh`: number | string
+- `stemv`: number | string
+- `stitchTiles`: number | string
+- `stopColor`: string
+- `stopOpacity`: number | string
+- `strikethroughPosition`: number | string
+- `strikethroughThickness`: number | string
+- `string`: number | string
+- `stroke`: string
+- `strokeDasharray`: string | number
+- `strokeDashoffset`: string | number
+- `strokeLinecap`: enum
+- `strokeLinejoin`: enum
+- `strokeMiterlimit`: number | string
+- `strokeOpacity`: number | string
+- `strokeWidth`: number | string
+- `surfaceScale`: number | string
+- `systemLanguage`: number | string
+- `tableValues`: number | string
+- `targetX`: number | string
+- `targetY`: number | string
+- `textAnchor`: enum
+- `textDecoration`: number | string
+- `textLength`: number | string
+- `textRendering`: number | string
+- `to`: number | string
+- `transform`: string
+- `u1`: number | string
+- `u2`: number | string
+- `underlinePosition`: number | string
+- `underlineThickness`: number | string
+- `unicode`: number | string
+- `unicodeBidi`: number | string
+- `unicodeRange`: number | string
+- `unitsPerEm`: number | string
+- `vAlphabetic`: number | string
+- `values`: string
+- `vectorEffect`: number | string
+- `version`: string
+- `vertAdvY`: number | string
+- `vertOriginX`: number | string
+- `vertOriginY`: number | string
+- `vHanging`: number | string
+- `vIdeographic`: number | string
+- `viewBox`: string
+- `viewTarget`: number | string
+- `visibility`: number | string
+- `vMathematical`: number | string
+- `widths`: number | string
+- `wordSpacing`: number | string
+- `writingMode`: number | string
+- `x1`: number | string
+- `x2`: number | string
+- `x`: number | string
+- `xChannelSelector`: string
+- `xHeight`: number | string
+- `xlinkActuate`: string
+- `xlinkArcrole`: string
+- `xlinkHref`: string
+- `xlinkRole`: string
+- `xlinkShow`: string
+- `xlinkTitle`: string
+- `xlinkType`: string
+- `xmlBase`: string
+- `xmlLang`: string
+- `xmlns`: string
+- `xmlnsXlink`: string
+- `xmlSpace`: string
+- `y1`: number | string
+- `y2`: number | string
+- `y`: number | string
+- `yChannelSelector`: string
+- `z`: number | string
+- `zoomAndPan`: string
+
+**Colors (kumo tokens used):**
+
+`text-brand`, `text-error`, `text-green`
+
+**Examples:**
 
 ```tsx
 <div className="flex items-end gap-4">
@@ -1911,11 +2190,7 @@ Loader component
     className="text-alert"
     size="lg"
   />
-  <Icon
-    glyph="cf-cloudflare-pages-outline"
-    className="text-error"
-    size="lg"
-  />
+  <Icon glyph="cf-cloudflare-pages-outline" className="text-error" size="lg" />
   <Icon
     glyph="cf-cloudflare-zero-trust-outline"
     className="text-info"
@@ -2386,15 +2661,16 @@ SensitiveInput component
 - `onChange`: React.ChangeEventHandler<HTMLInputElement>
 - `className`: string
 - `id`: string
+- `lang`: string
 - `title`: string
 - `children`: ReactNode
 - `onSubmit`: React.FormEventHandler<HTMLInputElement>
 - `onClick`: React.MouseEventHandler<HTMLInputElement>
 - `value`: string
   Controlled value
-- `size`: KumoInputSize [default: base]
+- `size`: enum [default: base]
   Size variant
-- `variant`: KumoInputVariant [default: default]
+- `variant`: enum [default: default]
   Style variant
 - `label`: ReactNode
   Label content for the input (enables Field wrapper and sets masked state label) - can be a string or any React node
@@ -2569,6 +2845,7 @@ Switch component
 - `value`: string | string[] | number
 - `className`: string
 - `id`: string
+- `lang`: string
 - `title`: string
 - `onChange`: React.FormEventHandler<HTMLButtonElement>
 - `onSubmit`: React.FormEventHandler<HTMLButtonElement>
@@ -3054,7 +3331,7 @@ Tooltip component
 
 **Props:**
 
-- `align`: TooltipAlign
+- `align`: enum
 - `asChild`: boolean
 - `className`: string
 - `side`: enum [default: top]
@@ -3090,4 +3367,7 @@ Tooltip component
 - **Other:** Icon, Label, Radio, SensitiveInput, Table
 - **Navigation:** MenuBar, Pagination, Tabs
 - **Layout:** Surface
-````
+
+```
+
+```

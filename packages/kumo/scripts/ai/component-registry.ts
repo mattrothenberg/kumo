@@ -1147,6 +1147,22 @@ function jsonSchemaTypeToString(def: Definition): string {
   return "unknown";
 }
 
+/**
+ * Resolve a $ref to its actual definition.
+ * Returns the resolved definition or the original if no $ref.
+ */
+function resolveRef(
+  def: Definition,
+  allDefinitions?: Record<string, Definition>,
+): Definition {
+  if (!def.$ref || !allDefinitions) {
+    return def;
+  }
+  const refName = decodeURIComponent(def.$ref.split("/").pop() || "");
+  const resolved = allDefinitions[refName];
+  return resolved || def;
+}
+
 function convertToPropSchema(
   propName: string,
   def: Definition,
@@ -1154,7 +1170,11 @@ function convertToPropSchema(
   // biome-ignore lint/suspicious/noExplicitAny: Variants have varying shapes
   variants?: Record<string, Record<string, any>>,
   defaults?: Record<string, string>,
+  allDefinitions?: Record<string, Definition>,
 ): PropSchema {
+  // Resolve $ref to get the actual definition (for enum detection)
+  const resolvedDef = resolveRef(def, allDefinitions);
+
   const prop: PropSchema = {
     type: jsonSchemaTypeToString(def),
   };
@@ -1169,9 +1189,14 @@ function convertToPropSchema(
     prop.description = def.description;
   }
 
-  // Handle enums - either from JSON schema or from variants
+  // Handle enums - check both original def and resolved def (for $ref cases)
   if (def.enum) {
     prop.values = def.enum as string[];
+    prop.type = "enum";
+  } else if (resolvedDef.enum) {
+    // Enum found via $ref resolution (e.g., KumoCodeLang)
+    prop.values = resolvedDef.enum as string[];
+    prop.type = "enum";
   }
 
   // Enrich with variant descriptions and classes if this prop is a variant
@@ -1249,6 +1274,7 @@ const KEEP_PROPS = new Set([
   "title", // Common component prop, even though HTMLAttributes has title for tooltips
   "label", // Common form field prop
   "href", // Common link prop for navigation components
+  "lang", // Code component uses lang for syntax highlighting (not HTML lang attribute)
   "onClick", // Common event handler to keep
   "onChange", // Common event handler to keep
   "onSubmit", // Common event handler to keep
@@ -1476,6 +1502,7 @@ function generatePropsFromType(
         allRequired.includes(propName),
         config.variants,
         config.defaults,
+        schema.definitions as Record<string, Definition>,
       );
     }
 
@@ -1688,12 +1715,7 @@ const ADDITIONAL_COMPONENT_PROPS: Record<string, Record<string, PropSchema>> = {
       description: "Callback when switch is clicked",
     },
   },
-  Code: {
-    lang: {
-      type: "'ts' | 'tsx' | 'jsonc' | 'bash' | 'css'",
-      description: "Language for syntax highlighting",
-    },
-  },
+  // Code.lang is now handled by KUMO_CODE_VARIANTS - no manual override needed
   Combobox: {
     onValueChange: {
       type: "(value: T | T[]) => void",

@@ -294,6 +294,10 @@
           "type": "string",
           "optional": true
         },
+        "lang": {
+          "type": "string",
+          "optional": true
+        },
         "title": {
           "type": "string",
           "optional": true
@@ -441,6 +445,10 @@
           "optional": true
         },
         "id": {
+          "type": "string",
+          "optional": true
+        },
+        "lang": {
           "type": "string",
           "optional": true
         },
@@ -634,6 +642,25 @@
       "importPath": "@cloudflare/kumo",
       "category": "Display",
       "props": {
+        "lang": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "ts",
+            "tsx",
+            "jsonc",
+            "bash",
+            "css"
+          ],
+          "descriptions": {
+            "ts": "TypeScript code",
+            "tsx": "TypeScript JSX code",
+            "jsonc": "JSON with comments",
+            "bash": "Shell/Bash commands",
+            "css": "CSS styles"
+          },
+          "default": "ts"
+        },
         "code": {
           "type": "string",
           "required": true,
@@ -648,10 +675,6 @@
           "type": "string",
           "optional": true,
           "description": "Additional CSS classes"
-        },
-        "lang": {
-          "type": "'ts' | 'tsx' | 'jsonc' | 'bash' | 'css'",
-          "description": "Language for syntax highlighting"
         }
       },
       "examples": [
@@ -1389,6 +1412,10 @@
           "optional": true
         },
         "id": {
+          "type": "string",
+          "optional": true
+        },
+        "lang": {
           "type": "string",
           "optional": true
         },
@@ -2938,6 +2965,10 @@
           "type": "string",
           "optional": true
         },
+        "lang": {
+          "type": "string",
+          "optional": true
+        },
         "title": {
           "type": "string",
           "optional": true
@@ -2960,15 +2991,25 @@
           "description": "Controlled value"
         },
         "size": {
-          "type": "KumoInputSize",
+          "type": "enum",
           "optional": true,
           "description": "Size variant",
+          "values": [
+            "xs",
+            "sm",
+            "base",
+            "lg"
+          ],
           "default": "base"
         },
         "variant": {
-          "type": "KumoInputVariant",
+          "type": "enum",
           "optional": true,
           "description": "Style variant",
+          "values": [
+            "default",
+            "error"
+          ],
           "default": "default"
         },
         "label": {
@@ -3126,6 +3167,10 @@
           "optional": true
         },
         "id": {
+          "type": "string",
+          "optional": true
+        },
+        "lang": {
           "type": "string",
           "optional": true
         },
@@ -3506,8 +3551,13 @@
       "category": "Overlay",
       "props": {
         "align": {
-          "type": "TooltipAlign",
-          "optional": true
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "start",
+            "center",
+            "end"
+          ]
         },
         "asChild": {
           "type": "boolean",

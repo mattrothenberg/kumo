@@ -32,7 +32,6 @@ import registry from "../../../../ai/component-registry.json";
 var codeProps = registry.components.Code.props;
 var langProp = codeProps.lang as unknown as {
   values: string[];
-  classes: Record<string, string>;
   descriptions: Record<string, string>;
   default: string;
 };
@@ -99,14 +98,20 @@ async function createCodeComponent(lang: string): Promise<ComponentNode> {
   );
   textNode.name = "Text";
 
-  // Load monospace font
-  await figma.loadFontAsync({ family: "SF Mono", style: "Regular" });
-  textNode.fontName = { family: "SF Mono", style: "Regular" };
+  // Load monospace font (Roboto Mono is reliably available in Figma)
+  await figma.loadFontAsync({ family: "Roboto Mono", style: "Regular" });
+  textNode.fontName = { family: "Roboto Mono", style: "Regular" };
 
-  // Apply text color - text-label
+  // Apply text color - text-label with fallback to text-surface
   var labelVar = getVariableByName("text-color-label");
   if (labelVar) {
     bindTextColorToVariable(textNode, labelVar.id);
+  } else {
+    // Fallback to text-surface if text-label doesn't exist
+    var surfaceVar = getVariableByName("text-color-surface");
+    if (surfaceVar) {
+      bindTextColorToVariable(textNode, surfaceVar.id);
+    }
   }
 
   component.appendChild(textNode);

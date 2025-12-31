@@ -102,6 +102,7 @@ const COLOR_TO_VARIABLE: Record<string, string> = {
   "text-info": "text-color-info",
   "text-alert": "text-color-alert",
   "text-muted": "text-color-muted",
+  "text-label": "text-color-label",
   "!text-white": null!, // Hardcoded white (important)
   "!text-surface": "text-color-surface",
   "!text-error": "text-color-error",
