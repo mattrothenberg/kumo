@@ -1,7 +1,7 @@
 /**
  * Fetch brand icons from Figma API
  *
- * One-time script to download brand icons from Figma Icon Library page.
+ * Downloads brand icons from Figma Icon Library file.
  * Stores SVGs in src/assets/icons/brand/ with cf-* naming convention.
  *
  * Usage:
@@ -20,23 +20,24 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const FILE_ID = "f15DmkwRAbKFbZLSQErUos";
-const ICON_LIBRARY_PAGE = "Icon Library";
+const ICONS_PAGE_ID = "45:2511"; // "Icons" page in the Figma file
 const OUTPUT_DIR = path.resolve(__dirname, "../../src/assets/icons/brand");
 
-interface FigmaComponent {
-  node_id: string;
+interface FigmaNode {
+  id: string;
   name: string;
-  containing_frame?: {
-    pageName?: string;
-  };
+  type: string;
+  children?: FigmaNode[];
 }
 
-interface FigmaComponentsResponse {
-  error: boolean;
-  status: number;
-  meta: {
-    components: FigmaComponent[];
-  };
+interface FigmaNodesResponse {
+  err: string | null;
+  nodes: Record<
+    string,
+    {
+      document: FigmaNode;
+    }
+  >;
 }
 
 interface FigmaSvgResponse {
@@ -73,16 +74,15 @@ function toKebabCase(str: string): string {
   return str
     .replace(/([a-z])([A-Z])/g, "$1-$2")
     .replace(/\s+/g, "-")
+    .replace(/_/g, "-")
     .toLowerCase();
 }
 
 /**
- * Fetch components from Figma file
+ * Fetch nodes from a specific page in the Figma file
  */
-async function fetchComponents(
-  token: string,
-): Promise<FigmaComponentsResponse> {
-  const uri = `https://api.figma.com/v1/files/${FILE_ID}/components`;
+async function fetchPageNodes(token: string): Promise<FigmaNodesResponse> {
+  const uri = `https://api.figma.com/v1/files/${FILE_ID}/nodes?ids=${ICONS_PAGE_ID}&depth=2`;
   const response = await fetch(uri, {
     headers: {
       "X-Figma-Token": token,
@@ -100,28 +100,47 @@ async function fetchComponents(
 }
 
 /**
- * Fetch SVG URLs for component node IDs
+ * Fetch SVG URLs for node IDs (batched to avoid URL length limits)
  */
 async function fetchSvgUrls(
   nodeIds: string[],
   token: string,
-): Promise<FigmaSvgResponse> {
-  const ids = nodeIds.join(",");
-  const uri = `https://api.figma.com/v1/images/${FILE_ID}?ids=${ids}&format=svg`;
-  const response = await fetch(uri, {
-    headers: {
-      "X-Figma-Token": token,
-      "Content-Type": "application/json",
-    },
-  });
+): Promise<Record<string, string>> {
+  const allImages: Record<string, string> = {};
+  const batchSize = 50; // Figma recommends batching
 
-  if (!response.ok) {
-    throw new Error(
-      `Figma API error: ${response.status} ${response.statusText}`,
+  for (let i = 0; i < nodeIds.length; i += batchSize) {
+    const batch = nodeIds.slice(i, i + batchSize);
+    const ids = batch.join(",");
+    const uri = `https://api.figma.com/v1/images/${FILE_ID}?ids=${ids}&format=svg`;
+
+    const response = await fetch(uri, {
+      headers: {
+        "X-Figma-Token": token,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Figma API error: ${response.status} ${response.statusText}`,
+      );
+    }
+
+    const data: FigmaSvgResponse = await response.json();
+    if (data.err) {
+      throw new Error(`Figma API error: ${data.err}`);
+    }
+
+    Object.assign(allImages, data.images);
+
+    // Progress indicator
+    console.log(
+      `   Fetched SVG URLs: ${Math.min(i + batchSize, nodeIds.length)}/${nodeIds.length}`,
     );
   }
 
-  return response.json();
+  return allImages;
 }
 
 /**
@@ -170,18 +189,25 @@ async function main() {
     );
   }
 
-  // Fetch all components
-  console.log("1. Fetching components list...");
-  const componentsData = await fetchComponents(token);
+  // Fetch page nodes
+  console.log("1. Fetching Icons page from Figma...");
+  const nodesData = await fetchPageNodes(token);
 
-  // Filter to Icon Library page
-  const iconComponents = componentsData.meta.components.filter(
-    (c) => c.containing_frame?.pageName === ICON_LIBRARY_PAGE,
+  if (nodesData.err) {
+    throw new Error(`Figma API error: ${nodesData.err}`);
+  }
+
+  const pageNode = nodesData.nodes[ICONS_PAGE_ID]?.document;
+  if (!pageNode || !pageNode.children) {
+    throw new Error(`Could not find Icons page (${ICONS_PAGE_ID})`);
+  }
+
+  // Filter to COMPONENT nodes only
+  const iconComponents = pageNode.children.filter(
+    (node) => node.type === "COMPONENT",
   );
 
-  console.log(
-    `   Found ${iconComponents.length} icons in ${ICON_LIBRARY_PAGE} page\n`,
-  );
+  console.log(`   Found ${iconComponents.length} icon components\n`);
 
   if (iconComponents.length === 0) {
     console.log("No icons found. Exiting.");
@@ -190,12 +216,9 @@ async function main() {
 
   // Fetch SVG URLs
   console.log("2. Fetching SVG URLs...");
-  const nodeIds = iconComponents.map((c) => c.node_id);
-  const svgData = await fetchSvgUrls(nodeIds, token);
-
-  if (svgData.err) {
-    throw new Error(`Figma API error: ${svgData.err}`);
-  }
+  const nodeIds = iconComponents.map((c) => c.id);
+  const svgUrls = await fetchSvgUrls(nodeIds, token);
+  console.log("");
 
   // Create output directory
   console.log(`3. Creating output directory: ${OUTPUT_DIR}\n`);
@@ -207,7 +230,7 @@ async function main() {
   let failed = 0;
 
   for (const component of iconComponents) {
-    const svgUrl = svgData.images[component.node_id];
+    const svgUrl = svgUrls[component.id];
     if (!svgUrl) {
       console.log(`   ⚠️  No SVG URL for: ${component.name}`);
       failed++;
@@ -219,18 +242,24 @@ async function main() {
 
     try {
       await downloadSvg(svgUrl, filePath);
-      console.log(`   ✓ ${fileName}`);
       downloaded++;
+      // Progress every 50 icons
+      if (downloaded % 50 === 0) {
+        console.log(`   Downloaded: ${downloaded}/${iconComponents.length}`);
+      }
     } catch (err) {
       console.log(`   ✗ ${fileName}: ${err}`);
       failed++;
     }
   }
 
-  console.log(`\nComplete!`);
+  console.log(`\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+  console.log(`  ✓ Brand icons fetch complete!`);
+  console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
   console.log(`  Downloaded: ${downloaded}`);
   console.log(`  Failed: ${failed}`);
   console.log(`  Output: ${OUTPUT_DIR}`);
+  console.log(`\nRun 'pnpm build:icons' to rebuild the sprite.`);
 }
 
 main().catch((err) => {
