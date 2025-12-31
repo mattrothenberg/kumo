@@ -45,9 +45,9 @@ export function iconVariants({
   size = KUMO_ICON_DEFAULT_VARIANTS.size,
 }: KumoIconVariantsProps = {}) {
   return cn(
-    // Base styles - text-surface provides default color that works in light/dark mode
-    // fill-current inherits from text color
-    "inline-block shrink-0 fill-current text-surface",
+    // Base styles - no default color, inherits currentColor from parent
+    // This matches Phosphor icon behavior
+    "inline-block shrink-0 fill-current",
     // Apply size variant
     KUMO_ICON_VARIANTS.size[size].classes,
   );
@@ -56,16 +56,15 @@ export function iconVariants({
 /**
  * Icon component using SVG sprite with <use> pattern
  *
- * Color is controlled via text color classes (e.g., text-error, text-info).
- * Icons use fill-current which inherits from the text color.
- * Default color is text-surface which adapts to light/dark mode.
+ * Color is inherited from parent's text color (currentColor), matching
+ * Phosphor icon behavior. Override with text-* classes when needed.
  *
  * @example
  * ```tsx
- * // Basic usage - uses text-surface (adapts to light/dark mode)
+ * // Basic usage - inherits color from parent
  * <Icon glyph="ph-check" />
  *
- * // With custom color and size
+ * // With explicit color and size
  * <Icon glyph="ph-arrow-right" className="text-brand" size="lg" />
  *
  * // Accessible icon with title
