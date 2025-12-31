@@ -5174,12 +5174,28 @@
   var langProp2 = codeBlockProps.lang;
   var CODE_BLOCK_WRAPPER_STYLES = "min-w-0 rounded-md border border-color bg-surface";
   var CODE_INNER_PADDING = 10;
+  var SECTION_PADDING7 = 48;
+  var SECTION_GAP7 = 160;
+  function getPlaceholderText2(lang) {
+    if (lang === "bash") {
+      return "npm install @cloudflare/kumo";
+    }
+    if (lang === "jsonc") {
+      return '{ "key": "value" }';
+    }
+    if (lang === "css") {
+      return ".class { color: blue; }";
+    }
+    if (lang === "tsx") {
+      return "<Button>Click</Button>";
+    }
+    return 'const hello = "world";';
+  }
   function createCodeBlockComponent(lang) {
     return __async(this, null, function* () {
-      const _classes = langProp2.classes[lang] || "";
-      const description = langProp2.descriptions[lang] || "";
-      const wrapperStyles = parseTailwindClasses(CODE_BLOCK_WRAPPER_STYLES);
-      const component = figma.createComponent();
+      var description = langProp2.descriptions[lang] || "";
+      var wrapperStyles = parseTailwindClasses(CODE_BLOCK_WRAPPER_STYLES);
+      var component = figma.createComponent();
       component.name = "lang=" + lang;
       component.description = description;
       component.layoutMode = "VERTICAL";
@@ -5193,28 +5209,26 @@
       component.counterAxisSizingMode = "AUTO";
       component.cornerRadius = wrapperStyles.borderRadius || 6;
       if (wrapperStyles.fillVariable) {
-        const fillVar = getVariableByName(wrapperStyles.fillVariable);
+        var fillVar = getVariableByName(wrapperStyles.fillVariable);
         if (fillVar) {
           bindFillToVariable(component, fillVar.id);
         }
       }
       if (wrapperStyles.strokeVariable) {
-        const strokeVar = getVariableByName(wrapperStyles.strokeVariable);
+        var strokeVar = getVariableByName(wrapperStyles.strokeVariable);
         if (strokeVar) {
           bindStrokeToVariable(component, strokeVar.id, 1);
         }
       }
-      const textNode = yield createTextNode(
-        'const hello = "world";',
+      var textNode = yield createTextNode(
+        getPlaceholderText2(lang),
         14,
-        // text-sm = 14px
         400
-        // normal weight
       );
       textNode.name = "Code";
-      yield figma.loadFontAsync({ family: "Inter", style: "Regular" });
-      textNode.fontName = { family: "Inter", style: "Regular" };
-      const labelVar = getVariableByName("text-color-label");
+      yield figma.loadFontAsync({ family: "SF Mono", style: "Regular" });
+      textNode.fontName = { family: "SF Mono", style: "Regular" };
+      var labelVar = getVariableByName("text-color-label");
       if (labelVar) {
         bindTextColorToVariable(textNode, labelVar.id);
       }
@@ -5223,38 +5237,37 @@
       return component;
     });
   }
-  var SECTION_PADDING7 = 48;
-  var SECTION_GAP7 = 160;
   function generateCodeBlockComponents(page, startY) {
     return __async(this, null, function* () {
       if (startY === void 0) startY = 100;
       figma.currentPage = page;
-      const langs = langProp2.values;
-      const components = [];
-      const rowLabels = [];
-      const rowGap = 40;
-      const labelColumnWidth = 160;
-      let currentY = 0;
-      for (let i = 0; i < langs.length; i++) {
-        const lang = langs[i];
-        const component = yield createCodeBlockComponent(lang);
+      var langs = langProp2.values;
+      var components = [];
+      var rowLabels = [];
+      var rowGap = 50;
+      var labelColumnWidth = 160;
+      var currentY = 0;
+      for (var i = 0; i < langs.length; i++) {
+        var lang = langs[i];
+        var component = yield createCodeBlockComponent(lang);
         rowLabels.push({ y: currentY, text: "lang=" + lang });
         component.x = labelColumnWidth;
         component.y = currentY;
-        currentY += component.height + rowGap;
+        currentY = currentY + component.height + rowGap;
         components.push(component);
       }
-      const componentSet = figma.combineAsVariants(components, page);
+      var componentSet = figma.combineAsVariants(components, page);
       componentSet.name = "CodeBlock";
       componentSet.description = "CodeBlock component with lang variants";
-      const contentWidth = componentSet.width + labelColumnWidth;
-      const contentHeight = componentSet.height;
-      const lightSection = createModeSection(page, "CodeBlock", "light");
+      componentSet.layoutMode = "NONE";
+      var contentWidth = componentSet.width + labelColumnWidth;
+      var contentHeight = componentSet.height;
+      var lightSection = createModeSection(page, "CodeBlock", "light");
       lightSection.frame.resize(
         contentWidth + SECTION_PADDING7 * 2,
         contentHeight + SECTION_PADDING7 * 2
       );
-      const darkSection = createModeSection(page, "CodeBlock", "dark");
+      var darkSection = createModeSection(page, "CodeBlock", "dark");
       darkSection.frame.resize(
         contentWidth + SECTION_PADDING7 * 2,
         contentHeight + SECTION_PADDING7 * 2
@@ -5262,31 +5275,33 @@
       lightSection.frame.appendChild(componentSet);
       componentSet.x = SECTION_PADDING7 + labelColumnWidth;
       componentSet.y = SECTION_PADDING7;
-      for (const label of rowLabels) {
-        const labelNode = yield createRowLabel(
+      for (var li = 0; li < rowLabels.length; li++) {
+        var label = rowLabels[li];
+        var labelNode = yield createRowLabel(
           label.text,
           SECTION_PADDING7,
           SECTION_PADDING7 + label.y + 8
-          // +8 to vertically center with code block
         );
         lightSection.frame.appendChild(labelNode);
       }
-      for (const component of components) {
-        const instance = component.createInstance();
-        instance.x = component.x + SECTION_PADDING7 + labelColumnWidth;
-        instance.y = component.y + SECTION_PADDING7;
+      for (var ci = 0; ci < components.length; ci++) {
+        var comp = components[ci];
+        var instance = comp.createInstance();
+        instance.x = comp.x + SECTION_PADDING7 + labelColumnWidth;
+        instance.y = comp.y + SECTION_PADDING7;
         darkSection.frame.appendChild(instance);
       }
-      for (const label of rowLabels) {
-        const labelNode = yield createRowLabel(
-          label.text,
+      for (var di = 0; di < rowLabels.length; di++) {
+        var darkLabel = rowLabels[di];
+        var darkLabelNode = yield createRowLabel(
+          darkLabel.text,
           SECTION_PADDING7,
-          SECTION_PADDING7 + label.y + 8
+          SECTION_PADDING7 + darkLabel.y + 8
         );
-        darkSection.frame.appendChild(labelNode);
+        darkSection.frame.appendChild(darkLabelNode);
       }
-      const totalWidth = contentWidth + SECTION_PADDING7 * 2;
-      const totalHeight = contentHeight + SECTION_PADDING7 * 2;
+      var totalWidth = contentWidth + SECTION_PADDING7 * 2;
+      var totalHeight = contentHeight + SECTION_PADDING7 * 2;
       lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
       darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
       lightSection.section.x = 100;
@@ -5667,7 +5682,7 @@
   function isMonoVariant(variant) {
     return MONO_VARIANTS.includes(variant);
   }
-  function getPlaceholderText2(variant) {
+  function getPlaceholderText3(variant) {
     if (variant.startsWith("heading")) {
       return variant.charAt(0).toUpperCase() + variant.slice(1).replace(/(\d)/, " $1");
     }
@@ -5718,7 +5733,7 @@
       }
       const fontSize = styles.fontSize || 16;
       const textNode = yield createTextNode(
-        getPlaceholderText2(variant),
+        getPlaceholderText3(variant),
         fontSize,
         fontWeight
       );
