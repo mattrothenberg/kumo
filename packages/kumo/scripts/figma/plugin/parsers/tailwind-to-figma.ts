@@ -9,6 +9,19 @@
  */
 
 /**
+ * Helper to get value from scale with fallback
+ * (Figma plugin runtime doesn't support ?? operator)
+ */
+function getOrDefault(
+  scale: Record<string, number>,
+  key: string,
+  fallback: number,
+): number {
+  const value = scale[key];
+  return value !== undefined ? value : fallback;
+}
+
+/**
  * Tailwind spacing scale (in pixels)
  * https://tailwindcss.com/docs/customizing-spacing
  */
@@ -145,29 +158,44 @@ export function parseTailwindClasses(classes: string): ParsedStyles {
     // Height: h-5, h-6.5, h-9, h-10
     const heightMatch = cls.match(/^h-(\d+\.?\d*)$/);
     if (heightMatch) {
-      result.height =
-        SPACING_SCALE[heightMatch[1]] ?? parseFloat(heightMatch[1]) * 4;
+      result.height = getOrDefault(
+        SPACING_SCALE,
+        heightMatch[1],
+        parseFloat(heightMatch[1]) * 4,
+      );
       continue;
     }
 
     // Padding X: px-1.5, px-2, px-3, px-4
     const pxMatch = cls.match(/^px-(\d+\.?\d*)$/);
     if (pxMatch) {
-      result.paddingX = SPACING_SCALE[pxMatch[1]] ?? parseFloat(pxMatch[1]) * 4;
+      result.paddingX = getOrDefault(
+        SPACING_SCALE,
+        pxMatch[1],
+        parseFloat(pxMatch[1]) * 4,
+      );
       continue;
     }
 
     // Padding Y: py-0.5, py-1, py-2
     const pyMatch = cls.match(/^py-(\d+\.?\d*)$/);
     if (pyMatch) {
-      result.paddingY = SPACING_SCALE[pyMatch[1]] ?? parseFloat(pyMatch[1]) * 4;
+      result.paddingY = getOrDefault(
+        SPACING_SCALE,
+        pyMatch[1],
+        parseFloat(pyMatch[1]) * 4,
+      );
       continue;
     }
 
     // Gap: gap-1, gap-1.5, gap-2
     const gapMatch = cls.match(/^gap-(\d+\.?\d*)$/);
     if (gapMatch) {
-      result.gap = SPACING_SCALE[gapMatch[1]] ?? parseFloat(gapMatch[1]) * 4;
+      result.gap = getOrDefault(
+        SPACING_SCALE,
+        gapMatch[1],
+        parseFloat(gapMatch[1]) * 4,
+      );
       continue;
     }
 
@@ -175,8 +203,11 @@ export function parseTailwindClasses(classes: string): ParsedStyles {
     const radiusMatch = cls.match(/^rounded-?(\w*)$/);
     if (radiusMatch) {
       const key = radiusMatch[1] || "DEFAULT";
-      result.borderRadius =
-        BORDER_RADIUS_SCALE[key] ?? BORDER_RADIUS_SCALE.DEFAULT;
+      result.borderRadius = getOrDefault(
+        BORDER_RADIUS_SCALE,
+        key,
+        BORDER_RADIUS_SCALE.DEFAULT,
+      );
       continue;
     }
 

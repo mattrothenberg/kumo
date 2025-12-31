@@ -159,6 +159,10 @@
   }
 
   // scripts/figma/plugin/parsers/tailwind-to-figma.ts
+  function getOrDefault(scale, key, fallback) {
+    const value = scale[key];
+    return value !== void 0 ? value : fallback;
+  }
   var SPACING_SCALE = {
     "0": 0,
     px: 1,
@@ -248,28 +252,48 @@
       }
       const heightMatch = cls.match(/^h-(\d+\.?\d*)$/);
       if (heightMatch) {
-        result.height = SPACING_SCALE[heightMatch[1]] ?? parseFloat(heightMatch[1]) * 4;
+        result.height = getOrDefault(
+          SPACING_SCALE,
+          heightMatch[1],
+          parseFloat(heightMatch[1]) * 4
+        );
         continue;
       }
       const pxMatch = cls.match(/^px-(\d+\.?\d*)$/);
       if (pxMatch) {
-        result.paddingX = SPACING_SCALE[pxMatch[1]] ?? parseFloat(pxMatch[1]) * 4;
+        result.paddingX = getOrDefault(
+          SPACING_SCALE,
+          pxMatch[1],
+          parseFloat(pxMatch[1]) * 4
+        );
         continue;
       }
       const pyMatch = cls.match(/^py-(\d+\.?\d*)$/);
       if (pyMatch) {
-        result.paddingY = SPACING_SCALE[pyMatch[1]] ?? parseFloat(pyMatch[1]) * 4;
+        result.paddingY = getOrDefault(
+          SPACING_SCALE,
+          pyMatch[1],
+          parseFloat(pyMatch[1]) * 4
+        );
         continue;
       }
       const gapMatch = cls.match(/^gap-(\d+\.?\d*)$/);
       if (gapMatch) {
-        result.gap = SPACING_SCALE[gapMatch[1]] ?? parseFloat(gapMatch[1]) * 4;
+        result.gap = getOrDefault(
+          SPACING_SCALE,
+          gapMatch[1],
+          parseFloat(gapMatch[1]) * 4
+        );
         continue;
       }
       const radiusMatch = cls.match(/^rounded-?(\w*)$/);
       if (radiusMatch) {
         const key = radiusMatch[1] || "DEFAULT";
-        result.borderRadius = BORDER_RADIUS_SCALE[key] ?? BORDER_RADIUS_SCALE.DEFAULT;
+        result.borderRadius = getOrDefault(
+          BORDER_RADIUS_SCALE,
+          key,
+          BORDER_RADIUS_SCALE.DEFAULT
+        );
         continue;
       }
       const fontMatch = cls.match(/^text-(xs|sm|base|lg|xl|2xl)$/);
@@ -4158,7 +4182,7 @@
     if (shape === "circle") {
       component.cornerRadius = BORDER_RADIUS.full;
     } else {
-      component.cornerRadius = sizeStyles.borderRadius ?? BORDER_RADIUS.lg;
+      component.cornerRadius = sizeStyles.borderRadius !== void 0 ? sizeStyles.borderRadius : BORDER_RADIUS.lg;
     }
     if (variantStyles.fillVariable) {
       const fillVar = getVariableByName(variantStyles.fillVariable);
@@ -4565,7 +4589,7 @@
     component.primaryAxisSizingMode = "AUTO";
     component.counterAxisSizingMode = "FIXED";
     component.resize(100, sizeStyles.height || 36);
-    const cornerRadius = sizeStyles.borderRadius ?? 8;
+    const cornerRadius = sizeStyles.borderRadius !== void 0 ? sizeStyles.borderRadius : 8;
     component.cornerRadius = cornerRadius;
     if (variantStyles.fillVariable) {
       const fillVar = getVariableByName(variantStyles.fillVariable);
@@ -4696,7 +4720,7 @@
   function getBorderRadiusForSize(size) {
     const sizeClasses = sizeProp3.classes[size] || "";
     const parsed = parseTailwindClasses(sizeClasses);
-    return parsed.borderRadius ?? BORDER_RADIUS.lg;
+    return parsed.borderRadius !== void 0 ? parsed.borderRadius : BORDER_RADIUS.lg;
   }
   var SECTION_PADDING6 = 48;
   var SECTION_GAP6 = 160;

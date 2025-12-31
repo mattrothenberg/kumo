@@ -120,7 +120,8 @@ async function createLinkButtonComponent(
   component.resize(100, sizeStyles.height || 36);
 
   // Set corner radius from size classes
-  const cornerRadius = sizeStyles.borderRadius ?? 8;
+  const cornerRadius =
+    sizeStyles.borderRadius !== undefined ? sizeStyles.borderRadius : 8;
   component.cornerRadius = cornerRadius;
 
   // Apply fill from variant

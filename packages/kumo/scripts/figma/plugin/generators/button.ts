@@ -157,7 +157,10 @@ async function createButtonComponent(
     component.cornerRadius = BORDER_RADIUS.full;
   } else {
     // Both base and square use size-based radius
-    component.cornerRadius = sizeStyles.borderRadius ?? BORDER_RADIUS.lg;
+    component.cornerRadius =
+      sizeStyles.borderRadius !== undefined
+        ? sizeStyles.borderRadius
+        : BORDER_RADIUS.lg;
   }
 
   // Apply fill from variant

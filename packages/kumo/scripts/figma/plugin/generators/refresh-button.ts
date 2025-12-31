@@ -69,7 +69,9 @@ const REFRESH_ICON_SIZE: Record<string, number> = {
 function getBorderRadiusForSize(size: string): number {
   const sizeClasses = sizeProp.classes[size] || "";
   const parsed = parseTailwindClasses(sizeClasses);
-  return parsed.borderRadius ?? BORDER_RADIUS.lg;
+  return parsed.borderRadius !== undefined
+    ? parsed.borderRadius
+    : BORDER_RADIUS.lg;
 }
 
 /**
