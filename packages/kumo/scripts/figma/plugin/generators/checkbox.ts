@@ -174,7 +174,6 @@ function createCheckboxComponent(
       );
       minusIcon.strokes = [stroke];
     }
-    // @ts-expect-error - VectorNode is valid child for ComponentNode
     component.appendChild(minusIcon);
     // Center the icon
     minusIcon.x = (CHECKBOX_SIZE - ICON_SIZE) / 2;
@@ -195,7 +194,6 @@ function createCheckboxComponent(
       );
       checkIcon.strokes = [stroke];
     }
-    // @ts-expect-error - VectorNode is valid child for ComponentNode
     component.appendChild(checkIcon);
     // Center the icon
     checkIcon.x = (CHECKBOX_SIZE - ICON_SIZE) / 2;
