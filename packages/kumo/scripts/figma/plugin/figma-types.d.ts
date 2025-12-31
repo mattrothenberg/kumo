@@ -25,6 +25,7 @@ interface PluginAPI {
   createPage(): PageNode;
   createRectangle(): RectangleNode;
   createEllipse(): EllipseNode;
+  createNodeFromSvg(svg: string): FrameNode;
   loadFontAsync(font: { family: string; style: string }): Promise<void>;
   /**
    * Combines multiple components into a ComponentSet (variants)
@@ -81,11 +82,15 @@ interface SceneNode extends BaseNode {
   fills?: ReadonlyArray<Paint>;
   strokes?: ReadonlyArray<Paint>;
   strokeWeight?: number;
+  constraints?: { horizontal: ConstraintType; vertical: ConstraintType };
+  children?: readonly SceneNode[];
   setBoundVariable(
     field: string,
     variable: { type: "VARIABLE_ALIAS"; id: string },
   ): void;
 }
+
+type ConstraintType = "MIN" | "CENTER" | "MAX" | "STRETCH" | "SCALE";
 
 interface FrameNode extends SceneNode {
   type: "FRAME";
@@ -100,6 +105,14 @@ interface FrameNode extends SceneNode {
   primaryAxisSizingMode?: "FIXED" | "AUTO";
   counterAxisSizingMode?: "FIXED" | "AUTO";
   cornerRadius: number;
+  resize(width: number, height: number): void;
+  x: number;
+  y: number;
+  children: readonly SceneNode[];
+  setExplicitVariableModeForCollection(
+    collection: VariableCollection,
+    modeId: string,
+  ): void;
 }
 
 interface TextNode extends SceneNode {
@@ -198,6 +211,11 @@ interface RGB {
 interface VariableCollection {
   name: string;
   variableIds: string[];
+  modes: { modeId: string; name: string }[];
+}
+
+interface VectorNode extends SceneNode {
+  type: "VECTOR";
 }
 
 interface Variable {
