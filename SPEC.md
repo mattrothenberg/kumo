@@ -167,6 +167,220 @@ interface ComponentRegistryEntry {
 
 ---
 
+## Generator Implementation Rules
+
+### CRITICAL: Section Frame Pattern
+
+Every generator MUST create components inside section frames with explicit color modes. This is the **only** way to get light/dark mode working correctly in Figma.
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  Section (ComponentName - light)                                    │
+│  ┌───────────────────────────────────────────────────────────────┐  │
+│  │  Frame (Content) - bg-surface variable + explicit light mode  │  │
+│  │  ┌─────────────────────────────────────────────────────────┐  │  │
+│  │  │  ComponentSet + Row Labels + Column Headers             │  │  │
+│  │  └─────────────────────────────────────────────────────────┘  │  │
+│  └───────────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+**Why this matters:**
+
+- Figma variables only respond to explicit mode settings on frames
+- Sections alone cannot have explicit variable modes
+- The inner frame with `setExplicitVariableModeForCollection()` is what makes colors switch
+
+### Required Generator Structure
+
+Every generator file MUST follow this structure:
+
+```typescript
+// 1. Imports from shared utilities
+import {
+  createTextNode,
+  bindFillToVariable,
+  bindStrokeToVariable,
+  getVariableByName,
+  createModeSection, // REQUIRED for light/dark mode
+  createRowLabel,
+  bindTextColorToVariable,
+} from "./shared";
+import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
+
+// 2. Import registry data (source of truth)
+import registry from "../../../../ai/component-registry.json";
+
+// 3. Extract props with type assertions
+const componentProps = registry.components.ComponentName.props;
+const variantProp = componentProps.variant as {
+  values: string[];
+  classes: Record<string, string>;
+  descriptions: Record<string, string>;
+  default: string;
+};
+
+// 4. Constants
+const SECTION_PADDING = 48;
+const SECTION_GAP = 160;
+
+// 5. Component creation function (creates ONE component)
+async function createComponent(variant: string): Promise<ComponentNode> {
+  // Parse Tailwind classes from registry
+  const styles = parseTailwindClasses(variantProp.classes[variant]);
+
+  // Create component with proper naming
+  const component = figma.createComponent();
+  component.name = `variant=${variant}`;
+
+  // Apply styles and bind variables
+  // ...
+
+  return component;
+}
+
+// 6. Main generator function (creates BOTH light and dark sections)
+export async function generateComponentNameComponents(
+  page: PageNode,
+  startY: number,
+): Promise<number> {
+  figma.currentPage = page;
+
+  // Create all component variants
+  const components: ComponentNode[] = [];
+  for (const variant of variantProp.values) {
+    components.push(await createComponent(variant));
+  }
+
+  // Combine into ComponentSet
+  const componentSet = figma.combineAsVariants(components, page);
+  componentSet.name = "ComponentName";
+
+  // Create light mode section
+  const lightSection = createModeSection(page, "ComponentName", "light");
+  lightSection.frame.appendChild(componentSet);
+
+  // Create dark mode section with instances
+  const darkSection = createModeSection(page, "ComponentName", "dark");
+  for (const component of components) {
+    const instance = component.createInstance();
+    darkSection.frame.appendChild(instance);
+  }
+
+  // Position sections side by side
+  lightSection.section.x = 100;
+  lightSection.section.y = startY;
+  darkSection.section.x =
+    lightSection.section.x + lightSection.section.width + 50;
+  darkSection.section.y = startY;
+
+  return (
+    startY +
+    Math.max(lightSection.section.height, darkSection.section.height) +
+    SECTION_GAP
+  );
+}
+```
+
+### Variable Binding Rules
+
+**ALWAYS bind colors to variables, NEVER hardcode hex values:**
+
+```typescript
+// ✅ CORRECT - Bind to variable
+const surfaceVar = getVariableByName("surface");
+if (surfaceVar) {
+  bindFillToVariable(component, surfaceVar.id);
+}
+
+// ❌ WRONG - Hardcoded color
+component.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
+```
+
+**Variable naming convention:**
+| Kumo Token | Figma Variable Name |
+|------------|---------------------|
+| `bg-surface` | `surface` |
+| `bg-primary` | `primary` |
+| `text-surface` | `text-color-surface` |
+| `text-label` | `text-color-label` |
+| `text-muted` | `text-color-muted` |
+| `border-color` | `border` |
+
+### ComponentSet Naming Convention
+
+Variant names MUST follow Figma's property=value format:
+
+```typescript
+// Single property
+component.name = "variant=primary";
+
+// Multiple properties (comma-separated)
+component.name = "variant=primary, size=base, disabled=false";
+```
+
+### Row Labels and Column Headers
+
+Always add labels for visual clarity in Figma:
+
+```typescript
+// Row labels (left side, one per row)
+const rowLabels: { y: number; text: string }[] = [];
+rowLabels.push({ y: currentY, text: "variant=primary" });
+
+// Add to section frame
+for (const label of rowLabels) {
+  const labelNode = await createRowLabel(
+    label.text,
+    SECTION_PADDING,
+    SECTION_PADDING + label.y + 8, // +8 to vertically center
+  );
+  lightSection.frame.appendChild(labelNode);
+}
+
+// Column headers (top, one per column)
+await createColumnHeaders(
+  [
+    { x: 180, text: "size=xs" },
+    { x: 280, text: "size=sm" },
+  ],
+  SECTION_PADDING,
+  lightSection.frame,
+);
+```
+
+### Font Loading
+
+**ALWAYS load fonts before creating text nodes:**
+
+```typescript
+// Standard Inter font
+await figma.loadFontAsync({ family: "Inter", style: "Regular" });
+await figma.loadFontAsync({ family: "Inter", style: "Medium" });
+await figma.loadFontAsync({ family: "Inter", style: "Semi Bold" });
+
+// Monospace font (for code components)
+await figma.loadFontAsync({ family: "SF Mono", style: "Regular" });
+```
+
+### Integration with code.ts
+
+After creating a generator, add it to `code.ts`:
+
+```typescript
+// 1. Import at top
+import { generateComponentNameComponents } from "./generators/component-name";
+
+// 2. Add to generation sequence
+figma.notify("Generating ComponentName components...");
+nextY = await generateComponentNameComponents(componentsPage, nextY);
+
+// 3. Update closePlugin message
+figma.closePlugin("Generation complete - created ..., ComponentName, ...");
+```
+
+---
+
 ## Generator Pattern
 
 ### Standard Generator Template
