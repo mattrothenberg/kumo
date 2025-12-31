@@ -72,6 +72,10 @@
       "types": "./dist/src/components/dropdown/index.d.ts",
       "import": "./dist/components/dropdown.js"
     },
+    "./components/icon": {
+      "types": "./dist/src/components/icon/index.d.ts",
+      "import": "./dist/components/icon.js"
+    },
     "./components/input": {
       "types": "./dist/src/components/input/index.d.ts",
       "import": "./dist/components/input.js"
@@ -359,6 +363,8 @@
     "build:colors": "tsx scripts/color/build-colors-storybook.ts",
     "figma:sync": "tsx scripts/figma/sync-tokens-to-figma.ts",
     "build:figma-plugin": "esbuild scripts/figma/plugin/code.ts --bundle --outfile=scripts/figma/plugin/code.js --format=iife --target=es2020",
+    "build:icons": "tsx scripts/icon/build-sprite.ts",
+    "fetch:brand-icons": "tsx scripts/icon/fetch-brand-icons.ts",
     "storybook": "pnpm run prebuild && storybook dev -p 6006",
     "build:storybook": "pnpm run prebuild && storybook build",
     "deploy": "pnpm run build:storybook && wrangler deploy",
@@ -381,6 +387,7 @@
   },
   "devDependencies": {
     "@figma/plugin-typings": "1.121.0",
+    "@phosphor-icons/core": "2.1.1",
     "@storybook/addon-a11y": "catalog:",
     "@storybook/addon-docs": "catalog:",
     "@storybook/addon-mcp": "0.1.4",
@@ -409,6 +416,7 @@
     "remark-gfm": "4.0.1",
     "rollup-plugin-preserve-directives": "0.4.0",
     "storybook": "catalog:",
+    "svgo": "4.0.0",
     "tailwindcss": "catalog:",
     "ts-json-schema-generator": "2.4.0",
     "tsx": "catalog:",

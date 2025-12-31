@@ -98,6 +98,7 @@ export default defineConfig(({ mode }) => {
             __dirname,
             "src/components/field/index.ts",
           ),
+          "components/icon": resolve(__dirname, "src/components/icon/index.ts"),
           "components/input": resolve(
             __dirname,
             "src/components/input/index.ts",

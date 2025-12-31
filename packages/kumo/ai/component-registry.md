@@ -1442,6 +1442,372 @@ Field component
 
 ---
 
+### Icon
+
+Icon component variants configuration / export const KUMO_ICON_VARIANTS = { size: { xs: { classes: "size-3", description: "12px - small UI elements", }, sm: { classes: "size-4", description: "16px - standard inline icons", }, base: { classes: "size-5", description: "20px - default size", }, lg: { classes: "size-6", description: "24px - prominent icons", }, xl: { classes: "size-8", description: "32px - hero sections", }, }, } as const; /** Default variant values for Icon component / export const KUMO_ICON_DEFAULT_VARIANTS = { size: "base", } as const; /** Generate className string for icon variants / export function iconVariants({ size = KUMO_ICON_DEFAULT_VARIANTS.size, }: KumoIconVariantsProps = {}) { return cn( // Base styles - fill inherits from className "inline-block shrink-0 fill-current", // Apply size variant KUMO_ICON_VARIANTS.size[size].classes, ); } /\*\* Icon component using SVG sprite with <use> pattern Color is controlled via className (e.g., fill-primary, fill-error). Icons use fill-current by default, inheriting from parent text color. `tsx // Basic usage - inherits parent color <Icon glyph="ph-check" /> // With custom color and size <Icon glyph="ph-arrow-right" className="fill-primary" size="lg" /> // Accessible icon with title <Icon glyph="cf-workers" title="Cloudflare Workers" /> // Error state <Icon glyph="ph-warning" className="fill-error" /> `
+
+**Import:** `import { Icon } from "@cloudflare/kumo";`
+
+**Category:** Other
+
+**Props:**
+
+- `glyph`: IconGlyph (required)
+  Icon glyph identifier (e.g., "ph-check", "cf-workers")
+- `title`: string
+  Accessible title for the icon (makes it non-decorative)
+- `size`: enum [default: base]
+  - `"xs"`: 12px - small UI elements
+  - `"sm"`: 16px - standard inline icons
+  - `"base"`: 20px - default size
+  - `"lg"`: 24px - prominent icons
+  - `"xl"`: 32px - hero sections
+- `children`: ReactNode
+- `onChange`: React.FormEventHandler<SVGSVGElement>
+- `onSubmit`: React.FormEventHandler<SVGSVGElement>
+- `onClick`: React.MouseEventHandler<SVGSVGElement>
+- `className`: string
+- `id`: string
+- `name`: string
+- `type`: string
+- `crossOrigin`: enum
+- `accentHeight`: number | string
+- `accumulate`: enum
+- `additive`: enum
+- `alignmentBaseline`: enum
+- `allowReorder`: enum
+- `alphabetic`: number | string
+- `amplitude`: number | string
+- `arabicForm`: enum
+- `ascent`: number | string
+- `attributeName`: string
+- `attributeType`: string
+- `autoReverse`: Booleanish
+- `azimuth`: number | string
+- `baseFrequency`: number | string
+- `baselineShift`: number | string
+- `baseProfile`: number | string
+- `bbox`: number | string
+- `begin`: number | string
+- `bias`: number | string
+- `by`: number | string
+- `calcMode`: number | string
+- `capHeight`: number | string
+- `clip`: number | string
+- `clipPath`: string
+- `clipPathUnits`: number | string
+- `clipRule`: number | string
+- `colorInterpolation`: number | string
+- `colorInterpolationFilters`: enum
+- `colorProfile`: number | string
+- `colorRendering`: number | string
+- `contentScriptType`: number | string
+- `contentStyleType`: number | string
+- `cursor`: number | string
+- `cx`: number | string
+- `cy`: number | string
+- `d`: string
+- `decelerate`: number | string
+- `descent`: number | string
+- `diffuseConstant`: number | string
+- `direction`: number | string
+- `display`: number | string
+- `divisor`: number | string
+- `dominantBaseline`: enum
+- `dur`: number | string
+- `dx`: number | string
+- `dy`: number | string
+- `edgeMode`: number | string
+- `elevation`: number | string
+- `enableBackground`: number | string
+- `end`: number | string
+- `exponent`: number | string
+- `externalResourcesRequired`: Booleanish
+- `fill`: string
+- `fillOpacity`: number | string
+- `fillRule`: enum
+- `filter`: string
+- `filterRes`: number | string
+- `filterUnits`: number | string
+- `floodColor`: number | string
+- `floodOpacity`: number | string
+- `focusable`: Booleanish | string
+- `fontFamily`: string
+- `fontSize`: number | string
+- `fontSizeAdjust`: number | string
+- `fontStretch`: number | string
+- `fontStyle`: number | string
+- `fontVariant`: number | string
+- `fontWeight`: number | string
+- `format`: number | string
+- `fr`: number | string
+- `from`: number | string
+- `fx`: number | string
+- `fy`: number | string
+- `g1`: number | string
+- `g2`: number | string
+- `glyphName`: number | string
+- `glyphOrientationHorizontal`: number | string
+- `glyphOrientationVertical`: number | string
+- `glyphRef`: number | string
+- `gradientTransform`: string
+- `gradientUnits`: string
+- `hanging`: number | string
+- `horizAdvX`: number | string
+- `horizOriginX`: number | string
+- `href`: string
+- `ideographic`: number | string
+- `imageRendering`: number | string
+- `in2`: number | string
+- `in`: string
+- `intercept`: number | string
+- `k1`: number | string
+- `k2`: number | string
+- `k3`: number | string
+- `k4`: number | string
+- `k`: number | string
+- `kernelMatrix`: number | string
+- `kernelUnitLength`: number | string
+- `kerning`: number | string
+- `keyPoints`: number | string
+- `keySplines`: number | string
+- `keyTimes`: number | string
+- `lengthAdjust`: number | string
+- `letterSpacing`: number | string
+- `lightingColor`: number | string
+- `limitingConeAngle`: number | string
+- `local`: number | string
+- `markerEnd`: string
+- `markerHeight`: number | string
+- `markerMid`: string
+- `markerStart`: string
+- `markerUnits`: number | string
+- `markerWidth`: number | string
+- `mask`: string
+- `maskContentUnits`: number | string
+- `maskUnits`: number | string
+- `mathematical`: number | string
+- `mode`: number | string
+- `numOctaves`: number | string
+- `offset`: number | string
+- `opacity`: number | string
+- `operator`: number | string
+- `order`: number | string
+- `orient`: number | string
+- `orientation`: number | string
+- `origin`: number | string
+- `overflow`: number | string
+- `overlinePosition`: number | string
+- `overlineThickness`: number | string
+- `paintOrder`: number | string
+- `panose1`: number | string
+- `path`: string
+- `pathLength`: number | string
+- `patternContentUnits`: string
+- `patternTransform`: number | string
+- `patternUnits`: string
+- `pointerEvents`: number | string
+- `points`: string
+- `pointsAtX`: number | string
+- `pointsAtY`: number | string
+- `pointsAtZ`: number | string
+- `preserveAlpha`: Booleanish
+- `preserveAspectRatio`: string
+- `primitiveUnits`: number | string
+- `r`: number | string
+- `radius`: number | string
+- `refX`: number | string
+- `refY`: number | string
+- `renderingIntent`: number | string
+- `repeatCount`: number | string
+- `repeatDur`: number | string
+- `requiredExtensions`: number | string
+- `requiredFeatures`: number | string
+- `restart`: number | string
+- `result`: string
+- `rotate`: number | string
+- `rx`: number | string
+- `ry`: number | string
+- `scale`: number | string
+- `seed`: number | string
+- `shapeRendering`: number | string
+- `slope`: number | string
+- `spacing`: number | string
+- `specularConstant`: number | string
+- `specularExponent`: number | string
+- `speed`: number | string
+- `spreadMethod`: string
+- `startOffset`: number | string
+- `stdDeviation`: number | string
+- `stemh`: number | string
+- `stemv`: number | string
+- `stitchTiles`: number | string
+- `stopColor`: string
+- `stopOpacity`: number | string
+- `strikethroughPosition`: number | string
+- `strikethroughThickness`: number | string
+- `string`: number | string
+- `stroke`: string
+- `strokeDasharray`: string | number
+- `strokeDashoffset`: string | number
+- `strokeLinecap`: enum
+- `strokeLinejoin`: enum
+- `strokeMiterlimit`: number | string
+- `strokeOpacity`: number | string
+- `strokeWidth`: number | string
+- `surfaceScale`: number | string
+- `systemLanguage`: number | string
+- `tableValues`: number | string
+- `targetX`: number | string
+- `targetY`: number | string
+- `textAnchor`: enum
+- `textDecoration`: number | string
+- `textLength`: number | string
+- `textRendering`: number | string
+- `to`: number | string
+- `transform`: string
+- `u1`: number | string
+- `u2`: number | string
+- `underlinePosition`: number | string
+- `underlineThickness`: number | string
+- `unicode`: number | string
+- `unicodeBidi`: number | string
+- `unicodeRange`: number | string
+- `unitsPerEm`: number | string
+- `vAlphabetic`: number | string
+- `values`: string
+- `vectorEffect`: number | string
+- `version`: string
+- `vertAdvY`: number | string
+- `vertOriginX`: number | string
+- `vertOriginY`: number | string
+- `vHanging`: number | string
+- `vIdeographic`: number | string
+- `viewBox`: string
+- `viewTarget`: number | string
+- `visibility`: number | string
+- `vMathematical`: number | string
+- `widths`: number | string
+- `wordSpacing`: number | string
+- `writingMode`: number | string
+- `x1`: number | string
+- `x2`: number | string
+- `x`: number | string
+- `xChannelSelector`: string
+- `xHeight`: number | string
+- `xlinkActuate`: string
+- `xlinkArcrole`: string
+- `xlinkHref`: string
+- `xlinkRole`: string
+- `xlinkShow`: string
+- `xlinkTitle`: string
+- `xlinkType`: string
+- `xmlBase`: string
+- `xmlLang`: string
+- `xmlns`: string
+- `xmlnsXlink`: string
+- `xmlSpace`: string
+- `y1`: number | string
+- `y2`: number | string
+- `y`: number | string
+- `yChannelSelector`: string
+- `z`: number | string
+- `zoomAndPan`: string
+
+**Colors (kumo tokens used):**
+
+`fill-error`, `fill-primary`
+
+**Examples:**
+
+```tsx
+<Icon glyph="ph-check" size="base" />
+```
+
+```tsx
+<div className="grid grid-cols-8 gap-4">
+  {ALL_ICON_GLYPHS.map((glyph) => (
+    <div key={glyph} className="flex flex-col items-center gap-2">
+      <Icon glyph={glyph} size="lg" />
+      <span className="text-xs text-muted">{glyph}</span>
+    </div>
+  ))}
+</div>
+```
+
+```tsx
+<div className="flex items-end gap-4">
+  <div className="flex flex-col items-center gap-2">
+    <Icon glyph="ph-check" size="xs" />
+    <span className="text-xs text-muted">xs (12px)</span>
+  </div>
+  <div className="flex flex-col items-center gap-2">
+    <Icon glyph="ph-check" size="sm" />
+    <span className="text-xs text-muted">sm (16px)</span>
+  </div>
+  <div className="flex flex-col items-center gap-2">
+    <Icon glyph="ph-check" size="base" />
+    <span className="text-xs text-muted">base (20px)</span>
+  </div>
+  <div className="flex flex-col items-center gap-2">
+    <Icon glyph="ph-check" size="lg" />
+    <span className="text-xs text-muted">lg (24px)</span>
+  </div>
+  <div className="flex flex-col items-center gap-2">
+    <Icon glyph="ph-check" size="xl" />
+    <span className="text-xs text-muted">xl (32px)</span>
+  </div>
+</div>
+```
+
+```tsx
+<div className="flex gap-4">
+  <div className="flex flex-col items-center gap-2">
+    <Icon glyph="ph-check" title="Success" />
+    <span className="text-xs text-muted">With title (accessible)</span>
+  </div>
+  <div className="flex flex-col items-center gap-2">
+    <Icon glyph="ph-warning" title="Warning" />
+    <span className="text-xs text-muted">Warning icon</span>
+  </div>
+  <div className="flex flex-col items-center gap-2">
+    <Icon glyph="ph-info" title="Information" />
+    <span className="text-xs text-muted">Info icon</span>
+  </div>
+</div>
+```
+
+```tsx
+<div className="flex gap-4">
+  <div className="flex flex-col items-center gap-2">
+    <Icon glyph="ph-check" className="fill-success" size="lg" />
+    <span className="text-xs text-muted">fill-success</span>
+  </div>
+  <div className="flex flex-col items-center gap-2">
+    <Icon glyph="ph-warning" className="fill-warning" size="lg" />
+    <span className="text-xs text-muted">fill-warning</span>
+  </div>
+  <div className="flex flex-col items-center gap-2">
+    <Icon glyph="ph-x" className="fill-error" size="lg" />
+    <span className="text-xs text-muted">fill-error</span>
+  </div>
+  <div className="flex flex-col items-center gap-2">
+    <Icon glyph="ph-info" className="fill-info" size="lg" />
+    <span className="text-xs text-muted">fill-info</span>
+  </div>
+  <div className="flex flex-col items-center gap-2">
+    <Icon glyph="ph-check" className="fill-primary" size="lg" />
+    <span className="text-xs text-muted">fill-primary</span>
+  </div>
+  <div className="flex flex-col items-center gap-2">
+    <Icon glyph="ph-gear" className="fill-muted" size="lg" />
+    <span className="text-xs text-muted">fill-muted</span>
+  </div>
+</div>
+```
+
+---
+
 ### Input
 
 Input component
@@ -3007,10 +3373,6 @@ Tooltip component
 - **Action:** Button, ClipboardText
 - **Input:** Checkbox, Combobox, DateRangePicker, Field, Input, Select, Switch
 - **Overlay:** Dialog, DropdownMenu, Tooltip
-- **Other:** Label, Radio, SensitiveInput, Table
+- **Other:** Icon, Label, Radio, SensitiveInput, Table
 - **Navigation:** MenuBar, Pagination, Tabs
-  <<<<<<< HEAD
-  =======
-- **Other:** SensitiveInput
-  > > > > > > > 5cb9e35 (UI-7428: semantic color changes - hues)
 - **Layout:** Surface

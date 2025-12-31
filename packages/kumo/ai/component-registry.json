@@ -10,13 +10,7 @@
         "variant": {
           "type": "enum",
           "optional": true,
-          "values": [
-            "primary",
-            "secondary",
-            "destructive",
-            "outline",
-            "beta"
-          ],
+          "values": ["primary", "secondary", "destructive", "outline", "beta"],
           "descriptions": {
             "primary": "Default high-emphasis badge for important labels",
             "secondary": "Subtle badge for secondary information",
@@ -77,11 +71,7 @@
         "variant": {
           "type": "enum",
           "optional": true,
-          "values": [
-            "default",
-            "alert",
-            "error"
-          ],
+          "values": ["default", "alert", "error"],
           "descriptions": {
             "default": "Informational banner for general messages",
             "alert": "Warning banner for cautionary messages",
@@ -128,10 +118,7 @@
         "size": {
           "type": "enum",
           "optional": true,
-          "values": [
-            "sm",
-            "base"
-          ],
+          "values": ["sm", "base"],
           "descriptions": {
             "sm": "Compact breadcrumbs for dense UIs",
             "base": "Default breadcrumbs size"
@@ -160,11 +147,7 @@
         "<Breadcrumbs>\n      <Breadcrumbs.Current>Home</Breadcrumbs.Current>\n    </Breadcrumbs>",
         "<Breadcrumbs>\n      <Breadcrumbs.Link href=\"/\">Home</Breadcrumbs.Link>\n      <Breadcrumbs.Separator />\n      <Breadcrumbs.Link href=\"/projects\">Projects</Breadcrumbs.Link>\n      <Breadcrumbs.Separator />\n      <Breadcrumbs.Current>Current Project</Breadcrumbs.Current>\n      <Breadcrumbs.Clipboard text=\"https://example.com/projects/current-project\" />\n    </Breadcrumbs>"
       ],
-      "colors": [
-        "text-disabled",
-        "text-green",
-        "text-muted"
-      ],
+      "colors": ["text-disabled", "text-green", "text-muted"],
       "subComponents": {
         "Link": {
           "name": "Link",
@@ -236,11 +219,7 @@
         "shape": {
           "type": "enum",
           "optional": true,
-          "values": [
-            "base",
-            "square",
-            "circle"
-          ],
+          "values": ["base", "square", "circle"],
           "descriptions": {
             "base": "Default rectangular button shape",
             "square": "Square button for icon-only actions",
@@ -255,12 +234,7 @@
         "size": {
           "type": "enum",
           "optional": true,
-          "values": [
-            "xs",
-            "sm",
-            "base",
-            "lg"
-          ],
+          "values": ["xs", "sm", "base", "lg"],
           "descriptions": {
             "xs": "Extra small button for compact UIs",
             "sm": "Small button for secondary actions",
@@ -335,11 +309,7 @@
         "type": {
           "type": "enum",
           "optional": true,
-          "values": [
-            "submit",
-            "reset",
-            "button"
-          ]
+          "values": ["submit", "reset", "button"]
         },
         "value": {
           "type": "string | string[] | number",
@@ -396,10 +366,7 @@
           "type": "enum",
           "optional": true,
           "description": "Visual variant: \"default\" or \"error\" for validation failures (visual only, no error text)",
-          "values": [
-            "default",
-            "error"
-          ],
+          "values": ["default", "error"],
           "descriptions": {
             "default": "Default checkbox appearance",
             "error": "Error state for validation failures"
@@ -580,11 +547,7 @@
         "size": {
           "type": "enum",
           "optional": true,
-          "values": [
-            "sm",
-            "base",
-            "lg"
-          ],
+          "values": ["sm", "base", "lg"],
           "descriptions": {
             "sm": "Small clipboard text for compact UIs",
             "base": "Default clipboard text size",
@@ -616,10 +579,7 @@
         "<ClipboardText text=\"This is a much longer text that demonstrates how the clipboard text component handles overflow with extended content\" />",
         "<ClipboardText text=\"npx create-cloudflare@latest my-app --template kumo\" size=\"base\" />"
       ],
-      "colors": [
-        "bg-surface",
-        "border-color"
-      ]
+      "colors": ["bg-surface", "border-color"]
     },
     "Code": {
       "name": "Code",
@@ -657,11 +617,7 @@
         "<Code lang=\"bash\" code=\"npm install @cloudflare/kumo\" />",
         "<CodeBlock\n      lang=\"tsx\"\n      code={`<Button variant=\"primary\">\n  Click me\n</Button>`}\n    />"
       ],
-      "colors": [
-        "bg-surface",
-        "border-color",
-        "text-label"
-      ]
+      "colors": ["bg-surface", "border-color", "text-label"]
     },
     "Collapsible": {
       "name": "Collapsible",
@@ -693,10 +649,7 @@
       "examples": [
         "<Collapsible label=\"Click to expand\" open={open} onOpenChange={setOpen}>\n        <Text>\n          This is the collapsible content that can be shown or hidden.\n        </Text>\n      </Collapsible>"
       ],
-      "colors": [
-        "border-color",
-        "text-info"
-      ]
+      "colors": ["border-color", "text-info"]
     },
     "Combobox": {
       "name": "Combobox",
@@ -707,10 +660,7 @@
         "inputSide": {
           "type": "enum",
           "optional": true,
-          "values": [
-            "right",
-            "top"
-          ],
+          "values": ["right", "top"],
           "descriptions": {
             "right": "Input positioned inline to the right of chips",
             "top": "Input positioned above chips"
@@ -906,11 +856,7 @@
         "size": {
           "type": "enum",
           "optional": true,
-          "values": [
-            "sm",
-            "base",
-            "lg"
-          ],
+          "values": ["sm", "base", "lg"],
           "descriptions": {
             "sm": "Compact calendar for tight spaces",
             "base": "Default calendar size",
@@ -926,10 +872,7 @@
         "variant": {
           "type": "enum",
           "optional": true,
-          "values": [
-            "default",
-            "subtle"
-          ],
+          "values": ["default", "subtle"],
           "descriptions": {
             "default": "Default calendar appearance",
             "subtle": "Subtle calendar with minimal background"
@@ -997,12 +940,7 @@
         "size": {
           "type": "enum",
           "optional": true,
-          "values": [
-            "base",
-            "sm",
-            "lg",
-            "xl"
-          ],
+          "values": ["base", "sm", "lg", "xl"],
           "descriptions": {
             "base": "Default dialog width",
             "sm": "Small dialog for simple confirmations",
@@ -1021,11 +959,7 @@
       "examples": [
         "<Dialog.Root>\n      <Dialog.Trigger render={<Button>Open Dialog</Button>} />\n      <Dialog className=\"p-6\">\n        <Dialog.Title className=\"mb-2 text-xl font-semibold\">\n          Dialog Title\n        </Dialog.Title>\n        <Dialog.Description className=\"mb-4\">\n          This is a dialog description with some content.\n        </Dialog.Description>\n        <Dialog.Close render={<Button>Close</Button>} />\n      </Dialog>\n    </Dialog.Root>"
       ],
-      "colors": [
-        "bg-color-3",
-        "bg-surface",
-        "text-surface"
-      ],
+      "colors": ["bg-color-3", "bg-surface", "text-surface"],
       "subComponents": {
         "Root": {
           "name": "Root",
@@ -1148,10 +1082,7 @@
         "variant": {
           "type": "enum",
           "optional": true,
-          "values": [
-            "default",
-            "danger"
-          ],
+          "values": ["default", "danger"],
           "descriptions": {
             "default": "Default dropdown item appearance",
             "danger": "Destructive action item"
@@ -1251,11 +1182,7 @@
         "size": {
           "type": "enum",
           "optional": true,
-          "values": [
-            "sm",
-            "base",
-            "lg"
-          ],
+          "values": ["sm", "base", "lg"],
           "descriptions": {
             "sm": "Compact empty state for smaller containers",
             "base": "Default empty state size",
@@ -1356,11 +1283,1097 @@
         }
       },
       "examples": [],
-      "colors": [
-        "text-error",
-        "text-muted",
-        "text-surface"
-      ]
+      "colors": ["text-error", "text-muted", "text-surface"]
+    },
+    "Icon": {
+      "name": "Icon",
+      "description": "Icon component variants configuration / export const KUMO_ICON_VARIANTS = { size: { xs: { classes: \"size-3\", description: \"12px - small UI elements\", }, sm: { classes: \"size-4\", description: \"16px - standard inline icons\", }, base: { classes: \"size-5\", description: \"20px - default size\", }, lg: { classes: \"size-6\", description: \"24px - prominent icons\", }, xl: { classes: \"size-8\", description: \"32px - hero sections\", }, }, } as const; /** Default variant values for Icon component / export const KUMO_ICON_DEFAULT_VARIANTS = { size: \"base\", } as const; /** Generate className string for icon variants / export function iconVariants({ size = KUMO_ICON_DEFAULT_VARIANTS.size, }: KumoIconVariantsProps = {}) { return cn( // Base styles - fill inherits from className \"inline-block shrink-0 fill-current\", // Apply size variant KUMO_ICON_VARIANTS.size[size].classes, ); } /** Icon component using SVG sprite with <use> pattern Color is controlled via className (e.g., fill-primary, fill-error). Icons use fill-current by default, inheriting from parent text color. ```tsx // Basic usage - inherits parent color <Icon glyph=\"ph-check\" /> // With custom color and size <Icon glyph=\"ph-arrow-right\" className=\"fill-primary\" size=\"lg\" /> // Accessible icon with title <Icon glyph=\"cf-workers\" title=\"Cloudflare Workers\" /> // Error state <Icon glyph=\"ph-warning\" className=\"fill-error\" /> ```",
+      "importPath": "@cloudflare/kumo",
+      "category": "Other",
+      "props": {
+        "glyph": {
+          "type": "IconGlyph",
+          "required": true,
+          "description": "Icon glyph identifier (e.g., \"ph-check\", \"cf-workers\")"
+        },
+        "title": {
+          "type": "string",
+          "optional": true,
+          "description": "Accessible title for the icon (makes it non-decorative)"
+        },
+        "size": {
+          "type": "enum",
+          "optional": true,
+          "values": ["xs", "sm", "base", "lg", "xl"],
+          "descriptions": {
+            "xs": "12px - small UI elements",
+            "sm": "16px - standard inline icons",
+            "base": "20px - default size",
+            "lg": "24px - prominent icons",
+            "xl": "32px - hero sections"
+          },
+          "classes": {
+            "xs": "size-3",
+            "sm": "size-4",
+            "base": "size-5",
+            "lg": "size-6",
+            "xl": "size-8"
+          },
+          "default": "base"
+        },
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "onChange": {
+          "type": "React.FormEventHandler<SVGSVGElement>",
+          "optional": true
+        },
+        "onSubmit": {
+          "type": "React.FormEventHandler<SVGSVGElement>",
+          "optional": true
+        },
+        "onClick": {
+          "type": "React.MouseEventHandler<SVGSVGElement>",
+          "optional": true
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "id": {
+          "type": "string",
+          "optional": true
+        },
+        "name": {
+          "type": "string",
+          "optional": true
+        },
+        "type": {
+          "type": "string",
+          "optional": true
+        },
+        "crossOrigin": {
+          "type": "enum",
+          "optional": true,
+          "values": ["anonymous", "use-credentials", ""]
+        },
+        "accentHeight": {
+          "type": "number | string",
+          "optional": true
+        },
+        "accumulate": {
+          "type": "enum",
+          "optional": true,
+          "values": ["none", "sum"]
+        },
+        "additive": {
+          "type": "enum",
+          "optional": true,
+          "values": ["replace", "sum"]
+        },
+        "alignmentBaseline": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "auto",
+            "baseline",
+            "before-edge",
+            "text-before-edge",
+            "middle",
+            "central",
+            "after-edge",
+            "text-after-edge",
+            "ideographic",
+            "alphabetic",
+            "hanging",
+            "mathematical",
+            "inherit"
+          ]
+        },
+        "allowReorder": {
+          "type": "enum",
+          "optional": true,
+          "values": ["no", "yes"]
+        },
+        "alphabetic": {
+          "type": "number | string",
+          "optional": true
+        },
+        "amplitude": {
+          "type": "number | string",
+          "optional": true
+        },
+        "arabicForm": {
+          "type": "enum",
+          "optional": true,
+          "values": ["initial", "medial", "terminal", "isolated"]
+        },
+        "ascent": {
+          "type": "number | string",
+          "optional": true
+        },
+        "attributeName": {
+          "type": "string",
+          "optional": true
+        },
+        "attributeType": {
+          "type": "string",
+          "optional": true
+        },
+        "autoReverse": {
+          "type": "Booleanish",
+          "optional": true
+        },
+        "azimuth": {
+          "type": "number | string",
+          "optional": true
+        },
+        "baseFrequency": {
+          "type": "number | string",
+          "optional": true
+        },
+        "baselineShift": {
+          "type": "number | string",
+          "optional": true
+        },
+        "baseProfile": {
+          "type": "number | string",
+          "optional": true
+        },
+        "bbox": {
+          "type": "number | string",
+          "optional": true
+        },
+        "begin": {
+          "type": "number | string",
+          "optional": true
+        },
+        "bias": {
+          "type": "number | string",
+          "optional": true
+        },
+        "by": {
+          "type": "number | string",
+          "optional": true
+        },
+        "calcMode": {
+          "type": "number | string",
+          "optional": true
+        },
+        "capHeight": {
+          "type": "number | string",
+          "optional": true
+        },
+        "clip": {
+          "type": "number | string",
+          "optional": true
+        },
+        "clipPath": {
+          "type": "string",
+          "optional": true
+        },
+        "clipPathUnits": {
+          "type": "number | string",
+          "optional": true
+        },
+        "clipRule": {
+          "type": "number | string",
+          "optional": true
+        },
+        "colorInterpolation": {
+          "type": "number | string",
+          "optional": true
+        },
+        "colorInterpolationFilters": {
+          "type": "enum",
+          "optional": true,
+          "values": ["auto", "sRGB", "linearRGB", "inherit"]
+        },
+        "colorProfile": {
+          "type": "number | string",
+          "optional": true
+        },
+        "colorRendering": {
+          "type": "number | string",
+          "optional": true
+        },
+        "contentScriptType": {
+          "type": "number | string",
+          "optional": true
+        },
+        "contentStyleType": {
+          "type": "number | string",
+          "optional": true
+        },
+        "cursor": {
+          "type": "number | string",
+          "optional": true
+        },
+        "cx": {
+          "type": "number | string",
+          "optional": true
+        },
+        "cy": {
+          "type": "number | string",
+          "optional": true
+        },
+        "d": {
+          "type": "string",
+          "optional": true
+        },
+        "decelerate": {
+          "type": "number | string",
+          "optional": true
+        },
+        "descent": {
+          "type": "number | string",
+          "optional": true
+        },
+        "diffuseConstant": {
+          "type": "number | string",
+          "optional": true
+        },
+        "direction": {
+          "type": "number | string",
+          "optional": true
+        },
+        "display": {
+          "type": "number | string",
+          "optional": true
+        },
+        "divisor": {
+          "type": "number | string",
+          "optional": true
+        },
+        "dominantBaseline": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "auto",
+            "use-script",
+            "no-change",
+            "reset-size",
+            "ideographic",
+            "alphabetic",
+            "hanging",
+            "mathematical",
+            "central",
+            "middle",
+            "text-after-edge",
+            "text-before-edge",
+            "inherit"
+          ]
+        },
+        "dur": {
+          "type": "number | string",
+          "optional": true
+        },
+        "dx": {
+          "type": "number | string",
+          "optional": true
+        },
+        "dy": {
+          "type": "number | string",
+          "optional": true
+        },
+        "edgeMode": {
+          "type": "number | string",
+          "optional": true
+        },
+        "elevation": {
+          "type": "number | string",
+          "optional": true
+        },
+        "enableBackground": {
+          "type": "number | string",
+          "optional": true
+        },
+        "end": {
+          "type": "number | string",
+          "optional": true
+        },
+        "exponent": {
+          "type": "number | string",
+          "optional": true
+        },
+        "externalResourcesRequired": {
+          "type": "Booleanish",
+          "optional": true
+        },
+        "fill": {
+          "type": "string",
+          "optional": true
+        },
+        "fillOpacity": {
+          "type": "number | string",
+          "optional": true
+        },
+        "fillRule": {
+          "type": "enum",
+          "optional": true,
+          "values": ["nonzero", "evenodd", "inherit"]
+        },
+        "filter": {
+          "type": "string",
+          "optional": true
+        },
+        "filterRes": {
+          "type": "number | string",
+          "optional": true
+        },
+        "filterUnits": {
+          "type": "number | string",
+          "optional": true
+        },
+        "floodColor": {
+          "type": "number | string",
+          "optional": true
+        },
+        "floodOpacity": {
+          "type": "number | string",
+          "optional": true
+        },
+        "focusable": {
+          "type": "Booleanish | string",
+          "optional": true
+        },
+        "fontFamily": {
+          "type": "string",
+          "optional": true
+        },
+        "fontSize": {
+          "type": "number | string",
+          "optional": true
+        },
+        "fontSizeAdjust": {
+          "type": "number | string",
+          "optional": true
+        },
+        "fontStretch": {
+          "type": "number | string",
+          "optional": true
+        },
+        "fontStyle": {
+          "type": "number | string",
+          "optional": true
+        },
+        "fontVariant": {
+          "type": "number | string",
+          "optional": true
+        },
+        "fontWeight": {
+          "type": "number | string",
+          "optional": true
+        },
+        "format": {
+          "type": "number | string",
+          "optional": true
+        },
+        "fr": {
+          "type": "number | string",
+          "optional": true
+        },
+        "from": {
+          "type": "number | string",
+          "optional": true
+        },
+        "fx": {
+          "type": "number | string",
+          "optional": true
+        },
+        "fy": {
+          "type": "number | string",
+          "optional": true
+        },
+        "g1": {
+          "type": "number | string",
+          "optional": true
+        },
+        "g2": {
+          "type": "number | string",
+          "optional": true
+        },
+        "glyphName": {
+          "type": "number | string",
+          "optional": true
+        },
+        "glyphOrientationHorizontal": {
+          "type": "number | string",
+          "optional": true
+        },
+        "glyphOrientationVertical": {
+          "type": "number | string",
+          "optional": true
+        },
+        "glyphRef": {
+          "type": "number | string",
+          "optional": true
+        },
+        "gradientTransform": {
+          "type": "string",
+          "optional": true
+        },
+        "gradientUnits": {
+          "type": "string",
+          "optional": true
+        },
+        "hanging": {
+          "type": "number | string",
+          "optional": true
+        },
+        "horizAdvX": {
+          "type": "number | string",
+          "optional": true
+        },
+        "horizOriginX": {
+          "type": "number | string",
+          "optional": true
+        },
+        "href": {
+          "type": "string",
+          "optional": true
+        },
+        "ideographic": {
+          "type": "number | string",
+          "optional": true
+        },
+        "imageRendering": {
+          "type": "number | string",
+          "optional": true
+        },
+        "in2": {
+          "type": "number | string",
+          "optional": true
+        },
+        "in": {
+          "type": "string",
+          "optional": true
+        },
+        "intercept": {
+          "type": "number | string",
+          "optional": true
+        },
+        "k1": {
+          "type": "number | string",
+          "optional": true
+        },
+        "k2": {
+          "type": "number | string",
+          "optional": true
+        },
+        "k3": {
+          "type": "number | string",
+          "optional": true
+        },
+        "k4": {
+          "type": "number | string",
+          "optional": true
+        },
+        "k": {
+          "type": "number | string",
+          "optional": true
+        },
+        "kernelMatrix": {
+          "type": "number | string",
+          "optional": true
+        },
+        "kernelUnitLength": {
+          "type": "number | string",
+          "optional": true
+        },
+        "kerning": {
+          "type": "number | string",
+          "optional": true
+        },
+        "keyPoints": {
+          "type": "number | string",
+          "optional": true
+        },
+        "keySplines": {
+          "type": "number | string",
+          "optional": true
+        },
+        "keyTimes": {
+          "type": "number | string",
+          "optional": true
+        },
+        "lengthAdjust": {
+          "type": "number | string",
+          "optional": true
+        },
+        "letterSpacing": {
+          "type": "number | string",
+          "optional": true
+        },
+        "lightingColor": {
+          "type": "number | string",
+          "optional": true
+        },
+        "limitingConeAngle": {
+          "type": "number | string",
+          "optional": true
+        },
+        "local": {
+          "type": "number | string",
+          "optional": true
+        },
+        "markerEnd": {
+          "type": "string",
+          "optional": true
+        },
+        "markerHeight": {
+          "type": "number | string",
+          "optional": true
+        },
+        "markerMid": {
+          "type": "string",
+          "optional": true
+        },
+        "markerStart": {
+          "type": "string",
+          "optional": true
+        },
+        "markerUnits": {
+          "type": "number | string",
+          "optional": true
+        },
+        "markerWidth": {
+          "type": "number | string",
+          "optional": true
+        },
+        "mask": {
+          "type": "string",
+          "optional": true
+        },
+        "maskContentUnits": {
+          "type": "number | string",
+          "optional": true
+        },
+        "maskUnits": {
+          "type": "number | string",
+          "optional": true
+        },
+        "mathematical": {
+          "type": "number | string",
+          "optional": true
+        },
+        "mode": {
+          "type": "number | string",
+          "optional": true
+        },
+        "numOctaves": {
+          "type": "number | string",
+          "optional": true
+        },
+        "offset": {
+          "type": "number | string",
+          "optional": true
+        },
+        "opacity": {
+          "type": "number | string",
+          "optional": true
+        },
+        "operator": {
+          "type": "number | string",
+          "optional": true
+        },
+        "order": {
+          "type": "number | string",
+          "optional": true
+        },
+        "orient": {
+          "type": "number | string",
+          "optional": true
+        },
+        "orientation": {
+          "type": "number | string",
+          "optional": true
+        },
+        "origin": {
+          "type": "number | string",
+          "optional": true
+        },
+        "overflow": {
+          "type": "number | string",
+          "optional": true
+        },
+        "overlinePosition": {
+          "type": "number | string",
+          "optional": true
+        },
+        "overlineThickness": {
+          "type": "number | string",
+          "optional": true
+        },
+        "paintOrder": {
+          "type": "number | string",
+          "optional": true
+        },
+        "panose1": {
+          "type": "number | string",
+          "optional": true
+        },
+        "path": {
+          "type": "string",
+          "optional": true
+        },
+        "pathLength": {
+          "type": "number | string",
+          "optional": true
+        },
+        "patternContentUnits": {
+          "type": "string",
+          "optional": true
+        },
+        "patternTransform": {
+          "type": "number | string",
+          "optional": true
+        },
+        "patternUnits": {
+          "type": "string",
+          "optional": true
+        },
+        "pointerEvents": {
+          "type": "number | string",
+          "optional": true
+        },
+        "points": {
+          "type": "string",
+          "optional": true
+        },
+        "pointsAtX": {
+          "type": "number | string",
+          "optional": true
+        },
+        "pointsAtY": {
+          "type": "number | string",
+          "optional": true
+        },
+        "pointsAtZ": {
+          "type": "number | string",
+          "optional": true
+        },
+        "preserveAlpha": {
+          "type": "Booleanish",
+          "optional": true
+        },
+        "preserveAspectRatio": {
+          "type": "string",
+          "optional": true
+        },
+        "primitiveUnits": {
+          "type": "number | string",
+          "optional": true
+        },
+        "r": {
+          "type": "number | string",
+          "optional": true
+        },
+        "radius": {
+          "type": "number | string",
+          "optional": true
+        },
+        "refX": {
+          "type": "number | string",
+          "optional": true
+        },
+        "refY": {
+          "type": "number | string",
+          "optional": true
+        },
+        "renderingIntent": {
+          "type": "number | string",
+          "optional": true
+        },
+        "repeatCount": {
+          "type": "number | string",
+          "optional": true
+        },
+        "repeatDur": {
+          "type": "number | string",
+          "optional": true
+        },
+        "requiredExtensions": {
+          "type": "number | string",
+          "optional": true
+        },
+        "requiredFeatures": {
+          "type": "number | string",
+          "optional": true
+        },
+        "restart": {
+          "type": "number | string",
+          "optional": true
+        },
+        "result": {
+          "type": "string",
+          "optional": true
+        },
+        "rotate": {
+          "type": "number | string",
+          "optional": true
+        },
+        "rx": {
+          "type": "number | string",
+          "optional": true
+        },
+        "ry": {
+          "type": "number | string",
+          "optional": true
+        },
+        "scale": {
+          "type": "number | string",
+          "optional": true
+        },
+        "seed": {
+          "type": "number | string",
+          "optional": true
+        },
+        "shapeRendering": {
+          "type": "number | string",
+          "optional": true
+        },
+        "slope": {
+          "type": "number | string",
+          "optional": true
+        },
+        "spacing": {
+          "type": "number | string",
+          "optional": true
+        },
+        "specularConstant": {
+          "type": "number | string",
+          "optional": true
+        },
+        "specularExponent": {
+          "type": "number | string",
+          "optional": true
+        },
+        "speed": {
+          "type": "number | string",
+          "optional": true
+        },
+        "spreadMethod": {
+          "type": "string",
+          "optional": true
+        },
+        "startOffset": {
+          "type": "number | string",
+          "optional": true
+        },
+        "stdDeviation": {
+          "type": "number | string",
+          "optional": true
+        },
+        "stemh": {
+          "type": "number | string",
+          "optional": true
+        },
+        "stemv": {
+          "type": "number | string",
+          "optional": true
+        },
+        "stitchTiles": {
+          "type": "number | string",
+          "optional": true
+        },
+        "stopColor": {
+          "type": "string",
+          "optional": true
+        },
+        "stopOpacity": {
+          "type": "number | string",
+          "optional": true
+        },
+        "strikethroughPosition": {
+          "type": "number | string",
+          "optional": true
+        },
+        "strikethroughThickness": {
+          "type": "number | string",
+          "optional": true
+        },
+        "string": {
+          "type": "number | string",
+          "optional": true
+        },
+        "stroke": {
+          "type": "string",
+          "optional": true
+        },
+        "strokeDasharray": {
+          "type": "string | number",
+          "optional": true
+        },
+        "strokeDashoffset": {
+          "type": "string | number",
+          "optional": true
+        },
+        "strokeLinecap": {
+          "type": "enum",
+          "optional": true,
+          "values": ["butt", "round", "square", "inherit"]
+        },
+        "strokeLinejoin": {
+          "type": "enum",
+          "optional": true,
+          "values": ["miter", "round", "bevel", "inherit"]
+        },
+        "strokeMiterlimit": {
+          "type": "number | string",
+          "optional": true
+        },
+        "strokeOpacity": {
+          "type": "number | string",
+          "optional": true
+        },
+        "strokeWidth": {
+          "type": "number | string",
+          "optional": true
+        },
+        "surfaceScale": {
+          "type": "number | string",
+          "optional": true
+        },
+        "systemLanguage": {
+          "type": "number | string",
+          "optional": true
+        },
+        "tableValues": {
+          "type": "number | string",
+          "optional": true
+        },
+        "targetX": {
+          "type": "number | string",
+          "optional": true
+        },
+        "targetY": {
+          "type": "number | string",
+          "optional": true
+        },
+        "textAnchor": {
+          "type": "enum",
+          "optional": true,
+          "values": ["start", "middle", "end", "inherit"]
+        },
+        "textDecoration": {
+          "type": "number | string",
+          "optional": true
+        },
+        "textLength": {
+          "type": "number | string",
+          "optional": true
+        },
+        "textRendering": {
+          "type": "number | string",
+          "optional": true
+        },
+        "to": {
+          "type": "number | string",
+          "optional": true
+        },
+        "transform": {
+          "type": "string",
+          "optional": true
+        },
+        "u1": {
+          "type": "number | string",
+          "optional": true
+        },
+        "u2": {
+          "type": "number | string",
+          "optional": true
+        },
+        "underlinePosition": {
+          "type": "number | string",
+          "optional": true
+        },
+        "underlineThickness": {
+          "type": "number | string",
+          "optional": true
+        },
+        "unicode": {
+          "type": "number | string",
+          "optional": true
+        },
+        "unicodeBidi": {
+          "type": "number | string",
+          "optional": true
+        },
+        "unicodeRange": {
+          "type": "number | string",
+          "optional": true
+        },
+        "unitsPerEm": {
+          "type": "number | string",
+          "optional": true
+        },
+        "vAlphabetic": {
+          "type": "number | string",
+          "optional": true
+        },
+        "values": {
+          "type": "string",
+          "optional": true
+        },
+        "vectorEffect": {
+          "type": "number | string",
+          "optional": true
+        },
+        "version": {
+          "type": "string",
+          "optional": true
+        },
+        "vertAdvY": {
+          "type": "number | string",
+          "optional": true
+        },
+        "vertOriginX": {
+          "type": "number | string",
+          "optional": true
+        },
+        "vertOriginY": {
+          "type": "number | string",
+          "optional": true
+        },
+        "vHanging": {
+          "type": "number | string",
+          "optional": true
+        },
+        "vIdeographic": {
+          "type": "number | string",
+          "optional": true
+        },
+        "viewBox": {
+          "type": "string",
+          "optional": true
+        },
+        "viewTarget": {
+          "type": "number | string",
+          "optional": true
+        },
+        "visibility": {
+          "type": "number | string",
+          "optional": true
+        },
+        "vMathematical": {
+          "type": "number | string",
+          "optional": true
+        },
+        "widths": {
+          "type": "number | string",
+          "optional": true
+        },
+        "wordSpacing": {
+          "type": "number | string",
+          "optional": true
+        },
+        "writingMode": {
+          "type": "number | string",
+          "optional": true
+        },
+        "x1": {
+          "type": "number | string",
+          "optional": true
+        },
+        "x2": {
+          "type": "number | string",
+          "optional": true
+        },
+        "x": {
+          "type": "number | string",
+          "optional": true
+        },
+        "xChannelSelector": {
+          "type": "string",
+          "optional": true
+        },
+        "xHeight": {
+          "type": "number | string",
+          "optional": true
+        },
+        "xlinkActuate": {
+          "type": "string",
+          "optional": true
+        },
+        "xlinkArcrole": {
+          "type": "string",
+          "optional": true
+        },
+        "xlinkHref": {
+          "type": "string",
+          "optional": true
+        },
+        "xlinkRole": {
+          "type": "string",
+          "optional": true
+        },
+        "xlinkShow": {
+          "type": "string",
+          "optional": true
+        },
+        "xlinkTitle": {
+          "type": "string",
+          "optional": true
+        },
+        "xlinkType": {
+          "type": "string",
+          "optional": true
+        },
+        "xmlBase": {
+          "type": "string",
+          "optional": true
+        },
+        "xmlLang": {
+          "type": "string",
+          "optional": true
+        },
+        "xmlns": {
+          "type": "string",
+          "optional": true
+        },
+        "xmlnsXlink": {
+          "type": "string",
+          "optional": true
+        },
+        "xmlSpace": {
+          "type": "string",
+          "optional": true
+        },
+        "y1": {
+          "type": "number | string",
+          "optional": true
+        },
+        "y2": {
+          "type": "number | string",
+          "optional": true
+        },
+        "y": {
+          "type": "number | string",
+          "optional": true
+        },
+        "yChannelSelector": {
+          "type": "string",
+          "optional": true
+        },
+        "z": {
+          "type": "number | string",
+          "optional": true
+        },
+        "zoomAndPan": {
+          "type": "string",
+          "optional": true
+        }
+      },
+      "examples": [
+        "<Icon glyph=\"ph-check\" size=\"base\" />",
+        "<div className=\"grid grid-cols-8 gap-4\">\n      {ALL_ICON_GLYPHS.map((glyph) => (\n        <div key={glyph} className=\"flex flex-col items-center gap-2\">\n          <Icon glyph={glyph} size=\"lg\" />\n          <span className=\"text-xs text-muted\">{glyph}</span>\n        </div>\n      ))}\n    </div>",
+        "<div className=\"flex items-end gap-4\">\n      <div className=\"flex flex-col items-center gap-2\">\n        <Icon glyph=\"ph-check\" size=\"xs\" />\n        <span className=\"text-xs text-muted\">xs (12px)</span>\n      </div>\n      <div className=\"flex flex-col items-center gap-2\">\n        <Icon glyph=\"ph-check\" size=\"sm\" />\n        <span className=\"text-xs text-muted\">sm (16px)</span>\n      </div>\n      <div className=\"flex flex-col items-center gap-2\">\n        <Icon glyph=\"ph-check\" size=\"base\" />\n        <span className=\"text-xs text-muted\">base (20px)</span>\n      </div>\n      <div className=\"flex flex-col items-center gap-2\">\n        <Icon glyph=\"ph-check\" size=\"lg\" />\n        <span className=\"text-xs text-muted\">lg (24px)</span>\n      </div>\n      <div className=\"flex flex-col items-center gap-2\">\n        <Icon glyph=\"ph-check\" size=\"xl\" />\n        <span className=\"text-xs text-muted\">xl (32px)</span>\n      </div>\n    </div>",
+        "<div className=\"flex gap-4\">\n      <div className=\"flex flex-col items-center gap-2\">\n        <Icon glyph=\"ph-check\" title=\"Success\" />\n        <span className=\"text-xs text-muted\">With title (accessible)</span>\n      </div>\n      <div className=\"flex flex-col items-center gap-2\">\n        <Icon glyph=\"ph-warning\" title=\"Warning\" />\n        <span className=\"text-xs text-muted\">Warning icon</span>\n      </div>\n      <div className=\"flex flex-col items-center gap-2\">\n        <Icon glyph=\"ph-info\" title=\"Information\" />\n        <span className=\"text-xs text-muted\">Info icon</span>\n      </div>\n    </div>",
+        "<div className=\"flex gap-4\">\n      <div className=\"flex flex-col items-center gap-2\">\n        <Icon glyph=\"ph-check\" className=\"fill-success\" size=\"lg\" />\n        <span className=\"text-xs text-muted\">fill-success</span>\n      </div>\n      <div className=\"flex flex-col items-center gap-2\">\n        <Icon glyph=\"ph-warning\" className=\"fill-warning\" size=\"lg\" />\n        <span className=\"text-xs text-muted\">fill-warning</span>\n      </div>\n      <div className=\"flex flex-col items-center gap-2\">\n        <Icon glyph=\"ph-x\" className=\"fill-error\" size=\"lg\" />\n        <span className=\"text-xs text-muted\">fill-error</span>\n      </div>\n      <div className=\"flex flex-col items-center gap-2\">\n        <Icon glyph=\"ph-info\" className=\"fill-info\" size=\"lg\" />\n        <span className=\"text-xs text-muted\">fill-info</span>\n      </div>\n      <div className=\"flex flex-col items-center gap-2\">\n        <Icon glyph=\"ph-check\" className=\"fill-primary\" size=\"lg\" />\n        <span className=\"text-xs text-muted\">fill-primary</span>\n      </div>\n      <div className=\"flex flex-col items-center gap-2\">\n        <Icon glyph=\"ph-gear\" className=\"fill-muted\" size=\"lg\" />\n        <span className=\"text-xs text-muted\">fill-muted</span>\n      </div>\n    </div>"
+      ],
+      "colors": ["fill-error", "fill-primary"]
     },
     "Input": {
       "name": "Input",
@@ -1391,12 +2404,7 @@
         "size": {
           "type": "enum",
           "optional": true,
-          "values": [
-            "xs",
-            "sm",
-            "base",
-            "lg"
-          ],
+          "values": ["xs", "sm", "base", "lg"],
           "descriptions": {
             "xs": "Extra small input for compact UIs",
             "sm": "Small input for secondary fields",
@@ -1414,10 +2422,7 @@
         "variant": {
           "type": "enum",
           "optional": true,
-          "values": [
-            "default",
-            "error"
-          ],
+          "values": ["default", "error"],
           "descriptions": {
             "default": "Default input appearance",
             "error": "Error state for validation failures"
@@ -1493,10 +2498,7 @@
         "<div className=\"flex flex-col gap-4\">\n      <Label>Default Label</Label>\n      <Label showOptional>Optional Label</Label>\n      <Label tooltip=\"More information\">Label with Tooltip</Label>\n      <Label showOptional tooltip=\"Optional field info\">\n        Optional with Tooltip\n      </Label>\n    </div>",
         "<div className=\"flex max-w-md flex-col gap-4\">\n      <Input label=\"Full Name\" placeholder=\"John Doe\" />\n      <Input\n        label=\"Email\"\n        labelTooltip=\"We'll send your receipt here\"\n        placeholder=\"john@example.com\"\n        type=\"email\"\n      />\n      <Input label=\"Company\" required={false} placeholder=\"Acme Inc.\" />\n      <Input\n        label=\"Notes\"\n        required={false}\n        labelTooltip=\"Any additional information you'd like to share\"\n        placeholder=\"Tell us more...\"\n      />\n    </div>"
       ],
-      "colors": [
-        "text-label",
-        "text-surface"
-      ]
+      "colors": ["text-label", "text-surface"]
     },
     "LayerCard": {
       "name": "LayerCard",
@@ -1549,11 +2551,7 @@
         "size": {
           "type": "enum",
           "optional": true,
-          "values": [
-            "sm",
-            "base",
-            "lg"
-          ],
+          "values": ["sm", "base", "lg"],
           "descriptions": {
             "sm": "Small loader for inline use",
             "base": "Default loader size",
@@ -1594,11 +2592,7 @@
         }
       },
       "examples": [],
-      "colors": [
-        "bg-color",
-        "bg-surface",
-        "border-color"
-      ]
+      "colors": ["bg-color", "bg-surface", "border-color"]
     },
     "Meter": {
       "name": "Meter",
@@ -1643,11 +2637,7 @@
         "<Meter label={Progress} value={50} max={100} />",
         "<div className=\"flex w-64 flex-col gap-4\">\n      <Meter label=\"Low\" value={25} max={100} />\n      <Meter label=\"Medium\" value={50} max={100} />\n      <Meter label=\"High\" value={75} max={100} />\n      <Meter label=\"Complete\" value={100} max={100} />\n    </div>"
       ],
-      "colors": [
-        "bg-color",
-        "text-label",
-        "text-surface"
-      ]
+      "colors": ["bg-color", "text-label", "text-surface"]
     },
     "PageHeader": {
       "name": "PageHeader",
@@ -1658,11 +2648,7 @@
         "spacing": {
           "type": "enum",
           "optional": true,
-          "values": [
-            "compact",
-            "base",
-            "relaxed"
-          ],
+          "values": ["compact", "base", "relaxed"],
           "descriptions": {
             "compact": "Compact spacing between header elements",
             "base": "Default spacing between header elements",
@@ -1715,11 +2701,7 @@
         "<PageHeader\n      breadcrumbs={\n        <Breadcrumbs>\n          <Breadcrumbs.Link href=\"/\">Home</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Link href=\"/products\">Products</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Current>Page title</Breadcrumbs.Current>\n        </Breadcrumbs>\n      }\n      title=\"Page title\"\n      description=\"Action-led, value-oriented description of what this page does. Optional second sentence with use cases or prerequisites.\"\n    />",
         "<PageHeader\n      breadcrumbs={\n        <Breadcrumbs>\n          <Breadcrumbs.Link href=\"/\">Home</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Link href=\"/products\">Products</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Current>Page title</Breadcrumbs.Current>\n        </Breadcrumbs>\n      }\n      title=\"Page title\"\n      description=\"Action-led, value-oriented description of what this page does. Optional second sentence with use cases or prerequisites.\"\n      tabs={[\n        { label: \"Overview\", value: \"overview\" },\n        { label: \"Analytics\", value: \"analytics\" },\n        { label: \"Settings\", value: \"settings\" },\n      ]}\n      defaultTab=\"overview\"\n    >\n      <Button variant=\"outline\" size=\"sm\">\n        Export\n      </Button>\n      <Button variant=\"primary\" size=\"sm\">\n        <PlusIcon size={16} />\n        New Item\n      </Button>\n    </PageHeader>"
       ],
-      "colors": [
-        "border-color",
-        "text-muted",
-        "text-surface"
-      ]
+      "colors": ["border-color", "text-muted", "text-surface"]
     },
     "Pagination": {
       "name": "Pagination",
@@ -1730,10 +2712,7 @@
         "controls": {
           "type": "enum",
           "optional": true,
-          "values": [
-            "full",
-            "simple"
-          ],
+          "values": ["full", "simple"],
           "descriptions": {
             "full": "Full pagination controls with first, previous, page input, next, and last buttons",
             "simple": "Simple pagination controls with only previous and next buttons"
@@ -1763,95 +2742,7 @@
         "<Pagination page={5} perPage={10} totalCount={100} setPage=\"() => {}\" />",
         "<Pagination page={5} perPage={10} totalCount={100} setPage=\"() => {}\" controls=\"simple\" />"
       ],
-      "colors": [
-        "text-label"
-      ]
-    },
-    "Radio": {
-      "name": "Radio",
-      "description": "Radio component",
-      "importPath": "@cloudflare/kumo",
-      "category": "Other",
-      "props": {
-        "legend": {
-          "type": "string",
-          "required": true,
-          "description": "Legend text for the group (required for accessibility)"
-        },
-        "children": {
-          "type": "ReactNode",
-          "optional": true,
-          "description": "Child Radio.Item components"
-        },
-        "orientation": {
-          "type": "enum",
-          "optional": true,
-          "description": "Layout direction of the radio items",
-          "values": [
-            "vertical",
-            "horizontal"
-          ]
-        },
-        "error": {
-          "type": "string",
-          "optional": true,
-          "description": "Error message for the group"
-        },
-        "description": {
-          "type": "ReactNode",
-          "optional": true,
-          "description": "Helper text for the group"
-        },
-        "value": {
-          "type": "string",
-          "optional": true,
-          "description": "Value of the radio that should be selected (controlled)"
-        },
-        "disabled": {
-          "type": "boolean",
-          "optional": true,
-          "description": "Whether all radios in the group are disabled"
-        },
-        "controlPosition": {
-          "type": "RadioControlPosition",
-          "optional": true,
-          "description": "Position of radio control relative to label: \"start\" (default) puts radio before label, \"end\" puts label before radio"
-        },
-        "name": {
-          "type": "string",
-          "optional": true,
-          "description": "Form submission name for the radio group"
-        },
-        "className": {
-          "type": "string",
-          "optional": true,
-          "description": "Additional CSS classes"
-        }
-      },
-      "examples": [
-        "<Radio.Group legend=\"Notification preference\" defaultValue=\"email\">\n      <Radio.Item label=\"Email\" value=\"email\" />\n      <Radio.Item label=\"SMS\" value=\"sms\" />\n      <Radio.Item label=\"Push notification\" value=\"push\" />\n    </Radio.Group>",
-        "<div className=\"flex flex-col gap-4\">\n      {Object.keys(KUMO_RADIO_VARIANTS.variant).map((variant) => (\n        <div\n          key={variant}\n          className=\"border border-dotted border-color bg-surface p-4\"\n        >\n          <div className=\"mb-2 font-sans text-sm leading-5 font-light tracking-wide text-muted uppercase\">\n            {variant}\n          </div>\n          <Radio.Group legend=\"Choose an option\" defaultValue=\"a\">\n            <Radio.Item\n              label=\"Option A\"\n              value=\"a\"\n              variant={variant as \"default\" | \"error\"}\n            />\n            <Radio.Item\n              label=\"Option B\"\n              value=\"b\"\n              variant={variant as \"default\" | \"error\"}\n            />\n          </Radio.Group>\n        </div>\n      ))}\n    </div>",
-        "<Radio.Group\n      legend=\"Size\"\n      orientation=\"horizontal\"\n      defaultValue=\"md\"\n      description=\"Choose the size that works best for your needs\"\n    >\n      <Radio.Item label=\"Small\" value=\"sm\" />\n      <Radio.Item label=\"Medium\" value=\"md\" />\n      <Radio.Item label=\"Large\" value=\"lg\" />\n      <Radio.Item label=\"Extra Large\" value=\"xl\" />\n    </Radio.Group>",
-        "<div className=\"flex flex-col gap-8\">\n      <Radio.Group\n        legend=\"Entirely disabled group\"\n        disabled\n        defaultValue=\"free\"\n      >\n        <Radio.Item label=\"Free\" value=\"free\" />\n        <Radio.Item label=\"Pro\" value=\"pro\" />\n        <Radio.Item label=\"Enterprise\" value=\"enterprise\" />\n      </Radio.Group>\n\n      <Radio.Group legend=\"Individual disabled items\" defaultValue=\"available\">\n        <Radio.Item label=\"Available option\" value=\"available\" />\n        <Radio.Item label=\"Unavailable option\" value=\"unavailable\" disabled />\n        <Radio.Item label=\"Another available\" value=\"another\" />\n      </Radio.Group>\n    </div>",
-        "<Radio.Group\n      legend=\"Payment method\"\n      error=\"Please select a payment method to continue\"\n    >\n      <Radio.Item label=\"Credit Card\" value=\"card\" />\n      <Radio.Item label=\"PayPal\" value=\"paypal\" />\n      <Radio.Item label=\"Bank Transfer\" value=\"bank\" />\n    </Radio.Group>",
-        "<Radio.Group\n      legend=\"Account type\"\n      description=\"Choose the account type that best fits your needs. You can change this later in settings.\"\n      defaultValue=\"personal\"\n    >\n      <Radio.Item label=\"Personal\" value=\"personal\" />\n      <Radio.Item label=\"Business\" value=\"business\" />\n      <Radio.Item label=\"Enterprise\" value=\"enterprise\" />\n    </Radio.Group>",
-        "<Radio.Group\n      legend=\"Subscription tier\"\n      description=\"Select a plan to get started\"\n      error=\"A subscription tier is required\"\n    >\n      <Radio.Item label=\"Starter\" value=\"starter\" />\n      <Radio.Item label=\"Professional\" value=\"professional\" />\n      <Radio.Item label=\"Enterprise\" value=\"enterprise\" />\n    </Radio.Group>",
-        "<Radio.Group\n      legend=\"Preferences\"\n      controlPosition=\"end\"\n      defaultValue=\"option1\"\n    >\n      <Radio.Item label=\"Label appears before radio\" value=\"option1\" />\n      <Radio.Item label=\"This layout may suit RTL languages\" value=\"option2\" />\n      <Radio.Item label=\"Or specific design requirements\" value=\"option3\" />\n    </Radio.Group>",
-        "<div className=\"flex flex-col gap-4\">\n        <Radio.Group\n          legend=\"Contact preference\"\n          description=\"Controlled state - selected value shown below\"\n          value={value}\n          onValueChange={setValue}\n        >\n          <Radio.Item label=\"Email\" value=\"email\" />\n          <Radio.Item label=\"Phone\" value=\"phone\" />\n          <Radio.Item label=\"Mail\" value=\"mail\" />\n        </Radio.Group>\n        <div className=\"rounded-md bg-surface-elevated p-4\">\n          <div className=\"mb-2 text-sm font-medium text-surface\">Selected:</div>\n          <code className=\"text-sm text-muted\">\"{value}\"</code>\n        </div>\n      </div>",
-        "<div className=\"flex flex-col gap-8\">\n      {/* English - Control at start: Radio → Label */}\n      <div>\n        <Radio.Group\n          legend=\"English (Radio → Label)\"\n          controlPosition=\"start\"\n          defaultValue=\"email\"\n        >\n          <Radio.Item label=\"Email notifications\" value=\"email\" />\n          <Radio.Item label=\"SMS notifications\" value=\"sms\" />\n          <Radio.Item label=\"Push notifications\" value=\"push\" />\n          <Radio.Item label=\"In-app notifications\" value=\"in-app\" disabled />\n        </Radio.Group>\n      </div>\n\n      {/* Spanish - Control at end: Label → Radio */}\n      <div>\n        <Radio.Group\n          legend=\"Español (Etiqueta → Radio)\"\n          controlPosition=\"end\"\n          defaultValue=\"email\"\n        >\n          <Radio.Item\n            label=\"Notificaciones por correo electrónico\"\n            value=\"email\"\n          />\n          <Radio.Item label=\"Notificaciones por SMS\" value=\"sms\" />\n          <Radio.Item label=\"Notificaciones push\" value=\"push\" />\n          <Radio.Item\n            label=\"Notificaciones en la aplicación\"\n            value=\"in-app\"\n            disabled\n          />\n        </Radio.Group>\n      </div>\n    </div>",
-        "<div className=\"flex flex-col gap-8\">\n      <Radio.Group\n        legend=\"Vertical (default)\"\n        orientation=\"vertical\"\n        defaultValue=\"a\"\n      >\n        <Radio.Item label=\"Option A\" value=\"a\" />\n        <Radio.Item label=\"Option B\" value=\"b\" />\n        <Radio.Item label=\"Option C\" value=\"c\" />\n      </Radio.Group>\n\n      <Radio.Group\n        legend=\"Horizontal\"\n        orientation=\"horizontal\"\n        defaultValue=\"a\"\n      >\n        <Radio.Item label=\"Option A\" value=\"a\" />\n        <Radio.Item label=\"Option B\" value=\"b\" />\n        <Radio.Item label=\"Option C\" value=\"c\" />\n      </Radio.Group>\n    </div>"
-      ],
-      "colors": [
-        "bg-surface",
-        "bg-surface-inverse",
-        "border-border",
-        "ring-active",
-        "ring-border",
-        "ring-destructive",
-        "text-error",
-        "text-muted",
-        "text-surface"
-      ]
+      "colors": ["text-label"]
     },
     "Select": {
       "name": "Select",
@@ -2095,13 +2986,8 @@
           "description": "Child elements"
         }
       },
-      "examples": [
-        "<Surface  />"
-      ],
-      "colors": [
-        "bg-surface",
-        "ring-border"
-      ]
+      "examples": ["<Surface  />"],
+      "colors": ["ring-border"]
     },
     "Switch": {
       "name": "Switch",
@@ -2113,10 +2999,7 @@
           "type": "enum",
           "optional": true,
           "description": "Visual variant: \"default\" or \"error\" for validation failures (visual only, no error text)",
-          "values": [
-            "default",
-            "error"
-          ],
+          "values": ["default", "error"],
           "descriptions": {
             "default": "Default switch appearance",
             "error": "Error state for validation failures"
@@ -2149,11 +3032,7 @@
         "size": {
           "type": "enum",
           "optional": true,
-          "values": [
-            "sm",
-            "base",
-            "lg"
-          ],
+          "values": ["sm", "base", "lg"],
           "descriptions": {
             "sm": "Small switch for compact UIs",
             "base": "Default switch size",
@@ -2185,11 +3064,7 @@
         "type": {
           "type": "enum",
           "optional": true,
-          "values": [
-            "submit",
-            "reset",
-            "button"
-          ]
+          "values": ["submit", "reset", "button"]
         },
         "value": {
           "type": "string | string[] | number",
@@ -2302,10 +3177,7 @@
       "props": {
         "layout": {
           "type": "enum",
-          "values": [
-            "auto",
-            "fixed"
-          ],
+          "values": ["auto", "fixed"],
           "default": "auto",
           "descriptions": {
             "auto": "Auto table layout - columns resize based on content",
@@ -2314,10 +3186,7 @@
         },
         "variant": {
           "type": "enum",
-          "values": [
-            "default",
-            "selected"
-          ],
+          "values": ["default", "selected"],
           "default": "default",
           "descriptions": {
             "default": "Default row variant",
@@ -2433,10 +3302,7 @@
         "variant": {
           "type": "enum",
           "optional": true,
-          "values": [
-            "segmented",
-            "underline"
-          ],
+          "values": ["segmented", "underline"],
           "default": "segmented"
         },
         "onValueChange": {
@@ -2512,12 +3378,7 @@
           "type": "enum",
           "optional": true,
           "description": "Text size (only applies to body/secondary/success/error variants)",
-          "values": [
-            "xs",
-            "sm",
-            "base",
-            "lg"
-          ],
+          "values": ["xs", "sm", "base", "lg"],
           "descriptions": {
             "xs": "Extra small text",
             "sm": "Small text",
@@ -2564,12 +3425,7 @@
         "<Text size=\"lg\">Sample text</Text>",
         "<Text bold={true}>Bold text</Text>"
       ],
-      "colors": [
-        "text-error",
-        "text-info",
-        "text-muted",
-        "text-surface"
-      ]
+      "colors": ["text-error", "text-info", "text-muted", "text-surface"]
     },
     "Toasty": {
       "name": "Toasty",
@@ -2613,12 +3469,7 @@
         "side": {
           "type": "enum",
           "optional": true,
-          "values": [
-            "top",
-            "bottom",
-            "left",
-            "right"
-          ],
+          "values": ["top", "bottom", "left", "right"],
           "descriptions": {
             "top": "Tooltip appears above the trigger",
             "bottom": "Tooltip appears below the trigger",
@@ -2636,37 +3487,15 @@
       "examples": [
         "<Tooltip content=\"This is a tooltip\" asChild>\n      <Button>Hover me</Button>\n    </Tooltip>"
       ],
-      "colors": [
-        "bg-black-icon",
-        "fill-black-icon",
-        "fill-icon-path"
-      ]
+      "colors": ["bg-black-icon", "fill-black-icon", "fill-icon-path"]
     }
   },
   "search": {
     "byCategory": {
-      "Display": [
-        "Badge",
-        "Code",
-        "Collapsible",
-        "LayerCard",
-        "Meter",
-        "Text"
-      ],
-      "Feedback": [
-        "Banner",
-        "Loader",
-        "Toasty"
-      ],
-      "Block": [
-        "Breadcrumbs",
-        "Empty",
-        "PageHeader"
-      ],
-      "Action": [
-        "Button",
-        "ClipboardText"
-      ],
+      "Display": ["Badge", "Code", "Collapsible", "LayerCard", "Meter", "Text"],
+      "Feedback": ["Banner", "Loader", "Toasty"],
+      "Block": ["Breadcrumbs", "Empty", "PageHeader"],
+      "Action": ["Button", "ClipboardText"],
       "Input": [
         "Checkbox",
         "Combobox",
@@ -2676,25 +3505,10 @@
         "Select",
         "Switch"
       ],
-      "Overlay": [
-        "Dialog",
-        "DropdownMenu",
-        "Tooltip"
-      ],
-      "Other": [
-        "Label",
-        "Radio",
-        "SensitiveInput",
-        "Table"
-      ],
-      "Navigation": [
-        "MenuBar",
-        "Pagination",
-        "Tabs"
-      ],
-      "Layout": [
-        "Surface"
-      ]
+      "Overlay": ["Dialog", "DropdownMenu", "Tooltip"],
+      "Other": ["Icon", "Label", "Radio", "SensitiveInput", "Table"],
+      "Navigation": ["MenuBar", "Pagination", "Tabs"],
+      "Layout": ["Surface"]
     },
     "byName": [
       "Badge",
@@ -2711,6 +3525,7 @@
       "DropdownMenu",
       "Empty",
       "Field",
+      "Icon",
       "Input",
       "Label",
       "LayerCard",
@@ -2719,7 +3534,6 @@
       "Meter",
       "PageHeader",
       "Pagination",
-      "Radio",
       "Select",
       "SensitiveInput",
       "Surface",
