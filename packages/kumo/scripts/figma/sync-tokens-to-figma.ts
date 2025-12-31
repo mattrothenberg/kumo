@@ -157,6 +157,57 @@ function resolveToken(token: ParsedToken): ResolvedToken {
 }
 
 /**
+ * Opacity modifiers used in the codebase (bg-color/opacity patterns)
+ * These are scanned from component source files to generate Figma variables.
+ *
+ * Format: { baseColor: [opacityValues] }
+ * Example: { "info": [20], "error": [20, 70, 90] }
+ */
+const OPACITY_MODIFIERS: Record<string, number[]> = {
+  // Banner variants: bg-info/20, bg-alert/20, bg-error/20
+  info: [20],
+  alert: [20],
+  error: [20, 70, 90],
+  // Button variants: bg-primary/50, bg-primary/70, bg-secondary/50
+  primary: [50, 70],
+  secondary: [50],
+};
+
+/**
+ * Generate opacity variant tokens from base tokens
+ *
+ * For each base color token that has opacity modifiers defined,
+ * creates additional tokens with the opacity baked into the alpha channel.
+ *
+ * Example: color-info + opacity 20 → color-info/20 with alpha 0.2
+ */
+function generateOpacityVariants(baseTokens: ResolvedToken[]): ResolvedToken[] {
+  const opacityTokens: ResolvedToken[] = [];
+
+  for (const token of baseTokens) {
+    // Extract base color name from token (e.g., "color-info" → "info")
+    const colorMatch = token.name.match(/^color-(\w+)$/);
+    if (!colorMatch) continue;
+
+    const colorName = colorMatch[1];
+    const opacities = OPACITY_MODIFIERS[colorName];
+    if (!opacities) continue;
+
+    // Generate a token for each opacity level
+    for (const opacity of opacities) {
+      const alpha = opacity / 100;
+      opacityTokens.push({
+        name: `${token.name}/${opacity}`,
+        light: { ...token.light, a: alpha },
+        dark: { ...token.dark, a: alpha },
+      });
+    }
+  }
+
+  return opacityTokens;
+}
+
+/**
  * Validate that FIGMA_TOKEN is set and return it
  */
 function getValidatedToken(): string {
@@ -279,7 +330,15 @@ async function runSyncCommand(): Promise<void> {
 
   // Step 3: Resolve base tokens to Figma colors
   console.log("\n🎨 Resolving colors...");
-  const resolvedColorTokens = baseTokens.map(resolveToken);
+  const resolvedBaseTokens = baseTokens.map(resolveToken);
+
+  // Step 3b: Generate opacity variant tokens
+  console.log("🔲 Generating opacity variants...");
+  const opacityVariants = generateOpacityVariants(resolvedBaseTokens);
+  console.log(`   Found ${opacityVariants.length} opacity variants`);
+
+  // Combine base tokens with opacity variants
+  const resolvedColorTokens = [...resolvedBaseTokens, ...opacityVariants];
 
   // Step 4: Resolve typography tokens
   console.log("📐 Resolving typography...");

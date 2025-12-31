@@ -283,6 +283,7 @@
             "secondary",
             "ghost",
             "destructive",
+            "secondary-destructive",
             "outline"
           ],
           "descriptions": {
@@ -290,6 +291,7 @@
             "secondary": "Default button style for most actions",
             "ghost": "Minimal button with no background",
             "destructive": "Danger button for destructive actions like delete",
+            "secondary-destructive": "Secondary button with destructive text for less prominent dangerous actions",
             "outline": "Bordered button with transparent background"
           },
           "classes": {
@@ -297,6 +299,7 @@
             "secondary": "bg-secondary !text-surface ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-surface/70 ring-border data-[state=open]:bg-subtle",
             "ghost": "text-surface hover:bg-accent shadow-none bg-inherit",
             "destructive": "bg-error !text-white hover:bg-error/70",
+            "secondary-destructive": "bg-secondary !text-error ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-error/70 ring-border data-[state=open]:bg-subtle",
             "outline": "bg-surface text-surface ring ring-border"
           },
           "default": "secondary"
@@ -348,6 +351,7 @@
         "<Button variant=\"secondary\">Button</Button>",
         "<Button variant=\"ghost\">Button</Button>",
         "<Button variant=\"destructive\">Button</Button>",
+        "<Button variant=\"secondary-destructive\">Button</Button>",
         "<Button variant=\"outline\">Button</Button>",
         "<Button size=\"xs\">Button</Button>",
         "<Button size=\"sm\">Button</Button>",
@@ -360,6 +364,7 @@
         "<Button variant=\"secondary\" disabled={true}>Button</Button>",
         "<Button variant=\"ghost\" disabled={true}>Button</Button>",
         "<Button variant=\"destructive\" disabled={true}>Button</Button>",
+        "<Button variant=\"secondary-destructive\" disabled={true}>Button</Button>",
         "<Button variant=\"outline\" disabled={true}>Button</Button>",
         "<Button variant=\"primary\" icon={PlusIcon}>Add Item</Button>",
         "<Button variant=\"primary\" loading={true}>Loading...</Button>",
@@ -2476,7 +2481,8 @@
             "secondary",
             "success",
             "error",
-            "mono"
+            "mono",
+            "mono-secondary"
           ],
           "descriptions": {
             "heading1": "Large heading for page titles",
@@ -2486,7 +2492,8 @@
             "secondary": "Muted text for secondary information",
             "success": "Success state text",
             "error": "Error state text",
-            "mono": "Monospace text for code"
+            "mono": "Monospace text for code",
+            "mono-secondary": "Muted monospace text"
           },
           "classes": {
             "heading1": "text-3xl font-semibold",
@@ -2496,7 +2503,8 @@
             "secondary": "text-muted",
             "success": "text-info",
             "error": "text-error",
-            "mono": "font-mono"
+            "mono": "font-mono",
+            "mono-secondary": "font-mono text-muted"
           },
           "default": "body"
         },
@@ -2549,6 +2557,7 @@
         "<Text variant=\"success\">Sample text</Text>",
         "<Text variant=\"error\">Sample text</Text>",
         "<Text variant=\"mono\">Sample text</Text>",
+        "<Text variant=\"mono-secondary\">Sample text</Text>",
         "<Text size=\"xs\">Sample text</Text>",
         "<Text size=\"sm\">Sample text</Text>",
         "<Text size=\"base\">Sample text</Text>",

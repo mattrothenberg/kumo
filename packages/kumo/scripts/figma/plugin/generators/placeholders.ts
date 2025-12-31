@@ -31,11 +31,9 @@ export type PlaceholderComponents = {
 function createPlaceholderIcon(size: number, name: string): ComponentNode {
   const component = figma.createComponent();
   component.name = name;
-  // @ts-ignore - ComponentNode has resize at runtime
   component.resize(size, size);
 
   // Create a rounded rectangle as the icon placeholder
-  // @ts-ignore - createRectangle exists on figma at runtime
   const rect = figma.createRectangle();
   rect.resize(size, size);
   rect.x = 0;
@@ -45,7 +43,6 @@ function createPlaceholderIcon(size: number, name: string): ComponentNode {
   // Use a medium gray fill
   rect.fills = [{ type: "SOLID", color: { r: 0.6, g: 0.6, b: 0.6 } }];
 
-  // @ts-ignore - appendChild accepts RectangleNode at runtime
   component.appendChild(rect);
 
   return component;
@@ -59,11 +56,9 @@ function createPlaceholderIcon(size: number, name: string): ComponentNode {
 function createLoader(): ComponentNode {
   const component = figma.createComponent();
   component.name = "Loader";
-  // @ts-ignore - ComponentNode has resize at runtime
   component.resize(16, 16);
 
   // Create circle with stroke (spinner ring)
-  // @ts-ignore - createEllipse exists on figma at runtime
   const spinner = figma.createEllipse();
   spinner.resize(16, 16);
   spinner.x = 0;
@@ -78,10 +73,49 @@ function createLoader(): ComponentNode {
   // Dashed stroke to create spinner appearance
   spinner.dashPattern = [4, 4];
 
-  // @ts-ignore - appendChild accepts EllipseNode at runtime
   component.appendChild(spinner);
 
   return component;
+}
+
+/**
+ * Find or create the Utilities page
+ * Reuses existing page if found, creates new one otherwise
+ */
+function getOrCreateUtilitiesPage(): PageNode {
+  // Find existing Utilities page (case-insensitive, trimmed)
+  let utilitiesPage = figma.root.children.find(
+    (page) =>
+      page.type === "PAGE" && page.name.trim().toLowerCase() === "utilities",
+  ) as PageNode | undefined;
+
+  if (utilitiesPage) {
+    console.log("✅ Found existing Utilities page");
+  } else {
+    console.log("📄 Creating new Utilities page");
+    utilitiesPage = figma.createPage();
+    utilitiesPage.name = "Utilities";
+  }
+
+  return utilitiesPage;
+}
+
+/**
+ * Purge all children from the Utilities page
+ */
+function purgeUtilitiesPage(): void {
+  const utilitiesPage = figma.root.children.find(
+    (page) =>
+      page.type === "PAGE" && page.name.trim().toLowerCase() === "utilities",
+  ) as PageNode | undefined;
+
+  if (utilitiesPage) {
+    const children = [...utilitiesPage.children];
+    console.log(`🗑️ Purging ${children.length} items from Utilities page`);
+    for (const node of children) {
+      node.remove();
+    }
+  }
 }
 
 /**
@@ -96,10 +130,11 @@ function createLoader(): ComponentNode {
  * @returns Object containing references to all generated components
  */
 export function generatePlaceholderComponents(): PlaceholderComponents {
-  // Create or find Utilities page
-  // @ts-ignore - createPage exists on figma at runtime
-  const page = figma.createPage();
-  page.name = "Utilities";
+  // Purge existing content first
+  purgeUtilitiesPage();
+
+  // Get or create Utilities page
+  const page = getOrCreateUtilitiesPage();
 
   // Generate placeholder icons
   const placeholderIcon12 = createPlaceholderIcon(12, "Placeholder Icon 12");
@@ -116,24 +151,16 @@ export function generatePlaceholderComponents(): PlaceholderComponents {
   page.appendChild(loader);
 
   // Layout components in a row with spacing
-  // @ts-ignore - ComponentNode has x/y at runtime
   placeholderIcon12.x = 0;
-  // @ts-ignore
   placeholderIcon12.y = 0;
 
-  // @ts-ignore
   placeholderIcon16.x = 50;
-  // @ts-ignore
   placeholderIcon16.y = 0;
 
-  // @ts-ignore
   placeholderIcon20.x = 100;
-  // @ts-ignore
   placeholderIcon20.y = 0;
 
-  // @ts-ignore
   loader.x = 150;
-  // @ts-ignore
   loader.y = 0;
 
   return {

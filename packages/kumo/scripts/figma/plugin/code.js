@@ -1,6 +1,16 @@
 "use strict";
 (() => {
   // scripts/figma/plugin/generators/shared.ts
+  var BORDER_RADIUS = {
+    /** Small radius (2px) */
+    sm: 2,
+    /** Medium radius (6px) */
+    md: 6,
+    /** Large radius (8px) */
+    lg: 8,
+    /** Full rounded (9999px) */
+    full: 9999
+  };
   function bindFillToVariable(node, variableId, opacity) {
     if (!("fills" in node)) return;
     const variable = figma.variables.getVariableById(variableId);
@@ -50,28 +60,102 @@
     const collections = figma.variables.getLocalVariableCollections();
     const kumoColors = collections.find((c) => c.name === "kumo-colors");
     if (!kumoColors) {
-      console.warn("kumo-colors collection not found");
+      console.warn(
+        "kumo-colors collection not found. Available collections:",
+        collections.map((c) => c.name).join(", ") || "none"
+      );
+      figma.notify("\u26A0\uFE0F kumo-colors collection not found", { error: true });
       return void 0;
     }
     const variables = kumoColors.variableIds.map((id) => figma.variables.getVariableById(id)).filter((v) => v !== null);
-    return variables.find((v) => v.name === variableName);
-  }
-  function getOrCreateSection(page, sectionName) {
-    const existing = page.findChild((n) => n.name === sectionName);
-    if (existing && existing.type === "SECTION") {
-      return existing;
+    const variable = variables.find((v) => v.name === variableName);
+    if (!variable) {
+      console.warn(
+        `Variable "${variableName}" not found in kumo-colors collection`
+      );
     }
+    return variable;
+  }
+  function setWhiteTextColor(textNode) {
+    const fill = {
+      type: "SOLID",
+      color: { r: 1, g: 1, b: 1 }
+    };
+    textNode.fills = [fill];
+  }
+  function bindTextColorToVariable(textNode, variableId) {
+    const variable = figma.variables.getVariableById(variableId);
+    if (!variable) {
+      console.warn("Variable not found: " + variableId);
+      figma.notify(`\u26A0\uFE0F Text color variable not found: ${variableId}`, {
+        error: true
+      });
+      return;
+    }
+    let fill = {
+      type: "SOLID",
+      color: { r: 1, g: 1, b: 1 }
+    };
+    fill = figma.variables.setBoundVariableForPaint(fill, "color", variable);
+    textNode.fills = [fill];
+  }
+  function getKumoColorsModes() {
+    const collections = figma.variables.getLocalVariableCollections();
+    const kumoColors = collections.find((c) => c.name === "kumo-colors");
+    if (!kumoColors) {
+      console.warn("kumo-colors collection not found");
+      return null;
+    }
+    const lightMode = kumoColors.modes.find(
+      (m) => m.name.toLowerCase() === "light"
+    );
+    const darkMode = kumoColors.modes.find(
+      (m) => m.name.toLowerCase() === "dark"
+    );
+    if (!lightMode || !darkMode) {
+      console.warn("Light or dark mode not found in kumo-colors collection");
+      return null;
+    }
+    return {
+      collection: kumoColors,
+      lightModeId: lightMode.modeId,
+      darkModeId: darkMode.modeId
+    };
+  }
+  function createModeSection(page, sectionName, mode) {
     const section = figma.createSection();
-    section.name = sectionName;
-    section.fills = [
-      {
+    section.name = `${sectionName} (${mode})`;
+    const frame = figma.createFrame();
+    frame.name = "Content";
+    frame.layoutMode = "NONE";
+    const surfaceVar = getVariableByName("surface");
+    if (surfaceVar) {
+      let fill = {
         type: "SOLID",
         color: { r: 1, g: 1, b: 1 }
-        // White
-      }
-    ];
+      };
+      fill = figma.variables.setBoundVariableForPaint(fill, "color", surfaceVar);
+      frame.fills = [fill];
+    } else {
+      frame.fills = [
+        {
+          type: "SOLID",
+          color: mode === "light" ? { r: 1, g: 1, b: 1 } : { r: 0.067, g: 0.067, b: 0.067 }
+          // #111111
+        }
+      ];
+    }
+    const modesInfo = getKumoColorsModes();
+    if (modesInfo) {
+      const modeId = mode === "light" ? modesInfo.lightModeId : modesInfo.darkModeId;
+      frame.setExplicitVariableModeForCollection(modesInfo.collection, modeId);
+    }
+    section.appendChild(frame);
+    frame.x = 0;
+    frame.y = 0;
+    section.fills = [];
     page.appendChild(section);
-    return section;
+    return { section, frame };
   }
 
   // scripts/figma/plugin/parsers/tailwind-to-figma.ts
@@ -103,7 +187,8 @@
     base: 16,
     lg: 18,
     xl: 20,
-    "2xl": 24
+    "2xl": 24,
+    "3xl": 30
   };
   var BORDER_RADIUS_SCALE = {
     none: 0,
@@ -123,6 +208,8 @@
     "bg-surface": "color-surface",
     "bg-surface-inverse": "color-surface-inverse",
     "bg-error": "color-error",
+    "bg-info": "color-info",
+    "bg-alert": "color-alert",
     "bg-color": "color-color",
     "bg-accent": "color-accent",
     "bg-subtle": "color-subtle",
@@ -137,6 +224,7 @@
     "text-surface-inverse": "text-color-surface-inverse",
     "text-error": "text-color-error",
     "text-info": "text-color-info",
+    "text-alert": "text-color-alert",
     "text-muted": "text-color-muted",
     "!text-white": null,
     // Hardcoded white (important)
@@ -146,6 +234,9 @@
     "border-color": "color-color",
     "border-primary": "color-primary",
     "border-border": "color-border",
+    "border-error": "color-error",
+    "border-info": "color-info",
+    "border-alert": "color-alert",
     "ring-border": "color-border"
   };
   function parseTailwindClasses(classes) {
@@ -188,9 +279,19 @@
         continue;
       }
       if (cls.startsWith("bg-")) {
-        const varName = COLOR_TO_VARIABLE[cls];
-        if (varName !== void 0) {
-          result.fillVariable = varName;
+        const opacityMatch = cls.match(/^(bg-[^/]+)\/([0-9]+)$/);
+        if (opacityMatch) {
+          const baseClass = opacityMatch[1];
+          const opacityValue = opacityMatch[2];
+          const varName = COLOR_TO_VARIABLE[baseClass];
+          if (varName !== void 0) {
+            result.fillVariable = `${varName}/${opacityValue}`;
+          }
+        } else {
+          const varName = COLOR_TO_VARIABLE[cls];
+          if (varName !== void 0) {
+            result.fillVariable = varName;
+          }
         }
         continue;
       }
@@ -514,6 +615,7 @@
               "secondary",
               "ghost",
               "destructive",
+              "secondary-destructive",
               "outline"
             ],
             descriptions: {
@@ -521,6 +623,7 @@
               secondary: "Default button style for most actions",
               ghost: "Minimal button with no background",
               destructive: "Danger button for destructive actions like delete",
+              "secondary-destructive": "Secondary button with destructive text for less prominent dangerous actions",
               outline: "Bordered button with transparent background"
             },
             classes: {
@@ -528,6 +631,7 @@
               secondary: "bg-secondary !text-surface ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-surface/70 ring-border data-[state=open]:bg-subtle",
               ghost: "text-surface hover:bg-accent shadow-none bg-inherit",
               destructive: "bg-error !text-white hover:bg-error/70",
+              "secondary-destructive": "bg-secondary !text-error ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-error/70 ring-border data-[state=open]:bg-subtle",
               outline: "bg-surface text-surface ring ring-border"
             },
             default: "secondary"
@@ -579,6 +683,7 @@
           '<Button variant="secondary">Button</Button>',
           '<Button variant="ghost">Button</Button>',
           '<Button variant="destructive">Button</Button>',
+          '<Button variant="secondary-destructive">Button</Button>',
           '<Button variant="outline">Button</Button>',
           '<Button size="xs">Button</Button>',
           '<Button size="sm">Button</Button>',
@@ -591,6 +696,7 @@
           '<Button variant="secondary" disabled={true}>Button</Button>',
           '<Button variant="ghost" disabled={true}>Button</Button>',
           '<Button variant="destructive" disabled={true}>Button</Button>',
+          '<Button variant="secondary-destructive" disabled={true}>Button</Button>',
           '<Button variant="outline" disabled={true}>Button</Button>',
           '<Button variant="primary" icon={PlusIcon}>Add Item</Button>',
           '<Button variant="primary" loading={true}>Loading...</Button>',
@@ -2358,7 +2464,8 @@
               "secondary",
               "success",
               "error",
-              "mono"
+              "mono",
+              "mono-secondary"
             ],
             descriptions: {
               heading1: "Large heading for page titles",
@@ -2368,7 +2475,8 @@
               secondary: "Muted text for secondary information",
               success: "Success state text",
               error: "Error state text",
-              mono: "Monospace text for code"
+              mono: "Monospace text for code",
+              "mono-secondary": "Muted monospace text"
             },
             classes: {
               heading1: "text-3xl font-semibold",
@@ -2378,7 +2486,8 @@
               secondary: "text-muted",
               success: "text-info",
               error: "text-error",
-              mono: "font-mono"
+              mono: "font-mono",
+              "mono-secondary": "font-mono text-muted"
             },
             default: "body"
           },
@@ -2431,6 +2540,7 @@
           '<Text variant="success">Sample text</Text>',
           '<Text variant="error">Sample text</Text>',
           '<Text variant="mono">Sample text</Text>',
+          '<Text variant="mono-secondary">Sample text</Text>',
           '<Text size="xs">Sample text</Text>',
           '<Text size="sm">Sample text</Text>',
           '<Text size="base">Sample text</Text>',
@@ -2604,26 +2714,6 @@
   var badgeProps = component_registry_default.components.Badge.props;
   var variantProp = badgeProps.variant;
   var BADGE_BASE_STYLES = "rounded-full px-2 py-0.5 text-xs";
-  function setWhiteTextColor(textNode) {
-    const fill = {
-      type: "SOLID",
-      color: { r: 1, g: 1, b: 1 }
-    };
-    textNode.fills = [fill];
-  }
-  function bindTextColorToVariable(textNode, variableId) {
-    const variable = figma.variables.getVariableById(variableId);
-    if (!variable) {
-      console.warn("Variable not found: " + variableId);
-      return;
-    }
-    var fill = {
-      type: "SOLID",
-      color: { r: 1, g: 1, b: 1 }
-    };
-    fill = figma.variables.setBoundVariableForPaint(fill, "color", variable);
-    textNode.fills = [fill];
-  }
   async function createBadgeComponent(variant) {
     const classes = variantProp.classes[variant] || "";
     const description = variantProp.descriptions[variant] || "";
@@ -2678,10 +2768,10 @@
     return component;
   }
   var SECTION_PADDING = 48;
-  var SECTION_GAP = 80;
+  var SECTION_GAP = 160;
   async function generateBadgeComponents(startY) {
     if (startY === void 0) startY = 100;
-    var componentsPage = figma.root.children.find(function(page) {
+    let componentsPage = figma.root.children.find(function(page) {
       return page.type === "PAGE" && page.name === "Components";
     });
     if (!componentsPage) {
@@ -2689,12 +2779,11 @@
       componentsPage.name = "Components";
     }
     figma.currentPage = componentsPage;
-    const section = getOrCreateSection(componentsPage, "Badge");
     const variants = variantProp.values;
     const components = [];
-    var currentX = 0;
-    var componentGap = 20;
-    for (var i = 0; i < variants.length; i++) {
+    let currentX = 0;
+    const componentGap = 20;
+    for (let i = 0; i < variants.length; i++) {
       const component = await createBadgeComponent(variants[i]);
       component.x = currentX;
       component.y = 0;
@@ -2704,71 +2793,228 @@
     const componentSet = figma.combineAsVariants(components, componentsPage);
     componentSet.name = "Badge";
     componentSet.description = "Badge component with variant styles";
-    section.appendChild(componentSet);
+    const contentWidth = componentSet.width;
+    const contentHeight = componentSet.height;
+    const lightSection = createModeSection(componentsPage, "Badge", "light");
+    lightSection.frame.resize(
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
+    );
+    const darkSection = createModeSection(componentsPage, "Badge", "dark");
+    darkSection.frame.resize(
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
+    );
+    lightSection.frame.appendChild(componentSet);
     componentSet.x = SECTION_PADDING;
     componentSet.y = SECTION_PADDING;
-    const totalWidth = componentSet.width + SECTION_PADDING * 2;
-    const totalHeight = componentSet.height + SECTION_PADDING * 2;
-    section.resizeWithoutConstraints(totalWidth, totalHeight);
-    section.x = 100;
-    section.y = startY;
+    for (const component of components) {
+      const instance = component.createInstance();
+      instance.x = component.x + SECTION_PADDING;
+      instance.y = SECTION_PADDING;
+      darkSection.frame.appendChild(instance);
+    }
+    const totalWidth = contentWidth + SECTION_PADDING * 2;
+    const totalHeight = contentHeight + SECTION_PADDING * 2;
+    lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    lightSection.section.x = 100;
+    lightSection.section.y = startY;
+    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.y = startY;
     console.log(
-      "\u2705 Generated Badge ComponentSet with " + variants.length + " variants"
-    );
-    console.log(
-      "Badge section height: " + totalHeight + ", nextY: " + (startY + totalHeight + SECTION_GAP)
+      "\u2705 Generated Badge ComponentSet with " + variants.length + " variants (light + dark)"
     );
     return startY + totalHeight + SECTION_GAP;
   }
 
-  // scripts/figma/plugin/generators/button-text.ts
-  var buttonProps = component_registry_default.components.Button.props;
-  var variantProp2 = buttonProps.variant;
-  var sizeProp = buttonProps.size;
-  var SECTION_PADDING2 = 48;
-  var SECTION_GAP2 = 80;
-  function setWhiteTextColor2(textNode) {
-    const fill = {
-      type: "SOLID",
-      color: { r: 1, g: 1, b: 1 }
-    };
-    textNode.fills = [fill];
-  }
-  function bindTextColorToVariable2(textNode, variableId) {
-    const variable = figma.variables.getVariableById(variableId);
-    if (!variable) {
-      console.warn("Variable not found: " + variableId);
-      return;
-    }
-    var fill = {
-      type: "SOLID",
-      color: { r: 1, g: 1, b: 1 }
-    };
-    fill = figma.variables.setBoundVariableForPaint(fill, "color", variable);
-    textNode.fills = [fill];
-  }
-  async function createButtonComponent(variant, size) {
-    const variantClasses = variantProp2.classes[variant] || "";
-    const sizeClasses = sizeProp.classes[size] || "";
-    const variantDesc = variantProp2.descriptions[variant] || "";
-    const sizeDesc = sizeProp.descriptions[size] || "";
-    const variantStyles = parseTailwindClasses(variantClasses);
-    const sizeStyles = parseTailwindClasses(sizeClasses);
+  // scripts/figma/plugin/generators/banner.ts
+  var bannerProps = component_registry_default.components.Banner.props;
+  var variantProp2 = bannerProps.variant;
+  var BANNER_BASE_STYLES = "flex w-full items-center gap-2 rounded-lg border px-4 py-1.5 text-base";
+  async function createBannerComponent(variant) {
+    const classes = variantProp2.classes[variant] || "";
+    const description = variantProp2.descriptions[variant] || "";
+    const baseStyles = parseTailwindClasses(BANNER_BASE_STYLES);
+    const variantStyles = parseTailwindClasses(classes);
     const component = figma.createComponent();
-    component.name = "variant=" + variant + ", size=" + size;
-    component.description = variantDesc + ". " + sizeDesc;
+    component.name = "variant=" + variant;
+    component.description = description;
     component.layoutMode = "HORIZONTAL";
     component.primaryAxisAlignItems = "CENTER";
     component.counterAxisAlignItems = "CENTER";
-    component.paddingLeft = sizeStyles.paddingX || 12;
-    component.paddingRight = sizeStyles.paddingX || 12;
+    component.itemSpacing = baseStyles.gap || 8;
+    component.paddingLeft = baseStyles.paddingX || 16;
+    component.paddingRight = baseStyles.paddingX || 16;
+    component.paddingTop = baseStyles.paddingY || 6;
+    component.paddingBottom = baseStyles.paddingY || 6;
+    component.primaryAxisSizingMode = "AUTO";
+    component.counterAxisSizingMode = "AUTO";
+    component.cornerRadius = baseStyles.borderRadius || 8;
+    if (variantStyles.fillVariable) {
+      const fillVar = getVariableByName(variantStyles.fillVariable);
+      if (fillVar) {
+        bindFillToVariable(component, fillVar.id);
+      }
+    } else {
+      component.fills = [];
+    }
+    if (variantStyles.strokeVariable) {
+      const strokeVar = getVariableByName(variantStyles.strokeVariable);
+      if (strokeVar) {
+        bindStrokeToVariable(component, strokeVar.id, 1);
+      }
+    }
+    const iconPlaceholder = figma.createRectangle();
+    iconPlaceholder.name = "Icon";
+    iconPlaceholder.resize(16, 16);
+    iconPlaceholder.cornerRadius = 2;
+    if (variantStyles.textVariable) {
+      const iconColorVar = getVariableByName(variantStyles.textVariable);
+      if (iconColorVar) {
+        bindFillToVariable(iconPlaceholder, iconColorVar.id);
+      }
+    }
+    component.appendChild(iconPlaceholder);
+    const textNode = await createTextNode(
+      "This is a banner message",
+      baseStyles.fontSize || 16,
+      // text-base = 16px
+      400
+      // normal weight
+    );
+    textNode.name = "Text";
+    if (variantStyles.textVariable) {
+      const textVar = getVariableByName(variantStyles.textVariable);
+      if (textVar) {
+        bindTextColorToVariable(textNode, textVar.id);
+      }
+    }
+    component.appendChild(textNode);
+    return component;
+  }
+  var SECTION_PADDING2 = 48;
+  var SECTION_GAP2 = 160;
+  async function generateBannerComponents(startY) {
+    if (startY === void 0) startY = 100;
+    let componentsPage = figma.root.children.find(function(page) {
+      return page.type === "PAGE" && page.name === "Components";
+    });
+    if (!componentsPage) {
+      componentsPage = figma.createPage();
+      componentsPage.name = "Components";
+    }
+    figma.currentPage = componentsPage;
+    const variants = variantProp2.values;
+    const components = [];
+    let currentX = 0;
+    const componentGap = 20;
+    for (let i = 0; i < variants.length; i++) {
+      const component = await createBannerComponent(variants[i]);
+      component.x = currentX;
+      component.y = 0;
+      currentX = currentX + component.width + componentGap;
+      components.push(component);
+    }
+    const componentSet = figma.combineAsVariants(components, componentsPage);
+    componentSet.name = "Banner";
+    componentSet.description = "Banner component with variant styles";
+    const contentWidth = componentSet.width;
+    const contentHeight = componentSet.height;
+    const lightSection = createModeSection(componentsPage, "Banner", "light");
+    lightSection.frame.resize(
+      contentWidth + SECTION_PADDING2 * 2,
+      contentHeight + SECTION_PADDING2 * 2
+    );
+    const darkSection = createModeSection(componentsPage, "Banner", "dark");
+    darkSection.frame.resize(
+      contentWidth + SECTION_PADDING2 * 2,
+      contentHeight + SECTION_PADDING2 * 2
+    );
+    lightSection.frame.appendChild(componentSet);
+    componentSet.x = SECTION_PADDING2;
+    componentSet.y = SECTION_PADDING2;
+    for (const component of components) {
+      const instance = component.createInstance();
+      instance.x = component.x + SECTION_PADDING2;
+      instance.y = SECTION_PADDING2;
+      darkSection.frame.appendChild(instance);
+    }
+    const totalWidth = contentWidth + SECTION_PADDING2 * 2;
+    const totalHeight = contentHeight + SECTION_PADDING2 * 2;
+    lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    lightSection.section.x = 100;
+    lightSection.section.y = startY;
+    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.y = startY;
+    console.log(
+      "\u2705 Generated Banner ComponentSet with " + variants.length + " variants (light + dark)"
+    );
+    return startY + totalHeight + SECTION_GAP2;
+  }
+
+  // scripts/figma/plugin/generators/button.ts
+  var buttonProps = component_registry_default.components.Button.props;
+  var variantProp3 = buttonProps.variant;
+  var sizeProp = buttonProps.size;
+  var shapeProp = buttonProps.shape;
+  var COMPACT_SIZE_MAP = {
+    xs: 14,
+    // size-3.5 = 14px
+    sm: 26,
+    // size-6.5 = 26px
+    base: 36,
+    // size-9 = 36px
+    lg: 40
+    // size-10 = 40px
+  };
+  function getPlaceholderIconForSize(size, placeholders) {
+    const iconSizeMap = {
+      xs: "placeholderIcon12",
+      sm: "placeholderIcon16",
+      base: "placeholderIcon20",
+      lg: "placeholderIcon20"
+    };
+    const key = iconSizeMap[size];
+    return key ? placeholders[key] : void 0;
+  }
+  var SECTION_PADDING3 = 48;
+  var SECTION_GAP3 = 160;
+  async function createButtonComponent(variant, size, shape, disabled, loading, placeholders) {
+    var _a;
+    const variantClasses = variantProp3.classes[variant] || "";
+    const sizeClasses = sizeProp.classes[size] || "";
+    const variantStyles = parseTailwindClasses(variantClasses);
+    const sizeStyles = parseTailwindClasses(sizeClasses);
+    const component = figma.createComponent();
+    component.name = `variant=${variant}, size=${size}, shape=${shape}, disabled=${disabled}, loading=${loading}`;
+    const isCompactShape = shape === "square" || shape === "circle";
+    component.layoutMode = "HORIZONTAL";
+    component.primaryAxisAlignItems = "CENTER";
+    component.counterAxisAlignItems = "CENTER";
+    if (isCompactShape) {
+      const buttonSize = COMPACT_SIZE_MAP[size] || 36;
+      component.primaryAxisSizingMode = "FIXED";
+      component.counterAxisSizingMode = "FIXED";
+      component.resize(buttonSize, buttonSize);
+      component.paddingLeft = 0;
+      component.paddingRight = 0;
+    } else {
+      component.primaryAxisSizingMode = "AUTO";
+      component.counterAxisSizingMode = "FIXED";
+      component.paddingLeft = sizeStyles.paddingX || 12;
+      component.paddingRight = sizeStyles.paddingX || 12;
+      component.resize(100, sizeStyles.height || 36);
+    }
     component.paddingTop = 0;
     component.paddingBottom = 0;
     component.itemSpacing = sizeStyles.gap || 6;
-    component.primaryAxisSizingMode = "AUTO";
-    component.counterAxisSizingMode = "FIXED";
-    component.resize(100, sizeStyles.height || 36);
-    component.cornerRadius = sizeStyles.borderRadius || 8;
+    if (shape === "circle") {
+      component.cornerRadius = BORDER_RADIUS.full;
+    } else {
+      component.cornerRadius = (_a = sizeStyles.borderRadius) != null ? _a : BORDER_RADIUS.lg;
+    }
     if (variantStyles.fillVariable) {
       const fillVar = getVariableByName(variantStyles.fillVariable);
       if (fillVar) {
@@ -2783,72 +3029,901 @@
         bindStrokeToVariable(component, strokeVar.id, 1);
       }
     }
+    if (disabled) {
+      component.opacity = 0.5;
+    }
+    if (loading && placeholders.loader) {
+      const loaderInstance = placeholders.loader.createInstance();
+      const loaderSize = size === "lg" ? 16 : 14;
+      loaderInstance.resize(loaderSize, loaderSize);
+      component.appendChild(loaderInstance);
+    }
+    if (isCompactShape && !loading) {
+      const placeholderIcon = getPlaceholderIconForSize(size, placeholders);
+      if (placeholderIcon) {
+        const iconInstance = placeholderIcon.createInstance();
+        component.appendChild(iconInstance);
+      }
+    }
+    if (shape === "base") {
+      const fontWeight = 500;
+      const labelText = loading ? "Loading..." : "Button";
+      const textNode = await createTextNode(
+        labelText,
+        sizeStyles.fontSize || 16,
+        fontWeight
+      );
+      textNode.name = "Label";
+      if (variantStyles.isWhiteText) {
+        setWhiteTextColor(textNode);
+      } else if (variantStyles.textVariable) {
+        const textVar = getVariableByName(variantStyles.textVariable);
+        if (textVar) {
+          bindTextColorToVariable(textNode, textVar.id);
+        }
+      }
+      component.appendChild(textNode);
+    }
+    return component;
+  }
+  function shouldGenerateVariant(variant, size, shape, disabled, loading) {
+    if (shape === "base" && !disabled && !loading) {
+      return true;
+    }
+    if (shape === "base" && disabled && !loading && size === "base") {
+      return true;
+    }
+    if (shape === "base" && loading && !disabled && size === "base") {
+      return true;
+    }
+    if ((shape === "square" || shape === "circle") && variant === "secondary" && !disabled && !loading) {
+      return true;
+    }
+    return false;
+  }
+  async function generateButtonComponents(page, placeholders = {}, startY = 100) {
+    figma.currentPage = page;
+    const variants = variantProp3.values;
+    const sizes = sizeProp.values;
+    const shapes = shapeProp.values;
+    const disabledOptions = [false, true];
+    const loadingOptions = [false, true];
+    const components = [];
+    const componentGap = 16;
+    const rowGap = 80;
+    const rowComponents = /* @__PURE__ */ new Map();
+    for (const variant of variants) {
+      for (const shape of shapes) {
+        for (const disabled of disabledOptions) {
+          for (const loading of loadingOptions) {
+            for (const size of sizes) {
+              if (!shouldGenerateVariant(variant, size, shape, disabled, loading)) {
+                continue;
+              }
+              const component = await createButtonComponent(
+                variant,
+                size,
+                shape,
+                disabled,
+                loading,
+                placeholders
+              );
+              let rowIndex;
+              if (shape === "base") {
+                rowIndex = variants.indexOf(variant);
+              } else if (shape === "square") {
+                rowIndex = variants.length;
+              } else {
+                rowIndex = variants.length + 1;
+              }
+              if (!rowComponents.has(rowIndex)) {
+                rowComponents.set(rowIndex, []);
+              }
+              rowComponents.get(rowIndex).push(component);
+              components.push(component);
+            }
+          }
+        }
+      }
+    }
+    let yOffset = 0;
+    const totalRows = variants.length + 2;
+    for (let i = 0; i < totalRows; i++) {
+      const row = rowComponents.get(i) || [];
+      let xOffset = 0;
+      for (const component of row) {
+        component.x = xOffset;
+        component.y = yOffset;
+        xOffset += component.width + componentGap;
+      }
+      if (row.length > 0) {
+        yOffset += rowGap;
+      }
+    }
+    const componentSet = figma.combineAsVariants(components, page);
+    componentSet.name = "Button";
+    componentSet.description = "Button component with variant, size, shape, disabled, and loading properties";
+    componentSet.layoutMode = "NONE";
+    const contentWidth = componentSet.width;
+    const contentHeight = componentSet.height;
+    const lightSection = createModeSection(page, "Button", "light");
+    lightSection.frame.resize(
+      contentWidth + SECTION_PADDING3 * 2,
+      contentHeight + SECTION_PADDING3 * 2
+    );
+    const darkSection = createModeSection(page, "Button", "dark");
+    darkSection.frame.resize(
+      contentWidth + SECTION_PADDING3 * 2,
+      contentHeight + SECTION_PADDING3 * 2
+    );
+    lightSection.frame.appendChild(componentSet);
+    componentSet.x = SECTION_PADDING3;
+    componentSet.y = SECTION_PADDING3;
+    for (const component of components) {
+      const instance = component.createInstance();
+      instance.x = component.x + SECTION_PADDING3;
+      instance.y = component.y + SECTION_PADDING3;
+      darkSection.frame.appendChild(instance);
+    }
+    const totalWidth = contentWidth + SECTION_PADDING3 * 2;
+    const totalHeight = contentHeight + SECTION_PADDING3 * 2;
+    lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    lightSection.section.x = 100;
+    lightSection.section.y = startY;
+    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.y = startY;
+    console.log(
+      `\u2705 Generated Button ComponentSet with ${components.length} variants (light + dark)`
+    );
+    return startY + totalHeight + SECTION_GAP3;
+  }
+  var BUTTON_VARIANTS_EXPORT = variantProp3.values;
+  var BUTTON_SIZES_EXPORT = sizeProp.values;
+  var BUTTON_SHAPES_EXPORT = shapeProp.values;
+
+  // scripts/figma/plugin/generators/checkbox.ts
+  var checkboxProps = component_registry_default.components.Checkbox.props;
+  var variantProp4 = checkboxProps.variant;
+  var CHECKBOX_SIZE = 16;
+  var ICON_SIZE = 12;
+  var SECTION_PADDING4 = 48;
+  var SECTION_GAP4 = 160;
+  function createCheckIcon(size) {
+    const vector = figma.createVector();
+    vector.name = "CheckIcon";
+    const scale = size / 12;
+    vector.vectorPaths = [
+      {
+        windingRule: "NONZERO",
+        // Checkmark path: starts bottom-left of check, goes to bottom point, then up-right
+        data: `M ${2 * scale} ${6 * scale} L ${5 * scale} ${9 * scale} L ${10 * scale} ${3 * scale}`
+      }
+    ];
+    vector.strokes = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
+    vector.strokeWeight = 2;
+    vector.strokeCap = "ROUND";
+    vector.strokeJoin = "ROUND";
+    vector.fills = [];
+    vector.resize(size, size);
+    return vector;
+  }
+  function createMinusIcon(size) {
+    const vector = figma.createVector();
+    vector.name = "MinusIcon";
+    const scale = size / 12;
+    const y = 6 * scale;
+    vector.vectorPaths = [
+      {
+        windingRule: "NONZERO",
+        data: `M ${2 * scale} ${y} L ${10 * scale} ${y}`
+      }
+    ];
+    vector.strokes = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
+    vector.strokeWeight = 2;
+    vector.strokeCap = "ROUND";
+    vector.fills = [];
+    vector.resize(size, size);
+    return vector;
+  }
+  function createCheckboxComponent(variant, checked, indeterminate, disabled) {
+    const component = figma.createComponent();
+    component.name = `variant=${variant}, checked=${checked}, indeterminate=${indeterminate}, disabled=${disabled}`;
+    const variantDesc = variantProp4.descriptions[variant] || "";
+    component.description = variantDesc;
+    component.layoutMode = "HORIZONTAL";
+    component.primaryAxisAlignItems = "CENTER";
+    component.counterAxisAlignItems = "CENTER";
+    component.primaryAxisSizingMode = "FIXED";
+    component.counterAxisSizingMode = "FIXED";
+    component.resize(CHECKBOX_SIZE, CHECKBOX_SIZE);
+    component.cornerRadius = BORDER_RADIUS.sm;
+    const isActive = checked || indeterminate;
+    const bgVariable = isActive ? "surface-inverse" : "surface";
+    const bgVar = getVariableByName(bgVariable);
+    if (bgVar) {
+      bindFillToVariable(component, bgVar.id);
+    }
+    const ringVariable = variant === "error" ? "error" : "border";
+    const ringVar = getVariableByName(ringVariable);
+    if (ringVar) {
+      bindStrokeToVariable(component, ringVar.id, 1);
+    }
+    if (disabled) {
+      component.opacity = 0.5;
+    }
+    if (indeterminate) {
+      const minusIcon = createMinusIcon(ICON_SIZE);
+      const iconColorVar = getVariableByName("text-color-surface-inverse");
+      if (iconColorVar) {
+        let stroke = {
+          type: "SOLID",
+          color: { r: 1, g: 1, b: 1 }
+        };
+        stroke = figma.variables.setBoundVariableForPaint(
+          stroke,
+          "color",
+          figma.variables.getVariableById(iconColorVar.id)
+        );
+        minusIcon.strokes = [stroke];
+      }
+      component.appendChild(minusIcon);
+      minusIcon.x = (CHECKBOX_SIZE - ICON_SIZE) / 2;
+      minusIcon.y = (CHECKBOX_SIZE - ICON_SIZE) / 2;
+    } else if (checked) {
+      const checkIcon = createCheckIcon(ICON_SIZE);
+      const iconColorVar = getVariableByName("text-color-surface-inverse");
+      if (iconColorVar) {
+        let stroke = {
+          type: "SOLID",
+          color: { r: 1, g: 1, b: 1 }
+        };
+        stroke = figma.variables.setBoundVariableForPaint(
+          stroke,
+          "color",
+          figma.variables.getVariableById(iconColorVar.id)
+        );
+        checkIcon.strokes = [stroke];
+      }
+      component.appendChild(checkIcon);
+      checkIcon.x = (CHECKBOX_SIZE - ICON_SIZE) / 2;
+      checkIcon.y = (CHECKBOX_SIZE - ICON_SIZE) / 2;
+    }
+    return component;
+  }
+  function shouldGenerateVariant2(variant, checked, indeterminate, disabled) {
+    if (!indeterminate && !disabled) {
+      return true;
+    }
+    if (indeterminate && !disabled && variant === "default") {
+      return true;
+    }
+    if (disabled && variant === "default") {
+      return true;
+    }
+    if (disabled && variant === "error" && !checked && !indeterminate) {
+      return true;
+    }
+    return false;
+  }
+  async function generateCheckboxComponents(page, startY = 100) {
+    figma.currentPage = page;
+    const variants = variantProp4.values;
+    const checkedOptions = [false, true];
+    const indeterminateOptions = [false, true];
+    const disabledOptions = [false, true];
+    const components = [];
+    const componentGap = 16;
+    const rowGap = 40;
+    let currentRow = 0;
+    let currentX = 0;
+    let maxRowWidth = 0;
+    for (const variant of variants) {
+      currentX = 0;
+      for (const disabled of disabledOptions) {
+        for (const indeterminate of indeterminateOptions) {
+          for (const checked of checkedOptions) {
+            if (indeterminate && checked) continue;
+            if (!shouldGenerateVariant2(variant, checked, indeterminate, disabled)) {
+              continue;
+            }
+            const component = createCheckboxComponent(
+              variant,
+              checked,
+              indeterminate,
+              disabled
+            );
+            component.x = currentX;
+            component.y = currentRow * rowGap;
+            currentX += component.width + componentGap;
+            maxRowWidth = Math.max(maxRowWidth, currentX);
+            components.push(component);
+          }
+        }
+      }
+      currentRow++;
+    }
+    const componentSet = figma.combineAsVariants(components, page);
+    componentSet.name = "Checkbox";
+    componentSet.description = "Checkbox component with variant, checked, indeterminate, and disabled properties";
+    componentSet.layoutMode = "NONE";
+    const contentWidth = componentSet.width;
+    const contentHeight = componentSet.height;
+    const lightSection = createModeSection(page, "Checkbox", "light");
+    lightSection.frame.resize(
+      contentWidth + SECTION_PADDING4 * 2,
+      contentHeight + SECTION_PADDING4 * 2
+    );
+    const darkSection = createModeSection(page, "Checkbox", "dark");
+    darkSection.frame.resize(
+      contentWidth + SECTION_PADDING4 * 2,
+      contentHeight + SECTION_PADDING4 * 2
+    );
+    lightSection.frame.appendChild(componentSet);
+    componentSet.x = SECTION_PADDING4;
+    componentSet.y = SECTION_PADDING4;
+    for (const component of components) {
+      const instance = component.createInstance();
+      instance.x = component.x + SECTION_PADDING4;
+      instance.y = component.y + SECTION_PADDING4;
+      darkSection.frame.appendChild(instance);
+    }
+    const totalWidth = contentWidth + SECTION_PADDING4 * 2;
+    const totalHeight = contentHeight + SECTION_PADDING4 * 2;
+    lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    lightSection.section.x = 100;
+    lightSection.section.y = startY;
+    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.y = startY;
+    console.log(
+      `\u2705 Generated Checkbox ComponentSet with ${components.length} variants (light + dark)`
+    );
+    return startY + totalHeight + SECTION_GAP4;
+  }
+  var CHECKBOX_VARIANTS_EXPORT = variantProp4.values;
+
+  // scripts/figma/plugin/generators/link-button.ts
+  var buttonProps2 = component_registry_default.components.Button.props;
+  var variantProp5 = buttonProps2.variant;
+  var sizeProp2 = buttonProps2.size;
+  function getPlaceholderIconForSize2(size, placeholders) {
+    const iconSizeMap = {
+      xs: "placeholderIcon12",
+      sm: "placeholderIcon16",
+      base: "placeholderIcon20",
+      lg: "placeholderIcon20"
+    };
+    const key = iconSizeMap[size];
+    return key ? placeholders[key] : void 0;
+  }
+  var SECTION_PADDING5 = 48;
+  var SECTION_GAP5 = 160;
+  async function createLinkButtonComponent(variant, size, hasIcon, placeholders) {
+    var _a;
+    const variantClasses = variantProp5.classes[variant] || "";
+    const sizeClasses = sizeProp2.classes[size] || "";
+    const variantDesc = variantProp5.descriptions[variant] || "";
+    const sizeDesc = sizeProp2.descriptions[size] || "";
+    const variantStyles = parseTailwindClasses(variantClasses);
+    const sizeStyles = parseTailwindClasses(sizeClasses);
+    const component = figma.createComponent();
+    component.name = `variant=${variant}, size=${size}, hasIcon=${hasIcon}`;
+    component.description = `${variantDesc}. ${sizeDesc}`;
+    component.layoutMode = "HORIZONTAL";
+    component.primaryAxisAlignItems = "CENTER";
+    component.counterAxisAlignItems = "CENTER";
+    component.paddingLeft = sizeStyles.paddingX || 12;
+    component.paddingRight = sizeStyles.paddingX || 12;
+    component.paddingTop = 0;
+    component.paddingBottom = 0;
+    component.itemSpacing = sizeStyles.gap || 6;
+    component.primaryAxisSizingMode = "AUTO";
+    component.counterAxisSizingMode = "FIXED";
+    component.resize(100, sizeStyles.height || 36);
+    const cornerRadius = (_a = sizeStyles.borderRadius) != null ? _a : 8;
+    component.cornerRadius = cornerRadius;
+    if (variantStyles.fillVariable) {
+      const fillVar = getVariableByName(variantStyles.fillVariable);
+      if (fillVar) {
+        bindFillToVariable(component, fillVar.id);
+      }
+    } else {
+      component.fills = [];
+    }
+    if (variantStyles.hasBorder && variantStyles.strokeVariable) {
+      const strokeVar = getVariableByName(variantStyles.strokeVariable);
+      if (strokeVar) {
+        bindStrokeToVariable(component, strokeVar.id, 1);
+      }
+    }
+    if (hasIcon) {
+      const placeholderIcon = getPlaceholderIconForSize2(size, placeholders);
+      if (placeholderIcon) {
+        const iconInstance = placeholderIcon.createInstance();
+        component.appendChild(iconInstance);
+      }
+    }
     const fontWeight = 500;
     const textNode = await createTextNode(
-      "Button",
+      "Link Button",
       sizeStyles.fontSize || 16,
       fontWeight
     );
     textNode.name = "Label";
     if (variantStyles.isWhiteText) {
-      setWhiteTextColor2(textNode);
+      setWhiteTextColor(textNode);
     } else if (variantStyles.textVariable) {
       const textVar = getVariableByName(variantStyles.textVariable);
       if (textVar) {
-        bindTextColorToVariable2(textNode, textVar.id);
+        bindTextColorToVariable(textNode, textVar.id);
       }
     }
     component.appendChild(textNode);
     return component;
   }
-  async function generateButtonTextComponents(page, startY) {
-    if (startY === void 0) startY = 100;
+  async function generateLinkButtonComponents(page, placeholders = {}, startY = 100) {
     figma.currentPage = page;
-    const section = getOrCreateSection(page, "Button");
-    const variants = variantProp2.values;
-    const sizes = sizeProp.values;
+    const variants = variantProp5.values;
+    const sizes = sizeProp2.values;
+    const hasIconOptions = [false, true];
     const components = [];
-    var componentGap = 20;
-    var rowHeight = 60;
-    for (var i = 0; i < variants.length; i++) {
-      var currentX = 0;
-      for (var j = 0; j < sizes.length; j++) {
-        const component = await createButtonComponent(variants[i], sizes[j]);
+    const componentGap = 20;
+    const iconGap = 40;
+    const rowGap = 80;
+    for (let v = 0; v < variants.length; v++) {
+      for (let hi = 0; hi < hasIconOptions.length; hi++) {
+        let currentX = hi * (sizes.length * 140 + iconGap);
+        for (let sz = 0; sz < sizes.length; sz++) {
+          const component = await createLinkButtonComponent(
+            variants[v],
+            sizes[sz],
+            hasIconOptions[hi],
+            placeholders
+          );
+          component.x = currentX;
+          component.y = v * rowGap;
+          currentX = currentX + component.width + componentGap;
+          components.push(component);
+        }
+      }
+    }
+    const componentSet = figma.combineAsVariants(components, page);
+    componentSet.name = "LinkButton";
+    componentSet.description = "LinkButton component for navigation with variant, size, and icon options";
+    componentSet.layoutMode = "NONE";
+    const contentWidth = componentSet.width;
+    const contentHeight = componentSet.height;
+    const lightSection = createModeSection(page, "LinkButton", "light");
+    lightSection.frame.resize(
+      contentWidth + SECTION_PADDING5 * 2,
+      contentHeight + SECTION_PADDING5 * 2
+    );
+    const darkSection = createModeSection(page, "LinkButton", "dark");
+    darkSection.frame.resize(
+      contentWidth + SECTION_PADDING5 * 2,
+      contentHeight + SECTION_PADDING5 * 2
+    );
+    lightSection.frame.appendChild(componentSet);
+    componentSet.x = SECTION_PADDING5;
+    componentSet.y = SECTION_PADDING5;
+    for (const component of components) {
+      const instance = component.createInstance();
+      instance.x = component.x + SECTION_PADDING5;
+      instance.y = component.y + SECTION_PADDING5;
+      darkSection.frame.appendChild(instance);
+    }
+    const totalWidth = contentWidth + SECTION_PADDING5 * 2;
+    const totalHeight = contentHeight + SECTION_PADDING5 * 2;
+    lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    lightSection.section.x = 100;
+    lightSection.section.y = startY;
+    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.y = startY;
+    const totalComponents = variants.length * sizes.length * hasIconOptions.length;
+    console.log(
+      `\u2705 Generated LinkButton ComponentSet with ${totalComponents} variants (light + dark)`
+    );
+    return startY + totalHeight + SECTION_GAP5;
+  }
+  var LINK_BUTTON_VARIANTS_EXPORT = variantProp5.values;
+  var LINK_BUTTON_SIZES_EXPORT = sizeProp2.values;
+
+  // scripts/figma/plugin/generators/refresh-button.ts
+  var buttonProps3 = component_registry_default.components.Button.props;
+  var variantProp6 = buttonProps3.variant;
+  var sizeProp3 = buttonProps3.size;
+  var COMPACT_SIZE_MAP2 = {
+    xs: 14,
+    sm: 26,
+    base: 36,
+    lg: 40
+  };
+  var REFRESH_ICON_SIZE = {
+    xs: 12,
+    sm: 16,
+    // size-4
+    base: 18,
+    // size-4.5
+    lg: 20
+    // size-5
+  };
+  function getBorderRadiusForSize(size) {
+    var _a;
+    const sizeClasses = sizeProp3.classes[size] || "";
+    const parsed = parseTailwindClasses(sizeClasses);
+    return (_a = parsed.borderRadius) != null ? _a : BORDER_RADIUS.lg;
+  }
+  var SECTION_PADDING6 = 48;
+  var SECTION_GAP6 = 160;
+  function createRefreshButtonComponent(size, loading, placeholders) {
+    const variant = variantProp6.default;
+    const variantClasses = variantProp6.classes[variant] || "";
+    const variantStyles = parseTailwindClasses(variantClasses);
+    const component = figma.createComponent();
+    component.name = `size=${size}, loading=${loading}`;
+    component.description = "Refresh button for triggering data refresh";
+    const buttonSize = COMPACT_SIZE_MAP2[size] || 36;
+    component.layoutMode = "HORIZONTAL";
+    component.primaryAxisAlignItems = "CENTER";
+    component.counterAxisAlignItems = "CENTER";
+    component.primaryAxisSizingMode = "FIXED";
+    component.counterAxisSizingMode = "FIXED";
+    component.resize(buttonSize, buttonSize);
+    component.cornerRadius = getBorderRadiusForSize(size);
+    if (variantStyles.fillVariable) {
+      const fillVar = getVariableByName(variantStyles.fillVariable);
+      if (fillVar) {
+        bindFillToVariable(component, fillVar.id);
+      }
+    }
+    if (variantStyles.hasBorder && variantStyles.strokeVariable) {
+      const strokeVar = getVariableByName(variantStyles.strokeVariable);
+      if (strokeVar) {
+        bindStrokeToVariable(component, strokeVar.id, 1);
+      }
+    }
+    const iconSize = REFRESH_ICON_SIZE[size] || 18;
+    if (loading && placeholders.loader) {
+      const loaderInstance = placeholders.loader.createInstance();
+      loaderInstance.resize(iconSize, iconSize);
+      component.appendChild(loaderInstance);
+    } else if (placeholders.refreshIcon) {
+      const iconInstance = placeholders.refreshIcon.createInstance();
+      iconInstance.resize(iconSize, iconSize);
+      component.appendChild(iconInstance);
+    } else {
+      const placeholderKey = iconSize <= 12 ? "placeholderIcon12" : iconSize <= 16 ? "placeholderIcon16" : "placeholderIcon20";
+      const placeholder = placeholders[placeholderKey];
+      if (placeholder) {
+        const iconInstance = placeholder.createInstance();
+        iconInstance.resize(iconSize, iconSize);
+        component.appendChild(iconInstance);
+      }
+    }
+    return component;
+  }
+  async function generateRefreshButtonComponents(page, placeholders = {}, startY = 100) {
+    figma.currentPage = page;
+    const sizes = sizeProp3.values;
+    const loadingOptions = [false, true];
+    const components = [];
+    const componentGap = 20;
+    const loadingGap = 40;
+    for (let lo = 0; lo < loadingOptions.length; lo++) {
+      let currentX = lo * (sizes.length * 60 + loadingGap);
+      for (let sz = 0; sz < sizes.length; sz++) {
+        const component = createRefreshButtonComponent(
+          sizes[sz],
+          loadingOptions[lo],
+          placeholders
+        );
         component.x = currentX;
-        component.y = i * rowHeight;
+        component.y = 0;
         currentX = currentX + component.width + componentGap;
         components.push(component);
       }
     }
     const componentSet = figma.combineAsVariants(components, page);
-    componentSet.name = "Button";
-    componentSet.description = "Button component with variant and size properties";
-    section.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING2;
-    componentSet.y = SECTION_PADDING2;
-    const totalWidth = componentSet.width + SECTION_PADDING2 * 2;
-    const totalHeight = componentSet.height + SECTION_PADDING2 * 2;
-    section.resizeWithoutConstraints(totalWidth, totalHeight);
-    section.x = 100;
-    section.y = startY;
-    console.log(
-      "\u2705 Generated Button ComponentSet with " + components.length + " variants (" + variants.length + " variants \xD7 " + sizes.length + " sizes)"
+    componentSet.name = "RefreshButton";
+    componentSet.description = "RefreshButton component with size and loading state";
+    componentSet.layoutMode = "NONE";
+    const contentWidth = componentSet.width;
+    const contentHeight = componentSet.height;
+    const lightSection = createModeSection(page, "RefreshButton", "light");
+    lightSection.frame.resize(
+      contentWidth + SECTION_PADDING6 * 2,
+      contentHeight + SECTION_PADDING6 * 2
     );
-    console.log(
-      "Button section height: " + totalHeight + ", startY was: " + startY
+    const darkSection = createModeSection(page, "RefreshButton", "dark");
+    darkSection.frame.resize(
+      contentWidth + SECTION_PADDING6 * 2,
+      contentHeight + SECTION_PADDING6 * 2
     );
-    return startY + totalHeight + SECTION_GAP2;
+    lightSection.frame.appendChild(componentSet);
+    componentSet.x = SECTION_PADDING6;
+    componentSet.y = SECTION_PADDING6;
+    for (const component of components) {
+      const instance = component.createInstance();
+      instance.x = component.x + SECTION_PADDING6;
+      instance.y = component.y + SECTION_PADDING6;
+      darkSection.frame.appendChild(instance);
+    }
+    const totalWidth = contentWidth + SECTION_PADDING6 * 2;
+    const totalHeight = contentHeight + SECTION_PADDING6 * 2;
+    lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    lightSection.section.x = 100;
+    lightSection.section.y = startY;
+    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.y = startY;
+    const totalComponents = sizes.length * loadingOptions.length;
+    console.log(
+      `\u2705 Generated RefreshButton ComponentSet with ${totalComponents} variants (light + dark)`
+    );
+    return startY + totalHeight + SECTION_GAP6;
   }
-  var BUTTON_VARIANTS_EXPORT = variantProp2.values;
-  var BUTTON_SIZES_EXPORT = sizeProp.values;
+  var REFRESH_BUTTON_SIZES_EXPORT = sizeProp3.values;
+
+  // scripts/figma/plugin/generators/placeholders.ts
+  function createPlaceholderIcon(size, name) {
+    const component = figma.createComponent();
+    component.name = name;
+    component.resize(size, size);
+    const rect = figma.createRectangle();
+    rect.resize(size, size);
+    rect.x = 0;
+    rect.y = 0;
+    rect.cornerRadius = size * 0.2;
+    rect.fills = [{ type: "SOLID", color: { r: 0.6, g: 0.6, b: 0.6 } }];
+    component.appendChild(rect);
+    return component;
+  }
+  function createLoader() {
+    const component = figma.createComponent();
+    component.name = "Loader";
+    component.resize(16, 16);
+    const spinner = figma.createEllipse();
+    spinner.resize(16, 16);
+    spinner.x = 0;
+    spinner.y = 0;
+    spinner.fills = [];
+    spinner.strokes = [{ type: "SOLID", color: { r: 0.4, g: 0.4, b: 0.4 } }];
+    spinner.strokeWeight = 2;
+    spinner.strokeAlign = "CENTER";
+    spinner.dashPattern = [4, 4];
+    component.appendChild(spinner);
+    return component;
+  }
+  function getOrCreateUtilitiesPage() {
+    let utilitiesPage = figma.root.children.find(
+      (page) => page.type === "PAGE" && page.name.trim().toLowerCase() === "utilities"
+    );
+    if (utilitiesPage) {
+      console.log("\u2705 Found existing Utilities page");
+    } else {
+      console.log("\u{1F4C4} Creating new Utilities page");
+      utilitiesPage = figma.createPage();
+      utilitiesPage.name = "Utilities";
+    }
+    return utilitiesPage;
+  }
+  function purgeUtilitiesPage() {
+    const utilitiesPage = figma.root.children.find(
+      (page) => page.type === "PAGE" && page.name.trim().toLowerCase() === "utilities"
+    );
+    if (utilitiesPage) {
+      const children = [...utilitiesPage.children];
+      console.log(`\u{1F5D1}\uFE0F Purging ${children.length} items from Utilities page`);
+      for (const node of children) {
+        node.remove();
+      }
+    }
+  }
+  function generatePlaceholderComponents() {
+    purgeUtilitiesPage();
+    const page = getOrCreateUtilitiesPage();
+    const placeholderIcon12 = createPlaceholderIcon(12, "Placeholder Icon 12");
+    const placeholderIcon16 = createPlaceholderIcon(16, "Placeholder Icon 16");
+    const placeholderIcon20 = createPlaceholderIcon(20, "Placeholder Icon 20");
+    const loader = createLoader();
+    page.appendChild(placeholderIcon12);
+    page.appendChild(placeholderIcon16);
+    page.appendChild(placeholderIcon20);
+    page.appendChild(loader);
+    placeholderIcon12.x = 0;
+    placeholderIcon12.y = 0;
+    placeholderIcon16.x = 50;
+    placeholderIcon16.y = 0;
+    placeholderIcon20.x = 100;
+    placeholderIcon20.y = 0;
+    loader.x = 150;
+    loader.y = 0;
+    return {
+      placeholderIcon12,
+      placeholderIcon16,
+      placeholderIcon20,
+      loader
+    };
+  }
+
+  // scripts/figma/plugin/generators/text.ts
+  var textProps = component_registry_default.components.Text.props;
+  var variantProp7 = textProps.variant;
+  var sizeProp4 = textProps.size;
+  var SECTION_PADDING7 = 48;
+  var SECTION_GAP7 = 160;
+  var TEXT_BASE_CLASS = "text-surface";
+  var COPY_VARIANTS = ["body", "secondary", "success", "error"];
+  var MONO_VARIANTS = ["mono", "mono-secondary"];
+  function isCopyVariant(variant) {
+    return COPY_VARIANTS.includes(variant);
+  }
+  function isMonoVariant(variant) {
+    return MONO_VARIANTS.includes(variant);
+  }
+  function getPlaceholderText(variant) {
+    if (variant.startsWith("heading")) {
+      return variant.charAt(0).toUpperCase() + variant.slice(1).replace(/(\d)/, " $1");
+    }
+    if (isMonoVariant(variant)) {
+      return "const code = true;";
+    }
+    return "Text content";
+  }
+  async function createTextComponent(variant, size) {
+    const variantClasses = variantProp7.classes[variant] || "";
+    const variantDesc = variantProp7.descriptions[variant] || "";
+    let effectiveSizeClasses = "";
+    let sizeDesc = "";
+    if (isCopyVariant(variant) && size) {
+      effectiveSizeClasses = sizeProp4.classes[size] || "";
+      sizeDesc = sizeProp4.descriptions[size] || "";
+    } else if (isMonoVariant(variant)) {
+      if (size === "lg") {
+        effectiveSizeClasses = sizeProp4.classes["base"] || "";
+        sizeDesc = "Large text (optically adjusted to base)";
+      } else {
+        effectiveSizeClasses = sizeProp4.classes["sm"] || "";
+        sizeDesc = "Default text (optically adjusted to small)";
+      }
+    }
+    const combinedClasses = `${TEXT_BASE_CLASS} ${variantClasses} ${effectiveSizeClasses}`.trim();
+    const styles = parseTailwindClasses(combinedClasses);
+    const component = figma.createComponent();
+    if (size) {
+      component.name = "variant=" + variant + ", size=" + size;
+      component.description = variantDesc + ". " + sizeDesc;
+    } else {
+      component.name = "variant=" + variant;
+      component.description = variantDesc;
+    }
+    component.layoutMode = "HORIZONTAL";
+    component.primaryAxisAlignItems = "MIN";
+    component.counterAxisAlignItems = "MIN";
+    component.primaryAxisSizingMode = "AUTO";
+    component.counterAxisSizingMode = "AUTO";
+    component.fills = [];
+    let fontWeight = 400;
+    if (variantClasses.includes("font-semibold")) {
+      fontWeight = 600;
+    } else if (variantClasses.includes("font-medium")) {
+      fontWeight = 500;
+    }
+    const fontSize = styles.fontSize || 16;
+    const textNode = await createTextNode(
+      getPlaceholderText(variant),
+      fontSize,
+      fontWeight
+    );
+    textNode.name = "Text";
+    if (styles.textVariable) {
+      const textVar = getVariableByName(styles.textVariable);
+      if (textVar) {
+        bindTextColorToVariable(textNode, textVar.id);
+      }
+    } else {
+      const surfaceVar = getVariableByName("text-color-surface");
+      if (surfaceVar) {
+        bindTextColorToVariable(textNode, surfaceVar.id);
+      }
+    }
+    component.appendChild(textNode);
+    return component;
+  }
+  async function generateTextComponents(page, startY) {
+    if (startY === void 0) startY = 100;
+    figma.currentPage = page;
+    const variants = variantProp7.values;
+    const sizes = sizeProp4.values;
+    const components = [];
+    const componentGap = 20;
+    const rowHeight = 50;
+    let currentRow = 0;
+    for (let i = 0; i < variants.length; i++) {
+      const variant = variants[i];
+      if (isCopyVariant(variant)) {
+        let currentX = 0;
+        for (let j = 0; j < sizes.length; j++) {
+          const component = await createTextComponent(variant, sizes[j]);
+          component.x = currentX;
+          component.y = currentRow * rowHeight;
+          currentX = currentX + component.width + componentGap;
+          components.push(component);
+        }
+        currentRow++;
+      } else if (isMonoVariant(variant)) {
+        let currentX = 0;
+        const defaultComponent = await createTextComponent(variant, null);
+        defaultComponent.x = currentX;
+        defaultComponent.y = currentRow * rowHeight;
+        currentX = currentX + defaultComponent.width + componentGap;
+        components.push(defaultComponent);
+        const lgComponent = await createTextComponent(variant, "lg");
+        lgComponent.x = currentX;
+        lgComponent.y = currentRow * rowHeight;
+        components.push(lgComponent);
+        currentRow++;
+      } else {
+        const component = await createTextComponent(variant, null);
+        component.x = 0;
+        component.y = currentRow * rowHeight;
+        components.push(component);
+        currentRow++;
+      }
+    }
+    const componentSet = figma.combineAsVariants(components, page);
+    componentSet.name = "Text";
+    componentSet.description = "Text component with variant and size properties for typography";
+    componentSet.layoutMode = "NONE";
+    const contentWidth = componentSet.width;
+    const contentHeight = componentSet.height;
+    const lightSection = createModeSection(page, "Text", "light");
+    lightSection.frame.resize(
+      contentWidth + SECTION_PADDING7 * 2,
+      contentHeight + SECTION_PADDING7 * 2
+    );
+    const darkSection = createModeSection(page, "Text", "dark");
+    darkSection.frame.resize(
+      contentWidth + SECTION_PADDING7 * 2,
+      contentHeight + SECTION_PADDING7 * 2
+    );
+    lightSection.frame.appendChild(componentSet);
+    componentSet.x = SECTION_PADDING7;
+    componentSet.y = SECTION_PADDING7;
+    for (const component of components) {
+      const instance = component.createInstance();
+      instance.x = component.x + SECTION_PADDING7;
+      instance.y = component.y + SECTION_PADDING7;
+      darkSection.frame.appendChild(instance);
+    }
+    const totalWidth = contentWidth + SECTION_PADDING7 * 2;
+    const totalHeight = contentHeight + SECTION_PADDING7 * 2;
+    lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    lightSection.section.x = 100;
+    lightSection.section.y = startY;
+    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.y = startY;
+    console.log(
+      "\u2705 Generated Text ComponentSet with " + components.length + " variants (light + dark)"
+    );
+    return startY + totalHeight + SECTION_GAP7;
+  }
+  var TEXT_VARIANTS_EXPORT = variantProp7.values;
+  var TEXT_SIZES_EXPORT = sizeProp4.values;
 
   // scripts/figma/plugin/code.ts
   figma.showUI(__html__, { width: 400, height: 300 });
   function getOrCreateComponentsPage() {
     let componentsPage = figma.root.children.find(
-      (page) => page.type === "PAGE" && page.name === "Components"
+      (page) => page.type === "PAGE" && page.name.trim().toLowerCase() === "components"
     );
-    if (!componentsPage) {
+    if (componentsPage) {
+      console.log("\u2705 Found existing Components page");
+    } else {
+      console.log("\u{1F4C4} Creating new Components page");
       componentsPage = figma.createPage();
       componentsPage.name = "Components";
     }
@@ -2856,10 +3931,11 @@
   }
   function purgeExistingContent() {
     const componentsPage = figma.root.children.find(
-      (page) => page.type === "PAGE" && page.name === "Components"
+      (page) => page.type === "PAGE" && page.name.trim().toLowerCase() === "components"
     );
     if (componentsPage) {
       const children = [...componentsPage.children];
+      console.log(`\u{1F5D1}\uFE0F Purging ${children.length} items from Components page`);
       for (const node of children) {
         node.remove();
       }
@@ -2877,11 +3953,35 @@
         let nextY = START_Y;
         figma.notify("Generating Badge components...");
         nextY = await generateBadgeComponents(nextY);
+        figma.notify("Generating Banner components...");
+        nextY = await generateBannerComponents(nextY);
+        figma.notify("Generating placeholder components...");
+        const placeholders = generatePlaceholderComponents();
         figma.notify("Generating Button components...");
-        await generateButtonTextComponents(componentsPage, nextY);
+        nextY = await generateButtonComponents(
+          componentsPage,
+          placeholders,
+          nextY
+        );
+        figma.notify("Generating LinkButton components...");
+        nextY = await generateLinkButtonComponents(
+          componentsPage,
+          placeholders,
+          nextY
+        );
+        figma.notify("Generating RefreshButton components...");
+        nextY = await generateRefreshButtonComponents(
+          componentsPage,
+          placeholders,
+          nextY
+        );
+        figma.notify("Generating Checkbox components...");
+        nextY = await generateCheckboxComponents(componentsPage, nextY);
+        figma.notify("Generating Text components...");
+        await generateTextComponents(componentsPage, nextY);
         figma.notify("\u2705 Generation complete!", { timeout: 3e3 });
         figma.closePlugin(
-          "Generation complete - created Badge and Button components"
+          "Generation complete - created Badge, Banner, Button, Checkbox, LinkButton, RefreshButton, and Text components"
         );
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);

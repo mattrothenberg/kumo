@@ -364,6 +364,7 @@ Button component
   - `"secondary"`: Default button style for most actions
   - `"ghost"`: Minimal button with no background
   - `"destructive"`: Danger button for destructive actions like delete
+  - `"secondary-destructive"`: Secondary button with destructive text for less prominent dangerous actions
   - `"outline"`: Bordered button with transparent background
 - `onChange`: React.FormEventHandler<HTMLButtonElement>
 - `onSubmit`: React.FormEventHandler<HTMLButtonElement>
@@ -2912,6 +2913,7 @@ Text component
   - `"success"`: Success state text
   - `"error"`: Error state text
   - `"mono"`: Monospace text for code
+  - `"mono-secondary"`: Muted monospace text
 - `size`: enum [default: base]
   - `"xs"`: Extra small text
   - `"sm"`: Small text

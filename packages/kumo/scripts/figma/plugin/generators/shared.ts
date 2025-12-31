@@ -253,7 +253,11 @@ export function getVariableByName(variableName: string): Variable | undefined {
   const kumoColors = collections.find((c) => c.name === "kumo-colors");
 
   if (!kumoColors) {
-    console.warn("kumo-colors collection not found");
+    console.warn(
+      "kumo-colors collection not found. Available collections:",
+      collections.map((c) => c.name).join(", ") || "none",
+    );
+    figma.notify("⚠️ kumo-colors collection not found", { error: true });
     return undefined;
   }
 
@@ -261,7 +265,56 @@ export function getVariableByName(variableName: string): Variable | undefined {
     .map((id) => figma.variables.getVariableById(id))
     .filter((v): v is Variable => v !== null);
 
-  return variables.find((v) => v.name === variableName);
+  const variable = variables.find((v) => v.name === variableName);
+
+  if (!variable) {
+    console.warn(
+      `Variable "${variableName}" not found in kumo-colors collection`,
+    );
+  }
+
+  return variable;
+}
+
+/**
+ * Helper to set white text color (hardcoded, not a variable)
+ *
+ * @param textNode - Text node to apply white color to
+ */
+export function setWhiteTextColor(textNode: TextNode): void {
+  const fill: SolidPaint = {
+    type: "SOLID",
+    color: { r: 1, g: 1, b: 1 },
+  };
+  textNode.fills = [fill];
+}
+
+/**
+ * Helper to bind text color to a Figma variable
+ *
+ * @param textNode - Text node to apply color to
+ * @param variableId - Figma variable ID
+ */
+export function bindTextColorToVariable(
+  textNode: TextNode,
+  variableId: string,
+): void {
+  const variable = figma.variables.getVariableById(variableId);
+  if (!variable) {
+    console.warn("Variable not found: " + variableId);
+    figma.notify(`⚠️ Text color variable not found: ${variableId}`, {
+      error: true,
+    });
+    return;
+  }
+
+  let fill: SolidPaint = {
+    type: "SOLID",
+    color: { r: 1, g: 1, b: 1 },
+  };
+
+  fill = figma.variables.setBoundVariableForPaint(fill, "color", variable);
+  textNode.fills = [fill];
 }
 
 /**
@@ -277,6 +330,130 @@ export const SECTION_CONFIG = {
 } as const;
 
 /**
+ * Color mode for sections
+ */
+export type ColorMode = "light" | "dark";
+
+/**
+ * Get the kumo-colors collection and its mode IDs
+ */
+function getKumoColorsModes(): {
+  collection: VariableCollection;
+  lightModeId: string;
+  darkModeId: string;
+} | null {
+  const collections = figma.variables.getLocalVariableCollections();
+  const kumoColors = collections.find((c) => c.name === "kumo-colors");
+
+  if (!kumoColors) {
+    console.warn("kumo-colors collection not found");
+    return null;
+  }
+
+  // Find light and dark mode IDs
+  const lightMode = kumoColors.modes.find(
+    (m) => m.name.toLowerCase() === "light",
+  );
+  const darkMode = kumoColors.modes.find(
+    (m) => m.name.toLowerCase() === "dark",
+  );
+
+  if (!lightMode || !darkMode) {
+    console.warn("Light or dark mode not found in kumo-colors collection");
+    return null;
+  }
+
+  return {
+    collection: kumoColors,
+    lightModeId: lightMode.modeId,
+    darkModeId: darkMode.modeId,
+  };
+}
+
+/**
+ * Result from creating a mode section - contains both section and inner frame
+ */
+export type ModeSectionResult = {
+  /** The outer section node */
+  section: SectionNode;
+  /** The inner frame with variable-bound background */
+  frame: FrameNode;
+};
+
+/**
+ * Create a section with an inner frame that has bg-surface variable fill and explicit color mode
+ *
+ * The section provides organization, while the inner frame provides:
+ * - Variable-bound background (bg-surface)
+ * - Explicit color mode (light/dark)
+ *
+ * @param page - Page to create section on
+ * @param sectionName - Section name
+ * @param mode - Color mode ("light" or "dark")
+ * @returns Object with section and inner frame
+ */
+export function createModeSection(
+  page: PageNode | DocumentNode,
+  sectionName: string,
+  mode: ColorMode,
+): ModeSectionResult {
+  const section = figma.createSection();
+  section.name = `${sectionName} (${mode})`;
+
+  // Create inner frame for variable binding
+  const frame = figma.createFrame();
+  frame.name = "Content";
+  frame.layoutMode = "NONE"; // Components will be positioned manually
+
+  // Get the surface variable for background
+  const surfaceVar = getVariableByName("surface");
+
+  if (surfaceVar) {
+    // Create fill bound to surface variable
+    let fill: SolidPaint = {
+      type: "SOLID",
+      color: { r: 1, g: 1, b: 1 },
+    };
+    fill = figma.variables.setBoundVariableForPaint(fill, "color", surfaceVar);
+    frame.fills = [fill];
+  } else {
+    // Fallback to static colors if variable not found
+    frame.fills = [
+      {
+        type: "SOLID",
+        color:
+          mode === "light"
+            ? { r: 1, g: 1, b: 1 } // White
+            : { r: 0.067, g: 0.067, b: 0.067 }, // #111111
+      },
+    ];
+  }
+
+  // Set explicit variable mode on the frame
+  const modesInfo = getKumoColorsModes();
+  if (modesInfo) {
+    const modeId =
+      mode === "light" ? modesInfo.lightModeId : modesInfo.darkModeId;
+    frame.setExplicitVariableModeForCollection(modesInfo.collection, modeId);
+  }
+
+  // Add frame to section
+  section.appendChild(frame);
+
+  // Position frame at origin within section
+  frame.x = 0;
+  frame.y = 0;
+
+  // Section has no fill (transparent)
+  section.fills = [];
+
+  // @ts-expect-error - Figma types are overly strict for appendChild
+  page.appendChild(section);
+
+  return { section, frame };
+}
+
+/**
  * Get or create a section node on a page with white background
  *
  * @param page - Page to create section on
@@ -286,6 +463,8 @@ export const SECTION_CONFIG = {
  * @example
  * const page = figma.currentPage;
  * const section = getOrCreateSection(page, "Badge");
+ *
+ * @deprecated Use createModeSection instead for light/dark mode support
  */
 export function getOrCreateSection(
   page: any,

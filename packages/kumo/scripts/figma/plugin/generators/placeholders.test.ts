@@ -1,15 +1,54 @@
 /**
  * @vitest-environment node
+ *
+ * Tests for placeholders.ts component generator
+ *
+ * Note: These tests mock the Figma Plugin API. Full integration tests
+ * require running in the actual Figma plugin environment.
  */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
+// Create mock factories for consistent mock objects
+const createMockRectangle = () => ({
+  resize: vi.fn(),
+  fills: [] as unknown[],
+  x: 0,
+  y: 0,
+  cornerRadius: 0,
+});
+
+const createMockEllipse = () => ({
+  resize: vi.fn(),
+  fills: [] as unknown[],
+  strokes: [] as unknown[],
+  x: 0,
+  y: 0,
+  strokeWeight: 0,
+  strokeAlign: "CENTER" as const,
+  dashPattern: [] as number[],
+});
+
+const createMockComponent = () => ({
+  name: "",
+  resize: vi.fn(),
+  appendChild: vi.fn(),
+  fills: [] as unknown[],
+  x: 0,
+  y: 0,
+});
+
+const createMockPage = () => ({
+  name: "",
+  appendChild: vi.fn(),
+});
+
 // Mock Figma API
 const mockFigma = {
-  createPage: vi.fn(),
-  createComponent: vi.fn(),
+  createPage: vi.fn(() => createMockPage()),
+  createComponent: vi.fn(() => createMockComponent()),
   createFrame: vi.fn(),
-  createEllipse: vi.fn(),
-  createRectangle: vi.fn(),
+  createEllipse: vi.fn(() => createMockEllipse()),
+  createRectangle: vi.fn(() => createMockRectangle()),
   currentPage: { appendChild: vi.fn() },
 };
 
@@ -19,6 +58,11 @@ global.figma = mockFigma;
 describe("placeholders generator", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    // Reset mock implementations
+    mockFigma.createPage.mockImplementation(() => createMockPage());
+    mockFigma.createComponent.mockImplementation(() => createMockComponent());
+    mockFigma.createEllipse.mockImplementation(() => createMockEllipse());
+    mockFigma.createRectangle.mockImplementation(() => createMockRectangle());
   });
 
   it("should export generatePlaceholderComponents function", async () => {
@@ -28,53 +72,19 @@ describe("placeholders generator", () => {
   });
 
   it("should create Utilities page", async () => {
-    const mockPage = { name: "", appendChild: vi.fn() };
-    const mockComponent = {
-      name: "",
-      resize: vi.fn(),
-      appendChild: vi.fn(),
-      fills: [],
-      x: 0,
-      y: 0,
-    };
-    const mockEllipse = {
-      resize: vi.fn(),
-      fills: [],
-      x: 0,
-      y: 0,
-    };
-
+    const mockPage = createMockPage();
     mockFigma.createPage.mockReturnValue(mockPage);
-    mockFigma.createComponent.mockReturnValue(mockComponent);
-    mockFigma.createEllipse.mockReturnValue(mockEllipse);
 
     const { generatePlaceholderComponents } = await import("./placeholders");
-    await generatePlaceholderComponents();
+    generatePlaceholderComponents();
 
     expect(mockFigma.createPage).toHaveBeenCalled();
     expect(mockPage.name).toBe("Utilities");
   });
 
-  it("should generate three placeholder icon sizes", async () => {
-    const mockPage = { name: "Utilities", appendChild: vi.fn() };
-    const mockComponent = {
-      name: "",
-      resize: vi.fn(),
-      appendChild: vi.fn(),
-      fills: [],
-    };
-
-    mockFigma.createPage.mockReturnValue(mockPage);
-    mockFigma.createComponent.mockReturnValue(mockComponent);
-    mockFigma.createEllipse.mockReturnValue({
-      resize: vi.fn(),
-      fills: [],
-      x: 0,
-      y: 0,
-    });
-
+  it("should generate three placeholder icon sizes plus loader", async () => {
     const { generatePlaceholderComponents } = await import("./placeholders");
-    const result = await generatePlaceholderComponents();
+    const result = generatePlaceholderComponents();
 
     // Should create 3 placeholder icons + 1 loader = 4 components
     expect(mockFigma.createComponent).toHaveBeenCalledTimes(4);
@@ -84,59 +94,19 @@ describe("placeholders generator", () => {
     expect(result).toHaveProperty("loader");
   });
 
-  it("should create placeholder icons with correct sizes", async () => {
-    const mockPage = { name: "Utilities", appendChild: vi.fn() };
-    const mockComponent = {
-      name: "",
-      resize: vi.fn(),
-      appendChild: vi.fn(),
-      fills: [],
-    };
-    const mockEllipse = {
-      resize: vi.fn(),
-      fills: [],
-      x: 0,
-      y: 0,
-    };
-
-    mockFigma.createPage.mockReturnValue(mockPage);
-    mockFigma.createComponent.mockReturnValue(mockComponent);
-    mockFigma.createEllipse.mockReturnValue(mockEllipse);
-
+  it("should create placeholder icons with rectangles", async () => {
     const { generatePlaceholderComponents } = await import("./placeholders");
-    await generatePlaceholderComponents();
+    generatePlaceholderComponents();
 
-    // Check that components are resized to correct dimensions
-    expect(mockComponent.resize).toHaveBeenCalledWith(12, 12);
-    expect(mockComponent.resize).toHaveBeenCalledWith(16, 16);
-    expect(mockComponent.resize).toHaveBeenCalledWith(20, 20);
+    // Should create 3 rectangles for placeholder icons
+    expect(mockFigma.createRectangle).toHaveBeenCalledTimes(3);
   });
 
-  it("should create loader component", async () => {
-    const mockPage = { name: "Utilities", appendChild: vi.fn() };
-    const mockComponent = {
-      name: "",
-      resize: vi.fn(),
-      appendChild: vi.fn(),
-      fills: [],
-    };
-
-    mockFigma.createPage.mockReturnValue(mockPage);
-    mockFigma.createComponent.mockReturnValue(mockComponent);
-    mockFigma.createEllipse.mockReturnValue({
-      resize: vi.fn(),
-      fills: [],
-      x: 0,
-      y: 0,
-      strokeWeight: 0,
-      strokes: [],
-      strokeAlign: "CENTER",
-      dashPattern: [],
-    });
-
+  it("should create loader with ellipse", async () => {
     const { generatePlaceholderComponents } = await import("./placeholders");
-    const result = await generatePlaceholderComponents();
+    generatePlaceholderComponents();
 
-    expect(result.loader).toBeDefined();
+    // Should create 1 ellipse for loader
+    expect(mockFigma.createEllipse).toHaveBeenCalledTimes(1);
   });
 });

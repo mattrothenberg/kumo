@@ -78,48 +78,62 @@ export function extractOpacityModifiers(sourceCode: string): OpacityModifier[] {
 }
 
 /**
- * Extract opacity modifiers from multiple source files
+ * Extract opacity modifiers from multiple source code strings
  *
- * @param filePaths - Array of file paths to scan
- * @returns Array of unique opacity modifiers across all files
+ * Note: In Figma plugin context, network access is not available.
+ * Source files must be bundled/embedded at build time.
+ * This function accepts pre-loaded source code strings.
+ *
+ * @param sources - Array of source code strings to scan
+ * @returns Array of unique opacity modifiers across all sources
  *
  * @example
- * const paths = [
- *   "packages/kumo/src/components/button/button.tsx",
- *   "packages/kumo/src/components/badge/badge.tsx"
- * ];
- * const modifiers = await extractOpacityModifiersFromFiles(paths);
+ * // At build time, bundle source files as strings:
+ * const buttonSource = `...contents of button.tsx...`;
+ * const badgeSource = `...contents of badge.tsx...`;
+ * const modifiers = extractOpacityModifiersFromSources([buttonSource, badgeSource]);
  */
-export async function extractOpacityModifiersFromFiles(
-  filePaths: string[],
-): Promise<OpacityModifier[]> {
+export function extractOpacityModifiersFromSources(
+  sources: string[],
+): OpacityModifier[] {
   const allModifiers: OpacityModifier[] = [];
   const seen = new Set<string>();
 
-  for (const path of filePaths) {
-    try {
-      // In Figma plugin context, we'd need to fetch these files
-      // This is a placeholder - actual implementation depends on how we bundle the plugin
-      // Note: fetch is not available in Figma plugin context
-      // Actual implementation will need to bundle source files
-      const response = await globalThis.fetch(path);
-      const sourceCode = await response.text();
-
-      const modifiers = extractOpacityModifiers(sourceCode);
-      for (const mod of modifiers) {
-        if (!seen.has(mod.variableName)) {
-          seen.add(mod.variableName);
-          allModifiers.push(mod);
-        }
+  for (const sourceCode of sources) {
+    const modifiers = extractOpacityModifiers(sourceCode);
+    for (const mod of modifiers) {
+      if (!seen.has(mod.variableName)) {
+        seen.add(mod.variableName);
+        allModifiers.push(mod);
       }
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.warn(`Failed to parse ${path}:`, error);
     }
   }
 
   return allModifiers;
 }
+
+/**
+ * Pre-extracted opacity modifiers from Kumo component source files.
+ * These are extracted at build time and bundled with the plugin.
+ *
+ * To regenerate, run: `pnpm build:ai-metadata` and update this list.
+ *
+ * Source files scanned:
+ * - packages/kumo/src/components/button/button.tsx
+ * - packages/kumo/src/components/badge/badge.tsx
+ */
+export const BUNDLED_OPACITY_MODIFIERS: OpacityModifier[] = [
+  // From button.tsx primary variant: hover:bg-primary/70, disabled:bg-primary/50
+  { token: "primary", opacity: 70, variableName: "opacity-primary-70" },
+  { token: "primary", opacity: 50, variableName: "opacity-primary-50" },
+  // From button.tsx secondary variant: disabled:bg-secondary/50, disabled:!text-surface/70
+  { token: "secondary", opacity: 50, variableName: "opacity-secondary-50" },
+  { token: "surface", opacity: 70, variableName: "opacity-surface-70" },
+  // From button.tsx destructive variant: hover:bg-error/70
+  { token: "error", opacity: 70, variableName: "opacity-error-70" },
+  // From button.tsx secondary-destructive variant: disabled:!text-error/70
+  { token: "error", opacity: 70, variableName: "opacity-error-70" }, // Deduplicated
+];
 
 /**
  * Generate opacity variable name from token and opacity value

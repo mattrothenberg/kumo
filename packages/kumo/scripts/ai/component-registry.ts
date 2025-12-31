@@ -465,11 +465,13 @@ function parseVariantsObject(
     // Now parse the variant values within this block
     // biome-ignore lint/suspicious/noExplicitAny: Variants have varying shapes
     const variants: Record<string, any> = {};
-    const variantPropPattern = /^\s*(\w+)\s*:\s*\{/gm;
+    // Match variant names including quoted keys like "secondary-destructive"
+    const variantPropPattern = /^\s*(?:"([^"]+)"|'([^']+)'|(\w+))\s*:\s*\{/gm;
     let variantMatch: RegExpExecArray | null;
 
     while ((variantMatch = variantPropPattern.exec(propBlock)) !== null) {
-      const variantName = variantMatch[1];
+      // Capture group 1 = double-quoted, 2 = single-quoted, 3 = unquoted
+      const variantName = variantMatch[1] || variantMatch[2] || variantMatch[3];
 
       // Skip nested properties
       if (["classes", "description"].includes(variantName)) continue;

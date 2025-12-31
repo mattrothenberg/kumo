@@ -26,6 +26,16 @@ interface PluginAPI {
   createRectangle(): RectangleNode;
   createEllipse(): EllipseNode;
   loadFontAsync(font: { family: string; style: string }): Promise<void>;
+  /**
+   * Combines multiple components into a ComponentSet (variants)
+   * @param components - Array of ComponentNode to combine
+   * @param parent - Parent node (usually PageNode or FrameNode)
+   * @returns ComponentSetNode containing all variants
+   */
+  combineAsVariants(
+    components: ComponentNode[],
+    parent: BaseNode,
+  ): ComponentSetNode;
   variables: {
     getLocalVariableCollections(): VariableCollection[];
     getVariableById(id: string): Variable | null;
@@ -67,11 +77,6 @@ interface PageNode extends BaseNode {
   children: readonly SceneNode[];
 }
 
-interface SectionNode extends BaseNode {
-  type: "SECTION";
-  children: readonly SceneNode[];
-}
-
 interface SceneNode extends BaseNode {
   fills?: ReadonlyArray<Paint>;
   strokes?: ReadonlyArray<Paint>;
@@ -104,9 +109,8 @@ interface TextNode extends SceneNode {
   fontName: { family: string; style: string };
 }
 
-interface RectangleNode extends SceneNode {
+interface RectangleNode extends SceneNode, LayoutMixin {
   type: "RECTANGLE";
-  cornerRadius: number;
 }
 
 interface EllipseNode extends SceneNode {
@@ -118,12 +122,52 @@ interface EllipseNode extends SceneNode {
   dashPattern: number[];
 }
 
-interface ComponentNode extends SceneNode {
-  type: "COMPONENT";
+/**
+ * Layout mixin properties available on ComponentNode at runtime.
+ * Figma Plugin API includes these properties on ComponentNode even though
+ * the base typings don't extend LayoutMixin explicitly.
+ */
+interface LayoutMixin {
+  layoutMode: "NONE" | "HORIZONTAL" | "VERTICAL";
+  primaryAxisAlignItems: "MIN" | "CENTER" | "MAX" | "SPACE_BETWEEN";
+  counterAxisAlignItems: "MIN" | "CENTER" | "MAX";
+  paddingTop: number;
+  paddingRight: number;
+  paddingBottom: number;
+  paddingLeft: number;
+  itemSpacing: number;
+  primaryAxisSizingMode: "FIXED" | "AUTO";
+  counterAxisSizingMode: "FIXED" | "AUTO";
+  cornerRadius: number;
+  resize(width: number, height: number): void;
+  opacity: number;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  dashPattern: number[];
 }
 
-interface ComponentSetNode extends SceneNode {
+interface ComponentNode extends SceneNode, LayoutMixin {
+  type: "COMPONENT";
+  description: string;
+  createInstance(): InstanceNode;
+}
+
+interface InstanceNode extends SceneNode, LayoutMixin {
+  type: "INSTANCE";
+}
+
+interface ComponentSetNode extends SceneNode, LayoutMixin {
   type: "COMPONENT_SET";
+  description: string;
+}
+
+interface SectionNode extends BaseNode, LayoutMixin {
+  type: "SECTION";
+  children: readonly SceneNode[];
+  fills: ReadonlyArray<Paint>;
+  resizeWithoutConstraints(width: number, height: number): void;
 }
 
 interface Paint {

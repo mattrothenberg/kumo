@@ -8,7 +8,13 @@
  */
 
 import { generateBadgeComponents } from "./generators/badge";
-import { generateButtonTextComponents } from "./generators/button-text";
+import { generateBannerComponents } from "./generators/banner";
+import { generateButtonComponents } from "./generators/button";
+import { generateCheckboxComponents } from "./generators/checkbox";
+import { generateLinkButtonComponents } from "./generators/link-button";
+import { generateRefreshButtonComponents } from "./generators/refresh-button";
+import { generatePlaceholderComponents } from "./generators/placeholders";
+import { generateTextComponents } from "./generators/text";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore - __html__ is provided by Figma plugin API
@@ -18,11 +24,16 @@ figma.showUI(__html__, { width: 400, height: 300 });
  * Find or create the Components page
  */
 function getOrCreateComponentsPage(): PageNode {
+  // Find existing Components page (case-insensitive, trimmed)
   let componentsPage = figma.root.children.find(
-    (page) => page.type === "PAGE" && page.name === "Components",
+    (page) =>
+      page.type === "PAGE" && page.name.trim().toLowerCase() === "components",
   ) as PageNode | undefined;
 
-  if (!componentsPage) {
+  if (componentsPage) {
+    console.log("✅ Found existing Components page");
+  } else {
+    console.log("📄 Creating new Components page");
     componentsPage = figma.createPage();
     componentsPage.name = "Components";
   }
@@ -35,14 +46,16 @@ function getOrCreateComponentsPage(): PageNode {
  * Deletes all children in Components page
  */
 function purgeExistingContent(): void {
-  // Find and delete Components page sections
+  // Find and delete Components page sections (case-insensitive)
   const componentsPage = figma.root.children.find(
-    (page) => page.type === "PAGE" && page.name === "Components",
+    (page) =>
+      page.type === "PAGE" && page.name.trim().toLowerCase() === "components",
   ) as PageNode | undefined;
 
   if (componentsPage) {
     // Remove all children (sections, component sets, etc.)
     const children = [...componentsPage.children];
+    console.log(`🗑️ Purging ${children.length} items from Components page`);
     for (const node of children) {
       node.remove();
     }
@@ -75,13 +88,49 @@ figma.ui.onmessage = async (msg: { type: string }) => {
       figma.notify("Generating Badge components...");
       nextY = await generateBadgeComponents(nextY);
 
-      // Step 4: Generate Button components (all variants and sizes)
+      // Step 4: Generate Banner components
+      figma.notify("Generating Banner components...");
+      nextY = await generateBannerComponents(nextY);
+
+      // Step 5: Generate placeholder components (icons, loader)
+      figma.notify("Generating placeholder components...");
+      const placeholders = generatePlaceholderComponents();
+
+      // Step 6: Generate Button components (all variants, sizes, shapes, disabled, loading)
       figma.notify("Generating Button components...");
-      await generateButtonTextComponents(componentsPage, nextY);
+      nextY = await generateButtonComponents(
+        componentsPage,
+        placeholders,
+        nextY,
+      );
+
+      // Step 7: Generate LinkButton components
+      figma.notify("Generating LinkButton components...");
+      nextY = await generateLinkButtonComponents(
+        componentsPage,
+        placeholders,
+        nextY,
+      );
+
+      // Step 8: Generate RefreshButton components
+      figma.notify("Generating RefreshButton components...");
+      nextY = await generateRefreshButtonComponents(
+        componentsPage,
+        placeholders,
+        nextY,
+      );
+
+      // Step 9: Generate Checkbox components
+      figma.notify("Generating Checkbox components...");
+      nextY = await generateCheckboxComponents(componentsPage, nextY);
+
+      // Step 10: Generate Text components (typography variants)
+      figma.notify("Generating Text components...");
+      await generateTextComponents(componentsPage, nextY);
 
       figma.notify("✅ Generation complete!", { timeout: 3000 });
       figma.closePlugin(
-        "Generation complete - created Badge and Button components",
+        "Generation complete - created Badge, Banner, Button, Checkbox, LinkButton, RefreshButton, and Text components",
       );
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
