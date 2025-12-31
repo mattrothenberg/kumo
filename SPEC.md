@@ -191,6 +191,99 @@ Every generator MUST create components inside section frames with explicit color
 - Sections alone cannot have explicit variable modes
 - The inner frame with `setExplicitVariableModeForCollection()` is what makes colors switch
 
+### CRITICAL: After Making Changes
+
+After modifying any generator:
+
+1. **Rebuild the plugin**: `pnpm --filter @cloudflare/kumo build:figma-plugin`
+2. **Re-run the plugin in Figma**: The plugin purges and regenerates all components
+3. **Verify in Figma**: Check that sections appear with proper light/dark frames
+
+### Reference Implementation: Button Generator
+
+The Button generator (`generators/button.ts`) is the canonical reference. All generators MUST follow this exact pattern:
+
+```typescript
+// 1. Create components and position them in a grid
+const components: ComponentNode[] = [];
+for (...) {
+  const component = await createComponent(...);
+  component.x = labelColumnWidth + colIndex * spacing;
+  component.y = rowIndex * rowHeight;
+  components.push(component);
+}
+
+// 2. Combine into ComponentSet ON THE PAGE (not in a frame yet)
+const componentSet = figma.combineAsVariants(components, page);
+componentSet.name = "ComponentName";
+componentSet.layoutMode = "NONE";  // CRITICAL: Disable auto-layout on ComponentSet
+
+// 3. Calculate content dimensions AFTER combineAsVariants
+const contentWidth = componentSet.width + labelColumnWidth;
+const contentHeight = componentSet.height + headerRowHeight;
+
+// 4. Create light and dark sections
+const lightSection = createModeSection(page, "ComponentName", "light");
+lightSection.frame.resize(
+  contentWidth + SECTION_PADDING * 2,
+  contentHeight + SECTION_PADDING * 2,
+);
+
+const darkSection = createModeSection(page, "ComponentName", "dark");
+darkSection.frame.resize(
+  contentWidth + SECTION_PADDING * 2,
+  contentHeight + SECTION_PADDING * 2,
+);
+
+// 5. Move ComponentSet INTO light section frame
+lightSection.frame.appendChild(componentSet);
+componentSet.x = SECTION_PADDING + labelColumnWidth;
+componentSet.y = SECTION_PADDING + headerRowHeight;
+
+// 6. Add labels to light section
+await createColumnHeaders([...], SECTION_PADDING, lightSection.frame);
+for (const label of rowLabels) {
+  const labelNode = await createRowLabel(...);
+  lightSection.frame.appendChild(labelNode);
+}
+
+// 7. Create INSTANCES for dark section (not the original components)
+for (const component of components) {
+  const instance = component.createInstance();
+  instance.x = component.x + SECTION_PADDING + labelColumnWidth;
+  instance.y = component.y + SECTION_PADDING + headerRowHeight;
+  darkSection.frame.appendChild(instance);
+}
+
+// 8. Add labels to dark section
+await createColumnHeaders([...], SECTION_PADDING, darkSection.frame);
+for (const label of rowLabels) {
+  const labelNode = await createRowLabel(...);
+  darkSection.frame.appendChild(labelNode);
+}
+
+// 9. Resize sections to fit content
+lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+
+// 10. Position sections side by side
+lightSection.section.x = 100;
+lightSection.section.y = startY;
+darkSection.section.x = 100 + totalWidth + 50;
+darkSection.section.y = startY;
+
+// 11. Return next Y position
+return startY + totalHeight + SECTION_GAP;
+```
+
+**Key Points:**
+
+- `combineAsVariants()` is called with `page` as parent, then ComponentSet is moved to frame
+- Dark section contains INSTANCES, not the original components
+- Labels are added to BOTH sections
+- Sections are resized AFTER content is added
+- Sections are positioned side by side at the end
+
 ### Required Generator Structure
 
 Every generator file MUST follow this structure:
