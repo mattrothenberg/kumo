@@ -11,6 +11,7 @@ import { generateBadgeComponents } from "./generators/badge";
 import { generateBannerComponents } from "./generators/banner";
 import { generateButtonComponents } from "./generators/button";
 import { generateCheckboxComponents } from "./generators/checkbox";
+import { generateClipboardTextComponents } from "./generators/clipboard-text";
 import { generateLinkButtonComponents } from "./generators/link-button";
 import { generateRefreshButtonComponents } from "./generators/refresh-button";
 import { generateTextComponents } from "./generators/text";
@@ -114,11 +115,15 @@ figma.ui.onmessage = async (msg: { type: string }) => {
 
       // Step 10: Generate Text components (typography variants)
       figma.notify("Generating Text components...");
-      await generateTextComponents(componentsPage, nextY);
+      nextY = await generateTextComponents(componentsPage, nextY);
+
+      // Step 11: Generate ClipboardText components
+      figma.notify("Generating ClipboardText components...");
+      await generateClipboardTextComponents(nextY);
 
       figma.notify("✅ Generation complete!", { timeout: 3000 });
       figma.closePlugin(
-        "Generation complete - created Badge, Banner, Button, Checkbox, LinkButton, RefreshButton, Text components, and Icon Library",
+        "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, LinkButton, RefreshButton, Text components, and Icon Library",
       );
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
