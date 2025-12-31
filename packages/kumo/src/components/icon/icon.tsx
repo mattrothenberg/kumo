@@ -56,22 +56,26 @@ export function iconVariants({
 /**
  * Icon component using SVG sprite with <use> pattern
  *
- * Color is controlled via className (e.g., fill-primary, fill-error).
- * Icons use fill-current by default, inheriting from parent text color.
+ * Color is controlled via text color classes (e.g., text-error, text-info).
+ * Icons use fill-current which inherits from the text color.
+ * Default color is text-surface which adapts to light/dark mode.
  *
  * @example
  * ```tsx
- * // Basic usage - inherits parent color
+ * // Basic usage - uses text-surface (adapts to light/dark mode)
  * <Icon glyph="ph-check" />
  *
  * // With custom color and size
- * <Icon glyph="ph-arrow-right" className="fill-primary" size="lg" />
+ * <Icon glyph="ph-arrow-right" className="text-brand" size="lg" />
  *
  * // Accessible icon with title
- * <Icon glyph="cf-workers" title="Cloudflare Workers" />
+ * <Icon glyph="cf-cloudflare-workers-outline" title="Cloudflare Workers" />
  *
  * // Error state
- * <Icon glyph="ph-warning" className="fill-error" />
+ * <Icon glyph="ph-warning" className="text-error" />
+ *
+ * // Success state
+ * <Icon glyph="ph-check" className="text-green" />
  * ```
  */
 export const Icon = forwardRef<SVGSVGElement, IconProps>(

@@ -102,34 +102,35 @@ export const WithTitle: Story = {
 };
 
 /**
- * Custom colors using Kumo semantic tokens (fill-*)
+ * Custom colors using Kumo semantic text tokens.
+ * Icons use fill-current which inherits from text color.
  */
 export const WithCustomColor: Story = {
   render: () => (
     <div className="flex gap-4">
       <div className="flex flex-col items-center gap-2">
-        <Icon glyph="ph-check" className="fill-success" size="lg" />
-        <span className="text-xs text-muted">fill-success</span>
+        <Icon glyph="ph-check" className="text-green" size="lg" />
+        <span className="text-xs text-muted">text-green</span>
       </div>
       <div className="flex flex-col items-center gap-2">
-        <Icon glyph="ph-warning" className="fill-warning" size="lg" />
-        <span className="text-xs text-muted">fill-warning</span>
+        <Icon glyph="ph-warning" className="text-alert" size="lg" />
+        <span className="text-xs text-muted">text-alert</span>
       </div>
       <div className="flex flex-col items-center gap-2">
-        <Icon glyph="ph-x" className="fill-error" size="lg" />
-        <span className="text-xs text-muted">fill-error</span>
+        <Icon glyph="ph-x" className="text-error" size="lg" />
+        <span className="text-xs text-muted">text-error</span>
       </div>
       <div className="flex flex-col items-center gap-2">
-        <Icon glyph="ph-info" className="fill-info" size="lg" />
-        <span className="text-xs text-muted">fill-info</span>
+        <Icon glyph="ph-info" className="text-info" size="lg" />
+        <span className="text-xs text-muted">text-info</span>
       </div>
       <div className="flex flex-col items-center gap-2">
-        <Icon glyph="ph-check" className="fill-primary" size="lg" />
-        <span className="text-xs text-muted">fill-primary</span>
+        <Icon glyph="ph-check" className="text-brand" size="lg" />
+        <span className="text-xs text-muted">text-brand</span>
       </div>
       <div className="flex flex-col items-center gap-2">
-        <Icon glyph="ph-gear" className="fill-muted" size="lg" />
-        <span className="text-xs text-muted">fill-muted</span>
+        <Icon glyph="ph-gear" className="text-label" size="lg" />
+        <span className="text-xs text-muted">text-label</span>
       </div>
     </div>
   ),
