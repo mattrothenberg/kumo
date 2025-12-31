@@ -42,15 +42,34 @@ function phNameToFilename(phName: string): string {
 }
 
 /**
+ * Strip hardcoded fill colors from SVG content
+ *
+ * Removes fill="..." attributes with hex colors, rgb, or named colors
+ * so that fill="currentColor" on the parent symbol takes effect.
+ *
+ * @param content - SVG inner content (paths, etc.)
+ * @returns Content with hardcoded fills removed
+ */
+function stripHardcodedFills(content: string): string {
+  // Remove fill attributes with hex colors (#xxx, #xxxxxx)
+  // Remove fill attributes with rgb/rgba
+  // Remove fill attributes with named colors (but keep fill="none" and fill="currentColor")
+  return content
+    .replace(/\s+fill="(?!none|currentColor)[^"]*"/gi, "")
+    .replace(/\s+fill='(?!none|currentColor)[^']*'/gi, "");
+}
+
+/**
  * Extract SVG content from a file and convert to <symbol>
  *
  * Extracts:
  * - viewBox attribute
  * - Inner content (paths, etc.)
+ * - Strips hardcoded fill colors for theming support
  * - Ensures fill="currentColor" on symbol for theming
  *
  * @param svgContent - Raw SVG file content
- * @param id - Symbol ID (e.g., "ph-check", "brand-cloudflare")
+ * @param id - Symbol ID (e.g., "ph-check", "cf-cloudflare-workers")
  * @returns Symbol element string
  */
 function svgToSymbol(svgContent: string, id: string): string {
@@ -60,7 +79,10 @@ function svgToSymbol(svgContent: string, id: string): string {
 
   // Extract content between <svg> tags
   const contentMatch = svgContent.match(/<svg[^>]*>(.*?)<\/svg>/s);
-  const content = contentMatch ? contentMatch[1].trim() : "";
+  let content = contentMatch ? contentMatch[1].trim() : "";
+
+  // Strip hardcoded fill colors so currentColor inheritance works
+  content = stripHardcodedFills(content);
 
   // Add fill="currentColor" to symbol element for theming support
   return `  <symbol id="${id}" viewBox="${viewBox}" fill="currentColor">\n    ${content}\n  </symbol>`;
@@ -99,7 +121,9 @@ function loadPhosphorIcons(iconNames: string[]): string[] {
 /**
  * Load brand icons from src/assets/icons/brand/
  *
- * @returns Array of symbol elements with "brand-" prefix
+ * Brand icons are named cf-*.svg and use the filename as the ID directly.
+ *
+ * @returns Array of symbol elements
  */
 function loadBrandIcons(): string[] {
   const brandIconsDir = join(__dirname, "../../src/assets/icons/brand");
@@ -115,8 +139,8 @@ function loadBrandIcons(): string[] {
     const filePath = join(brandIconsDir, file);
     const svgContent = readFileSync(filePath, "utf-8");
 
-    // Use "brand-{filename}" as the ID
-    const id = `brand-${file.replace(".svg", "")}`;
+    // Use filename without extension as the ID (e.g., "cf-cloudflare-workers-outline")
+    const id = file.replace(".svg", "");
     const symbol = svgToSymbol(svgContent, id);
     symbols.push(symbol);
   }

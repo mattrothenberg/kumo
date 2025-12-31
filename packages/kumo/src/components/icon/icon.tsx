@@ -45,8 +45,9 @@ export function iconVariants({
   size = KUMO_ICON_DEFAULT_VARIANTS.size,
 }: KumoIconVariantsProps = {}) {
   return cn(
-    // Base styles - fill inherits from className
-    "inline-block shrink-0 fill-current",
+    // Base styles - text-surface provides default color that works in light/dark mode
+    // fill-current inherits from text color
+    "inline-block shrink-0 fill-current text-surface",
     // Apply size variant
     KUMO_ICON_VARIANTS.size[size].classes,
   );
