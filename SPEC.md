@@ -68,6 +68,8 @@ packages/kumo/scripts/figma/plugin/
 │   ├── button.ts                # Button component generator
 │   ├── checkbox.ts              # Checkbox component generator
 │   ├── clipboard-text.ts        # ClipboardText component generator
+│   ├── code.ts                  # Code component generator
+│   ├── code-block.ts            # CodeBlock component generator
 │   ├── link-button.ts           # LinkButton component generator
 │   ├── refresh-button.ts        # RefreshButton component generator
 │   └── text.ts                  # Text component generator
@@ -500,6 +502,8 @@ export function bindIconColor(
 | Button        | 2    | variant (4) x size (4)     | Yes   | Primary action button      |
 | Checkbox      | 2    | checked (3) x disabled (2) | Yes   | Check/indeterminate icons  |
 | ClipboardText | 3    | variant (2)                | Yes   | Text + copy button         |
+| Code          | 1    | lang (5)                   | No    | Monospace text, SF Mono    |
+| CodeBlock     | 2    | lang (5)                   | No    | Code wrapper with border   |
 | LinkButton    | 2    | variant (4) x size (4)     | Yes   | Arrow icon                 |
 | RefreshButton | 2    | variant (4) x size (4)     | Yes   | Refresh icon               |
 | Text          | 1    | variant (10)               | No    | Typography scale           |
