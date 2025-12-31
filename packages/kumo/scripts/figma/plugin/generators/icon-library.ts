@@ -251,6 +251,38 @@ async function createSizeExamplesFrame(
  *   iconSpacing: 40,
  * });
  */
+/**
+ * Count existing icon components on the Icon Library page
+ */
+function countExistingIcons(pageName: string): number {
+  const iconPage = figma.root.children.find(
+    (page) => page.type === "PAGE" && page.name === pageName,
+  ) as PageNode | undefined;
+
+  if (!iconPage) {
+    return 0;
+  }
+
+  // Find the Icons container frame
+  const iconsFrame = iconPage.children.find(
+    (node) => node.type === "FRAME" && node.name === "Icons",
+  ) as FrameNode | undefined;
+
+  if (!iconsFrame) {
+    return 0;
+  }
+
+  // Count components (icons are named "Icon/...")
+  let count = 0;
+  for (const child of iconsFrame.children) {
+    if (child.type === "COMPONENT" && child.name.startsWith("Icon/")) {
+      count++;
+    }
+  }
+
+  return count;
+}
+
 export async function generateIconLibrary(
   config?: IconLibraryConfig,
 ): Promise<void> {
@@ -259,7 +291,23 @@ export async function generateIconLibrary(
   // Get icons from pre-generated JSON (built by build-icon-data.ts)
   console.log("📖 Loading icon data...");
   const icons: IconData[] = iconData;
-  console.log(`✅ Found ${icons.length} icons`);
+  console.log(`✅ Found ${icons.length} icons in sprite`);
+
+  // Check if we can skip regeneration
+  const existingCount = countExistingIcons(finalConfig.pageName);
+  if (existingCount === icons.length) {
+    console.log(
+      `⏭️ Skipping Icon Library generation - ${existingCount} icons already exist`,
+    );
+    figma.notify(`Icon Library up to date (${existingCount} icons)`, {
+      timeout: 2000,
+    });
+    return;
+  }
+
+  console.log(
+    `🔄 Regenerating Icon Library: ${existingCount} existing → ${icons.length} icons`,
+  );
 
   // Create or find "Icon Library" page
   let iconPage = figma.root.children.find(

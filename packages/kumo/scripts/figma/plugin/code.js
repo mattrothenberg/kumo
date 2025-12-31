@@ -7941,12 +7941,46 @@
       return frame;
     });
   }
+  function countExistingIcons(pageName) {
+    const iconPage = figma.root.children.find(
+      (page) => page.type === "PAGE" && page.name === pageName
+    );
+    if (!iconPage) {
+      return 0;
+    }
+    const iconsFrame = iconPage.children.find(
+      (node) => node.type === "FRAME" && node.name === "Icons"
+    );
+    if (!iconsFrame) {
+      return 0;
+    }
+    let count = 0;
+    for (const child of iconsFrame.children) {
+      if (child.type === "COMPONENT" && child.name.startsWith("Icon/")) {
+        count++;
+      }
+    }
+    return count;
+  }
   function generateIconLibrary(config) {
     return __async(this, null, function* () {
       const finalConfig = __spreadValues(__spreadValues({}, DEFAULT_CONFIG), config);
       console.log("\u{1F4D6} Loading icon data...");
       const icons = icon_data_default;
-      console.log(`\u2705 Found ${icons.length} icons`);
+      console.log(`\u2705 Found ${icons.length} icons in sprite`);
+      const existingCount = countExistingIcons(finalConfig.pageName);
+      if (existingCount === icons.length) {
+        console.log(
+          `\u23ED\uFE0F Skipping Icon Library generation - ${existingCount} icons already exist`
+        );
+        figma.notify(`Icon Library up to date (${existingCount} icons)`, {
+          timeout: 2e3
+        });
+        return;
+      }
+      console.log(
+        `\u{1F504} Regenerating Icon Library: ${existingCount} existing \u2192 ${icons.length} icons`
+      );
       let iconPage = figma.root.children.find(
         (page) => page.type === "PAGE" && page.name === finalConfig.pageName
       );
