@@ -4304,7 +4304,7 @@
     const BANNER_ICONS = {
       default: "ph-info",
       alert: "ph-warning",
-      error: "ph-warning-circle"
+      error: "ph-warning"
     };
     const iconId = BANNER_ICONS[variant] || "ph-info";
     const iconSize = 16;

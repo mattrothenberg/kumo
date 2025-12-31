@@ -87,11 +87,11 @@ async function createBannerComponent(variant: string): Promise<ComponentNode> {
   // Create icon based on variant
   // - default (info): ph-info
   // - alert: ph-warning
-  // - error: ph-warning-circle
+  // - error: ph-warning (same icon, different color via variant)
   const BANNER_ICONS: Record<string, string> = {
     default: "ph-info",
     alert: "ph-warning",
-    error: "ph-warning-circle",
+    error: "ph-warning",
   };
 
   const iconId = BANNER_ICONS[variant] || "ph-info";
