@@ -20,6 +20,7 @@
     "dist",
     "src/design-tokens",
     "scripts/**/dist",
+    "scripts/figma/plugin",
     "**/*.test.ts",
     "**/*.test.tsx"
   ]

@@ -25,6 +25,8 @@ import {
   createTextNode,
   getVariableByName,
   createModeSection,
+  createRowLabel,
+  createColumnHeaders,
   bindTextColorToVariable,
 } from "./shared";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
@@ -224,50 +226,74 @@ export async function generateTextComponents(
   // Generate components
   const components: ComponentNode[] = [];
 
+  // Track row labels: { y, text }
+  const rowLabels: { y: number; text: string }[] = [];
+
+  // Track column headers: { x, text }
+  const columnHeaders: { x: number; text: string }[] = [];
+  let columnHeadersRecorded = false;
+
   // Layout configuration
   const componentGap = 20;
   const rowHeight = 50;
+  const headerRowHeight = 24; // Space for column headers at top
+  const labelColumnWidth = 160; // Space for labels on the left
   let currentRow = 0;
 
   // Generate variants based on their category
   for (let i = 0; i < variants.length; i++) {
     const variant = variants[i];
 
+    // Record row label (offset by header row)
+    rowLabels.push({
+      y: currentRow * rowHeight + headerRowHeight,
+      text: "variant=" + variant,
+    });
+
     if (isCopyVariant(variant)) {
       // Copy variants: generate all size combinations
-      let currentX = 0;
+      let currentX = labelColumnWidth;
       for (let j = 0; j < sizes.length; j++) {
         const component = await createTextComponent(variant, sizes[j]);
         component.x = currentX;
-        component.y = currentRow * rowHeight;
+        component.y = currentRow * rowHeight + headerRowHeight;
+
+        // Record column headers from first copy variant row
+        if (!columnHeadersRecorded) {
+          columnHeaders.push({ x: currentX, text: "size=" + sizes[j] });
+        }
+
         currentX = currentX + component.width + componentGap;
         components.push(component);
+      }
+      if (!columnHeadersRecorded) {
+        columnHeadersRecorded = true;
       }
       currentRow++;
     } else if (isMonoVariant(variant)) {
       // Mono variants: only default (null) and lg sizes
       // From text.tsx type definition (lines 119-122): size?: "lg"
-      let currentX = 0;
+      let currentX = labelColumnWidth;
 
       // Default size (no size prop)
       const defaultComponent = await createTextComponent(variant, null);
       defaultComponent.x = currentX;
-      defaultComponent.y = currentRow * rowHeight;
+      defaultComponent.y = currentRow * rowHeight + headerRowHeight;
       currentX = currentX + defaultComponent.width + componentGap;
       components.push(defaultComponent);
 
       // lg size only
       const lgComponent = await createTextComponent(variant, "lg");
       lgComponent.x = currentX;
-      lgComponent.y = currentRow * rowHeight;
+      lgComponent.y = currentRow * rowHeight + headerRowHeight;
       components.push(lgComponent);
 
       currentRow++;
     } else {
       // Headings: no size variants (from text.tsx lines 125-129: size?: never)
       const component = await createTextComponent(variant, null);
-      component.x = 0;
-      component.y = currentRow * rowHeight;
+      component.x = labelColumnWidth;
+      component.y = currentRow * rowHeight + headerRowHeight;
       components.push(component);
       currentRow++;
     }
@@ -283,9 +309,9 @@ export async function generateTextComponents(
   // Disable auto-layout on the ComponentSet
   componentSet.layoutMode = "NONE";
 
-  // Calculate content dimensions
-  const contentWidth = componentSet.width;
-  const contentHeight = componentSet.height;
+  // Calculate content dimensions (add label column width and header row)
+  const contentWidth = componentSet.width + labelColumnWidth;
+  const contentHeight = componentSet.height + headerRowHeight;
 
   // Create light mode section
   const lightSection = createModeSection(page, "Text", "light");
@@ -303,15 +329,51 @@ export async function generateTextComponents(
 
   // Move ComponentSet into light section frame
   lightSection.frame.appendChild(componentSet);
-  componentSet.x = SECTION_PADDING;
-  componentSet.y = SECTION_PADDING;
+  componentSet.x = SECTION_PADDING + labelColumnWidth;
+  componentSet.y = SECTION_PADDING + headerRowHeight;
+
+  // Add column headers to light section
+  await createColumnHeaders(
+    columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING, text: h.text })),
+    SECTION_PADDING,
+    lightSection.frame,
+  );
+
+  // Add row labels to light section
+  for (const label of rowLabels) {
+    const labelNode = await createRowLabel(
+      label.text,
+      SECTION_PADDING,
+      SECTION_PADDING + label.y + 8, // +8 to vertically center with text
+    );
+    lightSection.frame.appendChild(labelNode);
+  }
 
   // Create instances for dark section
+  // Note: component positions are relative to ComponentSet after combineAsVariants
+  // We need to add labelColumnWidth to match the light section layout
   for (const component of components) {
     const instance = component.createInstance();
-    instance.x = component.x + SECTION_PADDING;
-    instance.y = component.y + SECTION_PADDING;
+    instance.x = component.x + SECTION_PADDING + labelColumnWidth;
+    instance.y = component.y + SECTION_PADDING + headerRowHeight;
     darkSection.frame.appendChild(instance);
+  }
+
+  // Add column headers to dark section
+  await createColumnHeaders(
+    columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING, text: h.text })),
+    SECTION_PADDING,
+    darkSection.frame,
+  );
+
+  // Add row labels to dark section
+  for (const label of rowLabels) {
+    const labelNode = await createRowLabel(
+      label.text,
+      SECTION_PADDING,
+      SECTION_PADDING + label.y + 8,
+    );
+    darkSection.frame.appendChild(labelNode);
   }
 
   // Resize sections to fit content with padding

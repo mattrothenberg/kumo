@@ -11,6 +11,7 @@ import {
   bindStrokeToVariable,
   getVariableByName,
   createModeSection,
+  createRowLabel,
   setWhiteTextColor,
   bindTextColorToVariable,
 } from "./shared";
@@ -144,16 +145,27 @@ export async function generateBadgeComponents(startY: number): Promise<number> {
   const variants = variantProp.values;
   const components: ComponentNode[] = [];
 
-  // Track position for laying out components before combining
-  let currentX = 0;
-  const componentGap = 20;
+  // Track row labels: { y, text }
+  const rowLabels: { y: number; text: string }[] = [];
+
+  // Layout spacing - vertical layout with labels
+  const rowGap = 40;
+  const labelColumnWidth = 180; // Space for labels on the left
+
+  // Track position for laying out components vertically
+  let currentY = 0;
 
   for (let i = 0; i < variants.length; i++) {
-    const component = await createBadgeComponent(variants[i]);
-    // Position each component horizontally before combining
-    component.x = currentX;
-    component.y = 0;
-    currentX = currentX + component.width + componentGap;
+    const variant = variants[i];
+    const component = await createBadgeComponent(variant);
+
+    // Record row label
+    rowLabels.push({ y: currentY, text: "variant=" + variant });
+
+    // Position each component vertically with label offset
+    component.x = labelColumnWidth;
+    component.y = currentY;
+    currentY += component.height + rowGap;
     components.push(component);
   }
 
@@ -163,8 +175,8 @@ export async function generateBadgeComponents(startY: number): Promise<number> {
   componentSet.name = "Badge";
   componentSet.description = "Badge component with variant styles";
 
-  // Calculate content dimensions
-  const contentWidth = componentSet.width;
+  // Calculate content dimensions (add label column width)
+  const contentWidth = componentSet.width + labelColumnWidth;
   const contentHeight = componentSet.height;
 
   // Create light mode section
@@ -183,15 +195,37 @@ export async function generateBadgeComponents(startY: number): Promise<number> {
 
   // Move ComponentSet into light section frame
   lightSection.frame.appendChild(componentSet);
-  componentSet.x = SECTION_PADDING;
+  componentSet.x = SECTION_PADDING + labelColumnWidth;
   componentSet.y = SECTION_PADDING;
 
+  // Add row labels to light section
+  for (const label of rowLabels) {
+    const labelNode = await createRowLabel(
+      label.text,
+      SECTION_PADDING,
+      SECTION_PADDING + label.y + 4, // +4 to vertically center with badge
+    );
+    lightSection.frame.appendChild(labelNode);
+  }
+
   // Create instances for dark section
+  // Note: component positions are relative to ComponentSet after combineAsVariants
+  // We need to add labelColumnWidth to match the light section layout
   for (const component of components) {
     const instance = component.createInstance();
-    instance.x = component.x + SECTION_PADDING;
-    instance.y = SECTION_PADDING;
+    instance.x = component.x + SECTION_PADDING + labelColumnWidth;
+    instance.y = component.y + SECTION_PADDING;
     darkSection.frame.appendChild(instance);
+  }
+
+  // Add row labels to dark section
+  for (const label of rowLabels) {
+    const labelNode = await createRowLabel(
+      label.text,
+      SECTION_PADDING,
+      SECTION_PADDING + label.y + 4,
+    );
+    darkSection.frame.appendChild(labelNode);
   }
 
   // Resize sections to fit content with padding

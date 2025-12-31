@@ -455,6 +455,10 @@
         "onClick": {
           "type": "React.MouseEventHandler<HTMLInputElement>",
           "optional": true
+        },
+        "onValueChange": {
+          "type": "(checked: boolean) => void",
+          "description": "Callback when checkbox value changes"
         }
       },
       "examples": [
@@ -536,6 +540,49 @@
             }
           }
         }
+      },
+      "styling": {
+        "dimensions": "h-4 w-4",
+        "borderRadius": "rounded-sm",
+        "baseTokens": [
+          "bg-surface",
+          "ring-border"
+        ],
+        "states": {
+          "checked": [
+            "bg-surface-inverse",
+            "text-surface-inverse"
+          ],
+          "indeterminate": [
+            "bg-surface-inverse",
+            "text-surface-inverse"
+          ],
+          "error": [
+            "ring-error"
+          ],
+          "hover": [
+            "ring-active"
+          ],
+          "focus": [
+            "ring-active"
+          ],
+          "disabled": [
+            "opacity-50",
+            "cursor-not-allowed"
+          ]
+        },
+        "icons": [
+          {
+            "name": "ph-check",
+            "state": "checked",
+            "size": 12
+          },
+          {
+            "name": "ph-minus",
+            "state": "indeterminate",
+            "size": 12
+          }
+        ]
       }
     },
     "ClipboardText": {

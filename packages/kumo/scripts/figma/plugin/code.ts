@@ -13,7 +13,6 @@ import { generateButtonComponents } from "./generators/button";
 import { generateCheckboxComponents } from "./generators/checkbox";
 import { generateLinkButtonComponents } from "./generators/link-button";
 import { generateRefreshButtonComponents } from "./generators/refresh-button";
-import { generatePlaceholderComponents } from "./generators/placeholders";
 import { generateTextComponents } from "./generators/text";
 import { generateIconLibrary } from "./generators/icon-library";
 
@@ -93,33 +92,21 @@ figma.ui.onmessage = async (msg: { type: string }) => {
       figma.notify("Generating Banner components...");
       nextY = await generateBannerComponents(nextY);
 
-      // Step 5: Generate placeholder components (icons, loader)
-      figma.notify("Generating placeholder components...");
-      const placeholders = generatePlaceholderComponents();
+      // Step 5: Generate Icon Library first (other components depend on it)
+      figma.notify("Generating Icon Library...");
+      await generateIconLibrary();
 
       // Step 6: Generate Button components (all variants, sizes, shapes, disabled, loading)
       figma.notify("Generating Button components...");
-      nextY = await generateButtonComponents(
-        componentsPage,
-        placeholders,
-        nextY,
-      );
+      nextY = await generateButtonComponents(componentsPage, nextY);
 
       // Step 7: Generate LinkButton components
       figma.notify("Generating LinkButton components...");
-      nextY = await generateLinkButtonComponents(
-        componentsPage,
-        placeholders,
-        nextY,
-      );
+      nextY = await generateLinkButtonComponents(componentsPage, nextY);
 
       // Step 8: Generate RefreshButton components
       figma.notify("Generating RefreshButton components...");
-      nextY = await generateRefreshButtonComponents(
-        componentsPage,
-        placeholders,
-        nextY,
-      );
+      nextY = await generateRefreshButtonComponents(componentsPage, nextY);
 
       // Step 9: Generate Checkbox components
       figma.notify("Generating Checkbox components...");
@@ -128,10 +115,6 @@ figma.ui.onmessage = async (msg: { type: string }) => {
       // Step 10: Generate Text components (typography variants)
       figma.notify("Generating Text components...");
       await generateTextComponents(componentsPage, nextY);
-
-      // Step 11: Generate Icon Library (separate page)
-      figma.notify("Generating Icon Library...");
-      await generateIconLibrary();
 
       figma.notify("✅ Generation complete!", { timeout: 3000 });
       figma.closePlugin(

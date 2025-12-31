@@ -1010,6 +1010,23 @@ interface ComponentSchema {
   colors: string[];
   /** Sub-components for compound component patterns */
   subComponents?: Record<string, SubComponentSchema>;
+  /** Component-specific styling metadata (dimensions, states, icons, etc.) */
+  styling?: {
+    /** Fixed dimensions (e.g., "h-4 w-4" for checkbox) */
+    dimensions?: string;
+    /** Border radius classes */
+    borderRadius?: string;
+    /** Base state styling tokens */
+    baseTokens?: string[];
+    /** State-specific styling (checked, hover, disabled, etc.) */
+    states?: Record<string, string[]>;
+    /** Icon information */
+    icons?: {
+      name: string;
+      state?: string;
+      size?: string | number;
+    }[];
+  };
 }
 
 interface ComponentRegistry {
@@ -1723,6 +1740,12 @@ const ADDITIONAL_COMPONENT_PROPS: Record<string, Record<string, PropSchema>> = {
       description: "Callback when collapsed state changes",
     },
   },
+  Checkbox: {
+    onValueChange: {
+      type: "(checked: boolean) => void",
+      description: "Callback when checkbox value changes",
+    },
+  },
 };
 
 /**
@@ -1739,6 +1762,38 @@ const PROP_TYPE_OVERRIDES: Record<string, Record<string, string>> = {
   },
   Select: {
     value: "string",
+  },
+};
+
+/**
+ * Component-specific styling metadata for AI/Figma plugin consumption.
+ * Documents dimensions, states, icons, and color tokens used in components.
+ */
+const COMPONENT_STYLING_METADATA: Record<string, ComponentSchema["styling"]> = {
+  Checkbox: {
+    dimensions: "h-4 w-4",
+    borderRadius: "rounded-sm",
+    baseTokens: ["bg-surface", "ring-border"],
+    states: {
+      checked: ["bg-surface-inverse", "text-surface-inverse"],
+      indeterminate: ["bg-surface-inverse", "text-surface-inverse"],
+      error: ["ring-error"],
+      hover: ["ring-active"],
+      focus: ["ring-active"],
+      disabled: ["opacity-50", "cursor-not-allowed"],
+    },
+    icons: [
+      {
+        name: "ph-check",
+        state: "checked",
+        size: 12,
+      },
+      {
+        name: "ph-minus",
+        state: "indeterminate",
+        size: 12,
+      },
+    ],
   },
 };
 
@@ -1921,6 +1976,9 @@ async function generateRegistry(): Promise<GenerateRegistryResult> {
     // Store colors for style guide generation
     componentColors.set(config.name, colors);
 
+    // Get styling metadata if available
+    const stylingMetadata = COMPONENT_STYLING_METADATA[config.name];
+
     components[config.name] = {
       name: config.name,
       description: config.description,
@@ -1930,6 +1988,7 @@ async function generateRegistry(): Promise<GenerateRegistryResult> {
       examples,
       colors,
       ...(subComponentSchemas && { subComponents: subComponentSchemas }),
+      ...(stylingMetadata && { styling: stylingMetadata }),
     };
 
     if (!byCategory[config.category]) {
@@ -2134,6 +2193,35 @@ ${styleGuide}`;
     if (comp.colors.length > 0) {
       context += `\n**Colors (kumo tokens used):**\n\n`;
       context += `\`${comp.colors.join("`, `")}\`\n`;
+    }
+
+    // Document styling metadata (dimensions, states, icons)
+    if (comp.styling) {
+      context += `\n**Styling:**\n\n`;
+
+      if (comp.styling.dimensions) {
+        context += `- **Dimensions:** \`${comp.styling.dimensions}\`\n`;
+      }
+      if (comp.styling.borderRadius) {
+        context += `- **Border Radius:** \`${comp.styling.borderRadius}\`\n`;
+      }
+      if (comp.styling.baseTokens && comp.styling.baseTokens.length > 0) {
+        context += `- **Base Tokens:** \`${comp.styling.baseTokens.join("`, `")}\`\n`;
+      }
+      if (comp.styling.states && Object.keys(comp.styling.states).length > 0) {
+        context += `- **States:**\n`;
+        for (const [stateName, tokens] of Object.entries(comp.styling.states)) {
+          context += `  - \`${stateName}\`: \`${tokens.join("`, `")}\`\n`;
+        }
+      }
+      if (comp.styling.icons && comp.styling.icons.length > 0) {
+        context += `- **Icons:**\n`;
+        for (const icon of comp.styling.icons) {
+          const stateInfo = icon.state ? ` (${icon.state})` : "";
+          const sizeInfo = icon.size ? ` size ${icon.size}` : "";
+          context += `  - \`${icon.name}\`${stateInfo}${sizeInfo}\n`;
+        }
+      }
     }
 
     // Document sub-components for compound component patterns

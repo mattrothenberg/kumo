@@ -211,8 +211,8 @@ export function parseTailwindClasses(classes: string): ParsedStyles {
       continue;
     }
 
-    // Font size: text-xs, text-sm, text-base, text-lg
-    const fontMatch = cls.match(/^text-(xs|sm|base|lg|xl|2xl)$/);
+    // Font size: text-xs, text-sm, text-base, text-lg, text-xl, text-2xl, text-3xl
+    const fontMatch = cls.match(/^text-(xs|sm|base|lg|xl|2xl|3xl)$/);
     if (fontMatch) {
       result.fontSize = FONT_SIZE_SCALE[fontMatch[1]];
       continue;

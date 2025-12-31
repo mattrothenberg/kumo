@@ -449,10 +449,28 @@ Checkbox component
 - `title`: string
 - `onSubmit`: React.FormEventHandler<HTMLInputElement>
 - `onClick`: React.MouseEventHandler<HTMLInputElement>
+- `onValueChange`: (checked: boolean) => void
+  Callback when checkbox value changes
 
 **Colors (kumo tokens used):**
 
 `bg-surface`, `bg-surface-inverse`, `border-border`, `ring-active`, `ring-border`, `ring-error`, `text-error`, `text-muted`, `text-surface`, `text-surface-inverse`
+
+**Styling:**
+
+- **Dimensions:** `h-4 w-4`
+- **Border Radius:** `rounded-sm`
+- **Base Tokens:** `bg-surface`, `ring-border`
+- **States:**
+  - `checked`: `bg-surface-inverse`, `text-surface-inverse`
+  - `indeterminate`: `bg-surface-inverse`, `text-surface-inverse`
+  - `error`: `ring-error`
+  - `hover`: `ring-active`
+  - `focus`: `ring-active`
+  - `disabled`: `opacity-50`, `cursor-not-allowed`
+- **Icons:**
+  - `ph-check` (checked) size 12
+  - `ph-minus` (indeterminate) size 12
 
 **Sub-Components:**
 

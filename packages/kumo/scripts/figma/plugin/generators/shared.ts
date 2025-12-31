@@ -237,6 +237,80 @@ export async function createTextNode(
 }
 
 /**
+ * Create a row label for component sections
+ *
+ * @param text - Label text (e.g., "variant=primary", "disabled=true")
+ * @param x - X position
+ * @param y - Y position
+ * @returns Text node styled as a label
+ *
+ * @example
+ * const label = await createRowLabel("variant=primary, size=base", 0, 100);
+ */
+export async function createRowLabel(
+  text: string,
+  x: number,
+  y: number,
+): Promise<TextNode> {
+  const textNode = figma.createText();
+
+  await figma.loadFontAsync({ family: "Inter", style: "Medium" });
+
+  textNode.characters = text;
+  textNode.fontSize = 12;
+  textNode.fontName = { family: "Inter", style: "Medium" };
+
+  // Use muted color for labels
+  const mutedVar = getVariableByName("text-color-muted");
+  if (mutedVar) {
+    let fill: SolidPaint = {
+      type: "SOLID",
+      color: { r: 0.5, g: 0.5, b: 0.5 },
+    };
+    fill = figma.variables.setBoundVariableForPaint(fill, "color", mutedVar);
+    textNode.fills = [fill];
+  } else {
+    // Fallback to gray
+    textNode.fills = [
+      {
+        type: "SOLID",
+        color: { r: 0.5, g: 0.5, b: 0.5 },
+      },
+    ];
+  }
+
+  textNode.x = x;
+  textNode.y = y;
+
+  return textNode;
+}
+
+/**
+ * Create column headers for component grids (e.g., size=xs, size=sm, etc.)
+ *
+ * @param headers - Array of { x, text } for each column header
+ * @param y - Y position for all headers (typically above the grid)
+ * @param frame - Frame to append headers to
+ *
+ * @example
+ * await createColumnHeaders(
+ *   [{ x: 180, text: "size=xs" }, { x: 280, text: "size=sm" }],
+ *   SECTION_PADDING,
+ *   lightSection.frame
+ * );
+ */
+export async function createColumnHeaders(
+  headers: { x: number; text: string }[],
+  y: number,
+  frame: FrameNode,
+): Promise<void> {
+  for (const header of headers) {
+    const labelNode = await createRowLabel(header.text, header.x, y);
+    frame.appendChild(labelNode);
+  }
+}
+
+/**
  * Get a variable by name from the kumo-colors collection
  *
  * @param variableName - Variable name (e.g., "primary", "opacity-primary-70")
