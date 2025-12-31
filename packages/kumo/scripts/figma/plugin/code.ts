@@ -15,6 +15,7 @@ import { generateLinkButtonComponents } from "./generators/link-button";
 import { generateRefreshButtonComponents } from "./generators/refresh-button";
 import { generatePlaceholderComponents } from "./generators/placeholders";
 import { generateTextComponents } from "./generators/text";
+import { generateIconLibrary } from "./generators/icon-library";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore - __html__ is provided by Figma plugin API
@@ -128,9 +129,13 @@ figma.ui.onmessage = async (msg: { type: string }) => {
       figma.notify("Generating Text components...");
       await generateTextComponents(componentsPage, nextY);
 
+      // Step 11: Generate Icon Library (separate page)
+      figma.notify("Generating Icon Library...");
+      await generateIconLibrary();
+
       figma.notify("✅ Generation complete!", { timeout: 3000 });
       figma.closePlugin(
-        "Generation complete - created Badge, Banner, Button, Checkbox, LinkButton, RefreshButton, and Text components",
+        "Generation complete - created Badge, Banner, Button, Checkbox, LinkButton, RefreshButton, Text components, and Icon Library",
       );
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);

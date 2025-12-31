@@ -11,11 +11,28 @@
  * - Grid layout: 20 icons per row, 48px spacing, 24px icon size
  * - Size examples frame: 16px, 20px, 24px variants
  *
- * @see packages/kumo/scripts/figma/plugin/parsers/sprite-parser.ts
+ * IMPORTANT: Run `npx tsx scripts/figma/plugin/build-icon-data.ts` before
+ * building the plugin to generate the icon data JSON.
+ *
+ * @see packages/kumo/scripts/figma/plugin/build-icon-data.ts
  */
 
-import { parseSpriteIcons, type IconData } from "../parsers/sprite-parser";
+// Icon data is generated at build time by build-icon-data.ts
+// esbuild will inline this JSON into the bundle
+import iconData from "../generated/icon-data.json";
 import { getVariableByName, bindFillToVariable } from "./shared";
+
+/**
+ * Icon data extracted from sprite.svg
+ */
+export type IconData = {
+  /** Icon ID (e.g., "ph-arrow-right", "cf-workers-outline") */
+  id: string;
+  /** SVG viewBox attribute (e.g., "0 0 256 256") */
+  viewBox: string;
+  /** Inner SVG content (paths, groups, etc.) */
+  content: string;
+};
 
 /**
  * Configuration for icon library generation
@@ -239,9 +256,9 @@ export async function generateIconLibrary(
 ): Promise<void> {
   const finalConfig = { ...DEFAULT_CONFIG, ...config };
 
-  // Parse sprite icons
-  console.log("📖 Parsing sprite icons...");
-  const icons = parseSpriteIcons();
+  // Get icons from pre-generated JSON (built by build-icon-data.ts)
+  console.log("📖 Loading icon data...");
+  const icons: IconData[] = iconData;
   console.log(`✅ Found ${icons.length} icons`);
 
   // Create or find "Icon Library" page
@@ -263,7 +280,8 @@ export async function generateIconLibrary(
   // Create size examples frame first (at top)
   if (finalConfig.showSizeExamples && icons.length > 0) {
     console.log("🎨 Creating size examples...");
-    const sampleIcon = icons.find((icon) => icon.id === "ph-check") || icons[0];
+    const sampleIcon =
+      icons.find((icon: IconData) => icon.id === "ph-check") || icons[0];
     const sizeExamplesFrame = await createSizeExamplesFrame(
       sampleIcon,
       finalConfig.sizeExampleDimensions,

@@ -362,7 +362,7 @@
     "validate:changeset": "tsx ../../ci/scripts/validate-kumo-changeset.ts",
     "build:colors": "tsx scripts/color/build-colors-storybook.ts",
     "figma:sync": "tsx scripts/figma/sync-tokens-to-figma.ts",
-    "build:figma-plugin": "esbuild scripts/figma/plugin/code.ts --bundle --outfile=scripts/figma/plugin/code.js --format=iife --target=es2020",
+    "build:figma-plugin": "tsx scripts/figma/plugin/build-icon-data.ts && esbuild scripts/figma/plugin/code.ts --bundle --outfile=scripts/figma/plugin/code.js --format=iife --target=es2020",
     "build:icons": "tsx scripts/icon/build-sprite.ts",
     "add:icon": "tsx scripts/icon/add-icon.ts",
     "storybook": "pnpm run prebuild && storybook dev -p 6006",
