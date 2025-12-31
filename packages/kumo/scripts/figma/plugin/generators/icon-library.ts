@@ -277,6 +277,41 @@ export async function generateIconLibrary(
   // Switch to icon page
   figma.currentPage = iconPage;
 
+  // Clear existing content on the page
+  const existingChildren = [...iconPage.children];
+  for (const child of existingChildren) {
+    child.remove();
+  }
+
+  // Create main container frame with white background
+  const containerFrame = figma.createFrame();
+  containerFrame.name = "Icons";
+  containerFrame.fills = [
+    {
+      type: "SOLID",
+      color: { r: 1, g: 1, b: 1 }, // White background
+    },
+  ];
+
+  // Calculate grid dimensions
+  const gridWidth =
+    finalConfig.iconsPerRow *
+      (finalConfig.defaultIconSize + finalConfig.iconSpacing) -
+    finalConfig.iconSpacing +
+    200; // padding
+  const numRows = Math.ceil(icons.length / finalConfig.iconsPerRow);
+  const gridHeight =
+    numRows * (finalConfig.defaultIconSize + finalConfig.iconSpacing) -
+    finalConfig.iconSpacing +
+    400; // padding + space for size examples
+
+  containerFrame.resize(gridWidth, gridHeight);
+  containerFrame.x = 0;
+  containerFrame.y = 0;
+
+  // Add container to page
+  iconPage.appendChild(containerFrame);
+
   // Create size examples frame first (at top)
   if (finalConfig.showSizeExamples && icons.length > 0) {
     console.log("🎨 Creating size examples...");
@@ -288,6 +323,7 @@ export async function generateIconLibrary(
     );
     sizeExamplesFrame.x = 100;
     sizeExamplesFrame.y = 100;
+    containerFrame.appendChild(sizeExamplesFrame);
     console.log("✅ Size examples created");
   }
 
@@ -315,7 +351,7 @@ export async function generateIconLibrary(
       component.y = currentY;
 
       components.push(component);
-      iconPage.appendChild(component);
+      containerFrame.appendChild(component);
 
       // Update position for next icon
       iconsInCurrentRow++;

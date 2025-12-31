@@ -7958,6 +7958,26 @@
         console.log(`\u2705 Found existing page: ${finalConfig.pageName}`);
       }
       figma.currentPage = iconPage;
+      const existingChildren = [...iconPage.children];
+      for (const child of existingChildren) {
+        child.remove();
+      }
+      const containerFrame = figma.createFrame();
+      containerFrame.name = "Icons";
+      containerFrame.fills = [
+        {
+          type: "SOLID",
+          color: { r: 1, g: 1, b: 1 }
+          // White background
+        }
+      ];
+      const gridWidth = finalConfig.iconsPerRow * (finalConfig.defaultIconSize + finalConfig.iconSpacing) - finalConfig.iconSpacing + 200;
+      const numRows = Math.ceil(icons.length / finalConfig.iconsPerRow);
+      const gridHeight = numRows * (finalConfig.defaultIconSize + finalConfig.iconSpacing) - finalConfig.iconSpacing + 400;
+      containerFrame.resize(gridWidth, gridHeight);
+      containerFrame.x = 0;
+      containerFrame.y = 0;
+      iconPage.appendChild(containerFrame);
       if (finalConfig.showSizeExamples && icons.length > 0) {
         console.log("\u{1F3A8} Creating size examples...");
         const sampleIcon = icons.find((icon) => icon.id === "ph-check") || icons[0];
@@ -7967,6 +7987,7 @@
         );
         sizeExamplesFrame.x = 100;
         sizeExamplesFrame.y = 100;
+        containerFrame.appendChild(sizeExamplesFrame);
         console.log("\u2705 Size examples created");
       }
       const startY = finalConfig.showSizeExamples ? 300 : 100;
@@ -7985,7 +8006,7 @@
           component.x = currentX;
           component.y = currentY;
           components.push(component);
-          iconPage.appendChild(component);
+          containerFrame.appendChild(component);
           iconsInCurrentRow++;
           if (iconsInCurrentRow >= finalConfig.iconsPerRow) {
             currentX = 100;
