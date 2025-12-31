@@ -17,6 +17,7 @@ import { generateCodeBlockComponents } from "./generators/code-block";
 import { generateCollapsibleComponents } from "./generators/collapsible";
 import { generateComboboxComponents } from "./generators/combobox";
 import { generateDateRangePickerComponents } from "./generators/date-range-picker";
+import { generateDialogComponents } from "./generators/dialog";
 import { generateLinkButtonComponents } from "./generators/link-button";
 import { generateRefreshButtonComponents } from "./generators/refresh-button";
 import { generateTextComponents } from "./generators/text";
@@ -146,9 +147,13 @@ figma.ui.onmessage = async (msg: { type: string }) => {
       figma.notify("Generating DateRangePicker components...");
       nextY = await generateDateRangePickerComponents(componentsPage, nextY);
 
+      // Step 17: Generate Dialog components
+      figma.notify("Generating Dialog components...");
+      nextY = await generateDialogComponents(componentsPage, nextY);
+
       figma.notify("✅ Generation complete!", { timeout: 3000 });
       figma.closePlugin(
-        "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, LinkButton, RefreshButton, Text components, and Icon Library",
+        "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, Dialog, LinkButton, RefreshButton, Text components, and Icon Library",
       );
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);

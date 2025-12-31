@@ -292,6 +292,7 @@ After building, run the plugin in Figma:
 | Collapsible     | open (2) x state (4)                     | Chevron icon, content panel |
 | Combobox        | variant (3) x open (2) x state (3)       | Label, description, error   |
 | DateRangePicker | size (3) x variant (2) x selected (2)    | Dual calendar, date range   |
+| Dialog          | size (4)                                 | Title, description, actions |
 | LinkButton      | variant (6) x size (4)                   | Arrow icon                  |
 | RefreshButton   | loading (2) x size (4)                   | Refresh icon                |
 | Text            | variant (9) x size (4)                   | Typography scale            |
