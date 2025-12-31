@@ -715,6 +715,28 @@
               "secondary-destructive": "bg-secondary !text-error ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-error/70 ring-border data-[state=open]:bg-subtle",
               outline: "bg-surface text-surface ring ring-border"
             },
+            stateClasses: {
+              primary: {
+                hover: "hover:bg-primary/70",
+                disabled: "disabled:bg-primary/50"
+              },
+              secondary: {
+                "not-disabled": "not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle",
+                disabled: "disabled:bg-secondary/50 disabled:!text-surface/70",
+                "data-state": "data-[state=open]:bg-subtle"
+              },
+              ghost: {
+                hover: "hover:bg-accent"
+              },
+              destructive: {
+                hover: "hover:bg-error/70"
+              },
+              "secondary-destructive": {
+                "not-disabled": "not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle",
+                disabled: "disabled:bg-secondary/50 disabled:!text-error/70",
+                "data-state": "data-[state=open]:bg-subtle"
+              }
+            },
             default: "secondary"
           },
           onChange: {
@@ -824,6 +846,12 @@
             classes: {
               default: "[&:focus-within>span]:ring-active [&:hover>span]:ring-active",
               error: "[&>span]:ring-error"
+            },
+            stateClasses: {
+              default: {
+                focus: "[&:focus-within>span]:ring-active",
+                hover: "[&:hover>span]:ring-active"
+              }
             },
             default: "default"
           },
@@ -1139,7 +1167,7 @@
       },
       Collapsible: {
         name: "Collapsible",
-        description: "Collapsible component",
+        description: 'Collapsible component for showing/hiding content. Features: - Animated chevron indicator (rotates 180\xB0 when open) - Accessible with aria-expanded and aria-controls - Content panel with left border accent ```tsx const [open, setOpen] = useState(false); <Collapsible label="Show details" open={open} onOpenChange={setOpen}> <Text>Hidden content revealed when expanded.</Text> </Collapsible> ``` ```tsx const [activeIndex, setActiveIndex] = useState<number | null>(null); {items.map((item, i) => ( <Collapsible key={i} label={item.title} open={activeIndex === i} onOpenChange={(open) => setActiveIndex(open ? i : null)} > {item.content} </Collapsible> ))} ```',
         importPath: "@cloudflare/kumo",
         category: "Display",
         props: {
@@ -1149,15 +1177,18 @@
           },
           label: {
             type: "string",
-            required: true
+            required: true,
+            description: "Text label displayed in the trigger button"
           },
           open: {
             type: "boolean",
-            optional: true
+            optional: true,
+            description: "Whether the collapsible content is visible"
           },
           className: {
             type: "string",
-            optional: true
+            optional: true,
+            description: "Additional CSS classes for the content panel"
           },
           onOpenChange: {
             type: "(open: boolean) => void",
@@ -3023,6 +3054,14 @@
               default: "focus:ring-active",
               error: "!ring-error focus:ring-error"
             },
+            stateClasses: {
+              default: {
+                focus: "focus:ring-active"
+              },
+              error: {
+                focus: "focus:ring-error"
+              }
+            },
             default: "default"
           }
         },
@@ -4280,6 +4319,12 @@
       figmaVariableName = "text-color-muted";
     } else if (colorVariableName === "text-error") {
       figmaVariableName = "text-color-error";
+    } else if (colorVariableName === "text-info") {
+      figmaVariableName = "text-color-info";
+    } else if (colorVariableName === "text-disabled") {
+      figmaVariableName = "text-color-disabled";
+    } else if (colorVariableName === "text-label") {
+      figmaVariableName = "text-color-label";
     }
     var variable;
     if (!isHardcodedWhite) {
@@ -4495,13 +4540,45 @@
   };
   var SECTION_PADDING3 = 48;
   var SECTION_GAP3 = 160;
-  async function createButtonComponent(variant, size, shape, disabled, loading) {
+  var STATE_STYLES = {
+    primary: {
+      hover: { fillVariable: "color-primary", fillOpacity: 0.7 },
+      focus: { addRing: true },
+      pressed: { fillVariable: "color-primary", fillOpacity: 0.8 }
+    },
+    secondary: {
+      hover: { fillVariable: "color-subtle", strokeVariable: "color-subtle" },
+      focus: { addRing: true },
+      pressed: { fillVariable: "color-accent" }
+    },
+    ghost: {
+      hover: { fillVariable: "color-accent" },
+      focus: { addRing: true },
+      pressed: { fillVariable: "color-accent" }
+    },
+    destructive: {
+      hover: { fillVariable: "color-error", fillOpacity: 0.7 },
+      focus: { addRing: true },
+      pressed: { fillVariable: "color-error", fillOpacity: 0.8 }
+    },
+    "secondary-destructive": {
+      hover: { fillVariable: "color-subtle" },
+      focus: { addRing: true },
+      pressed: { fillVariable: "color-accent" }
+    },
+    outline: {
+      hover: {},
+      focus: { addRing: true },
+      pressed: { fillVariable: "color-subtle" }
+    }
+  };
+  async function createButtonComponent(variant, size, shape, disabled, loading, state) {
     var variantClasses = variantProp3.classes[variant] || "";
     var sizeClasses = sizeProp.classes[size] || "";
     var variantStyles = parseTailwindClasses(variantClasses);
     var sizeStyles = parseTailwindClasses(sizeClasses);
     var component = figma.createComponent();
-    component.name = "variant=" + variant + ", size=" + size + ", shape=" + shape + ", disabled=" + disabled + ", loading=" + loading;
+    component.name = "variant=" + variant + ", size=" + size + ", shape=" + shape + ", disabled=" + disabled + ", loading=" + loading + ", state=" + state;
     var isCompactShape = shape === "square" || shape === "circle";
     component.layoutMode = "HORIZONTAL";
     component.primaryAxisAlignItems = "CENTER";
@@ -4540,6 +4617,32 @@
       var strokeVar = getVariableByName(variantStyles.strokeVariable);
       if (strokeVar) {
         bindStrokeToVariable(component, strokeVar.id, 1);
+      }
+    }
+    if (state !== "default" && !disabled && !loading) {
+      var stateStyle = STATE_STYLES[variant] && STATE_STYLES[variant][state];
+      if (stateStyle) {
+        if (stateStyle.fillVariable) {
+          var stateFillVar = getVariableByName(stateStyle.fillVariable);
+          if (stateFillVar) {
+            bindFillToVariable(component, stateFillVar.id);
+            if (stateStyle.fillOpacity !== void 0) {
+              component.opacity = stateStyle.fillOpacity;
+            }
+          }
+        }
+        if (stateStyle.strokeVariable) {
+          var stateStrokeVar = getVariableByName(stateStyle.strokeVariable);
+          if (stateStrokeVar) {
+            bindStrokeToVariable(component, stateStrokeVar.id, 1);
+          }
+        }
+        if (stateStyle.addRing) {
+          var ringVar = getVariableByName("color-active");
+          if (ringVar) {
+            bindStrokeToVariable(component, ringVar.id, 1);
+          }
+        }
       }
     }
     if (disabled) {
@@ -4582,17 +4685,20 @@
     }
     return component;
   }
-  function shouldGenerateVariant(variant, size, shape, disabled, loading) {
-    if (shape === "base" && !disabled && !loading) {
+  function shouldGenerateVariant(variant, size, shape, disabled, loading, state) {
+    if (shape === "base" && !disabled && !loading && state === "default") {
       return true;
     }
-    if (shape === "base" && disabled && !loading && size === "base") {
+    if (shape === "base" && !disabled && !loading && size === "base") {
       return true;
     }
-    if (shape === "base" && loading && !disabled && size === "base") {
+    if (shape === "base" && disabled && !loading && size === "base" && state === "default") {
       return true;
     }
-    if ((shape === "square" || shape === "circle") && variant === "secondary" && !disabled && !loading) {
+    if (shape === "base" && loading && !disabled && size === "base" && state === "default") {
+      return true;
+    }
+    if ((shape === "square" || shape === "circle") && variant === "secondary" && !disabled && !loading && state === "default") {
       return true;
     }
     return false;
@@ -4605,6 +4711,7 @@
     var shapes = shapeProp.values;
     var disabledOptions = [false, true];
     var loadingOptions = [false, true];
+    var stateOptions = ["default", "hover", "focus", "pressed"];
     var components = [];
     var rowLabels = [];
     var componentGap = 16;
@@ -4622,34 +4729,45 @@
           var disabled = disabledOptions[di];
           for (var li = 0; li < loadingOptions.length; li++) {
             var loading = loadingOptions[li];
-            for (var si = 0; si < sizes.length; si++) {
-              var size = sizes[si];
-              if (!shouldGenerateVariant(variant, size, shape, disabled, loading)) {
-                continue;
+            for (var sti = 0; sti < stateOptions.length; sti++) {
+              var state = stateOptions[sti];
+              for (var si = 0; si < sizes.length; si++) {
+                var size = sizes[si];
+                if (!shouldGenerateVariant(
+                  variant,
+                  size,
+                  shape,
+                  disabled,
+                  loading,
+                  state
+                )) {
+                  continue;
+                }
+                var component = await createButtonComponent(
+                  variant,
+                  size,
+                  shape,
+                  disabled,
+                  loading,
+                  state
+                );
+                var rowIndex;
+                if (shape === "base") {
+                  rowIndex = variants.indexOf(variant);
+                  rowLabelTexts.set(rowIndex, "variant=" + variant);
+                } else if (shape === "square") {
+                  rowIndex = variants.length;
+                  rowLabelTexts.set(rowIndex, "shape=square");
+                } else {
+                  rowIndex = variants.length + 1;
+                  rowLabelTexts.set(rowIndex, "shape=circle");
+                }
+                if (!rowComponents.has(rowIndex)) {
+                  rowComponents.set(rowIndex, []);
+                }
+                rowComponents.get(rowIndex).push(component);
+                components.push(component);
               }
-              var component = await createButtonComponent(
-                variant,
-                size,
-                shape,
-                disabled,
-                loading
-              );
-              var rowIndex;
-              if (shape === "base") {
-                rowIndex = variants.indexOf(variant);
-                rowLabelTexts.set(rowIndex, "variant=" + variant);
-              } else if (shape === "square") {
-                rowIndex = variants.length;
-                rowLabelTexts.set(rowIndex, "shape=square");
-              } else {
-                rowIndex = variants.length + 1;
-                rowLabelTexts.set(rowIndex, "shape=circle");
-              }
-              if (!rowComponents.has(rowIndex)) {
-                rowComponents.set(rowIndex, []);
-              }
-              rowComponents.get(rowIndex).push(component);
-              components.push(component);
             }
           }
         }
@@ -4703,7 +4821,7 @@
     }
     var componentSet = figma.combineAsVariants(components, page);
     componentSet.name = "Button";
-    componentSet.description = "Button component with variant, size, shape, disabled, and loading properties";
+    componentSet.description = "Button component with variant, size, shape, disabled, loading, and state properties";
     componentSet.layoutMode = "NONE";
     var contentWidth = componentSet.width + labelColumnWidth;
     var contentHeight = componentSet.height + headerRowHeight;
@@ -5502,12 +5620,1148 @@
     return startY + totalHeight + SECTION_GAP7;
   }
 
+  // scripts/figma/plugin/generators/collapsible.ts
+  var TRIGGER_BASE_STYLES = "flex items-center gap-1 text-sm text-info";
+  var CONTENT_PANEL_STYLES = "my-2 border-l-2 border-color pl-4";
+  var SECTION_PADDING8 = 48;
+  var SECTION_GAP8 = 160;
+  var OPEN_VALUES = [false, true];
+  var STATE_VALUES = ["default", "hover", "focus", "disabled"];
+  var STATE_STYLES2 = {
+    default: {
+      textVariable: "text-color-info"
+    },
+    hover: {
+      textVariable: "text-color-info"
+      // Could add underline or different color on hover
+    },
+    focus: {
+      textVariable: "text-color-info",
+      addRing: true
+    },
+    disabled: {
+      textVariable: "text-color-disabled",
+      opacity: 0.5
+    }
+  };
+  async function createCollapsibleComponent(open, state) {
+    var triggerStyles = parseTailwindClasses(TRIGGER_BASE_STYLES);
+    var contentStyles = parseTailwindClasses(CONTENT_PANEL_STYLES);
+    var component = figma.createComponent();
+    component.name = "open=" + open + ", state=" + state;
+    component.description = "Collapsible " + (open ? "expanded" : "collapsed") + " in " + state + " state";
+    component.layoutMode = "VERTICAL";
+    component.primaryAxisSizingMode = "AUTO";
+    component.counterAxisSizingMode = "AUTO";
+    component.itemSpacing = 8;
+    component.fills = [];
+    var stateStyle = STATE_STYLES2[state] || STATE_STYLES2["default"];
+    if (stateStyle.opacity !== void 0) {
+      component.opacity = stateStyle.opacity;
+    }
+    var trigger = figma.createFrame();
+    trigger.name = "Trigger";
+    trigger.layoutMode = "HORIZONTAL";
+    trigger.primaryAxisAlignItems = "CENTER";
+    trigger.counterAxisAlignItems = "CENTER";
+    trigger.primaryAxisSizingMode = "AUTO";
+    trigger.counterAxisSizingMode = "AUTO";
+    trigger.itemSpacing = triggerStyles.gap || 4;
+    trigger.fills = [];
+    trigger.paddingTop = 4;
+    trigger.paddingBottom = 4;
+    trigger.paddingLeft = 4;
+    trigger.paddingRight = 4;
+    trigger.cornerRadius = BORDER_RADIUS.sm;
+    if (stateStyle.addRing) {
+      var ringVar = getVariableByName("color-active");
+      if (ringVar) {
+        bindStrokeToVariable(trigger, ringVar.id, 2);
+      }
+    }
+    var labelText = await createTextNode(
+      "Click to expand",
+      triggerStyles.fontSize || 14,
+      400
+    );
+    labelText.name = "Label";
+    var textVar = getVariableByName(stateStyle.textVariable || "text-color-info");
+    if (textVar) {
+      bindTextColorToVariable(labelText, textVar.id);
+    }
+    trigger.appendChild(labelText);
+    var chevronIconName = "ph-caret-down";
+    var chevron = getButtonIcon(chevronIconName, "sm");
+    chevron.name = "Chevron";
+    if (open) {
+      chevron.rotation = 180;
+    }
+    var iconColorToken = state === "disabled" ? "text-disabled" : "text-info";
+    bindIconColor(chevron, iconColorToken);
+    trigger.appendChild(chevron);
+    component.appendChild(trigger);
+    if (open) {
+      var contentPanel = figma.createFrame();
+      contentPanel.name = "Content";
+      contentPanel.layoutMode = "VERTICAL";
+      contentPanel.primaryAxisSizingMode = "AUTO";
+      contentPanel.counterAxisSizingMode = "AUTO";
+      contentPanel.itemSpacing = 16;
+      contentPanel.paddingLeft = contentStyles.paddingX || 16;
+      contentPanel.paddingTop = 8;
+      contentPanel.paddingBottom = 8;
+      contentPanel.fills = [];
+      var borderVar = getVariableByName("color-border");
+      if (borderVar) {
+        bindStrokeToVariable(contentPanel, borderVar.id, 2);
+        contentPanel.strokeLeftWeight = 2;
+        contentPanel.strokeTopWeight = 0;
+        contentPanel.strokeRightWeight = 0;
+        contentPanel.strokeBottomWeight = 0;
+      }
+      var contentText = await createTextNode(
+        "This is the collapsible content that can be shown or hidden.",
+        14,
+        400
+      );
+      contentText.name = "Content Text";
+      contentText.layoutSizingHorizontal = "FIXED";
+      contentText.resize(280, contentText.height);
+      contentText.textAutoResize = "HEIGHT";
+      var contentTextVar = getVariableByName("text-color-surface");
+      if (contentTextVar) {
+        bindTextColorToVariable(contentText, contentTextVar.id);
+      }
+      contentPanel.appendChild(contentText);
+      component.appendChild(contentPanel);
+    }
+    return component;
+  }
+  async function generateCollapsibleComponents(startY) {
+    if (startY === void 0) startY = 100;
+    var componentsPage = figma.root.children.find(function(page) {
+      return page.type === "PAGE" && page.name === "Components";
+    });
+    if (!componentsPage) {
+      componentsPage = figma.createPage();
+      componentsPage.name = "Components";
+    }
+    figma.currentPage = componentsPage;
+    var components = [];
+    var rowLabels = [];
+    var columnHeaders = [];
+    var componentGapX = 24;
+    var componentGapY = 40;
+    var headerRowHeight = 24;
+    var labelColumnWidth = 120;
+    var rowComponents = /* @__PURE__ */ new Map();
+    for (var oi = 0; oi < OPEN_VALUES.length; oi++) {
+      var open = OPEN_VALUES[oi];
+      rowComponents.set(oi, []);
+      for (var si = 0; si < STATE_VALUES.length; si++) {
+        var state = STATE_VALUES[si];
+        var component = await createCollapsibleComponent(open, state);
+        rowComponents.get(oi).push(component);
+        components.push(component);
+      }
+    }
+    var columnWidths = [];
+    var rowHeights = [];
+    for (var colIdx = 0; colIdx < STATE_VALUES.length; colIdx++) {
+      var maxColWidth = 0;
+      for (var rowIdx = 0; rowIdx < OPEN_VALUES.length; rowIdx++) {
+        var row = rowComponents.get(rowIdx) || [];
+        var comp = row[colIdx];
+        if (comp && comp.width > maxColWidth) {
+          maxColWidth = comp.width;
+        }
+      }
+      columnWidths.push(maxColWidth);
+    }
+    for (var rowIdx = 0; rowIdx < OPEN_VALUES.length; rowIdx++) {
+      var row = rowComponents.get(rowIdx) || [];
+      var maxRowHeight = 0;
+      for (var colIdx = 0; colIdx < row.length; colIdx++) {
+        var comp = row[colIdx];
+        if (comp && comp.height > maxRowHeight) {
+          maxRowHeight = comp.height;
+        }
+      }
+      rowHeights.push(maxRowHeight);
+    }
+    var yOffset = headerRowHeight;
+    for (var rowIdx = 0; rowIdx < OPEN_VALUES.length; rowIdx++) {
+      var row = rowComponents.get(rowIdx) || [];
+      var xOffset = labelColumnWidth;
+      var openValue = OPEN_VALUES[rowIdx];
+      rowLabels.push({
+        y: yOffset,
+        text: "open=" + openValue
+      });
+      for (var colIdx = 0; colIdx < row.length; colIdx++) {
+        var comp = row[colIdx];
+        comp.x = xOffset;
+        comp.y = yOffset;
+        if (rowIdx === 0) {
+          columnHeaders.push({
+            x: xOffset,
+            text: "state=" + STATE_VALUES[colIdx]
+          });
+        }
+        xOffset += columnWidths[colIdx] + componentGapX;
+      }
+      yOffset += rowHeights[rowIdx] + componentGapY;
+    }
+    var componentSet = figma.combineAsVariants(components, componentsPage);
+    componentSet.name = "Collapsible";
+    componentSet.description = "Collapsible component with open and state properties. Use to show/hide content with an animated chevron indicator.";
+    componentSet.layoutMode = "NONE";
+    var contentWidth = componentSet.width + labelColumnWidth;
+    var contentHeight = componentSet.height + headerRowHeight;
+    var lightSection = createModeSection(componentsPage, "Collapsible", "light");
+    lightSection.frame.resize(
+      contentWidth + SECTION_PADDING8 * 2,
+      contentHeight + SECTION_PADDING8 * 2
+    );
+    var darkSection = createModeSection(componentsPage, "Collapsible", "dark");
+    darkSection.frame.resize(
+      contentWidth + SECTION_PADDING8 * 2,
+      contentHeight + SECTION_PADDING8 * 2
+    );
+    lightSection.frame.appendChild(componentSet);
+    componentSet.x = SECTION_PADDING8 + labelColumnWidth;
+    componentSet.y = SECTION_PADDING8 + headerRowHeight;
+    await createColumnHeaders(
+      columnHeaders.map(function(h) {
+        return { x: h.x + SECTION_PADDING8, text: h.text };
+      }),
+      SECTION_PADDING8,
+      lightSection.frame
+    );
+    for (var li = 0; li < rowLabels.length; li++) {
+      var label = rowLabels[li];
+      var labelNode = await createRowLabel(
+        label.text,
+        SECTION_PADDING8,
+        SECTION_PADDING8 + label.y + 8
+      );
+      lightSection.frame.appendChild(labelNode);
+    }
+    for (var k = 0; k < components.length; k++) {
+      var origComp = components[k];
+      var instance = origComp.createInstance();
+      instance.x = origComp.x + SECTION_PADDING8 + labelColumnWidth;
+      instance.y = origComp.y + SECTION_PADDING8 + headerRowHeight;
+      darkSection.frame.appendChild(instance);
+    }
+    await createColumnHeaders(
+      columnHeaders.map(function(h) {
+        return { x: h.x + SECTION_PADDING8, text: h.text };
+      }),
+      SECTION_PADDING8,
+      darkSection.frame
+    );
+    for (var di = 0; di < rowLabels.length; di++) {
+      var darkLabel = rowLabels[di];
+      var darkLabelNode = await createRowLabel(
+        darkLabel.text,
+        SECTION_PADDING8,
+        SECTION_PADDING8 + darkLabel.y + 8
+      );
+      darkSection.frame.appendChild(darkLabelNode);
+    }
+    var totalWidth = contentWidth + SECTION_PADDING8 * 2;
+    var totalHeight = contentHeight + SECTION_PADDING8 * 2;
+    lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    lightSection.section.x = 100;
+    lightSection.section.y = startY;
+    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.y = startY;
+    console.log(
+      "\u2705 Generated Collapsible ComponentSet with " + components.length + " variants (light + dark)"
+    );
+    return startY + totalHeight + SECTION_GAP8;
+  }
+
+  // scripts/figma/plugin/generators/combobox.ts
+  var TRIGGER_BASE_STYLES2 = "bg-secondary ring ring-border rounded-lg";
+  var DROPDOWN_PANEL_STYLES = "bg-surface border border-border";
+  var SECTION_PADDING9 = 48;
+  var SECTION_GAP9 = 160;
+  var VARIANT_VALUES = ["default", "withLabel", "withError"];
+  var OPEN_VALUES2 = [false, true];
+  var STATE_VALUES2 = ["default", "focus", "disabled"];
+  var STATE_STYLES3 = {
+    default: {
+      ringVariable: "color-border"
+    },
+    focus: {
+      ringVariable: "color-active"
+    },
+    disabled: {
+      ringVariable: "color-border",
+      opacity: 0.5
+    }
+  };
+  var VARIANT_CONFIG = {
+    default: {},
+    withLabel: {
+      label: "Country",
+      description: "Select your country of residence"
+    },
+    withError: {
+      label: "Subscription Plan",
+      errorMessage: "Please select a plan to continue",
+      useErrorRing: true
+    }
+  };
+  async function createComboboxComponent(variant, open, state) {
+    var _triggerStyles = parseTailwindClasses(TRIGGER_BASE_STYLES2);
+    var _dropdownStyles = parseTailwindClasses(DROPDOWN_PANEL_STYLES);
+    var variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
+    var component = figma.createComponent();
+    component.name = "variant=" + variant + ", open=" + open + ", state=" + state;
+    component.description = "Combobox " + variant + " " + (open ? "open" : "closed") + " in " + state + " state";
+    component.layoutMode = "VERTICAL";
+    component.primaryAxisSizingMode = "AUTO";
+    component.counterAxisSizingMode = "AUTO";
+    component.counterAxisAlignItems = "MIN";
+    component.itemSpacing = 4;
+    component.fills = [];
+    var stateStyle = STATE_STYLES3[state] || STATE_STYLES3["default"];
+    if (stateStyle.opacity !== void 0) {
+      component.opacity = stateStyle.opacity;
+    }
+    if (variantConfig.label) {
+      var labelText = await createTextNode(variantConfig.label, 14, 500);
+      labelText.name = "Label";
+      labelText.textAutoResize = "WIDTH_AND_HEIGHT";
+      var labelVar = getVariableByName("text-color-label");
+      if (labelVar) {
+        bindTextColorToVariable(labelText, labelVar.id);
+      }
+      component.appendChild(labelText);
+    }
+    var trigger = figma.createFrame();
+    trigger.name = "TriggerInput";
+    trigger.layoutMode = "HORIZONTAL";
+    trigger.primaryAxisAlignItems = "SPACE_BETWEEN";
+    trigger.counterAxisAlignItems = "CENTER";
+    trigger.primaryAxisSizingMode = "FIXED";
+    trigger.counterAxisSizingMode = "FIXED";
+    trigger.resize(280, 36);
+    trigger.itemSpacing = 8;
+    trigger.paddingLeft = 12;
+    trigger.paddingRight = 12;
+    trigger.paddingTop = 0;
+    trigger.paddingBottom = 0;
+    trigger.cornerRadius = BORDER_RADIUS.lg;
+    var bgVar = getVariableByName("color-secondary");
+    if (bgVar) {
+      bindFillToVariable(trigger, bgVar.id);
+    }
+    var ringVarName = variantConfig.useErrorRing ? "color-error" : stateStyle.ringVariable || "color-border";
+    var ringVar = getVariableByName(ringVarName);
+    if (ringVar) {
+      bindStrokeToVariable(trigger, ringVar.id, 1);
+    }
+    var placeholderText = await createTextNode("Select item...", 16, 400);
+    placeholderText.name = "Placeholder";
+    placeholderText.textAutoResize = "WIDTH_AND_HEIGHT";
+    var mutedVar = getVariableByName("text-color-muted");
+    if (mutedVar) {
+      bindTextColorToVariable(placeholderText, mutedVar.id);
+    }
+    trigger.appendChild(placeholderText);
+    var chevronIconName = "ph-caret-down";
+    var chevron = getButtonIcon(chevronIconName, "sm");
+    chevron.name = "Chevron";
+    if (open) {
+      chevron.rotation = 180;
+    }
+    var iconColorToken = state === "disabled" ? "text-disabled" : "text-surface";
+    bindIconColor(chevron, iconColorToken);
+    trigger.appendChild(chevron);
+    component.appendChild(trigger);
+    if (variantConfig.description) {
+      var descText = await createTextNode(variantConfig.description, 12, 400);
+      descText.name = "Description";
+      descText.textAutoResize = "WIDTH_AND_HEIGHT";
+      var descVar = getVariableByName("text-color-muted");
+      if (descVar) {
+        bindTextColorToVariable(descText, descVar.id);
+      }
+      component.appendChild(descText);
+    }
+    if (variantConfig.errorMessage) {
+      var errorText = await createTextNode(variantConfig.errorMessage, 12, 400);
+      errorText.name = "Error";
+      errorText.textAutoResize = "WIDTH_AND_HEIGHT";
+      var errorVar = getVariableByName("text-color-error");
+      if (errorVar) {
+        bindTextColorToVariable(errorText, errorVar.id);
+      }
+      component.appendChild(errorText);
+    }
+    if (open) {
+      var dropdownPanel = figma.createFrame();
+      dropdownPanel.name = "Dropdown";
+      dropdownPanel.layoutMode = "VERTICAL";
+      dropdownPanel.primaryAxisSizingMode = "FIXED";
+      dropdownPanel.counterAxisSizingMode = "AUTO";
+      dropdownPanel.resize(280, 120);
+      dropdownPanel.itemSpacing = 0;
+      dropdownPanel.paddingLeft = 0;
+      dropdownPanel.paddingRight = 0;
+      dropdownPanel.paddingTop = 4;
+      dropdownPanel.paddingBottom = 4;
+      dropdownPanel.cornerRadius = BORDER_RADIUS.lg;
+      var dropdownBgVar = getVariableByName("color-secondary");
+      if (dropdownBgVar) {
+        bindFillToVariable(dropdownPanel, dropdownBgVar.id);
+      }
+      var borderVar = getVariableByName("color-border");
+      if (borderVar) {
+        bindStrokeToVariable(dropdownPanel, borderVar.id, 1);
+      }
+      var itemLabels = ["Option 1", "Option 2", "Option 3"];
+      for (var i = 0; i < itemLabels.length; i++) {
+        var itemFrame = figma.createFrame();
+        itemFrame.name = "Item " + (i + 1);
+        itemFrame.layoutMode = "HORIZONTAL";
+        itemFrame.primaryAxisAlignItems = "MIN";
+        itemFrame.counterAxisAlignItems = "CENTER";
+        itemFrame.primaryAxisSizingMode = "FIXED";
+        itemFrame.counterAxisSizingMode = "AUTO";
+        itemFrame.resize(280, 32);
+        itemFrame.itemSpacing = 8;
+        itemFrame.paddingLeft = 12;
+        itemFrame.paddingRight = 12;
+        itemFrame.paddingTop = 8;
+        itemFrame.paddingBottom = 8;
+        itemFrame.fills = [];
+        if (i === 1) {
+          var accentVar = getVariableByName("color-color-3");
+          if (accentVar) {
+            bindFillToVariable(itemFrame, accentVar.id);
+          }
+        }
+        var itemText = await createTextNode(itemLabels[i], 14, 400);
+        itemText.name = "Label";
+        itemText.textAutoResize = "WIDTH_AND_HEIGHT";
+        var textVar = getVariableByName("text-color-surface");
+        if (textVar) {
+          bindTextColorToVariable(itemText, textVar.id);
+        }
+        itemFrame.appendChild(itemText);
+        dropdownPanel.appendChild(itemFrame);
+      }
+      component.appendChild(dropdownPanel);
+    }
+    return component;
+  }
+  async function generateComboboxComponents(startY) {
+    if (startY === void 0) startY = 100;
+    var componentsPage = figma.root.children.find(function(page) {
+      return page.type === "PAGE" && page.name === "Components";
+    });
+    if (!componentsPage) {
+      componentsPage = figma.createPage();
+      componentsPage.name = "Components";
+    }
+    figma.currentPage = componentsPage;
+    var components = [];
+    var rowLabels = [];
+    var columnHeaders = [];
+    var componentGapX = 24;
+    var componentGapY = 40;
+    var headerRowHeight = 24;
+    var labelColumnWidth = 150;
+    var rowComponents = /* @__PURE__ */ new Map();
+    for (var vi = 0; vi < VARIANT_VALUES.length; vi++) {
+      var variant = VARIANT_VALUES[vi];
+      rowComponents.set(vi, []);
+      for (var oi = 0; oi < OPEN_VALUES2.length; oi++) {
+        var open = OPEN_VALUES2[oi];
+        for (var si = 0; si < STATE_VALUES2.length; si++) {
+          var state = STATE_VALUES2[si];
+          var component = await createComboboxComponent(variant, open, state);
+          rowComponents.get(vi).push(component);
+          components.push(component);
+        }
+      }
+    }
+    var columnWidths = [];
+    var rowHeights = [];
+    var numColumns = OPEN_VALUES2.length * STATE_VALUES2.length;
+    for (var colIdx = 0; colIdx < numColumns; colIdx++) {
+      var maxColWidth = 0;
+      for (var rowIdx = 0; rowIdx < VARIANT_VALUES.length; rowIdx++) {
+        var row = rowComponents.get(rowIdx) || [];
+        var comp = row[colIdx];
+        if (comp && comp.width > maxColWidth) {
+          maxColWidth = comp.width;
+        }
+      }
+      columnWidths.push(maxColWidth);
+    }
+    for (var rowIdx = 0; rowIdx < VARIANT_VALUES.length; rowIdx++) {
+      var row = rowComponents.get(rowIdx) || [];
+      var maxRowHeight = 0;
+      for (var colIdx = 0; colIdx < row.length; colIdx++) {
+        var comp = row[colIdx];
+        if (comp && comp.height > maxRowHeight) {
+          maxRowHeight = comp.height;
+        }
+      }
+      rowHeights.push(maxRowHeight);
+    }
+    var yOffset = headerRowHeight;
+    for (var rowIdx = 0; rowIdx < VARIANT_VALUES.length; rowIdx++) {
+      var row = rowComponents.get(rowIdx) || [];
+      var xOffset = labelColumnWidth;
+      var variantValue = VARIANT_VALUES[rowIdx];
+      rowLabels.push({
+        y: yOffset,
+        text: "variant=" + variantValue
+      });
+      for (var colIdx = 0; colIdx < row.length; colIdx++) {
+        var comp = row[colIdx];
+        comp.x = xOffset;
+        comp.y = yOffset;
+        if (rowIdx === 0) {
+          var openIdx = Math.floor(colIdx / STATE_VALUES2.length);
+          var stateIdx = colIdx % STATE_VALUES2.length;
+          var openVal = OPEN_VALUES2[openIdx];
+          var stateVal = STATE_VALUES2[stateIdx];
+          columnHeaders.push({
+            x: xOffset,
+            text: "open=" + openVal + ", state=" + stateVal
+          });
+        }
+        xOffset += columnWidths[colIdx] + componentGapX;
+      }
+      yOffset += rowHeights[rowIdx] + componentGapY;
+    }
+    var componentSet = figma.combineAsVariants(components, componentsPage);
+    componentSet.name = "Combobox";
+    componentSet.description = "Combobox component with variant, open, and state properties. Use for searchable select dropdowns with filtering.";
+    componentSet.layoutMode = "NONE";
+    var contentWidth = componentSet.width + labelColumnWidth;
+    var contentHeight = componentSet.height + headerRowHeight;
+    var lightSection = createModeSection(componentsPage, "Combobox", "light");
+    lightSection.frame.resize(
+      contentWidth + SECTION_PADDING9 * 2,
+      contentHeight + SECTION_PADDING9 * 2
+    );
+    var darkSection = createModeSection(componentsPage, "Combobox", "dark");
+    darkSection.frame.resize(
+      contentWidth + SECTION_PADDING9 * 2,
+      contentHeight + SECTION_PADDING9 * 2
+    );
+    lightSection.frame.appendChild(componentSet);
+    componentSet.x = SECTION_PADDING9 + labelColumnWidth;
+    componentSet.y = SECTION_PADDING9 + headerRowHeight;
+    await createColumnHeaders(
+      columnHeaders.map(function(h) {
+        return { x: h.x + SECTION_PADDING9, text: h.text };
+      }),
+      SECTION_PADDING9,
+      lightSection.frame
+    );
+    for (var li = 0; li < rowLabels.length; li++) {
+      var label = rowLabels[li];
+      var labelNode = await createRowLabel(
+        label.text,
+        SECTION_PADDING9,
+        SECTION_PADDING9 + label.y + 8
+      );
+      lightSection.frame.appendChild(labelNode);
+    }
+    for (var k = 0; k < components.length; k++) {
+      var origComp = components[k];
+      var instance = origComp.createInstance();
+      instance.x = origComp.x + SECTION_PADDING9 + labelColumnWidth;
+      instance.y = origComp.y + SECTION_PADDING9 + headerRowHeight;
+      darkSection.frame.appendChild(instance);
+    }
+    await createColumnHeaders(
+      columnHeaders.map(function(h) {
+        return { x: h.x + SECTION_PADDING9, text: h.text };
+      }),
+      SECTION_PADDING9,
+      darkSection.frame
+    );
+    for (var di = 0; di < rowLabels.length; di++) {
+      var darkLabel = rowLabels[di];
+      var darkLabelNode = await createRowLabel(
+        darkLabel.text,
+        SECTION_PADDING9,
+        SECTION_PADDING9 + darkLabel.y + 8
+      );
+      darkSection.frame.appendChild(darkLabelNode);
+    }
+    var totalWidth = contentWidth + SECTION_PADDING9 * 2;
+    var totalHeight = contentHeight + SECTION_PADDING9 * 2;
+    lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    lightSection.section.x = 100;
+    lightSection.section.y = startY;
+    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.y = startY;
+    console.log(
+      "\u2705 Generated Combobox ComponentSet with " + components.length + " variants (light + dark)"
+    );
+    return startY + totalHeight + SECTION_GAP9;
+  }
+
+  // scripts/figma/plugin/generators/date-range-picker.ts
+  var SECTION_PADDING10 = 48;
+  var SECTION_GAP10 = 160;
+  var SIZE_VALUES = ["sm", "base", "lg"];
+  var VARIANT_VALUES2 = ["default", "subtle"];
+  var SELECTED_VALUES = [false, true];
+  var SIZE_CONFIG = {
+    sm: {
+      calendarWidth: 168,
+      cellHeight: 22,
+      cellWidth: 24,
+      textSize: 12,
+      iconSize: 14,
+      padding: 12,
+      gap: 8
+    },
+    base: {
+      calendarWidth: 196,
+      cellHeight: 26,
+      cellWidth: 28,
+      textSize: 14,
+      iconSize: 16,
+      padding: 16,
+      gap: 10
+    },
+    lg: {
+      calendarWidth: 252,
+      cellHeight: 32,
+      cellWidth: 36,
+      textSize: 16,
+      iconSize: 18,
+      padding: 20,
+      gap: 12
+    }
+  };
+  var VARIANT_CONFIG2 = {
+    default: { bgVariable: "color-calendar" },
+    subtle: { bgVariable: "color-surface" }
+  };
+  var DAYS_OF_WEEK = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+  async function createDayHeaders(size, sizeConfig) {
+    var headerRow = figma.createFrame();
+    headerRow.name = "Day Headers";
+    headerRow.layoutMode = "HORIZONTAL";
+    headerRow.primaryAxisSizingMode = "AUTO";
+    headerRow.counterAxisSizingMode = "AUTO";
+    headerRow.itemSpacing = 4;
+    headerRow.fills = [];
+    for (var i = 0; i < DAYS_OF_WEEK.length; i++) {
+      var dayLabel = await createTextNode(
+        DAYS_OF_WEEK[i],
+        sizeConfig.textSize,
+        400
+      );
+      dayLabel.name = DAYS_OF_WEEK[i];
+      dayLabel.textAlignHorizontal = "CENTER";
+      dayLabel.resize(sizeConfig.cellWidth, 22);
+      var mutedVar = getVariableByName("text-color-muted");
+      if (mutedVar) {
+        bindTextColorToVariable(dayLabel, mutedVar.id);
+      }
+      headerRow.appendChild(dayLabel);
+    }
+    return headerRow;
+  }
+  async function createDayCell(dayNumber, mode, sizeConfig) {
+    var cell = figma.createFrame();
+    cell.name = "Day " + dayNumber;
+    cell.layoutMode = "HORIZONTAL";
+    cell.primaryAxisAlignItems = "CENTER";
+    cell.counterAxisAlignItems = "CENTER";
+    cell.primaryAxisSizingMode = "FIXED";
+    cell.counterAxisSizingMode = "FIXED";
+    cell.resize(sizeConfig.cellWidth, sizeConfig.cellHeight);
+    cell.fills = [];
+    if (mode === "selected") {
+      var selectedVar = getVariableByName("color-calendar-day-range-selected");
+      if (selectedVar) {
+        bindFillToVariable(cell, selectedVar.id);
+      }
+    } else if (mode === "start" || mode === "end") {
+      var endpointVar = getVariableByName(
+        "color-calendar-day-range-selected-endpoints"
+      );
+      if (endpointVar) {
+        bindFillToVariable(cell, endpointVar.id);
+      }
+      if (mode === "start") {
+        cell.topLeftRadius = 5;
+        cell.bottomLeftRadius = 5;
+      } else {
+        cell.topRightRadius = 5;
+        cell.bottomRightRadius = 5;
+      }
+    }
+    var dayText = await createTextNode(
+      String(dayNumber),
+      sizeConfig.textSize,
+      400
+    );
+    dayText.name = "Day Number";
+    dayText.textAlignHorizontal = "CENTER";
+    if (mode === "start" || mode === "end") {
+      var inverseVar = getVariableByName("text-color-surface-inverse");
+      if (inverseVar) {
+        bindTextColorToVariable(dayText, inverseVar.id);
+      }
+    } else if (mode === "outOfRange") {
+      var labelVar = getVariableByName("text-color-label");
+      if (labelVar) {
+        bindTextColorToVariable(dayText, labelVar.id);
+      }
+    } else {
+      var surfaceVar = getVariableByName("text-color-surface");
+      if (surfaceVar) {
+        bindTextColorToVariable(dayText, surfaceVar.id);
+      }
+    }
+    cell.appendChild(dayText);
+    return cell;
+  }
+  var MONTH_CONFIG = {
+    December: { startDay: 1, daysInMonth: 31, prevMonthDays: 30 },
+    // Mon, Nov has 30
+    January: { startDay: 4, daysInMonth: 31, prevMonthDays: 31 }
+    // Thu, Dec has 31
+  };
+  async function createCalendarGrid(monthName, selected, sizeConfig) {
+    var grid = figma.createFrame();
+    grid.name = "Calendar Grid";
+    grid.layoutMode = "VERTICAL";
+    grid.primaryAxisSizingMode = "AUTO";
+    grid.counterAxisSizingMode = "AUTO";
+    grid.itemSpacing = 2;
+    grid.fills = [];
+    var config = MONTH_CONFIG[monthName] || MONTH_CONFIG["January"];
+    var startDay = config.startDay;
+    var daysInMonth = config.daysInMonth;
+    var prevMonthDays = config.prevMonthDays;
+    for (var row = 0; row < 6; row++) {
+      var rowFrame = figma.createFrame();
+      rowFrame.name = "Row " + (row + 1);
+      rowFrame.layoutMode = "HORIZONTAL";
+      rowFrame.primaryAxisSizingMode = "AUTO";
+      rowFrame.counterAxisSizingMode = "AUTO";
+      rowFrame.itemSpacing = 0;
+      rowFrame.fills = [];
+      for (var col = 0; col < 7; col++) {
+        var cellIndex = row * 7 + col;
+        var dayNumber;
+        var isOutOfRange = false;
+        if (cellIndex < startDay) {
+          dayNumber = prevMonthDays - startDay + cellIndex + 1;
+          isOutOfRange = true;
+        } else if (cellIndex >= startDay + daysInMonth) {
+          dayNumber = cellIndex - startDay - daysInMonth + 1;
+          isOutOfRange = true;
+        } else {
+          dayNumber = cellIndex - startDay + 1;
+        }
+        var cellMode = isOutOfRange ? "outOfRange" : "normal";
+        if (selected && !isOutOfRange) {
+          if (dayNumber === 15) {
+            cellMode = "start";
+          } else if (dayNumber === 22) {
+            cellMode = "end";
+          } else if (dayNumber > 15 && dayNumber < 22) {
+            cellMode = "selected";
+          }
+        }
+        var cell = await createDayCell(dayNumber, cellMode, sizeConfig);
+        rowFrame.appendChild(cell);
+      }
+      grid.appendChild(rowFrame);
+    }
+    return grid;
+  }
+  async function createMonthHeader(monthName, year, showLeftNav, showRightNav, sizeConfig) {
+    var header = figma.createFrame();
+    header.name = "Month Header";
+    header.layoutMode = "HORIZONTAL";
+    header.primaryAxisAlignItems = "SPACE_BETWEEN";
+    header.counterAxisAlignItems = "CENTER";
+    header.primaryAxisSizingMode = "FIXED";
+    header.counterAxisSizingMode = "AUTO";
+    header.resize(sizeConfig.calendarWidth, 32);
+    header.fills = [];
+    if (showLeftNav) {
+      var leftButton = figma.createFrame();
+      leftButton.name = "Prev Month";
+      leftButton.layoutMode = "HORIZONTAL";
+      leftButton.primaryAxisAlignItems = "CENTER";
+      leftButton.counterAxisAlignItems = "CENTER";
+      leftButton.primaryAxisSizingMode = "AUTO";
+      leftButton.counterAxisSizingMode = "AUTO";
+      leftButton.paddingLeft = 6;
+      leftButton.paddingRight = 6;
+      leftButton.paddingTop = 6;
+      leftButton.paddingBottom = 6;
+      leftButton.cornerRadius = BORDER_RADIUS.md;
+      var selectedOpacityVar = getVariableByName(
+        "color-calendar-day-range-selected/85"
+      );
+      if (selectedOpacityVar) {
+        bindFillToVariable(leftButton, selectedOpacityVar.id);
+      }
+      var leftIcon = getButtonIcon("ph-caret-left", "sm");
+      bindIconColor(leftIcon, "text-surface");
+      leftButton.appendChild(leftIcon);
+      header.appendChild(leftButton);
+    } else {
+      var spacer = figma.createFrame();
+      spacer.resize(1, 1);
+      spacer.fills = [];
+      header.appendChild(spacer);
+    }
+    var titleText = await createTextNode(
+      monthName + " " + year,
+      sizeConfig.textSize,
+      600
+    );
+    titleText.name = "Month Year";
+    titleText.textAlignHorizontal = "CENTER";
+    var surfaceVar = getVariableByName("text-color-surface");
+    if (surfaceVar) {
+      bindTextColorToVariable(titleText, surfaceVar.id);
+    }
+    header.appendChild(titleText);
+    if (showRightNav) {
+      var rightButton = figma.createFrame();
+      rightButton.name = "Next Month";
+      rightButton.layoutMode = "HORIZONTAL";
+      rightButton.primaryAxisAlignItems = "CENTER";
+      rightButton.counterAxisAlignItems = "CENTER";
+      rightButton.primaryAxisSizingMode = "AUTO";
+      rightButton.counterAxisSizingMode = "AUTO";
+      rightButton.paddingLeft = 6;
+      rightButton.paddingRight = 6;
+      rightButton.paddingTop = 6;
+      rightButton.paddingBottom = 6;
+      rightButton.cornerRadius = BORDER_RADIUS.md;
+      var selectedOpacityVar2 = getVariableByName(
+        "color-calendar-day-range-selected/85"
+      );
+      if (selectedOpacityVar2) {
+        bindFillToVariable(rightButton, selectedOpacityVar2.id);
+      }
+      var rightIcon = getButtonIcon("ph-caret-right", "sm");
+      bindIconColor(rightIcon, "text-surface");
+      rightButton.appendChild(rightIcon);
+      header.appendChild(rightButton);
+    } else {
+      var spacer2 = figma.createFrame();
+      spacer2.resize(1, 1);
+      spacer2.fills = [];
+      header.appendChild(spacer2);
+    }
+    return header;
+  }
+  async function createCalendar(monthName, year, showLeftNav, showRightNav, selected, sizeConfig) {
+    var calendar = figma.createFrame();
+    calendar.name = monthName + " Calendar";
+    calendar.layoutMode = "VERTICAL";
+    calendar.primaryAxisSizingMode = "AUTO";
+    calendar.counterAxisSizingMode = "AUTO";
+    calendar.itemSpacing = 12;
+    calendar.fills = [];
+    var monthHeader = await createMonthHeader(
+      monthName,
+      year,
+      showLeftNav,
+      showRightNav,
+      sizeConfig
+    );
+    calendar.appendChild(monthHeader);
+    var dayHeaders = await createDayHeaders("base", sizeConfig);
+    calendar.appendChild(dayHeaders);
+    var grid = await createCalendarGrid(monthName, selected, sizeConfig);
+    calendar.appendChild(grid);
+    return calendar;
+  }
+  async function createFooter(sizeConfig) {
+    var footer = figma.createFrame();
+    footer.name = "Footer";
+    footer.layoutMode = "HORIZONTAL";
+    footer.primaryAxisAlignItems = "SPACE_BETWEEN";
+    footer.counterAxisAlignItems = "CENTER";
+    footer.primaryAxisSizingMode = "FIXED";
+    footer.counterAxisSizingMode = "AUTO";
+    footer.resize(sizeConfig.calendarWidth * 2 + 16, 32);
+    footer.itemSpacing = 8;
+    footer.fills = [];
+    var timezoneSection = figma.createFrame();
+    timezoneSection.name = "Timezone";
+    timezoneSection.layoutMode = "HORIZONTAL";
+    timezoneSection.primaryAxisAlignItems = "MIN";
+    timezoneSection.counterAxisAlignItems = "CENTER";
+    timezoneSection.primaryAxisSizingMode = "AUTO";
+    timezoneSection.counterAxisSizingMode = "AUTO";
+    timezoneSection.itemSpacing = 8;
+    timezoneSection.fills = [];
+    var globeIcon = getButtonIcon("ph-globe-hemisphere-west", "sm");
+    bindIconColor(globeIcon, "text-label");
+    timezoneSection.appendChild(globeIcon);
+    var timezoneText = await createTextNode(
+      "Timezone: New York, NY, USA (GMT-4)",
+      sizeConfig.textSize,
+      400
+    );
+    timezoneText.name = "Timezone Text";
+    var labelVar = getVariableByName("text-color-label");
+    if (labelVar) {
+      bindTextColorToVariable(timezoneText, labelVar.id);
+    }
+    timezoneSection.appendChild(timezoneText);
+    footer.appendChild(timezoneSection);
+    var resetButton = await createTextNode(
+      "Reset Dates",
+      sizeConfig.textSize,
+      600
+    );
+    resetButton.name = "Reset Button";
+    resetButton.textDecoration = "UNDERLINE";
+    var surfaceVar = getVariableByName("text-color-surface");
+    if (surfaceVar) {
+      bindTextColorToVariable(resetButton, surfaceVar.id);
+    }
+    footer.appendChild(resetButton);
+    return footer;
+  }
+  async function createDateRangePickerComponent(size, variant, selected) {
+    var sizeConfig = SIZE_CONFIG[size] || SIZE_CONFIG["base"];
+    var variantConfig = VARIANT_CONFIG2[variant] || VARIANT_CONFIG2["default"];
+    var component = figma.createComponent();
+    component.name = "size=" + size + ", variant=" + variant + ", selected=" + selected;
+    component.description = "DateRangePicker " + size + " " + variant + " " + (selected ? "with selected range" : "no selection");
+    component.layoutMode = "VERTICAL";
+    component.primaryAxisSizingMode = "AUTO";
+    component.counterAxisSizingMode = "AUTO";
+    component.itemSpacing = sizeConfig.gap;
+    component.paddingLeft = sizeConfig.padding;
+    component.paddingRight = sizeConfig.padding;
+    component.paddingTop = sizeConfig.padding;
+    component.paddingBottom = sizeConfig.padding;
+    component.cornerRadius = BORDER_RADIUS.lg;
+    var bgVar = getVariableByName(variantConfig.bgVariable);
+    if (bgVar) {
+      bindFillToVariable(component, bgVar.id);
+    }
+    var calendarsContainer = figma.createFrame();
+    calendarsContainer.name = "Calendars";
+    calendarsContainer.layoutMode = "HORIZONTAL";
+    calendarsContainer.primaryAxisSizingMode = "AUTO";
+    calendarsContainer.counterAxisSizingMode = "AUTO";
+    calendarsContainer.itemSpacing = 16;
+    calendarsContainer.fills = [];
+    var leftCalendar = await createCalendar(
+      "December",
+      "2025",
+      true,
+      false,
+      selected,
+      sizeConfig
+    );
+    calendarsContainer.appendChild(leftCalendar);
+    var rightCalendar = await createCalendar(
+      "January",
+      "2026",
+      false,
+      true,
+      false,
+      sizeConfig
+    );
+    calendarsContainer.appendChild(rightCalendar);
+    component.appendChild(calendarsContainer);
+    var footer = await createFooter(sizeConfig);
+    component.appendChild(footer);
+    return component;
+  }
+  async function generateDateRangePickerComponents(page, startY) {
+    if (startY === void 0) startY = 100;
+    figma.currentPage = page;
+    var components = [];
+    var rowLabels = [];
+    var columnHeaders = [];
+    var componentGapX = 24;
+    var componentGapY = 40;
+    var headerRowHeight = 24;
+    var labelColumnWidth = 150;
+    var rowComponents = /* @__PURE__ */ new Map();
+    for (var si = 0; si < SIZE_VALUES.length; si++) {
+      var size = SIZE_VALUES[si];
+      rowComponents.set(si, []);
+      for (var vi = 0; vi < VARIANT_VALUES2.length; vi++) {
+        var variant = VARIANT_VALUES2[vi];
+        for (var seli = 0; seli < SELECTED_VALUES.length; seli++) {
+          var selected = SELECTED_VALUES[seli];
+          var component = await createDateRangePickerComponent(
+            size,
+            variant,
+            selected
+          );
+          var row = rowComponents.get(si);
+          if (row) {
+            row.push(component);
+          }
+          components.push(component);
+        }
+      }
+    }
+    var columnWidths = [];
+    var rowHeights = [];
+    var numColumns = VARIANT_VALUES2.length * SELECTED_VALUES.length;
+    for (var colIdx = 0; colIdx < numColumns; colIdx++) {
+      var maxColWidth = 0;
+      for (var rowIdx = 0; rowIdx < SIZE_VALUES.length; rowIdx++) {
+        var row = rowComponents.get(rowIdx);
+        if (row) {
+          var comp = row[colIdx];
+          if (comp && comp.width > maxColWidth) {
+            maxColWidth = comp.width;
+          }
+        }
+      }
+      columnWidths.push(maxColWidth);
+    }
+    for (var rowIdx = 0; rowIdx < SIZE_VALUES.length; rowIdx++) {
+      var row = rowComponents.get(rowIdx);
+      if (row) {
+        var maxRowHeight = 0;
+        for (var colIdx = 0; colIdx < row.length; colIdx++) {
+          var comp = row[colIdx];
+          if (comp && comp.height > maxRowHeight) {
+            maxRowHeight = comp.height;
+          }
+        }
+        rowHeights.push(maxRowHeight);
+      }
+    }
+    var yOffset = headerRowHeight;
+    for (var rowIdx = 0; rowIdx < SIZE_VALUES.length; rowIdx++) {
+      var row = rowComponents.get(rowIdx);
+      if (row) {
+        var xOffset = labelColumnWidth;
+        var sizeValue = SIZE_VALUES[rowIdx];
+        rowLabels.push({
+          y: yOffset,
+          text: "size=" + sizeValue
+        });
+        for (var colIdx = 0; colIdx < row.length; colIdx++) {
+          var comp = row[colIdx];
+          comp.x = xOffset;
+          comp.y = yOffset;
+          if (rowIdx === 0) {
+            var variantIdx = Math.floor(colIdx / SELECTED_VALUES.length);
+            var selectedIdx = colIdx % SELECTED_VALUES.length;
+            var variantVal = VARIANT_VALUES2[variantIdx];
+            var selectedVal = SELECTED_VALUES[selectedIdx];
+            columnHeaders.push({
+              x: xOffset,
+              text: "variant=" + variantVal + ", selected=" + selectedVal
+            });
+          }
+          xOffset = xOffset + columnWidths[colIdx] + componentGapX;
+        }
+        yOffset = yOffset + rowHeights[rowIdx] + componentGapY;
+      }
+    }
+    var componentSet = figma.combineAsVariants(components, page);
+    componentSet.name = "DateRangePicker";
+    componentSet.description = "DateRangePicker component with size, variant, and selected properties. Use for selecting date ranges across two side-by-side calendars.";
+    componentSet.layoutMode = "NONE";
+    var contentWidth = componentSet.width + labelColumnWidth;
+    var contentHeight = componentSet.height + headerRowHeight;
+    var lightSection = createModeSection(page, "DateRangePicker", "light");
+    lightSection.frame.resize(
+      contentWidth + SECTION_PADDING10 * 2,
+      contentHeight + SECTION_PADDING10 * 2
+    );
+    var darkSection = createModeSection(page, "DateRangePicker", "dark");
+    darkSection.frame.resize(
+      contentWidth + SECTION_PADDING10 * 2,
+      contentHeight + SECTION_PADDING10 * 2
+    );
+    lightSection.frame.appendChild(componentSet);
+    componentSet.x = SECTION_PADDING10 + labelColumnWidth;
+    componentSet.y = SECTION_PADDING10 + headerRowHeight;
+    await createColumnHeaders(
+      columnHeaders.map(function(h) {
+        return { x: h.x + SECTION_PADDING10, text: h.text };
+      }),
+      SECTION_PADDING10,
+      lightSection.frame
+    );
+    for (var li = 0; li < rowLabels.length; li++) {
+      var label = rowLabels[li];
+      var labelNode = await createRowLabel(
+        label.text,
+        SECTION_PADDING10,
+        SECTION_PADDING10 + label.y + 8
+      );
+      lightSection.frame.appendChild(labelNode);
+    }
+    for (var k = 0; k < components.length; k++) {
+      var origComp = components[k];
+      var instance = origComp.createInstance();
+      instance.x = origComp.x + SECTION_PADDING10 + labelColumnWidth;
+      instance.y = origComp.y + SECTION_PADDING10 + headerRowHeight;
+      darkSection.frame.appendChild(instance);
+    }
+    await createColumnHeaders(
+      columnHeaders.map(function(h) {
+        return { x: h.x + SECTION_PADDING10, text: h.text };
+      }),
+      SECTION_PADDING10,
+      darkSection.frame
+    );
+    for (var di = 0; di < rowLabels.length; di++) {
+      var darkLabel = rowLabels[di];
+      var darkLabelNode = await createRowLabel(
+        darkLabel.text,
+        SECTION_PADDING10,
+        SECTION_PADDING10 + darkLabel.y + 8
+      );
+      darkSection.frame.appendChild(darkLabelNode);
+    }
+    var totalWidth = contentWidth + SECTION_PADDING10 * 2;
+    var totalHeight = contentHeight + SECTION_PADDING10 * 2;
+    lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    lightSection.section.x = 100;
+    lightSection.section.y = startY;
+    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.y = startY;
+    console.log(
+      "\u2705 Generated DateRangePicker ComponentSet with " + components.length + " variants (light + dark)"
+    );
+    return startY + totalHeight + SECTION_GAP10;
+  }
+
   // scripts/figma/plugin/generators/link-button.ts
   var buttonProps2 = component_registry_default.components.Button.props;
   var variantProp5 = buttonProps2.variant;
   var sizeProp3 = buttonProps2.size;
-  var SECTION_PADDING8 = 48;
-  var SECTION_GAP8 = 160;
+  var SECTION_PADDING11 = 48;
+  var SECTION_GAP11 = 160;
   async function createLinkButtonComponent(variant, size, hasIcon) {
     var variantClasses = variantProp5.classes[variant] || "";
     var sizeClasses = sizeProp3.classes[size] || "";
@@ -5624,58 +6878,58 @@
     var contentHeight = componentSet.height + headerRowHeight;
     var lightSection = createModeSection(page, "LinkButton", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING8 * 2,
-      contentHeight + SECTION_PADDING8 * 2
+      contentWidth + SECTION_PADDING11 * 2,
+      contentHeight + SECTION_PADDING11 * 2
     );
     var darkSection = createModeSection(page, "LinkButton", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING8 * 2,
-      contentHeight + SECTION_PADDING8 * 2
+      contentWidth + SECTION_PADDING11 * 2,
+      contentHeight + SECTION_PADDING11 * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING8 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING8 + headerRowHeight;
+    componentSet.x = SECTION_PADDING11 + labelColumnWidth;
+    componentSet.y = SECTION_PADDING11 + headerRowHeight;
     await createColumnHeaders(
       columnHeaders.map(function(h) {
-        return { x: h.x + SECTION_PADDING8, text: h.text };
+        return { x: h.x + SECTION_PADDING11, text: h.text };
       }),
-      SECTION_PADDING8,
+      SECTION_PADDING11,
       lightSection.frame
     );
     for (var li = 0; li < rowLabels.length; li++) {
       var label = rowLabels[li];
       var labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING8,
-        SECTION_PADDING8 + label.y + 12
+        SECTION_PADDING11,
+        SECTION_PADDING11 + label.y + 12
       );
       lightSection.frame.appendChild(labelNode);
     }
     for (var i = 0; i < components.length; i++) {
       var comp = components[i];
       var instance = comp.createInstance();
-      instance.x = comp.x + SECTION_PADDING8 + labelColumnWidth;
-      instance.y = comp.y + SECTION_PADDING8 + headerRowHeight;
+      instance.x = comp.x + SECTION_PADDING11 + labelColumnWidth;
+      instance.y = comp.y + SECTION_PADDING11 + headerRowHeight;
       darkSection.frame.appendChild(instance);
     }
     await createColumnHeaders(
       columnHeaders.map(function(h) {
-        return { x: h.x + SECTION_PADDING8, text: h.text };
+        return { x: h.x + SECTION_PADDING11, text: h.text };
       }),
-      SECTION_PADDING8,
+      SECTION_PADDING11,
       darkSection.frame
     );
     for (var di = 0; di < rowLabels.length; di++) {
       var darkLabel = rowLabels[di];
       var darkLabelNode = await createRowLabel(
         darkLabel.text,
-        SECTION_PADDING8,
-        SECTION_PADDING8 + darkLabel.y + 12
+        SECTION_PADDING11,
+        SECTION_PADDING11 + darkLabel.y + 12
       );
       darkSection.frame.appendChild(darkLabelNode);
     }
-    var totalWidth = contentWidth + SECTION_PADDING8 * 2;
-    var totalHeight = contentHeight + SECTION_PADDING8 * 2;
+    var totalWidth = contentWidth + SECTION_PADDING11 * 2;
+    var totalHeight = contentHeight + SECTION_PADDING11 * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     lightSection.section.x = 100;
@@ -5686,7 +6940,7 @@
     console.log(
       "\u2705 Generated LinkButton ComponentSet with " + totalComponents + " variants (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP8;
+    return startY + totalHeight + SECTION_GAP11;
   }
   var LINK_BUTTON_VARIANTS_EXPORT = variantProp5.values;
   var LINK_BUTTON_SIZES_EXPORT = sizeProp3.values;
@@ -5715,8 +6969,8 @@
     var parsed = parseTailwindClasses(sizeClasses);
     return parsed.borderRadius !== void 0 ? parsed.borderRadius : BORDER_RADIUS.lg;
   }
-  var SECTION_PADDING9 = 48;
-  var SECTION_GAP9 = 160;
+  var SECTION_PADDING12 = 48;
+  var SECTION_GAP12 = 160;
   function createRefreshButtonComponent(size, loading) {
     var variant = variantProp6.default;
     var variantClasses = variantProp6.classes[variant] || "";
@@ -5796,44 +7050,44 @@
     var contentHeight = componentSet.height;
     var lightSection = createModeSection(page, "RefreshButton", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING9 * 2,
-      contentHeight + SECTION_PADDING9 * 2
+      contentWidth + SECTION_PADDING12 * 2,
+      contentHeight + SECTION_PADDING12 * 2
     );
     var darkSection = createModeSection(page, "RefreshButton", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING9 * 2,
-      contentHeight + SECTION_PADDING9 * 2
+      contentWidth + SECTION_PADDING12 * 2,
+      contentHeight + SECTION_PADDING12 * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING9 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING9;
+    componentSet.x = SECTION_PADDING12 + labelColumnWidth;
+    componentSet.y = SECTION_PADDING12;
     for (var li = 0; li < rowLabels.length; li++) {
       var label = rowLabels[li];
       var labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING9,
-        SECTION_PADDING9 + label.y + 10
+        SECTION_PADDING12,
+        SECTION_PADDING12 + label.y + 10
       );
       lightSection.frame.appendChild(labelNode);
     }
     for (var i = 0; i < components.length; i++) {
       var comp = components[i];
       var instance = comp.createInstance();
-      instance.x = comp.x + SECTION_PADDING9 + labelColumnWidth;
-      instance.y = comp.y + SECTION_PADDING9;
+      instance.x = comp.x + SECTION_PADDING12 + labelColumnWidth;
+      instance.y = comp.y + SECTION_PADDING12;
       darkSection.frame.appendChild(instance);
     }
     for (var di = 0; di < rowLabels.length; di++) {
       var darkLabel = rowLabels[di];
       var darkLabelNode = await createRowLabel(
         darkLabel.text,
-        SECTION_PADDING9,
-        SECTION_PADDING9 + darkLabel.y + 10
+        SECTION_PADDING12,
+        SECTION_PADDING12 + darkLabel.y + 10
       );
       darkSection.frame.appendChild(darkLabelNode);
     }
-    var totalWidth = contentWidth + SECTION_PADDING9 * 2;
-    var totalHeight = contentHeight + SECTION_PADDING9 * 2;
+    var totalWidth = contentWidth + SECTION_PADDING12 * 2;
+    var totalHeight = contentHeight + SECTION_PADDING12 * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     lightSection.section.x = 100;
@@ -5844,7 +7098,7 @@
     console.log(
       "\u2705 Generated RefreshButton ComponentSet with " + totalComponents + " variants (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP9;
+    return startY + totalHeight + SECTION_GAP12;
   }
   var REFRESH_BUTTON_SIZES_EXPORT = sizeProp4.values;
 
@@ -5852,8 +7106,8 @@
   var textProps = component_registry_default.components.Text.props;
   var variantProp7 = textProps.variant;
   var sizeProp5 = textProps.size;
-  var SECTION_PADDING10 = 48;
-  var SECTION_GAP10 = 160;
+  var SECTION_PADDING13 = 48;
+  var SECTION_GAP13 = 160;
   var TEXT_BASE_CLASS = "text-surface";
   var COPY_VARIANTS = ["body", "secondary", "success", "error"];
   var MONO_VARIANTS = ["mono", "mono-secondary"];
@@ -5996,52 +7250,52 @@
     const contentHeight = componentSet.height + headerRowHeight;
     const lightSection = createModeSection(page, "Text", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING10 * 2,
-      contentHeight + SECTION_PADDING10 * 2
+      contentWidth + SECTION_PADDING13 * 2,
+      contentHeight + SECTION_PADDING13 * 2
     );
     const darkSection = createModeSection(page, "Text", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING10 * 2,
-      contentHeight + SECTION_PADDING10 * 2
+      contentWidth + SECTION_PADDING13 * 2,
+      contentHeight + SECTION_PADDING13 * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING10 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING10 + headerRowHeight;
+    componentSet.x = SECTION_PADDING13 + labelColumnWidth;
+    componentSet.y = SECTION_PADDING13 + headerRowHeight;
     await createColumnHeaders(
-      columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING10, text: h.text })),
-      SECTION_PADDING10,
+      columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING13, text: h.text })),
+      SECTION_PADDING13,
       lightSection.frame
     );
     for (const label of rowLabels) {
       const labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING10,
-        SECTION_PADDING10 + label.y + 8
+        SECTION_PADDING13,
+        SECTION_PADDING13 + label.y + 8
         // +8 to vertically center with text
       );
       lightSection.frame.appendChild(labelNode);
     }
     for (const component of components) {
       const instance = component.createInstance();
-      instance.x = component.x + SECTION_PADDING10 + labelColumnWidth;
-      instance.y = component.y + SECTION_PADDING10 + headerRowHeight;
+      instance.x = component.x + SECTION_PADDING13 + labelColumnWidth;
+      instance.y = component.y + SECTION_PADDING13 + headerRowHeight;
       darkSection.frame.appendChild(instance);
     }
     await createColumnHeaders(
-      columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING10, text: h.text })),
-      SECTION_PADDING10,
+      columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING13, text: h.text })),
+      SECTION_PADDING13,
       darkSection.frame
     );
     for (const label of rowLabels) {
       const labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING10,
-        SECTION_PADDING10 + label.y + 8
+        SECTION_PADDING13,
+        SECTION_PADDING13 + label.y + 8
       );
       darkSection.frame.appendChild(labelNode);
     }
-    const totalWidth = contentWidth + SECTION_PADDING10 * 2;
-    const totalHeight = contentHeight + SECTION_PADDING10 * 2;
+    const totalWidth = contentWidth + SECTION_PADDING13 * 2;
+    const totalHeight = contentHeight + SECTION_PADDING13 * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     lightSection.section.x = 100;
@@ -6051,7 +7305,7 @@
     console.log(
       "\u2705 Generated Text ComponentSet with " + components.length + " variants (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP10;
+    return startY + totalHeight + SECTION_GAP13;
   }
   var TEXT_VARIANTS_EXPORT = variantProp7.values;
   var TEXT_SIZES_EXPORT = sizeProp5.values;
@@ -8970,7 +10224,7 @@
   }
 
   // scripts/figma/plugin/code.ts
-  figma.showUI(__html__, { width: 400, height: 300 });
+  figma.showUI(__html__, { width: 320, height: 220 });
   function getOrCreateComponentsPage() {
     let componentsPage = figma.root.children.find(
       (page) => page.type === "PAGE" && page.name.trim().toLowerCase() === "components"
@@ -9028,9 +10282,15 @@
         nextY = await generateCodeComponents(componentsPage, nextY);
         figma.notify("Generating CodeBlock components...");
         nextY = await generateCodeBlockComponents(componentsPage, nextY);
+        figma.notify("Generating Collapsible components...");
+        nextY = await generateCollapsibleComponents(nextY);
+        figma.notify("Generating Combobox components...");
+        nextY = await generateComboboxComponents(nextY);
+        figma.notify("Generating DateRangePicker components...");
+        nextY = await generateDateRangePickerComponents(componentsPage, nextY);
         figma.notify("\u2705 Generation complete!", { timeout: 3e3 });
         figma.closePlugin(
-          "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, LinkButton, RefreshButton, Text components, and Icon Library"
+          "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, LinkButton, RefreshButton, Text components, and Icon Library"
         );
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);

@@ -39,8 +39,15 @@
       }
 
       body {
-        font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          Helvetica, Arial, sans-serif;
+        font-family:
+          Inter,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          Helvetica,
+          Arial,
+          sans-serif;
         font-size: var(--text-base);
         line-height: 1.43;
         color: var(--text-color-surface);
@@ -65,7 +72,6 @@
       .actions {
         display: flex;
         gap: var(--spacing-2);
-        margin-bottom: var(--spacing-4);
       }
 
       /*
@@ -165,8 +171,8 @@
 
     <div class="warning">
       <span class="warning-icon">&#9888;</span>
-      <strong>Destructive sync:</strong> All existing generated components on the
-      Components page will be replaced.
+      <strong>Destructive sync:</strong> All existing generated components on
+      the Components page will be replaced.
     </div>
 
     <div class="actions">
@@ -177,24 +183,6 @@
         Generate UI Kit
       </button>
     </div>
-
-    <p class="description">
-      Components generated:
-    </p>
-
-    <ul class="component-list">
-      <li>Badge</li>
-      <li>Banner</li>
-      <li>Button</li>
-      <li>Checkbox</li>
-      <li>ClipboardText</li>
-      <li>Code</li>
-      <li>CodeBlock</li>
-      <li>LinkButton</li>
-      <li>RefreshButton</li>
-      <li>Text</li>
-      <li>Icon Library</li>
-    </ul>
 
     <script>
       document.getElementById("generate").onclick = () => {

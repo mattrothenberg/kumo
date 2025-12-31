@@ -14,6 +14,9 @@ import { generateCheckboxComponents } from "./generators/checkbox";
 import { generateClipboardTextComponents } from "./generators/clipboard-text";
 import { generateCodeComponents } from "./generators/code";
 import { generateCodeBlockComponents } from "./generators/code-block";
+import { generateCollapsibleComponents } from "./generators/collapsible";
+import { generateComboboxComponents } from "./generators/combobox";
+import { generateDateRangePickerComponents } from "./generators/date-range-picker";
 import { generateLinkButtonComponents } from "./generators/link-button";
 import { generateRefreshButtonComponents } from "./generators/refresh-button";
 import { generateTextComponents } from "./generators/text";
@@ -21,7 +24,7 @@ import { generateIconLibrary } from "./generators/icon-library";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore - __html__ is provided by Figma plugin API
-figma.showUI(__html__, { width: 400, height: 300 });
+figma.showUI(__html__, { width: 320, height: 220 });
 
 /**
  * Find or create the Components page
@@ -131,9 +134,21 @@ figma.ui.onmessage = async (msg: { type: string }) => {
       figma.notify("Generating CodeBlock components...");
       nextY = await generateCodeBlockComponents(componentsPage, nextY);
 
+      // Step 14: Generate Collapsible components
+      figma.notify("Generating Collapsible components...");
+      nextY = await generateCollapsibleComponents(nextY);
+
+      // Step 15: Generate Combobox components
+      figma.notify("Generating Combobox components...");
+      nextY = await generateComboboxComponents(nextY);
+
+      // Step 16: Generate DateRangePicker components
+      figma.notify("Generating DateRangePicker components...");
+      nextY = await generateDateRangePickerComponents(componentsPage, nextY);
+
       figma.notify("✅ Generation complete!", { timeout: 3000 });
       figma.closePlugin(
-        "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, LinkButton, RefreshButton, Text components, and Icon Library",
+        "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, LinkButton, RefreshButton, Text components, and Icon Library",
       );
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);

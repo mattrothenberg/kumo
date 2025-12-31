@@ -276,6 +276,28 @@
             "secondary-destructive": "bg-secondary !text-error ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-error/70 ring-border data-[state=open]:bg-subtle",
             "outline": "bg-surface text-surface ring ring-border"
           },
+          "stateClasses": {
+            "primary": {
+              "hover": "hover:bg-primary/70",
+              "disabled": "disabled:bg-primary/50"
+            },
+            "secondary": {
+              "not-disabled": "not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle",
+              "disabled": "disabled:bg-secondary/50 disabled:!text-surface/70",
+              "data-state": "data-[state=open]:bg-subtle"
+            },
+            "ghost": {
+              "hover": "hover:bg-accent"
+            },
+            "destructive": {
+              "hover": "hover:bg-error/70"
+            },
+            "secondary-destructive": {
+              "not-disabled": "not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle",
+              "disabled": "disabled:bg-secondary/50 disabled:!text-error/70",
+              "data-state": "data-[state=open]:bg-subtle"
+            }
+          },
           "default": "secondary"
         },
         "onChange": {
@@ -378,6 +400,12 @@
           "classes": {
             "default": "[&:focus-within>span]:ring-active [&:hover>span]:ring-active",
             "error": "[&>span]:ring-error"
+          },
+          "stateClasses": {
+            "default": {
+              "focus": "[&:focus-within>span]:ring-active",
+              "hover": "[&:hover>span]:ring-active"
+            }
           },
           "default": "default"
         },
@@ -691,7 +719,7 @@
     },
     "Collapsible": {
       "name": "Collapsible",
-      "description": "Collapsible component",
+      "description": "Collapsible component for showing/hiding content. Features: - Animated chevron indicator (rotates 180° when open) - Accessible with aria-expanded and aria-controls - Content panel with left border accent ```tsx const [open, setOpen] = useState(false); <Collapsible label=\"Show details\" open={open} onOpenChange={setOpen}> <Text>Hidden content revealed when expanded.</Text> </Collapsible> ``` ```tsx const [activeIndex, setActiveIndex] = useState<number | null>(null); {items.map((item, i) => ( <Collapsible key={i} label={item.title} open={activeIndex === i} onOpenChange={(open) => setActiveIndex(open ? i : null)} > {item.content} </Collapsible> ))} ```",
       "importPath": "@cloudflare/kumo",
       "category": "Display",
       "props": {
@@ -701,15 +729,18 @@
         },
         "label": {
           "type": "string",
-          "required": true
+          "required": true,
+          "description": "Text label displayed in the trigger button"
         },
         "open": {
           "type": "boolean",
-          "optional": true
+          "optional": true,
+          "description": "Whether the collapsible content is visible"
         },
         "className": {
           "type": "string",
-          "optional": true
+          "optional": true,
+          "description": "Additional CSS classes for the content panel"
         },
         "onOpenChange": {
           "type": "(open: boolean) => void",
@@ -2508,6 +2539,14 @@
           "classes": {
             "default": "focus:ring-active",
             "error": "!ring-error focus:ring-error"
+          },
+          "stateClasses": {
+            "default": {
+              "focus": "focus:ring-active"
+            },
+            "error": {
+              "focus": "focus:ring-error"
+            }
           },
           "default": "default"
         }

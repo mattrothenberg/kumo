@@ -342,21 +342,53 @@ function discoverDirs(sourceDir: string): string[] {
 }
 
 /**
- * Discover all component directories in src/components/
- * Returns array of directory names (kebab-case)
- * @deprecated Use discoverDirs(componentsDir) directly
+ * Extract state-specific classes from a class string.
+ * Identifies hover:*, focus:*, active:*, disabled:*, not-disabled:* prefixes.
+ * Also handles complex selectors like [&:hover>span], [&:focus-within>span].
  */
-function _discoverComponentDirs(): string[] {
-  return discoverDirs(componentsDir);
-}
+function extractStateClasses(classString: string): Record<string, string> {
+  const states: Record<string, string> = {};
 
-/**
- * Discover all block directories in src/blocks/
- * Returns array of directory names (kebab-case)
- * @deprecated Use discoverDirs(blocksDir) directly
- */
-function _discoverBlockDirs(): string[] {
-  return discoverDirs(blocksDir);
+  // Split by whitespace to process each class individually
+  const classes = classString.split(/\s+/);
+
+  for (const cls of classes) {
+    if (!cls) continue;
+
+    // Check for hover states
+    if (cls.startsWith("hover:") || cls.match(/^\[&:hover[^\]]*\]:/)) {
+      states.hover = states.hover ? `${states.hover} ${cls}` : cls;
+    }
+    // Check for focus states (focus, focus-visible, focus-within)
+    else if (
+      cls.match(/^(focus|focus-visible|focus-within):/) ||
+      cls.match(/^\[&:focus(-visible|-within)?[^\]]*\]:/)
+    ) {
+      states.focus = states.focus ? `${states.focus} ${cls}` : cls;
+    }
+    // Check for active state
+    else if (cls.startsWith("active:")) {
+      states.active = states.active ? `${states.active} ${cls}` : cls;
+    }
+    // Check for disabled state
+    else if (cls.startsWith("disabled:")) {
+      states.disabled = states.disabled ? `${states.disabled} ${cls}` : cls;
+    }
+    // Check for not-disabled state
+    else if (cls.startsWith("not-disabled:")) {
+      states["not-disabled"] = states["not-disabled"]
+        ? `${states["not-disabled"]} ${cls}`
+        : cls;
+    }
+    // Check for data-state
+    else if (cls.match(/^data-\[state=[^\]]+\]:/)) {
+      states["data-state"] = states["data-state"]
+        ? `${states["data-state"]} ${cls}`
+        : cls;
+    }
+  }
+
+  return states;
 }
 
 /**
@@ -488,9 +520,16 @@ function parseVariantsObject(
       );
       // Extract classes if present (for Figma plugin consumption)
       const classesMatch = variantBlock.match(/classes\s*:\s*["']([^"']*)["']/);
+
+      // Extract state classes from the classes string
+      const stateClasses = classesMatch
+        ? extractStateClasses(classesMatch[1])
+        : {};
+
       variants[variantName] = {
         description: descMatch ? descMatch[1] : undefined,
         ...(classesMatch && { classes: classesMatch[1] }),
+        ...(Object.keys(stateClasses).length > 0 && { stateClasses }),
       };
     }
 
@@ -984,6 +1023,8 @@ interface PropSchema {
   descriptions?: Record<string, string>;
   /** Tailwind classes for each variant value (for Figma plugin) */
   classes?: Record<string, string>;
+  /** State-specific classes extracted from variant classes */
+  stateClasses?: Record<string, Record<string, string>>;
 }
 
 interface SubComponentSchema {
@@ -1207,6 +1248,8 @@ function convertToPropSchema(
 
     const descriptions: Record<string, string> = {};
     const classes: Record<string, string> = {};
+    const stateClassesMap: Record<string, Record<string, string>> = {};
+
     for (const [key, val] of Object.entries(variantDef)) {
       if (val.description) {
         descriptions[key] = val.description;
@@ -1214,12 +1257,19 @@ function convertToPropSchema(
       if (val.classes) {
         classes[key] = val.classes;
       }
+      if (val.stateClasses) {
+        stateClassesMap[key] = val.stateClasses;
+      }
     }
+
     if (Object.keys(descriptions).length > 0) {
       prop.descriptions = descriptions;
     }
     if (Object.keys(classes).length > 0) {
       prop.classes = classes;
+    }
+    if (Object.keys(stateClassesMap).length > 0) {
+      prop.stateClasses = stateClassesMap;
     }
   }
 
@@ -2209,6 +2259,19 @@ ${styleGuide}`;
         }
       } else if (prop.description) {
         context += `  ${prop.description}\n`;
+      }
+
+      // Document state classes for variant props
+      if (prop.stateClasses && Object.keys(prop.stateClasses).length > 0) {
+        context += `\n  **State Classes:**\n`;
+        for (const [variantValue, states] of Object.entries(
+          prop.stateClasses,
+        )) {
+          context += `  - \`"${variantValue}"\`:\n`;
+          for (const [stateName, stateClass] of Object.entries(states)) {
+            context += `    - \`${stateName}\`: \`${stateClass}\`\n`;
+          }
+        }
       }
     }
 

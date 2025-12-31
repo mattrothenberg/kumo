@@ -214,6 +214,12 @@ export function bindIconColor(
     figmaVariableName = "text-color-muted";
   } else if (colorVariableName === "text-error") {
     figmaVariableName = "text-color-error";
+  } else if (colorVariableName === "text-info") {
+    figmaVariableName = "text-color-info";
+  } else if (colorVariableName === "text-disabled") {
+    figmaVariableName = "text-color-disabled";
+  } else if (colorVariableName === "text-label") {
+    figmaVariableName = "text-color-label";
   }
 
   var variable: Variable | undefined;

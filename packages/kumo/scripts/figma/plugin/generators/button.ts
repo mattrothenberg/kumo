@@ -9,6 +9,7 @@
  * - shape: base, square, circle
  * - disabled: true, false
  * - loading: true, false
+ * - state: default, hover, focus, pressed
  *
  * Reads all definitions from component-registry.json (the source of truth).
  * Uses real icons from the Icon Library page.
@@ -85,6 +86,54 @@ var SECTION_PADDING = 48;
 var SECTION_GAP = 160;
 
 /**
+ * State-specific style overrides
+ * Maps variant × state to specific Figma styling
+ */
+var STATE_STYLES: Record<
+  string,
+  Record<
+    string,
+    {
+      fillVariable?: string;
+      fillOpacity?: number;
+      strokeVariable?: string;
+      addRing?: boolean;
+    }
+  >
+> = {
+  primary: {
+    hover: { fillVariable: "color-primary", fillOpacity: 0.7 },
+    focus: { addRing: true },
+    pressed: { fillVariable: "color-primary", fillOpacity: 0.8 },
+  },
+  secondary: {
+    hover: { fillVariable: "color-subtle", strokeVariable: "color-subtle" },
+    focus: { addRing: true },
+    pressed: { fillVariable: "color-accent" },
+  },
+  ghost: {
+    hover: { fillVariable: "color-accent" },
+    focus: { addRing: true },
+    pressed: { fillVariable: "color-accent" },
+  },
+  destructive: {
+    hover: { fillVariable: "color-error", fillOpacity: 0.7 },
+    focus: { addRing: true },
+    pressed: { fillVariable: "color-error", fillOpacity: 0.8 },
+  },
+  "secondary-destructive": {
+    hover: { fillVariable: "color-subtle" },
+    focus: { addRing: true },
+    pressed: { fillVariable: "color-accent" },
+  },
+  outline: {
+    hover: {},
+    focus: { addRing: true },
+    pressed: { fillVariable: "color-subtle" },
+  },
+};
+
+/**
  * Create a single button component
  */
 async function createButtonComponent(
@@ -93,6 +142,7 @@ async function createButtonComponent(
   shape: string,
   disabled: boolean,
   loading: boolean,
+  state: string,
 ): Promise<ComponentNode> {
   var variantClasses = variantProp.classes[variant] || "";
   var sizeClasses = sizeProp.classes[size] || "";
@@ -113,7 +163,9 @@ async function createButtonComponent(
     ", disabled=" +
     disabled +
     ", loading=" +
-    loading;
+    loading +
+    ", state=" +
+    state;
 
   var isCompactShape = shape === "square" || shape === "circle";
 
@@ -170,6 +222,39 @@ async function createButtonComponent(
     var strokeVar = getVariableByName(variantStyles.strokeVariable);
     if (strokeVar) {
       bindStrokeToVariable(component, strokeVar.id, 1);
+    }
+  }
+
+  // Apply state-specific styles (hover, focus, pressed)
+  if (state !== "default" && !disabled && !loading) {
+    var stateStyle = STATE_STYLES[variant] && STATE_STYLES[variant][state];
+    if (stateStyle) {
+      // Apply state-specific fill
+      if (stateStyle.fillVariable) {
+        var stateFillVar = getVariableByName(stateStyle.fillVariable);
+        if (stateFillVar) {
+          bindFillToVariable(component, stateFillVar.id);
+          if (stateStyle.fillOpacity !== undefined) {
+            component.opacity = stateStyle.fillOpacity;
+          }
+        }
+      }
+
+      // Apply state-specific stroke
+      if (stateStyle.strokeVariable) {
+        var stateStrokeVar = getVariableByName(stateStyle.strokeVariable);
+        if (stateStrokeVar) {
+          bindStrokeToVariable(component, stateStrokeVar.id, 1);
+        }
+      }
+
+      // Add focus ring (ring-active)
+      if (stateStyle.addRing) {
+        var ringVar = getVariableByName("color-active");
+        if (ringVar) {
+          bindStrokeToVariable(component, ringVar.id, 1);
+        }
+      }
     }
   }
 
@@ -231,16 +316,17 @@ async function createButtonComponent(
 /**
  * Determine which combinations to generate.
  *
- * Instead of generating all 288 combinations (6×4×3×2×2), we generate
+ * Instead of generating all possible combinations, we generate
  * a reduced set that covers all use cases:
  *
- * 1. All variants × all sizes (shape=base, disabled=false, loading=false) = 24
- * 2. Disabled state: all variants, size=base only = 6
- * 3. Loading state: all variants, size=base only = 6
- * 4. Shape=square: all sizes, secondary variant only = 4
- * 5. Shape=circle: all sizes, secondary variant only = 4
+ * 1. All variants × base size × all states (shape=base, disabled=false, loading=false) = 6×4 = 24
+ * 2. All variants × all sizes × default state (shape=base) = 6×4 = 24
+ * 3. Disabled state: all variants, size=base only, state=default = 6
+ * 4. Loading state: all variants, size=base only, state=default = 6
+ * 5. Shape=square: all sizes, secondary variant only, state=default = 4
+ * 6. Shape=circle: all sizes, secondary variant only, state=default = 4
  *
- * Total: ~44 components
+ * Total: ~68 components
  */
 function shouldGenerateVariant(
   variant: string,
@@ -248,28 +334,47 @@ function shouldGenerateVariant(
   shape: string,
   disabled: boolean,
   loading: boolean,
+  state: string,
 ): boolean {
-  // Base shape: generate all variants × sizes for default state
-  if (shape === "base" && !disabled && !loading) {
+  // Base shape, default state: generate all variants × all sizes
+  if (shape === "base" && !disabled && !loading && state === "default") {
     return true;
   }
 
-  // Disabled: only show for base size, all variants
-  if (shape === "base" && disabled && !loading && size === "base") {
+  // Base shape, base size: generate all variants × all states
+  if (shape === "base" && !disabled && !loading && size === "base") {
     return true;
   }
 
-  // Loading: only show for base size, all variants
-  if (shape === "base" && loading && !disabled && size === "base") {
+  // Disabled: only show for base size, all variants, default state
+  if (
+    shape === "base" &&
+    disabled &&
+    !loading &&
+    size === "base" &&
+    state === "default"
+  ) {
     return true;
   }
 
-  // Square/circle shapes: only show secondary variant, all sizes
+  // Loading: only show for base size, all variants, default state
+  if (
+    shape === "base" &&
+    loading &&
+    !disabled &&
+    size === "base" &&
+    state === "default"
+  ) {
+    return true;
+  }
+
+  // Square/circle shapes: only show secondary variant, all sizes, default state
   if (
     (shape === "square" || shape === "circle") &&
     variant === "secondary" &&
     !disabled &&
-    !loading
+    !loading &&
+    state === "default"
   ) {
     return true;
   }
@@ -301,6 +406,7 @@ export async function generateButtonComponents(
   var shapes = shapeProp.values;
   var disabledOptions = [false, true];
   var loadingOptions = [false, true];
+  var stateOptions = ["default", "hover", "focus", "pressed"];
 
   // Generate selected combinations only
   var components: ComponentNode[] = [];
@@ -334,43 +440,54 @@ export async function generateButtonComponents(
         var disabled = disabledOptions[di];
         for (var li = 0; li < loadingOptions.length; li++) {
           var loading = loadingOptions[li];
-          for (var si = 0; si < sizes.length; si++) {
-            var size = sizes[si];
-            if (
-              !shouldGenerateVariant(variant, size, shape, disabled, loading)
-            ) {
-              continue;
-            }
+          for (var sti = 0; sti < stateOptions.length; sti++) {
+            var state = stateOptions[sti];
+            for (var si = 0; si < sizes.length; si++) {
+              var size = sizes[si];
+              if (
+                !shouldGenerateVariant(
+                  variant,
+                  size,
+                  shape,
+                  disabled,
+                  loading,
+                  state,
+                )
+              ) {
+                continue;
+              }
 
-            var component = await createButtonComponent(
-              variant,
-              size,
-              shape,
-              disabled,
-              loading,
-            );
+              var component = await createButtonComponent(
+                variant,
+                size,
+                shape,
+                disabled,
+                loading,
+                state,
+              );
 
-            // Determine row based on shape
-            var rowIndex: number;
-            if (shape === "base") {
-              // Text buttons grouped by variant
-              rowIndex = variants.indexOf(variant);
-              rowLabelTexts.set(rowIndex, "variant=" + variant);
-            } else if (shape === "square") {
-              // Square buttons in their own row after all variants
-              rowIndex = variants.length;
-              rowLabelTexts.set(rowIndex, "shape=square");
-            } else {
-              // Circle buttons in their own row after square
-              rowIndex = variants.length + 1;
-              rowLabelTexts.set(rowIndex, "shape=circle");
-            }
+              // Determine row based on shape
+              var rowIndex: number;
+              if (shape === "base") {
+                // Text buttons grouped by variant
+                rowIndex = variants.indexOf(variant);
+                rowLabelTexts.set(rowIndex, "variant=" + variant);
+              } else if (shape === "square") {
+                // Square buttons in their own row after all variants
+                rowIndex = variants.length;
+                rowLabelTexts.set(rowIndex, "shape=square");
+              } else {
+                // Circle buttons in their own row after square
+                rowIndex = variants.length + 1;
+                rowLabelTexts.set(rowIndex, "shape=circle");
+              }
 
-            if (!rowComponents.has(rowIndex)) {
-              rowComponents.set(rowIndex, []);
+              if (!rowComponents.has(rowIndex)) {
+                rowComponents.set(rowIndex, []);
+              }
+              rowComponents.get(rowIndex)!.push(component);
+              components.push(component);
             }
-            rowComponents.get(rowIndex)!.push(component);
-            components.push(component);
           }
         }
       }
@@ -443,7 +560,7 @@ export async function generateButtonComponents(
   var componentSet = figma.combineAsVariants(components, page);
   componentSet.name = "Button";
   componentSet.description =
-    "Button component with variant, size, shape, disabled, and loading properties";
+    "Button component with variant, size, shape, disabled, loading, and state properties";
 
   componentSet.layoutMode = "NONE";
 
@@ -552,3 +669,4 @@ export var BUTTON_SIZES_EXPORT = sizeProp.values;
 export var BUTTON_SHAPES_EXPORT = shapeProp.values;
 export var BUTTON_DISABLED_OPTIONS = [false, true];
 export var BUTTON_LOADING_OPTIONS = [false, true];
+export var BUTTON_STATE_OPTIONS = ["default", "hover", "focus", "pressed"];

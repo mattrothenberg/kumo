@@ -366,6 +366,24 @@ Button component
   - `"destructive"`: Danger button for destructive actions like delete
   - `"secondary-destructive"`: Secondary button with destructive text for less prominent dangerous actions
   - `"outline"`: Bordered button with transparent background
+
+  **State Classes:**
+  - `"primary"`:
+    - `hover`: `hover:bg-primary/70`
+    - `disabled`: `disabled:bg-primary/50`
+  - `"secondary"`:
+    - `not-disabled`: `not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle`
+    - `disabled`: `disabled:bg-secondary/50 disabled:!text-surface/70`
+    - `data-state`: `data-[state=open]:bg-subtle`
+  - `"ghost"`:
+    - `hover`: `hover:bg-accent`
+  - `"destructive"`:
+    - `hover`: `hover:bg-error/70`
+  - `"secondary-destructive"`:
+    - `not-disabled`: `not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle`
+    - `disabled`: `disabled:bg-secondary/50 disabled:!text-error/70`
+    - `data-state`: `data-[state=open]:bg-subtle`
+
 - `onChange`: React.FormEventHandler<HTMLButtonElement>
 - `onSubmit`: React.FormEventHandler<HTMLButtonElement>
 - `onClick`: React.MouseEventHandler<HTMLButtonElement>
@@ -878,7 +896,7 @@ Simple code component without syntax highlighting
 
 ### Collapsible
 
-Collapsible component
+Collapsible component for showing/hiding content. Features: - Animated chevron indicator (rotates 180° when open) - Accessible with aria-expanded and aria-controls - Content panel with left border accent `tsx const [open, setOpen] = useState(false); <Collapsible label="Show details" open={open} onOpenChange={setOpen}> <Text>Hidden content revealed when expanded.</Text> </Collapsible> ` `tsx const [activeIndex, setActiveIndex] = useState<number | null>(null); {items.map((item, i) => ( <Collapsible key={i} label={item.title} open={activeIndex === i} onOpenChange={(open) => setActiveIndex(open ? i : null)} > {item.content} </Collapsible> ))} `
 
 **Import:** `import { Collapsible } from "@cloudflare/kumo";`
 
@@ -888,8 +906,11 @@ Collapsible component
 
 - `children`: ReactNode
 - `label`: string (required)
+  Text label displayed in the trigger button
 - `open`: boolean
+  Whether the collapsible content is visible
 - `className`: string
+  Additional CSS classes for the content panel
 - `onOpenChange`: (open: boolean) => void
   Callback when collapsed state changes
 
@@ -1798,6 +1819,12 @@ Input component
 - `variant`: enum [default: default]
   - `"default"`: Default input appearance
   - `"error"`: Error state for validation failures
+
+  **State Classes:**
+  - `"default"`:
+    - `focus`: `focus:ring-active`
+  - `"error"`:
+    - `focus`: `focus:ring-error`
 
 **Colors (kumo tokens used):**
 
