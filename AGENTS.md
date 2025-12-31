@@ -526,6 +526,67 @@ export const Primary: Story = {
 };
 ```
 
+## Icon System
+
+Kumo uses an SVG sprite system for icons, combining Phosphor icons and Cloudflare brand icons.
+
+### Using Icons
+
+```tsx
+import { Icon } from "@cloudflare/kumo";
+
+// Phosphor icons (ph-* prefix)
+<Icon name="ph-check" />
+<Icon name="ph-arrow-right" size="lg" />
+
+// Cloudflare brand icons (cf-* prefix)
+<Icon name="cf-workers-outline" />
+<Icon name="cf-pages-solid" className="text-active" />
+```
+
+### Adding Icons
+
+**CLI (recommended):**
+
+```bash
+# Add single icon
+pnpm add:icon path/to/icon.svg
+
+# Add with custom name
+pnpm add:icon icon.svg --name cf-my-feature-outline
+
+# Add all SVGs from folder
+pnpm add:icon path/to/folder/
+
+# Preview without writing
+pnpm add:icon icon.svg --dry-run
+```
+
+**Manual:** Drop SVG into `src/assets/icons/brand/`, then run `pnpm build:icons`
+
+### Naming Conventions
+
+- **`cf-*`** - Cloudflare brand icons (e.g., `cf-workers-outline`, `cf-pages-solid`)
+- **`ph-*`** - Custom Phosphor-style icons (rare, most come from `@phosphor-icons/core`)
+- **Variants** - Use `-outline` or `-solid` suffix for consistency
+
+### Normalization
+
+Icons are automatically normalized on build:
+
+- viewBox preserved (required for scaling)
+- Hardcoded fills converted to `currentColor` (enables `text-*` color classes)
+- Width/height attributes removed (use CSS sizing)
+- Inline styles stripped
+- SVGO optimization applied
+
+### Build Commands
+
+```bash
+pnpm build:icons    # Rebuild sprite + types after adding icons
+pnpm add:icon       # Add new icons with normalization
+```
+
 ## Changesets & Version Management
 
 Kumo uses [Changesets](https://github.com/changesets/changesets) for version management with automated validation and releases.

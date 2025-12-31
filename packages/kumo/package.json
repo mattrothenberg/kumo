@@ -364,7 +364,7 @@
     "figma:sync": "tsx scripts/figma/sync-tokens-to-figma.ts",
     "build:figma-plugin": "esbuild scripts/figma/plugin/code.ts --bundle --outfile=scripts/figma/plugin/code.js --format=iife --target=es2020",
     "build:icons": "tsx scripts/icon/build-sprite.ts",
-    "fetch:brand-icons": "tsx scripts/icon/fetch-brand-icons.ts",
+    "add:icon": "tsx scripts/icon/add-icon.ts",
     "storybook": "pnpm run prebuild && storybook dev -p 6006",
     "build:storybook": "pnpm run prebuild && storybook build",
     "deploy": "pnpm run build:storybook && wrangler deploy",

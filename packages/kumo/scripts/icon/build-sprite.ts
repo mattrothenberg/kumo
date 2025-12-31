@@ -5,7 +5,7 @@
  * It coordinates the following steps:
  *
  * 1. Extract Phosphor icons from codebase (extract-phosphor-icons.ts)
- * 2. Optimize brand icons via SVGO (optimize-svg.ts)
+ * 2. Normalize & optimize brand icons via SVGO (optimize-svg.ts)
  * 3. Generate SVG sprite (generate-sprite.ts)
  * 4. Generate TypeScript types (generate-types.ts)
  *
@@ -13,9 +13,15 @@
  *   pnpm build:icons
  *   npx tsx packages/kumo/scripts/icon/build-sprite.ts
  *
- * Prerequisites:
- *   - Brand icons must be fetched first via pnpm fetch:brand-icons
- *   - All icon script files must exist in scripts/icon/
+ * Adding icons:
+ *   pnpm add:icon path/to/icon.svg           # Add single icon
+ *   pnpm add:icon path/to/folder/            # Add all SVGs in folder
+ *   # Or manually drop SVGs into src/assets/icons/brand/
+ *
+ * Icon naming:
+ *   - cf-* for Cloudflare brand icons (e.g., cf-workers-outline.svg)
+ *   - ph-* for custom Phosphor-style icons (rare)
+ *   - Recommend -outline or -solid suffix for variants
  */
 
 import { extractPhosphorIcons } from "./extract-phosphor-icons.js";
