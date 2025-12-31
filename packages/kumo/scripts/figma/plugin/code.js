@@ -6766,44 +6766,40 @@
     sm: {
       width: 350,
       titleSize: 20,
-      titleWeight: 700,
+      titleWeight: 600,
       descSize: 16,
       padding: 16,
       gap: 8,
-      iconSize: "sm",
       buttonSize: "sm"
     },
     base: {
       width: 384,
       // min-w-96 = 24rem = 384px
       titleSize: 20,
-      titleWeight: 700,
+      titleWeight: 600,
       descSize: 16,
       padding: 24,
       gap: 16,
-      iconSize: "base",
       buttonSize: "base"
     },
     lg: {
       width: 512,
       // min-w-[32rem] = 512px
-      titleSize: 25,
-      titleWeight: 700,
-      descSize: 18,
+      titleSize: 20,
+      titleWeight: 600,
+      descSize: 16,
       padding: 24,
       gap: 16,
-      iconSize: "base",
       buttonSize: "base"
     },
     xl: {
       width: 768,
       // min-w-[48rem] = 768px
-      titleSize: 25,
-      titleWeight: 700,
-      descSize: 18,
+      titleSize: 20,
+      titleWeight: 600,
+      descSize: 16,
       padding: 24,
       gap: 16,
-      iconSize: "base",
       buttonSize: "base"
     }
   };
@@ -6871,7 +6867,7 @@
     component.paddingRight = config.padding;
     component.paddingTop = config.padding;
     component.paddingBottom = config.padding;
-    component.cornerRadius = 12;
+    component.cornerRadius = BORDER_RADIUS.lg;
     var bgVar = getVariableByName("color-surface");
     if (bgVar) {
       bindFillToVariable(component, bgVar.id);
@@ -6911,11 +6907,25 @@
       bindTextColorToVariable(title, titleVar.id);
     }
     header.appendChild(title);
+    var closeContainer = figma.createFrame();
+    closeContainer.name = "Close";
+    closeContainer.layoutMode = "HORIZONTAL";
+    closeContainer.primaryAxisAlignItems = "CENTER";
+    closeContainer.counterAxisAlignItems = "CENTER";
+    closeContainer.primaryAxisSizingMode = "FIXED";
+    closeContainer.counterAxisSizingMode = "FIXED";
+    closeContainer.resize(20, 20);
+    closeContainer.paddingLeft = 2;
+    closeContainer.paddingRight = 2;
+    closeContainer.paddingTop = 2;
+    closeContainer.paddingBottom = 2;
+    closeContainer.fills = [];
     var closeIconName = "ph-x";
-    var closeIcon = getButtonIcon(closeIconName, config.iconSize);
-    closeIcon.name = "Close";
+    var closeIcon = getButtonIcon(closeIconName, "base");
+    closeIcon.name = "Icon";
     bindIconColor(closeIcon, "text-surface");
-    header.appendChild(closeIcon);
+    closeContainer.appendChild(closeIcon);
+    header.appendChild(closeContainer);
     component.appendChild(header);
     var description = await createTextNode(
       "This is a dialog description with some content explaining the purpose of this dialog.",
@@ -6941,7 +6951,7 @@
     actions.layoutAlign = "STRETCH";
     actions.layoutGrow = 0;
     actions.fills = [];
-    actions.itemSpacing = size === "sm" ? 8 : 12;
+    actions.itemSpacing = 12;
     var cancelButton = await createButton("Cancel", false, config.buttonSize);
     actions.appendChild(cancelButton);
     var primaryButton = await createButton("Confirm", true, config.buttonSize);

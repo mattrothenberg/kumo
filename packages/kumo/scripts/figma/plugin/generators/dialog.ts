@@ -69,48 +69,43 @@ var SIZE_CONFIG: Record<
     descSize: number;
     padding: number;
     gap: number;
-    iconSize: "sm" | "base" | "lg";
     buttonSize: "sm" | "base";
   }
 > = {
   sm: {
     width: 350,
     titleSize: 20,
-    titleWeight: 700,
+    titleWeight: 600,
     descSize: 16,
     padding: 16,
     gap: 8,
-    iconSize: "sm",
     buttonSize: "sm",
   },
   base: {
     width: 384, // min-w-96 = 24rem = 384px
     titleSize: 20,
-    titleWeight: 700,
+    titleWeight: 600,
     descSize: 16,
     padding: 24,
     gap: 16,
-    iconSize: "base",
     buttonSize: "base",
   },
   lg: {
     width: 512, // min-w-[32rem] = 512px
-    titleSize: 25,
-    titleWeight: 700,
-    descSize: 18,
+    titleSize: 20,
+    titleWeight: 600,
+    descSize: 16,
     padding: 24,
     gap: 16,
-    iconSize: "base",
     buttonSize: "base",
   },
   xl: {
     width: 768, // min-w-[48rem] = 768px
-    titleSize: 25,
-    titleWeight: 700,
-    descSize: 18,
+    titleSize: 20,
+    titleWeight: 600,
+    descSize: 16,
     padding: 24,
     gap: 16,
-    iconSize: "base",
     buttonSize: "base",
   },
 };
@@ -216,7 +211,7 @@ async function createDialogComponent(size: string): Promise<ComponentNode> {
   component.paddingRight = config.padding;
   component.paddingTop = config.padding;
   component.paddingBottom = config.padding;
-  component.cornerRadius = 12; // rounded-xl = 12px
+  component.cornerRadius = BORDER_RADIUS.lg; // rounded-lg = 8px
 
   // Apply background fill (bg-surface)
   var bgVar = getVariableByName("color-surface");
@@ -224,7 +219,7 @@ async function createDialogComponent(size: string): Promise<ComponentNode> {
     bindFillToVariable(component, bgVar.id);
   }
 
-  // Apply shadow effect
+  // Apply shadow effect (matches Figma design: 0px 8px 32px rgba(0,0,0,0.16))
   component.effects = [
     {
       type: "DROP_SHADOW",
@@ -260,7 +255,7 @@ async function createDialogComponent(size: string): Promise<ComponentNode> {
   title.textAutoResize = "WIDTH_AND_HEIGHT";
   title.layoutGrow = 1;
 
-  // Apply title text color (text-surface - bold)
+  // Apply title text color (text-surface)
   var titleVar = getVariableByName("text-color-surface");
   if (titleVar) {
     bindTextColorToVariable(title, titleVar.id);
@@ -268,15 +263,31 @@ async function createDialogComponent(size: string): Promise<ComponentNode> {
 
   header.appendChild(title);
 
-  // Create close button (X icon)
-  var closeIconName = "ph-x";
-  var closeIcon = getButtonIcon(closeIconName, config.iconSize);
-  closeIcon.name = "Close";
+  // Create close button container (20x20 with 2px padding for icon)
+  var closeContainer = figma.createFrame();
+  closeContainer.name = "Close";
+  closeContainer.layoutMode = "HORIZONTAL";
+  closeContainer.primaryAxisAlignItems = "CENTER";
+  closeContainer.counterAxisAlignItems = "CENTER";
+  closeContainer.primaryAxisSizingMode = "FIXED";
+  closeContainer.counterAxisSizingMode = "FIXED";
+  closeContainer.resize(20, 20);
+  closeContainer.paddingLeft = 2;
+  closeContainer.paddingRight = 2;
+  closeContainer.paddingTop = 2;
+  closeContainer.paddingBottom = 2;
+  closeContainer.fills = [];
 
-  // Apply icon color
+  // Create close icon (ph-x) - use base size (20px)
+  var closeIconName = "ph-x";
+  var closeIcon = getButtonIcon(closeIconName, "base");
+  closeIcon.name = "Icon";
+
+  // Apply icon color (text-surface)
   bindIconColor(closeIcon, "text-surface");
 
-  header.appendChild(closeIcon);
+  closeContainer.appendChild(closeIcon);
+  header.appendChild(closeContainer);
   component.appendChild(header);
 
   // Create description text
@@ -309,7 +320,7 @@ async function createDialogComponent(size: string): Promise<ComponentNode> {
   actions.layoutAlign = "STRETCH";
   actions.layoutGrow = 0;
   actions.fills = [];
-  actions.itemSpacing = size === "sm" ? 8 : 12;
+  actions.itemSpacing = 12;
 
   // Create Cancel button (secondary)
   var cancelButton = await createButton("Cancel", false, config.buttonSize);
