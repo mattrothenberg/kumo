@@ -5043,7 +5043,6 @@
   var langProp = codeProps.lang;
   var SECTION_PADDING6 = 48;
   var SECTION_GAP6 = 160;
-  var CODE_BASE_CLASS = "m-0 w-auto rounded-none border-none bg-transparent p-0 font-mono text-sm leading-[20px] text-label";
   function getPlaceholderText(lang) {
     if (lang === "bash") {
       return "npm install @cloudflare/kumo";
@@ -5061,11 +5060,8 @@
   }
   function createCodeComponent(lang) {
     return __async(this, null, function* () {
-      const langClasses = langProp.classes[lang] || "";
-      const langDesc = langProp.descriptions[lang] || "";
-      const combinedClasses = `${CODE_BASE_CLASS} ${langClasses}`.trim();
-      const styles = parseTailwindClasses(combinedClasses);
-      const component = figma.createComponent();
+      var langDesc = langProp.descriptions[lang] || "";
+      var component = figma.createComponent();
       component.name = "lang=" + lang;
       component.description = langDesc;
       component.layoutMode = "HORIZONTAL";
@@ -5074,9 +5070,9 @@
       component.primaryAxisSizingMode = "AUTO";
       component.counterAxisSizingMode = "AUTO";
       component.fills = [];
-      const fontSize = styles.fontSize || 14;
-      const fontWeight = 400;
-      const textNode = yield createTextNode(
+      var fontSize = 14;
+      var fontWeight = 400;
+      var textNode = yield createTextNode(
         getPlaceholderText(lang),
         fontSize,
         fontWeight
@@ -5084,7 +5080,7 @@
       textNode.name = "Text";
       yield figma.loadFontAsync({ family: "SF Mono", style: "Regular" });
       textNode.fontName = { family: "SF Mono", style: "Regular" };
-      const labelVar = getVariableByName("text-color-label");
+      var labelVar = getVariableByName("text-color-label");
       if (labelVar) {
         bindTextColorToVariable(textNode, labelVar.id);
       }
@@ -5096,36 +5092,34 @@
     return __async(this, null, function* () {
       if (startY === void 0) startY = 100;
       figma.currentPage = page;
-      const langs = langProp.values;
-      const components = [];
-      const rowLabels = [];
-      const rowHeight = 50;
-      const labelColumnWidth = 160;
-      let currentRow = 0;
-      for (let i = 0; i < langs.length; i++) {
-        const lang = langs[i];
+      var langs = langProp.values;
+      var components = [];
+      var rowLabels = [];
+      var rowHeight = 40;
+      var labelColumnWidth = 160;
+      for (var i = 0; i < langs.length; i++) {
+        var lang = langs[i];
         rowLabels.push({
-          y: currentRow * rowHeight,
+          y: i * rowHeight,
           text: "lang=" + lang
         });
-        const component = yield createCodeComponent(lang);
+        var component = yield createCodeComponent(lang);
         component.x = labelColumnWidth;
-        component.y = currentRow * rowHeight;
+        component.y = i * rowHeight;
         components.push(component);
-        currentRow++;
       }
-      const componentSet = figma.combineAsVariants(components, page);
+      var componentSet = figma.combineAsVariants(components, page);
       componentSet.name = "Code";
       componentSet.description = "Code component with lang property for displaying code snippets";
       componentSet.layoutMode = "NONE";
-      const contentWidth = componentSet.width + labelColumnWidth;
-      const contentHeight = componentSet.height;
-      const lightSection = createModeSection(page, "Code", "light");
+      var contentWidth = componentSet.width + labelColumnWidth;
+      var contentHeight = componentSet.height;
+      var lightSection = createModeSection(page, "Code", "light");
       lightSection.frame.resize(
         contentWidth + SECTION_PADDING6 * 2,
         contentHeight + SECTION_PADDING6 * 2
       );
-      const darkSection = createModeSection(page, "Code", "dark");
+      var darkSection = createModeSection(page, "Code", "dark");
       darkSection.frame.resize(
         contentWidth + SECTION_PADDING6 * 2,
         contentHeight + SECTION_PADDING6 * 2
@@ -5133,8 +5127,9 @@
       lightSection.frame.appendChild(componentSet);
       componentSet.x = SECTION_PADDING6 + labelColumnWidth;
       componentSet.y = SECTION_PADDING6;
-      for (const label of rowLabels) {
-        const labelNode = yield createRowLabel(
+      for (var li = 0; li < rowLabels.length; li++) {
+        var label = rowLabels[li];
+        var labelNode = yield createRowLabel(
           label.text,
           SECTION_PADDING6,
           SECTION_PADDING6 + label.y + 8
@@ -5142,22 +5137,24 @@
         );
         lightSection.frame.appendChild(labelNode);
       }
-      for (const component of components) {
-        const instance = component.createInstance();
-        instance.x = component.x + SECTION_PADDING6 + labelColumnWidth;
-        instance.y = component.y + SECTION_PADDING6;
+      for (var ci = 0; ci < components.length; ci++) {
+        var comp = components[ci];
+        var instance = comp.createInstance();
+        instance.x = comp.x + SECTION_PADDING6 + labelColumnWidth;
+        instance.y = comp.y + SECTION_PADDING6;
         darkSection.frame.appendChild(instance);
       }
-      for (const label of rowLabels) {
-        const labelNode = yield createRowLabel(
-          label.text,
+      for (var di = 0; di < rowLabels.length; di++) {
+        var darkLabel = rowLabels[di];
+        var darkLabelNode = yield createRowLabel(
+          darkLabel.text,
           SECTION_PADDING6,
-          SECTION_PADDING6 + label.y + 8
+          SECTION_PADDING6 + darkLabel.y + 8
         );
-        darkSection.frame.appendChild(labelNode);
+        darkSection.frame.appendChild(darkLabelNode);
       }
-      const totalWidth = contentWidth + SECTION_PADDING6 * 2;
-      const totalHeight = contentHeight + SECTION_PADDING6 * 2;
+      var totalWidth = contentWidth + SECTION_PADDING6 * 2;
+      var totalHeight = contentHeight + SECTION_PADDING6 * 2;
       lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
       darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
       lightSection.section.x = 100;
