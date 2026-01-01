@@ -41,6 +41,12 @@ export const FONT_SIZE = {
 } as const;
 
 /**
+ * Layout constants for component display sections
+ */
+export const SECTION_PADDING = 48;
+export const SECTION_GAP = 160;
+
+/**
  * Auto-layout configuration
  */
 export type AutoLayoutConfig = {
@@ -216,21 +222,26 @@ export async function createTextNode(
 ): Promise<TextNode> {
   const textNode = figma.createText();
 
-  // Load font before setting properties
+  // Load ALL required fonts BEFORE setting any text properties
   await figma.loadFontAsync({ family: "Inter", style: "Regular" });
 
-  textNode.characters = text;
-  textNode.fontSize = fontSize;
-  textNode.fontName = { family: "Inter", style: "Regular" };
-
-  // Note: fontWeight requires loading specific font styles
-  // This is simplified - actual implementation needs proper font loading
   if (fontWeight >= 600) {
     await figma.loadFontAsync({ family: "Inter", style: "Semi Bold" });
-    textNode.fontName = { family: "Inter", style: "Semi Bold" };
   } else if (fontWeight >= 500) {
     await figma.loadFontAsync({ family: "Inter", style: "Medium" });
+  }
+
+  // Now set text properties after all fonts are loaded
+  textNode.characters = text;
+  textNode.fontSize = fontSize;
+
+  // Apply the appropriate font style based on weight
+  if (fontWeight >= 600) {
+    textNode.fontName = { family: "Inter", style: "Semi Bold" };
+  } else if (fontWeight >= 500) {
     textNode.fontName = { family: "Inter", style: "Medium" };
+  } else {
+    textNode.fontName = { family: "Inter", style: "Regular" };
   }
 
   return textNode;

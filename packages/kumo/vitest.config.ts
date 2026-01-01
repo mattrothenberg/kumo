@@ -38,6 +38,10 @@ export default defineConfig({
         test: {
           name: "unit",
           environment: "happy-dom",
+          include: [
+            "src/**/*.{test,spec}.{ts,tsx}",
+            "scripts/**/*.{test,spec}.ts",
+          ],
           setupFiles: ["./tests/setup.ts"],
           globals: true,
         },

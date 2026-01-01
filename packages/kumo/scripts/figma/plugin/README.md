@@ -160,6 +160,54 @@ Generates utility components for icon buttons.
 2. Regenerate Badge ComponentSet
 3. Regenerate Button ComponentSet
 
+## Technical Constraints
+
+### ES2020 Target
+
+The plugin uses ES2020 as the compilation target (`tsconfig.json`) due to Figma's plugin runtime requirements. This means:
+
+- **Modern syntax supported:** Optional chaining (`?.`), nullish coalescing (`??`), and other ES2020 features work
+- **const/let preferred:** ES2020 fully supports `const` and `let` - use them instead of `var`
+- **Existing var usage:** The codebase currently uses `var` in many places due to historical reasons, not technical constraints
+- **Migration:** Prefer `const`/`let` in new code; existing `var` can be migrated incrementally
+
+### Variable Declaration Best Practices
+
+```typescript
+// ✅ Preferred (ES2020 fully supports these)
+const variable = figma.getVariableById(id);
+let mutableValue = 0;
+
+// ❌ Avoid in new code
+var variable = figma.getVariableById(id);
+```
+
+### Relationship to Token Sync
+
+This plugin and the token sync script serve different purposes:
+
+1. **Token Sync Script** (`sync-tokens-to-figma.ts`):
+   - Syncs color tokens from `kumo-binding.css` to Figma variables
+   - Creates/updates the `kumo-colors` variable collection
+   - **Run this FIRST** before running the plugin
+
+2. **This Plugin** (`code.ts`):
+   - Generates Figma component instances from `component-registry.json`
+   - Binds components to variables from the `kumo-colors` collection
+   - **Run this SECOND** after token sync completes
+
+**Workflow:**
+
+```bash
+# 1. Sync tokens first
+npx tsx packages/kumo/scripts/figma/sync-tokens-to-figma.ts
+
+# 2. Build and run plugin
+cd packages/kumo/scripts/figma/plugin
+./build.sh
+# Then run in Figma: Plugins > Development > Kumo UI Kit Generator
+```
+
 ## Troubleshooting
 
 ### "kumo-colors collection not found"

@@ -38,9 +38,8 @@ import {
 import { generateTabsComponents } from "./generators/tabs";
 import { generateTextComponents } from "./generators/text";
 import { generateIconLibrary } from "./generators/icon-library";
+import { logInfo, logError } from "./logger";
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore - __html__ is provided by Figma plugin API
 figma.showUI(__html__, { width: 320, height: 220 });
 
 /**
@@ -54,9 +53,9 @@ function getOrCreateComponentsPage(): PageNode {
   ) as PageNode | undefined;
 
   if (componentsPage) {
-    console.log("✅ Found existing Components page");
+    logInfo("✅ Found existing Components page");
   } else {
-    console.log("📄 Creating new Components page");
+    logInfo("📄 Creating new Components page");
     componentsPage = figma.createPage();
     componentsPage.name = "Components";
   }
@@ -78,13 +77,13 @@ function purgeExistingContent(): void {
   if (componentsPage) {
     // Remove all children (sections, component sets, etc.)
     const children = [...componentsPage.children];
-    console.log(`🗑️ Purging ${children.length} items from Components page`);
+    logInfo(`🗑️ Purging ${children.length} items from Components page`);
     for (const node of children) {
       node.remove();
     }
   }
 
-  console.log("✅ Purged existing generated content");
+  logInfo("✅ Purged existing generated content");
 }
 
 /**
@@ -107,120 +106,211 @@ figma.ui.onmessage = async (msg: { type: string }) => {
       // Track Y position for sequential section placement
       let nextY = START_Y;
 
+      // Total component count for progress indicator
+      const TOTAL_COMPONENTS = 28;
+      let componentIndex = 0;
+
       // Step 3: Generate Badge components
-      figma.notify("Generating Badge components...");
+      componentIndex++;
+      figma.notify(
+        `Generating Badge (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generateBadgeComponents(nextY);
 
       // Step 4: Generate Banner components
-      figma.notify("Generating Banner components...");
+      componentIndex++;
+      figma.notify(
+        `Generating Banner (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generateBannerComponents(nextY);
 
       // Step 5: Generate Icon Library first (other components depend on it)
-      figma.notify("Generating Icon Library...");
+      componentIndex++;
+      figma.notify(
+        `Generating Icon Library (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       await generateIconLibrary();
 
       // Step 6: Generate Button components (all variants, sizes, shapes, disabled, loading)
-      figma.notify("Generating Button components...");
+      componentIndex++;
+      figma.notify(
+        `Generating Button (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generateButtonComponents(componentsPage, nextY);
 
       // Step 7: Generate LinkButton components
-      figma.notify("Generating LinkButton components...");
+      componentIndex++;
+      figma.notify(
+        `Generating LinkButton (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generateLinkButtonComponents(componentsPage, nextY);
 
       // Step 8: Generate RefreshButton components
-      figma.notify("Generating RefreshButton components...");
+      componentIndex++;
+      figma.notify(
+        `Generating RefreshButton (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generateRefreshButtonComponents(componentsPage, nextY);
 
       // Step 9: Generate Checkbox components
-      figma.notify("Generating Checkbox components...");
+      componentIndex++;
+      figma.notify(
+        `Generating Checkbox (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generateCheckboxComponents(componentsPage, nextY);
 
       // Step 10: Generate Text components (typography variants)
-      figma.notify("Generating Text components...");
+      componentIndex++;
+      figma.notify(
+        `Generating Text (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generateTextComponents(componentsPage, nextY);
 
       // Step 11: Generate ClipboardText components
-      figma.notify("Generating ClipboardText components...");
+      componentIndex++;
+      figma.notify(
+        `Generating ClipboardText (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generateClipboardTextComponents(nextY);
 
       // Step 12: Generate Code components
-      figma.notify("Generating Code components...");
+      componentIndex++;
+      figma.notify(
+        `Generating Code (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generateCodeComponents(componentsPage, nextY);
 
       // Step 13: Generate CodeBlock components
-      figma.notify("Generating CodeBlock components...");
+      componentIndex++;
+      figma.notify(
+        `Generating CodeBlock (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generateCodeBlockComponents(componentsPage, nextY);
 
       // Step 14: Generate Collapsible components
-      figma.notify("Generating Collapsible components...");
+      componentIndex++;
+      figma.notify(
+        `Generating Collapsible (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generateCollapsibleComponents(nextY);
 
       // Step 15: Generate Combobox components
-      figma.notify("Generating Combobox components...");
+      componentIndex++;
+      figma.notify(
+        `Generating Combobox (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generateComboboxComponents(nextY);
 
       // Step 16: Generate DateRangePicker components
-      figma.notify("Generating DateRangePicker components...");
+      componentIndex++;
+      figma.notify(
+        `Generating DateRangePicker (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generateDateRangePickerComponents(componentsPage, nextY);
 
       // Step 17: Generate Dialog components
-      figma.notify("Generating Dialog components...");
+      componentIndex++;
+      figma.notify(
+        `Generating Dialog (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generateDialogComponents(componentsPage, nextY);
 
       // Step 18: Generate Dropdown components
-      figma.notify("Generating Dropdown components...");
+      componentIndex++;
+      figma.notify(
+        `Generating Dropdown (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generateDropdownComponents(componentsPage, nextY);
 
       // Step 19: Generate Input components
-      figma.notify("Generating Input components...");
+      componentIndex++;
+      figma.notify(
+        `Generating Input (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generateInputComponents(componentsPage, nextY);
 
       // Step 20: Generate InputArea components
-      figma.notify("Generating InputArea components...");
+      componentIndex++;
+      figma.notify(
+        `Generating InputArea (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generateInputAreaComponents(componentsPage, nextY);
 
       // Step 21: Generate LayerCard components
-      figma.notify("Generating LayerCard components...");
+      componentIndex++;
+      figma.notify(
+        `Generating LayerCard (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generateLayerCardComponents(componentsPage, nextY);
 
       // Step 22: Generate Loader components
-      figma.notify("Generating Loader components...");
+      componentIndex++;
+      figma.notify(
+        `Generating Loader (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generateLoaderComponents(componentsPage, nextY);
 
       // Step 23: Generate MenuBar components
-      figma.notify("Generating MenuBar components...");
+      componentIndex++;
+      figma.notify(
+        `Generating MenuBar (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generateMenuBarComponents(componentsPage, nextY);
 
       // Step 24: Generate Meter components
-      figma.notify("Generating Meter components...");
+      componentIndex++;
+      figma.notify(
+        `Generating Meter (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generateMeterComponents(nextY);
 
       // Step 25: Generate Pagination components
-      figma.notify("Generating Pagination components...");
+      componentIndex++;
+      figma.notify(
+        `Generating Pagination (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generatePaginationComponents(nextY);
 
       // Step 26: Generate Select components
-      figma.notify("Generating Select components...");
+      componentIndex++;
+      figma.notify(
+        `Generating Select (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generateSelectComponents(componentsPage, nextY);
 
       // Step 27: Generate SensitiveInput components
-      figma.notify("Generating SensitiveInput components...");
+      componentIndex++;
+      figma.notify(
+        `Generating SensitiveInput (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generateSensitiveInputComponents(componentsPage, nextY);
 
       // Step 28: Generate Surface components
-      figma.notify("Generating Surface components...");
+      componentIndex++;
+      figma.notify(
+        `Generating Surface (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generateSurfaceComponents(componentsPage, nextY);
 
       // Step 29: Generate Switch components
-      figma.notify("Generating Switch components...");
+      componentIndex++;
+      figma.notify(
+        `Generating Switch (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generateSwitchComponents(componentsPage, nextY);
 
       // Step 30: Generate Switch.Group components
-      figma.notify("Generating Switch.Group components...");
+      componentIndex++;
+      figma.notify(
+        `Generating Switch.Group (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generateSwitchGroupComponents(componentsPage, nextY);
 
       // Step 31: Generate Tabs components
-      figma.notify("Generating Tabs components...");
+      componentIndex++;
+      figma.notify(
+        `Generating Tabs (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
       nextY = await generateTabsComponents(componentsPage, nextY);
 
       figma.notify("✅ Generation complete!", { timeout: 3000 });
@@ -229,8 +319,35 @@ figma.ui.onmessage = async (msg: { type: string }) => {
       );
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
-      console.error("Generation error:", error);
-      figma.notify(`Error: ${message}`, { error: true });
+      logError("Generation error:", error);
+
+      // Provide specific error guidance based on error type
+      let errorNotification = `Error: ${message}`;
+
+      // Check for missing kumo-colors collection
+      if (message.includes("kumo-colors") || message.includes("collection")) {
+        errorNotification =
+          "Missing kumo-colors collection. Run token sync first: npx tsx sync-tokens-to-figma.ts";
+        logError(
+          "Kumo semantic color tokens not found. Please sync tokens from CSS to Figma variables.",
+        );
+      }
+      // Check for missing font
+      else if (message.includes("font") || message.includes("Inter")) {
+        errorNotification =
+          "Missing Inter font. Please install the Inter font family and restart Figma.";
+        logError(
+          "Inter font family not available. Install from https://rsms.me/inter/",
+        );
+      }
+      // Generic mid-generation failure
+      else {
+        logError(
+          `Generation failed during component creation. Partial state may exist on Components page.`,
+        );
+      }
+
+      figma.notify(errorNotification, { error: true, timeout: 5000 });
       figma.closePlugin();
     }
   }
