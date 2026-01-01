@@ -214,6 +214,56 @@
     page.appendChild(section);
     return { section, frame };
   }
+  function findComponentSet(componentSetName) {
+    const componentsPage = figma.root.children.find(function(page) {
+      return page.type === "PAGE" && page.name.trim().toLowerCase() === "components";
+    });
+    if (!componentsPage) {
+      console.warn("Components page not found");
+      return void 0;
+    }
+    function findInNode(node) {
+      if (node.type === "COMPONENT_SET" && node.name === componentSetName) {
+        return node;
+      }
+      if ("children" in node && node.children) {
+        for (let i = 0; i < node.children.length; i++) {
+          const found = findInNode(node.children[i]);
+          if (found) return found;
+        }
+      }
+      return void 0;
+    }
+    for (let i = 0; i < componentsPage.children.length; i++) {
+      const found = findInNode(componentsPage.children[i]);
+      if (found) return found;
+    }
+    console.warn("ComponentSet not found: " + componentSetName);
+    return void 0;
+  }
+  function createComponentInstance(componentSetName, variantProps) {
+    const componentSet = findComponentSet(componentSetName);
+    if (!componentSet) {
+      return void 0;
+    }
+    const variantName = Object.entries(variantProps).map(function(entry) {
+      return entry[0] + "=" + entry[1];
+    }).join(", ");
+    const children = componentSet.children;
+    if (!children) {
+      return void 0;
+    }
+    const variant = children.find(function(child) {
+      return child.type === "COMPONENT" && child.name === variantName;
+    });
+    if (!variant) {
+      console.warn(
+        "Variant not found in " + componentSetName + ": " + variantName
+      );
+      return void 0;
+    }
+    return variant.createInstance();
+  }
 
   // scripts/figma/plugin/parsers/tailwind-to-figma.ts
   function getOrDefault(scale, key, fallback) {
@@ -7127,30 +7177,41 @@
     itemFrame.paddingBottom = 6;
     itemFrame.cornerRadius = 6;
     itemFrame.fills = [];
-    var checkboxFrame = figma.createFrame();
-    checkboxFrame.name = "Checkbox";
-    checkboxFrame.resize(16, 16);
-    checkboxFrame.cornerRadius = 4;
-    if (checked) {
-      var primaryVar = getVariableByName("color-primary");
-      if (primaryVar) {
-        bindFillToVariable(checkboxFrame, primaryVar.id);
-      }
-      var checkIcon = getButtonIcon("ph-check", "xs");
-      checkIcon.name = "Check";
-      bindIconColor(checkIcon, "text-white");
-      checkboxFrame.layoutMode = "HORIZONTAL";
-      checkboxFrame.primaryAxisAlignItems = "CENTER";
-      checkboxFrame.counterAxisAlignItems = "CENTER";
-      checkboxFrame.appendChild(checkIcon);
+    var checkboxState = checked ? "checked" : "unchecked";
+    var checkboxInstance = createComponentInstance("Checkbox", {
+      state: checkboxState,
+      variant: "default",
+      disabled: "false"
+    });
+    if (checkboxInstance) {
+      checkboxInstance.name = "Checkbox";
+      itemFrame.appendChild(checkboxInstance);
     } else {
-      var borderVar = getVariableByName("color-border");
-      if (borderVar) {
-        bindStrokeToVariable(checkboxFrame, borderVar.id, 1);
+      var checkboxFrame = figma.createFrame();
+      checkboxFrame.name = "Checkbox";
+      checkboxFrame.resize(16, 16);
+      checkboxFrame.cornerRadius = 4;
+      if (checked) {
+        var primaryVar = getVariableByName("color-primary");
+        if (primaryVar) {
+          bindFillToVariable(checkboxFrame, primaryVar.id);
+        }
+        var checkIcon = getButtonIcon("ph-check", "xs");
+        checkIcon.name = "Check";
+        bindIconColor(checkIcon, "text-white");
+        checkboxFrame.layoutMode = "HORIZONTAL";
+        checkboxFrame.primaryAxisAlignItems = "CENTER";
+        checkboxFrame.counterAxisAlignItems = "CENTER";
+        checkboxFrame.appendChild(checkIcon);
+      } else {
+        var borderVar = getVariableByName("color-border");
+        if (borderVar) {
+          bindStrokeToVariable(checkboxFrame, borderVar.id, 1);
+        }
+        checkboxFrame.fills = [];
       }
-      checkboxFrame.fills = [];
+      itemFrame.appendChild(checkboxFrame);
     }
-    itemFrame.appendChild(checkboxFrame);
     var labelText = await createTextNode(label, 14, 400);
     labelText.name = "Label";
     labelText.textAutoResize = "WIDTH_AND_HEIGHT";

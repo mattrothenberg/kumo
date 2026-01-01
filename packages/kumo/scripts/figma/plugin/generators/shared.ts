@@ -638,3 +638,95 @@ export function applyCornerRadius(
     typeof radius === "number" ? radius : BORDER_RADIUS[radius];
   node.cornerRadius = radiusValue;
 }
+
+/**
+ * Find a ComponentSet by name on the Components page
+ *
+ * @param componentSetName - Name of the ComponentSet (e.g., "Checkbox", "Button")
+ * @returns ComponentSetNode if found, undefined otherwise
+ */
+export function findComponentSet(
+  componentSetName: string,
+): ComponentSetNode | undefined {
+  // Find the Components page
+  const componentsPage = figma.root.children.find(function (page) {
+    return (
+      page.type === "PAGE" && page.name.trim().toLowerCase() === "components"
+    );
+  }) as PageNode | undefined;
+
+  if (!componentsPage) {
+    console.warn("Components page not found");
+    return undefined;
+  }
+
+  // Search recursively for the ComponentSet (it may be inside sections/frames)
+  function findInNode(node: SceneNode): ComponentSetNode | undefined {
+    if (node.type === "COMPONENT_SET" && node.name === componentSetName) {
+      return node as ComponentSetNode;
+    }
+
+    if ("children" in node && node.children) {
+      for (let i = 0; i < node.children.length; i++) {
+        const found = findInNode(node.children[i]);
+        if (found) return found;
+      }
+    }
+
+    return undefined;
+  }
+
+  for (let i = 0; i < componentsPage.children.length; i++) {
+    const found = findInNode(componentsPage.children[i]);
+    if (found) return found;
+  }
+
+  console.warn("ComponentSet not found: " + componentSetName);
+  return undefined;
+}
+
+/**
+ * Create an instance of a component variant from a ComponentSet
+ *
+ * @param componentSetName - Name of the ComponentSet (e.g., "Checkbox")
+ * @param variantProps - Object with variant property values (e.g., { state: "checked", variant: "default" })
+ * @returns InstanceNode if found, undefined otherwise
+ *
+ * @example
+ * const checkbox = createComponentInstance("Checkbox", { state: "checked", variant: "default", disabled: "false" });
+ */
+export function createComponentInstance(
+  componentSetName: string,
+  variantProps: Record<string, string>,
+): InstanceNode | undefined {
+  const componentSet = findComponentSet(componentSetName);
+  if (!componentSet) {
+    return undefined;
+  }
+
+  // Build the variant name string (e.g., "state=checked, variant=default, disabled=false")
+  const variantName = Object.entries(variantProps)
+    .map(function (entry) {
+      return entry[0] + "=" + entry[1];
+    })
+    .join(", ");
+
+  // Find the matching component variant
+  const children = componentSet.children;
+  if (!children) {
+    return undefined;
+  }
+
+  const variant = children.find(function (child) {
+    return child.type === "COMPONENT" && child.name === variantName;
+  }) as ComponentNode | undefined;
+
+  if (!variant) {
+    console.warn(
+      "Variant not found in " + componentSetName + ": " + variantName,
+    );
+    return undefined;
+  }
+
+  return variant.createInstance();
+}

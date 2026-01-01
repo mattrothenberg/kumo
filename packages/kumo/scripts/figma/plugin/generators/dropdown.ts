@@ -24,6 +24,7 @@ import {
   bindFillToVariable,
   bindStrokeToVariable,
   bindTextColorToVariable,
+  createComponentInstance,
   BORDER_RADIUS,
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
@@ -160,7 +161,7 @@ async function createMenuItem(
 }
 
 /**
- * Create a checkbox menu item
+ * Create a checkbox menu item using the real Checkbox component
  */
 async function createCheckboxItem(
   label: string,
@@ -183,37 +184,47 @@ async function createCheckboxItem(
   itemFrame.cornerRadius = 6;
   itemFrame.fills = [];
 
-  // Create checkbox indicator
-  var checkboxFrame = figma.createFrame();
-  checkboxFrame.name = "Checkbox";
-  checkboxFrame.resize(16, 16);
-  checkboxFrame.cornerRadius = 4;
+  // Use the real Checkbox component from the ComponentSet
+  // Checkbox variant format: "state=checked, variant=default, disabled=false"
+  var checkboxState = checked ? "checked" : "unchecked";
+  var checkboxInstance = createComponentInstance("Checkbox", {
+    state: checkboxState,
+    variant: "default",
+    disabled: "false",
+  });
 
-  if (checked) {
-    // Filled checkbox with check icon
-    var primaryVar = getVariableByName("color-primary");
-    if (primaryVar) {
-      bindFillToVariable(checkboxFrame, primaryVar.id);
-    }
-
-    // Add check icon
-    var checkIcon = getButtonIcon("ph-check", "xs");
-    checkIcon.name = "Check";
-    bindIconColor(checkIcon, "text-white");
-    checkboxFrame.layoutMode = "HORIZONTAL";
-    checkboxFrame.primaryAxisAlignItems = "CENTER";
-    checkboxFrame.counterAxisAlignItems = "CENTER";
-    checkboxFrame.appendChild(checkIcon);
+  if (checkboxInstance) {
+    checkboxInstance.name = "Checkbox";
+    itemFrame.appendChild(checkboxInstance);
   } else {
-    // Empty checkbox with border
-    var borderVar = getVariableByName("color-border");
-    if (borderVar) {
-      bindStrokeToVariable(checkboxFrame, borderVar.id, 1);
-    }
-    checkboxFrame.fills = [];
-  }
+    // Fallback: create a simple checkbox indicator if component not found
+    var checkboxFrame = figma.createFrame();
+    checkboxFrame.name = "Checkbox";
+    checkboxFrame.resize(16, 16);
+    checkboxFrame.cornerRadius = 4;
 
-  itemFrame.appendChild(checkboxFrame);
+    if (checked) {
+      var primaryVar = getVariableByName("color-primary");
+      if (primaryVar) {
+        bindFillToVariable(checkboxFrame, primaryVar.id);
+      }
+      var checkIcon = getButtonIcon("ph-check", "xs");
+      checkIcon.name = "Check";
+      bindIconColor(checkIcon, "text-white");
+      checkboxFrame.layoutMode = "HORIZONTAL";
+      checkboxFrame.primaryAxisAlignItems = "CENTER";
+      checkboxFrame.counterAxisAlignItems = "CENTER";
+      checkboxFrame.appendChild(checkIcon);
+    } else {
+      var borderVar = getVariableByName("color-border");
+      if (borderVar) {
+        bindStrokeToVariable(checkboxFrame, borderVar.id, 1);
+      }
+      checkboxFrame.fills = [];
+    }
+
+    itemFrame.appendChild(checkboxFrame);
+  }
 
   // Create label text
   var labelText = await createTextNode(label, 14, 400);
