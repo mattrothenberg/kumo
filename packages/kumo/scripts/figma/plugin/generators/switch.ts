@@ -1,19 +1,29 @@
 /**
  * Switch Component Generator
  *
- * Generates a high-quality Switch ComponentSet in Figma matching the code implementation.
+ * Generates high-quality Switch components in Figma matching the code implementation.
  *
- * Component Structure (from switch.tsx):
- * - Outer container: horizontal layout with gap-2 (8px)
- * - Switch track: rounded-full pill shape, bg-surface-3 when unchecked, bg-primary/bg-error when checked
- * - Switch thumb: circular, bg-white, translates right when checked
- * - Label text: text-base font-medium text-surface
+ * ## Generated Components
  *
- * Properties:
+ * ### 1. Switch (ComponentSet)
+ * Single switch with label. Properties:
+ * - size: sm, base, lg
  * - checked: false, true
  * - variant: default, error
  * - disabled: false, true
- * - size: sm, base, lg
+ * - controlFirst: true (switch→label), false (label→switch)
+ *
+ * ### 2. Switch.Group (ComponentSet)
+ * Fieldset containing multiple switches. Properties:
+ * - hasDescription: false, true
+ * - hasError: false, true
+ * - controlFirst: true, false
+ *
+ * Component Structure (from switch.tsx):
+ * - Single Switch: Field wrapper with switch + label
+ * - Switch.Group: Fieldset with legend, optional description/error, Switch.Item children
+ * - Switch track: rounded-full pill, bg-surface-3 (off) / bg-primary or bg-error (on)
+ * - Switch thumb: circular, bg-white, translates right when checked
  *
  * @see packages/kumo/src/components/switch/switch.tsx
  */
@@ -162,13 +172,42 @@ function createSwitchTrack(
 }
 
 /**
- * Create a single switch component with label
+ * Create a single switch component with label (controlFirst=true, for backwards compat)
  */
 async function createSwitchComponent(
   size: string,
   variant: string,
   checked: boolean,
   disabled: boolean,
+  labelText: string,
+): Promise<ComponentNode> {
+  // Delegate to createSwitchWithLayout with controlFirst=true
+  return createSwitchWithLayout(
+    size,
+    variant,
+    checked,
+    disabled,
+    true,
+    labelText,
+  );
+}
+
+/**
+ * Get a simple label for the switch
+ */
+function getSwitchLabel(): string {
+  return "Label";
+}
+
+/**
+ * Create a single switch component with label and controlFirst option
+ */
+async function createSwitchWithLayout(
+  size: string,
+  variant: string,
+  checked: boolean,
+  disabled: boolean,
+  controlFirst: boolean,
   labelText: string,
 ): Promise<ComponentNode> {
   var component = figma.createComponent();
@@ -180,13 +219,18 @@ async function createSwitchComponent(
     ", variant=" +
     variant +
     ", disabled=" +
-    disabled;
+    disabled +
+    ", controlFirst=" +
+    controlFirst;
 
   var variantDesc = variantProp.descriptions[variant] || "";
   var sizeDesc = sizeProp.descriptions[size] || "";
-  component.description = variantDesc + " - " + sizeDesc;
+  var layoutDesc = controlFirst
+    ? "Switch appears before label"
+    : "Label appears before switch";
+  component.description = variantDesc + " - " + sizeDesc + ". " + layoutDesc;
 
-  // Configure as horizontal auto-layout (switch + label)
+  // Configure as horizontal auto-layout (switch + label or label + switch)
   component.layoutMode = "HORIZONTAL";
   component.primaryAxisAlignItems = "MIN";
   component.counterAxisAlignItems = "CENTER";
@@ -197,19 +241,22 @@ async function createSwitchComponent(
 
   // Create switch track
   var switchTrack = createSwitchTrack(size, variant, checked, disabled);
-  component.appendChild(switchTrack);
 
   // Create label text
-  // From switch.tsx: "text-base font-medium text-surface"
   var label = await createTextNode(labelText, FONT_SIZE.base, 500);
-
-  // Bind text color to text-color-surface
   var textVar = getVariableByName("text-color-surface");
   if (textVar) {
     bindTextColorToVariable(label, textVar.id);
   }
 
-  component.appendChild(label);
+  // Add in order based on controlFirst
+  if (controlFirst) {
+    component.appendChild(switchTrack);
+    component.appendChild(label);
+  } else {
+    component.appendChild(label);
+    component.appendChild(switchTrack);
+  }
 
   // Apply disabled state: opacity-50
   if (disabled) {
@@ -220,10 +267,175 @@ async function createSwitchComponent(
 }
 
 /**
- * Get a simple label for the switch
+ * Create a Switch.Item (switch within a group, no Field wrapper)
  */
-function getSwitchLabel(): string {
-  return "Label";
+async function createSwitchItem(
+  checked: boolean,
+  disabled: boolean,
+  controlFirst: boolean,
+  labelText: string,
+): Promise<FrameNode> {
+  var item = figma.createFrame();
+  item.name = "Switch.Item";
+  item.layoutMode = "HORIZONTAL";
+  item.primaryAxisAlignItems = "MIN";
+  item.counterAxisAlignItems = "CENTER";
+  item.primaryAxisSizingMode = "AUTO";
+  item.counterAxisSizingMode = "AUTO";
+  item.itemSpacing = SWITCH_LABEL_GAP;
+  item.fills = [];
+
+  // Create switch track (always base size in groups)
+  var switchTrack = createSwitchTrack("base", "default", checked, disabled);
+
+  // Create label text
+  var label = await createTextNode(labelText, FONT_SIZE.base, 500);
+  var textVar = getVariableByName("text-color-surface");
+  if (textVar) {
+    bindTextColorToVariable(label, textVar.id);
+  }
+
+  // Add in order based on controlFirst
+  if (controlFirst) {
+    item.appendChild(switchTrack);
+    item.appendChild(label);
+  } else {
+    item.appendChild(label);
+    item.appendChild(switchTrack);
+  }
+
+  // Apply disabled state
+  if (disabled) {
+    item.opacity = 0.5;
+  }
+
+  return item;
+}
+
+/**
+ * Create a Switch.Group component
+ */
+async function createSwitchGroupComponent(
+  hasDescription: boolean,
+  hasError: boolean,
+  controlFirst: boolean,
+): Promise<ComponentNode> {
+  var component = figma.createComponent();
+  component.name =
+    "hasDescription=" +
+    hasDescription +
+    ", hasError=" +
+    hasError +
+    ", controlFirst=" +
+    controlFirst;
+
+  component.description =
+    "Switch group with fieldset and legend. " +
+    (hasDescription ? "Includes description text. " : "") +
+    (hasError ? "Shows error message. " : "") +
+    (controlFirst
+      ? "Switches appear before labels."
+      : "Labels appear before switches.");
+
+  // Fieldset container: flex flex-col gap-4 rounded-lg border border-border p-4
+  component.layoutMode = "VERTICAL";
+  component.primaryAxisSizingMode = "AUTO";
+  component.counterAxisSizingMode = "AUTO";
+  component.itemSpacing = 16; // gap-4
+  component.paddingLeft = 16;
+  component.paddingRight = 16;
+  component.paddingTop = 16;
+  component.paddingBottom = 16;
+  component.cornerRadius = 8; // rounded-lg
+
+  // Border: border-border
+  var borderVar = getVariableByName("color-border");
+  if (borderVar) {
+    component.strokes = [
+      figma.variables.setBoundVariableForPaint(
+        { type: "SOLID", color: { r: 0, g: 0, b: 0 } },
+        "color",
+        borderVar,
+      ),
+    ];
+    component.strokeWeight = 1;
+  }
+
+  // Background: transparent (no fill)
+  component.fills = [];
+
+  // Legend: text-lg font-medium text-surface
+  var legend = await createTextNode("Notification settings", FONT_SIZE.lg, 500);
+  var textVar = getVariableByName("text-color-surface");
+  if (textVar) {
+    bindTextColorToVariable(legend, textVar.id);
+  }
+  component.appendChild(legend);
+
+  // Items container: flex flex-col gap-2
+  var itemsContainer = figma.createFrame();
+  itemsContainer.name = "Items";
+  itemsContainer.layoutMode = "VERTICAL";
+  itemsContainer.primaryAxisSizingMode = "AUTO";
+  itemsContainer.counterAxisSizingMode = "AUTO";
+  itemsContainer.itemSpacing = 8; // gap-2
+  itemsContainer.fills = [];
+
+  // Add 3 switch items
+  var item1 = await createSwitchItem(
+    true,
+    false,
+    controlFirst,
+    "Email notifications",
+  );
+  var item2 = await createSwitchItem(
+    false,
+    false,
+    controlFirst,
+    "SMS notifications",
+  );
+  var item3 = await createSwitchItem(
+    true,
+    false,
+    controlFirst,
+    "Push notifications",
+  );
+
+  itemsContainer.appendChild(item1);
+  itemsContainer.appendChild(item2);
+  itemsContainer.appendChild(item3);
+
+  component.appendChild(itemsContainer);
+
+  // Error message: text-sm text-error (14px, but we use xs=12 as closest)
+  if (hasError) {
+    var errorText = await createTextNode(
+      "You must enable at least one notification method",
+      FONT_SIZE.xs,
+      400,
+    );
+    var errorVar = getVariableByName("text-color-error");
+    if (errorVar) {
+      bindTextColorToVariable(errorText, errorVar.id);
+    }
+    component.appendChild(errorText);
+  }
+
+  // Description: text-sm text-muted (14px, but we use xs=12 as closest)
+  if (hasDescription) {
+    var descText = await createTextNode(
+      "Choose how you want to be notified about important updates",
+      FONT_SIZE.xs,
+      400,
+    );
+    var mutedVar = getVariableByName("text-color-muted");
+    if (mutedVar) {
+      bindTextColorToVariable(descText, mutedVar.id);
+    }
+    component.appendChild(descText);
+  }
+
+  return component;
 }
 
 /**
@@ -530,6 +742,112 @@ export async function generateSwitchComponents(
   );
 
   return startY + totalHeight + SECTION_GAP;
+}
+
+/**
+ * Generate Switch.Group ComponentSet
+ *
+ * Creates variants for:
+ * - hasDescription: false, true
+ * - hasError: false, true
+ * - controlFirst: true, false
+ *
+ * Total: 2 × 2 × 2 = 8 variants
+ *
+ * @param page - Target page for components
+ * @param startY - Y position to start placing sections
+ * @returns The Y position after all sections
+ */
+export async function generateSwitchGroupComponents(
+  page: PageNode,
+  startY: number,
+): Promise<number> {
+  if (startY === undefined) startY = 100;
+
+  console.log("Switch.Group: Starting generation at Y=" + startY);
+
+  figma.currentPage = page;
+
+  var components: ComponentNode[] = [];
+
+  // Generate all combinations: hasDescription × hasError × controlFirst
+  var hasDescriptionValues = [false, true];
+  var hasErrorValues = [false, true];
+  var controlFirstValues = [true, false];
+
+  for (var d = 0; d < hasDescriptionValues.length; d++) {
+    for (var e = 0; e < hasErrorValues.length; e++) {
+      for (var c = 0; c < controlFirstValues.length; c++) {
+        var component = await createSwitchGroupComponent(
+          hasDescriptionValues[d],
+          hasErrorValues[e],
+          controlFirstValues[c],
+        );
+        components.push(component);
+      }
+    }
+  }
+
+  // Combine into ComponentSet
+  // @ts-ignore - combineAsVariants works at runtime
+  var componentSet = figma.combineAsVariants(components, page);
+  componentSet.name = "Switch.Group";
+  componentSet.description =
+    "Switch group with fieldset, legend, optional description and error message. " +
+    "Use for multiple related switches. Properties: hasDescription, hasError, controlFirst.";
+
+  // Auto-layout the component set for clean display
+  componentSet.layoutMode = "HORIZONTAL";
+  componentSet.layoutWrap = "WRAP";
+  componentSet.itemSpacing = 24;
+  componentSet.counterAxisSpacing = 24;
+  componentSet.primaryAxisSizingMode = "AUTO";
+  componentSet.counterAxisSizingMode = "AUTO";
+
+  // Create light mode section
+  var lightSection = createModeSection(page, "Switch.Group", "light");
+
+  // Create dark mode section
+  var darkSection = createModeSection(page, "Switch.Group", "dark");
+
+  // Move ComponentSet into light section
+  lightSection.frame.appendChild(componentSet);
+  componentSet.x = SECTION_PADDING;
+  componentSet.y = SECTION_PADDING;
+
+  // Create instances for dark section
+  for (var i = 0; i < components.length; i++) {
+    var comp = components[i];
+    var instance = comp.createInstance();
+    instance.x = comp.x + SECTION_PADDING;
+    instance.y = comp.y + SECTION_PADDING;
+    darkSection.frame.appendChild(instance);
+  }
+
+  // Resize sections to fit content
+  var contentWidth = componentSet.width + SECTION_PADDING * 2;
+  var contentHeight = componentSet.height + SECTION_PADDING * 2;
+
+  lightSection.frame.resize(contentWidth, contentHeight);
+  darkSection.frame.resize(contentWidth, contentHeight);
+
+  lightSection.section.resizeWithoutConstraints(contentWidth, contentHeight);
+  darkSection.section.resizeWithoutConstraints(contentWidth, contentHeight);
+
+  // Position sections side by side
+  lightSection.section.x = 100;
+  lightSection.section.y = startY;
+
+  darkSection.section.x = 100 + contentWidth + 50;
+  darkSection.section.y = startY;
+
+  console.log(
+    "✅ Generated Switch.Group ComponentSet with " +
+      components.length +
+      " variants (light + dark)",
+  );
+
+  return startY + contentHeight + SECTION_GAP;
 }
 
 /**

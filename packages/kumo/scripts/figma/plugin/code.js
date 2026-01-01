@@ -10621,11 +10621,25 @@
     return track;
   }
   async function createSwitchComponent(size, variant, checked, disabled, labelText) {
+    return createSwitchWithLayout(
+      size,
+      variant,
+      checked,
+      disabled,
+      true,
+      labelText
+    );
+  }
+  function getSwitchLabel() {
+    return "Label";
+  }
+  async function createSwitchWithLayout(size, variant, checked, disabled, controlFirst, labelText) {
     var component = figma.createComponent();
-    component.name = "size=" + size + ", checked=" + checked + ", variant=" + variant + ", disabled=" + disabled;
+    component.name = "size=" + size + ", checked=" + checked + ", variant=" + variant + ", disabled=" + disabled + ", controlFirst=" + controlFirst;
     var variantDesc = variantProp7.descriptions[variant] || "";
     var sizeDesc = sizeProp6.descriptions[size] || "";
-    component.description = variantDesc + " - " + sizeDesc;
+    var layoutDesc = controlFirst ? "Switch appears before label" : "Label appears before switch";
+    component.description = variantDesc + " - " + sizeDesc + ". " + layoutDesc;
     component.layoutMode = "HORIZONTAL";
     component.primaryAxisAlignItems = "MIN";
     component.counterAxisAlignItems = "CENTER";
@@ -10634,20 +10648,136 @@
     component.itemSpacing = SWITCH_LABEL_GAP;
     component.fills = [];
     var switchTrack = createSwitchTrack(size, variant, checked, disabled);
-    component.appendChild(switchTrack);
     var label = await createTextNode(labelText, FONT_SIZE.base, 500);
     var textVar = getVariableByName("text-color-surface");
     if (textVar) {
       bindTextColorToVariable(label, textVar.id);
     }
-    component.appendChild(label);
+    if (controlFirst) {
+      component.appendChild(switchTrack);
+      component.appendChild(label);
+    } else {
+      component.appendChild(label);
+      component.appendChild(switchTrack);
+    }
     if (disabled) {
       component.opacity = 0.5;
     }
     return component;
   }
-  function getSwitchLabel() {
-    return "Label";
+  async function createSwitchItem(checked, disabled, controlFirst, labelText) {
+    var item = figma.createFrame();
+    item.name = "Switch.Item";
+    item.layoutMode = "HORIZONTAL";
+    item.primaryAxisAlignItems = "MIN";
+    item.counterAxisAlignItems = "CENTER";
+    item.primaryAxisSizingMode = "AUTO";
+    item.counterAxisSizingMode = "AUTO";
+    item.itemSpacing = SWITCH_LABEL_GAP;
+    item.fills = [];
+    var switchTrack = createSwitchTrack("base", "default", checked, disabled);
+    var label = await createTextNode(labelText, FONT_SIZE.base, 500);
+    var textVar = getVariableByName("text-color-surface");
+    if (textVar) {
+      bindTextColorToVariable(label, textVar.id);
+    }
+    if (controlFirst) {
+      item.appendChild(switchTrack);
+      item.appendChild(label);
+    } else {
+      item.appendChild(label);
+      item.appendChild(switchTrack);
+    }
+    if (disabled) {
+      item.opacity = 0.5;
+    }
+    return item;
+  }
+  async function createSwitchGroupComponent(hasDescription, hasError, controlFirst) {
+    var component = figma.createComponent();
+    component.name = "hasDescription=" + hasDescription + ", hasError=" + hasError + ", controlFirst=" + controlFirst;
+    component.description = "Switch group with fieldset and legend. " + (hasDescription ? "Includes description text. " : "") + (hasError ? "Shows error message. " : "") + (controlFirst ? "Switches appear before labels." : "Labels appear before switches.");
+    component.layoutMode = "VERTICAL";
+    component.primaryAxisSizingMode = "AUTO";
+    component.counterAxisSizingMode = "AUTO";
+    component.itemSpacing = 16;
+    component.paddingLeft = 16;
+    component.paddingRight = 16;
+    component.paddingTop = 16;
+    component.paddingBottom = 16;
+    component.cornerRadius = 8;
+    var borderVar = getVariableByName("color-border");
+    if (borderVar) {
+      component.strokes = [
+        figma.variables.setBoundVariableForPaint(
+          { type: "SOLID", color: { r: 0, g: 0, b: 0 } },
+          "color",
+          borderVar
+        )
+      ];
+      component.strokeWeight = 1;
+    }
+    component.fills = [];
+    var legend = await createTextNode("Notification settings", FONT_SIZE.lg, 500);
+    var textVar = getVariableByName("text-color-surface");
+    if (textVar) {
+      bindTextColorToVariable(legend, textVar.id);
+    }
+    component.appendChild(legend);
+    var itemsContainer = figma.createFrame();
+    itemsContainer.name = "Items";
+    itemsContainer.layoutMode = "VERTICAL";
+    itemsContainer.primaryAxisSizingMode = "AUTO";
+    itemsContainer.counterAxisSizingMode = "AUTO";
+    itemsContainer.itemSpacing = 8;
+    itemsContainer.fills = [];
+    var item1 = await createSwitchItem(
+      true,
+      false,
+      controlFirst,
+      "Email notifications"
+    );
+    var item2 = await createSwitchItem(
+      false,
+      false,
+      controlFirst,
+      "SMS notifications"
+    );
+    var item3 = await createSwitchItem(
+      true,
+      false,
+      controlFirst,
+      "Push notifications"
+    );
+    itemsContainer.appendChild(item1);
+    itemsContainer.appendChild(item2);
+    itemsContainer.appendChild(item3);
+    component.appendChild(itemsContainer);
+    if (hasError) {
+      var errorText = await createTextNode(
+        "You must enable at least one notification method",
+        FONT_SIZE.xs,
+        400
+      );
+      var errorVar = getVariableByName("text-color-error");
+      if (errorVar) {
+        bindTextColorToVariable(errorText, errorVar.id);
+      }
+      component.appendChild(errorText);
+    }
+    if (hasDescription) {
+      var descText = await createTextNode(
+        "Choose how you want to be notified about important updates",
+        FONT_SIZE.xs,
+        400
+      );
+      var mutedVar = getVariableByName("text-color-muted");
+      if (mutedVar) {
+        bindTextColorToVariable(descText, mutedVar.id);
+      }
+      component.appendChild(descText);
+    }
+    return component;
   }
   async function generateSwitchComponents(page, startY) {
     if (startY === void 0) startY = 100;
@@ -10866,6 +10996,62 @@
       "\u2705 Generated Switch ComponentSet with " + components.length + " variants (light + dark)"
     );
     return startY + totalHeight + SECTION_GAP25;
+  }
+  async function generateSwitchGroupComponents(page, startY) {
+    if (startY === void 0) startY = 100;
+    console.log("Switch.Group: Starting generation at Y=" + startY);
+    figma.currentPage = page;
+    var components = [];
+    var hasDescriptionValues = [false, true];
+    var hasErrorValues = [false, true];
+    var controlFirstValues = [true, false];
+    for (var d = 0; d < hasDescriptionValues.length; d++) {
+      for (var e = 0; e < hasErrorValues.length; e++) {
+        for (var c = 0; c < controlFirstValues.length; c++) {
+          var component = await createSwitchGroupComponent(
+            hasDescriptionValues[d],
+            hasErrorValues[e],
+            controlFirstValues[c]
+          );
+          components.push(component);
+        }
+      }
+    }
+    var componentSet = figma.combineAsVariants(components, page);
+    componentSet.name = "Switch.Group";
+    componentSet.description = "Switch group with fieldset, legend, optional description and error message. Use for multiple related switches. Properties: hasDescription, hasError, controlFirst.";
+    componentSet.layoutMode = "HORIZONTAL";
+    componentSet.layoutWrap = "WRAP";
+    componentSet.itemSpacing = 24;
+    componentSet.counterAxisSpacing = 24;
+    componentSet.primaryAxisSizingMode = "AUTO";
+    componentSet.counterAxisSizingMode = "AUTO";
+    var lightSection = createModeSection(page, "Switch.Group", "light");
+    var darkSection = createModeSection(page, "Switch.Group", "dark");
+    lightSection.frame.appendChild(componentSet);
+    componentSet.x = SECTION_PADDING25;
+    componentSet.y = SECTION_PADDING25;
+    for (var i = 0; i < components.length; i++) {
+      var comp = components[i];
+      var instance = comp.createInstance();
+      instance.x = comp.x + SECTION_PADDING25;
+      instance.y = comp.y + SECTION_PADDING25;
+      darkSection.frame.appendChild(instance);
+    }
+    var contentWidth = componentSet.width + SECTION_PADDING25 * 2;
+    var contentHeight = componentSet.height + SECTION_PADDING25 * 2;
+    lightSection.frame.resize(contentWidth, contentHeight);
+    darkSection.frame.resize(contentWidth, contentHeight);
+    lightSection.section.resizeWithoutConstraints(contentWidth, contentHeight);
+    darkSection.section.resizeWithoutConstraints(contentWidth, contentHeight);
+    lightSection.section.x = 100;
+    lightSection.section.y = startY;
+    darkSection.section.x = 100 + contentWidth + 50;
+    darkSection.section.y = startY;
+    console.log(
+      "\u2705 Generated Switch.Group ComponentSet with " + components.length + " variants (light + dark)"
+    );
+    return startY + contentHeight + SECTION_GAP25;
   }
   var SWITCH_VARIANTS_EXPORT = variantProp7.values;
   var SWITCH_SIZES_EXPORT = sizeProp6.values;
@@ -14296,11 +14482,13 @@
         nextY = await generateSurfaceComponents(componentsPage, nextY);
         figma.notify("Generating Switch components...");
         nextY = await generateSwitchComponents(componentsPage, nextY);
+        figma.notify("Generating Switch.Group components...");
+        nextY = await generateSwitchGroupComponents(componentsPage, nextY);
         figma.notify("Generating Tabs components...");
         nextY = await generateTabsComponents(componentsPage, nextY);
         figma.notify("\u2705 Generation complete!", { timeout: 3e3 });
         figma.closePlugin(
-          "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, Dialog, Dropdown, Input, InputArea, LayerCard, Loader, LinkButton, MenuBar, Meter, Pagination, RefreshButton, Select, SensitiveInput, Surface, Switch, Tabs, Text components, and Icon Library"
+          "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, Dialog, Dropdown, Input, InputArea, LayerCard, Loader, LinkButton, MenuBar, Meter, Pagination, RefreshButton, Select, SensitiveInput, Surface, Switch, Switch.Group, Tabs, Text components, and Icon Library"
         );
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);

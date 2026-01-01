@@ -31,7 +31,10 @@ import { generateRefreshButtonComponents } from "./generators/refresh-button";
 import { generateSelectComponents } from "./generators/select";
 import { generateSensitiveInputComponents } from "./generators/sensitive-input";
 import { generateSurfaceComponents } from "./generators/surface";
-import { generateSwitchComponents } from "./generators/switch";
+import {
+  generateSwitchComponents,
+  generateSwitchGroupComponents,
+} from "./generators/switch";
 import { generateTabsComponents } from "./generators/tabs";
 import { generateTextComponents } from "./generators/text";
 import { generateIconLibrary } from "./generators/icon-library";
@@ -212,13 +215,17 @@ figma.ui.onmessage = async (msg: { type: string }) => {
       figma.notify("Generating Switch components...");
       nextY = await generateSwitchComponents(componentsPage, nextY);
 
-      // Step 30: Generate Tabs components
+      // Step 30: Generate Switch.Group components
+      figma.notify("Generating Switch.Group components...");
+      nextY = await generateSwitchGroupComponents(componentsPage, nextY);
+
+      // Step 31: Generate Tabs components
       figma.notify("Generating Tabs components...");
       nextY = await generateTabsComponents(componentsPage, nextY);
 
       figma.notify("✅ Generation complete!", { timeout: 3000 });
       figma.closePlugin(
-        "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, Dialog, Dropdown, Input, InputArea, LayerCard, Loader, LinkButton, MenuBar, Meter, Pagination, RefreshButton, Select, SensitiveInput, Surface, Switch, Tabs, Text components, and Icon Library",
+        "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, Dialog, Dropdown, Input, InputArea, LayerCard, Loader, LinkButton, MenuBar, Meter, Pagination, RefreshButton, Select, SensitiveInput, Surface, Switch, Switch.Group, Tabs, Text components, and Icon Library",
       );
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
