@@ -9171,6 +9171,168 @@
     }
   }
 
+  // scripts/figma/plugin/generators/meter.ts
+  var METER_WIDTH = 240;
+  var METER_TRACK_HEIGHT = 8;
+  var METER_GAP = 8;
+  var SECTION_PADDING19 = 48;
+  var SECTION_GAP19 = 160;
+  async function createMeterComponent(label, fillPercentage) {
+    const component = figma.createComponent();
+    component.name = "fill=" + fillPercentage;
+    component.description = "Meter at " + fillPercentage + "% fill";
+    component.layoutMode = "VERTICAL";
+    component.primaryAxisAlignItems = "MIN";
+    component.counterAxisAlignItems = "MIN";
+    component.itemSpacing = METER_GAP;
+    component.primaryAxisSizingMode = "AUTO";
+    component.counterAxisSizingMode = "AUTO";
+    const headerRow = figma.createFrame();
+    headerRow.name = "Header";
+    headerRow.layoutMode = "HORIZONTAL";
+    headerRow.primaryAxisAlignItems = "SPACE_BETWEEN";
+    headerRow.counterAxisAlignItems = "CENTER";
+    headerRow.primaryAxisSizingMode = "FIXED";
+    headerRow.counterAxisSizingMode = "AUTO";
+    headerRow.resize(METER_WIDTH, 20);
+    headerRow.fills = [];
+    const labelText = await createTextNode(label, 12, 400);
+    labelText.name = "Label";
+    const labelVar = getVariableByName("text-color-label");
+    if (labelVar) {
+      bindTextColorToVariable(labelText, labelVar.id);
+    }
+    const valueText = await createTextNode(fillPercentage + "%", 14, 500);
+    valueText.name = "Value";
+    const surfaceTextVar = getVariableByName("text-color-surface");
+    if (surfaceTextVar) {
+      bindTextColorToVariable(valueText, surfaceTextVar.id);
+    }
+    headerRow.appendChild(labelText);
+    headerRow.appendChild(valueText);
+    const track = figma.createFrame();
+    track.name = "Track";
+    track.layoutMode = "NONE";
+    track.resize(METER_WIDTH, METER_TRACK_HEIGHT);
+    track.cornerRadius = 9999;
+    const bgColorVar = getVariableByName("color-4");
+    if (bgColorVar) {
+      bindFillToVariable(track, bgColorVar.id);
+    } else {
+      track.fills = [
+        {
+          type: "SOLID",
+          color: { r: 0.9, g: 0.9, b: 0.9 }
+        }
+      ];
+    }
+    const indicator = figma.createFrame();
+    indicator.name = "Indicator";
+    indicator.layoutMode = "NONE";
+    const indicatorWidth = METER_WIDTH * fillPercentage / 100;
+    indicator.resize(indicatorWidth, METER_TRACK_HEIGHT);
+    indicator.cornerRadius = 9999;
+    const primaryVar = getVariableByName("primary");
+    if (primaryVar) {
+      bindFillToVariable(indicator, primaryVar.id);
+    } else {
+      indicator.fills = [
+        {
+          type: "SOLID",
+          color: { r: 0, g: 0.5, b: 1 }
+        }
+      ];
+    }
+    indicator.x = 0;
+    indicator.y = 0;
+    track.appendChild(indicator);
+    component.appendChild(headerRow);
+    component.appendChild(track);
+    return component;
+  }
+  async function generateMeterComponents(startY) {
+    if (startY === void 0) startY = 100;
+    var componentsPage = figma.root.children.find(function(page) {
+      return page.type === "PAGE" && page.name === "Components";
+    });
+    if (!componentsPage) {
+      componentsPage = figma.createPage();
+      componentsPage.name = "Components";
+    }
+    figma.currentPage = componentsPage;
+    const fillLevels = [0, 25, 50, 75, 100];
+    const components = [];
+    const rowLabels = [];
+    const rowGap = 40;
+    const labelColumnWidth = 180;
+    var currentY = 0;
+    for (var i = 0; i < fillLevels.length; i++) {
+      const fillLevel = fillLevels[i];
+      const component = await createMeterComponent("Progress", fillLevel);
+      rowLabels.push({ y: currentY, text: "fill=" + fillLevel });
+      component.x = labelColumnWidth;
+      component.y = currentY;
+      currentY += component.height + rowGap;
+      components.push(component);
+    }
+    const componentSet = figma.combineAsVariants(components, componentsPage);
+    componentSet.name = "Meter";
+    componentSet.description = "Meter component showing progress at different fill levels";
+    const contentWidth = componentSet.width + labelColumnWidth;
+    const contentHeight = componentSet.height;
+    const lightSection = createModeSection(componentsPage, "Meter", "light");
+    lightSection.frame.resize(
+      contentWidth + SECTION_PADDING19 * 2,
+      contentHeight + SECTION_PADDING19 * 2
+    );
+    const darkSection = createModeSection(componentsPage, "Meter", "dark");
+    darkSection.frame.resize(
+      contentWidth + SECTION_PADDING19 * 2,
+      contentHeight + SECTION_PADDING19 * 2
+    );
+    lightSection.frame.appendChild(componentSet);
+    componentSet.x = SECTION_PADDING19 + labelColumnWidth;
+    componentSet.y = SECTION_PADDING19;
+    for (var j = 0; j < rowLabels.length; j++) {
+      const label = rowLabels[j];
+      const labelNode = await createRowLabel(
+        label.text,
+        SECTION_PADDING19,
+        SECTION_PADDING19 + label.y + 8
+        // +8 to vertically center with meter
+      );
+      lightSection.frame.appendChild(labelNode);
+    }
+    for (var k = 0; k < components.length; k++) {
+      const component = components[k];
+      const instance = component.createInstance();
+      instance.x = component.x + SECTION_PADDING19 + labelColumnWidth;
+      instance.y = component.y + SECTION_PADDING19;
+      darkSection.frame.appendChild(instance);
+    }
+    for (var m = 0; m < rowLabels.length; m++) {
+      const label = rowLabels[m];
+      const labelNode = await createRowLabel(
+        label.text,
+        SECTION_PADDING19,
+        SECTION_PADDING19 + label.y + 8
+      );
+      darkSection.frame.appendChild(labelNode);
+    }
+    const totalWidth = contentWidth + SECTION_PADDING19 * 2;
+    const totalHeight = contentHeight + SECTION_PADDING19 * 2;
+    lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    lightSection.section.x = 100;
+    lightSection.section.y = startY;
+    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.y = startY;
+    console.log(
+      "\u2705 Generated Meter ComponentSet with " + fillLevels.length + " fill levels (light + dark)"
+    );
+    return startY + totalHeight + SECTION_GAP19;
+  }
+
   // scripts/figma/plugin/generators/refresh-button.ts
   var buttonProps3 = component_registry_default.components.Button.props;
   var variantProp6 = buttonProps3.variant;
@@ -9195,8 +9357,8 @@
     var parsed = parseTailwindClasses(sizeClasses);
     return parsed.borderRadius !== void 0 ? parsed.borderRadius : BORDER_RADIUS.lg;
   }
-  var SECTION_PADDING19 = 48;
-  var SECTION_GAP19 = 160;
+  var SECTION_PADDING20 = 48;
+  var SECTION_GAP20 = 160;
   function createRefreshButtonComponent(size, loading) {
     var variant = variantProp6.default;
     var variantClasses = variantProp6.classes[variant] || "";
@@ -9276,44 +9438,44 @@
     var contentHeight = componentSet.height;
     var lightSection = createModeSection(page, "RefreshButton", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING19 * 2,
-      contentHeight + SECTION_PADDING19 * 2
+      contentWidth + SECTION_PADDING20 * 2,
+      contentHeight + SECTION_PADDING20 * 2
     );
     var darkSection = createModeSection(page, "RefreshButton", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING19 * 2,
-      contentHeight + SECTION_PADDING19 * 2
+      contentWidth + SECTION_PADDING20 * 2,
+      contentHeight + SECTION_PADDING20 * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING19 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING19;
+    componentSet.x = SECTION_PADDING20 + labelColumnWidth;
+    componentSet.y = SECTION_PADDING20;
     for (var li = 0; li < rowLabels.length; li++) {
       var label = rowLabels[li];
       var labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING19,
-        SECTION_PADDING19 + label.y + 10
+        SECTION_PADDING20,
+        SECTION_PADDING20 + label.y + 10
       );
       lightSection.frame.appendChild(labelNode);
     }
     for (var i = 0; i < components.length; i++) {
       var comp = components[i];
       var instance = comp.createInstance();
-      instance.x = comp.x + SECTION_PADDING19 + labelColumnWidth;
-      instance.y = comp.y + SECTION_PADDING19;
+      instance.x = comp.x + SECTION_PADDING20 + labelColumnWidth;
+      instance.y = comp.y + SECTION_PADDING20;
       darkSection.frame.appendChild(instance);
     }
     for (var di = 0; di < rowLabels.length; di++) {
       var darkLabel = rowLabels[di];
       var darkLabelNode = await createRowLabel(
         darkLabel.text,
-        SECTION_PADDING19,
-        SECTION_PADDING19 + darkLabel.y + 10
+        SECTION_PADDING20,
+        SECTION_PADDING20 + darkLabel.y + 10
       );
       darkSection.frame.appendChild(darkLabelNode);
     }
-    var totalWidth = contentWidth + SECTION_PADDING19 * 2;
-    var totalHeight = contentHeight + SECTION_PADDING19 * 2;
+    var totalWidth = contentWidth + SECTION_PADDING20 * 2;
+    var totalHeight = contentHeight + SECTION_PADDING20 * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     lightSection.section.x = 100;
@@ -9324,7 +9486,7 @@
     console.log(
       "\u2705 Generated RefreshButton ComponentSet with " + totalComponents + " variants (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP19;
+    return startY + totalHeight + SECTION_GAP20;
   }
   var REFRESH_BUTTON_SIZES_EXPORT = sizeProp5.values;
 
@@ -9332,8 +9494,8 @@
   var textProps = component_registry_default.components.Text.props;
   var variantProp7 = textProps.variant;
   var sizeProp6 = textProps.size;
-  var SECTION_PADDING20 = 48;
-  var SECTION_GAP20 = 160;
+  var SECTION_PADDING21 = 48;
+  var SECTION_GAP21 = 160;
   var TEXT_BASE_CLASS = "text-surface";
   var COPY_VARIANTS = ["body", "secondary", "success", "error"];
   var MONO_VARIANTS = ["mono", "mono-secondary"];
@@ -9476,52 +9638,52 @@
     const contentHeight = componentSet.height + headerRowHeight;
     const lightSection = createModeSection(page, "Text", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING20 * 2,
-      contentHeight + SECTION_PADDING20 * 2
+      contentWidth + SECTION_PADDING21 * 2,
+      contentHeight + SECTION_PADDING21 * 2
     );
     const darkSection = createModeSection(page, "Text", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING20 * 2,
-      contentHeight + SECTION_PADDING20 * 2
+      contentWidth + SECTION_PADDING21 * 2,
+      contentHeight + SECTION_PADDING21 * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING20 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING20 + headerRowHeight;
+    componentSet.x = SECTION_PADDING21 + labelColumnWidth;
+    componentSet.y = SECTION_PADDING21 + headerRowHeight;
     await createColumnHeaders(
-      columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING20, text: h.text })),
-      SECTION_PADDING20,
+      columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING21, text: h.text })),
+      SECTION_PADDING21,
       lightSection.frame
     );
     for (const label of rowLabels) {
       const labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING20,
-        SECTION_PADDING20 + label.y + 8
+        SECTION_PADDING21,
+        SECTION_PADDING21 + label.y + 8
         // +8 to vertically center with text
       );
       lightSection.frame.appendChild(labelNode);
     }
     for (const component of components) {
       const instance = component.createInstance();
-      instance.x = component.x + SECTION_PADDING20 + labelColumnWidth;
-      instance.y = component.y + SECTION_PADDING20 + headerRowHeight;
+      instance.x = component.x + SECTION_PADDING21 + labelColumnWidth;
+      instance.y = component.y + SECTION_PADDING21 + headerRowHeight;
       darkSection.frame.appendChild(instance);
     }
     await createColumnHeaders(
-      columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING20, text: h.text })),
-      SECTION_PADDING20,
+      columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING21, text: h.text })),
+      SECTION_PADDING21,
       darkSection.frame
     );
     for (const label of rowLabels) {
       const labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING20,
-        SECTION_PADDING20 + label.y + 8
+        SECTION_PADDING21,
+        SECTION_PADDING21 + label.y + 8
       );
       darkSection.frame.appendChild(labelNode);
     }
-    const totalWidth = contentWidth + SECTION_PADDING20 * 2;
-    const totalHeight = contentHeight + SECTION_PADDING20 * 2;
+    const totalWidth = contentWidth + SECTION_PADDING21 * 2;
+    const totalHeight = contentHeight + SECTION_PADDING21 * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     lightSection.section.x = 100;
@@ -9531,7 +9693,7 @@
     console.log(
       "\u2705 Generated Text ComponentSet with " + components.length + " variants (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP20;
+    return startY + totalHeight + SECTION_GAP21;
   }
   var TEXT_VARIANTS_EXPORT = variantProp7.values;
   var TEXT_SIZES_EXPORT = sizeProp6.values;
@@ -12528,9 +12690,11 @@
         nextY = await generateLoaderComponents(componentsPage, nextY);
         figma.notify("Generating MenuBar components...");
         nextY = await generateMenuBarComponents(componentsPage, nextY);
+        figma.notify("Generating Meter components...");
+        nextY = await generateMeterComponents(nextY);
         figma.notify("\u2705 Generation complete!", { timeout: 3e3 });
         figma.closePlugin(
-          "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, Dialog, Dropdown, Input, InputArea, LayerCard, Loader, LinkButton, MenuBar, RefreshButton, Text components, and Icon Library"
+          "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, Dialog, Dropdown, Input, InputArea, LayerCard, Loader, LinkButton, MenuBar, Meter, RefreshButton, Text components, and Icon Library"
         );
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
