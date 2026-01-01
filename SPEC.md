@@ -306,6 +306,8 @@ After building, run the plugin in Figma:
 | Select          | variant (3) x open (2) x state (4)                            | Label, description, error, loading state                     |
 | SensitiveInput  | size (4) x variant (2) x state (3) x mode (2) x withLabel (2) | Masked/revealed, eye toggle, copy button                     |
 | Surface         | (no variants)                                                 | Container with shadow-xs and ring-border                     |
+| Switch          | size (3) x variant (2) x checked (2) x disabled (2)           | Toggle switch with label                                     |
+| Tabs            | active (3)                                                    | Tab navigation with active indicator                         |
 | Text            | variant (9) x size (4)                                        | Typography scale                                             |
 
 ## Troubleshooting

@@ -10561,12 +10561,540 @@
     return startY + totalHeight + SECTION_GAP24;
   }
 
-  // scripts/figma/plugin/generators/text.ts
-  var textProps = component_registry_default.components.Text.props;
-  var variantProp7 = textProps.variant;
-  var sizeProp6 = textProps.size;
+  // scripts/figma/plugin/generators/switch.ts
+  var switchProps = component_registry_default.components.Switch.props;
+  var variantProp7 = switchProps.variant;
+  var sizeProp6 = switchProps.size;
+  var SWITCH_DIMENSIONS = {
+    sm: { width: 34, height: 22 },
+    // 8.5 * 4 = 34, 5.5 * 4 = 22
+    base: { width: 42, height: 26 },
+    // 10.5 * 4 = 42, 6.5 * 4 = 26
+    lg: { width: 50, height: 30 }
+    // 12.5 * 4 = 50, 7.5 * 4 = 30
+  };
+  var SWITCH_PADDING = 4;
+  var SWITCH_LABEL_GAP = 8;
   var SECTION_PADDING25 = 48;
   var SECTION_GAP25 = 160;
+  function createSwitchThumb(size, checked) {
+    var dimensions = SWITCH_DIMENSIONS[size];
+    var thumbSize = dimensions.height - SWITCH_PADDING * 2;
+    var thumb = figma.createEllipse();
+    thumb.name = "Thumb";
+    thumb.resize(thumbSize, thumbSize);
+    thumb.fills = [
+      {
+        type: "SOLID",
+        color: { r: 1, g: 1, b: 1 }
+      }
+    ];
+    if (checked) {
+      thumb.x = dimensions.width - thumbSize - SWITCH_PADDING;
+    } else {
+      thumb.x = SWITCH_PADDING;
+    }
+    thumb.y = SWITCH_PADDING;
+    return thumb;
+  }
+  function createSwitchTrack(size, variant, checked, disabled) {
+    var dimensions = SWITCH_DIMENSIONS[size];
+    var track = figma.createFrame();
+    track.name = "Switch Track";
+    track.resize(dimensions.width, dimensions.height);
+    track.layoutMode = "NONE";
+    track.cornerRadius = BORDER_RADIUS.full;
+    var bgVariableName = "color-surface-3";
+    if (checked && !disabled) {
+      if (variant === "error") {
+        bgVariableName = "color-error";
+      } else {
+        bgVariableName = "color-primary";
+      }
+    }
+    var bgVar = getVariableByName(bgVariableName);
+    if (bgVar) {
+      bindFillToVariable(track, bgVar.id);
+    }
+    var thumb = createSwitchThumb(size, checked);
+    track.appendChild(thumb);
+    return track;
+  }
+  async function createSwitchComponent(size, variant, checked, disabled, labelText) {
+    var component = figma.createComponent();
+    component.name = "size=" + size + ", checked=" + checked + ", variant=" + variant + ", disabled=" + disabled;
+    var variantDesc = variantProp7.descriptions[variant] || "";
+    var sizeDesc = sizeProp6.descriptions[size] || "";
+    component.description = variantDesc + " - " + sizeDesc;
+    component.layoutMode = "HORIZONTAL";
+    component.primaryAxisAlignItems = "MIN";
+    component.counterAxisAlignItems = "CENTER";
+    component.primaryAxisSizingMode = "AUTO";
+    component.counterAxisSizingMode = "AUTO";
+    component.itemSpacing = SWITCH_LABEL_GAP;
+    component.fills = [];
+    var switchTrack = createSwitchTrack(size, variant, checked, disabled);
+    component.appendChild(switchTrack);
+    var label = await createTextNode(labelText, FONT_SIZE.base, 500);
+    var textVar = getVariableByName("text-color-surface");
+    if (textVar) {
+      bindTextColorToVariable(label, textVar.id);
+    }
+    component.appendChild(label);
+    if (disabled) {
+      component.opacity = 0.5;
+    }
+    return component;
+  }
+  function getSwitchLabel() {
+    return "Label";
+  }
+  async function generateSwitchComponents(page, startY) {
+    if (startY === void 0) startY = 100;
+    figma.currentPage = page;
+    var sizes = sizeProp6.values;
+    var components = [];
+    var rowLabels = [];
+    var componentGap = 24;
+    var rowGap = 48;
+    var headerRowHeight = 24;
+    var labelColumnWidth = 280;
+    var columnHeaderTexts = ["size=sm", "size=base", "size=lg"];
+    var currentY = headerRowHeight;
+    rowLabels.push({ y: currentY, text: "checked=false, variant=default" });
+    var currentX = labelColumnWidth;
+    for (var i = 0; i < sizes.length; i++) {
+      var component = await createSwitchComponent(
+        sizes[i],
+        "default",
+        false,
+        false,
+        getSwitchLabel()
+      );
+      component.x = currentX;
+      component.y = currentY;
+      currentX = currentX + component.width + componentGap;
+      components.push(component);
+    }
+    currentY = currentY + rowGap;
+    rowLabels.push({ y: currentY, text: "checked=true, variant=default" });
+    currentX = labelColumnWidth;
+    for (var i = 0; i < sizes.length; i++) {
+      var component = await createSwitchComponent(
+        sizes[i],
+        "default",
+        true,
+        false,
+        getSwitchLabel()
+      );
+      component.x = currentX;
+      component.y = currentY;
+      currentX = currentX + component.width + componentGap;
+      components.push(component);
+    }
+    currentY = currentY + rowGap;
+    rowLabels.push({
+      y: currentY,
+      text: "checked=false, variant=default, disabled=true"
+    });
+    currentX = labelColumnWidth;
+    for (var i = 0; i < sizes.length; i++) {
+      var component = await createSwitchComponent(
+        sizes[i],
+        "default",
+        false,
+        true,
+        getSwitchLabel()
+      );
+      component.x = currentX;
+      component.y = currentY;
+      currentX = currentX + component.width + componentGap;
+      components.push(component);
+    }
+    currentY = currentY + rowGap;
+    rowLabels.push({
+      y: currentY,
+      text: "checked=true, variant=default, disabled=true"
+    });
+    currentX = labelColumnWidth;
+    for (var i = 0; i < sizes.length; i++) {
+      var component = await createSwitchComponent(
+        sizes[i],
+        "default",
+        true,
+        true,
+        getSwitchLabel()
+      );
+      component.x = currentX;
+      component.y = currentY;
+      currentX = currentX + component.width + componentGap;
+      components.push(component);
+    }
+    currentY = currentY + rowGap;
+    rowLabels.push({ y: currentY, text: "checked=false, variant=error" });
+    currentX = labelColumnWidth;
+    for (var i = 0; i < sizes.length; i++) {
+      var component = await createSwitchComponent(
+        sizes[i],
+        "error",
+        false,
+        false,
+        getSwitchLabel()
+      );
+      component.x = currentX;
+      component.y = currentY;
+      currentX = currentX + component.width + componentGap;
+      components.push(component);
+    }
+    currentY = currentY + rowGap;
+    rowLabels.push({ y: currentY, text: "checked=true, variant=error" });
+    currentX = labelColumnWidth;
+    for (var i = 0; i < sizes.length; i++) {
+      var component = await createSwitchComponent(
+        sizes[i],
+        "error",
+        true,
+        false,
+        getSwitchLabel()
+      );
+      component.x = currentX;
+      component.y = currentY;
+      currentX = currentX + component.width + componentGap;
+      components.push(component);
+    }
+    currentY = currentY + rowGap;
+    rowLabels.push({
+      y: currentY,
+      text: "checked=false, variant=error, disabled=true"
+    });
+    currentX = labelColumnWidth;
+    for (var i = 0; i < sizes.length; i++) {
+      var component = await createSwitchComponent(
+        sizes[i],
+        "error",
+        false,
+        true,
+        getSwitchLabel()
+      );
+      component.x = currentX;
+      component.y = currentY;
+      currentX = currentX + component.width + componentGap;
+      components.push(component);
+    }
+    currentY = currentY + rowGap;
+    rowLabels.push({
+      y: currentY,
+      text: "checked=true, variant=error, disabled=true"
+    });
+    currentX = labelColumnWidth;
+    for (var i = 0; i < sizes.length; i++) {
+      var component = await createSwitchComponent(
+        sizes[i],
+        "error",
+        true,
+        true,
+        getSwitchLabel()
+      );
+      component.x = currentX;
+      component.y = currentY;
+      currentX = currentX + component.width + componentGap;
+      components.push(component);
+    }
+    var componentSet = figma.combineAsVariants(components, page);
+    componentSet.name = "Switch";
+    componentSet.description = "Switch component with size (sm/base/lg), checked (false/true), variant (default/error), and disabled properties. Includes label text.";
+    componentSet.layoutMode = "NONE";
+    var contentWidth = componentSet.width + labelColumnWidth;
+    var contentHeight = componentSet.height + headerRowHeight;
+    var lightSection = createModeSection(page, "Switch", "light");
+    lightSection.frame.resize(
+      contentWidth + SECTION_PADDING25 * 2,
+      contentHeight + SECTION_PADDING25 * 2
+    );
+    var darkSection = createModeSection(page, "Switch", "dark");
+    darkSection.frame.resize(
+      contentWidth + SECTION_PADDING25 * 2,
+      contentHeight + SECTION_PADDING25 * 2
+    );
+    lightSection.frame.appendChild(componentSet);
+    componentSet.x = SECTION_PADDING25 + labelColumnWidth;
+    componentSet.y = SECTION_PADDING25 + headerRowHeight;
+    var columnHeaders = [];
+    for (var i = 0; i < Math.min(3, components.length); i++) {
+      columnHeaders.push({
+        x: components[i].x + SECTION_PADDING25,
+        text: columnHeaderTexts[i]
+      });
+    }
+    await createColumnHeaders(columnHeaders, SECTION_PADDING25, lightSection.frame);
+    for (var i = 0; i < rowLabels.length; i++) {
+      var label = rowLabels[i];
+      var labelNode = await createRowLabel(
+        label.text,
+        SECTION_PADDING25,
+        SECTION_PADDING25 + label.y + 4
+        // +4 to vertically center with switch
+      );
+      lightSection.frame.appendChild(labelNode);
+    }
+    for (var i = 0; i < components.length; i++) {
+      var component = components[i];
+      var instance = component.createInstance();
+      instance.x = component.x + SECTION_PADDING25 + labelColumnWidth;
+      instance.y = component.y + SECTION_PADDING25 + headerRowHeight;
+      darkSection.frame.appendChild(instance);
+    }
+    await createColumnHeaders(columnHeaders, SECTION_PADDING25, darkSection.frame);
+    for (var i = 0; i < rowLabels.length; i++) {
+      var label = rowLabels[i];
+      var labelNode = await createRowLabel(
+        label.text,
+        SECTION_PADDING25,
+        SECTION_PADDING25 + label.y + 4
+      );
+      darkSection.frame.appendChild(labelNode);
+    }
+    var totalWidth = contentWidth + SECTION_PADDING25 * 2;
+    var totalHeight = contentHeight + SECTION_PADDING25 * 2;
+    lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    lightSection.section.x = 100;
+    lightSection.section.y = startY;
+    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.y = startY;
+    console.log(
+      "\u2705 Generated Switch ComponentSet with " + components.length + " variants (light + dark)"
+    );
+    return startY + totalHeight + SECTION_GAP25;
+  }
+  var SWITCH_VARIANTS_EXPORT = variantProp7.values;
+  var SWITCH_SIZES_EXPORT = sizeProp6.values;
+
+  // scripts/figma/plugin/generators/tabs.ts
+  var SECTION_PADDING26 = 48;
+  var SECTION_GAP26 = 160;
+  var TABS_CONFIG = {
+    /** Height of tabs container (h-8.5 = 34px) */
+    containerHeight: 34,
+    /** Border radius for container (rounded-lg = 8px) */
+    borderRadius: 8,
+    /** Horizontal padding inside container (px-px = 1px on each side) */
+    containerPadding: 1,
+    /** Vertical margin on tabs (my-px = 1px) */
+    tabVerticalMargin: 1,
+    /** Horizontal padding on tabs (px-2.5 = 10px) */
+    tabHorizontalPadding: 10,
+    /** Tab text size (text-base = 16px) */
+    tabFontSize: 16,
+    /** Tab font weight (font-medium = 500) */
+    tabFontWeight: 500
+  };
+  var DEFAULT_TABS = ["Tab 1", "Tab 2", "Tab 3"];
+  async function createTabButton(label, isActive) {
+    var button = figma.createFrame();
+    button.name = isActive ? "Tab (active)" : "Tab";
+    button.layoutMode = "HORIZONTAL";
+    button.primaryAxisAlignItems = "CENTER";
+    button.counterAxisAlignItems = "CENTER";
+    button.primaryAxisSizingMode = "AUTO";
+    button.counterAxisSizingMode = "FIXED";
+    var buttonHeight = TABS_CONFIG.containerHeight - TABS_CONFIG.tabVerticalMargin * 2;
+    button.resize(100, buttonHeight);
+    button.paddingLeft = TABS_CONFIG.tabHorizontalPadding;
+    button.paddingRight = TABS_CONFIG.tabHorizontalPadding;
+    button.paddingTop = 0;
+    button.paddingBottom = 0;
+    button.cornerRadius = TABS_CONFIG.borderRadius;
+    button.fills = [];
+    var text = await createTextNode(
+      label,
+      TABS_CONFIG.tabFontSize,
+      TABS_CONFIG.tabFontWeight
+    );
+    text.name = "Label";
+    if (isActive) {
+      var surfaceTextVar = getVariableByName("text-color-surface");
+      if (surfaceTextVar) {
+        bindTextColorToVariable(text, surfaceTextVar.id);
+      }
+    } else {
+      var labelTextVar = getVariableByName("text-color-label");
+      if (labelTextVar) {
+        bindTextColorToVariable(text, labelTextVar.id);
+      }
+    }
+    button.appendChild(text);
+    return button;
+  }
+  function createTabIndicator(activeIndex, tabWidths) {
+    var indicator = figma.createFrame();
+    indicator.name = "Indicator";
+    var indicatorHeight = TABS_CONFIG.containerHeight - TABS_CONFIG.tabVerticalMargin * 2;
+    var indicatorWidth = tabWidths[activeIndex];
+    var indicatorX = TABS_CONFIG.containerPadding;
+    for (var i = 0; i < activeIndex; i++) {
+      indicatorX = indicatorX + tabWidths[i];
+    }
+    var indicatorY = TABS_CONFIG.tabVerticalMargin;
+    indicator.resize(indicatorWidth, indicatorHeight);
+    indicator.x = indicatorX;
+    indicator.y = indicatorY;
+    indicator.cornerRadius = TABS_CONFIG.borderRadius;
+    var surfaceElevatedVar = getVariableByName("color-surface-elevated");
+    if (surfaceElevatedVar) {
+      bindFillToVariable(indicator, surfaceElevatedVar.id);
+    }
+    var ringVar = getVariableByName("color-color-2");
+    if (ringVar) {
+      bindStrokeToVariable(indicator, ringVar.id, 1);
+    }
+    indicator.effects = [
+      {
+        type: "DROP_SHADOW",
+        color: { r: 0, g: 0, b: 0, a: 0.05 },
+        offset: { x: 0, y: 1 },
+        radius: 2,
+        spread: 0,
+        visible: true,
+        blendMode: "NORMAL"
+      }
+    ];
+    return indicator;
+  }
+  async function createTabsComponent(activeIndex) {
+    var component = figma.createComponent();
+    component.name = "active=" + DEFAULT_TABS[activeIndex];
+    component.description = "Tabs navigation component. Active tab shows elevated white pill indicator with shadow. Tabs: Tab 1, Tab 2, Tab 3.";
+    component.layoutMode = "HORIZONTAL";
+    component.primaryAxisSizingMode = "AUTO";
+    component.counterAxisSizingMode = "FIXED";
+    component.resize(100, TABS_CONFIG.containerHeight);
+    component.itemSpacing = 0;
+    component.paddingLeft = TABS_CONFIG.containerPadding;
+    component.paddingRight = TABS_CONFIG.containerPadding;
+    component.paddingTop = 0;
+    component.paddingBottom = 0;
+    component.cornerRadius = TABS_CONFIG.borderRadius;
+    var accentVar = getVariableByName("color-accent");
+    if (accentVar) {
+      bindFillToVariable(component, accentVar.id);
+    }
+    var tabButtons = [];
+    for (var i = 0; i < DEFAULT_TABS.length; i++) {
+      var tab = DEFAULT_TABS[i];
+      var isActive = i === activeIndex;
+      var button = await createTabButton(tab, isActive);
+      tabButtons.push(button);
+    }
+    var tabWidths = [];
+    for (var j = 0; j < tabButtons.length; j++) {
+      var btn = tabButtons[j];
+      component.appendChild(btn);
+      tabWidths.push(btn.width);
+    }
+    for (var k = 0; k < tabButtons.length; k++) {
+      tabButtons[k].remove();
+    }
+    var indicator = createTabIndicator(activeIndex, tabWidths);
+    component.appendChild(indicator);
+    for (var m = 0; m < tabButtons.length; m++) {
+      component.appendChild(tabButtons[m]);
+    }
+    return component;
+  }
+  async function generateTabsComponents(page, startY) {
+    if (startY === void 0) startY = 100;
+    console.log("Tabs: Starting generation at Y=" + startY);
+    try {
+      figma.currentPage = page;
+      var components = [];
+      var rowLabels = [];
+      var labelColumnWidth = 160;
+      var rowGap = 24;
+      var currentY = 0;
+      for (var i = 0; i < DEFAULT_TABS.length; i++) {
+        var tab = DEFAULT_TABS[i];
+        console.log("Tabs: Creating active=" + tab);
+        var component = await createTabsComponent(i);
+        component.x = labelColumnWidth;
+        component.y = currentY;
+        rowLabels.push({ y: currentY, text: "active=" + tab });
+        components.push(component);
+        currentY = currentY + TABS_CONFIG.containerHeight + rowGap;
+      }
+      console.log("Tabs: Combining as variants...");
+      var componentSet = figma.combineAsVariants(components, page);
+      componentSet.name = "Tabs";
+      componentSet.description = "Tabs - Horizontal tab navigation. Shows active state with elevated pill indicator. Tabs: Tab 1, Tab 2, Tab 3.";
+      componentSet.layoutMode = "NONE";
+      var contentWidth = componentSet.width + labelColumnWidth;
+      var contentHeight = componentSet.height;
+      var lightSection = createModeSection(page, "Tabs", "light");
+      lightSection.frame.resize(
+        contentWidth + SECTION_PADDING26 * 2,
+        contentHeight + SECTION_PADDING26 * 2
+      );
+      var darkSection = createModeSection(page, "Tabs", "dark");
+      darkSection.frame.resize(
+        contentWidth + SECTION_PADDING26 * 2,
+        contentHeight + SECTION_PADDING26 * 2
+      );
+      lightSection.frame.appendChild(componentSet);
+      componentSet.x = SECTION_PADDING26 + labelColumnWidth;
+      componentSet.y = SECTION_PADDING26;
+      for (var li = 0; li < rowLabels.length; li++) {
+        var label = rowLabels[li];
+        var labelNode = await createRowLabel(
+          label.text,
+          SECTION_PADDING26,
+          SECTION_PADDING26 + label.y + 12
+          // Center vertically with tabs
+        );
+        lightSection.frame.appendChild(labelNode);
+      }
+      for (var k = 0; k < components.length; k++) {
+        var origComp = components[k];
+        var instance = origComp.createInstance();
+        instance.x = SECTION_PADDING26 + labelColumnWidth;
+        instance.y = origComp.y + SECTION_PADDING26;
+        darkSection.frame.appendChild(instance);
+      }
+      for (var di = 0; di < rowLabels.length; di++) {
+        var darkLabel = rowLabels[di];
+        var darkLabelNode = await createRowLabel(
+          darkLabel.text,
+          SECTION_PADDING26,
+          SECTION_PADDING26 + darkLabel.y + 12
+        );
+        darkSection.frame.appendChild(darkLabelNode);
+      }
+      var totalWidth = contentWidth + SECTION_PADDING26 * 2;
+      var totalHeight = contentHeight + SECTION_PADDING26 * 2;
+      lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+      darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+      lightSection.section.x = 100;
+      lightSection.section.y = startY;
+      darkSection.section.x = 100 + totalWidth + 50;
+      darkSection.section.y = startY;
+      console.log(
+        "Generated Tabs ComponentSet with " + DEFAULT_TABS.length + " variants (light + dark)"
+      );
+      return startY + totalHeight + SECTION_GAP26;
+    } catch (error) {
+      var errorMessage = error instanceof Error ? error.message : String(error);
+      var errorStack = error instanceof Error ? error.stack : "";
+      console.error("Tabs generation failed: " + errorMessage);
+      console.error("Stack: " + errorStack);
+      throw error;
+    }
+  }
+
+  // scripts/figma/plugin/generators/text.ts
+  var textProps = component_registry_default.components.Text.props;
+  var variantProp8 = textProps.variant;
+  var sizeProp7 = textProps.size;
+  var SECTION_PADDING27 = 48;
+  var SECTION_GAP27 = 160;
   var TEXT_BASE_CLASS = "text-surface";
   var COPY_VARIANTS = ["body", "secondary", "success", "error"];
   var MONO_VARIANTS = ["mono", "mono-secondary"];
@@ -10586,19 +11114,19 @@
     return "Text content";
   }
   async function createTextComponent(variant, size) {
-    const variantClasses = variantProp7.classes[variant] || "";
-    const variantDesc = variantProp7.descriptions[variant] || "";
+    const variantClasses = variantProp8.classes[variant] || "";
+    const variantDesc = variantProp8.descriptions[variant] || "";
     let effectiveSizeClasses = "";
     let sizeDesc = "";
     if (isCopyVariant(variant) && size) {
-      effectiveSizeClasses = sizeProp6.classes[size] || "";
-      sizeDesc = sizeProp6.descriptions[size] || "";
+      effectiveSizeClasses = sizeProp7.classes[size] || "";
+      sizeDesc = sizeProp7.descriptions[size] || "";
     } else if (isMonoVariant(variant)) {
       if (size === "lg") {
-        effectiveSizeClasses = sizeProp6.classes["base"] || "";
+        effectiveSizeClasses = sizeProp7.classes["base"] || "";
         sizeDesc = "Large text (optically adjusted to base)";
       } else {
-        effectiveSizeClasses = sizeProp6.classes["sm"] || "";
+        effectiveSizeClasses = sizeProp7.classes["sm"] || "";
         sizeDesc = "Default text (optically adjusted to small)";
       }
     }
@@ -10648,8 +11176,8 @@
   async function generateTextComponents(page, startY) {
     if (startY === void 0) startY = 100;
     figma.currentPage = page;
-    const variants = variantProp7.values;
-    const sizes = sizeProp6.values;
+    const variants = variantProp8.values;
+    const sizes = sizeProp7.values;
     const components = [];
     const rowLabels = [];
     const columnHeaders = [];
@@ -10709,52 +11237,52 @@
     const contentHeight = componentSet.height + headerRowHeight;
     const lightSection = createModeSection(page, "Text", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING25 * 2,
-      contentHeight + SECTION_PADDING25 * 2
+      contentWidth + SECTION_PADDING27 * 2,
+      contentHeight + SECTION_PADDING27 * 2
     );
     const darkSection = createModeSection(page, "Text", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING25 * 2,
-      contentHeight + SECTION_PADDING25 * 2
+      contentWidth + SECTION_PADDING27 * 2,
+      contentHeight + SECTION_PADDING27 * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING25 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING25 + headerRowHeight;
+    componentSet.x = SECTION_PADDING27 + labelColumnWidth;
+    componentSet.y = SECTION_PADDING27 + headerRowHeight;
     await createColumnHeaders(
-      columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING25, text: h.text })),
-      SECTION_PADDING25,
+      columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING27, text: h.text })),
+      SECTION_PADDING27,
       lightSection.frame
     );
     for (const label of rowLabels) {
       const labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING25,
-        SECTION_PADDING25 + label.y + 8
+        SECTION_PADDING27,
+        SECTION_PADDING27 + label.y + 8
         // +8 to vertically center with text
       );
       lightSection.frame.appendChild(labelNode);
     }
     for (const component of components) {
       const instance = component.createInstance();
-      instance.x = component.x + SECTION_PADDING25 + labelColumnWidth;
-      instance.y = component.y + SECTION_PADDING25 + headerRowHeight;
+      instance.x = component.x + SECTION_PADDING27 + labelColumnWidth;
+      instance.y = component.y + SECTION_PADDING27 + headerRowHeight;
       darkSection.frame.appendChild(instance);
     }
     await createColumnHeaders(
-      columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING25, text: h.text })),
-      SECTION_PADDING25,
+      columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING27, text: h.text })),
+      SECTION_PADDING27,
       darkSection.frame
     );
     for (const label of rowLabels) {
       const labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING25,
-        SECTION_PADDING25 + label.y + 8
+        SECTION_PADDING27,
+        SECTION_PADDING27 + label.y + 8
       );
       darkSection.frame.appendChild(labelNode);
     }
-    const totalWidth = contentWidth + SECTION_PADDING25 * 2;
-    const totalHeight = contentHeight + SECTION_PADDING25 * 2;
+    const totalWidth = contentWidth + SECTION_PADDING27 * 2;
+    const totalHeight = contentHeight + SECTION_PADDING27 * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     lightSection.section.x = 100;
@@ -10764,10 +11292,10 @@
     console.log(
       "\u2705 Generated Text ComponentSet with " + components.length + " variants (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP25;
+    return startY + totalHeight + SECTION_GAP27;
   }
-  var TEXT_VARIANTS_EXPORT = variantProp7.values;
-  var TEXT_SIZES_EXPORT = sizeProp6.values;
+  var TEXT_VARIANTS_EXPORT = variantProp8.values;
+  var TEXT_SIZES_EXPORT = sizeProp7.values;
 
   // scripts/figma/plugin/generated/icon-data.json
   var icon_data_default = [
@@ -13771,9 +14299,13 @@
         nextY = await generateSensitiveInputComponents(componentsPage, nextY);
         figma.notify("Generating Surface components...");
         nextY = await generateSurfaceComponents(componentsPage, nextY);
+        figma.notify("Generating Switch components...");
+        nextY = await generateSwitchComponents(componentsPage, nextY);
+        figma.notify("Generating Tabs components...");
+        nextY = await generateTabsComponents(componentsPage, nextY);
         figma.notify("\u2705 Generation complete!", { timeout: 3e3 });
         figma.closePlugin(
-          "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, Dialog, Dropdown, Input, InputArea, LayerCard, Loader, LinkButton, MenuBar, Meter, Pagination, RefreshButton, Select, SensitiveInput, Surface, Text components, and Icon Library"
+          "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, Dialog, Dropdown, Input, InputArea, LayerCard, Loader, LinkButton, MenuBar, Meter, Pagination, RefreshButton, Select, SensitiveInput, Surface, Switch, Tabs, Text components, and Icon Library"
         );
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
