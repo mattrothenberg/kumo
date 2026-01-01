@@ -1,0 +1,723 @@
+/**
+ * Dropdown Component Generator
+ *
+ * Generates a Dropdown ComponentSet in Figma that matches
+ * the DropdownMenu component structure:
+ *
+ * - open: false, true
+ * - variant: default, withIcons, withDanger, withGroups, withCheckbox, withShortcuts
+ *
+ * The Dropdown has a Trigger (Button) and when open,
+ * displays a dropdown panel with menu items.
+ *
+ * Uses real icons from the Icon Library page.
+ *
+ * @see packages/kumo/src/components/dropdown/dropdown.tsx
+ */
+
+import {
+  createTextNode,
+  getVariableByName,
+  createModeSection,
+  createRowLabel,
+  createColumnHeaders,
+  bindFillToVariable,
+  bindStrokeToVariable,
+  bindTextColorToVariable,
+  BORDER_RADIUS,
+} from "./shared";
+import { getButtonIcon, bindIconColor } from "./icon-utils";
+
+/**
+ * Section padding for component display
+ */
+var SECTION_PADDING = 48;
+
+/**
+ * Gap between sections on the page
+ */
+var SECTION_GAP = 160;
+
+/**
+ * Open state values
+ */
+var OPEN_VALUES = [false, true];
+
+/**
+ * Variant types for different dropdown configurations
+ */
+var VARIANT_VALUES = [
+  "default",
+  "withIcons",
+  "withDanger",
+  "withGroups",
+  "withCheckbox",
+  "withShortcuts",
+];
+
+/**
+ * Dropdown panel width
+ */
+var DROPDOWN_WIDTH = 200;
+
+/**
+ * Create a menu item frame
+ */
+async function createMenuItem(
+  label: string,
+  options?: {
+    icon?: string;
+    variant?: "default" | "danger";
+    disabled?: boolean;
+    shortcut?: string;
+    highlighted?: boolean;
+  },
+): Promise<FrameNode> {
+  var opts = options || {};
+  var itemFrame = figma.createFrame();
+  itemFrame.name = "Item: " + label;
+  itemFrame.layoutMode = "HORIZONTAL";
+  itemFrame.primaryAxisAlignItems = "SPACE_BETWEEN";
+  itemFrame.counterAxisAlignItems = "CENTER";
+  itemFrame.primaryAxisSizingMode = "FIXED";
+  itemFrame.counterAxisSizingMode = "AUTO";
+  itemFrame.layoutAlign = "STRETCH";
+  itemFrame.resize(DROPDOWN_WIDTH - 12, 32);
+  itemFrame.itemSpacing = 8;
+  itemFrame.paddingLeft = 8;
+  itemFrame.paddingRight = 8;
+  itemFrame.paddingTop = 6;
+  itemFrame.paddingBottom = 6;
+  itemFrame.cornerRadius = 6;
+  itemFrame.fills = [];
+
+  // Apply highlight background if highlighted
+  if (opts.highlighted) {
+    var highlightVar = getVariableByName("color-color-3");
+    if (highlightVar) {
+      bindFillToVariable(itemFrame, highlightVar.id);
+    }
+  }
+
+  // Apply disabled opacity
+  if (opts.disabled) {
+    itemFrame.opacity = 0.5;
+  }
+
+  // Left side container (icon + label)
+  var leftContainer = figma.createFrame();
+  leftContainer.name = "Left";
+  leftContainer.layoutMode = "HORIZONTAL";
+  leftContainer.primaryAxisSizingMode = "AUTO";
+  leftContainer.counterAxisSizingMode = "AUTO";
+  leftContainer.counterAxisAlignItems = "CENTER";
+  leftContainer.itemSpacing = 8;
+  leftContainer.fills = [];
+
+  // Add icon if provided
+  if (opts.icon) {
+    var icon = getButtonIcon(opts.icon, "sm");
+    icon.name = "Icon";
+    var iconColorToken =
+      opts.variant === "danger" ? "text-error" : "text-surface";
+    bindIconColor(icon, iconColorToken);
+    leftContainer.appendChild(icon);
+  }
+
+  // Create label text
+  var labelText = await createTextNode(label, 14, 400);
+  labelText.name = "Label";
+  labelText.textAutoResize = "WIDTH_AND_HEIGHT";
+
+  // Apply text color based on variant
+  var textColorToken =
+    opts.variant === "danger" ? "text-color-error" : "text-color-surface";
+  var textVar = getVariableByName(textColorToken);
+  if (textVar) {
+    bindTextColorToVariable(labelText, textVar.id);
+  }
+
+  leftContainer.appendChild(labelText);
+  itemFrame.appendChild(leftContainer);
+
+  // Add shortcut if provided
+  if (opts.shortcut) {
+    var shortcutText = await createTextNode(opts.shortcut, 12, 400);
+    shortcutText.name = "Shortcut";
+    shortcutText.textAutoResize = "WIDTH_AND_HEIGHT";
+    shortcutText.opacity = 0.6;
+
+    var shortcutVar = getVariableByName("text-color-muted");
+    if (shortcutVar) {
+      bindTextColorToVariable(shortcutText, shortcutVar.id);
+    }
+
+    itemFrame.appendChild(shortcutText);
+  }
+
+  return itemFrame;
+}
+
+/**
+ * Create a checkbox menu item
+ */
+async function createCheckboxItem(
+  label: string,
+  checked: boolean,
+): Promise<FrameNode> {
+  var itemFrame = figma.createFrame();
+  itemFrame.name = "CheckboxItem: " + label;
+  itemFrame.layoutMode = "HORIZONTAL";
+  itemFrame.primaryAxisAlignItems = "MIN";
+  itemFrame.counterAxisAlignItems = "CENTER";
+  itemFrame.primaryAxisSizingMode = "FIXED";
+  itemFrame.counterAxisSizingMode = "AUTO";
+  itemFrame.layoutAlign = "STRETCH";
+  itemFrame.resize(DROPDOWN_WIDTH - 12, 32);
+  itemFrame.itemSpacing = 8;
+  itemFrame.paddingLeft = 8;
+  itemFrame.paddingRight = 8;
+  itemFrame.paddingTop = 6;
+  itemFrame.paddingBottom = 6;
+  itemFrame.cornerRadius = 6;
+  itemFrame.fills = [];
+
+  // Create checkbox indicator
+  var checkboxFrame = figma.createFrame();
+  checkboxFrame.name = "Checkbox";
+  checkboxFrame.resize(16, 16);
+  checkboxFrame.cornerRadius = 4;
+
+  if (checked) {
+    // Filled checkbox with check icon
+    var primaryVar = getVariableByName("color-primary");
+    if (primaryVar) {
+      bindFillToVariable(checkboxFrame, primaryVar.id);
+    }
+
+    // Add check icon
+    var checkIcon = getButtonIcon("ph-check", "xs");
+    checkIcon.name = "Check";
+    bindIconColor(checkIcon, "text-white");
+    checkboxFrame.layoutMode = "HORIZONTAL";
+    checkboxFrame.primaryAxisAlignItems = "CENTER";
+    checkboxFrame.counterAxisAlignItems = "CENTER";
+    checkboxFrame.appendChild(checkIcon);
+  } else {
+    // Empty checkbox with border
+    var borderVar = getVariableByName("color-border");
+    if (borderVar) {
+      bindStrokeToVariable(checkboxFrame, borderVar.id, 1);
+    }
+    checkboxFrame.fills = [];
+  }
+
+  itemFrame.appendChild(checkboxFrame);
+
+  // Create label text
+  var labelText = await createTextNode(label, 14, 400);
+  labelText.name = "Label";
+  labelText.textAutoResize = "WIDTH_AND_HEIGHT";
+
+  var textVar = getVariableByName("text-color-surface");
+  if (textVar) {
+    bindTextColorToVariable(labelText, textVar.id);
+  }
+
+  itemFrame.appendChild(labelText);
+
+  return itemFrame;
+}
+
+/**
+ * Create a separator line
+ */
+function createSeparator(): FrameNode {
+  var separator = figma.createFrame();
+  separator.name = "Separator";
+  separator.layoutMode = "HORIZONTAL";
+  separator.primaryAxisSizingMode = "FIXED";
+  separator.counterAxisSizingMode = "FIXED";
+  separator.layoutAlign = "STRETCH";
+  separator.resize(DROPDOWN_WIDTH - 12, 9);
+  separator.fills = [];
+
+  // Create the line
+  var line = figma.createFrame();
+  line.name = "Line";
+  line.layoutMode = "HORIZONTAL";
+  line.primaryAxisSizingMode = "FIXED";
+  line.counterAxisSizingMode = "FIXED";
+  line.layoutAlign = "STRETCH";
+  line.resize(DROPDOWN_WIDTH - 12, 1);
+
+  var mutedVar = getVariableByName("color-muted");
+  if (mutedVar) {
+    bindFillToVariable(line, mutedVar.id);
+  }
+
+  separator.appendChild(line);
+  separator.paddingTop = 4;
+  separator.paddingBottom = 4;
+
+  return separator;
+}
+
+/**
+ * Create a group label
+ */
+async function createGroupLabel(label: string): Promise<FrameNode> {
+  var labelFrame = figma.createFrame();
+  labelFrame.name = "GroupLabel: " + label;
+  labelFrame.layoutMode = "HORIZONTAL";
+  labelFrame.primaryAxisSizingMode = "FIXED";
+  labelFrame.counterAxisSizingMode = "AUTO";
+  labelFrame.layoutAlign = "STRETCH";
+  labelFrame.resize(DROPDOWN_WIDTH - 12, 24);
+  labelFrame.paddingLeft = 8;
+  labelFrame.paddingRight = 8;
+  labelFrame.paddingTop = 6;
+  labelFrame.paddingBottom = 2;
+  labelFrame.fills = [];
+
+  var labelText = await createTextNode(label, 14, 600);
+  labelText.name = "Label";
+  labelText.textAutoResize = "WIDTH_AND_HEIGHT";
+
+  var textVar = getVariableByName("text-color-surface");
+  if (textVar) {
+    bindTextColorToVariable(labelText, textVar.id);
+  }
+
+  labelFrame.appendChild(labelText);
+
+  return labelFrame;
+}
+
+/**
+ * Create the trigger button
+ */
+async function createTriggerButton(label: string): Promise<FrameNode> {
+  var button = figma.createFrame();
+  button.name = "Trigger";
+  button.layoutMode = "HORIZONTAL";
+  button.primaryAxisAlignItems = "CENTER";
+  button.counterAxisAlignItems = "CENTER";
+  button.primaryAxisSizingMode = "AUTO";
+  button.counterAxisSizingMode = "AUTO";
+  button.itemSpacing = 8;
+  button.paddingLeft = 12;
+  button.paddingRight = 12;
+  button.paddingTop = 8;
+  button.paddingBottom = 8;
+  button.cornerRadius = BORDER_RADIUS.lg;
+
+  // Apply secondary button styles
+  var bgVar = getVariableByName("color-secondary");
+  if (bgVar) {
+    bindFillToVariable(button, bgVar.id);
+  }
+
+  var borderVar = getVariableByName("color-border");
+  if (borderVar) {
+    bindStrokeToVariable(button, borderVar.id, 1);
+  }
+
+  // Create button text
+  var buttonText = await createTextNode(label, 14, 500);
+  buttonText.name = "Label";
+  buttonText.textAutoResize = "WIDTH_AND_HEIGHT";
+
+  var textVar = getVariableByName("text-color-surface");
+  if (textVar) {
+    bindTextColorToVariable(buttonText, textVar.id);
+  }
+
+  button.appendChild(buttonText);
+
+  return button;
+}
+
+/**
+ * Create the dropdown panel with items based on variant
+ */
+async function createDropdownPanel(variant: string): Promise<FrameNode> {
+  var panel = figma.createFrame();
+  panel.name = "Dropdown";
+  panel.layoutMode = "VERTICAL";
+  panel.primaryAxisSizingMode = "AUTO";
+  panel.counterAxisSizingMode = "FIXED";
+  panel.resize(DROPDOWN_WIDTH, 100); // Height will auto-adjust
+  panel.itemSpacing = 2;
+  panel.paddingLeft = 6;
+  panel.paddingRight = 6;
+  panel.paddingTop = 6;
+  panel.paddingBottom = 6;
+  panel.cornerRadius = BORDER_RADIUS.lg;
+
+  // Apply background (bg-secondary)
+  var bgVar = getVariableByName("color-secondary");
+  if (bgVar) {
+    bindFillToVariable(panel, bgVar.id);
+  }
+
+  // Apply border (ring ring-border)
+  var borderVar = getVariableByName("color-border");
+  if (borderVar) {
+    bindStrokeToVariable(panel, borderVar.id, 1);
+  }
+
+  // Add items based on variant
+  if (variant === "default") {
+    var item1 = await createMenuItem("Item 1");
+    var item2 = await createMenuItem("Item 2", { highlighted: true });
+    var item3 = await createMenuItem("Item 3");
+    panel.appendChild(item1);
+    panel.appendChild(item2);
+    panel.appendChild(item3);
+  } else if (variant === "withIcons") {
+    var editItem = await createMenuItem("Edit", { icon: "ph-pencil" });
+    var copyItem = await createMenuItem("Copy", {
+      icon: "ph-copy",
+      highlighted: true,
+    });
+    var shareItem = await createMenuItem("Share", { icon: "ph-share" });
+    var downloadItem = await createMenuItem("Download", {
+      icon: "ph-download",
+    });
+    panel.appendChild(editItem);
+    panel.appendChild(copyItem);
+    panel.appendChild(shareItem);
+    panel.appendChild(downloadItem);
+  } else if (variant === "withDanger") {
+    var editItem2 = await createMenuItem("Edit", { icon: "ph-pencil" });
+    var duplicateItem = await createMenuItem("Duplicate", { icon: "ph-copy" });
+    var sep1 = createSeparator();
+    var deleteItem = await createMenuItem("Delete", {
+      icon: "ph-trash",
+      variant: "danger",
+    });
+    panel.appendChild(editItem2);
+    panel.appendChild(duplicateItem);
+    panel.appendChild(sep1);
+    panel.appendChild(deleteItem);
+  } else if (variant === "withGroups") {
+    var accountLabel = await createGroupLabel("Account");
+    var profileItem = await createMenuItem("Profile", { icon: "ph-user" });
+    var settingsItem = await createMenuItem("Settings", { icon: "ph-gear" });
+    var sep2 = createSeparator();
+    var signOutItem = await createMenuItem("Sign out", {
+      icon: "ph-sign-out",
+      variant: "danger",
+    });
+    panel.appendChild(accountLabel);
+    panel.appendChild(profileItem);
+    panel.appendChild(settingsItem);
+    panel.appendChild(sep2);
+    panel.appendChild(signOutItem);
+  } else if (variant === "withCheckbox") {
+    var displayLabel = await createGroupLabel("Display");
+    var sidebarItem = await createCheckboxItem("Show sidebar", true);
+    var lineNumItem = await createCheckboxItem("Show line numbers", false);
+    var wrapItem = await createCheckboxItem("Word wrap", true);
+    panel.appendChild(displayLabel);
+    panel.appendChild(sidebarItem);
+    panel.appendChild(lineNumItem);
+    panel.appendChild(wrapItem);
+  } else if (variant === "withShortcuts") {
+    var copyShortcut = await createMenuItem("Copy", {
+      icon: "ph-copy",
+      shortcut: "\u2318C",
+    });
+    var editShortcut = await createMenuItem("Edit", {
+      icon: "ph-pencil",
+      shortcut: "\u2318E",
+      highlighted: true,
+    });
+    var sep3 = createSeparator();
+    var deleteShortcut = await createMenuItem("Delete", {
+      icon: "ph-trash",
+      variant: "danger",
+      shortcut: "\u2318\u232B",
+    });
+    panel.appendChild(copyShortcut);
+    panel.appendChild(editShortcut);
+    panel.appendChild(sep3);
+    panel.appendChild(deleteShortcut);
+  }
+
+  return panel;
+}
+
+/**
+ * Create a single Dropdown component variant
+ */
+async function createDropdownComponent(
+  open: boolean,
+  variant: string,
+): Promise<ComponentNode> {
+  var component = figma.createComponent();
+  component.name = "open=" + open + ", variant=" + variant;
+  component.description =
+    "Dropdown " + variant + " " + (open ? "open" : "closed");
+
+  // Set up vertical auto-layout
+  component.layoutMode = "VERTICAL";
+  component.primaryAxisSizingMode = "AUTO";
+  component.counterAxisSizingMode = "AUTO";
+  component.counterAxisAlignItems = "MIN";
+  component.itemSpacing = 4;
+  component.fills = [];
+
+  // Create trigger button
+  var triggerLabel =
+    variant === "withCheckbox"
+      ? "View Options"
+      : variant === "withGroups"
+        ? "User Menu"
+        : variant === "withShortcuts"
+          ? "Edit"
+          : "Open Menu";
+  var trigger = await createTriggerButton(triggerLabel);
+  component.appendChild(trigger);
+
+  // Create dropdown panel if open
+  if (open) {
+    var panel = await createDropdownPanel(variant);
+    component.appendChild(panel);
+  }
+
+  return component;
+}
+
+/**
+ * Generate Dropdown ComponentSet with open and variant properties
+ *
+ * Creates a "Dropdown" ComponentSet with all combinations of:
+ * - open: false, true
+ * - variant: default, withIcons, withDanger, withGroups, withCheckbox, withShortcuts
+ *
+ * Layout:
+ * - Rows: variants
+ * - Columns: open states
+ *
+ * Creates both light and dark mode sections.
+ *
+ * @param page - The page to add components to
+ * @param startY - Y position to start placing the section
+ * @returns The Y position after this section (for next section placement)
+ */
+export async function generateDropdownComponents(
+  page: PageNode,
+  startY: number,
+): Promise<number> {
+  if (startY === undefined) startY = 100;
+
+  figma.currentPage = page;
+
+  // Generate all combinations
+  var components: ComponentNode[] = [];
+
+  // Track row labels: { y, text }
+  var rowLabels: { y: number; text: string }[] = [];
+
+  // Track column headers: { x, text }
+  var columnHeaders: { x: number; text: string }[] = [];
+
+  // Layout spacing
+  var componentGapX = 24;
+  var componentGapY = 40;
+  var headerRowHeight = 24;
+  var labelColumnWidth = 180;
+
+  // Track layout by row (variant)
+  var rowComponents: Map<number, ComponentNode[]> = new Map();
+
+  // Generate components for each combination
+  // Rows = variants, Columns = open states
+  for (var vi = 0; vi < VARIANT_VALUES.length; vi++) {
+    var variant = VARIANT_VALUES[vi];
+    rowComponents.set(vi, []);
+
+    for (var oi = 0; oi < OPEN_VALUES.length; oi++) {
+      var open = OPEN_VALUES[oi];
+      var component = await createDropdownComponent(open, variant);
+      rowComponents.get(vi)!.push(component);
+      components.push(component);
+    }
+  }
+
+  // First pass: calculate max width per column and max height per row
+  var columnWidths: number[] = [];
+  var rowHeights: number[] = [];
+
+  var numColumns = OPEN_VALUES.length;
+
+  for (var colIdx = 0; colIdx < numColumns; colIdx++) {
+    var maxColWidth = 0;
+    for (var rowIdx = 0; rowIdx < VARIANT_VALUES.length; rowIdx++) {
+      var row = rowComponents.get(rowIdx) || [];
+      var comp = row[colIdx];
+      if (comp && comp.width > maxColWidth) {
+        maxColWidth = comp.width;
+      }
+    }
+    columnWidths.push(maxColWidth);
+  }
+
+  for (var rowIdx = 0; rowIdx < VARIANT_VALUES.length; rowIdx++) {
+    var row = rowComponents.get(rowIdx) || [];
+    var maxRowHeight = 0;
+    for (var colIdx = 0; colIdx < row.length; colIdx++) {
+      var comp = row[colIdx];
+      if (comp && comp.height > maxRowHeight) {
+        maxRowHeight = comp.height;
+      }
+    }
+    rowHeights.push(maxRowHeight);
+  }
+
+  // Second pass: position components using consistent column widths
+  var yOffset = headerRowHeight;
+
+  for (var rowIdx = 0; rowIdx < VARIANT_VALUES.length; rowIdx++) {
+    var row = rowComponents.get(rowIdx) || [];
+    var xOffset = labelColumnWidth;
+    var variantValue = VARIANT_VALUES[rowIdx];
+
+    // Record row label
+    rowLabels.push({
+      y: yOffset,
+      text: "variant=" + variantValue,
+    });
+
+    for (var colIdx = 0; colIdx < row.length; colIdx++) {
+      var comp = row[colIdx];
+      comp.x = xOffset;
+      comp.y = yOffset;
+
+      // Record column headers from first row
+      if (rowIdx === 0) {
+        var openVal = OPEN_VALUES[colIdx];
+        columnHeaders.push({
+          x: xOffset,
+          text: "open=" + openVal,
+        });
+      }
+
+      // Use consistent column width for positioning
+      xOffset += columnWidths[colIdx] + componentGapX;
+    }
+
+    yOffset += rowHeights[rowIdx] + componentGapY;
+  }
+
+  // Combine all variants into a single ComponentSet
+  // @ts-ignore - combineAsVariants works at runtime
+  var componentSet = figma.combineAsVariants(components, page);
+  componentSet.name = "Dropdown";
+  componentSet.description =
+    "Dropdown menu component with trigger button and menu items. " +
+    "Supports icons, danger variants, groups, checkboxes, and keyboard shortcuts.";
+  componentSet.layoutMode = "NONE";
+
+  // Calculate content dimensions
+  var contentWidth = componentSet.width + labelColumnWidth;
+  var contentHeight = componentSet.height + headerRowHeight;
+
+  // Create light mode section
+  var lightSection = createModeSection(page, "Dropdown", "light");
+  lightSection.frame.resize(
+    contentWidth + SECTION_PADDING * 2,
+    contentHeight + SECTION_PADDING * 2,
+  );
+
+  // Create dark mode section
+  var darkSection = createModeSection(page, "Dropdown", "dark");
+  darkSection.frame.resize(
+    contentWidth + SECTION_PADDING * 2,
+    contentHeight + SECTION_PADDING * 2,
+  );
+
+  // Move ComponentSet into light section frame
+  lightSection.frame.appendChild(componentSet);
+  componentSet.x = SECTION_PADDING + labelColumnWidth;
+  componentSet.y = SECTION_PADDING + headerRowHeight;
+
+  // Add column headers to light section
+  await createColumnHeaders(
+    columnHeaders.map(function (h) {
+      return { x: h.x + SECTION_PADDING, text: h.text };
+    }),
+    SECTION_PADDING,
+    lightSection.frame,
+  );
+
+  // Add row labels to light section
+  for (var li = 0; li < rowLabels.length; li++) {
+    var label = rowLabels[li];
+    var labelNode = await createRowLabel(
+      label.text,
+      SECTION_PADDING,
+      SECTION_PADDING + label.y + 8,
+    );
+    lightSection.frame.appendChild(labelNode);
+  }
+
+  // Create instances for dark section
+  for (var k = 0; k < components.length; k++) {
+    var origComp = components[k];
+    var instance = origComp.createInstance();
+    instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
+    instance.y = origComp.y + SECTION_PADDING + headerRowHeight;
+    darkSection.frame.appendChild(instance);
+  }
+
+  // Add column headers to dark section
+  await createColumnHeaders(
+    columnHeaders.map(function (h) {
+      return { x: h.x + SECTION_PADDING, text: h.text };
+    }),
+    SECTION_PADDING,
+    darkSection.frame,
+  );
+
+  // Add row labels to dark section
+  for (var di = 0; di < rowLabels.length; di++) {
+    var darkLabel = rowLabels[di];
+    var darkLabelNode = await createRowLabel(
+      darkLabel.text,
+      SECTION_PADDING,
+      SECTION_PADDING + darkLabel.y + 8,
+    );
+    darkSection.frame.appendChild(darkLabelNode);
+  }
+
+  // Resize sections to fit content with padding
+  var totalWidth = contentWidth + SECTION_PADDING * 2;
+  var totalHeight = contentHeight + SECTION_PADDING * 2;
+
+  lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+  darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+
+  // Position sections side by side
+  lightSection.section.x = 100;
+  lightSection.section.y = startY;
+
+  darkSection.section.x = 100 + totalWidth + 50;
+  darkSection.section.y = startY;
+
+  console.log(
+    "Generated Dropdown ComponentSet with " +
+      components.length +
+      " variants (light + dark)",
+  );
+
+  return startY + totalHeight + SECTION_GAP;
+}
+
+/**
+ * Exports for tests and backwards compatibility
+ */
+export var DROPDOWN_OPEN_VALUES = OPEN_VALUES;
+export var DROPDOWN_VARIANT_VALUES = VARIANT_VALUES;
