@@ -39,6 +39,83 @@ const variantProp = badgeProps.variant as {
 const BADGE_BASE_STYLES = badgeComponent.baseStyles as string;
 
 /**
+ * TESTABLE EXPORTS - Pure functions that return intermediate data
+ * These functions compute data without calling Figma APIs, enabling snapshot tests.
+ */
+
+/**
+ * Get variant configuration from registry
+ */
+export function getBadgeVariantConfig() {
+  return {
+    values: variantProp.values,
+    classes: variantProp.classes,
+    descriptions: variantProp.descriptions,
+    default: variantProp.default,
+  };
+}
+
+/**
+ * Get parsed base styles
+ */
+export function getBadgeParsedBaseStyles() {
+  return parseTailwindClasses(BADGE_BASE_STYLES);
+}
+
+/**
+ * Get parsed styles for a specific variant
+ */
+export function getBadgeParsedVariantStyles(variant: string) {
+  const classes = variantProp.classes[variant] || "";
+  return {
+    variant,
+    classes,
+    description: variantProp.descriptions[variant] || "",
+    parsed: parseTailwindClasses(classes),
+  };
+}
+
+/**
+ * Get all variant data (for snapshot testing)
+ * Returns intermediate data before Figma API calls
+ */
+export function getAllBadgeVariantData() {
+  const baseStyles = getBadgeParsedBaseStyles();
+  const config = getBadgeVariantConfig();
+
+  return {
+    baseStyles: {
+      raw: BADGE_BASE_STYLES,
+      parsed: baseStyles,
+    },
+    variants: config.values.map((variant) => {
+      const variantData = getBadgeParsedVariantStyles(variant);
+      return {
+        ...variantData,
+        // Layout calculations
+        layout: {
+          layoutMode: "HORIZONTAL",
+          primaryAxisAlignItems: "CENTER",
+          counterAxisAlignItems: "CENTER",
+          paddingLeft: baseStyles.paddingX ?? 8,
+          paddingRight: baseStyles.paddingX ?? 8,
+          paddingTop: baseStyles.paddingY ?? 2,
+          paddingBottom: baseStyles.paddingY ?? 2,
+          cornerRadius: baseStyles.borderRadius ?? 9999,
+          primaryAxisSizingMode: "AUTO",
+          counterAxisSizingMode: "AUTO",
+        },
+        // Text properties
+        text: {
+          fontSize: baseStyles.fontSize ?? 12,
+          fontWeight: baseStyles.fontWeight ?? 500,
+        },
+      };
+    }),
+  };
+}
+
+/**
  * Create a single Badge component with the specified variant
  */
 async function createBadgeComponent(variant: string): Promise<ComponentNode> {

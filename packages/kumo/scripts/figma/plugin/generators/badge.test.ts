@@ -13,6 +13,12 @@
 
 import { describe, it, expect } from "vitest";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
+import {
+  getBadgeVariantConfig,
+  getBadgeParsedBaseStyles,
+  getBadgeParsedVariantStyles,
+  getAllBadgeVariantData,
+} from "./badge";
 
 // Import registry as source of truth
 import registry from "../../../../ai/component-registry.json";
@@ -488,5 +494,94 @@ describe("Badge Generator - Color Token Coverage", () => {
       const parsed = parseTailwindClasses(`border ${color}`);
       expect(parsed.strokeVariable).toBeDefined();
     }
+  });
+});
+
+describe("Badge Generator - Snapshot Tests (Intermediate Data)", () => {
+  /**
+   * SNAPSHOT TESTS - Regression guards for intermediate data
+   *
+   * These tests capture the intermediate data (parsed styles, variant configs,
+   * layout calculations) BEFORE it hits Figma APIs. This enables:
+   *
+   * 1. Testing without Figma plugin runtime
+   * 2. Detecting unintended changes in parsing or layout logic
+   * 3. Validating the full source of truth chain:
+   *    badge.tsx → component-registry.json → badge.ts parser → Figma
+   *
+   * If these snapshots change unexpectedly, it means:
+   * - Badge component styles changed in badge.tsx (intended)
+   * - Parser logic changed (review carefully)
+   * - Registry generation changed (review carefully)
+   */
+
+  it("should produce consistent variant config from registry", () => {
+    const config = getBadgeVariantConfig();
+    expect(config).toMatchSnapshot();
+  });
+
+  it("should produce consistent parsed base styles", () => {
+    const baseStyles = getBadgeParsedBaseStyles();
+    expect(baseStyles).toMatchSnapshot();
+  });
+
+  it("should produce consistent parsed styles for primary variant", () => {
+    const variantData = getBadgeParsedVariantStyles("primary");
+    expect(variantData).toMatchSnapshot();
+  });
+
+  it("should produce consistent parsed styles for secondary variant", () => {
+    const variantData = getBadgeParsedVariantStyles("secondary");
+    expect(variantData).toMatchSnapshot();
+  });
+
+  it("should produce consistent parsed styles for destructive variant", () => {
+    const variantData = getBadgeParsedVariantStyles("destructive");
+    expect(variantData).toMatchSnapshot();
+  });
+
+  it("should produce consistent parsed styles for outline variant", () => {
+    const variantData = getBadgeParsedVariantStyles("outline");
+    expect(variantData).toMatchSnapshot();
+  });
+
+  it("should produce consistent parsed styles for beta variant", () => {
+    const variantData = getBadgeParsedVariantStyles("beta");
+    expect(variantData).toMatchSnapshot();
+  });
+
+  it("should produce consistent complete badge variant data", () => {
+    const allData = getAllBadgeVariantData();
+    expect(allData).toMatchSnapshot();
+  });
+
+  /**
+   * GOLDEN PATH TEST - Full intermediate data chain
+   *
+   * This test captures the complete intermediate data structure that
+   * badge.ts computes before making any Figma API calls. It's the
+   * most comprehensive regression guard.
+   */
+  it("should produce consistent intermediate data for all variants (golden path)", () => {
+    const allData = getAllBadgeVariantData();
+
+    // Verify structure exists
+    expect(allData.baseStyles).toBeDefined();
+    expect(allData.baseStyles.raw).toBeDefined();
+    expect(allData.baseStyles.parsed).toBeDefined();
+    expect(allData.variants).toHaveLength(5);
+
+    // Each variant should have complete data
+    for (const variant of allData.variants) {
+      expect(variant.variant).toBeDefined();
+      expect(variant.classes).toBeDefined();
+      expect(variant.description).toBeDefined();
+      expect(variant.parsed).toBeDefined();
+      expect(variant.layout).toBeDefined();
+      expect(variant.text).toBeDefined();
+    }
+
+    // Full snapshot
+    expect(allData).toMatchSnapshot();
   });
 });

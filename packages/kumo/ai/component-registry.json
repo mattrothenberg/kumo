@@ -110,7 +110,8 @@
         "text-alert",
         "text-error",
         "text-info"
-      ]
+      ],
+      "baseStyles": "flex w-full items-center gap-2 rounded-lg border px-4 py-1.5 text-base"
     },
     "Breadcrumbs": {
       "name": "Breadcrumbs",

@@ -1,0 +1,418 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Badge Generator - Snapshot Tests (Intermediate Data) > should produce consistent complete badge variant data 1`] = `
+{
+  "baseStyles": {
+    "parsed": {
+      "borderRadius": 9999,
+      "fontSize": 12,
+      "fontWeight": 500,
+      "paddingX": 8,
+      "paddingY": 2,
+    },
+    "raw": "inline-flex w-fit flex-none shrink-0 items-center justify-self-start rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap",
+  },
+  "variants": [
+    {
+      "classes": "bg-surface-inverse text-surface-inverse",
+      "description": "Default high-emphasis badge for important labels",
+      "layout": {
+        "cornerRadius": 9999,
+        "counterAxisAlignItems": "CENTER",
+        "counterAxisSizingMode": "AUTO",
+        "layoutMode": "HORIZONTAL",
+        "paddingBottom": 2,
+        "paddingLeft": 8,
+        "paddingRight": 8,
+        "paddingTop": 2,
+        "primaryAxisAlignItems": "CENTER",
+        "primaryAxisSizingMode": "AUTO",
+      },
+      "parsed": {
+        "fillVariable": "color-surface-inverse",
+        "textVariable": "text-color-surface-inverse",
+      },
+      "text": {
+        "fontSize": 12,
+        "fontWeight": 500,
+      },
+      "variant": "primary",
+    },
+    {
+      "classes": "bg-color text-surface",
+      "description": "Subtle badge for secondary information",
+      "layout": {
+        "cornerRadius": 9999,
+        "counterAxisAlignItems": "CENTER",
+        "counterAxisSizingMode": "AUTO",
+        "layoutMode": "HORIZONTAL",
+        "paddingBottom": 2,
+        "paddingLeft": 8,
+        "paddingRight": 8,
+        "paddingTop": 2,
+        "primaryAxisAlignItems": "CENTER",
+        "primaryAxisSizingMode": "AUTO",
+      },
+      "parsed": {
+        "fillVariable": "color-color",
+        "textVariable": "text-color-surface",
+      },
+      "text": {
+        "fontSize": 12,
+        "fontWeight": 500,
+      },
+      "variant": "secondary",
+    },
+    {
+      "classes": "bg-error text-white",
+      "description": "Error or danger state indicator",
+      "layout": {
+        "cornerRadius": 9999,
+        "counterAxisAlignItems": "CENTER",
+        "counterAxisSizingMode": "AUTO",
+        "layoutMode": "HORIZONTAL",
+        "paddingBottom": 2,
+        "paddingLeft": 8,
+        "paddingRight": 8,
+        "paddingTop": 2,
+        "primaryAxisAlignItems": "CENTER",
+        "primaryAxisSizingMode": "AUTO",
+      },
+      "parsed": {
+        "fillVariable": "color-error",
+        "isWhiteText": true,
+        "textVariable": null,
+      },
+      "text": {
+        "fontSize": 12,
+        "fontWeight": 500,
+      },
+      "variant": "destructive",
+    },
+    {
+      "classes": "border border-color bg-transparent text-surface",
+      "description": "Bordered badge with transparent background",
+      "layout": {
+        "cornerRadius": 9999,
+        "counterAxisAlignItems": "CENTER",
+        "counterAxisSizingMode": "AUTO",
+        "layoutMode": "HORIZONTAL",
+        "paddingBottom": 2,
+        "paddingLeft": 8,
+        "paddingRight": 8,
+        "paddingTop": 2,
+        "primaryAxisAlignItems": "CENTER",
+        "primaryAxisSizingMode": "AUTO",
+      },
+      "parsed": {
+        "fillVariable": null,
+        "hasBorder": true,
+        "strokeVariable": "color-color",
+        "strokeWeight": 1,
+        "textVariable": "text-color-surface",
+      },
+      "text": {
+        "fontSize": 12,
+        "fontWeight": 500,
+      },
+      "variant": "outline",
+    },
+    {
+      "classes": "border border-dashed border-primary bg-transparent text-info",
+      "description": "Indicates beta or experimental features",
+      "layout": {
+        "cornerRadius": 9999,
+        "counterAxisAlignItems": "CENTER",
+        "counterAxisSizingMode": "AUTO",
+        "layoutMode": "HORIZONTAL",
+        "paddingBottom": 2,
+        "paddingLeft": 8,
+        "paddingRight": 8,
+        "paddingTop": 2,
+        "primaryAxisAlignItems": "CENTER",
+        "primaryAxisSizingMode": "AUTO",
+      },
+      "parsed": {
+        "borderStyle": "dashed",
+        "dashPattern": [
+          4,
+          4,
+        ],
+        "fillVariable": null,
+        "hasBorder": true,
+        "strokeVariable": "color-primary",
+        "strokeWeight": 1,
+        "textVariable": "text-color-info",
+      },
+      "text": {
+        "fontSize": 12,
+        "fontWeight": 500,
+      },
+      "variant": "beta",
+    },
+  ],
+}
+`;
+
+exports[`Badge Generator - Snapshot Tests (Intermediate Data) > should produce consistent intermediate data for all variants (golden path) 1`] = `
+{
+  "baseStyles": {
+    "parsed": {
+      "borderRadius": 9999,
+      "fontSize": 12,
+      "fontWeight": 500,
+      "paddingX": 8,
+      "paddingY": 2,
+    },
+    "raw": "inline-flex w-fit flex-none shrink-0 items-center justify-self-start rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap",
+  },
+  "variants": [
+    {
+      "classes": "bg-surface-inverse text-surface-inverse",
+      "description": "Default high-emphasis badge for important labels",
+      "layout": {
+        "cornerRadius": 9999,
+        "counterAxisAlignItems": "CENTER",
+        "counterAxisSizingMode": "AUTO",
+        "layoutMode": "HORIZONTAL",
+        "paddingBottom": 2,
+        "paddingLeft": 8,
+        "paddingRight": 8,
+        "paddingTop": 2,
+        "primaryAxisAlignItems": "CENTER",
+        "primaryAxisSizingMode": "AUTO",
+      },
+      "parsed": {
+        "fillVariable": "color-surface-inverse",
+        "textVariable": "text-color-surface-inverse",
+      },
+      "text": {
+        "fontSize": 12,
+        "fontWeight": 500,
+      },
+      "variant": "primary",
+    },
+    {
+      "classes": "bg-color text-surface",
+      "description": "Subtle badge for secondary information",
+      "layout": {
+        "cornerRadius": 9999,
+        "counterAxisAlignItems": "CENTER",
+        "counterAxisSizingMode": "AUTO",
+        "layoutMode": "HORIZONTAL",
+        "paddingBottom": 2,
+        "paddingLeft": 8,
+        "paddingRight": 8,
+        "paddingTop": 2,
+        "primaryAxisAlignItems": "CENTER",
+        "primaryAxisSizingMode": "AUTO",
+      },
+      "parsed": {
+        "fillVariable": "color-color",
+        "textVariable": "text-color-surface",
+      },
+      "text": {
+        "fontSize": 12,
+        "fontWeight": 500,
+      },
+      "variant": "secondary",
+    },
+    {
+      "classes": "bg-error text-white",
+      "description": "Error or danger state indicator",
+      "layout": {
+        "cornerRadius": 9999,
+        "counterAxisAlignItems": "CENTER",
+        "counterAxisSizingMode": "AUTO",
+        "layoutMode": "HORIZONTAL",
+        "paddingBottom": 2,
+        "paddingLeft": 8,
+        "paddingRight": 8,
+        "paddingTop": 2,
+        "primaryAxisAlignItems": "CENTER",
+        "primaryAxisSizingMode": "AUTO",
+      },
+      "parsed": {
+        "fillVariable": "color-error",
+        "isWhiteText": true,
+        "textVariable": null,
+      },
+      "text": {
+        "fontSize": 12,
+        "fontWeight": 500,
+      },
+      "variant": "destructive",
+    },
+    {
+      "classes": "border border-color bg-transparent text-surface",
+      "description": "Bordered badge with transparent background",
+      "layout": {
+        "cornerRadius": 9999,
+        "counterAxisAlignItems": "CENTER",
+        "counterAxisSizingMode": "AUTO",
+        "layoutMode": "HORIZONTAL",
+        "paddingBottom": 2,
+        "paddingLeft": 8,
+        "paddingRight": 8,
+        "paddingTop": 2,
+        "primaryAxisAlignItems": "CENTER",
+        "primaryAxisSizingMode": "AUTO",
+      },
+      "parsed": {
+        "fillVariable": null,
+        "hasBorder": true,
+        "strokeVariable": "color-color",
+        "strokeWeight": 1,
+        "textVariable": "text-color-surface",
+      },
+      "text": {
+        "fontSize": 12,
+        "fontWeight": 500,
+      },
+      "variant": "outline",
+    },
+    {
+      "classes": "border border-dashed border-primary bg-transparent text-info",
+      "description": "Indicates beta or experimental features",
+      "layout": {
+        "cornerRadius": 9999,
+        "counterAxisAlignItems": "CENTER",
+        "counterAxisSizingMode": "AUTO",
+        "layoutMode": "HORIZONTAL",
+        "paddingBottom": 2,
+        "paddingLeft": 8,
+        "paddingRight": 8,
+        "paddingTop": 2,
+        "primaryAxisAlignItems": "CENTER",
+        "primaryAxisSizingMode": "AUTO",
+      },
+      "parsed": {
+        "borderStyle": "dashed",
+        "dashPattern": [
+          4,
+          4,
+        ],
+        "fillVariable": null,
+        "hasBorder": true,
+        "strokeVariable": "color-primary",
+        "strokeWeight": 1,
+        "textVariable": "text-color-info",
+      },
+      "text": {
+        "fontSize": 12,
+        "fontWeight": 500,
+      },
+      "variant": "beta",
+    },
+  ],
+}
+`;
+
+exports[`Badge Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed base styles 1`] = `
+{
+  "borderRadius": 9999,
+  "fontSize": 12,
+  "fontWeight": 500,
+  "paddingX": 8,
+  "paddingY": 2,
+}
+`;
+
+exports[`Badge Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for beta variant 1`] = `
+{
+  "classes": "border border-dashed border-primary bg-transparent text-info",
+  "description": "Indicates beta or experimental features",
+  "parsed": {
+    "borderStyle": "dashed",
+    "dashPattern": [
+      4,
+      4,
+    ],
+    "fillVariable": null,
+    "hasBorder": true,
+    "strokeVariable": "color-primary",
+    "strokeWeight": 1,
+    "textVariable": "text-color-info",
+  },
+  "variant": "beta",
+}
+`;
+
+exports[`Badge Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for destructive variant 1`] = `
+{
+  "classes": "bg-error text-white",
+  "description": "Error or danger state indicator",
+  "parsed": {
+    "fillVariable": "color-error",
+    "isWhiteText": true,
+    "textVariable": null,
+  },
+  "variant": "destructive",
+}
+`;
+
+exports[`Badge Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for outline variant 1`] = `
+{
+  "classes": "border border-color bg-transparent text-surface",
+  "description": "Bordered badge with transparent background",
+  "parsed": {
+    "fillVariable": null,
+    "hasBorder": true,
+    "strokeVariable": "color-color",
+    "strokeWeight": 1,
+    "textVariable": "text-color-surface",
+  },
+  "variant": "outline",
+}
+`;
+
+exports[`Badge Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for primary variant 1`] = `
+{
+  "classes": "bg-surface-inverse text-surface-inverse",
+  "description": "Default high-emphasis badge for important labels",
+  "parsed": {
+    "fillVariable": "color-surface-inverse",
+    "textVariable": "text-color-surface-inverse",
+  },
+  "variant": "primary",
+}
+`;
+
+exports[`Badge Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for secondary variant 1`] = `
+{
+  "classes": "bg-color text-surface",
+  "description": "Subtle badge for secondary information",
+  "parsed": {
+    "fillVariable": "color-color",
+    "textVariable": "text-color-surface",
+  },
+  "variant": "secondary",
+}
+`;
+
+exports[`Badge Generator - Snapshot Tests (Intermediate Data) > should produce consistent variant config from registry 1`] = `
+{
+  "classes": {
+    "beta": "border border-dashed border-primary bg-transparent text-info",
+    "destructive": "bg-error text-white",
+    "outline": "border border-color bg-transparent text-surface",
+    "primary": "bg-surface-inverse text-surface-inverse",
+    "secondary": "bg-color text-surface",
+  },
+  "default": "primary",
+  "descriptions": {
+    "beta": "Indicates beta or experimental features",
+    "destructive": "Error or danger state indicator",
+    "outline": "Bordered badge with transparent background",
+    "primary": "Default high-emphasis badge for important labels",
+    "secondary": "Subtle badge for secondary information",
+  },
+  "values": [
+    "primary",
+    "secondary",
+    "destructive",
+    "outline",
+    "beta",
+  ],
+}
+`;
