@@ -121,10 +121,20 @@ figma.ui.onmessage = async (msg: { type: string }) => {
       let nextY = START_Y;
 
       /**
-       * Generator registry - add new generators here
-       * Order matters for layout and dependencies (Icon Library must be early)
+       * Generator registry - add new generators here in any order.
+       * They will be auto-sorted alphabetically at runtime.
+       *
+       * Set `priority: true` for generators that must run before others
+       * (e.g., Icon Library creates icons that other generators reference).
        */
-      const GENERATORS: GeneratorConfig[] = [
+      const GENERATORS: (GeneratorConfig & { priority?: boolean })[] = [
+        {
+          name: "Icon Library",
+          priority: true, // Must run first - other generators depend on icons
+          execute: async () => {
+            await generateIconLibrary();
+          },
+        },
         {
           name: "Badge",
           execute: async (_page, y) => {
@@ -140,12 +150,6 @@ figma.ui.onmessage = async (msg: { type: string }) => {
           },
         },
         {
-          name: "Icon Library",
-          execute: async () => {
-            await generateIconLibrary();
-          },
-        },
-        {
           name: "Button",
           execute: async (page, y) => {
             const result = await generateButtonComponents(page, y);
@@ -153,30 +157,9 @@ figma.ui.onmessage = async (msg: { type: string }) => {
           },
         },
         {
-          name: "LinkButton",
-          execute: async (page, y) => {
-            const result = await generateLinkButtonComponents(page, y);
-            return { nextY: result };
-          },
-        },
-        {
-          name: "RefreshButton",
-          execute: async (page, y) => {
-            const result = await generateRefreshButtonComponents(page, y);
-            return { nextY: result };
-          },
-        },
-        {
           name: "Checkbox",
           execute: async (page, y) => {
             const result = await generateCheckboxComponents(page, y);
-            return { nextY: result };
-          },
-        },
-        {
-          name: "Text",
-          execute: async (page, y) => {
-            const result = await generateTextComponents(page, y);
             return { nextY: result };
           },
         },
@@ -258,6 +241,13 @@ figma.ui.onmessage = async (msg: { type: string }) => {
           },
         },
         {
+          name: "LinkButton",
+          execute: async (page, y) => {
+            const result = await generateLinkButtonComponents(page, y);
+            return { nextY: result };
+          },
+        },
+        {
           name: "Loader",
           execute: async (page, y) => {
             const result = await generateLoaderComponents(page, y);
@@ -282,6 +272,13 @@ figma.ui.onmessage = async (msg: { type: string }) => {
           name: "Pagination",
           execute: async (_page, y) => {
             const result = await generatePaginationComponents(y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "RefreshButton",
+          execute: async (page, y) => {
+            const result = await generateRefreshButtonComponents(page, y);
             return { nextY: result };
           },
         },
@@ -328,6 +325,13 @@ figma.ui.onmessage = async (msg: { type: string }) => {
           },
         },
         {
+          name: "Text",
+          execute: async (page, y) => {
+            const result = await generateTextComponents(page, y);
+            return { nextY: result };
+          },
+        },
+        {
           name: "Toast",
           execute: async (page, y) => {
             const result = await generateToastComponents(page, y);
@@ -343,12 +347,21 @@ figma.ui.onmessage = async (msg: { type: string }) => {
         },
       ];
 
-      // Dynamically calculated total from generator array
-      const TOTAL_COMPONENTS = GENERATORS.length;
+      // Sort generators: priority items first, then alphabetically by name
+      const sortedGenerators = [...GENERATORS].sort((a, b) => {
+        // Priority items come first
+        if (a.priority && !b.priority) return -1;
+        if (!a.priority && b.priority) return 1;
+        // Then sort alphabetically
+        return a.name.localeCompare(b.name);
+      });
 
-      // Step 3: Execute all generators sequentially
-      for (let i = 0; i < GENERATORS.length; i++) {
-        const generator = GENERATORS[i];
+      // Dynamically calculated total from generator array
+      const TOTAL_COMPONENTS = sortedGenerators.length;
+
+      // Step 3: Execute all generators sequentially (sorted alphabetically, priority first)
+      for (let i = 0; i < sortedGenerators.length; i++) {
+        const generator = sortedGenerators[i];
         const componentIndex = i + 1;
 
         figma.notify(
