@@ -530,6 +530,35 @@ export const Primary: Story = {
 
 Kumo uses an SVG sprite system for icons, combining Phosphor icons and Cloudflare brand icons.
 
+### Philosophy: Code as Source of Truth
+
+**Icons live in the codebase, not in Figma.** This ensures:
+
+1. **Version control** - Icons are tracked in git with full history
+2. **Type safety** - TypeScript types are auto-generated from the sprite
+3. **Consistency** - One source of truth for both code and design
+4. **Review process** - Icon changes go through PR review like any code change
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        ICON WORKFLOW                            │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   Designer provides SVG                                         │
+│            ↓                                                    │
+│   pnpm add:icon icon.svg --name cf-feature-outline              │
+│            ↓                                                    │
+│   Icon normalized + added to src/assets/icons/brand/            │
+│            ↓                                                    │
+│   pnpm build:icons → sprite.svg + TypeScript types              │
+│            ↓                                                    │
+│   Commit + PR review                                            │
+│            ↓                                                    │
+│   Figma plugin syncs icons to Figma (Icon Library page)         │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
 ### Using Icons
 
 ```tsx
@@ -544,9 +573,9 @@ import { Icon } from "@cloudflare/kumo";
 <Icon name="cf-pages-solid" className="text-active" />
 ```
 
-### Adding Icons
+### Adding Icons (REQUIRED: Use the CLI)
 
-**CLI (recommended):**
+**Always use the CLI to add icons.** This ensures proper normalization and prevents issues.
 
 ```bash
 # Add single icon
@@ -562,7 +591,7 @@ pnpm add:icon path/to/folder/
 pnpm add:icon icon.svg --dry-run
 ```
 
-**Manual:** Drop SVG into `src/assets/icons/brand/`, then run `pnpm build:icons`
+**DO NOT** manually drop SVGs into the icons folder without running the CLI - they won't be normalized.
 
 ### Naming Conventions
 
@@ -572,7 +601,7 @@ pnpm add:icon icon.svg --dry-run
 
 ### Normalization
 
-Icons are automatically normalized on build:
+The CLI automatically normalizes icons:
 
 - viewBox preserved (required for scaling)
 - Hardcoded fills converted to `currentColor` (enables `text-*` color classes)
@@ -580,11 +609,30 @@ Icons are automatically normalized on build:
 - Inline styles stripped
 - SVGO optimization applied
 
+### Figma Sync
+
+The Figma plugin generates an **Icon Library** page with all icons from the codebase:
+
+```bash
+# Build and run the Figma plugin
+cd packages/kumo/scripts/figma/plugin && ./build.sh
+# Then run in Figma: Plugins > Development > Kumo UI Kit Generator
+```
+
+The Icon Library page includes:
+
+- All icons as Figma components (`Icon/ph-check`, `Icon/cf-workers-outline`)
+- Grid layout with 20 icons per row
+- Size examples (16px, 20px, 24px)
+- Fill color bound to semantic token (`text-color-surface`)
+
+**Designers should use icons from the Icon Library page**, not import their own SVGs. This keeps design and code in sync.
+
 ### Build Commands
 
 ```bash
+pnpm add:icon       # Add new icons with normalization (REQUIRED)
 pnpm build:icons    # Rebuild sprite + types after adding icons
-pnpm add:icon       # Add new icons with normalization
 ```
 
 ## Changesets & Version Management
