@@ -11,6 +11,14 @@ const meta: Meta<typeof InputArea> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * Bare textarea without Field wrapper - just the styled textarea element.
+ * Use this when you need a simple textarea without label, description, or error.
+ */
+export const BareTextarea: Story = {
+  render: () => <InputArea placeholder="Enter text..." />,
+};
+
 export const Sizes: Story = {
   render: () => (
     <>
@@ -35,6 +43,9 @@ export const Variants: Story = {
   ),
 };
 
+/**
+ * InputArea with Field wrapper - includes label, description, and error support.
+ */
 export const WithLabel: Story = {
   render: () => (
     <InputArea
@@ -61,8 +72,4 @@ export const Disabled: Story = {
   render: () => (
     <InputArea label="Disabled Field" placeholder="Disabled input" disabled />
   ),
-};
-
-export const BareTextarea: Story = {
-  render: () => <InputArea placeholder="Textarea without Field wrapper" />,
 };
