@@ -77,7 +77,8 @@ async function createMenuItem(
   var itemFrame = figma.createFrame();
   itemFrame.name = "Item: " + label;
   itemFrame.layoutMode = "HORIZONTAL";
-  itemFrame.primaryAxisAlignItems = "SPACE_BETWEEN";
+  // Use SPACE_BETWEEN only when there's a shortcut, otherwise left-align
+  itemFrame.primaryAxisAlignItems = opts.shortcut ? "SPACE_BETWEEN" : "MIN";
   itemFrame.counterAxisAlignItems = "CENTER";
   itemFrame.primaryAxisSizingMode = "FIXED";
   itemFrame.counterAxisSizingMode = "AUTO";
@@ -347,6 +348,7 @@ async function createDropdownPanel(variant: string): Promise<FrameNode> {
   panel.layoutMode = "VERTICAL";
   panel.primaryAxisSizingMode = "AUTO";
   panel.counterAxisSizingMode = "FIXED";
+  panel.counterAxisAlignItems = "MIN"; // Left-align children
   panel.resize(DROPDOWN_WIDTH, 100); // Height will auto-adjust
   panel.itemSpacing = 2;
   panel.paddingLeft = 6;

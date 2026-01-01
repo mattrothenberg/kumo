@@ -7050,7 +7050,7 @@
     var itemFrame = figma.createFrame();
     itemFrame.name = "Item: " + label;
     itemFrame.layoutMode = "HORIZONTAL";
-    itemFrame.primaryAxisAlignItems = "SPACE_BETWEEN";
+    itemFrame.primaryAxisAlignItems = opts.shortcut ? "SPACE_BETWEEN" : "MIN";
     itemFrame.counterAxisAlignItems = "CENTER";
     itemFrame.primaryAxisSizingMode = "FIXED";
     itemFrame.counterAxisSizingMode = "AUTO";
@@ -7247,6 +7247,7 @@
     panel.layoutMode = "VERTICAL";
     panel.primaryAxisSizingMode = "AUTO";
     panel.counterAxisSizingMode = "FIXED";
+    panel.counterAxisAlignItems = "MIN";
     panel.resize(DROPDOWN_WIDTH, 100);
     panel.itemSpacing = 2;
     panel.paddingLeft = 6;
