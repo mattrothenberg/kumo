@@ -1,3 +1,4 @@
+import { logComplete } from "../logger";
 /**
  * RefreshButton Component Generator
  *
@@ -291,7 +292,7 @@ export async function generateRefreshButtonComponents(
   darkSection.section.y = startY;
 
   var totalComponents = sizes.length * loadingOptions.length;
-  console.log(
+  logComplete(
     "✅ Generated RefreshButton ComponentSet with " +
       totalComponents +
       " variants (light + dark)",

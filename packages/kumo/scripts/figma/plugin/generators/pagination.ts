@@ -1,3 +1,4 @@
+import { logComplete } from "../logger";
 /**
  * Pagination Component Generator
  *
@@ -399,7 +400,7 @@ export async function generatePaginationComponents(
   darkSection.section.x = 100 + totalWidth + 50;
   darkSection.section.y = startY;
 
-  console.log(
+  logComplete(
     "✅ Generated Pagination ComponentSet with " +
       pageStates.length +
       " states (light + dark)",

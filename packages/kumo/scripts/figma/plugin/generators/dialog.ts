@@ -29,6 +29,7 @@ import {
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import registry from "../../../../ai/component-registry.json";
+import { logComplete } from "../logger";
 
 /**
  * Extract props from registry
@@ -459,7 +460,7 @@ export async function generateDialogComponents(
   darkSection.section.x = 100 + totalWidth + 50;
   darkSection.section.y = startY;
 
-  console.log(
+  logComplete(
     "Generated Dialog ComponentSet with " +
       components.length +
       " variants (light + dark)",

@@ -1,3 +1,4 @@
+import { logComplete } from "../logger";
 /**
  * DateRangePicker Component Generator
  *
@@ -857,7 +858,7 @@ export async function generateDateRangePickerComponents(
   darkSection.section.x = 100 + totalWidth + 50;
   darkSection.section.y = startY;
 
-  console.log(
+  logComplete(
     "✅ Generated DateRangePicker ComponentSet with " +
       components.length +
       " variants (base size only, light + dark)",

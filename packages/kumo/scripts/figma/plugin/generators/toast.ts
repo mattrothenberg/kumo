@@ -30,6 +30,7 @@ import {
   BORDER_RADIUS,
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
+import { logComplete } from "../logger";
 
 /**
  * Section padding for component display
@@ -268,7 +269,7 @@ export async function generateToastComponents(
   darkSection.section.x = 100 + totalWidth + 50;
   darkSection.section.y = startY;
 
-  console.log("Generated Toast ComponentSet (light + dark)");
+  logComplete("Generated Toast ComponentSet (light + dark)");
 
   return startY + totalHeight + SECTION_GAP;
 }

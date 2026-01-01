@@ -1,3 +1,4 @@
+import { logComplete } from "../logger";
 /**
  * Tooltip Component Generator
  *
@@ -249,7 +250,7 @@ export async function generateTooltipComponents(
   darkSection.section.x = 100 + totalWidth + 50;
   darkSection.section.y = startY;
 
-  console.log("Generated Tooltip ComponentSet (light + dark)");
+  logComplete("Generated Tooltip ComponentSet (light + dark)");
 
   return startY + totalHeight + SECTION_GAP;
 }

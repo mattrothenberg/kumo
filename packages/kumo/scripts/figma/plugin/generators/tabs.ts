@@ -23,6 +23,7 @@ import {
   createTextNode,
   bindTextColorToVariable,
 } from "./shared";
+import { logComplete, logStart, logProgress } from "../logger";
 
 /**
  * Section padding for component display
@@ -276,7 +277,7 @@ export async function generateTabsComponents(
 ): Promise<number> {
   if (startY === undefined) startY = 100;
 
-  console.log("Tabs: Starting generation at Y=" + startY);
+  logStart("Tabs", "Y=" + startY);
 
   try {
     figma.currentPage = page;
@@ -291,7 +292,7 @@ export async function generateTabsComponents(
     // Create a component for each active state
     for (var i = 0; i < DEFAULT_TABS.length; i++) {
       var tab = DEFAULT_TABS[i];
-      console.log("Tabs: Creating active=" + tab);
+      logProgress("Tabs", "Creating active=" + tab);
 
       var component = await createTabsComponent(i);
       component.x = labelColumnWidth;
@@ -303,7 +304,7 @@ export async function generateTabsComponents(
       currentY = currentY + TABS_CONFIG.containerHeight + rowGap;
     }
 
-    console.log("Tabs: Combining as variants...");
+    logProgress("Tabs", "Combining as variants...");
     // @ts-ignore - combineAsVariants works at runtime
     var componentSet = figma.combineAsVariants(components, page);
     componentSet.name = "Tabs";
@@ -381,7 +382,7 @@ export async function generateTabsComponents(
     darkSection.section.x = 100 + totalWidth + 50;
     darkSection.section.y = startY;
 
-    console.log(
+    logComplete(
       "Generated Tabs ComponentSet with " +
         DEFAULT_TABS.length +
         " variants (light + dark)",

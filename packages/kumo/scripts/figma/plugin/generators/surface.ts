@@ -1,3 +1,4 @@
+import { logComplete } from "../logger";
 /**
  * Surface Component Generator
  *
@@ -196,7 +197,7 @@ export async function generateSurfaceComponents(
   darkSection.section.x = 100 + totalWidth + 50;
   darkSection.section.y = startY;
 
-  console.log(
+  logComplete(
     "Generated Surface ComponentSet with " +
       components.length +
       " variants (light + dark)",

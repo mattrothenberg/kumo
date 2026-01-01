@@ -28,6 +28,7 @@ import {
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
+import { logComplete } from "../logger";
 
 /**
  * Base styles from collapsibleVariants() in collapsible.tsx
@@ -456,8 +457,8 @@ export async function generateCollapsibleComponents(
   darkSection.section.x = 100 + totalWidth + 50;
   darkSection.section.y = startY;
 
-  console.log(
-    "✅ Generated Collapsible ComponentSet with " +
+  logComplete(
+    "Generated Collapsible ComponentSet with " +
       components.length +
       " variants (light + dark)",
   );

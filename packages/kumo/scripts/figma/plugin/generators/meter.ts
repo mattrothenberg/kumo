@@ -1,3 +1,4 @@
+import { logComplete } from "../logger";
 /**
  * Meter Component Generator
  *
@@ -269,7 +270,7 @@ export async function generateMeterComponents(startY: number): Promise<number> {
   darkSection.section.x = 100 + totalWidth + 50;
   darkSection.section.y = startY;
 
-  console.log(
+  logComplete(
     "✅ Generated Meter ComponentSet with " +
       fillLevels.length +
       " fill levels (light + dark)",

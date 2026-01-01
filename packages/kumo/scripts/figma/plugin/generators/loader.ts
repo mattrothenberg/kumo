@@ -23,6 +23,7 @@ import {
   createRowLabel,
   bindStrokeToVariable,
 } from "./shared";
+import { logComplete, logStart, logProgress } from "../logger";
 
 /**
  * Section padding for component display
@@ -153,7 +154,7 @@ export async function generateLoaderComponents(
 ): Promise<number> {
   if (startY === undefined) startY = 100;
 
-  console.log("Loader: Starting generation at Y=" + startY);
+  logStart("Loader", "Y=" + startY);
 
   try {
     figma.currentPage = page;
@@ -172,7 +173,7 @@ export async function generateLoaderComponents(
       var sizeValue =
         loaderData.sizes[size as keyof typeof loaderData.sizes].value;
 
-      console.log("Loader: Creating size=" + size);
+      logProgress("Loader", "Creating size=" + size);
       var component = await createLoaderComponent(size);
       component.x = labelColumnWidth;
       component.y = currentY;
@@ -183,7 +184,7 @@ export async function generateLoaderComponents(
       currentY += sizeValue + componentGap;
     }
 
-    console.log("Loader: Combining as variants...");
+    logProgress("Loader", "Combining as variants...");
     // @ts-ignore - combineAsVariants works at runtime
     var componentSet = figma.combineAsVariants(components, page);
     componentSet.name = "Loader";
@@ -262,7 +263,7 @@ export async function generateLoaderComponents(
     darkSection.section.x = 100 + totalWidth + 50;
     darkSection.section.y = startY;
 
-    console.log(
+    logComplete(
       "Generated Loader ComponentSet with " +
         sizes.length +
         " variants (light + dark)",

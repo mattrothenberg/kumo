@@ -1,3 +1,4 @@
+import { logComplete } from "../logger";
 /**
  * LinkButton Component Generator
  *
@@ -325,7 +326,7 @@ export async function generateLinkButtonComponents(
   darkSection.section.y = startY;
 
   var totalComponents = variants.length * sizes.length * hasIconOptions.length;
-  console.log(
+  logComplete(
     "✅ Generated LinkButton ComponentSet with " +
       totalComponents +
       " variants (light + dark)",

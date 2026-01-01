@@ -1,3 +1,4 @@
+import { logComplete } from "../logger";
 /**
  * InputArea Component Generator
  *
@@ -556,7 +557,7 @@ export async function generateInputAreaComponents(
   darkSection.section.x = 100 + totalWidth + 50;
   darkSection.section.y = startY;
 
-  console.log(
+  logComplete(
     "Generated InputArea ComponentSet with " +
       components.length +
       " variants (light + dark)",

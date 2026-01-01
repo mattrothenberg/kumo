@@ -29,6 +29,7 @@ import {
   BORDER_RADIUS,
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
+import { logComplete } from "../logger";
 
 /**
  * Section padding for component display
@@ -584,7 +585,7 @@ export async function generateSelectComponents(
   darkSection.section.x = 100 + totalWidth + 50;
   darkSection.section.y = startY;
 
-  console.log(
+  logComplete(
     "Generated Select ComponentSet with " +
       components.length +
       " variants (light + dark)",

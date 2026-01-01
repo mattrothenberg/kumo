@@ -1,3 +1,4 @@
+import { logComplete } from "../logger";
 /**
  * Text Component Generator
  *
@@ -390,7 +391,7 @@ export async function generateTextComponents(
   darkSection.section.x = 100 + totalWidth + 50;
   darkSection.section.y = startY;
 
-  console.log(
+  logComplete(
     "✅ Generated Text ComponentSet with " +
       components.length +
       " variants (light + dark)",

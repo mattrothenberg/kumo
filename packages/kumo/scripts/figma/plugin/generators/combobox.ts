@@ -30,6 +30,7 @@ import {
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
+import { logComplete } from "../logger";
 
 /**
  * Base styles for TriggerInput container
@@ -574,8 +575,8 @@ export async function generateComboboxComponents(
   darkSection.section.x = 100 + totalWidth + 50;
   darkSection.section.y = startY;
 
-  console.log(
-    "✅ Generated Combobox ComponentSet with " +
+  logComplete(
+    "Generated Combobox ComponentSet with " +
       components.length +
       " variants (light + dark)",
   );

@@ -26,6 +26,7 @@ import {
   bindTextColorToVariable,
   BORDER_RADIUS,
 } from "./shared";
+import { logComplete } from "../logger";
 
 /**
  * Section padding for component display
@@ -549,7 +550,7 @@ export async function generateInputComponents(
   darkSection.section.x = 100 + totalWidth + 50;
   darkSection.section.y = startY;
 
-  console.log(
+  logComplete(
     "Generated Input ComponentSet with " +
       components.length +
       " variants (light + dark)",

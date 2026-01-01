@@ -1,3 +1,4 @@
+import { logComplete } from "../logger";
 /**
  * Dropdown Component Generator
  *
@@ -720,7 +721,7 @@ export async function generateDropdownComponents(
   darkSection.section.x = 100 + totalWidth + 50;
   darkSection.section.y = startY;
 
-  console.log(
+  logComplete(
     "Generated Dropdown ComponentSet with " +
       components.length +
       " variants (light + dark)",

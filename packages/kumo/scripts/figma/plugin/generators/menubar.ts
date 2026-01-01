@@ -1,3 +1,4 @@
+import { logComplete } from "../logger";
 /**
  * MenuBar Component Generator
  *

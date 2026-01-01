@@ -4,6 +4,12 @@
  * Provides log levels (DEBUG, INFO, WARN, ERROR) with configurable verbosity.
  * In production, only WARN and ERROR are shown by default.
  *
+ * Semantic logging functions with emojis for consistent output:
+ * - logComplete: ✅ Task completed successfully
+ * - logStart: 🎨 Starting a generation task
+ * - logProgress: 📦 Progress update during generation
+ * - logFound: 📖 Found/loaded resources
+ *
  * ES2020 compatible for Figma plugin runtime.
  */
 
@@ -24,7 +30,7 @@ export enum LogLevel {
  * To enable DEBUG logs: Set LOG_LEVEL = LogLevel.DEBUG
  * For production: Set LOG_LEVEL = LogLevel.WARN
  */
-export let LOG_LEVEL: LogLevel = LogLevel.INFO;
+export var LOG_LEVEL: LogLevel = LogLevel.INFO;
 
 /**
  * Set the current log level
@@ -34,26 +40,23 @@ export function setLogLevel(level: LogLevel): void {
 }
 
 /**
- * Internal logging function
+ * Internal logging function (no prefix, just logs the message)
  */
-function log(level: LogLevel, levelName: string, ...args: unknown[]): void {
+function log(level: LogLevel, ...args: unknown[]): void {
   if (level < LOG_LEVEL) {
     return;
   }
 
-  // Figma plugin environment has console available
-  const prefix = `[${levelName}]`;
-
   switch (level) {
     case LogLevel.DEBUG:
     case LogLevel.INFO:
-      console.log(prefix, ...args);
+      console.log(...args);
       break;
     case LogLevel.WARN:
-      console.warn(prefix, ...args);
+      console.warn(...args);
       break;
     case LogLevel.ERROR:
-      console.error(prefix, ...args);
+      console.error(...args);
       break;
   }
 }
@@ -63,7 +66,7 @@ function log(level: LogLevel, levelName: string, ...args: unknown[]): void {
  * Hidden by default, enable with setLogLevel(LogLevel.DEBUG)
  */
 export function logDebug(...args: unknown[]): void {
-  log(LogLevel.DEBUG, "DEBUG", ...args);
+  log(LogLevel.DEBUG, ...args);
 }
 
 /**
@@ -71,7 +74,7 @@ export function logDebug(...args: unknown[]): void {
  * Shown by default in development
  */
 export function logInfo(...args: unknown[]): void {
-  log(LogLevel.INFO, "INFO", ...args);
+  log(LogLevel.INFO, ...args);
 }
 
 /**
@@ -79,7 +82,7 @@ export function logInfo(...args: unknown[]): void {
  * Always shown (production + development)
  */
 export function logWarn(...args: unknown[]): void {
-  log(LogLevel.WARN, "WARN", ...args);
+  log(LogLevel.WARN, "⚠️", ...args);
 }
 
 /**
@@ -87,5 +90,76 @@ export function logWarn(...args: unknown[]): void {
  * Always shown (production + development)
  */
 export function logError(...args: unknown[]): void {
-  log(LogLevel.ERROR, "ERROR", ...args);
+  log(LogLevel.ERROR, "❌", ...args);
+}
+
+// ============================================================================
+// SEMANTIC LOGGING FUNCTIONS
+// Use these for consistent, meaningful log output across generators
+// ============================================================================
+
+/**
+ * Log successful completion of a task
+ * Use at the end of generator functions
+ *
+ * @example logComplete("Generated Badge ComponentSet with 8 variants (light + dark)")
+ */
+export function logComplete(...args: unknown[]): void {
+  log(LogLevel.INFO, "✅", ...args);
+}
+
+/**
+ * Log the start of a generation task
+ * Use at the beginning of generator functions
+ *
+ * @example logStart("Badge", "Y=100")
+ */
+export function logStart(component: string, context?: string): void {
+  var msg = component + ": Starting generation";
+  if (context) {
+    msg += " at " + context;
+  }
+  log(LogLevel.INFO, "🎨", msg);
+}
+
+/**
+ * Log progress during generation
+ * Use for intermediate steps like "Creating variant X" or "Combining as variants"
+ *
+ * @example logProgress("Badge", "Creating variant=info")
+ * @example logProgress("Badge", "Combining as variants...")
+ */
+export function logProgress(component: string, message: string): void {
+  log(LogLevel.INFO, "📦", component + ": " + message);
+}
+
+/**
+ * Log found/loaded resources
+ * Use when loading data, finding pages, etc.
+ *
+ * @example logFound("Found 535 icons in sprite")
+ * @example logFound("Found existing Components page")
+ */
+export function logFound(...args: unknown[]): void {
+  log(LogLevel.INFO, "📖", ...args);
+}
+
+/**
+ * Log creation of new resources
+ * Use when creating pages, files, etc.
+ *
+ * @example logCreate("Creating new Components page")
+ */
+export function logCreate(...args: unknown[]): void {
+  log(LogLevel.INFO, "📄", ...args);
+}
+
+/**
+ * Log cleanup/purge operations
+ * Use when removing old content
+ *
+ * @example logPurge("Purging 12 items from Components page")
+ */
+export function logPurge(...args: unknown[]): void {
+  log(LogLevel.INFO, "🗑️", ...args);
 }

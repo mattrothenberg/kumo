@@ -1,3 +1,4 @@
+import { logComplete } from "../logger";
 /**
  * SensitiveInput Component Generator
  *
@@ -578,7 +579,7 @@ export async function generateSensitiveInputComponents(
   darkSection.section.x = 100 + totalWidth + 50;
   darkSection.section.y = startY;
 
-  console.log(
+  logComplete(
     "Generated SensitiveInput ComponentSet with " +
       components.length +
       " variants (light + dark)",
