@@ -1833,6 +1833,10 @@ Input component
 **Examples:**
 
 ```tsx
+<Input placeholder="Enter text..." />
+```
+
+```tsx
 <Input
   label="Email"
   placeholder="Enter your email"

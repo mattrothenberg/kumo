@@ -23,6 +23,14 @@ const meta: Meta<typeof Input> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * Bare input without Field wrapper - just the styled input element.
+ * Use this when you need a simple input without label, description, or error.
+ */
+export const BareInput: Story = {
+  render: () => <Input placeholder="Enter text..." />,
+};
+
 export const Sizes: Story = {
   render: () => (
     <>
@@ -47,6 +55,9 @@ export const Variants: Story = {
   ),
 };
 
+/**
+ * Input with Field wrapper - includes label, description, and error support.
+ */
 export const WithLabel: Story = {
   render: () => (
     <Input
@@ -320,8 +331,4 @@ export const InputGroupSizes: Story = {
       </div>
     </div>
   ),
-};
-
-export const BareInput: Story = {
-  render: () => <Input placeholder="Input without Field wrapper" />,
 };
