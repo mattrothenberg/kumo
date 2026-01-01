@@ -141,9 +141,8 @@ function createTabIndicator(
   var indicator = figma.createFrame();
   indicator.name = "Indicator";
 
-  // CRITICAL: Set to absolute positioning so it doesn't participate in auto-layout
-  // This allows the indicator to be positioned behind the tabs without affecting their layout
-  indicator.layoutPositioning = "ABSOLUTE";
+  // NOTE: layoutPositioning = "ABSOLUTE" must be set AFTER adding to parent
+  // It will be set in createTabsComponent after insertChild
 
   // Calculate position and size based on active tab
   var indicatorHeight =
@@ -252,8 +251,11 @@ async function createTabsComponent(
 
   // Insert indicator at the beginning so it appears behind tabs
   // In Figma, lower index = further back in z-order
-  // Since indicator has layoutPositioning="ABSOLUTE", it won't affect tab layout
   component.insertChild(0, indicator);
+
+  // CRITICAL: Set layoutPositioning AFTER adding to parent with layoutMode !== NONE
+  // This makes the indicator absolutely positioned so it doesn't affect tab layout
+  indicator.layoutPositioning = "ABSOLUTE";
 
   return component;
 }
