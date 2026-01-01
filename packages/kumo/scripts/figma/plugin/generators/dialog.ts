@@ -233,13 +233,15 @@ async function createDialogComponent(size: string): Promise<ComponentNode> {
   ];
 
   // Create header frame (title + close button)
+  // Header must fill width so SPACE_BETWEEN pushes X to the right
   var header = figma.createFrame();
   header.name = "Header";
   header.layoutMode = "HORIZONTAL";
   header.primaryAxisAlignItems = "SPACE_BETWEEN";
   header.counterAxisAlignItems = "CENTER";
-  header.primaryAxisSizingMode = "AUTO";
+  header.primaryAxisSizingMode = "FIXED";
   header.counterAxisSizingMode = "AUTO";
+  header.resize(config.width - config.padding * 2, 24); // Full width minus padding
   header.layoutAlign = "STRETCH";
   header.layoutGrow = 0;
   header.fills = [];
@@ -264,12 +266,13 @@ async function createDialogComponent(size: string): Promise<ComponentNode> {
   header.appendChild(title);
 
   // Create close icon (ph-x) - 20x20 directly in header
+  // Color is text-muted to match code: className="text-muted hover:text-surface"
   var closeIconName = "ph-x";
   var closeIcon = getButtonIcon(closeIconName, "base");
   closeIcon.name = "Close";
 
-  // Apply icon color (text-surface)
-  bindIconColor(closeIcon, "text-surface");
+  // Apply icon color (text-muted to match code)
+  bindIconColor(closeIcon, "text-muted");
 
   header.appendChild(closeIcon);
   component.appendChild(header);
