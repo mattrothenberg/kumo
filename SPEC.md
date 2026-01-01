@@ -309,6 +309,7 @@ After building, run the plugin in Figma:
 | Switch          | size (3) x variant (2) x checked (2) x disabled (2)           | Toggle switch with label                                     |
 | Tabs            | active (3)                                                    | Tab navigation with active indicator                         |
 | Text            | variant (9) x size (4)                                        | Typography scale                                             |
+| Toast           | (no variants)                                                 | Title, description, close button                             |
 
 ## Troubleshooting
 

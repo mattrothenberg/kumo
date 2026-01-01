@@ -37,6 +37,7 @@ import {
 } from "./generators/switch";
 import { generateTabsComponents } from "./generators/tabs";
 import { generateTextComponents } from "./generators/text";
+import { generateToastComponents } from "./generators/toast";
 import { generateIconLibrary } from "./generators/icon-library";
 import { logInfo, logError } from "./logger";
 
@@ -107,7 +108,7 @@ figma.ui.onmessage = async (msg: { type: string }) => {
       let nextY = START_Y;
 
       // Total component count for progress indicator
-      const TOTAL_COMPONENTS = 28;
+      const TOTAL_COMPONENTS = 29;
       let componentIndex = 0;
 
       // Step 3: Generate Badge components
@@ -313,9 +314,16 @@ figma.ui.onmessage = async (msg: { type: string }) => {
       );
       nextY = await generateTabsComponents(componentsPage, nextY);
 
+      // Step 32: Generate Toast components
+      componentIndex++;
+      figma.notify(
+        `Generating Toast (${componentIndex}/${TOTAL_COMPONENTS})...`,
+      );
+      nextY = await generateToastComponents(componentsPage, nextY);
+
       figma.notify("✅ Generation complete!", { timeout: 3000 });
       figma.closePlugin(
-        "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, Dialog, Dropdown, Input, InputArea, LayerCard, Loader, LinkButton, MenuBar, Meter, Pagination, RefreshButton, Select, SensitiveInput, Surface, Switch, Switch.Group, Tabs, Text components, and Icon Library",
+        "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, Dialog, Dropdown, Input, InputArea, LayerCard, Loader, LinkButton, MenuBar, Meter, Pagination, RefreshButton, Select, SensitiveInput, Surface, Switch, Switch.Group, Tabs, Text, Toast components, and Icon Library",
       );
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);

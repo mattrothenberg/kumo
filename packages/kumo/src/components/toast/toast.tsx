@@ -2,8 +2,54 @@ import { Toast } from "@base-ui/react/toast";
 import type React from "react";
 import { cn } from "../../utils/cn";
 
+/**
+ * Toast styling configuration for Figma plugin consumption.
+ * Toast has no user-facing variants but documents the styling structure.
+ */
 export const KUMO_TOAST_VARIANTS = {
-  // Toast currently has no variant options but structure is ready for future additions
+  /**
+   * Toast root container styling
+   * - bg-toast: Toast background color
+   * - border-color: Border color
+   * - rounded-lg: 8px border radius
+   * - p-4: 16px padding
+   * - shadow-lg: Large shadow for elevation
+   */
+  root: {
+    classes: "rounded-lg border border-color bg-toast p-4 shadow-lg",
+    description: "Toast container with background, border, and shadow",
+  },
+  /**
+   * Toast title styling
+   * - text-surface: Primary text color
+   * - font-medium: 500 font weight
+   * - text-[0.975rem]: ~15.6px font size
+   */
+  title: {
+    classes: "text-[0.975rem] leading-5 font-medium text-surface",
+    description: "Toast title with primary text color",
+  },
+  /**
+   * Toast description styling
+   * - text-muted: Secondary text color
+   * - text-[0.925rem]: ~14.8px font size
+   */
+  description: {
+    classes: "text-[0.925rem] leading-5 text-muted",
+    description: "Toast description with muted text color",
+  },
+  /**
+   * Toast close button styling
+   * - h-5 w-5: 20x20px size
+   * - text-muted: Icon color
+   * - hover:bg-toast-button-hover: Hover background
+   * - hover:text-label: Hover icon color
+   */
+  close: {
+    classes:
+      "absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded border-none bg-transparent text-muted hover:bg-toast-button-hover hover:text-label",
+    description: "Close button with X icon",
+  },
 } as const;
 
 export const KUMO_TOAST_DEFAULT_VARIANTS = {} as const;
