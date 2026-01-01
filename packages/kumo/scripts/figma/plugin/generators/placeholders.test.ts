@@ -50,6 +50,9 @@ const mockFigma = {
   createEllipse: vi.fn(() => createMockEllipse()),
   createRectangle: vi.fn(() => createMockRectangle()),
   currentPage: { appendChild: vi.fn() },
+  root: {
+    children: [] as ReturnType<typeof createMockPage>[],
+  },
 };
 
 // @ts-expect-error - Mocking Figma global for testing
@@ -63,6 +66,8 @@ describe("placeholders generator", () => {
     mockFigma.createComponent.mockImplementation(() => createMockComponent());
     mockFigma.createEllipse.mockImplementation(() => createMockEllipse());
     mockFigma.createRectangle.mockImplementation(() => createMockRectangle());
+    // Reset root.children to empty array (no existing Utilities page)
+    mockFigma.root.children = [];
   });
 
   it("should export generatePlaceholderComponents function", async () => {

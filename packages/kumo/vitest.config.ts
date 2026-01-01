@@ -60,6 +60,8 @@ export default defineConfig({
             name: "chromium",
           },
           setupFiles: ["./.storybook/vitest.setup.ts"],
+          // Exclude stories that depend on build artifacts
+          exclude: ["**/design-tokens/**"],
         },
       },
     ],
