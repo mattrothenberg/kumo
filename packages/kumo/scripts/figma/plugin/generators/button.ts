@@ -68,15 +68,166 @@ var shapeProp = buttonProps.shape as {
 };
 
 /**
- * Compact size mapping from button.tsx KUMO_BUTTON_VARIANTS.compactSize
- * Used for square and circle shapes
+ * TESTABLE EXPORTS - Pure functions that return intermediate data
+ * These functions compute data without calling Figma APIs, enabling snapshot tests.
  */
-var COMPACT_SIZE_MAP_LOCAL: Record<string, number> = {
-  xs: 14, // size-3.5 = 14px
-  sm: 26, // size-6.5 = 26px
-  base: 36, // size-9 = 36px
-  lg: 40, // size-10 = 40px
-};
+
+/**
+ * Get variant configuration from registry
+ */
+export function getButtonVariantConfig() {
+  return {
+    values: variantProp.values,
+    classes: variantProp.classes,
+    descriptions: variantProp.descriptions,
+    default: variantProp.default,
+  };
+}
+
+/**
+ * Get size configuration from registry
+ */
+export function getButtonSizeConfig() {
+  return {
+    values: sizeProp.values,
+    classes: sizeProp.classes,
+    descriptions: sizeProp.descriptions,
+    default: sizeProp.default,
+  };
+}
+
+/**
+ * Get shape configuration from registry
+ */
+export function getButtonShapeConfig() {
+  return {
+    values: shapeProp.values,
+    classes: shapeProp.classes,
+    descriptions: shapeProp.descriptions,
+    default: shapeProp.default,
+  };
+}
+
+/**
+ * Get parsed base styles
+ */
+export function getButtonParsedBaseStyles() {
+  const baseStyles = "flex items-center font-medium";
+  return parseTailwindClasses(baseStyles);
+}
+
+/**
+ * Get parsed styles for a specific variant
+ */
+export function getButtonParsedVariantStyles(variant: string) {
+  const classes = variantProp.classes[variant] || "";
+  return {
+    variant,
+    classes,
+    description: variantProp.descriptions[variant] || "",
+    parsed: parseTailwindClasses(classes),
+  };
+}
+
+/**
+ * Get parsed styles for a specific size
+ */
+export function getButtonParsedSizeStyles(size: string) {
+  const classes = sizeProp.classes[size] || "";
+  return {
+    size,
+    classes,
+    description: sizeProp.descriptions[size] || "",
+    parsed: parseTailwindClasses(classes),
+  };
+}
+
+/**
+ * Get parsed styles for a specific shape
+ */
+export function getButtonParsedShapeStyles(shape: string) {
+  const classes = shapeProp.classes[shape] || "";
+  return {
+    shape,
+    classes,
+    description: shapeProp.descriptions[shape] || "",
+    parsed: parseTailwindClasses(classes),
+  };
+}
+
+/**
+ * Compact size mapping from button.tsx KUMO_BUTTON_VARIANTS.compactSize
+ * Used for square and circle shapes.
+ * Derived from Tailwind size-* classes which map to SPACING_SCALE values:
+ * size-3.5 = 14px, size-6.5 = 26px, size-9 = 36px, size-10 = 40px
+ */
+export function getCompactSizeMap(): Record<string, number> {
+  return {
+    xs: 14, // size-3.5 = 14px
+    sm: 26, // size-6.5 = 26px
+    base: 36, // size-9 = 36px
+    lg: 40, // size-10 = 40px
+  };
+}
+
+var COMPACT_SIZE_MAP_LOCAL: Record<string, number> = getCompactSizeMap();
+
+/**
+ * Get state styles mapping
+ * Derived from hover/focus/pressed states in variant classes from registry
+ */
+export function getStateStylesMap(): Record<
+  string,
+  Record<
+    string,
+    {
+      fillVariable?: string;
+      fillOpacity?: number;
+      strokeVariable?: string;
+      addRing?: boolean;
+      textOpacity?: number;
+    }
+  >
+> {
+  return {
+    primary: {
+      // hover:bg-primary/70
+      hover: { fillVariable: "color-primary/70" },
+      focus: { addRing: true },
+      pressed: { fillVariable: "color-primary/70" },
+    },
+    secondary: {
+      // not-disabled:hover:bg-subtle, not-disabled:hover:border-subtle!
+      hover: { fillVariable: "color-subtle", strokeVariable: "color-subtle" },
+      focus: { addRing: true },
+      // data-[state=open]:bg-subtle
+      pressed: { fillVariable: "color-subtle" },
+    },
+    ghost: {
+      // hover:bg-accent
+      hover: { fillVariable: "color-accent" },
+      focus: { addRing: true },
+      pressed: { fillVariable: "color-accent" },
+    },
+    destructive: {
+      // hover:bg-error/70
+      hover: { fillVariable: "color-error/70" },
+      focus: { addRing: true },
+      pressed: { fillVariable: "color-error/70" },
+    },
+    "secondary-destructive": {
+      // not-disabled:hover:bg-subtle, not-disabled:hover:border-subtle!
+      hover: { fillVariable: "color-subtle", strokeVariable: "color-subtle" },
+      focus: { addRing: true },
+      pressed: { fillVariable: "color-subtle" },
+    },
+    outline: {
+      hover: { fillVariable: "color-subtle" },
+      focus: { addRing: true },
+      pressed: { fillVariable: "color-subtle" },
+    },
+  };
+}
 
 /**
  * State-specific style overrides
@@ -102,44 +253,46 @@ var STATE_STYLES: Record<
       textOpacity?: number;
     }
   >
-> = {
-  primary: {
-    // hover:bg-primary/70
-    hover: { fillVariable: "color-primary/70" },
-    focus: { addRing: true },
-    pressed: { fillVariable: "color-primary/70" },
-  },
-  secondary: {
-    // not-disabled:hover:bg-subtle, not-disabled:hover:border-subtle!
-    hover: { fillVariable: "color-subtle", strokeVariable: "color-subtle" },
-    focus: { addRing: true },
-    // data-[state=open]:bg-subtle
-    pressed: { fillVariable: "color-subtle" },
-  },
-  ghost: {
-    // hover:bg-accent
-    hover: { fillVariable: "color-accent" },
-    focus: { addRing: true },
-    pressed: { fillVariable: "color-accent" },
-  },
-  destructive: {
-    // hover:bg-error/70
-    hover: { fillVariable: "color-error/70" },
-    focus: { addRing: true },
-    pressed: { fillVariable: "color-error/70" },
-  },
-  "secondary-destructive": {
-    // not-disabled:hover:bg-subtle, not-disabled:hover:border-subtle!
-    hover: { fillVariable: "color-subtle", strokeVariable: "color-subtle" },
-    focus: { addRing: true },
-    pressed: { fillVariable: "color-subtle" },
-  },
-  outline: {
-    hover: { fillVariable: "color-subtle" },
-    focus: { addRing: true },
-    pressed: { fillVariable: "color-subtle" },
-  },
-};
+> = getStateStylesMap();
+
+/**
+ * Get all variant data (for snapshot testing)
+ * Returns intermediate data before Figma API calls
+ */
+export function getAllButtonVariantData() {
+  const baseStyles = getButtonParsedBaseStyles();
+  const variantConfig = getButtonVariantConfig();
+  const sizeConfig = getButtonSizeConfig();
+  const shapeConfig = getButtonShapeConfig();
+  const compactSizeMap = getCompactSizeMap();
+  const stateStyles = getStateStylesMap();
+
+  return {
+    baseStyles: {
+      raw: "flex items-center font-medium",
+      parsed: baseStyles,
+    },
+    variants: variantConfig.values.map((variant) => {
+      const variantData = getButtonParsedVariantStyles(variant);
+      return {
+        ...variantData,
+        stateStyles: stateStyles[variant] || {},
+      };
+    }),
+    sizes: sizeConfig.values.map((size) => {
+      const sizeData = getButtonParsedSizeStyles(size);
+      return {
+        ...sizeData,
+        compactSize: compactSizeMap[size],
+      };
+    }),
+    shapes: shapeConfig.values.map((shape) => {
+      return getButtonParsedShapeStyles(shape);
+    }),
+    compactSizeMap,
+    stateStyles,
+  };
+}
 
 /**
  * Create a single button component
