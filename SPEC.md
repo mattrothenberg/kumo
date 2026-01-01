@@ -303,6 +303,7 @@ After building, run the plugin in Figma:
 | Meter           | fill (5)                                           | Progress bar at 0%, 25%, 50%, 75%, 100%                      |
 | Pagination      | state (3)                                          | First/middle/last page states, nav buttons + input           |
 | RefreshButton   | loading (2) x size (4)                             | Refresh icon                                                 |
+| Select          | variant (3) x open (2) x state (4)                 | Label, description, error, loading state                     |
 | Text            | variant (9) x size (4)                             | Typography scale                                             |
 
 ## Troubleshooting
