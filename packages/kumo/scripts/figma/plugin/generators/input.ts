@@ -96,6 +96,11 @@ var VARIANT_VALUES = ["default", "error"];
 var STATE_VALUES = ["default", "focus", "disabled"];
 
 /**
+ * WithLabel values - whether to show Field wrapper (label, description, error)
+ */
+var WITH_LABEL_VALUES = [false, true];
+
+/**
  * State-specific style overrides
  */
 var STATE_STYLES: Record<
@@ -151,12 +156,14 @@ var VARIANT_CONFIG: Record<
  * @param size - Size (xs, sm, base, lg)
  * @param variant - Variant type (default, error)
  * @param state - Interaction state (default, focus, disabled)
+ * @param withLabel - Whether to show Field wrapper (label, description, error)
  * @returns ComponentNode for the input
  */
 async function createInputComponent(
   size: string,
   variant: string,
   state: string,
+  withLabel: boolean,
 ): Promise<ComponentNode> {
   var sizeConfig = SIZE_CONFIG[size] || SIZE_CONFIG["base"];
   var variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
@@ -164,9 +171,24 @@ async function createInputComponent(
 
   // Create component
   var component = figma.createComponent();
-  component.name = "size=" + size + ", variant=" + variant + ", state=" + state;
+  component.name =
+    "size=" +
+    size +
+    ", variant=" +
+    variant +
+    ", state=" +
+    state +
+    ", withLabel=" +
+    withLabel;
   component.description =
-    "Input " + size + " " + variant + " in " + state + " state";
+    "Input " +
+    size +
+    " " +
+    variant +
+    " in " +
+    state +
+    " state" +
+    (withLabel ? " with Field wrapper" : " bare");
 
   // Set up vertical auto-layout for the entire component (label + input + description/error)
   component.layoutMode = "VERTICAL";
@@ -181,8 +203,8 @@ async function createInputComponent(
     component.opacity = stateStyle.opacity;
   }
 
-  // Create label
-  if (variantConfig.label) {
+  // Create label (only if withLabel is true)
+  if (withLabel && variantConfig.label) {
     var labelText = await createTextNode(variantConfig.label, 14, 500);
     labelText.name = "Label";
     labelText.textAutoResize = "WIDTH_AND_HEIGHT";
@@ -252,8 +274,8 @@ async function createInputComponent(
   inputFrame.appendChild(placeholderText);
   component.appendChild(inputFrame);
 
-  // Create description or error message
-  if (variantConfig.description && variant === "default") {
+  // Create description or error message (only if withLabel is true)
+  if (withLabel && variantConfig.description && variant === "default") {
     var descText = await createTextNode(variantConfig.description, 12, 400);
     descText.name = "Description";
     descText.textAutoResize = "WIDTH_AND_HEIGHT";
@@ -266,7 +288,7 @@ async function createInputComponent(
     component.appendChild(descText);
   }
 
-  if (variantConfig.errorMessage && variant === "error") {
+  if (withLabel && variantConfig.errorMessage && variant === "error") {
     var errorText = await createTextNode(variantConfig.errorMessage, 12, 400);
     errorText.name = "Error";
     errorText.textAutoResize = "WIDTH_AND_HEIGHT";
@@ -283,15 +305,16 @@ async function createInputComponent(
 }
 
 /**
- * Generate Input ComponentSet with size, variant, and state properties
+ * Generate Input ComponentSet with size, variant, state, and withLabel properties
  *
  * Creates an "Input" ComponentSet with all combinations of:
  * - size: xs, sm, base, lg
  * - variant: default, error
  * - state: default, focus, disabled
+ * - withLabel: false (bare input), true (with Field wrapper)
  *
  * Layout:
- * - Rows: size (xs, sm, base, lg)
+ * - Rows: size × withLabel combinations (8 rows total)
  * - Columns: variant × state combinations (6 columns total)
  *
  * Creates both light and dark mode sections.
@@ -321,26 +344,38 @@ export async function generateInputComponents(
   var componentGapX = 24;
   var componentGapY = 40;
   var headerRowHeight = 24;
-  var labelColumnWidth = 120;
+  var labelColumnWidth = 200; // Wider for size + withLabel labels
 
-  // Track layout by row (size)
+  // Track layout by row (size × withLabel)
   var rowComponents: Map<number, ComponentNode[]> = new Map();
 
   // Generate components for each combination
-  // Rows = sizes, Columns = variant × state
+  // Rows = size × withLabel, Columns = variant × state
+  var rowIndex = 0;
   for (var si = 0; si < SIZE_VALUES.length; si++) {
     var size = SIZE_VALUES[si];
-    rowComponents.set(si, []);
 
-    for (var vi = 0; vi < VARIANT_VALUES.length; vi++) {
-      var variant = VARIANT_VALUES[vi];
+    for (var wli = 0; wli < WITH_LABEL_VALUES.length; wli++) {
+      var withLabel = WITH_LABEL_VALUES[wli];
+      rowComponents.set(rowIndex, []);
 
-      for (var sti = 0; sti < STATE_VALUES.length; sti++) {
-        var state = STATE_VALUES[sti];
-        var component = await createInputComponent(size, variant, state);
-        rowComponents.get(si)!.push(component);
-        components.push(component);
+      for (var vi = 0; vi < VARIANT_VALUES.length; vi++) {
+        var variant = VARIANT_VALUES[vi];
+
+        for (var sti = 0; sti < STATE_VALUES.length; sti++) {
+          var state = STATE_VALUES[sti];
+          var component = await createInputComponent(
+            size,
+            variant,
+            state,
+            withLabel,
+          );
+          rowComponents.get(rowIndex)!.push(component);
+          components.push(component);
+        }
       }
+
+      rowIndex++;
     }
   }
 
@@ -349,10 +384,11 @@ export async function generateInputComponents(
   var rowHeights: number[] = [];
 
   var numColumns = VARIANT_VALUES.length * STATE_VALUES.length;
+  var totalRows = SIZE_VALUES.length * WITH_LABEL_VALUES.length;
 
   for (var colIdx = 0; colIdx < numColumns; colIdx++) {
     var maxColWidth = 0;
-    for (var rowIdx = 0; rowIdx < SIZE_VALUES.length; rowIdx++) {
+    for (var rowIdx = 0; rowIdx < totalRows; rowIdx++) {
       var row = rowComponents.get(rowIdx) || [];
       var comp = row[colIdx];
       if (comp && comp.width > maxColWidth) {
@@ -362,7 +398,7 @@ export async function generateInputComponents(
     columnWidths.push(maxColWidth);
   }
 
-  for (var rowIdx = 0; rowIdx < SIZE_VALUES.length; rowIdx++) {
+  for (var rowIdx = 0; rowIdx < totalRows; rowIdx++) {
     var row = rowComponents.get(rowIdx) || [];
     var maxRowHeight = 0;
     for (var colIdx = 0; colIdx < row.length; colIdx++) {
@@ -377,39 +413,45 @@ export async function generateInputComponents(
   // Second pass: position components using consistent column widths
   var yOffset = headerRowHeight;
 
-  for (var rowIdx = 0; rowIdx < SIZE_VALUES.length; rowIdx++) {
-    var row = rowComponents.get(rowIdx) || [];
-    var xOffset = labelColumnWidth;
-    var sizeValue = SIZE_VALUES[rowIdx];
+  var currentRowIndex = 0;
+  for (var si2 = 0; si2 < SIZE_VALUES.length; si2++) {
+    var sizeValue = SIZE_VALUES[si2];
 
-    // Record row label
-    rowLabels.push({
-      y: yOffset,
-      text: "size=" + sizeValue,
-    });
+    for (var wli2 = 0; wli2 < WITH_LABEL_VALUES.length; wli2++) {
+      var withLabelValue = WITH_LABEL_VALUES[wli2];
+      var row = rowComponents.get(currentRowIndex) || [];
+      var xOffset = labelColumnWidth;
 
-    for (var colIdx = 0; colIdx < row.length; colIdx++) {
-      var comp = row[colIdx];
-      comp.x = xOffset;
-      comp.y = yOffset;
+      // Record row label
+      rowLabels.push({
+        y: yOffset,
+        text: "size=" + sizeValue + ", withLabel=" + withLabelValue,
+      });
 
-      // Record column headers from first row
-      if (rowIdx === 0) {
-        var variantIdx = Math.floor(colIdx / STATE_VALUES.length);
-        var stateIdx = colIdx % STATE_VALUES.length;
-        var variantVal = VARIANT_VALUES[variantIdx];
-        var stateVal = STATE_VALUES[stateIdx];
-        columnHeaders.push({
-          x: xOffset,
-          text: "variant=" + variantVal + ", state=" + stateVal,
-        });
+      for (var colIdx = 0; colIdx < row.length; colIdx++) {
+        var comp = row[colIdx];
+        comp.x = xOffset;
+        comp.y = yOffset;
+
+        // Record column headers from first row
+        if (currentRowIndex === 0) {
+          var variantIdx = Math.floor(colIdx / STATE_VALUES.length);
+          var stateIdx = colIdx % STATE_VALUES.length;
+          var variantVal = VARIANT_VALUES[variantIdx];
+          var stateVal = STATE_VALUES[stateIdx];
+          columnHeaders.push({
+            x: xOffset,
+            text: "variant=" + variantVal + ", state=" + stateVal,
+          });
+        }
+
+        // Use consistent column width for positioning
+        xOffset += columnWidths[colIdx] + componentGapX;
       }
 
-      // Use consistent column width for positioning
-      xOffset += columnWidths[colIdx] + componentGapX;
+      yOffset += rowHeights[currentRowIndex] + componentGapY;
+      currentRowIndex++;
     }
-
-    yOffset += rowHeights[rowIdx] + componentGapY;
   }
 
   // Combine all variants into a single ComponentSet
@@ -417,8 +459,8 @@ export async function generateInputComponents(
   var componentSet = figma.combineAsVariants(components, page);
   componentSet.name = "Input";
   componentSet.description =
-    "Input component with size, variant, and state properties. " +
-    "Use for text input fields with optional label, description, and error states.";
+    "Input component with size, variant, state, and withLabel properties. " +
+    "Use withLabel=false for bare inputs, withLabel=true for inputs with Field wrapper (label, description, error).";
   componentSet.layoutMode = "NONE";
 
   // Calculate content dimensions

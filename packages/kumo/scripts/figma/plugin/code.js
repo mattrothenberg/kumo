@@ -7612,6 +7612,7 @@
   var SIZE_VALUES3 = ["xs", "sm", "base", "lg"];
   var VARIANT_VALUES4 = ["default", "error"];
   var STATE_VALUES3 = ["default", "focus", "disabled"];
+  var WITH_LABEL_VALUES = [false, true];
   var STATE_STYLES4 = {
     default: {
       ringVariable: "color-border",
@@ -7639,13 +7640,13 @@
       errorMessage: "Please enter a valid email address"
     }
   };
-  async function createInputComponent(size, variant, state) {
+  async function createInputComponent(size, variant, state, withLabel) {
     var sizeConfig = SIZE_CONFIG3[size] || SIZE_CONFIG3["base"];
     var variantConfig = VARIANT_CONFIG3[variant] || VARIANT_CONFIG3["default"];
     var stateStyle = STATE_STYLES4[state] || STATE_STYLES4["default"];
     var component = figma.createComponent();
-    component.name = "size=" + size + ", variant=" + variant + ", state=" + state;
-    component.description = "Input " + size + " " + variant + " in " + state + " state";
+    component.name = "size=" + size + ", variant=" + variant + ", state=" + state + ", withLabel=" + withLabel;
+    component.description = "Input " + size + " " + variant + " in " + state + " state" + (withLabel ? " with Field wrapper" : " bare");
     component.layoutMode = "VERTICAL";
     component.primaryAxisSizingMode = "AUTO";
     component.counterAxisSizingMode = "AUTO";
@@ -7655,7 +7656,7 @@
     if (stateStyle.opacity !== void 0) {
       component.opacity = stateStyle.opacity;
     }
-    if (variantConfig.label) {
+    if (withLabel && variantConfig.label) {
       var labelText = await createTextNode(variantConfig.label, 14, 500);
       labelText.name = "Label";
       labelText.textAutoResize = "WIDTH_AND_HEIGHT";
@@ -7707,7 +7708,7 @@
     }
     inputFrame.appendChild(placeholderText);
     component.appendChild(inputFrame);
-    if (variantConfig.description && variant === "default") {
+    if (withLabel && variantConfig.description && variant === "default") {
       var descText = await createTextNode(variantConfig.description, 12, 400);
       descText.name = "Description";
       descText.textAutoResize = "WIDTH_AND_HEIGHT";
@@ -7717,7 +7718,7 @@
       }
       component.appendChild(descText);
     }
-    if (variantConfig.errorMessage && variant === "error") {
+    if (withLabel && variantConfig.errorMessage && variant === "error") {
       var errorText = await createTextNode(variantConfig.errorMessage, 12, 400);
       errorText.name = "Error";
       errorText.textAutoResize = "WIDTH_AND_HEIGHT";
@@ -7738,27 +7739,38 @@
     var componentGapX = 24;
     var componentGapY = 40;
     var headerRowHeight = 24;
-    var labelColumnWidth = 120;
+    var labelColumnWidth = 200;
     var rowComponents = /* @__PURE__ */ new Map();
+    var rowIndex = 0;
     for (var si = 0; si < SIZE_VALUES3.length; si++) {
       var size = SIZE_VALUES3[si];
-      rowComponents.set(si, []);
-      for (var vi = 0; vi < VARIANT_VALUES4.length; vi++) {
-        var variant = VARIANT_VALUES4[vi];
-        for (var sti = 0; sti < STATE_VALUES3.length; sti++) {
-          var state = STATE_VALUES3[sti];
-          var component = await createInputComponent(size, variant, state);
-          rowComponents.get(si).push(component);
-          components.push(component);
+      for (var wli = 0; wli < WITH_LABEL_VALUES.length; wli++) {
+        var withLabel = WITH_LABEL_VALUES[wli];
+        rowComponents.set(rowIndex, []);
+        for (var vi = 0; vi < VARIANT_VALUES4.length; vi++) {
+          var variant = VARIANT_VALUES4[vi];
+          for (var sti = 0; sti < STATE_VALUES3.length; sti++) {
+            var state = STATE_VALUES3[sti];
+            var component = await createInputComponent(
+              size,
+              variant,
+              state,
+              withLabel
+            );
+            rowComponents.get(rowIndex).push(component);
+            components.push(component);
+          }
         }
+        rowIndex++;
       }
     }
     var columnWidths = [];
     var rowHeights = [];
     var numColumns = VARIANT_VALUES4.length * STATE_VALUES3.length;
+    var totalRows = SIZE_VALUES3.length * WITH_LABEL_VALUES.length;
     for (var colIdx = 0; colIdx < numColumns; colIdx++) {
       var maxColWidth = 0;
-      for (var rowIdx = 0; rowIdx < SIZE_VALUES3.length; rowIdx++) {
+      for (var rowIdx = 0; rowIdx < totalRows; rowIdx++) {
         var row = rowComponents.get(rowIdx) || [];
         var comp = row[colIdx];
         if (comp && comp.width > maxColWidth) {
@@ -7767,7 +7779,7 @@
       }
       columnWidths.push(maxColWidth);
     }
-    for (var rowIdx = 0; rowIdx < SIZE_VALUES3.length; rowIdx++) {
+    for (var rowIdx = 0; rowIdx < totalRows; rowIdx++) {
       var row = rowComponents.get(rowIdx) || [];
       var maxRowHeight = 0;
       for (var colIdx = 0; colIdx < row.length; colIdx++) {
@@ -7779,35 +7791,40 @@
       rowHeights.push(maxRowHeight);
     }
     var yOffset = headerRowHeight;
-    for (var rowIdx = 0; rowIdx < SIZE_VALUES3.length; rowIdx++) {
-      var row = rowComponents.get(rowIdx) || [];
-      var xOffset = labelColumnWidth;
-      var sizeValue = SIZE_VALUES3[rowIdx];
-      rowLabels.push({
-        y: yOffset,
-        text: "size=" + sizeValue
-      });
-      for (var colIdx = 0; colIdx < row.length; colIdx++) {
-        var comp = row[colIdx];
-        comp.x = xOffset;
-        comp.y = yOffset;
-        if (rowIdx === 0) {
-          var variantIdx = Math.floor(colIdx / STATE_VALUES3.length);
-          var stateIdx = colIdx % STATE_VALUES3.length;
-          var variantVal = VARIANT_VALUES4[variantIdx];
-          var stateVal = STATE_VALUES3[stateIdx];
-          columnHeaders.push({
-            x: xOffset,
-            text: "variant=" + variantVal + ", state=" + stateVal
-          });
+    var currentRowIndex = 0;
+    for (var si2 = 0; si2 < SIZE_VALUES3.length; si2++) {
+      var sizeValue = SIZE_VALUES3[si2];
+      for (var wli2 = 0; wli2 < WITH_LABEL_VALUES.length; wli2++) {
+        var withLabelValue = WITH_LABEL_VALUES[wli2];
+        var row = rowComponents.get(currentRowIndex) || [];
+        var xOffset = labelColumnWidth;
+        rowLabels.push({
+          y: yOffset,
+          text: "size=" + sizeValue + ", withLabel=" + withLabelValue
+        });
+        for (var colIdx = 0; colIdx < row.length; colIdx++) {
+          var comp = row[colIdx];
+          comp.x = xOffset;
+          comp.y = yOffset;
+          if (currentRowIndex === 0) {
+            var variantIdx = Math.floor(colIdx / STATE_VALUES3.length);
+            var stateIdx = colIdx % STATE_VALUES3.length;
+            var variantVal = VARIANT_VALUES4[variantIdx];
+            var stateVal = STATE_VALUES3[stateIdx];
+            columnHeaders.push({
+              x: xOffset,
+              text: "variant=" + variantVal + ", state=" + stateVal
+            });
+          }
+          xOffset += columnWidths[colIdx] + componentGapX;
         }
-        xOffset += columnWidths[colIdx] + componentGapX;
+        yOffset += rowHeights[currentRowIndex] + componentGapY;
+        currentRowIndex++;
       }
-      yOffset += rowHeights[rowIdx] + componentGapY;
     }
     var componentSet = figma.combineAsVariants(components, page);
     componentSet.name = "Input";
-    componentSet.description = "Input component with size, variant, and state properties. Use for text input fields with optional label, description, and error states.";
+    componentSet.description = "Input component with size, variant, state, and withLabel properties. Use withLabel=false for bare inputs, withLabel=true for inputs with Field wrapper (label, description, error).";
     componentSet.layoutMode = "NONE";
     var contentWidth = componentSet.width + labelColumnWidth;
     var contentHeight = componentSet.height + headerRowHeight;

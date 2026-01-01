@@ -280,24 +280,24 @@ After building, run the plugin in Figma:
 
 ## Component Status
 
-| Component       | Variants                                 | Notes                                      |
-| --------------- | ---------------------------------------- | ------------------------------------------ |
-| Badge           | variant (5)                              | Simple text badge                          |
-| Banner          | variant (3)                              | Icon + text                                |
-| Button          | variant (6) x size (4) x shape (3)       | Full matrix                                |
-| Checkbox        | variant (2) x checked (3) x disabled (2) | With icons                                 |
-| ClipboardText   | size (3)                                 | Roboto Mono                                |
-| Code            | lang (5)                                 | Roboto Mono, transparent bg                |
-| CodeBlock       | lang (5)                                 | Roboto Mono, bordered                      |
-| Collapsible     | open (2) x state (4)                     | Chevron icon, content panel                |
-| Combobox        | variant (3) x open (2) x state (3)       | Label, description, error                  |
-| DateRangePicker | size (3) x variant (2) x selected (2)    | Dual calendar, date range                  |
-| Dialog          | size (4)                                 | Title, description, actions                |
-| Dropdown        | open (2) x variant (6)                   | Icons, danger, groups, checkbox, shortcuts |
-| Input           | size (4) x variant (2) x state (3)       | Label, description, error states           |
-| LinkButton      | variant (6) x size (4)                   | Arrow icon                                 |
-| RefreshButton   | loading (2) x size (4)                   | Refresh icon                               |
-| Text            | variant (9) x size (4)                   | Typography scale                           |
+| Component       | Variants                                           | Notes                                                        |
+| --------------- | -------------------------------------------------- | ------------------------------------------------------------ |
+| Badge           | variant (5)                                        | Simple text badge                                            |
+| Banner          | variant (3)                                        | Icon + text                                                  |
+| Button          | variant (6) x size (4) x shape (3)                 | Full matrix                                                  |
+| Checkbox        | variant (2) x checked (3) x disabled (2)           | With icons                                                   |
+| ClipboardText   | size (3)                                           | Roboto Mono                                                  |
+| Code            | lang (5)                                           | Roboto Mono, transparent bg                                  |
+| CodeBlock       | lang (5)                                           | Roboto Mono, bordered                                        |
+| Collapsible     | open (2) x state (4)                               | Chevron icon, content panel                                  |
+| Combobox        | variant (3) x open (2) x state (3)                 | Label, description, error                                    |
+| DateRangePicker | size (3) x variant (2) x selected (2)              | Dual calendar, date range                                    |
+| Dialog          | size (4)                                           | Title, description, actions                                  |
+| Dropdown        | open (2) x variant (6)                             | Icons, danger, groups, checkbox, shortcuts                   |
+| Input           | size (4) x variant (2) x state (3) x withLabel (2) | Bare input or with Field wrapper (label, description, error) |
+| LinkButton      | variant (6) x size (4)                             | Arrow icon                                                   |
+| RefreshButton   | loading (2) x size (4)                             | Refresh icon                                                 |
+| Text            | variant (9) x size (4)                             | Typography scale                                             |
 
 ## Troubleshooting
 
