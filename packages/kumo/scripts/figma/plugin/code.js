@@ -185,7 +185,7 @@
     const frame = figma.createFrame();
     frame.name = "Content";
     frame.layoutMode = "NONE";
-    const surfaceVar = getVariableByName("surface");
+    const surfaceVar = getVariableByName("color-surface");
     if (surfaceVar) {
       let fill = {
         type: "SOLID",
@@ -466,6 +466,7 @@
     components: {
       Badge: {
         name: "Badge",
+        type: "component",
         description: "Badge component",
         importPath: "@cloudflare/kumo",
         category: "Display",
@@ -525,6 +526,7 @@
       },
       Banner: {
         name: "Banner",
+        type: "component",
         description: "Banner component",
         importPath: "@cloudflare/kumo",
         category: "Feedback",
@@ -584,6 +586,7 @@
       },
       Breadcrumbs: {
         name: "Breadcrumbs",
+        type: "block",
         description: "Breadcrumbs component",
         importPath: "@cloudflare/kumo",
         category: "Block",
@@ -676,6 +679,7 @@
       },
       Button: {
         name: "Button",
+        type: "component",
         description: "Button component",
         importPath: "@cloudflare/kumo",
         category: "Action",
@@ -877,6 +881,7 @@
       },
       Checkbox: {
         name: "Checkbox",
+        type: "component",
         description: "Checkbox component",
         importPath: "@cloudflare/kumo",
         category: "Input",
@@ -1110,6 +1115,7 @@
       },
       ClipboardText: {
         name: "ClipboardText",
+        type: "component",
         description: "ClipboardText component",
         importPath: "@cloudflare/kumo",
         category: "Action",
@@ -1160,6 +1166,7 @@
       },
       Code: {
         name: "Code",
+        type: "component",
         description: "Simple code component without syntax highlighting",
         importPath: "@cloudflare/kumo",
         category: "Display",
@@ -1217,6 +1224,7 @@
       },
       Collapsible: {
         name: "Collapsible",
+        type: "component",
         description: 'Collapsible component for showing/hiding content. Features: - Animated chevron indicator (rotates 180\xB0 when open) - Accessible with aria-expanded and aria-controls - Content panel with left border accent ```tsx const [open, setOpen] = useState(false); <Collapsible label="Show details" open={open} onOpenChange={setOpen}> <Text>Hidden content revealed when expanded.</Text> </Collapsible> ``` ```tsx const [activeIndex, setActiveIndex] = useState<number | null>(null); {items.map((item, i) => ( <Collapsible key={i} label={item.title} open={activeIndex === i} onOpenChange={(open) => setActiveIndex(open ? i : null)} > {item.content} </Collapsible> ))} ```',
         importPath: "@cloudflare/kumo",
         category: "Display",
@@ -1255,6 +1263,7 @@
       },
       Combobox: {
         name: "Combobox",
+        type: "component",
         description: "Combobox component",
         importPath: "@cloudflare/kumo",
         category: "Input",
@@ -1444,6 +1453,7 @@
       },
       DateRangePicker: {
         name: "DateRangePicker",
+        type: "component",
         description: "DateRangePicker component",
         importPath: "@cloudflare/kumo",
         category: "Input",
@@ -1527,6 +1537,7 @@
       },
       Dialog: {
         name: "Dialog",
+        type: "component",
         description: "Dialog component",
         importPath: "@cloudflare/kumo",
         category: "Overlay",
@@ -1690,6 +1701,7 @@
       },
       DropdownMenu: {
         name: "DropdownMenu",
+        type: "component",
         description: "DropdownMenu component",
         importPath: "@cloudflare/kumo",
         category: "Overlay",
@@ -1793,6 +1805,7 @@
       },
       Empty: {
         name: "Empty",
+        type: "block",
         description: "Empty component",
         importPath: "@cloudflare/kumo",
         category: "Block",
@@ -1867,6 +1880,7 @@
       },
       Field: {
         name: "Field",
+        type: "component",
         description: "Field component",
         importPath: "@cloudflare/kumo",
         category: "Input",
@@ -1902,6 +1916,7 @@
       },
       Icon: {
         name: "Icon",
+        type: "component",
         description: 'Icon component variants configuration / export const KUMO_ICON_VARIANTS = { size: { xs: { classes: "size-3", description: "12px - small UI elements", }, sm: { classes: "size-4", description: "16px - standard inline icons", }, base: { classes: "size-5", description: "20px - default size", }, lg: { classes: "size-6", description: "24px - prominent icons", }, xl: { classes: "size-8", description: "32px - hero sections", }, }, } as const; /** Default variant values for Icon component / export const KUMO_ICON_DEFAULT_VARIANTS = { size: "base", } as const; /** Generate className string for icon variants / export function iconVariants({ size = KUMO_ICON_DEFAULT_VARIANTS.size, }: KumoIconVariantsProps = {}) { return cn( // Base styles - no default color, inherits currentColor from parent // This matches Phosphor icon behavior "inline-block shrink-0 fill-current", // Apply size variant KUMO_ICON_VARIANTS.size[size].classes, ); } /** Icon component using SVG sprite with <use> pattern Color is inherited from parent\'s text color (currentColor), matching Phosphor icon behavior. Override with text-* classes when needed. ```tsx // Basic usage - inherits color from parent <Icon glyph="ph-check" /> // With explicit color and size <Icon glyph="ph-arrow-right" className="text-brand" size="lg" /> // Accessible icon with title <Icon glyph="cf-cloudflare-workers-outline" title="Cloudflare Workers" /> // Error state <Icon glyph="ph-warning" className="text-error" /> // Success state <Icon glyph="ph-check" className="text-green" /> ```',
         importPath: "@cloudflare/kumo",
         category: "Other",
@@ -3051,6 +3066,7 @@
       },
       Input: {
         name: "Input",
+        type: "component",
         description: "Input component",
         importPath: "@cloudflare/kumo",
         category: "Input",
@@ -3143,6 +3159,7 @@
       },
       LayerCard: {
         name: "LayerCard",
+        type: "component",
         description: "LayerCard component",
         importPath: "@cloudflare/kumo",
         category: "Display",
@@ -3181,6 +3198,7 @@
       },
       Loader: {
         name: "Loader",
+        type: "component",
         description: "Loader component",
         importPath: "@cloudflare/kumo",
         category: "Feedback",
@@ -3215,6 +3233,7 @@
       },
       MenuBar: {
         name: "MenuBar",
+        type: "component",
         description: "MenuBar component",
         importPath: "@cloudflare/kumo",
         category: "Navigation",
@@ -3245,6 +3264,7 @@
       },
       Meter: {
         name: "Meter",
+        type: "component",
         description: "Meter component",
         importPath: "@cloudflare/kumo",
         category: "Display",
@@ -3294,6 +3314,7 @@
       },
       PageHeader: {
         name: "PageHeader",
+        type: "block",
         description: "PageHeader component",
         importPath: "@cloudflare/kumo",
         category: "Block",
@@ -3353,6 +3374,7 @@
       },
       Pagination: {
         name: "Pagination",
+        type: "component",
         description: "Pagination component",
         importPath: "@cloudflare/kumo",
         category: "Navigation",
@@ -3385,6 +3407,7 @@
       },
       Select: {
         name: "Select",
+        type: "component",
         description: "Select component",
         importPath: "@cloudflare/kumo",
         category: "Input",
@@ -3473,6 +3496,7 @@
       },
       SensitiveInput: {
         name: "SensitiveInput",
+        type: "component",
         description: "SensitiveInput component",
         importPath: "@cloudflare/kumo",
         category: "Other",
@@ -3603,6 +3627,7 @@
       },
       Surface: {
         name: "Surface",
+        type: "component",
         description: "Surface component",
         importPath: "@cloudflare/kumo",
         category: "Layout",
@@ -3632,6 +3657,7 @@
       },
       Switch: {
         name: "Switch",
+        type: "component",
         description: "Switch component",
         importPath: "@cloudflare/kumo",
         category: "Input",
@@ -3813,6 +3839,7 @@
       },
       Tabs: {
         name: "Tabs",
+        type: "component",
         description: "Tabs component",
         importPath: "@cloudflare/kumo",
         category: "Navigation",
@@ -3859,6 +3886,7 @@
       },
       Text: {
         name: "Text",
+        type: "component",
         description: "Text component",
         importPath: "@cloudflare/kumo",
         category: "Display",
@@ -3967,6 +3995,7 @@
       },
       Toasty: {
         name: "Toasty",
+        type: "component",
         description: "Toasty component",
         importPath: "@cloudflare/kumo",
         category: "Feedback",
@@ -3988,6 +4017,7 @@
       },
       Tooltip: {
         name: "Tooltip",
+        type: "component",
         description: "Tooltip component",
         importPath: "@cloudflare/kumo",
         category: "Overlay",
@@ -4369,6 +4399,8 @@
       figmaVariableName = "text-color-surface";
     } else if (colorVariableName === "text-surface-inverse") {
       figmaVariableName = "text-color-surface-inverse";
+    } else if (colorVariableName === "fill-surface-inverse") {
+      figmaVariableName = "color-surface-inverse";
     } else if (colorVariableName === "text-muted") {
       figmaVariableName = "text-color-muted";
     } else if (colorVariableName === "text-error") {
@@ -4596,32 +4628,38 @@
   var SECTION_GAP3 = 160;
   var STATE_STYLES = {
     primary: {
-      hover: { fillVariable: "color-primary", fillOpacity: 0.7 },
+      // hover:bg-primary/70
+      hover: { fillVariable: "color-primary/70" },
       focus: { addRing: true },
-      pressed: { fillVariable: "color-primary", fillOpacity: 0.8 }
+      pressed: { fillVariable: "color-primary/70" }
     },
     secondary: {
+      // not-disabled:hover:bg-subtle, not-disabled:hover:border-subtle!
       hover: { fillVariable: "color-subtle", strokeVariable: "color-subtle" },
       focus: { addRing: true },
-      pressed: { fillVariable: "color-accent" }
+      // data-[state=open]:bg-subtle
+      pressed: { fillVariable: "color-subtle" }
     },
     ghost: {
+      // hover:bg-accent
       hover: { fillVariable: "color-accent" },
       focus: { addRing: true },
       pressed: { fillVariable: "color-accent" }
     },
     destructive: {
-      hover: { fillVariable: "color-error", fillOpacity: 0.7 },
+      // hover:bg-error/70
+      hover: { fillVariable: "color-error/70" },
       focus: { addRing: true },
-      pressed: { fillVariable: "color-error", fillOpacity: 0.8 }
+      pressed: { fillVariable: "color-error/70" }
     },
     "secondary-destructive": {
-      hover: { fillVariable: "color-subtle" },
+      // not-disabled:hover:bg-subtle, not-disabled:hover:border-subtle!
+      hover: { fillVariable: "color-subtle", strokeVariable: "color-subtle" },
       focus: { addRing: true },
-      pressed: { fillVariable: "color-accent" }
+      pressed: { fillVariable: "color-subtle" }
     },
     outline: {
-      hover: {},
+      hover: { fillVariable: "color-subtle" },
       focus: { addRing: true },
       pressed: { fillVariable: "color-subtle" }
     }
@@ -4680,8 +4718,25 @@
           var stateFillVar = getVariableByName(stateStyle.fillVariable);
           if (stateFillVar) {
             bindFillToVariable(component, stateFillVar.id);
-            if (stateStyle.fillOpacity !== void 0) {
-              component.opacity = stateStyle.fillOpacity;
+          } else {
+            var baseVarName = stateStyle.fillVariable.split("/")[0];
+            var opacityMatch = stateStyle.fillVariable.match(/\/(\d+)$/);
+            var baseFillVar = getVariableByName(baseVarName);
+            if (baseFillVar) {
+              bindFillToVariable(component, baseFillVar.id);
+              if (opacityMatch) {
+                var opacityValue = parseInt(opacityMatch[1], 10) / 100;
+                var fills = component.fills;
+                if (fills && fills.length > 0) {
+                  var newFills = [];
+                  for (var fi = 0; fi < fills.length; fi++) {
+                    var fill = Object.assign({}, fills[fi]);
+                    fill.opacity = opacityValue;
+                    newFills.push(fill);
+                  }
+                  component.fills = newFills;
+                }
+              }
             }
           }
         }
@@ -4694,7 +4749,7 @@
         if (stateStyle.addRing) {
           var ringVar = getVariableByName("color-active");
           if (ringVar) {
-            bindStrokeToVariable(component, ringVar.id, 1);
+            bindStrokeToVariable(component, ringVar.id, 2);
           }
         }
       }
@@ -4739,33 +4794,11 @@
     }
     return component;
   }
-  function shouldGenerateVariant(variant, size, shape, disabled, loading, state) {
-    if (shape === "base" && !disabled && !loading && state === "default") {
-      return true;
-    }
-    if (shape === "base" && !disabled && !loading && size === "base") {
-      return true;
-    }
-    if (shape === "base" && disabled && !loading && size === "base" && state === "default") {
-      return true;
-    }
-    if (shape === "base" && loading && !disabled && size === "base" && state === "default") {
-      return true;
-    }
-    if ((shape === "square" || shape === "circle") && variant === "secondary" && !disabled && !loading && state === "default") {
-      return true;
-    }
-    return false;
-  }
   async function generateButtonComponents(page, startY) {
     if (startY === void 0) startY = 100;
     figma.currentPage = page;
     var variants = variantProp3.values;
     var sizes = sizeProp.values;
-    var shapes = shapeProp.values;
-    var disabledOptions = [false, true];
-    var loadingOptions = [false, true];
-    var stateOptions = ["default", "hover", "focus", "pressed"];
     var components = [];
     var rowLabels = [];
     var componentGap = 16;
@@ -4775,103 +4808,167 @@
     var rowComponents = /* @__PURE__ */ new Map();
     var rowLabelTexts = /* @__PURE__ */ new Map();
     var columnHeaders = [];
+    var baseShapeColumnOrder = [
+      { state: "default", disabled: false, loading: false },
+      { state: "hover", disabled: false, loading: false },
+      { state: "focus", disabled: false, loading: false },
+      { state: "pressed", disabled: false, loading: false },
+      { state: "default", disabled: true, loading: false },
+      { state: "default", disabled: false, loading: true }
+    ];
     for (var vi = 0; vi < variants.length; vi++) {
       var variant = variants[vi];
-      for (var shi = 0; shi < shapes.length; shi++) {
-        var shape = shapes[shi];
-        for (var di = 0; di < disabledOptions.length; di++) {
-          var disabled = disabledOptions[di];
-          for (var li = 0; li < loadingOptions.length; li++) {
-            var loading = loadingOptions[li];
-            for (var sti = 0; sti < stateOptions.length; sti++) {
-              var state = stateOptions[sti];
-              for (var si = 0; si < sizes.length; si++) {
-                var size = sizes[si];
-                if (!shouldGenerateVariant(
-                  variant,
-                  size,
-                  shape,
-                  disabled,
-                  loading,
-                  state
-                )) {
-                  continue;
-                }
-                var component = await createButtonComponent(
-                  variant,
-                  size,
-                  shape,
-                  disabled,
-                  loading,
-                  state
-                );
-                var rowIndex;
-                if (shape === "base") {
-                  rowIndex = variants.indexOf(variant);
-                  rowLabelTexts.set(rowIndex, "variant=" + variant);
-                } else if (shape === "square") {
-                  rowIndex = variants.length;
-                  rowLabelTexts.set(rowIndex, "shape=square");
-                } else {
-                  rowIndex = variants.length + 1;
-                  rowLabelTexts.set(rowIndex, "shape=circle");
-                }
-                if (!rowComponents.has(rowIndex)) {
-                  rowComponents.set(rowIndex, []);
-                }
-                rowComponents.get(rowIndex).push(component);
-                components.push(component);
-              }
-            }
-          }
-        }
+      var rowIndex = vi;
+      rowLabelTexts.set(rowIndex, "variant=" + variant);
+      if (!rowComponents.has(rowIndex)) {
+        rowComponents.set(rowIndex, []);
+      }
+      for (var ci = 0; ci < baseShapeColumnOrder.length; ci++) {
+        var colConfig = baseShapeColumnOrder[ci];
+        var component = await createButtonComponent(
+          variant,
+          "base",
+          // Always base size for variant rows
+          "base",
+          // Always base shape
+          colConfig.disabled,
+          colConfig.loading,
+          colConfig.state
+        );
+        rowComponents.get(rowIndex).push(component);
+        components.push(component);
       }
     }
+    var sizeRowIndex = variants.length;
+    rowLabelTexts.set(sizeRowIndex, "shape=base (sizes)");
+    if (!rowComponents.has(sizeRowIndex)) {
+      rowComponents.set(sizeRowIndex, []);
+    }
+    for (var sizeIdx = 0; sizeIdx < sizes.length; sizeIdx++) {
+      var sizeVal = sizes[sizeIdx];
+      var sizeComponent = await createButtonComponent(
+        "secondary",
+        sizeVal,
+        "base",
+        // base shape = text button
+        false,
+        false,
+        "default"
+      );
+      rowComponents.get(sizeRowIndex).push(sizeComponent);
+      components.push(sizeComponent);
+    }
+    var squareRowIndex = variants.length + 1;
+    rowLabelTexts.set(squareRowIndex, "shape=square");
+    if (!rowComponents.has(squareRowIndex)) {
+      rowComponents.set(squareRowIndex, []);
+    }
+    for (var si = 0; si < sizes.length; si++) {
+      var size = sizes[si];
+      var squareComponent = await createButtonComponent(
+        "secondary",
+        size,
+        "square",
+        false,
+        false,
+        "default"
+      );
+      rowComponents.get(squareRowIndex).push(squareComponent);
+      components.push(squareComponent);
+    }
+    var circleRowIndex = variants.length + 2;
+    rowLabelTexts.set(circleRowIndex, "shape=circle");
+    if (!rowComponents.has(circleRowIndex)) {
+      rowComponents.set(circleRowIndex, []);
+    }
+    for (var si2 = 0; si2 < sizes.length; si2++) {
+      var size2 = sizes[si2];
+      var circleComponent = await createButtonComponent(
+        "secondary",
+        size2,
+        "circle",
+        false,
+        false,
+        "default"
+      );
+      rowComponents.get(circleRowIndex).push(circleComponent);
+      components.push(circleComponent);
+    }
+    var variantColumnHeaders = [
+      "default",
+      "hover",
+      "focus",
+      "pressed",
+      "disabled",
+      "loading"
+    ];
+    var shapeColumnHeaders = ["xs", "sm", "base", "lg"];
+    var shapeColumnHeaderPositions = [];
+    var shapeColumnXPositions = [];
     var yOffset = headerRowHeight;
-    var totalRows = variants.length + 2;
-    var columnHeadersRecorded = false;
+    var variantRowCount = variants.length;
+    var totalRows = variantRowCount + 3;
+    var sectionGap = 60;
+    var firstShapeRowIndex = variantRowCount;
     for (var i = 0; i < totalRows; i++) {
       var row = rowComponents.get(i) || [];
       var xOffset = labelColumnWidth;
+      if (i === variantRowCount) {
+        yOffset += sectionGap;
+      }
       var labelText = rowLabelTexts.get(i);
       if (labelText && row.length > 0) {
         rowLabels.push({ y: yOffset, text: labelText });
       }
+      if (i === 0) {
+        for (var hi = 0; hi < variantColumnHeaders.length; hi++) {
+          columnHeaders.push({
+            x: xOffset + hi * (100 + componentGap),
+            // Approximate width
+            text: variantColumnHeaders[hi]
+          });
+        }
+      }
+      var isShapeRow = i >= firstShapeRowIndex;
+      var isFirstShapeRow = i === firstShapeRowIndex;
       for (var j = 0; j < row.length; j++) {
         var comp = row[j];
-        comp.x = xOffset;
+        if (isShapeRow && !isFirstShapeRow && j < shapeColumnXPositions.length) {
+          comp.x = shapeColumnXPositions[j];
+        } else {
+          comp.x = xOffset;
+        }
         comp.y = yOffset;
-        if (i === 0 && !columnHeadersRecorded) {
-          var nameParts = comp.name.split(", ");
-          var sizeMatch = nameParts.find(function(p) {
-            return p.startsWith("size=");
+        if (isFirstShapeRow && j < shapeColumnHeaders.length) {
+          shapeColumnXPositions.push(xOffset);
+          shapeColumnHeaderPositions.push({
+            x: xOffset,
+            text: shapeColumnHeaders[j]
           });
-          var disabledMatch = nameParts.find(function(p) {
-            return p.startsWith("disabled=true");
-          });
-          var loadingMatch = nameParts.find(function(p) {
-            return p.startsWith("loading=true");
-          });
-          var headerText = "";
-          if (disabledMatch) {
-            headerText = "disabled";
-          } else if (loadingMatch) {
-            headerText = "loading";
-          } else if (sizeMatch) {
-            headerText = sizeMatch;
-          }
-          if (headerText) {
-            columnHeaders.push({ x: xOffset, text: headerText });
-          }
         }
         xOffset += comp.width + componentGap;
-      }
-      if (i === 0 && row.length > 0) {
-        columnHeadersRecorded = true;
       }
       if (row.length > 0) {
         yOffset += rowGap;
       }
+    }
+    var firstRow = rowComponents.get(0) || [];
+    if (firstRow.length > 0) {
+      columnHeaders = [];
+      var headerXOffset = labelColumnWidth;
+      for (var chi = 0; chi < firstRow.length; chi++) {
+        var headerComp = firstRow[chi];
+        columnHeaders.push({
+          x: headerXOffset,
+          text: variantColumnHeaders[chi] || ""
+        });
+        headerXOffset += headerComp.width + componentGap;
+      }
+    }
+    var shapeHeaderY = 0;
+    var squareRow = rowComponents.get(variantRowCount) || [];
+    if (squareRow.length > 0) {
+      shapeHeaderY = squareRow[0].y - headerRowHeight - 8;
     }
     var componentSet = figma.combineAsVariants(components, page);
     componentSet.name = "Button";
@@ -4899,6 +4996,15 @@
       SECTION_PADDING3,
       lightSection.frame
     );
+    if (shapeColumnHeaderPositions.length > 0 && shapeHeaderY > 0) {
+      await createColumnHeaders(
+        shapeColumnHeaderPositions.map(function(h) {
+          return { x: h.x + SECTION_PADDING3, text: h.text };
+        }),
+        SECTION_PADDING3 + shapeHeaderY,
+        lightSection.frame
+      );
+    }
     for (var li = 0; li < rowLabels.length; li++) {
       var label = rowLabels[li];
       var labelNode = await createRowLabel(
@@ -4923,6 +5029,15 @@
       SECTION_PADDING3,
       darkSection.frame
     );
+    if (shapeColumnHeaderPositions.length > 0 && shapeHeaderY > 0) {
+      await createColumnHeaders(
+        shapeColumnHeaderPositions.map(function(h) {
+          return { x: h.x + SECTION_PADDING3, text: h.text };
+        }),
+        SECTION_PADDING3 + shapeHeaderY,
+        darkSection.frame
+      );
+    }
     for (var di = 0; di < rowLabels.length; di++) {
       var darkLabel = rowLabels[di];
       var darkLabelNode = await createRowLabel(
@@ -5018,22 +5133,8 @@
     }
     return component;
   }
-  function getStateLabel(state, variant, disabled) {
-    const parts = [];
-    if (state === "checked") {
-      parts.push("Checked");
-    } else if (state === "indeterminate") {
-      parts.push("Indeterminate");
-    } else {
-      parts.push("Unchecked");
-    }
-    if (variant === "error") {
-      parts.push("Error");
-    }
-    if (disabled) {
-      parts.push("Disabled");
-    }
-    return parts.join(" - ");
+  function getCheckboxLabel() {
+    return "Label";
   }
   async function generateCheckboxComponents(page, startY = 100) {
     figma.currentPage = page;
@@ -5042,17 +5143,18 @@
     const rowLabels = [];
     const componentGap = 24;
     const rowGap = 48;
+    const headerRowHeight = 24;
     const labelColumnWidth = 180;
-    let currentY = 0;
+    const columnHeaderTexts = ["Unchecked", "Checked", "Indeterminate"];
+    let currentY = headerRowHeight;
     rowLabels.push({ y: currentY, text: "variant=default" });
     let currentX = labelColumnWidth;
     for (const state of states) {
-      const labelText = getStateLabel(state, "default", false);
       const component = await createCheckboxComponent(
         state,
         "default",
         false,
-        labelText
+        getCheckboxLabel()
       );
       component.x = currentX;
       component.y = currentY;
@@ -5063,12 +5165,11 @@
     rowLabels.push({ y: currentY, text: "variant=default, disabled=true" });
     currentX = labelColumnWidth;
     for (const state of states) {
-      const labelText = getStateLabel(state, "default", true);
       const component = await createCheckboxComponent(
         state,
         "default",
         true,
-        labelText
+        getCheckboxLabel()
       );
       component.x = currentX;
       component.y = currentY;
@@ -5078,13 +5179,12 @@
     currentY += rowGap;
     rowLabels.push({ y: currentY, text: "variant=error" });
     currentX = labelColumnWidth;
-    for (const state of ["unchecked", "checked"]) {
-      const labelText = getStateLabel(state, "error", false);
+    for (const state of states) {
       const component = await createCheckboxComponent(
         state,
         "error",
         false,
-        labelText
+        getCheckboxLabel()
       );
       component.x = currentX;
       component.y = currentY;
@@ -5094,16 +5194,16 @@
     currentY += rowGap;
     rowLabels.push({ y: currentY, text: "variant=error, disabled=true" });
     currentX = labelColumnWidth;
-    {
-      const labelText = getStateLabel("unchecked", "error", true);
+    for (const state of states) {
       const component = await createCheckboxComponent(
-        "unchecked",
+        state,
         "error",
         true,
-        labelText
+        getCheckboxLabel()
       );
       component.x = currentX;
       component.y = currentY;
+      currentX += component.width + componentGap;
       components.push(component);
     }
     const componentSet = figma.combineAsVariants(components, page);
@@ -5111,7 +5211,7 @@
     componentSet.description = "Checkbox component with state (unchecked/checked/indeterminate), variant (default/error), and disabled properties. Includes label text.";
     componentSet.layoutMode = "NONE";
     const contentWidth = componentSet.width + labelColumnWidth;
-    const contentHeight = componentSet.height;
+    const contentHeight = componentSet.height + headerRowHeight;
     const lightSection = createModeSection(page, "Checkbox", "light");
     lightSection.frame.resize(
       contentWidth + SECTION_PADDING4 * 2,
@@ -5124,7 +5224,15 @@
     );
     lightSection.frame.appendChild(componentSet);
     componentSet.x = SECTION_PADDING4 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING4;
+    componentSet.y = SECTION_PADDING4 + headerRowHeight;
+    const columnHeaders = [];
+    for (let i = 0; i < Math.min(3, components.length); i++) {
+      columnHeaders.push({
+        x: components[i].x + SECTION_PADDING4,
+        text: columnHeaderTexts[i]
+      });
+    }
+    await createColumnHeaders(columnHeaders, SECTION_PADDING4, lightSection.frame);
     for (const label of rowLabels) {
       const labelNode = await createRowLabel(
         label.text,
@@ -5137,9 +5245,10 @@
     for (const component of components) {
       const instance = component.createInstance();
       instance.x = component.x + SECTION_PADDING4 + labelColumnWidth;
-      instance.y = component.y + SECTION_PADDING4;
+      instance.y = component.y + SECTION_PADDING4 + headerRowHeight;
       darkSection.frame.appendChild(instance);
     }
+    await createColumnHeaders(columnHeaders, SECTION_PADDING4, darkSection.frame);
     for (const label of rowLabels) {
       const labelNode = await createRowLabel(
         label.text,
@@ -6273,7 +6382,6 @@
   // scripts/figma/plugin/generators/date-range-picker.ts
   var SECTION_PADDING10 = 48;
   var SECTION_GAP10 = 160;
-  var SIZE_VALUES = ["sm", "base", "lg"];
   var VARIANT_VALUES2 = ["default", "subtle"];
   var SELECTED_VALUES = [false, true];
   var SIZE_CONFIG = {
@@ -6652,6 +6760,7 @@
   async function generateDateRangePickerComponents(page, startY) {
     if (startY === void 0) startY = 100;
     figma.currentPage = page;
+    var sizesToGenerate = ["base"];
     var components = [];
     var rowLabels = [];
     var columnHeaders = [];
@@ -6660,8 +6769,8 @@
     var headerRowHeight = 24;
     var labelColumnWidth = 150;
     var rowComponents = /* @__PURE__ */ new Map();
-    for (var si = 0; si < SIZE_VALUES.length; si++) {
-      var size = SIZE_VALUES[si];
+    for (var si = 0; si < sizesToGenerate.length; si++) {
+      var size = sizesToGenerate[si];
       rowComponents.set(si, []);
       for (var vi = 0; vi < VARIANT_VALUES2.length; vi++) {
         var variant = VARIANT_VALUES2[vi];
@@ -6685,7 +6794,7 @@
     var numColumns = VARIANT_VALUES2.length * SELECTED_VALUES.length;
     for (var colIdx = 0; colIdx < numColumns; colIdx++) {
       var maxColWidth = 0;
-      for (var rowIdx = 0; rowIdx < SIZE_VALUES.length; rowIdx++) {
+      for (var rowIdx = 0; rowIdx < sizesToGenerate.length; rowIdx++) {
         var row = rowComponents.get(rowIdx);
         if (row) {
           var comp = row[colIdx];
@@ -6696,7 +6805,7 @@
       }
       columnWidths.push(maxColWidth);
     }
-    for (var rowIdx = 0; rowIdx < SIZE_VALUES.length; rowIdx++) {
+    for (var rowIdx = 0; rowIdx < sizesToGenerate.length; rowIdx++) {
       var row = rowComponents.get(rowIdx);
       if (row) {
         var maxRowHeight = 0;
@@ -6710,11 +6819,11 @@
       }
     }
     var yOffset = headerRowHeight;
-    for (var rowIdx = 0; rowIdx < SIZE_VALUES.length; rowIdx++) {
+    for (var rowIdx = 0; rowIdx < sizesToGenerate.length; rowIdx++) {
       var row = rowComponents.get(rowIdx);
       if (row) {
         var xOffset = labelColumnWidth;
-        var sizeValue = SIZE_VALUES[rowIdx];
+        var sizeValue = sizesToGenerate[rowIdx];
         rowLabels.push({
           y: yOffset,
           text: "size=" + sizeValue
@@ -6740,7 +6849,7 @@
     }
     var componentSet = figma.combineAsVariants(components, page);
     componentSet.name = "DateRangePicker";
-    componentSet.description = "DateRangePicker component with size, variant, and selected properties. Use for selecting date ranges across two side-by-side calendars.";
+    componentSet.description = "DateRangePicker component with variant and selected properties. Showing base size only. Additional sizes (sm, lg) available in code.";
     componentSet.layoutMode = "NONE";
     var contentWidth = componentSet.width + labelColumnWidth;
     var contentHeight = componentSet.height + headerRowHeight;
@@ -6773,6 +6882,19 @@
       );
       lightSection.frame.appendChild(labelNode);
     }
+    var noteText = await createTextNode(
+      "Note: sm and lg sizes also available in code",
+      12,
+      400
+    );
+    noteText.name = "Size Note";
+    var mutedVar = getVariableByName("text-color-muted");
+    if (mutedVar) {
+      bindTextColorToVariable(noteText, mutedVar.id);
+    }
+    noteText.x = SECTION_PADDING10;
+    noteText.y = SECTION_PADDING10 + yOffset + 16;
+    lightSection.frame.appendChild(noteText);
     for (var k = 0; k < components.length; k++) {
       var origComp = components[k];
       var instance = origComp.createInstance();
@@ -6796,8 +6918,20 @@
       );
       darkSection.frame.appendChild(darkLabelNode);
     }
+    var darkNoteText = await createTextNode(
+      "Note: sm and lg sizes also available in code",
+      12,
+      400
+    );
+    darkNoteText.name = "Size Note";
+    if (mutedVar) {
+      bindTextColorToVariable(darkNoteText, mutedVar.id);
+    }
+    darkNoteText.x = SECTION_PADDING10;
+    darkNoteText.y = SECTION_PADDING10 + yOffset + 16;
+    darkSection.frame.appendChild(darkNoteText);
     var totalWidth = contentWidth + SECTION_PADDING10 * 2;
-    var totalHeight = contentHeight + SECTION_PADDING10 * 2;
+    var totalHeight = contentHeight + SECTION_PADDING10 * 2 + 40;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     lightSection.section.x = 100;
@@ -6805,7 +6939,7 @@
     darkSection.section.x = 100 + totalWidth + 50;
     darkSection.section.y = startY;
     console.log(
-      "\u2705 Generated DateRangePicker ComponentSet with " + components.length + " variants (light + dark)"
+      "\u2705 Generated DateRangePicker ComponentSet with " + components.length + " variants (base size only, light + dark)"
     );
     return startY + totalHeight + SECTION_GAP10;
   }
@@ -6815,7 +6949,7 @@
   var sizeProp3 = dialogProps.size;
   var SECTION_PADDING11 = 48;
   var SECTION_GAP11 = 160;
-  var SIZE_VALUES2 = sizeProp3.values;
+  var SIZE_VALUES = sizeProp3.values;
   var SIZE_CONFIG2 = {
     sm: {
       width: 350,
@@ -7009,8 +7143,8 @@
     var labelColumnWidth = 120;
     var yOffset = 0;
     var maxWidth = 0;
-    for (var i = 0; i < SIZE_VALUES2.length; i++) {
-      var size = SIZE_VALUES2[i];
+    for (var i = 0; i < SIZE_VALUES.length; i++) {
+      var size = SIZE_VALUES[i];
       var component = await createDialogComponent(size);
       component.x = labelColumnWidth;
       component.y = yOffset;
@@ -7609,7 +7743,7 @@
       width: 320
     }
   };
-  var SIZE_VALUES3 = ["xs", "sm", "base", "lg"];
+  var SIZE_VALUES2 = ["xs", "sm", "base", "lg"];
   var VARIANT_VALUES4 = ["default", "error"];
   var STATE_VALUES3 = ["default", "focus", "disabled"];
   var WITH_LABEL_VALUES = [false, true];
@@ -7742,8 +7876,8 @@
     var labelColumnWidth = 200;
     var rowComponents = /* @__PURE__ */ new Map();
     var rowIndex = 0;
-    for (var si = 0; si < SIZE_VALUES3.length; si++) {
-      var size = SIZE_VALUES3[si];
+    for (var si = 0; si < SIZE_VALUES2.length; si++) {
+      var size = SIZE_VALUES2[si];
       for (var wli = 0; wli < WITH_LABEL_VALUES.length; wli++) {
         var withLabel = WITH_LABEL_VALUES[wli];
         rowComponents.set(rowIndex, []);
@@ -7767,7 +7901,7 @@
     var columnWidths = [];
     var rowHeights = [];
     var numColumns = VARIANT_VALUES4.length * STATE_VALUES3.length;
-    var totalRows = SIZE_VALUES3.length * WITH_LABEL_VALUES.length;
+    var totalRows = SIZE_VALUES2.length * WITH_LABEL_VALUES.length;
     for (var colIdx = 0; colIdx < numColumns; colIdx++) {
       var maxColWidth = 0;
       for (var rowIdx = 0; rowIdx < totalRows; rowIdx++) {
@@ -7792,8 +7926,8 @@
     }
     var yOffset = headerRowHeight;
     var currentRowIndex = 0;
-    for (var si2 = 0; si2 < SIZE_VALUES3.length; si2++) {
-      var sizeValue = SIZE_VALUES3[si2];
+    for (var si2 = 0; si2 < SIZE_VALUES2.length; si2++) {
+      var sizeValue = SIZE_VALUES2[si2];
       for (var wli2 = 0; wli2 < WITH_LABEL_VALUES.length; wli2++) {
         var withLabelValue = WITH_LABEL_VALUES[wli2];
         var row = rowComponents.get(currentRowIndex) || [];
@@ -7947,7 +8081,7 @@
       width: 360
     }
   };
-  var SIZE_VALUES4 = ["xs", "sm", "base", "lg"];
+  var SIZE_VALUES3 = ["xs", "sm", "base", "lg"];
   var VARIANT_VALUES5 = ["default", "error"];
   var STATE_VALUES4 = ["default", "focus", "disabled"];
   var WITH_LABEL_VALUES2 = [false, true];
@@ -8080,8 +8214,8 @@
     var labelColumnWidth = 200;
     var rowComponents = /* @__PURE__ */ new Map();
     var rowIndex = 0;
-    for (var si = 0; si < SIZE_VALUES4.length; si++) {
-      var size = SIZE_VALUES4[si];
+    for (var si = 0; si < SIZE_VALUES3.length; si++) {
+      var size = SIZE_VALUES3[si];
       for (var wli = 0; wli < WITH_LABEL_VALUES2.length; wli++) {
         var withLabel = WITH_LABEL_VALUES2[wli];
         rowComponents.set(rowIndex, []);
@@ -8105,7 +8239,7 @@
     var columnWidths = [];
     var rowHeights = [];
     var numColumns = VARIANT_VALUES5.length * STATE_VALUES4.length;
-    var totalRows = SIZE_VALUES4.length * WITH_LABEL_VALUES2.length;
+    var totalRows = SIZE_VALUES3.length * WITH_LABEL_VALUES2.length;
     for (var colIdx = 0; colIdx < numColumns; colIdx++) {
       var maxColWidth = 0;
       for (var rowIdx = 0; rowIdx < totalRows; rowIdx++) {
@@ -8130,8 +8264,8 @@
     }
     var yOffset = headerRowHeight;
     var currentRowIndex = 0;
-    for (var si2 = 0; si2 < SIZE_VALUES4.length; si2++) {
-      var sizeValue = SIZE_VALUES4[si2];
+    for (var si2 = 0; si2 < SIZE_VALUES3.length; si2++) {
+      var sizeValue = SIZE_VALUES3[si2];
       for (var wli2 = 0; wli2 < WITH_LABEL_VALUES2.length; wli2++) {
         var withLabelValue = WITH_LABEL_VALUES2[wli2];
         var row = rowComponents.get(currentRowIndex) || [];
@@ -8256,19 +8390,29 @@
     }
   };
   async function createLayerCardComponent() {
+    console.log("LayerCard: Creating component...");
     var config = LAYER_CARD_CONFIG;
     var component = figma.createComponent();
+    console.log("LayerCard: Component created");
     component.name = "default";
     component.description = "LayerCard - A layered card component with secondary header and primary content area";
     component.layoutMode = "VERTICAL";
     component.primaryAxisSizingMode = "AUTO";
     component.counterAxisSizingMode = "FIXED";
-    component.resize(config.width, 1);
+    component.resizeWithoutConstraints(config.width, 100);
     component.itemSpacing = 0;
     component.cornerRadius = config.borderRadius;
     var rootBgVar = getVariableByName("color-surface-2");
     if (rootBgVar) {
       bindFillToVariable(component, rootBgVar.id);
+    } else {
+      console.log(
+        "LayerCard: color-surface-2 variable not found, using fallback"
+      );
+      var fallbackBgVar = getVariableByName("color-surface");
+      if (fallbackBgVar) {
+        bindFillToVariable(component, fallbackBgVar.id);
+      }
     }
     var rootRingVar = getVariableByName("color-border");
     if (rootRingVar) {
@@ -8279,7 +8423,6 @@
     secondaryFrame.layoutMode = "HORIZONTAL";
     secondaryFrame.primaryAxisAlignItems = "SPACE_BETWEEN";
     secondaryFrame.counterAxisAlignItems = "CENTER";
-    secondaryFrame.layoutSizingHorizontal = "FILL";
     secondaryFrame.primaryAxisSizingMode = "FIXED";
     secondaryFrame.counterAxisSizingMode = "AUTO";
     secondaryFrame.paddingLeft = config.secondary.paddingX;
@@ -8288,35 +8431,53 @@
     secondaryFrame.paddingBottom = config.secondary.paddingY;
     secondaryFrame.itemSpacing = config.secondary.gap;
     secondaryFrame.fills = [];
+    console.log("LayerCard: Creating secondary text...");
     var secondaryText = await createTextNode(
       "Next Steps",
       config.secondary.fontSize,
       config.secondary.fontWeight
     );
+    console.log("LayerCard: Secondary text created");
     secondaryText.name = "Title";
     secondaryText.textAutoResize = "WIDTH_AND_HEIGHT";
     var secondaryTextVar = getVariableByName("text-color-label");
     if (secondaryTextVar) {
       bindTextColorToVariable(secondaryText, secondaryTextVar.id);
     }
-    var actionPlaceholder = figma.createFrame();
-    actionPlaceholder.name = "Action";
-    actionPlaceholder.resize(24, 24);
-    actionPlaceholder.cornerRadius = 4;
-    actionPlaceholder.fills = [];
-    var actionBorderVar = getVariableByName("color-border");
-    if (actionBorderVar) {
-      bindStrokeToVariable(actionPlaceholder, actionBorderVar.id, 1);
+    var iconButtonFrame = figma.createFrame();
+    iconButtonFrame.name = "Action Button";
+    iconButtonFrame.layoutMode = "HORIZONTAL";
+    iconButtonFrame.primaryAxisAlignItems = "CENTER";
+    iconButtonFrame.counterAxisAlignItems = "CENTER";
+    iconButtonFrame.resize(28, 28);
+    iconButtonFrame.cornerRadius = 4;
+    iconButtonFrame.fills = [];
+    var arrowIcon = createIconInstance(DEFAULT_ICONS.arrowRight, 16);
+    if (arrowIcon) {
+      arrowIcon.name = "Icon";
+      bindIconColor(arrowIcon, "text-label");
+      iconButtonFrame.appendChild(arrowIcon);
+    } else {
+      console.log("LayerCard: Arrow icon not found, using placeholder");
+      var arrowPlaceholder = figma.createFrame();
+      arrowPlaceholder.name = "Arrow Placeholder";
+      arrowPlaceholder.resize(16, 16);
+      arrowPlaceholder.fills = [];
+      var arrowBorderVar = getVariableByName("color-border");
+      if (arrowBorderVar) {
+        bindStrokeToVariable(arrowPlaceholder, arrowBorderVar.id, 1);
+      }
+      iconButtonFrame.appendChild(arrowPlaceholder);
     }
     secondaryFrame.appendChild(secondaryText);
-    secondaryFrame.appendChild(actionPlaceholder);
+    secondaryFrame.appendChild(iconButtonFrame);
     component.appendChild(secondaryFrame);
+    secondaryFrame.layoutSizingHorizontal = "FILL";
     var primaryFrame = figma.createFrame();
     primaryFrame.name = "Primary";
     primaryFrame.layoutMode = "VERTICAL";
     primaryFrame.primaryAxisAlignItems = "MIN";
     primaryFrame.counterAxisAlignItems = "MIN";
-    primaryFrame.layoutSizingHorizontal = "FILL";
     primaryFrame.primaryAxisSizingMode = "AUTO";
     primaryFrame.counterAxisSizingMode = "AUTO";
     primaryFrame.paddingLeft = config.primary.paddingX;
@@ -8326,18 +8487,29 @@
     primaryFrame.itemSpacing = config.primary.gap;
     primaryFrame.cornerRadius = config.primary.borderRadius;
     var primaryBgVar = getVariableByName("color-layer-card-primary");
+    if (!primaryBgVar) {
+      primaryBgVar = getVariableByName("color-surface");
+    }
     if (primaryBgVar) {
       bindFillToVariable(primaryFrame, primaryBgVar.id);
     }
     var primaryRingVar = getVariableByName("color-color");
+    if (!primaryRingVar) {
+      console.log("LayerCard: color-color not found, trying color-border");
+      primaryRingVar = getVariableByName("color-border");
+    }
     if (primaryRingVar) {
       bindStrokeToVariable(primaryFrame, primaryRingVar.id, 1);
+    } else {
+      console.log("LayerCard: No ring variable found for primary section");
     }
+    console.log("LayerCard: Creating primary text...");
     var primaryText = await createTextNode(
       "Get started with Kumo",
       config.primary.fontSize,
       config.primary.fontWeight
     );
+    console.log("LayerCard: Primary text created");
     primaryText.name = "Content";
     primaryText.textAutoResize = "WIDTH_AND_HEIGHT";
     var primaryTextVar = getVariableByName("text-color-surface");
@@ -8346,81 +8518,289 @@
     }
     primaryFrame.appendChild(primaryText);
     component.appendChild(primaryFrame);
+    primaryFrame.layoutSizingHorizontal = "FILL";
+    console.log("LayerCard: Component assembly complete");
     return component;
   }
   async function generateLayerCardComponents(page, startY) {
     if (startY === void 0) startY = 100;
-    figma.currentPage = page;
-    var components = [];
-    var rowLabels = [];
-    var component = await createLayerCardComponent();
-    component.x = 160;
-    component.y = 0;
-    rowLabels.push({ y: 0, text: "LayerCard" });
-    components.push(component);
-    var componentSet = figma.combineAsVariants(components, page);
-    componentSet.name = "LayerCard";
-    componentSet.description = "LayerCard - A layered card component with Secondary (header) and Primary (content) sections. Use LayerCard.Secondary for the header area and LayerCard.Primary for the main content.";
-    componentSet.layoutMode = "NONE";
-    var labelColumnWidth = 160;
-    var contentWidth = componentSet.width + labelColumnWidth;
-    var contentHeight = componentSet.height;
-    var lightSection = createModeSection(page, "LayerCard", "light");
-    lightSection.frame.resize(
-      contentWidth + SECTION_PADDING15 * 2,
-      contentHeight + SECTION_PADDING15 * 2
-    );
-    var darkSection = createModeSection(page, "LayerCard", "dark");
-    darkSection.frame.resize(
-      contentWidth + SECTION_PADDING15 * 2,
-      contentHeight + SECTION_PADDING15 * 2
-    );
-    lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING15 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING15;
-    for (var li = 0; li < rowLabels.length; li++) {
-      var label = rowLabels[li];
-      var labelNode = await createRowLabel(
-        label.text,
-        SECTION_PADDING15,
-        SECTION_PADDING15 + label.y + 8
+    console.log("LayerCard: Starting generation at Y=" + startY);
+    try {
+      figma.currentPage = page;
+      var components = [];
+      var rowLabels = [];
+      var labelColumnWidth = 160;
+      console.log("LayerCard: Calling createLayerCardComponent...");
+      var component = await createLayerCardComponent();
+      console.log("LayerCard: Component returned, setting position...");
+      component.x = labelColumnWidth;
+      component.y = 0;
+      rowLabels.push({ y: 0, text: "LayerCard" });
+      components.push(component);
+      console.log("LayerCard: Combining as variants...");
+      var componentSet = figma.combineAsVariants(components, page);
+      console.log("LayerCard: ComponentSet created");
+      componentSet.name = "LayerCard";
+      componentSet.description = "LayerCard - A layered card component with Secondary (header) and Primary (content) sections. Use LayerCard.Secondary for the header area and LayerCard.Primary for the main content.";
+      componentSet.layoutMode = "NONE";
+      var contentWidth = componentSet.width + labelColumnWidth;
+      var contentHeight = componentSet.height;
+      var lightSection = createModeSection(page, "LayerCard", "light");
+      lightSection.frame.resize(
+        contentWidth + SECTION_PADDING15 * 2,
+        contentHeight + SECTION_PADDING15 * 2
       );
-      lightSection.frame.appendChild(labelNode);
-    }
-    for (var k = 0; k < components.length; k++) {
-      var origComp = components[k];
-      var instance = origComp.createInstance();
-      instance.x = origComp.x + SECTION_PADDING15 + labelColumnWidth;
-      instance.y = origComp.y + SECTION_PADDING15;
-      darkSection.frame.appendChild(instance);
-    }
-    for (var di = 0; di < rowLabels.length; di++) {
-      var darkLabel = rowLabels[di];
-      var darkLabelNode = await createRowLabel(
-        darkLabel.text,
-        SECTION_PADDING15,
-        SECTION_PADDING15 + darkLabel.y + 8
+      var darkSection = createModeSection(page, "LayerCard", "dark");
+      darkSection.frame.resize(
+        contentWidth + SECTION_PADDING15 * 2,
+        contentHeight + SECTION_PADDING15 * 2
       );
-      darkSection.frame.appendChild(darkLabelNode);
+      lightSection.frame.appendChild(componentSet);
+      componentSet.x = SECTION_PADDING15 + labelColumnWidth;
+      componentSet.y = SECTION_PADDING15;
+      for (var li = 0; li < rowLabels.length; li++) {
+        var label = rowLabels[li];
+        var labelNode = await createRowLabel(
+          label.text,
+          SECTION_PADDING15,
+          SECTION_PADDING15 + label.y + 8
+        );
+        lightSection.frame.appendChild(labelNode);
+      }
+      for (var k = 0; k < components.length; k++) {
+        var origComp = components[k];
+        var instance = origComp.createInstance();
+        instance.x = origComp.x + SECTION_PADDING15 + labelColumnWidth;
+        instance.y = origComp.y + SECTION_PADDING15;
+        darkSection.frame.appendChild(instance);
+      }
+      for (var di = 0; di < rowLabels.length; di++) {
+        var darkLabel = rowLabels[di];
+        var darkLabelNode = await createRowLabel(
+          darkLabel.text,
+          SECTION_PADDING15,
+          SECTION_PADDING15 + darkLabel.y + 8
+        );
+        darkSection.frame.appendChild(darkLabelNode);
+      }
+      var totalWidth = contentWidth + SECTION_PADDING15 * 2;
+      var totalHeight = contentHeight + SECTION_PADDING15 * 2;
+      lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+      darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+      lightSection.section.x = 100;
+      lightSection.section.y = startY;
+      darkSection.section.x = 100 + totalWidth + 50;
+      darkSection.section.y = startY;
+      console.log("Generated LayerCard ComponentSet (light + dark)");
+      console.log(
+        "LayerCard dimensions: " + totalWidth + "x" + totalHeight + " at Y=" + startY
+      );
+      return startY + totalHeight + SECTION_GAP15;
+    } catch (error) {
+      var errorMessage = error instanceof Error ? error.message : String(error);
+      var errorStack = error instanceof Error ? error.stack : "";
+      console.error("LayerCard generation failed: " + errorMessage);
+      console.error("Stack: " + errorStack);
+      throw error;
     }
-    var totalWidth = contentWidth + SECTION_PADDING15 * 2;
-    var totalHeight = contentHeight + SECTION_PADDING15 * 2;
-    lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
-    lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
-    darkSection.section.y = startY;
-    console.log("Generated LayerCard ComponentSet (light + dark)");
-    return startY + totalHeight + SECTION_GAP15;
+  }
+
+  // scripts/figma/plugin/generated/loader-data.json
+  var loader_data_default = {
+    viewBox: "0 0 24 24",
+    width: 24,
+    height: 24,
+    circles: [
+      {
+        cx: 12,
+        cy: 12,
+        r: 9.5,
+        fill: "none",
+        strokeWidth: 2,
+        strokeLinecap: "round",
+        strokeDasharray: "42 150",
+        strokeDashoffset: "-16"
+      },
+      {
+        cx: 12,
+        cy: 12,
+        r: 9.5,
+        fill: "none",
+        opacity: 0.1,
+        strokeWidth: 2,
+        strokeLinecap: "round"
+      }
+    ],
+    sizes: {
+      sm: {
+        value: 16,
+        description: "Small loader for inline use"
+      },
+      base: {
+        value: 24,
+        description: "Default loader size"
+      },
+      lg: {
+        value: 32,
+        description: "Large loader for prominent loading states"
+      }
+    },
+    svgString: '<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">\n  <circle\n    cx="12"\n    cy="12"\n    r="9.5"\n    fill="none"\n    stroke="currentColor"\n    stroke-width="2"\n    stroke-linecap="round"\n    opacity="0.1"\n  />\n  <path\n    d="M 12 2.5 A 9.5 9.5 0 1 1 3.072920102533871 15.249191361593855"\n    fill="none"\n    stroke="currentColor"\n    stroke-width="2"\n    stroke-linecap="round"\n  />\n</svg>'
+  };
+
+  // scripts/figma/plugin/generators/loader.ts
+  var SECTION_PADDING16 = 48;
+  var SECTION_GAP16 = 160;
+  async function createLoaderComponent(size) {
+    var sizeConfig = loader_data_default.sizes[size];
+    var sizeValue = sizeConfig.value;
+    var component = figma.createComponent();
+    component.name = "size=" + size;
+    component.description = sizeConfig.description;
+    component.resize(sizeValue, sizeValue);
+    component.fills = [];
+    component.layoutMode = "HORIZONTAL";
+    component.primaryAxisAlignItems = "CENTER";
+    component.counterAxisAlignItems = "CENTER";
+    var svgString = loader_data_default.svgString;
+    try {
+      var svgNode = figma.createNodeFromSvg(svgString);
+      svgNode.name = "Spinner";
+      svgNode.resize(sizeValue, sizeValue);
+      svgNode.constraints = {
+        horizontal: "SCALE",
+        vertical: "SCALE"
+      };
+      var strokeVar = getVariableByName("text-color-surface");
+      if (strokeVar) {
+        traverseAndBindStrokes(svgNode, strokeVar.id);
+      }
+      component.appendChild(svgNode);
+    } catch (error) {
+      console.error("Failed to create SVG node for Loader:", error);
+      var fallbackCircle = figma.createEllipse();
+      fallbackCircle.name = "Fallback";
+      fallbackCircle.resize(sizeValue - 4, sizeValue - 4);
+      fallbackCircle.x = 2;
+      fallbackCircle.y = 2;
+      fallbackCircle.fills = [];
+      fallbackCircle.strokes = [
+        { type: "SOLID", color: { r: 0.5, g: 0.5, b: 0.5 } }
+      ];
+      fallbackCircle.strokeWeight = 2;
+      component.appendChild(fallbackCircle);
+    }
+    return component;
+  }
+  function traverseAndBindStrokes(node, variableId) {
+    if (node.type === "VECTOR" || node.type === "ELLIPSE" || node.type === "RECTANGLE" || node.type === "LINE" || node.type === "POLYGON" || node.type === "STAR") {
+      var strokeNode = node;
+      if (strokeNode.strokes && strokeNode.strokes.length > 0) {
+        var strokeWeight = typeof strokeNode.strokeWeight === "number" ? strokeNode.strokeWeight : 1;
+        bindStrokeToVariable(node, variableId, strokeWeight);
+      }
+    }
+    if (node.type === "FRAME" || node.type === "GROUP") {
+      var containerNode = node;
+      for (var i = 0; i < containerNode.children.length; i++) {
+        traverseAndBindStrokes(containerNode.children[i], variableId);
+      }
+    }
+  }
+  async function generateLoaderComponents(page, startY) {
+    if (startY === void 0) startY = 100;
+    console.log("Loader: Starting generation at Y=" + startY);
+    try {
+      figma.currentPage = page;
+      var sizes = Object.keys(loader_data_default.sizes);
+      var components = [];
+      var rowLabels = [];
+      var labelColumnWidth = 120;
+      var componentGap = 24;
+      var currentY = 0;
+      for (var i = 0; i < sizes.length; i++) {
+        var size = sizes[i];
+        var sizeValue = loader_data_default.sizes[size].value;
+        console.log("Loader: Creating size=" + size);
+        var component = await createLoaderComponent(size);
+        component.x = labelColumnWidth;
+        component.y = currentY;
+        rowLabels.push({ y: currentY, text: "size=" + size });
+        components.push(component);
+        currentY += sizeValue + componentGap;
+      }
+      console.log("Loader: Combining as variants...");
+      var componentSet = figma.combineAsVariants(components, page);
+      componentSet.name = "Loader";
+      componentSet.description = "Loader - Circular loading spinner. Sizes: sm (16px), base (24px), lg (32px). Uses currentColor for stroke, so set text color on parent to change color. Static representation of animated spinner from loader.tsx.";
+      componentSet.layoutMode = "NONE";
+      var contentWidth = componentSet.width + labelColumnWidth;
+      var contentHeight = componentSet.height;
+      var lightSection = createModeSection(page, "Loader", "light");
+      lightSection.frame.resize(
+        contentWidth + SECTION_PADDING16 * 2,
+        contentHeight + SECTION_PADDING16 * 2
+      );
+      var darkSection = createModeSection(page, "Loader", "dark");
+      darkSection.frame.resize(
+        contentWidth + SECTION_PADDING16 * 2,
+        contentHeight + SECTION_PADDING16 * 2
+      );
+      lightSection.frame.appendChild(componentSet);
+      componentSet.x = SECTION_PADDING16 + labelColumnWidth;
+      componentSet.y = SECTION_PADDING16;
+      for (var li = 0; li < rowLabels.length; li++) {
+        var label = rowLabels[li];
+        var labelNode = await createRowLabel(
+          label.text,
+          SECTION_PADDING16,
+          SECTION_PADDING16 + label.y + 4
+        );
+        lightSection.frame.appendChild(labelNode);
+      }
+      for (var k = 0; k < components.length; k++) {
+        var origComp = components[k];
+        var instance = origComp.createInstance();
+        instance.x = SECTION_PADDING16 + labelColumnWidth;
+        instance.y = origComp.y + SECTION_PADDING16;
+        darkSection.frame.appendChild(instance);
+      }
+      for (var di = 0; di < rowLabels.length; di++) {
+        var darkLabel = rowLabels[di];
+        var darkLabelNode = await createRowLabel(
+          darkLabel.text,
+          SECTION_PADDING16,
+          SECTION_PADDING16 + darkLabel.y + 4
+        );
+        darkSection.frame.appendChild(darkLabelNode);
+      }
+      var totalWidth = contentWidth + SECTION_PADDING16 * 2;
+      var totalHeight = contentHeight + SECTION_PADDING16 * 2;
+      lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+      darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+      lightSection.section.x = 100;
+      lightSection.section.y = startY;
+      darkSection.section.x = 100 + totalWidth + 50;
+      darkSection.section.y = startY;
+      console.log(
+        "Generated Loader ComponentSet with " + sizes.length + " variants (light + dark)"
+      );
+      return startY + totalHeight + SECTION_GAP16;
+    } catch (error) {
+      var errorMessage = error instanceof Error ? error.message : String(error);
+      var errorStack = error instanceof Error ? error.stack : "";
+      console.error("Loader generation failed: " + errorMessage);
+      console.error("Stack: " + errorStack);
+      throw error;
+    }
   }
 
   // scripts/figma/plugin/generators/link-button.ts
   var buttonProps2 = component_registry_default.components.Button.props;
   var variantProp5 = buttonProps2.variant;
   var sizeProp4 = buttonProps2.size;
-  var SECTION_PADDING16 = 48;
-  var SECTION_GAP16 = 160;
+  var SECTION_PADDING17 = 48;
+  var SECTION_GAP17 = 160;
   async function createLinkButtonComponent(variant, size, hasIcon) {
     var variantClasses = variantProp5.classes[variant] || "";
     var sizeClasses = sizeProp4.classes[size] || "";
@@ -8537,58 +8917,58 @@
     var contentHeight = componentSet.height + headerRowHeight;
     var lightSection = createModeSection(page, "LinkButton", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING16 * 2,
-      contentHeight + SECTION_PADDING16 * 2
+      contentWidth + SECTION_PADDING17 * 2,
+      contentHeight + SECTION_PADDING17 * 2
     );
     var darkSection = createModeSection(page, "LinkButton", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING16 * 2,
-      contentHeight + SECTION_PADDING16 * 2
+      contentWidth + SECTION_PADDING17 * 2,
+      contentHeight + SECTION_PADDING17 * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING16 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING16 + headerRowHeight;
+    componentSet.x = SECTION_PADDING17 + labelColumnWidth;
+    componentSet.y = SECTION_PADDING17 + headerRowHeight;
     await createColumnHeaders(
       columnHeaders.map(function(h) {
-        return { x: h.x + SECTION_PADDING16, text: h.text };
+        return { x: h.x + SECTION_PADDING17, text: h.text };
       }),
-      SECTION_PADDING16,
+      SECTION_PADDING17,
       lightSection.frame
     );
     for (var li = 0; li < rowLabels.length; li++) {
       var label = rowLabels[li];
       var labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING16,
-        SECTION_PADDING16 + label.y + 12
+        SECTION_PADDING17,
+        SECTION_PADDING17 + label.y + 12
       );
       lightSection.frame.appendChild(labelNode);
     }
     for (var i = 0; i < components.length; i++) {
       var comp = components[i];
       var instance = comp.createInstance();
-      instance.x = comp.x + SECTION_PADDING16 + labelColumnWidth;
-      instance.y = comp.y + SECTION_PADDING16 + headerRowHeight;
+      instance.x = comp.x + SECTION_PADDING17 + labelColumnWidth;
+      instance.y = comp.y + SECTION_PADDING17 + headerRowHeight;
       darkSection.frame.appendChild(instance);
     }
     await createColumnHeaders(
       columnHeaders.map(function(h) {
-        return { x: h.x + SECTION_PADDING16, text: h.text };
+        return { x: h.x + SECTION_PADDING17, text: h.text };
       }),
-      SECTION_PADDING16,
+      SECTION_PADDING17,
       darkSection.frame
     );
     for (var di = 0; di < rowLabels.length; di++) {
       var darkLabel = rowLabels[di];
       var darkLabelNode = await createRowLabel(
         darkLabel.text,
-        SECTION_PADDING16,
-        SECTION_PADDING16 + darkLabel.y + 12
+        SECTION_PADDING17,
+        SECTION_PADDING17 + darkLabel.y + 12
       );
       darkSection.frame.appendChild(darkLabelNode);
     }
-    var totalWidth = contentWidth + SECTION_PADDING16 * 2;
-    var totalHeight = contentHeight + SECTION_PADDING16 * 2;
+    var totalWidth = contentWidth + SECTION_PADDING17 * 2;
+    var totalHeight = contentHeight + SECTION_PADDING17 * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     lightSection.section.x = 100;
@@ -8599,10 +8979,197 @@
     console.log(
       "\u2705 Generated LinkButton ComponentSet with " + totalComponents + " variants (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP16;
+    return startY + totalHeight + SECTION_GAP17;
   }
   var LINK_BUTTON_VARIANTS_EXPORT = variantProp5.values;
   var LINK_BUTTON_SIZES_EXPORT = sizeProp4.values;
+
+  // scripts/figma/plugin/generators/menubar.ts
+  var SECTION_PADDING18 = 48;
+  var SECTION_GAP18 = 160;
+  var MENUBAR_CONFIG = {
+    /** Height of the menubar - compact, just enough for icon + small padding */
+    height: 32,
+    /** Width of each menu option button (w-11 = 44px, but visually looks ~36px) */
+    buttonWidth: 36,
+    /** Icon size inside buttons */
+    iconSize: 18,
+    /** Border radius for the container (rounded-lg = 8px) */
+    borderRadius: 8,
+    /** Border radius for individual buttons (rounded-md = 6px) */
+    buttonBorderRadius: 6
+  };
+  var DEFAULT_OPTIONS = [
+    { icon: "ph-house", tooltip: "Home", id: "home" },
+    { icon: "ph-magnifying-glass", tooltip: "Search", id: "search" },
+    { icon: "ph-bell", tooltip: "Notifications", id: "notifications" },
+    { icon: "ph-gear", tooltip: "Settings", id: "settings" }
+  ];
+  function createMenuOption(iconId, isActive) {
+    var button = figma.createFrame();
+    button.name = isActive ? "Option (active)" : "Option";
+    button.resize(MENUBAR_CONFIG.buttonWidth, MENUBAR_CONFIG.height);
+    button.layoutMode = "HORIZONTAL";
+    button.primaryAxisAlignItems = "CENTER";
+    button.counterAxisAlignItems = "CENTER";
+    button.primaryAxisSizingMode = "FIXED";
+    button.counterAxisSizingMode = "FIXED";
+    button.paddingTop = 0;
+    button.paddingBottom = 0;
+    button.paddingLeft = 0;
+    button.paddingRight = 0;
+    button.cornerRadius = MENUBAR_CONFIG.buttonBorderRadius;
+    if (isActive) {
+      var surfaceVar = getVariableByName("color-surface");
+      if (surfaceVar) {
+        bindFillToVariable(button, surfaceVar.id);
+      }
+    } else {
+      var colorVar = getVariableByName("color-color");
+      if (colorVar) {
+        bindFillToVariable(button, colorVar.id);
+      }
+    }
+    var icon = createIconInstance(iconId, MENUBAR_CONFIG.iconSize);
+    if (icon) {
+      icon.name = "Icon";
+      bindIconColor(icon, "fill-surface-inverse");
+      button.appendChild(icon);
+    }
+    return button;
+  }
+  async function createMenuBarComponent(activeIndex) {
+    var component = figma.createComponent();
+    if (activeIndex >= 0 && activeIndex < DEFAULT_OPTIONS.length) {
+      component.name = "active=" + DEFAULT_OPTIONS[activeIndex].id;
+    } else {
+      component.name = "active=none";
+    }
+    component.description = 'MenuBar navigation component with icon buttons. Active button shows elevated background. Note: This is the fit-content version; React component uses className="w-fit" for this behavior.';
+    component.layoutMode = "HORIZONTAL";
+    component.primaryAxisSizingMode = "AUTO";
+    component.counterAxisSizingMode = "FIXED";
+    component.resize(100, MENUBAR_CONFIG.height);
+    component.itemSpacing = 0;
+    component.paddingLeft = 1;
+    component.paddingRight = 0;
+    component.paddingTop = 0;
+    component.paddingBottom = 0;
+    component.cornerRadius = MENUBAR_CONFIG.borderRadius;
+    var borderVar = getVariableByName("color-color");
+    if (borderVar) {
+      bindStrokeToVariable(component, borderVar.id, 1);
+    }
+    var bgVar = getVariableByName("color-color");
+    if (bgVar) {
+      bindFillToVariable(component, bgVar.id);
+    }
+    component.effects = [
+      {
+        type: "DROP_SHADOW",
+        color: { r: 0, g: 0, b: 0, a: 0.05 },
+        offset: { x: 0, y: 1 },
+        radius: 2,
+        spread: 0,
+        visible: true,
+        blendMode: "NORMAL"
+      }
+    ];
+    for (var i = 0; i < DEFAULT_OPTIONS.length; i++) {
+      var option = DEFAULT_OPTIONS[i];
+      var isActive = i === activeIndex;
+      var button = createMenuOption(option.icon, isActive);
+      button.name = option.id;
+      component.appendChild(button);
+    }
+    return component;
+  }
+  async function generateMenuBarComponents(page, startY) {
+    if (startY === void 0) startY = 100;
+    console.log("MenuBar: Starting generation at Y=" + startY);
+    try {
+      figma.currentPage = page;
+      var components = [];
+      var rowLabels = [];
+      var labelColumnWidth = 160;
+      var rowGap = 24;
+      var currentY = 0;
+      for (var i = 0; i < DEFAULT_OPTIONS.length; i++) {
+        var option = DEFAULT_OPTIONS[i];
+        console.log("MenuBar: Creating active=" + option.id);
+        var component = await createMenuBarComponent(i);
+        component.x = labelColumnWidth;
+        component.y = currentY;
+        rowLabels.push({ y: currentY, text: "active=" + option.id });
+        components.push(component);
+        currentY += MENUBAR_CONFIG.height + rowGap;
+      }
+      console.log("MenuBar: Combining as variants...");
+      var componentSet = figma.combineAsVariants(components, page);
+      componentSet.name = "MenuBar";
+      componentSet.description = 'MenuBar - Horizontal icon navigation bar. Shows active state with elevated button background. Icons: Home, Search, Notifications, Settings. Note: Figma version uses fit-content width; React equivalent is className="w-fit".';
+      componentSet.layoutMode = "NONE";
+      var contentWidth = componentSet.width + labelColumnWidth;
+      var contentHeight = componentSet.height;
+      var lightSection = createModeSection(page, "MenuBar", "light");
+      lightSection.frame.resize(
+        contentWidth + SECTION_PADDING18 * 2,
+        contentHeight + SECTION_PADDING18 * 2
+      );
+      var darkSection = createModeSection(page, "MenuBar", "dark");
+      darkSection.frame.resize(
+        contentWidth + SECTION_PADDING18 * 2,
+        contentHeight + SECTION_PADDING18 * 2
+      );
+      lightSection.frame.appendChild(componentSet);
+      componentSet.x = SECTION_PADDING18 + labelColumnWidth;
+      componentSet.y = SECTION_PADDING18;
+      for (var li = 0; li < rowLabels.length; li++) {
+        var label = rowLabels[li];
+        var labelNode = await createRowLabel(
+          label.text,
+          SECTION_PADDING18,
+          SECTION_PADDING18 + label.y + 12
+          // Center vertically with menubar
+        );
+        lightSection.frame.appendChild(labelNode);
+      }
+      for (var k = 0; k < components.length; k++) {
+        var origComp = components[k];
+        var instance = origComp.createInstance();
+        instance.x = SECTION_PADDING18 + labelColumnWidth;
+        instance.y = origComp.y + SECTION_PADDING18;
+        darkSection.frame.appendChild(instance);
+      }
+      for (var di = 0; di < rowLabels.length; di++) {
+        var darkLabel = rowLabels[di];
+        var darkLabelNode = await createRowLabel(
+          darkLabel.text,
+          SECTION_PADDING18,
+          SECTION_PADDING18 + darkLabel.y + 12
+        );
+        darkSection.frame.appendChild(darkLabelNode);
+      }
+      var totalWidth = contentWidth + SECTION_PADDING18 * 2;
+      var totalHeight = contentHeight + SECTION_PADDING18 * 2;
+      lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+      darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+      lightSection.section.x = 100;
+      lightSection.section.y = startY;
+      darkSection.section.x = 100 + totalWidth + 50;
+      darkSection.section.y = startY;
+      console.log(
+        "Generated MenuBar ComponentSet with " + DEFAULT_OPTIONS.length + " variants (light + dark)"
+      );
+      return startY + totalHeight + SECTION_GAP18;
+    } catch (error) {
+      var errorMessage = error instanceof Error ? error.message : String(error);
+      var errorStack = error instanceof Error ? error.stack : "";
+      console.error("MenuBar generation failed: " + errorMessage);
+      console.error("Stack: " + errorStack);
+      throw error;
+    }
+  }
 
   // scripts/figma/plugin/generators/refresh-button.ts
   var buttonProps3 = component_registry_default.components.Button.props;
@@ -8628,8 +9195,8 @@
     var parsed = parseTailwindClasses(sizeClasses);
     return parsed.borderRadius !== void 0 ? parsed.borderRadius : BORDER_RADIUS.lg;
   }
-  var SECTION_PADDING17 = 48;
-  var SECTION_GAP17 = 160;
+  var SECTION_PADDING19 = 48;
+  var SECTION_GAP19 = 160;
   function createRefreshButtonComponent(size, loading) {
     var variant = variantProp6.default;
     var variantClasses = variantProp6.classes[variant] || "";
@@ -8709,44 +9276,44 @@
     var contentHeight = componentSet.height;
     var lightSection = createModeSection(page, "RefreshButton", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING17 * 2,
-      contentHeight + SECTION_PADDING17 * 2
+      contentWidth + SECTION_PADDING19 * 2,
+      contentHeight + SECTION_PADDING19 * 2
     );
     var darkSection = createModeSection(page, "RefreshButton", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING17 * 2,
-      contentHeight + SECTION_PADDING17 * 2
+      contentWidth + SECTION_PADDING19 * 2,
+      contentHeight + SECTION_PADDING19 * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING17 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING17;
+    componentSet.x = SECTION_PADDING19 + labelColumnWidth;
+    componentSet.y = SECTION_PADDING19;
     for (var li = 0; li < rowLabels.length; li++) {
       var label = rowLabels[li];
       var labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING17,
-        SECTION_PADDING17 + label.y + 10
+        SECTION_PADDING19,
+        SECTION_PADDING19 + label.y + 10
       );
       lightSection.frame.appendChild(labelNode);
     }
     for (var i = 0; i < components.length; i++) {
       var comp = components[i];
       var instance = comp.createInstance();
-      instance.x = comp.x + SECTION_PADDING17 + labelColumnWidth;
-      instance.y = comp.y + SECTION_PADDING17;
+      instance.x = comp.x + SECTION_PADDING19 + labelColumnWidth;
+      instance.y = comp.y + SECTION_PADDING19;
       darkSection.frame.appendChild(instance);
     }
     for (var di = 0; di < rowLabels.length; di++) {
       var darkLabel = rowLabels[di];
       var darkLabelNode = await createRowLabel(
         darkLabel.text,
-        SECTION_PADDING17,
-        SECTION_PADDING17 + darkLabel.y + 10
+        SECTION_PADDING19,
+        SECTION_PADDING19 + darkLabel.y + 10
       );
       darkSection.frame.appendChild(darkLabelNode);
     }
-    var totalWidth = contentWidth + SECTION_PADDING17 * 2;
-    var totalHeight = contentHeight + SECTION_PADDING17 * 2;
+    var totalWidth = contentWidth + SECTION_PADDING19 * 2;
+    var totalHeight = contentHeight + SECTION_PADDING19 * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     lightSection.section.x = 100;
@@ -8757,7 +9324,7 @@
     console.log(
       "\u2705 Generated RefreshButton ComponentSet with " + totalComponents + " variants (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP17;
+    return startY + totalHeight + SECTION_GAP19;
   }
   var REFRESH_BUTTON_SIZES_EXPORT = sizeProp5.values;
 
@@ -8765,8 +9332,8 @@
   var textProps = component_registry_default.components.Text.props;
   var variantProp7 = textProps.variant;
   var sizeProp6 = textProps.size;
-  var SECTION_PADDING18 = 48;
-  var SECTION_GAP18 = 160;
+  var SECTION_PADDING20 = 48;
+  var SECTION_GAP20 = 160;
   var TEXT_BASE_CLASS = "text-surface";
   var COPY_VARIANTS = ["body", "secondary", "success", "error"];
   var MONO_VARIANTS = ["mono", "mono-secondary"];
@@ -8909,52 +9476,52 @@
     const contentHeight = componentSet.height + headerRowHeight;
     const lightSection = createModeSection(page, "Text", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING18 * 2,
-      contentHeight + SECTION_PADDING18 * 2
+      contentWidth + SECTION_PADDING20 * 2,
+      contentHeight + SECTION_PADDING20 * 2
     );
     const darkSection = createModeSection(page, "Text", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING18 * 2,
-      contentHeight + SECTION_PADDING18 * 2
+      contentWidth + SECTION_PADDING20 * 2,
+      contentHeight + SECTION_PADDING20 * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING18 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING18 + headerRowHeight;
+    componentSet.x = SECTION_PADDING20 + labelColumnWidth;
+    componentSet.y = SECTION_PADDING20 + headerRowHeight;
     await createColumnHeaders(
-      columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING18, text: h.text })),
-      SECTION_PADDING18,
+      columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING20, text: h.text })),
+      SECTION_PADDING20,
       lightSection.frame
     );
     for (const label of rowLabels) {
       const labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING18,
-        SECTION_PADDING18 + label.y + 8
+        SECTION_PADDING20,
+        SECTION_PADDING20 + label.y + 8
         // +8 to vertically center with text
       );
       lightSection.frame.appendChild(labelNode);
     }
     for (const component of components) {
       const instance = component.createInstance();
-      instance.x = component.x + SECTION_PADDING18 + labelColumnWidth;
-      instance.y = component.y + SECTION_PADDING18 + headerRowHeight;
+      instance.x = component.x + SECTION_PADDING20 + labelColumnWidth;
+      instance.y = component.y + SECTION_PADDING20 + headerRowHeight;
       darkSection.frame.appendChild(instance);
     }
     await createColumnHeaders(
-      columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING18, text: h.text })),
-      SECTION_PADDING18,
+      columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING20, text: h.text })),
+      SECTION_PADDING20,
       darkSection.frame
     );
     for (const label of rowLabels) {
       const labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING18,
-        SECTION_PADDING18 + label.y + 8
+        SECTION_PADDING20,
+        SECTION_PADDING20 + label.y + 8
       );
       darkSection.frame.appendChild(labelNode);
     }
-    const totalWidth = contentWidth + SECTION_PADDING18 * 2;
-    const totalHeight = contentHeight + SECTION_PADDING18 * 2;
+    const totalWidth = contentWidth + SECTION_PADDING20 * 2;
+    const totalHeight = contentHeight + SECTION_PADDING20 * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     lightSection.section.x = 100;
@@ -8964,7 +9531,7 @@
     console.log(
       "\u2705 Generated Text ComponentSet with " + components.length + " variants (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP18;
+    return startY + totalHeight + SECTION_GAP20;
   }
   var TEXT_VARIANTS_EXPORT = variantProp7.values;
   var TEXT_SIZES_EXPORT = sizeProp6.values;
@@ -11957,9 +12524,13 @@
         nextY = await generateInputAreaComponents(componentsPage, nextY);
         figma.notify("Generating LayerCard components...");
         nextY = await generateLayerCardComponents(componentsPage, nextY);
+        figma.notify("Generating Loader components...");
+        nextY = await generateLoaderComponents(componentsPage, nextY);
+        figma.notify("Generating MenuBar components...");
+        nextY = await generateMenuBarComponents(componentsPage, nextY);
         figma.notify("\u2705 Generation complete!", { timeout: 3e3 });
         figma.closePlugin(
-          "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, Dialog, Dropdown, Input, InputArea, LayerCard, LinkButton, RefreshButton, Text components, and Icon Library"
+          "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, Dialog, Dropdown, Input, InputArea, LayerCard, Loader, LinkButton, MenuBar, RefreshButton, Text components, and Icon Library"
         );
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);

@@ -23,6 +23,7 @@ import {
   createModeSection,
   createTextNode,
   createRowLabel,
+  createColumnHeaders,
   bindTextColorToVariable,
   BORDER_RADIUS,
   FONT_SIZE,
@@ -180,39 +181,21 @@ async function createCheckboxComponent(
 }
 
 /**
- * Get a descriptive label for the checkbox state
+ * Get a simple label for the checkbox (just "Label" since state is shown in column headers)
  */
-function getStateLabel(
-  state: CheckboxState,
-  variant: string,
-  disabled: boolean,
-): string {
-  const parts: string[] = [];
-
-  // State description
-  if (state === "checked") {
-    parts.push("Checked");
-  } else if (state === "indeterminate") {
-    parts.push("Indeterminate");
-  } else {
-    parts.push("Unchecked");
-  }
-
-  // Variant (only if error)
-  if (variant === "error") {
-    parts.push("Error");
-  }
-
-  // Disabled state
-  if (disabled) {
-    parts.push("Disabled");
-  }
-
-  return parts.join(" - ");
+function getCheckboxLabel(): string {
+  return "Label";
 }
 
 /**
  * Generate Checkbox ComponentSet
+ *
+ * Layout:
+ * - Column headers: Unchecked | Checked | Indeterminate
+ * - Row 1: variant=default
+ * - Row 2: variant=default, disabled=true
+ * - Row 3: variant=error
+ * - Row 4: variant=error, disabled=true
  *
  * @param page - Target page for components
  * @param startY - Y position to start placing sections
@@ -234,23 +217,26 @@ export async function generateCheckboxComponents(
 
   // Layout grid spacing
   const componentGap = 24;
-  const rowGap = 48; // Increased to make room for labels
+  const rowGap = 48;
+  const headerRowHeight = 24; // Space for column headers at top
 
   const labelColumnWidth = 180; // Space for labels on the left
 
+  // Column headers for states
+  const columnHeaderTexts = ["Unchecked", "Checked", "Indeterminate"];
+
   // Track layout - each scenario on its own row for readability
-  let currentY = 0;
+  let currentY = headerRowHeight; // Start below header row
 
   // Row 1: Default variant - all states (unchecked, checked, indeterminate)
   rowLabels.push({ y: currentY, text: "variant=default" });
   let currentX = labelColumnWidth;
   for (const state of states) {
-    const labelText = getStateLabel(state, "default", false);
     const component = await createCheckboxComponent(
       state,
       "default",
       false,
-      labelText,
+      getCheckboxLabel(),
     );
     component.x = currentX;
     component.y = currentY;
@@ -263,12 +249,11 @@ export async function generateCheckboxComponents(
   rowLabels.push({ y: currentY, text: "variant=default, disabled=true" });
   currentX = labelColumnWidth;
   for (const state of states) {
-    const labelText = getStateLabel(state, "default", true);
     const component = await createCheckboxComponent(
       state,
       "default",
       true,
-      labelText,
+      getCheckboxLabel(),
     );
     component.x = currentX;
     component.y = currentY;
@@ -277,16 +262,15 @@ export async function generateCheckboxComponents(
   }
   currentY += rowGap;
 
-  // Row 3: Error variant - unchecked and checked only
+  // Row 3: Error variant - all states
   rowLabels.push({ y: currentY, text: "variant=error" });
   currentX = labelColumnWidth;
-  for (const state of ["unchecked", "checked"] as CheckboxState[]) {
-    const labelText = getStateLabel(state, "error", false);
+  for (const state of states) {
     const component = await createCheckboxComponent(
       state,
       "error",
       false,
-      labelText,
+      getCheckboxLabel(),
     );
     component.x = currentX;
     component.y = currentY;
@@ -295,19 +279,19 @@ export async function generateCheckboxComponents(
   }
   currentY += rowGap;
 
-  // Row 4: Error variant - disabled (unchecked only)
+  // Row 4: Error variant - disabled states
   rowLabels.push({ y: currentY, text: "variant=error, disabled=true" });
   currentX = labelColumnWidth;
-  {
-    const labelText = getStateLabel("unchecked", "error", true);
+  for (const state of states) {
     const component = await createCheckboxComponent(
-      "unchecked",
+      state,
       "error",
       true,
-      labelText,
+      getCheckboxLabel(),
     );
     component.x = currentX;
     component.y = currentY;
+    currentX += component.width + componentGap;
     components.push(component);
   }
 
@@ -320,9 +304,9 @@ export async function generateCheckboxComponents(
 
   componentSet.layoutMode = "NONE";
 
-  // Calculate content dimensions (add label column width)
+  // Calculate content dimensions (add label column width and header row)
   const contentWidth = componentSet.width + labelColumnWidth;
-  const contentHeight = componentSet.height;
+  const contentHeight = componentSet.height + headerRowHeight;
 
   // Create light mode section
   const lightSection = createModeSection(page, "Checkbox", "light");
@@ -341,7 +325,20 @@ export async function generateCheckboxComponents(
   // Move ComponentSet into light section frame
   lightSection.frame.appendChild(componentSet);
   componentSet.x = SECTION_PADDING + labelColumnWidth;
-  componentSet.y = SECTION_PADDING;
+  componentSet.y = SECTION_PADDING + headerRowHeight;
+
+  // Build column headers with positions from first row components
+  const columnHeaders: { x: number; text: string }[] = [];
+  // Get first 3 components (first row) for column positions
+  for (let i = 0; i < Math.min(3, components.length); i++) {
+    columnHeaders.push({
+      x: components[i].x + SECTION_PADDING,
+      text: columnHeaderTexts[i],
+    });
+  }
+
+  // Add column headers to light section
+  await createColumnHeaders(columnHeaders, SECTION_PADDING, lightSection.frame);
 
   // Add row labels to light section
   for (const label of rowLabels) {
@@ -359,9 +356,12 @@ export async function generateCheckboxComponents(
   for (const component of components) {
     const instance = component.createInstance();
     instance.x = component.x + SECTION_PADDING + labelColumnWidth;
-    instance.y = component.y + SECTION_PADDING;
+    instance.y = component.y + SECTION_PADDING + headerRowHeight;
     darkSection.frame.appendChild(instance);
   }
+
+  // Add column headers to dark section
+  await createColumnHeaders(columnHeaders, SECTION_PADDING, darkSection.frame);
 
   // Add row labels to dark section
   for (const label of rowLabels) {

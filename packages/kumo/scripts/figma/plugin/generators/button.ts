@@ -88,6 +88,14 @@ var SECTION_GAP = 160;
 /**
  * State-specific style overrides
  * Maps variant × state to specific Figma styling
+ *
+ * These are derived from the stateClasses in component-registry.json:
+ * - hover: hover:bg-* classes
+ * - focus: ring-active (focus-visible ring)
+ * - pressed: same as hover but slightly darker
+ *
+ * Note: Figma doesn't support pseudo-states, so we create separate
+ * component variants for each state to document the visual appearance.
  */
 var STATE_STYLES: Record<
   string,
@@ -98,36 +106,43 @@ var STATE_STYLES: Record<
       fillOpacity?: number;
       strokeVariable?: string;
       addRing?: boolean;
+      textOpacity?: number;
     }
   >
 > = {
   primary: {
-    hover: { fillVariable: "color-primary", fillOpacity: 0.7 },
+    // hover:bg-primary/70
+    hover: { fillVariable: "color-primary/70" },
     focus: { addRing: true },
-    pressed: { fillVariable: "color-primary", fillOpacity: 0.8 },
+    pressed: { fillVariable: "color-primary/70" },
   },
   secondary: {
+    // not-disabled:hover:bg-subtle, not-disabled:hover:border-subtle!
     hover: { fillVariable: "color-subtle", strokeVariable: "color-subtle" },
     focus: { addRing: true },
-    pressed: { fillVariable: "color-accent" },
+    // data-[state=open]:bg-subtle
+    pressed: { fillVariable: "color-subtle" },
   },
   ghost: {
+    // hover:bg-accent
     hover: { fillVariable: "color-accent" },
     focus: { addRing: true },
     pressed: { fillVariable: "color-accent" },
   },
   destructive: {
-    hover: { fillVariable: "color-error", fillOpacity: 0.7 },
+    // hover:bg-error/70
+    hover: { fillVariable: "color-error/70" },
     focus: { addRing: true },
-    pressed: { fillVariable: "color-error", fillOpacity: 0.8 },
+    pressed: { fillVariable: "color-error/70" },
   },
   "secondary-destructive": {
-    hover: { fillVariable: "color-subtle" },
+    // not-disabled:hover:bg-subtle, not-disabled:hover:border-subtle!
+    hover: { fillVariable: "color-subtle", strokeVariable: "color-subtle" },
     focus: { addRing: true },
-    pressed: { fillVariable: "color-accent" },
+    pressed: { fillVariable: "color-subtle" },
   },
   outline: {
-    hover: {},
+    hover: { fillVariable: "color-subtle" },
     focus: { addRing: true },
     pressed: { fillVariable: "color-subtle" },
   },
@@ -231,11 +246,31 @@ async function createButtonComponent(
     if (stateStyle) {
       // Apply state-specific fill
       if (stateStyle.fillVariable) {
+        // Try the exact variable name first (e.g., "color-primary/70")
         var stateFillVar = getVariableByName(stateStyle.fillVariable);
         if (stateFillVar) {
           bindFillToVariable(component, stateFillVar.id);
-          if (stateStyle.fillOpacity !== undefined) {
-            component.opacity = stateStyle.fillOpacity;
+        } else {
+          // Fallback: try without opacity suffix and apply opacity separately
+          var baseVarName = stateStyle.fillVariable.split("/")[0];
+          var opacityMatch = stateStyle.fillVariable.match(/\/(\d+)$/);
+          var baseFillVar = getVariableByName(baseVarName);
+          if (baseFillVar) {
+            bindFillToVariable(component, baseFillVar.id);
+            if (opacityMatch) {
+              // Apply opacity to the fill
+              var opacityValue = parseInt(opacityMatch[1], 10) / 100;
+              var fills = component.fills;
+              if (fills && fills.length > 0) {
+                var newFills = [];
+                for (var fi = 0; fi < fills.length; fi++) {
+                  var fill = Object.assign({}, fills[fi]);
+                  fill.opacity = opacityValue;
+                  newFills.push(fill);
+                }
+                component.fills = newFills;
+              }
+            }
           }
         }
       }
@@ -252,7 +287,7 @@ async function createButtonComponent(
       if (stateStyle.addRing) {
         var ringVar = getVariableByName("color-active");
         if (ringVar) {
-          bindStrokeToVariable(component, ringVar.id, 1);
+          bindStrokeToVariable(component, ringVar.id, 2);
         }
       }
     }
@@ -314,73 +349,24 @@ async function createButtonComponent(
 }
 
 /**
- * Determine which combinations to generate.
+ * Generate Button ComponentSet with state documentation
  *
- * Instead of generating all possible combinations, we generate
- * a reduced set that covers all use cases:
+ * Layout strategy - organized by rows:
  *
- * 1. All variants × base size × all states (shape=base, disabled=false, loading=false) = 6×4 = 24
- * 2. All variants × all sizes × default state (shape=base) = 6×4 = 24
- * 3. Disabled state: all variants, size=base only, state=default = 6
- * 4. Loading state: all variants, size=base only, state=default = 6
- * 5. Shape=square: all sizes, secondary variant only, state=default = 4
- * 6. Shape=circle: all sizes, secondary variant only, state=default = 4
+ * Row 1-6 (variants): Each variant shows all states + disabled + loading
+ *   Columns: default | hover | focus | pressed | disabled | loading
  *
- * Total: ~68 components
+ * Row 7 (square): Secondary variant, all sizes
+ *   Columns: xs | sm | base | lg
+ *
+ * Row 8 (circle): Secondary variant, all sizes
+ *   Columns: xs | sm | base | lg
+ *
+ * This gives a clear view of:
+ * - How each variant looks in different states
+ * - The disabled and loading states for each variant
+ * - Shape variations with size options
  */
-function shouldGenerateVariant(
-  variant: string,
-  size: string,
-  shape: string,
-  disabled: boolean,
-  loading: boolean,
-  state: string,
-): boolean {
-  // Base shape, default state: generate all variants × all sizes
-  if (shape === "base" && !disabled && !loading && state === "default") {
-    return true;
-  }
-
-  // Base shape, base size: generate all variants × all states
-  if (shape === "base" && !disabled && !loading && size === "base") {
-    return true;
-  }
-
-  // Disabled: only show for base size, all variants, default state
-  if (
-    shape === "base" &&
-    disabled &&
-    !loading &&
-    size === "base" &&
-    state === "default"
-  ) {
-    return true;
-  }
-
-  // Loading: only show for base size, all variants, default state
-  if (
-    shape === "base" &&
-    loading &&
-    !disabled &&
-    size === "base" &&
-    state === "default"
-  ) {
-    return true;
-  }
-
-  // Square/circle shapes: only show secondary variant, all sizes, default state
-  if (
-    (shape === "square" || shape === "circle") &&
-    variant === "secondary" &&
-    !disabled &&
-    !loading &&
-    state === "default"
-  ) {
-    return true;
-  }
-
-  return false;
-}
 
 /**
  * Generate Button ComponentSet with reduced variants
@@ -403,10 +389,6 @@ export async function generateButtonComponents(
 
   var variants = variantProp.values;
   var sizes = sizeProp.values;
-  var shapes = shapeProp.values;
-  var disabledOptions = [false, true];
-  var loadingOptions = [false, true];
-  var stateOptions = ["default", "hover", "focus", "pressed"];
 
   // Generate selected combinations only
   var components: ComponentNode[] = [];
@@ -432,77 +414,144 @@ export async function generateButtonComponents(
   // Track column headers: { x, text }
   var columnHeaders: { x: number; text: string }[] = [];
 
+  // Generate components in a specific order for clean layout
+  // For base shape: states first, then disabled, then loading
+  var baseShapeColumnOrder = [
+    { state: "default", disabled: false, loading: false },
+    { state: "hover", disabled: false, loading: false },
+    { state: "focus", disabled: false, loading: false },
+    { state: "pressed", disabled: false, loading: false },
+    { state: "default", disabled: true, loading: false },
+    { state: "default", disabled: false, loading: true },
+  ];
+
+  // Generate base shape buttons (all variants × states/disabled/loading)
   for (var vi = 0; vi < variants.length; vi++) {
     var variant = variants[vi];
-    for (var shi = 0; shi < shapes.length; shi++) {
-      var shape = shapes[shi];
-      for (var di = 0; di < disabledOptions.length; di++) {
-        var disabled = disabledOptions[di];
-        for (var li = 0; li < loadingOptions.length; li++) {
-          var loading = loadingOptions[li];
-          for (var sti = 0; sti < stateOptions.length; sti++) {
-            var state = stateOptions[sti];
-            for (var si = 0; si < sizes.length; si++) {
-              var size = sizes[si];
-              if (
-                !shouldGenerateVariant(
-                  variant,
-                  size,
-                  shape,
-                  disabled,
-                  loading,
-                  state,
-                )
-              ) {
-                continue;
-              }
+    var rowIndex = vi;
+    rowLabelTexts.set(rowIndex, "variant=" + variant);
 
-              var component = await createButtonComponent(
-                variant,
-                size,
-                shape,
-                disabled,
-                loading,
-                state,
-              );
+    if (!rowComponents.has(rowIndex)) {
+      rowComponents.set(rowIndex, []);
+    }
 
-              // Determine row based on shape
-              var rowIndex: number;
-              if (shape === "base") {
-                // Text buttons grouped by variant
-                rowIndex = variants.indexOf(variant);
-                rowLabelTexts.set(rowIndex, "variant=" + variant);
-              } else if (shape === "square") {
-                // Square buttons in their own row after all variants
-                rowIndex = variants.length;
-                rowLabelTexts.set(rowIndex, "shape=square");
-              } else {
-                // Circle buttons in their own row after square
-                rowIndex = variants.length + 1;
-                rowLabelTexts.set(rowIndex, "shape=circle");
-              }
+    for (var ci = 0; ci < baseShapeColumnOrder.length; ci++) {
+      var colConfig = baseShapeColumnOrder[ci];
+      var component = await createButtonComponent(
+        variant,
+        "base", // Always base size for variant rows
+        "base", // Always base shape
+        colConfig.disabled,
+        colConfig.loading,
+        colConfig.state,
+      );
 
-              if (!rowComponents.has(rowIndex)) {
-                rowComponents.set(rowIndex, []);
-              }
-              rowComponents.get(rowIndex)!.push(component);
-              components.push(component);
-            }
-          }
-        }
-      }
+      rowComponents.get(rowIndex)!.push(component);
+      components.push(component);
     }
   }
 
+  // Generate base shape buttons showing all sizes (text buttons)
+  var sizeRowIndex = variants.length;
+  rowLabelTexts.set(sizeRowIndex, "shape=base (sizes)");
+  if (!rowComponents.has(sizeRowIndex)) {
+    rowComponents.set(sizeRowIndex, []);
+  }
+
+  for (var sizeIdx = 0; sizeIdx < sizes.length; sizeIdx++) {
+    var sizeVal = sizes[sizeIdx];
+    var sizeComponent = await createButtonComponent(
+      "secondary",
+      sizeVal,
+      "base", // base shape = text button
+      false,
+      false,
+      "default",
+    );
+    rowComponents.get(sizeRowIndex)!.push(sizeComponent);
+    components.push(sizeComponent);
+  }
+
+  // Generate square shape buttons (secondary variant × all sizes)
+  var squareRowIndex = variants.length + 1;
+  rowLabelTexts.set(squareRowIndex, "shape=square");
+  if (!rowComponents.has(squareRowIndex)) {
+    rowComponents.set(squareRowIndex, []);
+  }
+
+  for (var si = 0; si < sizes.length; si++) {
+    var size = sizes[si];
+    var squareComponent = await createButtonComponent(
+      "secondary",
+      size,
+      "square",
+      false,
+      false,
+      "default",
+    );
+    rowComponents.get(squareRowIndex)!.push(squareComponent);
+    components.push(squareComponent);
+  }
+
+  // Generate circle shape buttons (secondary variant × all sizes)
+  var circleRowIndex = variants.length + 2;
+  rowLabelTexts.set(circleRowIndex, "shape=circle");
+  if (!rowComponents.has(circleRowIndex)) {
+    rowComponents.set(circleRowIndex, []);
+  }
+
+  for (var si2 = 0; si2 < sizes.length; si2++) {
+    var size2 = sizes[si2];
+    var circleComponent = await createButtonComponent(
+      "secondary",
+      size2,
+      "circle",
+      false,
+      false,
+      "default",
+    );
+    rowComponents.get(circleRowIndex)!.push(circleComponent);
+    components.push(circleComponent);
+  }
+
+  // Define column headers for variant rows (states + disabled + loading)
+  var variantColumnHeaders = [
+    "default",
+    "hover",
+    "focus",
+    "pressed",
+    "disabled",
+    "loading",
+  ];
+
+  // Define column headers for shape rows (sizes)
+  var shapeColumnHeaders = ["xs", "sm", "base", "lg"];
+
+  // Track shape section column headers separately
+  var shapeColumnHeaderPositions: { x: number; text: string }[] = [];
+
+  // Track column X positions for shape section (set from first shape row - text buttons)
+  var shapeColumnXPositions: number[] = [];
+
   // Layout components in rows
-  // First row (variant rows) will have column headers for sizes
   var yOffset = headerRowHeight; // Start below header row
-  var totalRows = variants.length + 2; // variants + square + circle
-  var columnHeadersRecorded = false;
+  var variantRowCount = variants.length;
+  var totalRows = variantRowCount + 3; // variants + base sizes + square + circle
+
+  // Gap between variant section and shape section (for shape column headers)
+  var sectionGap = 60; // Extra space for shape section header
+
+  // First shape row index (base sizes with text)
+  var firstShapeRowIndex = variantRowCount;
 
   for (var i = 0; i < totalRows; i++) {
     var row = rowComponents.get(i) || [];
     var xOffset = labelColumnWidth;
+
+    // Add extra gap before shape rows for shape column headers
+    if (i === variantRowCount) {
+      yOffset += sectionGap;
+    }
 
     // Record row label position
     var labelText = rowLabelTexts.get(i);
@@ -510,49 +559,68 @@ export async function generateButtonComponents(
       rowLabels.push({ y: yOffset, text: labelText });
     }
 
+    // Record column headers from first row
+    if (i === 0) {
+      for (var hi = 0; hi < variantColumnHeaders.length; hi++) {
+        columnHeaders.push({
+          x: xOffset + hi * (100 + componentGap), // Approximate width
+          text: variantColumnHeaders[hi],
+        });
+      }
+    }
+
+    // Check if this is a shape row (after variant rows)
+    var isShapeRow = i >= firstShapeRowIndex;
+    var isFirstShapeRow = i === firstShapeRowIndex;
+
     for (var j = 0; j < row.length; j++) {
       var comp = row[j];
-      comp.x = xOffset;
+
+      // For shape rows after the first one, use stored column positions
+      if (isShapeRow && !isFirstShapeRow && j < shapeColumnXPositions.length) {
+        comp.x = shapeColumnXPositions[j];
+      } else {
+        comp.x = xOffset;
+      }
       comp.y = yOffset;
 
-      // Record column headers from first variant row (sizes + disabled + loading)
-      if (i === 0 && !columnHeadersRecorded) {
-        // Parse component name to get size/state
-        var nameParts = comp.name.split(", ");
-        var sizeMatch = nameParts.find(function (p: string) {
-          return p.startsWith("size=");
+      // Record column positions and headers from first shape row (text buttons)
+      if (isFirstShapeRow && j < shapeColumnHeaders.length) {
+        shapeColumnXPositions.push(xOffset);
+        shapeColumnHeaderPositions.push({
+          x: xOffset,
+          text: shapeColumnHeaders[j],
         });
-        var disabledMatch = nameParts.find(function (p: string) {
-          return p.startsWith("disabled=true");
-        });
-        var loadingMatch = nameParts.find(function (p: string) {
-          return p.startsWith("loading=true");
-        });
-
-        var headerText = "";
-        if (disabledMatch) {
-          headerText = "disabled";
-        } else if (loadingMatch) {
-          headerText = "loading";
-        } else if (sizeMatch) {
-          headerText = sizeMatch; // "size=xs", "size=sm", etc.
-        }
-
-        if (headerText) {
-          columnHeaders.push({ x: xOffset, text: headerText });
-        }
       }
 
       xOffset += comp.width + componentGap;
     }
 
-    if (i === 0 && row.length > 0) {
-      columnHeadersRecorded = true;
-    }
-
     if (row.length > 0) {
       yOffset += rowGap;
     }
+  }
+
+  // Update column headers with actual positions from first row
+  var firstRow = rowComponents.get(0) || [];
+  if (firstRow.length > 0) {
+    columnHeaders = [];
+    var headerXOffset = labelColumnWidth;
+    for (var chi = 0; chi < firstRow.length; chi++) {
+      var headerComp = firstRow[chi];
+      columnHeaders.push({
+        x: headerXOffset,
+        text: variantColumnHeaders[chi] || "",
+      });
+      headerXOffset += headerComp.width + componentGap;
+    }
+  }
+
+  // Calculate shape section header Y position (just above first shape row)
+  var shapeHeaderY = 0;
+  var squareRow = rowComponents.get(variantRowCount) || [];
+  if (squareRow.length > 0) {
+    shapeHeaderY = squareRow[0].y - headerRowHeight - 8; // 8px gap above row
   }
 
   // Combine all into a single ComponentSet
@@ -587,7 +655,7 @@ export async function generateButtonComponents(
   componentSet.x = SECTION_PADDING + labelColumnWidth;
   componentSet.y = SECTION_PADDING + headerRowHeight;
 
-  // Add column headers to light section
+  // Add column headers to light section (variant state headers)
   await createColumnHeaders(
     columnHeaders.map(function (h) {
       return { x: h.x + SECTION_PADDING, text: h.text };
@@ -595,6 +663,17 @@ export async function generateButtonComponents(
     SECTION_PADDING,
     lightSection.frame,
   );
+
+  // Add shape column headers to light section (size headers for shape rows)
+  if (shapeColumnHeaderPositions.length > 0 && shapeHeaderY > 0) {
+    await createColumnHeaders(
+      shapeColumnHeaderPositions.map(function (h) {
+        return { x: h.x + SECTION_PADDING, text: h.text };
+      }),
+      SECTION_PADDING + shapeHeaderY,
+      lightSection.frame,
+    );
+  }
 
   // Add row labels to light section
   for (var li = 0; li < rowLabels.length; li++) {
@@ -618,7 +697,7 @@ export async function generateButtonComponents(
     darkSection.frame.appendChild(instance);
   }
 
-  // Add column headers to dark section
+  // Add column headers to dark section (variant state headers)
   await createColumnHeaders(
     columnHeaders.map(function (h) {
       return { x: h.x + SECTION_PADDING, text: h.text };
@@ -626,6 +705,17 @@ export async function generateButtonComponents(
     SECTION_PADDING,
     darkSection.frame,
   );
+
+  // Add shape column headers to dark section (size headers for shape rows)
+  if (shapeColumnHeaderPositions.length > 0 && shapeHeaderY > 0) {
+    await createColumnHeaders(
+      shapeColumnHeaderPositions.map(function (h) {
+        return { x: h.x + SECTION_PADDING, text: h.text };
+      }),
+      SECTION_PADDING + shapeHeaderY,
+      darkSection.frame,
+    );
+  }
 
   // Add row labels to dark section
   for (var di = 0; di < rowLabels.length; di++) {

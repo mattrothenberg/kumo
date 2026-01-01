@@ -480,7 +480,7 @@ export function createModeSection(
   frame.layoutMode = "NONE"; // Components will be positioned manually
 
   // Get the surface variable for background
-  const surfaceVar = getVariableByName("surface");
+  const surfaceVar = getVariableByName("color-surface");
 
   if (surfaceVar) {
     // Create fill bound to surface variable

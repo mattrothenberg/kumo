@@ -3,6 +3,7 @@
   "components": {
     "Badge": {
       "name": "Badge",
+      "type": "component",
       "description": "Badge component",
       "importPath": "@cloudflare/kumo",
       "category": "Display",
@@ -56,6 +57,7 @@
     },
     "Banner": {
       "name": "Banner",
+      "type": "component",
       "description": "Banner component",
       "importPath": "@cloudflare/kumo",
       "category": "Feedback",
@@ -111,6 +113,7 @@
     },
     "Breadcrumbs": {
       "name": "Breadcrumbs",
+      "type": "block",
       "description": "Breadcrumbs component",
       "importPath": "@cloudflare/kumo",
       "category": "Block",
@@ -196,6 +199,7 @@
     },
     "Button": {
       "name": "Button",
+      "type": "component",
       "description": "Button component",
       "importPath": "@cloudflare/kumo",
       "category": "Action",
@@ -384,6 +388,7 @@
     },
     "Checkbox": {
       "name": "Checkbox",
+      "type": "component",
       "description": "Checkbox component",
       "importPath": "@cloudflare/kumo",
       "category": "Input",
@@ -623,6 +628,7 @@
     },
     "ClipboardText": {
       "name": "ClipboardText",
+      "type": "component",
       "description": "ClipboardText component",
       "importPath": "@cloudflare/kumo",
       "category": "Action",
@@ -666,6 +672,7 @@
     },
     "Code": {
       "name": "Code",
+      "type": "component",
       "description": "Simple code component without syntax highlighting",
       "importPath": "@cloudflare/kumo",
       "category": "Display",
@@ -719,6 +726,7 @@
     },
     "Collapsible": {
       "name": "Collapsible",
+      "type": "component",
       "description": "Collapsible component for showing/hiding content. Features: - Animated chevron indicator (rotates 180° when open) - Accessible with aria-expanded and aria-controls - Content panel with left border accent ```tsx const [open, setOpen] = useState(false); <Collapsible label=\"Show details\" open={open} onOpenChange={setOpen}> <Text>Hidden content revealed when expanded.</Text> </Collapsible> ``` ```tsx const [activeIndex, setActiveIndex] = useState<number | null>(null); {items.map((item, i) => ( <Collapsible key={i} label={item.title} open={activeIndex === i} onOpenChange={(open) => setActiveIndex(open ? i : null)} > {item.content} </Collapsible> ))} ```",
       "importPath": "@cloudflare/kumo",
       "category": "Display",
@@ -754,6 +762,7 @@
     },
     "Combobox": {
       "name": "Combobox",
+      "type": "component",
       "description": "Combobox component",
       "importPath": "@cloudflare/kumo",
       "category": "Input",
@@ -950,6 +959,7 @@
     },
     "DateRangePicker": {
       "name": "DateRangePicker",
+      "type": "component",
       "description": "DateRangePicker component",
       "importPath": "@cloudflare/kumo",
       "category": "Input",
@@ -1026,6 +1036,7 @@
     },
     "Dialog": {
       "name": "Dialog",
+      "type": "component",
       "description": "Dialog component",
       "importPath": "@cloudflare/kumo",
       "category": "Overlay",
@@ -1180,6 +1191,7 @@
     },
     "DropdownMenu": {
       "name": "DropdownMenu",
+      "type": "component",
       "description": "DropdownMenu component",
       "importPath": "@cloudflare/kumo",
       "category": "Overlay",
@@ -1280,6 +1292,7 @@
     },
     "Empty": {
       "name": "Empty",
+      "type": "block",
       "description": "Empty component",
       "importPath": "@cloudflare/kumo",
       "category": "Block",
@@ -1350,6 +1363,7 @@
     },
     "Field": {
       "name": "Field",
+      "type": "component",
       "description": "Field component",
       "importPath": "@cloudflare/kumo",
       "category": "Input",
@@ -1392,6 +1406,7 @@
     },
     "Icon": {
       "name": "Icon",
+      "type": "component",
       "description": "Icon component variants configuration / export const KUMO_ICON_VARIANTS = { size: { xs: { classes: \"size-3\", description: \"12px - small UI elements\", }, sm: { classes: \"size-4\", description: \"16px - standard inline icons\", }, base: { classes: \"size-5\", description: \"20px - default size\", }, lg: { classes: \"size-6\", description: \"24px - prominent icons\", }, xl: { classes: \"size-8\", description: \"32px - hero sections\", }, }, } as const; /** Default variant values for Icon component / export const KUMO_ICON_DEFAULT_VARIANTS = { size: \"base\", } as const; /** Generate className string for icon variants / export function iconVariants({ size = KUMO_ICON_DEFAULT_VARIANTS.size, }: KumoIconVariantsProps = {}) { return cn( // Base styles - no default color, inherits currentColor from parent // This matches Phosphor icon behavior \"inline-block shrink-0 fill-current\", // Apply size variant KUMO_ICON_VARIANTS.size[size].classes, ); } /** Icon component using SVG sprite with <use> pattern Color is inherited from parent's text color (currentColor), matching Phosphor icon behavior. Override with text-* classes when needed. ```tsx // Basic usage - inherits color from parent <Icon glyph=\"ph-check\" /> // With explicit color and size <Icon glyph=\"ph-arrow-right\" className=\"text-brand\" size=\"lg\" /> // Accessible icon with title <Icon glyph=\"cf-cloudflare-workers-outline\" title=\"Cloudflare Workers\" /> // Error state <Icon glyph=\"ph-warning\" className=\"text-error\" /> // Success state <Icon glyph=\"ph-check\" className=\"text-green\" /> ```",
       "importPath": "@cloudflare/kumo",
       "category": "Other",
@@ -2490,6 +2505,7 @@
     },
     "Input": {
       "name": "Input",
+      "type": "component",
       "description": "Input component",
       "importPath": "@cloudflare/kumo",
       "category": "Input",
@@ -2623,6 +2639,7 @@
     },
     "LayerCard": {
       "name": "LayerCard",
+      "type": "component",
       "description": "LayerCard component",
       "importPath": "@cloudflare/kumo",
       "category": "Display",
@@ -2661,6 +2678,7 @@
     },
     "Loader": {
       "name": "Loader",
+      "type": "component",
       "description": "Loader component",
       "importPath": "@cloudflare/kumo",
       "category": "Feedback",
@@ -2691,6 +2709,7 @@
     },
     "MenuBar": {
       "name": "MenuBar",
+      "type": "component",
       "description": "MenuBar component",
       "importPath": "@cloudflare/kumo",
       "category": "Navigation",
@@ -2717,6 +2736,7 @@
     },
     "Meter": {
       "name": "Meter",
+      "type": "component",
       "description": "Meter component",
       "importPath": "@cloudflare/kumo",
       "category": "Display",
@@ -2762,6 +2782,7 @@
     },
     "PageHeader": {
       "name": "PageHeader",
+      "type": "block",
       "description": "PageHeader component",
       "importPath": "@cloudflare/kumo",
       "category": "Block",
@@ -2826,6 +2847,7 @@
     },
     "Pagination": {
       "name": "Pagination",
+      "type": "component",
       "description": "Pagination component",
       "importPath": "@cloudflare/kumo",
       "category": "Navigation",
@@ -2867,6 +2889,7 @@
     },
     "Select": {
       "name": "Select",
+      "type": "component",
       "description": "Select component",
       "importPath": "@cloudflare/kumo",
       "category": "Input",
@@ -2968,6 +2991,7 @@
     },
     "SensitiveInput": {
       "name": "SensitiveInput",
+      "type": "component",
       "description": "SensitiveInput component",
       "importPath": "@cloudflare/kumo",
       "category": "Other",
@@ -3101,6 +3125,7 @@
     },
     "Surface": {
       "name": "Surface",
+      "type": "component",
       "description": "Surface component",
       "importPath": "@cloudflare/kumo",
       "category": "Layout",
@@ -3126,6 +3151,7 @@
     },
     "Switch": {
       "name": "Switch",
+      "type": "component",
       "description": "Switch component",
       "importPath": "@cloudflare/kumo",
       "category": "Input",
@@ -3399,6 +3425,7 @@
     },
     "Tabs": {
       "name": "Tabs",
+      "type": "component",
       "description": "Tabs component",
       "importPath": "@cloudflare/kumo",
       "category": "Navigation",
@@ -3470,6 +3497,7 @@
     },
     "Text": {
       "name": "Text",
+      "type": "component",
       "description": "Text component",
       "importPath": "@cloudflare/kumo",
       "category": "Display",
@@ -3568,6 +3596,7 @@
     },
     "Toasty": {
       "name": "Toasty",
+      "type": "component",
       "description": "Toasty component",
       "importPath": "@cloudflare/kumo",
       "category": "Feedback",
@@ -3589,6 +3618,7 @@
     },
     "Tooltip": {
       "name": "Tooltip",
+      "type": "component",
       "description": "Tooltip component",
       "importPath": "@cloudflare/kumo",
       "category": "Overlay",

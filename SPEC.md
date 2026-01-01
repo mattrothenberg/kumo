@@ -297,7 +297,9 @@ After building, run the plugin in Figma:
 | Input           | size (4) x variant (2) x state (3) x withLabel (2) | Bare input or with Field wrapper (label, description, error) |
 | InputArea       | size (4) x variant (2) x state (3) x withLabel (2) | Multi-line textarea, bare or with Field wrapper              |
 | LayerCard       | (no variants)                                      | Compound: Secondary (header) + Primary (content)             |
+| Loader          | size (3)                                           | Circular spinner, static representation                      |
 | LinkButton      | variant (6) x size (4)                             | Arrow icon                                                   |
+| MenuBar         | active (4)                                         | Icon nav bar, fit-content width (React: className="w-fit")   |
 | RefreshButton   | loading (2) x size (4)                             | Refresh icon                                                 |
 | Text            | variant (9) x size (4)                             | Typography scale                                             |
 

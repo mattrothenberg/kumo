@@ -210,6 +210,9 @@ export function bindIconColor(
     figmaVariableName = "text-color-surface";
   } else if (colorVariableName === "text-surface-inverse") {
     figmaVariableName = "text-color-surface-inverse";
+  } else if (colorVariableName === "fill-surface-inverse") {
+    // fill-surface-inverse uses color-surface-inverse (dark on light, light on dark)
+    figmaVariableName = "color-surface-inverse";
   } else if (colorVariableName === "text-muted") {
     figmaVariableName = "text-color-muted";
   } else if (colorVariableName === "text-error") {

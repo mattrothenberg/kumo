@@ -15,6 +15,14 @@ KUMO_DIR="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 
 echo "Building Kumo Figma Plugin..."
 
+# Generate icon and loader data from source files
+echo "📖 Generating icon data..."
+cd "$SCRIPT_DIR"
+npx tsx build-icon-data.ts 2>/dev/null || echo "⚠️  Icon data generation skipped (may already exist)"
+
+echo "📖 Generating loader data..."
+npx tsx build-loader-data.ts 2>/dev/null || echo "⚠️  Loader data generation skipped (may already exist)"
+
 cd "$KUMO_DIR"
 pnpm exec esbuild "$SCRIPT_DIR/code.ts" \
   --bundle \

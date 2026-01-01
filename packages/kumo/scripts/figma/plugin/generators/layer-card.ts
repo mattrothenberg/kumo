@@ -23,6 +23,7 @@ import {
   bindTextColorToVariable,
   BORDER_RADIUS,
 } from "./shared";
+import { createIconInstance, bindIconColor, DEFAULT_ICONS } from "./icon-utils";
 
 /**
  * Section padding for component display
@@ -69,10 +70,12 @@ var LAYER_CARD_CONFIG = {
  * @returns ComponentNode for the LayerCard
  */
 async function createLayerCardComponent(): Promise<ComponentNode> {
+  console.log("LayerCard: Creating component...");
   var config = LAYER_CARD_CONFIG;
 
   // Create component
   var component = figma.createComponent();
+  console.log("LayerCard: Component created");
   component.name = "default";
   component.description =
     "LayerCard - A layered card component with secondary header and primary content area";
@@ -81,7 +84,8 @@ async function createLayerCardComponent(): Promise<ComponentNode> {
   component.layoutMode = "VERTICAL";
   component.primaryAxisSizingMode = "AUTO";
   component.counterAxisSizingMode = "FIXED";
-  component.resize(config.width, 1); // Height will auto-size
+  // Set width directly - height will auto-size from children
+  component.resizeWithoutConstraints(config.width, 100);
   component.itemSpacing = 0;
   component.cornerRadius = config.borderRadius;
 
@@ -89,6 +93,15 @@ async function createLayerCardComponent(): Promise<ComponentNode> {
   var rootBgVar = getVariableByName("color-surface-2");
   if (rootBgVar) {
     bindFillToVariable(component, rootBgVar.id);
+  } else {
+    console.log(
+      "LayerCard: color-surface-2 variable not found, using fallback",
+    );
+    // Fallback to surface variable
+    var fallbackBgVar = getVariableByName("color-surface");
+    if (fallbackBgVar) {
+      bindFillToVariable(component, fallbackBgVar.id);
+    }
   }
 
   // Apply root ring (ring-border)
@@ -101,9 +114,10 @@ async function createLayerCardComponent(): Promise<ComponentNode> {
   var secondaryFrame = figma.createFrame();
   secondaryFrame.name = "Secondary";
   secondaryFrame.layoutMode = "HORIZONTAL";
+  // Use SPACE_BETWEEN to push icon to the right (like justify-between in CSS)
   secondaryFrame.primaryAxisAlignItems = "SPACE_BETWEEN";
   secondaryFrame.counterAxisAlignItems = "CENTER";
-  secondaryFrame.layoutSizingHorizontal = "FILL";
+  // Note: layoutSizingHorizontal = "FILL" must be set AFTER appending to auto-layout parent
   secondaryFrame.primaryAxisSizingMode = "FIXED";
   secondaryFrame.counterAxisSizingMode = "AUTO";
   secondaryFrame.paddingLeft = config.secondary.paddingX;
@@ -114,11 +128,13 @@ async function createLayerCardComponent(): Promise<ComponentNode> {
   secondaryFrame.fills = [];
 
   // Secondary text
+  console.log("LayerCard: Creating secondary text...");
   var secondaryText = await createTextNode(
     "Next Steps",
     config.secondary.fontSize,
     config.secondary.fontWeight,
   );
+  console.log("LayerCard: Secondary text created");
   secondaryText.name = "Title";
   secondaryText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -127,21 +143,42 @@ async function createLayerCardComponent(): Promise<ComponentNode> {
     bindTextColorToVariable(secondaryText, secondaryTextVar.id);
   }
 
-  // Placeholder for action button (just a small square)
-  var actionPlaceholder = figma.createFrame();
-  actionPlaceholder.name = "Action";
-  actionPlaceholder.resize(24, 24);
-  actionPlaceholder.cornerRadius = 4;
-  actionPlaceholder.fills = [];
+  // Create arrow icon button (ghost button with arrow-right icon)
+  var iconButtonFrame = figma.createFrame();
+  iconButtonFrame.name = "Action Button";
+  iconButtonFrame.layoutMode = "HORIZONTAL";
+  iconButtonFrame.primaryAxisAlignItems = "CENTER";
+  iconButtonFrame.counterAxisAlignItems = "CENTER";
+  iconButtonFrame.resize(28, 28); // sm size button
+  iconButtonFrame.cornerRadius = 4;
+  iconButtonFrame.fills = []; // Ghost button has no background
 
-  var actionBorderVar = getVariableByName("color-border");
-  if (actionBorderVar) {
-    bindStrokeToVariable(actionPlaceholder, actionBorderVar.id, 1);
+  // Create arrow-right icon
+  var arrowIcon = createIconInstance(DEFAULT_ICONS.arrowRight, 16);
+  if (arrowIcon) {
+    arrowIcon.name = "Icon";
+    // Bind icon color to text-label (same as the title text)
+    bindIconColor(arrowIcon, "text-label");
+    iconButtonFrame.appendChild(arrowIcon);
+  } else {
+    // Fallback: create a simple arrow placeholder if icon library not generated
+    console.log("LayerCard: Arrow icon not found, using placeholder");
+    var arrowPlaceholder = figma.createFrame();
+    arrowPlaceholder.name = "Arrow Placeholder";
+    arrowPlaceholder.resize(16, 16);
+    arrowPlaceholder.fills = [];
+    var arrowBorderVar = getVariableByName("color-border");
+    if (arrowBorderVar) {
+      bindStrokeToVariable(arrowPlaceholder, arrowBorderVar.id, 1);
+    }
+    iconButtonFrame.appendChild(arrowPlaceholder);
   }
 
   secondaryFrame.appendChild(secondaryText);
-  secondaryFrame.appendChild(actionPlaceholder);
+  secondaryFrame.appendChild(iconButtonFrame);
+  // Append to parent FIRST, then set FILL sizing
   component.appendChild(secondaryFrame);
+  secondaryFrame.layoutSizingHorizontal = "FILL";
 
   // Create Primary section (main content)
   var primaryFrame = figma.createFrame();
@@ -149,7 +186,7 @@ async function createLayerCardComponent(): Promise<ComponentNode> {
   primaryFrame.layoutMode = "VERTICAL";
   primaryFrame.primaryAxisAlignItems = "MIN";
   primaryFrame.counterAxisAlignItems = "MIN";
-  primaryFrame.layoutSizingHorizontal = "FILL";
+  // Note: layoutSizingHorizontal = "FILL" must be set AFTER appending to auto-layout parent
   primaryFrame.primaryAxisSizingMode = "AUTO";
   primaryFrame.counterAxisSizingMode = "AUTO";
   primaryFrame.paddingLeft = config.primary.paddingX;
@@ -160,23 +197,36 @@ async function createLayerCardComponent(): Promise<ComponentNode> {
   primaryFrame.cornerRadius = config.primary.borderRadius;
 
   // Apply primary background (bg-layer-card-primary)
+  // Fallback to color-surface if color-layer-card-primary doesn't exist
   var primaryBgVar = getVariableByName("color-layer-card-primary");
+  if (!primaryBgVar) {
+    primaryBgVar = getVariableByName("color-surface");
+  }
   if (primaryBgVar) {
     bindFillToVariable(primaryFrame, primaryBgVar.id);
   }
 
   // Apply primary ring (ring-color)
+  // Fallback to color-border if color-color doesn't exist
   var primaryRingVar = getVariableByName("color-color");
+  if (!primaryRingVar) {
+    console.log("LayerCard: color-color not found, trying color-border");
+    primaryRingVar = getVariableByName("color-border");
+  }
   if (primaryRingVar) {
     bindStrokeToVariable(primaryFrame, primaryRingVar.id, 1);
+  } else {
+    console.log("LayerCard: No ring variable found for primary section");
   }
 
   // Primary text content
+  console.log("LayerCard: Creating primary text...");
   var primaryText = await createTextNode(
     "Get started with Kumo",
     config.primary.fontSize,
     config.primary.fontWeight,
   );
+  console.log("LayerCard: Primary text created");
   primaryText.name = "Content";
   primaryText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -186,8 +236,11 @@ async function createLayerCardComponent(): Promise<ComponentNode> {
   }
 
   primaryFrame.appendChild(primaryText);
+  // Append to parent FIRST, then set FILL sizing
   component.appendChild(primaryFrame);
+  primaryFrame.layoutSizingHorizontal = "FILL";
 
+  console.log("LayerCard: Component assembly complete");
   return component;
 }
 
@@ -209,97 +262,120 @@ export async function generateLayerCardComponents(
 ): Promise<number> {
   if (startY === undefined) startY = 100;
 
-  figma.currentPage = page;
+  console.log("LayerCard: Starting generation at Y=" + startY);
 
-  // Generate single component (no variants)
-  var components: ComponentNode[] = [];
-  var rowLabels: { y: number; text: string }[] = [];
+  try {
+    figma.currentPage = page;
 
-  var component = await createLayerCardComponent();
-  component.x = 160; // Label column width
-  component.y = 0;
-  rowLabels.push({ y: 0, text: "LayerCard" });
-  components.push(component);
+    // Generate single component (no variants)
+    var components: ComponentNode[] = [];
+    var rowLabels: { y: number; text: string }[] = [];
 
-  // Combine into ComponentSet (even with single variant for consistency)
-  // @ts-ignore - combineAsVariants works at runtime
-  var componentSet = figma.combineAsVariants(components, page);
-  componentSet.name = "LayerCard";
-  componentSet.description =
-    "LayerCard - A layered card component with Secondary (header) and Primary (content) sections. " +
-    "Use LayerCard.Secondary for the header area and LayerCard.Primary for the main content.";
-  componentSet.layoutMode = "NONE";
+    var labelColumnWidth = 160;
 
-  // Calculate content dimensions
-  var labelColumnWidth = 160;
-  var contentWidth = componentSet.width + labelColumnWidth;
-  var contentHeight = componentSet.height;
+    console.log("LayerCard: Calling createLayerCardComponent...");
+    var component = await createLayerCardComponent();
+    console.log("LayerCard: Component returned, setting position...");
+    component.x = labelColumnWidth; // Position after label column
+    component.y = 0;
+    rowLabels.push({ y: 0, text: "LayerCard" });
+    components.push(component);
 
-  // Create light mode section
-  var lightSection = createModeSection(page, "LayerCard", "light");
-  lightSection.frame.resize(
-    contentWidth + SECTION_PADDING * 2,
-    contentHeight + SECTION_PADDING * 2,
-  );
+    console.log("LayerCard: Combining as variants...");
+    // Combine into ComponentSet (even with single variant for consistency)
+    // @ts-ignore - combineAsVariants works at runtime
+    var componentSet = figma.combineAsVariants(components, page);
+    console.log("LayerCard: ComponentSet created");
+    componentSet.name = "LayerCard";
+    componentSet.description =
+      "LayerCard - A layered card component with Secondary (header) and Primary (content) sections. " +
+      "Use LayerCard.Secondary for the header area and LayerCard.Primary for the main content.";
+    componentSet.layoutMode = "NONE";
 
-  // Create dark mode section
-  var darkSection = createModeSection(page, "LayerCard", "dark");
-  darkSection.frame.resize(
-    contentWidth + SECTION_PADDING * 2,
-    contentHeight + SECTION_PADDING * 2,
-  );
+    // Calculate content dimensions
+    var contentWidth = componentSet.width + labelColumnWidth;
+    var contentHeight = componentSet.height;
 
-  // Move ComponentSet into light section frame
-  lightSection.frame.appendChild(componentSet);
-  componentSet.x = SECTION_PADDING + labelColumnWidth;
-  componentSet.y = SECTION_PADDING;
-
-  // Add row labels to light section
-  for (var li = 0; li < rowLabels.length; li++) {
-    var label = rowLabels[li];
-    var labelNode = await createRowLabel(
-      label.text,
-      SECTION_PADDING,
-      SECTION_PADDING + label.y + 8,
+    // Create light mode section
+    var lightSection = createModeSection(page, "LayerCard", "light");
+    lightSection.frame.resize(
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2,
     );
-    lightSection.frame.appendChild(labelNode);
-  }
 
-  // Create instances for dark section
-  for (var k = 0; k < components.length; k++) {
-    var origComp = components[k];
-    var instance = origComp.createInstance();
-    instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
-    instance.y = origComp.y + SECTION_PADDING;
-    darkSection.frame.appendChild(instance);
-  }
-
-  // Add row labels to dark section
-  for (var di = 0; di < rowLabels.length; di++) {
-    var darkLabel = rowLabels[di];
-    var darkLabelNode = await createRowLabel(
-      darkLabel.text,
-      SECTION_PADDING,
-      SECTION_PADDING + darkLabel.y + 8,
+    // Create dark mode section
+    var darkSection = createModeSection(page, "LayerCard", "dark");
+    darkSection.frame.resize(
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2,
     );
-    darkSection.frame.appendChild(darkLabelNode);
+
+    // Move ComponentSet into light section frame
+    lightSection.frame.appendChild(componentSet);
+    componentSet.x = SECTION_PADDING + labelColumnWidth;
+    componentSet.y = SECTION_PADDING;
+
+    // Add row labels to light section
+    for (var li = 0; li < rowLabels.length; li++) {
+      var label = rowLabels[li];
+      var labelNode = await createRowLabel(
+        label.text,
+        SECTION_PADDING,
+        SECTION_PADDING + label.y + 8,
+      );
+      lightSection.frame.appendChild(labelNode);
+    }
+
+    // Create instances for dark section
+    for (var k = 0; k < components.length; k++) {
+      var origComp = components[k];
+      var instance = origComp.createInstance();
+      instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
+      instance.y = origComp.y + SECTION_PADDING;
+      darkSection.frame.appendChild(instance);
+    }
+
+    // Add row labels to dark section
+    for (var di = 0; di < rowLabels.length; di++) {
+      var darkLabel = rowLabels[di];
+      var darkLabelNode = await createRowLabel(
+        darkLabel.text,
+        SECTION_PADDING,
+        SECTION_PADDING + darkLabel.y + 8,
+      );
+      darkSection.frame.appendChild(darkLabelNode);
+    }
+
+    // Resize sections to fit content with padding
+    var totalWidth = contentWidth + SECTION_PADDING * 2;
+    var totalHeight = contentHeight + SECTION_PADDING * 2;
+
+    lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+
+    // Position sections side by side
+    lightSection.section.x = 100;
+    lightSection.section.y = startY;
+
+    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.y = startY;
+
+    console.log("Generated LayerCard ComponentSet (light + dark)");
+    console.log(
+      "LayerCard dimensions: " +
+        totalWidth +
+        "x" +
+        totalHeight +
+        " at Y=" +
+        startY,
+    );
+
+    return startY + totalHeight + SECTION_GAP;
+  } catch (error) {
+    var errorMessage = error instanceof Error ? error.message : String(error);
+    var errorStack = error instanceof Error ? error.stack : "";
+    console.error("LayerCard generation failed: " + errorMessage);
+    console.error("Stack: " + errorStack);
+    throw error;
   }
-
-  // Resize sections to fit content with padding
-  var totalWidth = contentWidth + SECTION_PADDING * 2;
-  var totalHeight = contentHeight + SECTION_PADDING * 2;
-
-  lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-  darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-
-  // Position sections side by side
-  lightSection.section.x = 100;
-  lightSection.section.y = startY;
-
-  darkSection.section.x = 100 + totalWidth + 50;
-  darkSection.section.y = startY;
-
-  console.log("Generated LayerCard ComponentSet (light + dark)");
-
-  return startY + totalHeight + SECTION_GAP;
 }

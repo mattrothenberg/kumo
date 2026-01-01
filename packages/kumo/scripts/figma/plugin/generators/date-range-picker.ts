@@ -601,14 +601,12 @@ async function createDateRangePickerComponent(
 /**
  * Generate DateRangePicker ComponentSet
  *
- * Creates a "DateRangePicker" ComponentSet with all combinations of:
- * - size: sm, base, lg
+ * Creates a "DateRangePicker" ComponentSet with base size only (for performance).
+ * Other sizes (sm, lg) are available in code but not generated here.
+ *
+ * Variants generated:
  * - variant: default, subtle
  * - selected: false, true
- *
- * Layout:
- * - Rows: size (sm, base, lg)
- * - Columns: variant × selected (4 columns: default/false, default/true, subtle/false, subtle/true)
  *
  * Creates both light and dark mode sections.
  *
@@ -624,7 +622,10 @@ export async function generateDateRangePickerComponents(
 
   figma.currentPage = page;
 
-  // Generate all combinations
+  // Only generate base size for performance (sm, lg available in code)
+  var sizesToGenerate = ["base"];
+
+  // Generate combinations
   var components: ComponentNode[] = [];
   var rowLabels: { y: number; text: string }[] = [];
   var columnHeaders: { x: number; text: string }[] = [];
@@ -638,8 +639,8 @@ export async function generateDateRangePickerComponents(
   var rowComponents: Map<number, ComponentNode[]> = new Map();
 
   // Generate components for each combination
-  for (var si = 0; si < SIZE_VALUES.length; si++) {
-    var size = SIZE_VALUES[si];
+  for (var si = 0; si < sizesToGenerate.length; si++) {
+    var size = sizesToGenerate[si];
     rowComponents.set(si, []);
 
     for (var vi = 0; vi < VARIANT_VALUES.length; vi++) {
@@ -669,7 +670,7 @@ export async function generateDateRangePickerComponents(
 
   for (var colIdx = 0; colIdx < numColumns; colIdx++) {
     var maxColWidth = 0;
-    for (var rowIdx = 0; rowIdx < SIZE_VALUES.length; rowIdx++) {
+    for (var rowIdx = 0; rowIdx < sizesToGenerate.length; rowIdx++) {
       var row = rowComponents.get(rowIdx);
       if (row) {
         var comp = row[colIdx];
@@ -681,7 +682,7 @@ export async function generateDateRangePickerComponents(
     columnWidths.push(maxColWidth);
   }
 
-  for (var rowIdx = 0; rowIdx < SIZE_VALUES.length; rowIdx++) {
+  for (var rowIdx = 0; rowIdx < sizesToGenerate.length; rowIdx++) {
     var row = rowComponents.get(rowIdx);
     if (row) {
       var maxRowHeight = 0;
@@ -698,11 +699,11 @@ export async function generateDateRangePickerComponents(
   // Second pass: position components
   var yOffset = headerRowHeight;
 
-  for (var rowIdx = 0; rowIdx < SIZE_VALUES.length; rowIdx++) {
+  for (var rowIdx = 0; rowIdx < sizesToGenerate.length; rowIdx++) {
     var row = rowComponents.get(rowIdx);
     if (row) {
       var xOffset = labelColumnWidth;
-      var sizeValue = SIZE_VALUES[rowIdx];
+      var sizeValue = sizesToGenerate[rowIdx];
 
       rowLabels.push({
         y: yOffset,
@@ -737,8 +738,8 @@ export async function generateDateRangePickerComponents(
   var componentSet = figma.combineAsVariants(components, page);
   componentSet.name = "DateRangePicker";
   componentSet.description =
-    "DateRangePicker component with size, variant, and selected properties. " +
-    "Use for selecting date ranges across two side-by-side calendars.";
+    "DateRangePicker component with variant and selected properties. " +
+    "Showing base size only. Additional sizes (sm, lg) available in code.";
   componentSet.layoutMode = "NONE";
 
   // Calculate dimensions
@@ -784,6 +785,21 @@ export async function generateDateRangePickerComponents(
     lightSection.frame.appendChild(labelNode);
   }
 
+  // Add note about other sizes
+  var noteText = await createTextNode(
+    "Note: sm and lg sizes also available in code",
+    12,
+    400,
+  );
+  noteText.name = "Size Note";
+  var mutedVar = getVariableByName("text-color-muted");
+  if (mutedVar) {
+    bindTextColorToVariable(noteText, mutedVar.id);
+  }
+  noteText.x = SECTION_PADDING;
+  noteText.y = SECTION_PADDING + yOffset + 16;
+  lightSection.frame.appendChild(noteText);
+
   // Create instances for dark section
   for (var k = 0; k < components.length; k++) {
     var origComp = components[k];
@@ -813,9 +829,23 @@ export async function generateDateRangePickerComponents(
     darkSection.frame.appendChild(darkLabelNode);
   }
 
-  // Resize sections
+  // Add note about other sizes to dark section
+  var darkNoteText = await createTextNode(
+    "Note: sm and lg sizes also available in code",
+    12,
+    400,
+  );
+  darkNoteText.name = "Size Note";
+  if (mutedVar) {
+    bindTextColorToVariable(darkNoteText, mutedVar.id);
+  }
+  darkNoteText.x = SECTION_PADDING;
+  darkNoteText.y = SECTION_PADDING + yOffset + 16;
+  darkSection.frame.appendChild(darkNoteText);
+
+  // Resize sections (add extra height for note)
   var totalWidth = contentWidth + SECTION_PADDING * 2;
-  var totalHeight = contentHeight + SECTION_PADDING * 2;
+  var totalHeight = contentHeight + SECTION_PADDING * 2 + 40;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
@@ -830,7 +860,7 @@ export async function generateDateRangePickerComponents(
   console.log(
     "✅ Generated DateRangePicker ComponentSet with " +
       components.length +
-      " variants (light + dark)",
+      " variants (base size only, light + dark)",
   );
 
   return startY + totalHeight + SECTION_GAP;

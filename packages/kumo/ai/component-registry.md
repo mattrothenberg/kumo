@@ -152,6 +152,8 @@ These tokens are used by specific components:
 
 Badge component
 
+**Type:** component
+
 **Import:** `import { Badge } from "@cloudflare/kumo";`
 
 **Category:** Display
@@ -182,6 +184,8 @@ Badge component
 ### Banner
 
 Banner component
+
+**Type:** component
 
 **Import:** `import { Banner } from "@cloudflare/kumo";`
 
@@ -216,6 +220,8 @@ Banner component
 ### Breadcrumbs
 
 Breadcrumbs component
+
+**Type:** block
 
 **Import:** `import { Breadcrumbs } from "@cloudflare/kumo";`
 
@@ -340,6 +346,8 @@ Props:
 
 Button component
 
+**Type:** component
+
 **Import:** `import { Button } from "@cloudflare/kumo";`
 
 **Category:** Action
@@ -436,6 +444,8 @@ Button component
 ### Checkbox
 
 Checkbox component
+
+**Type:** component
 
 **Import:** `import { Checkbox } from "@cloudflare/kumo";`
 
@@ -819,6 +829,8 @@ Props:
 
 ClipboardText component
 
+**Type:** component
+
 **Import:** `import { ClipboardText } from "@cloudflare/kumo";`
 
 **Category:** Action
@@ -853,6 +865,8 @@ ClipboardText component
 ### Code
 
 Simple code component without syntax highlighting
+
+**Type:** component
 
 **Import:** `import { Code } from "@cloudflare/kumo";`
 
@@ -898,6 +912,8 @@ Simple code component without syntax highlighting
 
 Collapsible component for showing/hiding content. Features: - Animated chevron indicator (rotates 180° when open) - Accessible with aria-expanded and aria-controls - Content panel with left border accent `tsx const [open, setOpen] = useState(false); <Collapsible label="Show details" open={open} onOpenChange={setOpen}> <Text>Hidden content revealed when expanded.</Text> </Collapsible> ` `tsx const [activeIndex, setActiveIndex] = useState<number | null>(null); {items.map((item, i) => ( <Collapsible key={i} label={item.title} open={activeIndex === i} onOpenChange={(open) => setActiveIndex(open ? i : null)} > {item.content} </Collapsible> ))} `
 
+**Type:** component
+
 **Import:** `import { Collapsible } from "@cloudflare/kumo";`
 
 **Category:** Display
@@ -931,6 +947,8 @@ Collapsible component for showing/hiding content. Features: - Animated chevron i
 ### Combobox
 
 Combobox component
+
+**Type:** component
 
 **Import:** `import { Combobox } from "@cloudflare/kumo";`
 
@@ -1127,6 +1145,8 @@ Usage:
 
 DateRangePicker component
 
+**Type:** component
+
 **Import:** `import { DateRangePicker } from "@cloudflare/kumo";`
 
 **Category:** Input
@@ -1180,6 +1200,8 @@ DateRangePicker component
 ### Dialog
 
 Dialog component
+
+**Type:** component
 
 **Import:** `import { Dialog } from "@cloudflare/kumo";`
 
@@ -1318,6 +1340,8 @@ Usage:
 
 DropdownMenu component
 
+**Type:** component
+
 **Import:** `import { DropdownMenu } from "@cloudflare/kumo";`
 
 **Category:** Overlay
@@ -1389,6 +1413,8 @@ Group sub-component (wraps DropdownMenuPrimitive)
 ### Empty
 
 Empty component
+
+**Type:** block
 
 **Import:** `import { Empty } from "@cloudflare/kumo";`
 
@@ -1463,6 +1489,8 @@ Empty component
 
 Field component
 
+**Type:** component
+
 **Import:** `import { Field } from "@cloudflare/kumo";`
 
 **Category:** Input
@@ -1490,6 +1518,8 @@ Field component
 ### Icon
 
 Icon component variants configuration / export const KUMO\*ICON_VARIANTS = { size: { xs: { classes: "size-3", description: "12px - small UI elements", }, sm: { classes: "size-4", description: "16px - standard inline icons", }, base: { classes: "size-5", description: "20px - default size", }, lg: { classes: "size-6", description: "24px - prominent icons", }, xl: { classes: "size-8", description: "32px - hero sections", }, }, } as const; /** Default variant values for Icon component / export const KUMO_ICON_DEFAULT_VARIANTS = { size: "base", } as const; /** Generate className string for icon variants / export function iconVariants({ size = KUMO_ICON_DEFAULT_VARIANTS.size, }: KumoIconVariantsProps = {}) { return cn( // Base styles - no default color, inherits currentColor from parent // This matches Phosphor icon behavior "inline-block shrink-0 fill-current", // Apply size variant KUMO_ICON_VARIANTS.size[size].classes, ); } /\*\* Icon component using SVG sprite with <use> pattern Color is inherited from parent's text color (currentColor), matching Phosphor icon behavior. Override with text-\_ classes when needed. `tsx // Basic usage - inherits color from parent <Icon glyph="ph-check" /> // With explicit color and size <Icon glyph="ph-arrow-right" className="text-brand" size="lg" /> // Accessible icon with title <Icon glyph="cf-cloudflare-workers-outline" title="Cloudflare Workers" /> // Error state <Icon glyph="ph-warning" className="text-error" /> // Success state <Icon glyph="ph-check" className="text-green" /> `
+
+**Type:** component
 
 **Import:** `import { Icon } from "@cloudflare/kumo";`
 
@@ -1796,6 +1826,8 @@ Icon component variants configuration / export const KUMO\*ICON_VARIANTS = { siz
 ### Input
 
 Input component
+
+**Type:** component
 
 **Import:** `import { Input } from "@cloudflare/kumo";`
 
@@ -2141,6 +2173,8 @@ When true, only renders the inline content (indicators, tooltip) without the out
 
 LayerCard component
 
+**Type:** component
+
 **Import:** `import { LayerCard } from "@cloudflare/kumo";`
 
 **Category:** Display
@@ -2188,6 +2222,8 @@ Secondary sub-component
 ### Loader
 
 Loader component
+
+**Type:** component
 
 **Import:** `import { Loader } from "@cloudflare/kumo";`
 
@@ -2238,6 +2274,8 @@ Loader component
 
 MenuBar component
 
+**Type:** component
+
 **Import:** `import { MenuBar } from "@cloudflare/kumo";`
 
 **Category:** Navigation
@@ -2258,6 +2296,8 @@ MenuBar component
 ### Meter
 
 Meter component
+
+**Type:** component
 
 **Import:** `import { Meter } from "@cloudflare/kumo";`
 
@@ -2301,6 +2341,8 @@ Meter component
 ### PageHeader
 
 PageHeader component
+
+**Type:** block
 
 **Import:** `import { PageHeader } from "@cloudflare/kumo";`
 
@@ -2472,6 +2514,8 @@ PageHeader component
 
 Pagination component
 
+**Type:** component
+
 **Import:** `import { Pagination } from "@cloudflare/kumo";`
 
 **Category:** Navigation
@@ -2512,6 +2556,8 @@ Pagination component
 ### Select
 
 Select component
+
+**Type:** component
 
 **Import:** `import { Select } from "@cloudflare/kumo";`
 
@@ -2677,6 +2723,8 @@ Option sub-component
 
 SensitiveInput component
 
+**Type:** component
+
 **Import:** `import { SensitiveInput } from "@cloudflare/kumo";`
 
 **Category:** Other
@@ -2822,6 +2870,8 @@ SensitiveInput component
 
 Surface component
 
+**Type:** component
+
 **Import:** `import { Surface } from "@cloudflare/kumo";`
 
 **Category:** Layout
@@ -2846,6 +2896,8 @@ Surface component
 ### Switch
 
 Switch component
+
+**Type:** component
 
 **Import:** `import { Switch } from "@cloudflare/kumo";`
 
@@ -3242,6 +3294,8 @@ ResizeHandle sub-component
 
 Tabs component
 
+**Type:** component
+
 **Import:** `import { Tabs } from "@cloudflare/kumo";`
 
 **Category:** Navigation
@@ -3285,6 +3339,8 @@ Tabs component
 ### Text
 
 Text component
+
+**Type:** component
 
 **Import:** `import { Text } from "@cloudflare/kumo";`
 
@@ -3338,6 +3394,8 @@ Text component
 
 Toasty component
 
+**Type:** component
+
 **Import:** `import { Toasty } from "@cloudflare/kumo";`
 
 **Category:** Feedback
@@ -3355,6 +3413,8 @@ Toasty component
 ### Tooltip
 
 Tooltip component
+
+**Type:** component
 
 **Import:** `import { Tooltip } from "@cloudflare/kumo";`
 

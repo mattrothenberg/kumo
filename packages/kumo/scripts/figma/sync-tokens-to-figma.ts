@@ -171,6 +171,8 @@ const OPACITY_MODIFIERS: Record<string, number[]> = {
   // Button variants: bg-primary/50, bg-primary/70, bg-secondary/50
   primary: [50, 70],
   secondary: [50],
+  // DateRangePicker: bg-calendar-day-range-selected/85
+  "calendar-day-range-selected": [85],
 };
 
 /**
@@ -185,8 +187,8 @@ function generateOpacityVariants(baseTokens: ResolvedToken[]): ResolvedToken[] {
   const opacityTokens: ResolvedToken[] = [];
 
   for (const token of baseTokens) {
-    // Extract base color name from token (e.g., "color-info" → "info")
-    const colorMatch = token.name.match(/^color-(\w+)$/);
+    // Extract base color name from token (e.g., "color-info" → "info", "color-calendar-day-range-selected" → "calendar-day-range-selected")
+    const colorMatch = token.name.match(/^color-([\w-]+)$/);
     if (!colorMatch) continue;
 
     const colorName = colorMatch[1];

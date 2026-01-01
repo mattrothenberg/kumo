@@ -33,6 +33,13 @@ const componentsDir = join(__dirname, "../../src/components");
 const blocksDir = join(__dirname, "../../src/blocks");
 const rootDir = join(__dirname, "../..");
 
+/**
+ * Component type based on source directory.
+ * - component: Base UI primitives (button, input, dialog)
+ * - block: Composite components (breadcrumbs, page-header, empty)
+ */
+export type ComponentType = "component" | "block";
+
 // =============================================================================
 // Component configuration - maps component to its props type and metadata
 // =============================================================================
@@ -58,8 +65,10 @@ interface ComponentConfig {
   sourceFile: string;
   /** Directory name (kebab-case) */
   dirName: string;
-  /** Base source directory (components or blocks) */
+  /** Base source directory (components, blocks, layouts, or pages) */
   sourceDir: string;
+  /** Component type based on source directory */
+  type: ComponentType;
   description: string;
   category: string;
   /**
@@ -920,7 +929,7 @@ function extractPropsFromInterface(
  */
 async function discoverFromDir(
   sourceDir: string,
-  type: "component" | "block",
+  type: ComponentType,
 ): Promise<ComponentConfig[]> {
   const dirs = discoverDirs(sourceDir);
   const configs: ComponentConfig[] = [];
@@ -950,8 +959,9 @@ async function discoverFromDir(
     }
 
     // Extract variants from file (may be empty for components without variant props)
+    // Layouts and pages may not have KUMO_*_VARIANTS exports
     const variantsData = extractVariantsFromFile(mainFile);
-    if (!variantsData) {
+    if (!variantsData && (type === "component" || type === "block")) {
       console.warn(
         `Warning: Could not find KUMO_*_VARIANTS exports in ${dirName}, skipping...`,
       );
@@ -968,7 +978,9 @@ async function discoverFromDir(
     // Detect sub-components for compound component patterns
     const subComponents = detectSubComponents(mainFile);
 
-    console.log(`  ${dirName} → ${componentName} (props: ${propsType})`);
+    console.log(
+      `  ${dirName} → ${componentName} (props: ${propsType}, type: ${type})`,
+    );
     if (subComponents.length > 0) {
       console.log(
         `    → Found ${subComponents.length} sub-components: ${subComponents.map((s) => s.name).join(", ")}`,
@@ -981,10 +993,11 @@ async function discoverFromDir(
       sourceFile: `${dirName}/${dirName}.tsx`,
       dirName,
       sourceDir,
+      type,
       description,
       category,
-      variants: variantsData.variants,
-      defaults: variantsData.defaults,
+      variants: variantsData?.variants ?? {},
+      defaults: variantsData?.defaults ?? {},
       ...(subComponents.length > 0 && { subComponents }),
     });
   }
@@ -1043,6 +1056,8 @@ interface SubComponentSchema {
 
 interface ComponentSchema {
   name: string;
+  /** Component type: "component" (base UI primitive) or "block" (composite component) */
+  type: ComponentType;
   description: string;
   importPath: string;
   category: string;
@@ -2053,6 +2068,7 @@ async function generateRegistry(): Promise<GenerateRegistryResult> {
 
     components[config.name] = {
       name: config.name,
+      type: config.type,
       description: config.description,
       importPath: "@cloudflare/kumo",
       category: config.category,
@@ -2241,6 +2257,7 @@ ${styleGuide}`;
     context += `---\n\n`;
     context += `### ${name}\n\n`;
     context += `${comp.description}\n\n`;
+    context += `**Type:** ${comp.type}\n\n`;
     context += `**Import:** \`import { ${name} } from "${comp.importPath}";\`\n\n`;
     context += `**Category:** ${comp.category}\n\n`;
 
