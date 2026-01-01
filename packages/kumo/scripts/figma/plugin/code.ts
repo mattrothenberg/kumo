@@ -29,6 +29,8 @@ import { generateMeterComponents } from "./generators/meter";
 import { generatePaginationComponents } from "./generators/pagination";
 import { generateRefreshButtonComponents } from "./generators/refresh-button";
 import { generateSelectComponents } from "./generators/select";
+import { generateSensitiveInputComponents } from "./generators/sensitive-input";
+import { generateSurfaceComponents } from "./generators/surface";
 import { generateTextComponents } from "./generators/text";
 import { generateIconLibrary } from "./generators/icon-library";
 
@@ -196,9 +198,17 @@ figma.ui.onmessage = async (msg: { type: string }) => {
       figma.notify("Generating Select components...");
       nextY = await generateSelectComponents(componentsPage, nextY);
 
+      // Step 27: Generate SensitiveInput components
+      figma.notify("Generating SensitiveInput components...");
+      nextY = await generateSensitiveInputComponents(componentsPage, nextY);
+
+      // Step 28: Generate Surface components
+      figma.notify("Generating Surface components...");
+      nextY = await generateSurfaceComponents(componentsPage, nextY);
+
       figma.notify("✅ Generation complete!", { timeout: 3000 });
       figma.closePlugin(
-        "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, Dialog, Dropdown, Input, InputArea, LayerCard, Loader, LinkButton, MenuBar, Meter, Pagination, RefreshButton, Select, Text components, and Icon Library",
+        "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, Dialog, Dropdown, Input, InputArea, LayerCard, Loader, LinkButton, MenuBar, Meter, Pagination, RefreshButton, Select, SensitiveInput, Surface, Text components, and Icon Library",
       );
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
