@@ -80,6 +80,11 @@ interface ComponentConfig {
   // biome-ignore lint/suspicious/noExplicitAny: Variants have varying shapes
   variants: Record<string, Record<string, any>>;
   defaults: Record<string, string>;
+  /**
+   * Base Tailwind classes applied to all variants.
+   * Extracted from KUMO_*_BASE_STYLES constant if present.
+   */
+  baseStyles?: string;
   /** Sub-components for compound component patterns (e.g., Dialog.Root, Dialog.Trigger) */
   subComponents?: SubComponentConfig[];
 }
@@ -426,6 +431,30 @@ function extractBalancedBraces(
 }
 
 /**
+ * Extract KUMO_*_BASE_STYLES from a component file.
+ * Returns the base styles string or null if not found.
+ */
+function extractBaseStylesFromFile(filePath: string): string | null {
+  try {
+    const content = readFileSync(filePath, "utf-8");
+
+    // Match: export const KUMO_*_BASE_STYLES = "..." or '...' or `...`
+    // Handles multi-line strings with template literals
+    const baseStylesMatch = content.match(
+      /export\s+const\s+KUMO_\w+_BASE_STYLES\s*=\s*["'`]([^"'`]+)["'`]/,
+    );
+
+    if (baseStylesMatch) {
+      return baseStylesMatch[1].trim();
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Extract KUMO_*_VARIANTS and KUMO_*_DEFAULT_VARIANTS from a component file.
  * Uses regex parsing to avoid import issues with JSX/React dependencies.
  */
@@ -433,6 +462,7 @@ function extractVariantsFromFile(filePath: string): {
   // biome-ignore lint/suspicious/noExplicitAny: Variants have varying shapes
   variants: Record<string, Record<string, any>>;
   defaults: Record<string, string>;
+  baseStyles: string | null;
 } | null {
   try {
     const content = readFileSync(filePath, "utf-8");
@@ -468,8 +498,11 @@ function extractVariantsFromFile(filePath: string): {
     const variants = parseVariantsObject(variantsBlock);
     const defaults = parseDefaultsObject(defaultsBlock);
 
+    // Extract base styles if present
+    const baseStyles = extractBaseStylesFromFile(filePath);
+
     // Return even if variants is empty - component still has props to document
-    return { variants, defaults };
+    return { variants, defaults, baseStyles };
   } catch {
     return null;
   }
@@ -998,6 +1031,7 @@ async function discoverFromDir(
       category,
       variants: variantsData?.variants ?? {},
       defaults: variantsData?.defaults ?? {},
+      ...(variantsData?.baseStyles && { baseStyles: variantsData.baseStyles }),
       ...(subComponents.length > 0 && { subComponents }),
     });
   }
@@ -1064,6 +1098,11 @@ interface ComponentSchema {
   props: Record<string, PropSchema>;
   examples: readonly string[];
   colors: string[];
+  /**
+   * Base Tailwind classes applied to all variants.
+   * Useful for Figma plugin to parse layout, spacing, typography.
+   */
+  baseStyles?: string;
   /** Sub-components for compound component patterns */
   subComponents?: Record<string, SubComponentSchema>;
   /** Component-specific styling metadata (dimensions, states, icons, etc.) */
@@ -2075,6 +2114,7 @@ async function generateRegistry(): Promise<GenerateRegistryResult> {
       props,
       examples,
       colors,
+      ...(config.baseStyles && { baseStyles: config.baseStyles }),
       ...(subComponentSchemas && { subComponents: subComponentSchemas }),
       ...(stylingMetadata && { styling: stylingMetadata }),
     };

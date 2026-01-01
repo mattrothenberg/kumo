@@ -1,6 +1,13 @@
 import type { ReactNode } from "react";
 import { cn } from "../../utils/cn";
 
+/**
+ * Base styles applied to all badge variants.
+ * Used by badgeVariants() and consumed by Figma plugin for component generation.
+ */
+export const KUMO_BADGE_BASE_STYLES =
+  "inline-flex w-fit flex-none shrink-0 items-center justify-self-start rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap";
+
 export const KUMO_BADGE_VARIANTS = {
   variant: {
     primary: {
@@ -41,8 +48,8 @@ export function badgeVariants({
   variant = KUMO_BADGE_DEFAULT_VARIANTS.variant,
 }: KumoBadgeVariantsProps = {}) {
   return cn(
-    // Base styles
-    "inline-flex w-fit flex-none shrink-0 items-center justify-self-start rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap",
+    // Base styles (exported as KUMO_BADGE_BASE_STYLES for Figma plugin)
+    KUMO_BADGE_BASE_STYLES,
     // Apply variant styles from KUMO_BADGE_VARIANTS
     KUMO_BADGE_VARIANTS.variant[variant].classes,
   );

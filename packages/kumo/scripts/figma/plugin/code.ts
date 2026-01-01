@@ -38,6 +38,7 @@ import {
 import { generateTabsComponents } from "./generators/tabs";
 import { generateTextComponents } from "./generators/text";
 import { generateToastComponents } from "./generators/toast";
+import { generateTooltipComponents } from "./generators/tooltip";
 import { generateIconLibrary } from "./generators/icon-library";
 import { logInfo, logError } from "./logger";
 
@@ -333,6 +334,13 @@ figma.ui.onmessage = async (msg: { type: string }) => {
             return { nextY: result };
           },
         },
+        {
+          name: "Tooltip",
+          execute: async (page, y) => {
+            const result = await generateTooltipComponents(page, y);
+            return { nextY: result };
+          },
+        },
       ];
 
       // Dynamically calculated total from generator array
@@ -357,7 +365,7 @@ figma.ui.onmessage = async (msg: { type: string }) => {
 
       figma.notify("✅ Generation complete!", { timeout: 3000 });
       figma.closePlugin(
-        "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, Dialog, Dropdown, Input, InputArea, LayerCard, Loader, LinkButton, MenuBar, Meter, Pagination, RefreshButton, Select, SensitiveInput, Surface, Switch, Switch.Group, Tabs, Text, Toast components, and Icon Library",
+        "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, Dialog, Dropdown, Input, InputArea, LayerCard, Loader, LinkButton, MenuBar, Meter, Pagination, RefreshButton, Select, SensitiveInput, Surface, Switch, Switch.Group, Tabs, Text, Toast, Tooltip components, and Icon Library",
       );
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);

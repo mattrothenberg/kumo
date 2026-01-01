@@ -76,6 +76,22 @@ const BORDER_RADIUS_SCALE: Record<string, number> = {
 };
 
 /**
+ * Tailwind font weight scale
+ * https://tailwindcss.com/docs/font-weight
+ */
+const FONT_WEIGHT_SCALE: Record<string, number> = {
+  thin: 100,
+  extralight: 200,
+  light: 300,
+  normal: 400,
+  medium: 500,
+  semibold: 600,
+  bold: 700,
+  extrabold: 800,
+  black: 900,
+};
+
+/**
  * Map Kumo semantic color classes to Figma variable names
  * These must match the kumo-colors collection in Figma
  */
@@ -130,6 +146,7 @@ export type ParsedStyles = {
 
   // Typography
   fontSize?: number;
+  fontWeight?: number;
 
   // Colors (Figma variable names)
   fillVariable?: string | null;
@@ -141,6 +158,10 @@ export type ParsedStyles = {
   isWhiteText?: boolean;
   hasBorder?: boolean;
   borderStyle?: "solid" | "dashed";
+
+  // Border properties
+  strokeWeight?: number;
+  dashPattern?: number[];
 };
 
 /**
@@ -219,6 +240,15 @@ export function parseTailwindClasses(classes: string): ParsedStyles {
       continue;
     }
 
+    // Font weight: font-thin, font-light, font-normal, font-medium, font-semibold, font-bold
+    const fontWeightMatch = cls.match(
+      /^font-(thin|extralight|light|normal|medium|semibold|bold|extrabold|black)$/,
+    );
+    if (fontWeightMatch) {
+      result.fontWeight = FONT_WEIGHT_SCALE[fontWeightMatch[1]];
+      continue;
+    }
+
     // Background colors (with optional opacity: bg-info/20)
     if (cls.startsWith("bg-")) {
       // Check for opacity modifier (e.g., bg-info/20)
@@ -257,8 +287,22 @@ export function parseTailwindClasses(classes: string): ParsedStyles {
     // Border
     if (cls === "border" || cls.startsWith("border-")) {
       result.hasBorder = true;
+
+      // Parse border width: border (1px default), border-2, border-4, etc.
+      if (cls === "border") {
+        result.strokeWeight = 1;
+      } else {
+        const widthMatch = cls.match(/^border-(\d+)$/);
+        if (widthMatch) {
+          result.strokeWeight = parseInt(widthMatch[1], 10);
+          continue;
+        }
+      }
+
+      // Parse border style
       if (cls === "border-dashed") {
         result.borderStyle = "dashed";
+        result.dashPattern = [4, 4];
       } else if (cls.startsWith("border-") && !cls.includes("dashed")) {
         const varName = COLOR_TO_VARIABLE[cls];
         if (varName) {

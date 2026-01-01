@@ -11617,21 +11617,15 @@
     if (startY === void 0) startY = 100;
     figma.currentPage = page;
     var components = [];
-    var rowLabels = [];
-    var labelColumnWidth = 120;
     var component = await createToastComponent();
-    component.x = labelColumnWidth;
+    component.x = 0;
     component.y = 0;
-    rowLabels.push({
-      y: 0,
-      text: "Toast"
-    });
     components.push(component);
     var componentSet = figma.combineAsVariants(components, page);
     componentSet.name = "Toast";
     componentSet.description = "Toast notification component. Use for transient messages, confirmations, and alerts.";
     componentSet.layoutMode = "NONE";
-    var contentWidth = componentSet.width + labelColumnWidth;
+    var contentWidth = componentSet.width;
     var contentHeight = componentSet.height;
     var lightSection = createModeSection(page, "Toast", "light");
     lightSection.frame.resize(
@@ -11644,32 +11638,14 @@
       contentHeight + SECTION_PADDING26 * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING26 + labelColumnWidth;
+    componentSet.x = SECTION_PADDING26;
     componentSet.y = SECTION_PADDING26;
-    for (var li = 0; li < rowLabels.length; li++) {
-      var label = rowLabels[li];
-      var labelNode = await createRowLabel(
-        label.text,
-        SECTION_PADDING26,
-        SECTION_PADDING26 + label.y + 8
-      );
-      lightSection.frame.appendChild(labelNode);
-    }
     for (var k = 0; k < components.length; k++) {
       var origComp = components[k];
       var instance = origComp.createInstance();
-      instance.x = origComp.x + SECTION_PADDING26 + labelColumnWidth;
+      instance.x = origComp.x + SECTION_PADDING26;
       instance.y = origComp.y + SECTION_PADDING26;
       darkSection.frame.appendChild(instance);
-    }
-    for (var di = 0; di < rowLabels.length; di++) {
-      var darkLabel = rowLabels[di];
-      var darkLabelNode = await createRowLabel(
-        darkLabel.text,
-        SECTION_PADDING26,
-        SECTION_PADDING26 + darkLabel.y + 8
-      );
-      darkSection.frame.appendChild(darkLabelNode);
     }
     var totalWidth = contentWidth + SECTION_PADDING26 * 2;
     var totalHeight = contentHeight + SECTION_PADDING26 * 2;
@@ -11681,6 +11657,123 @@
     darkSection.section.y = startY;
     console.log("Generated Toast ComponentSet (light + dark)");
     return startY + totalHeight + SECTION_GAP26;
+  }
+
+  // scripts/figma/plugin/generators/tooltip.ts
+  var SECTION_PADDING27 = 48;
+  var SECTION_GAP27 = 160;
+  var ARROW_WIDTH = 20;
+  var ARROW_HEIGHT = 10;
+  function createTooltipArrow() {
+    var arrow = figma.createVector();
+    arrow.name = "Arrow";
+    arrow.vectorNetwork = {
+      vertices: [
+        { x: 0, y: 0 },
+        { x: ARROW_WIDTH, y: 0 },
+        { x: ARROW_WIDTH / 2, y: ARROW_HEIGHT }
+      ],
+      segments: [
+        { start: 0, end: 1 },
+        { start: 1, end: 2 },
+        { start: 2, end: 0 }
+      ],
+      regions: [
+        {
+          windingRule: "NONZERO",
+          loops: [[0, 1, 2]]
+        }
+      ]
+    };
+    var bgVar = getVariableByName("color-surface-3");
+    if (bgVar) {
+      bindFillToVariable(arrow, bgVar.id);
+    }
+    arrow.strokes = [];
+    return arrow;
+  }
+  async function createTooltipComponent() {
+    var component = figma.createComponent();
+    component.name = "Tooltip";
+    component.description = "Tooltip popup component for contextual help";
+    component.layoutMode = "NONE";
+    component.fills = [];
+    var tooltipBox = figma.createFrame();
+    tooltipBox.name = "Tooltip Box";
+    tooltipBox.layoutMode = "VERTICAL";
+    tooltipBox.primaryAxisSizingMode = "AUTO";
+    tooltipBox.counterAxisSizingMode = "AUTO";
+    tooltipBox.paddingLeft = 10;
+    tooltipBox.paddingRight = 10;
+    tooltipBox.paddingTop = 6;
+    tooltipBox.paddingBottom = 6;
+    tooltipBox.cornerRadius = BORDER_RADIUS.md;
+    tooltipBox.x = 0;
+    tooltipBox.y = 0;
+    var bgVar = getVariableByName("color-surface-3");
+    if (bgVar) {
+      bindFillToVariable(tooltipBox, bgVar.id);
+    }
+    var text = await createTextNode("Tooltip text", 14, 400);
+    text.name = "Text";
+    text.textAutoResize = "WIDTH_AND_HEIGHT";
+    var textVar = getVariableByName("text-color-surface");
+    if (textVar) {
+      bindTextColorToVariable(text, textVar.id);
+    }
+    tooltipBox.appendChild(text);
+    component.appendChild(tooltipBox);
+    var arrow = createTooltipArrow();
+    arrow.x = (tooltipBox.width - ARROW_WIDTH) / 2;
+    arrow.y = tooltipBox.height;
+    component.appendChild(arrow);
+    component.resize(tooltipBox.width, tooltipBox.height + ARROW_HEIGHT);
+    return component;
+  }
+  async function generateTooltipComponents(page, startY) {
+    if (startY === void 0) startY = 100;
+    figma.currentPage = page;
+    var components = [];
+    var component = await createTooltipComponent();
+    component.x = 0;
+    component.y = 0;
+    components.push(component);
+    var componentSet = figma.combineAsVariants(components, page);
+    componentSet.name = "Tooltip";
+    componentSet.description = "Tooltip popup component. Use for contextual help and additional information on hover.";
+    componentSet.layoutMode = "NONE";
+    var contentWidth = componentSet.width;
+    var contentHeight = componentSet.height;
+    var lightSection = createModeSection(page, "Tooltip", "light");
+    lightSection.frame.resize(
+      contentWidth + SECTION_PADDING27 * 2,
+      contentHeight + SECTION_PADDING27 * 2
+    );
+    var darkSection = createModeSection(page, "Tooltip", "dark");
+    darkSection.frame.resize(
+      contentWidth + SECTION_PADDING27 * 2,
+      contentHeight + SECTION_PADDING27 * 2
+    );
+    lightSection.frame.appendChild(componentSet);
+    componentSet.x = SECTION_PADDING27;
+    componentSet.y = SECTION_PADDING27;
+    for (var k = 0; k < components.length; k++) {
+      var origComp = components[k];
+      var instance = origComp.createInstance();
+      instance.x = origComp.x + SECTION_PADDING27;
+      instance.y = origComp.y + SECTION_PADDING27;
+      darkSection.frame.appendChild(instance);
+    }
+    var totalWidth = contentWidth + SECTION_PADDING27 * 2;
+    var totalHeight = contentHeight + SECTION_PADDING27 * 2;
+    lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    lightSection.section.x = 100;
+    lightSection.section.y = startY;
+    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.y = startY;
+    console.log("Generated Tooltip ComponentSet (light + dark)");
+    return startY + totalHeight + SECTION_GAP27;
   }
 
   // scripts/figma/plugin/generated/icon-data.json
@@ -14842,6 +14935,13 @@
               const result = await generateToastComponents(page, y);
               return { nextY: result };
             }
+          },
+          {
+            name: "Tooltip",
+            execute: async (page, y) => {
+              const result = await generateTooltipComponents(page, y);
+              return { nextY: result };
+            }
           }
         ];
         const TOTAL_COMPONENTS = GENERATORS.length;
@@ -14858,7 +14958,7 @@
         }
         figma.notify("\u2705 Generation complete!", { timeout: 3e3 });
         figma.closePlugin(
-          "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, Dialog, Dropdown, Input, InputArea, LayerCard, Loader, LinkButton, MenuBar, Meter, Pagination, RefreshButton, Select, SensitiveInput, Surface, Switch, Switch.Group, Tabs, Text, Toast components, and Icon Library"
+          "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, Dialog, Dropdown, Input, InputArea, LayerCard, Loader, LinkButton, MenuBar, Meter, Pagination, RefreshButton, Select, SensitiveInput, Surface, Switch, Switch.Group, Tabs, Text, Toast, Tooltip components, and Icon Library"
         );
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);

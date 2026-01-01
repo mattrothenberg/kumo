@@ -1,0 +1,255 @@
+/**
+ * Tooltip Component Generator
+ *
+ * Generates a Tooltip component in Figma that matches
+ * the Tooltip component popup styling:
+ *
+ * - Static visual representation of an OPEN tooltip popup
+ * - Tooltip has bg-surface-3, text-surface, rounded-md, p-2 padding
+ * - Includes an arrow/pointer
+ *
+ * The Tooltip has:
+ * - Container with bg-surface-3, text-surface, rounded-md, p-2
+ * - Arrow pointing down (for a top-positioned tooltip)
+ * - Text content
+ *
+ * Uses semantic tokens bound to Figma variables:
+ * - bg-surface-3 → color-surface-3
+ * - text-surface → text-color-surface
+ *
+ * @see packages/kumo/src/components/tooltip/tooltip.tsx
+ */
+
+import {
+  createTextNode,
+  getVariableByName,
+  createModeSection,
+  bindFillToVariable,
+  bindTextColorToVariable,
+  BORDER_RADIUS,
+} from "./shared";
+
+/**
+ * Section padding for component display
+ */
+var SECTION_PADDING = 48;
+
+/**
+ * Gap between sections on the page
+ */
+var SECTION_GAP = 160;
+
+/**
+ * Tooltip dimensions
+ */
+var ARROW_WIDTH = 20;
+var ARROW_HEIGHT = 10;
+
+/**
+ * Create a tooltip arrow as a simple triangle pointing down using vector path
+ *
+ * Uses a vector network to draw a downward-pointing triangle.
+ * This avoids rotation issues with polygons.
+ *
+ * @returns VectorNode for the arrow
+ */
+function createTooltipArrow(): VectorNode {
+  var arrow = figma.createVector();
+  arrow.name = "Arrow";
+
+  // Create a downward-pointing triangle using vector network
+  // Points: top-left (0,0), top-right (width,0), bottom-center (width/2, height)
+  arrow.vectorNetwork = {
+    vertices: [
+      { x: 0, y: 0 },
+      { x: ARROW_WIDTH, y: 0 },
+      { x: ARROW_WIDTH / 2, y: ARROW_HEIGHT },
+    ],
+    segments: [
+      { start: 0, end: 1 },
+      { start: 1, end: 2 },
+      { start: 2, end: 0 },
+    ],
+    regions: [
+      {
+        windingRule: "NONZERO",
+        loops: [[0, 1, 2]],
+      },
+    ],
+  };
+
+  // Bind arrow fill to bg-surface-3 variable
+  var bgVar = getVariableByName("color-surface-3");
+  if (bgVar) {
+    bindFillToVariable(arrow as unknown as SceneNode, bgVar.id);
+  }
+
+  // Remove stroke
+  arrow.strokes = [];
+
+  return arrow;
+}
+
+/**
+ * Create a single Tooltip component
+ *
+ * Layout structure:
+ * - Component (frame with no auto-layout for manual positioning)
+ *   - Tooltip box (with bg, padding, rounded corners)
+ *     - Text content
+ *   - Arrow (positioned below the box)
+ *
+ * NOTE: We use layoutMode = "NONE" because:
+ * 1. layoutAlign = "CENTER" is deprecated in Figma
+ * 2. layoutPositioning = "ABSOLUTE" requires parent to have layoutMode !== NONE
+ * 3. Manual positioning is simpler and more reliable for this use case
+ *
+ * @returns ComponentNode for the tooltip
+ */
+async function createTooltipComponent(): Promise<ComponentNode> {
+  // Create component (no auto-layout - manual positioning)
+  var component = figma.createComponent();
+  component.name = "Tooltip";
+  component.description = "Tooltip popup component for contextual help";
+  component.layoutMode = "NONE";
+  component.fills = []; // Transparent - the inner box has the fill
+
+  // Create the tooltip box (the rounded rectangle with text)
+  var tooltipBox = figma.createFrame();
+  tooltipBox.name = "Tooltip Box";
+  tooltipBox.layoutMode = "VERTICAL";
+  tooltipBox.primaryAxisSizingMode = "AUTO";
+  tooltipBox.counterAxisSizingMode = "AUTO";
+  tooltipBox.paddingLeft = 10; // p-2.5 = 10px
+  tooltipBox.paddingRight = 10;
+  tooltipBox.paddingTop = 6; // p-1.5 = 6px
+  tooltipBox.paddingBottom = 6;
+  tooltipBox.cornerRadius = BORDER_RADIUS.md; // rounded-md = 6px
+  tooltipBox.x = 0;
+  tooltipBox.y = 0;
+
+  // Apply background fill (bg-surface-3)
+  var bgVar = getVariableByName("color-surface-3");
+  if (bgVar) {
+    bindFillToVariable(tooltipBox, bgVar.id);
+  }
+
+  // Create tooltip text content
+  // text-sm = 14px, normal weight = 400
+  var text = await createTextNode("Tooltip text", 14, 400);
+  text.name = "Text";
+  text.textAutoResize = "WIDTH_AND_HEIGHT";
+
+  // Apply text color (text-surface)
+  var textVar = getVariableByName("text-color-surface");
+  if (textVar) {
+    bindTextColorToVariable(text, textVar.id);
+  }
+
+  tooltipBox.appendChild(text);
+  component.appendChild(tooltipBox);
+
+  // Create arrow and position below the box
+  var arrow = createTooltipArrow();
+  // Center arrow horizontally under the box
+  arrow.x = (tooltipBox.width - ARROW_WIDTH) / 2;
+  // Position directly at bottom of box (no gap)
+  arrow.y = tooltipBox.height;
+
+  component.appendChild(arrow as unknown as SceneNode);
+
+  // Resize component to fit box + arrow
+  component.resize(tooltipBox.width, tooltipBox.height + ARROW_HEIGHT);
+
+  return component;
+}
+
+/**
+ * Generate Tooltip ComponentSet
+ *
+ * Creates a "Tooltip" ComponentSet with a single variant (no variants).
+ * Creates both light and dark mode sections.
+ *
+ * @param page - The page to add components to
+ * @param startY - Y position to start placing the section
+ * @returns The Y position after this section (for next section placement)
+ */
+export async function generateTooltipComponents(
+  page: PageNode,
+  startY: number,
+): Promise<number> {
+  if (startY === undefined) startY = 100;
+
+  figma.currentPage = page;
+
+  // Generate the tooltip component
+  var components: ComponentNode[] = [];
+
+  // Create the tooltip component
+  var component = await createTooltipComponent();
+
+  // Position component
+  component.x = 0;
+  component.y = 0;
+
+  components.push(component);
+
+  // Combine into ComponentSet (even with single variant for consistency)
+  // @ts-ignore - combineAsVariants works at runtime
+  var componentSet = figma.combineAsVariants(components, page);
+  componentSet.name = "Tooltip";
+  componentSet.description =
+    "Tooltip popup component. " +
+    "Use for contextual help and additional information on hover.";
+  componentSet.layoutMode = "NONE";
+
+  // Calculate content dimensions
+  var contentWidth = componentSet.width;
+  var contentHeight = componentSet.height;
+
+  // Create light mode section
+  var lightSection = createModeSection(page, "Tooltip", "light");
+  lightSection.frame.resize(
+    contentWidth + SECTION_PADDING * 2,
+    contentHeight + SECTION_PADDING * 2,
+  );
+
+  // Create dark mode section
+  var darkSection = createModeSection(page, "Tooltip", "dark");
+  darkSection.frame.resize(
+    contentWidth + SECTION_PADDING * 2,
+    contentHeight + SECTION_PADDING * 2,
+  );
+
+  // Move ComponentSet into light section frame
+  lightSection.frame.appendChild(componentSet);
+  componentSet.x = SECTION_PADDING;
+  componentSet.y = SECTION_PADDING;
+
+  // Create instances for dark section
+  for (var k = 0; k < components.length; k++) {
+    var origComp = components[k];
+    var instance = origComp.createInstance();
+    instance.x = origComp.x + SECTION_PADDING;
+    instance.y = origComp.y + SECTION_PADDING;
+    darkSection.frame.appendChild(instance);
+  }
+
+  // Resize sections to fit content with padding
+  var totalWidth = contentWidth + SECTION_PADDING * 2;
+  var totalHeight = contentHeight + SECTION_PADDING * 2;
+
+  lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+  darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+
+  // Position sections side by side
+  lightSection.section.x = 100;
+  lightSection.section.y = startY;
+
+  darkSection.section.x = 100 + totalWidth + 50;
+  darkSection.section.y = startY;
+
+  console.log("Generated Tooltip ComponentSet (light + dark)");
+
+  return startY + totalHeight + SECTION_GAP;
+}

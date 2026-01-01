@@ -310,6 +310,7 @@ After building, run the plugin in Figma:
 | Tabs            | active (3)                                                    | Tab navigation with active indicator                         |
 | Text            | variant (9) x size (4)                                        | Typography scale                                             |
 | Toast           | (no variants)                                                 | Title, description, close button                             |
+| Tooltip         | (no variants)                                                 | Content text with arrow, bg-surface-3                        |
 
 ## Troubleshooting
 
@@ -320,6 +321,13 @@ After building, run the plugin in Figma:
 **Icons missing**: Run Icon Library generation first (happens automatically in code.ts).
 
 **Build errors**: Check for forbidden syntax (nullish coalescing, optional chaining).
+
+**SVG path errors** (`Failed to convert path. Invalid command at M...`): Figma's `vectorPaths` API is strict and doesn't handle complex SVG paths with decimal coordinates well. Instead of copying SVG path data from React components, use Figma primitives:
+
+- `figma.createPolygon()` for triangles/arrows
+- `figma.createEllipse()` for circles
+- `figma.createRectangle()` for rectangles
+- Simple integer-based path commands only (e.g., `M 0 0 L 10 10 Z`)
 
 ---
 

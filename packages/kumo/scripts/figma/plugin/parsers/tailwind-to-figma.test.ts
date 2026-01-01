@@ -170,17 +170,22 @@ describe("parseTailwindClasses", () => {
 
   describe("Borders and Rings", () => {
     it("should detect border presence", () => {
-      expect(parseTailwindClasses("border")).toEqual({ hasBorder: true });
+      expect(parseTailwindClasses("border")).toEqual({
+        hasBorder: true,
+        strokeWeight: 1,
+      });
     });
 
     it("should parse border colors", () => {
       expect(parseTailwindClasses("border border-border")).toEqual({
         hasBorder: true,
         strokeVariable: "color-border",
+        strokeWeight: 1,
       });
       expect(parseTailwindClasses("border border-error")).toEqual({
         hasBorder: true,
         strokeVariable: "color-error",
+        strokeWeight: 1,
       });
     });
 
@@ -188,6 +193,7 @@ describe("parseTailwindClasses", () => {
       expect(parseTailwindClasses("border-dashed")).toEqual({
         hasBorder: true,
         borderStyle: "dashed",
+        dashPattern: [4, 4],
       });
     });
 
@@ -196,6 +202,48 @@ describe("parseTailwindClasses", () => {
       expect(parseTailwindClasses("ring-border")).toEqual({
         hasBorder: true,
         strokeVariable: "color-border",
+      });
+    });
+
+    it("should parse default border width (1px)", () => {
+      expect(parseTailwindClasses("border")).toEqual({
+        hasBorder: true,
+        strokeWeight: 1,
+      });
+    });
+
+    it("should parse border width from border-N classes", () => {
+      expect(parseTailwindClasses("border-2")).toEqual({
+        hasBorder: true,
+        strokeWeight: 2,
+      });
+      expect(parseTailwindClasses("border-4")).toEqual({
+        hasBorder: true,
+        strokeWeight: 4,
+      });
+      expect(parseTailwindClasses("border-8")).toEqual({
+        hasBorder: true,
+        strokeWeight: 8,
+      });
+    });
+
+    it("should parse dashPattern from border-dashed", () => {
+      expect(parseTailwindClasses("border-dashed")).toEqual({
+        hasBorder: true,
+        borderStyle: "dashed",
+        dashPattern: [4, 4],
+      });
+    });
+
+    it("should parse border with width, style, and color together", () => {
+      expect(
+        parseTailwindClasses("border-2 border-dashed border-error"),
+      ).toEqual({
+        hasBorder: true,
+        strokeWeight: 2,
+        borderStyle: "dashed",
+        dashPattern: [4, 4],
+        strokeVariable: "color-error",
       });
     });
   });
@@ -217,6 +265,7 @@ describe("parseTailwindClasses", () => {
         isWhiteText: true,
         hasBorder: true,
         strokeVariable: "color-border",
+        strokeWeight: 1,
       });
     });
 
@@ -249,6 +298,7 @@ describe("parseTailwindClasses", () => {
         textVariable: "text-color-info",
         hasBorder: true,
         borderStyle: "dashed",
+        dashPattern: [4, 4],
       });
     });
   });
@@ -394,10 +444,12 @@ describe("parseTailwindClasses", () => {
       expect(parseTailwindClasses("border border-color")).toEqual({
         hasBorder: true,
         strokeVariable: "color-color",
+        strokeWeight: 1,
       });
       expect(parseTailwindClasses("border border-primary")).toEqual({
         hasBorder: true,
         strokeVariable: "color-primary",
+        strokeWeight: 1,
       });
     });
 
@@ -429,6 +481,7 @@ describe("parseBaseStyles", () => {
       gap: 8,
       borderRadius: 8,
       fontSize: 16,
+      fontWeight: 500, // font-medium
       fillVariable: "color-secondary",
       textVariable: "text-color-surface",
       hasBorder: true,

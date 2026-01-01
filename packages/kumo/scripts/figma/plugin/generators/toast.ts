@@ -24,7 +24,6 @@ import {
   createTextNode,
   getVariableByName,
   createModeSection,
-  createRowLabel,
   bindFillToVariable,
   bindTextColorToVariable,
   bindStrokeToVariable,
@@ -205,24 +204,12 @@ export async function generateToastComponents(
   // Generate the toast component
   var components: ComponentNode[] = [];
 
-  // Track row labels: { y, text }
-  var rowLabels: { y: number; text: string }[] = [];
-
-  // Layout spacing
-  var labelColumnWidth = 120;
-
   // Create the toast component
   var component = await createToastComponent();
 
   // Position component
-  component.x = labelColumnWidth;
+  component.x = 0;
   component.y = 0;
-
-  // Record row label
-  rowLabels.push({
-    y: 0,
-    text: "Toast",
-  });
 
   components.push(component);
 
@@ -236,7 +223,7 @@ export async function generateToastComponents(
   componentSet.layoutMode = "NONE";
 
   // Calculate content dimensions
-  var contentWidth = componentSet.width + labelColumnWidth;
+  var contentWidth = componentSet.width;
   var contentHeight = componentSet.height;
 
   // Create light mode section
@@ -255,38 +242,16 @@ export async function generateToastComponents(
 
   // Move ComponentSet into light section frame
   lightSection.frame.appendChild(componentSet);
-  componentSet.x = SECTION_PADDING + labelColumnWidth;
+  componentSet.x = SECTION_PADDING;
   componentSet.y = SECTION_PADDING;
-
-  // Add row labels to light section
-  for (var li = 0; li < rowLabels.length; li++) {
-    var label = rowLabels[li];
-    var labelNode = await createRowLabel(
-      label.text,
-      SECTION_PADDING,
-      SECTION_PADDING + label.y + 8,
-    );
-    lightSection.frame.appendChild(labelNode);
-  }
 
   // Create instances for dark section
   for (var k = 0; k < components.length; k++) {
     var origComp = components[k];
     var instance = origComp.createInstance();
-    instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
+    instance.x = origComp.x + SECTION_PADDING;
     instance.y = origComp.y + SECTION_PADDING;
     darkSection.frame.appendChild(instance);
-  }
-
-  // Add row labels to dark section
-  for (var di = 0; di < rowLabels.length; di++) {
-    var darkLabel = rowLabels[di];
-    var darkLabelNode = await createRowLabel(
-      darkLabel.text,
-      SECTION_PADDING,
-      SECTION_PADDING + darkLabel.y + 8,
-    );
-    darkSection.frame.appendChild(darkLabelNode);
   }
 
   // Resize sections to fit content with padding
