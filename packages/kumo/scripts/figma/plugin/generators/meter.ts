@@ -89,7 +89,7 @@ async function createMeterComponent(
   track.cornerRadius = 9999; // fully rounded
 
   // Bind track background to bg-color variable
-  const bgColorVar = getVariableByName("color-4");
+  const bgColorVar = getVariableByName("color-color-4");
   if (bgColorVar) {
     bindFillToVariable(track, bgColorVar.id);
   } else {
@@ -113,7 +113,7 @@ async function createMeterComponent(
   indicator.cornerRadius = 9999; // fully rounded
 
   // Bind indicator background to primary variable
-  const primaryVar = getVariableByName("primary");
+  const primaryVar = getVariableByName("color-primary");
   if (primaryVar) {
     bindFillToVariable(indicator, primaryVar.id);
   } else {

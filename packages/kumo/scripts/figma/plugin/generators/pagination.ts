@@ -71,14 +71,14 @@ async function createNavButton(
     button.cornerRadius = 0;
   }
 
-  // Background: bg-secondary (color-2)
-  var bgVar = getVariableByName("color-2");
+  // Background: bg-secondary (color-surface-2)
+  var bgVar = getVariableByName("color-surface-2");
   if (bgVar) {
     bindFillToVariable(button, bgVar.id);
   }
 
   // Border: ring-border
-  var borderVar = getVariableByName("border");
+  var borderVar = getVariableByName("color-border");
   if (borderVar) {
     bindStrokeToVariable(button, borderVar.id, 1);
   }
@@ -86,8 +86,8 @@ async function createNavButton(
   // Create icon
   var icon = createIconInstance(iconId, ICON_SIZE);
   if (icon) {
-    // Icon color: text-surface for enabled, text-disabled for disabled
-    var iconColorVar = disabled ? "text-disabled" : "text-surface";
+    // Icon color: text-color-surface for enabled, text-color-disabled for disabled
+    var iconColorVar = disabled ? "text-color-disabled" : "text-color-surface";
     bindIconColor(icon, iconColorVar);
     button.appendChild(icon);
   }
@@ -109,14 +109,14 @@ async function createPageInput(pageNumber: string): Promise<FrameNode> {
   input.resize(INPUT_WIDTH, BUTTON_SIZE);
   input.cornerRadius = 0;
 
-  // Background: bg-secondary (color-2)
-  var bgVar = getVariableByName("color-2");
+  // Background: bg-secondary (color-surface-2)
+  var bgVar = getVariableByName("color-surface-2");
   if (bgVar) {
     bindFillToVariable(input, bgVar.id);
   }
 
   // Border: ring-border
-  var borderVar = getVariableByName("border");
+  var borderVar = getVariableByName("color-border");
   if (borderVar) {
     bindStrokeToVariable(input, borderVar.id, 1);
   }
