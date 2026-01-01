@@ -263,31 +263,15 @@ async function createDialogComponent(size: string): Promise<ComponentNode> {
 
   header.appendChild(title);
 
-  // Create close button container (20x20 with 2px padding for icon)
-  var closeContainer = figma.createFrame();
-  closeContainer.name = "Close";
-  closeContainer.layoutMode = "HORIZONTAL";
-  closeContainer.primaryAxisAlignItems = "CENTER";
-  closeContainer.counterAxisAlignItems = "CENTER";
-  closeContainer.primaryAxisSizingMode = "FIXED";
-  closeContainer.counterAxisSizingMode = "FIXED";
-  closeContainer.resize(20, 20);
-  closeContainer.paddingLeft = 2;
-  closeContainer.paddingRight = 2;
-  closeContainer.paddingTop = 2;
-  closeContainer.paddingBottom = 2;
-  closeContainer.fills = [];
-
-  // Create close icon (ph-x) - use base size (20px)
+  // Create close icon (ph-x) - 20x20 directly in header
   var closeIconName = "ph-x";
   var closeIcon = getButtonIcon(closeIconName, "base");
-  closeIcon.name = "Icon";
+  closeIcon.name = "Close";
 
   // Apply icon color (text-surface)
   bindIconColor(closeIcon, "text-surface");
 
-  closeContainer.appendChild(closeIcon);
-  header.appendChild(closeContainer);
+  header.appendChild(closeIcon);
   component.appendChild(header);
 
   // Create description text

@@ -6907,25 +6907,11 @@
       bindTextColorToVariable(title, titleVar.id);
     }
     header.appendChild(title);
-    var closeContainer = figma.createFrame();
-    closeContainer.name = "Close";
-    closeContainer.layoutMode = "HORIZONTAL";
-    closeContainer.primaryAxisAlignItems = "CENTER";
-    closeContainer.counterAxisAlignItems = "CENTER";
-    closeContainer.primaryAxisSizingMode = "FIXED";
-    closeContainer.counterAxisSizingMode = "FIXED";
-    closeContainer.resize(20, 20);
-    closeContainer.paddingLeft = 2;
-    closeContainer.paddingRight = 2;
-    closeContainer.paddingTop = 2;
-    closeContainer.paddingBottom = 2;
-    closeContainer.fills = [];
     var closeIconName = "ph-x";
     var closeIcon = getButtonIcon(closeIconName, "base");
-    closeIcon.name = "Icon";
+    closeIcon.name = "Close";
     bindIconColor(closeIcon, "text-surface");
-    closeContainer.appendChild(closeIcon);
-    header.appendChild(closeContainer);
+    header.appendChild(closeIcon);
     component.appendChild(header);
     var description = await createTextNode(
       "This is a dialog description with some content explaining the purpose of this dialog.",
