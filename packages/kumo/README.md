@@ -16,6 +16,18 @@ Kumo requires the following peer dependencies:
 pnpm add react react-dom @phosphor-icons/react
 ```
 
+## Component Documentation
+
+Kumo includes a built-in CLI for quick component reference:
+
+```bash
+npx @cloudflare/kumo ls         # List all components
+npx @cloudflare/kumo doc Button # Get component documentation
+npx @cloudflare/kumo docs       # Get all component docs
+```
+
+The CLI reads from `ai/component-registry.json` (generated from TypeScript types + Storybook examples).
+
 ## Usage
 
 ### Import Components
@@ -116,6 +128,8 @@ This validates:
 - Source maps are present
 
 ## Development
+
+**For comprehensive documentation including dynamic code analysis features (Figma plugin, token sync, custom linters, icon system, color analysis), see [AGENTS.md](../../AGENTS.md).**
 
 ### Creating New Components
 

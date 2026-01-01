@@ -22,6 +22,47 @@ pnpm build:ai-metadata  # Generate component-registry.{json,md}
 
 `Kumo` is Cloudflare's component library for building modern web applications. It is a `pnpm` monorepo containing a React component library and its documentation site. The library provides accessible, design-system-compliant UI components built on [Base UI](https://base-ui.com/).
 
+## Dynamic Code Analysis Features
+
+Kumo provides extensive automated tooling (`packages/kumo/scripts/`):
+
+**1. Component Registry + CLI** (`scripts/ai/`) - AI-readable metadata & CLI
+- Auto-generates `ai/component-registry.{json,md}` from TypeScript types + Storybook
+- Includes: props, variants, examples, semantic tokens, sub-components
+- **Exported CLI:** `npx @cloudflare/kumo {ls|doc|docs}` - Quick component reference
+
+**2. Figma Plugin** (`scripts/figma/plugin/`) - React → Figma components
+- 30+ generators (Button, Dialog, Tabs, Toast, etc.)
+- Parses Tailwind → Figma auto-layout, binds semantic tokens to variables
+- Icon library generation, loader variants, opacity modifiers
+
+**3. Figma Token Sync** (`scripts/figma/`) - CSS → Figma Variables API
+- Syncs semantic tokens (`kumo-binding.css`) to Figma
+- Parses `light-dark()`, converts colors (oklch/hex → Figma RGB)
+
+**4. Custom Lint Rules** (`scripts/linting/`) - Design system enforcement
+- `no-primitive-colors`: Blocks `bg-blue-500`, enforces semantic tokens
+- `no-tailwind-dark-variant`: Prevents `dark:` (auto via tokens)
+
+**5. Icon System** (`scripts/icon/`) - SVG sprite + type generation
+- CLI: `pnpm add:icon` (auto-normalizes viewBox, currentColor, SVGO)
+- Generates sprite.svg + TypeScript types for `<Icon name="..." />`
+
+**6. Color Analysis** (`scripts/color/`) - Token extraction & usage stats
+- Analyzes semantic token usage, generates color docs for Storybook
+
+**7. Primitives Generator** (`scripts/generate-primitives.ts`) - Base UI exports
+- Auto-generates tree-shakeable primitive exports, updates package.json
+
+**Key Commands:**
+```bash
+pnpm build:ai-metadata    # Component registry
+npx @cloudflare/kumo doc  # CLI docs (works in any project)
+pnpm build:figma-plugin   # Figma generators
+pnpm add:icon icon.svg    # Add icon with normalization
+pnpm lint                 # Custom rules + oxlint
+```
+
 ## Project Structure
 
 ```
