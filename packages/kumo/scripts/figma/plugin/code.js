@@ -11115,6 +11115,7 @@
   function createTabIndicator(activeIndex, tabWidths) {
     var indicator = figma.createFrame();
     indicator.name = "Indicator";
+    indicator.layoutPositioning = "ABSOLUTE";
     var indicatorHeight = TABS_CONFIG.containerHeight - TABS_CONFIG.tabVerticalMargin * 2;
     var indicatorWidth = tabWidths[activeIndex];
     var indicatorX = TABS_CONFIG.containerPadding;
@@ -11176,11 +11177,7 @@
       tabWidths.push(button.width);
     }
     var indicator = createTabIndicator(activeIndex, tabWidths);
-    if (component.children.length > 0) {
-      component.insertChild(0, indicator);
-    } else {
-      component.appendChild(indicator);
-    }
+    component.insertChild(0, indicator);
     return component;
   }
   async function generateTabsComponents(page, startY) {
