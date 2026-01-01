@@ -10980,25 +10980,20 @@
       bindFillToVariable(component, accentVar.id);
     }
     var tabButtons = [];
+    var tabWidths = [];
     for (var i = 0; i < DEFAULT_TABS.length; i++) {
       var tab = DEFAULT_TABS[i];
       var isActive = i === activeIndex;
       var button = await createTabButton(tab, isActive);
       tabButtons.push(button);
-    }
-    var tabWidths = [];
-    for (var j = 0; j < tabButtons.length; j++) {
-      var btn = tabButtons[j];
-      component.appendChild(btn);
-      tabWidths.push(btn.width);
-    }
-    for (var k = 0; k < tabButtons.length; k++) {
-      tabButtons[k].remove();
+      component.appendChild(button);
+      tabWidths.push(button.width);
     }
     var indicator = createTabIndicator(activeIndex, tabWidths);
-    component.appendChild(indicator);
-    for (var m = 0; m < tabButtons.length; m++) {
-      component.appendChild(tabButtons[m]);
+    if (component.children.length > 0) {
+      component.insertChild(0, indicator);
+    } else {
+      component.appendChild(indicator);
     }
     return component;
   }

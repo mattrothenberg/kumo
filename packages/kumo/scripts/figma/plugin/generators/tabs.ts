@@ -228,35 +228,31 @@ async function createTabsComponent(
     bindFillToVariable(component, accentVar.id);
   }
 
-  // Create tab buttons first to calculate widths
+  // Create tab buttons and add to component
   var tabButtons: FrameNode[] = [];
+  var tabWidths: number[] = [];
+
   for (var i = 0; i < DEFAULT_TABS.length; i++) {
     var tab = DEFAULT_TABS[i];
     var isActive = i === activeIndex;
     var button = await createTabButton(tab, isActive);
     tabButtons.push(button);
+    component.appendChild(button);
+    // Width is calculated after appendChild due to auto-layout
+    tabWidths.push(button.width);
   }
 
-  // Calculate tab widths (need to temporarily add to measure)
-  var tabWidths: number[] = [];
-  for (var j = 0; j < tabButtons.length; j++) {
-    var btn = tabButtons[j];
-    component.appendChild(btn);
-    tabWidths.push(btn.width);
-  }
-
-  // Remove tabs temporarily to add indicator first (so it appears behind)
-  for (var k = 0; k < tabButtons.length; k++) {
-    tabButtons[k].remove();
-  }
-
-  // Create and add indicator (behind tabs)
+  // Create indicator and insert at index 0 (behind tabs)
+  // In Figma, lower index = further back in z-order
   var indicator = createTabIndicator(activeIndex, tabWidths);
-  component.appendChild(indicator);
 
-  // Re-add tab buttons (they'll appear in front of indicator)
-  for (var m = 0; m < tabButtons.length; m++) {
-    component.appendChild(tabButtons[m]);
+  // Insert indicator at the beginning so it appears behind tabs
+  // We need to use insertChild at index 0
+  if (component.children.length > 0) {
+    // Move indicator to be first child (behind all tabs)
+    component.insertChild(0, indicator);
+  } else {
+    component.appendChild(indicator);
   }
 
   return component;
