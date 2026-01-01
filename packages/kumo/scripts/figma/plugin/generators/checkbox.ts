@@ -423,6 +423,9 @@ export async function generateCheckboxComponents(
   // Column headers for states
   var columnHeaderTexts = ["Unchecked", "Checked", "Indeterminate"];
 
+  // Track original X positions for column headers (before combineAsVariants moves them)
+  var columnXPositions: number[] = [];
+
   // Track layout - each scenario on its own row for readability
   var currentY = headerRowHeight; // Start below header row
 
@@ -443,6 +446,10 @@ export async function generateCheckboxComponents(
       );
       component.x = currentX;
       component.y = currentY;
+      // Store original X positions from first row for column headers
+      if (vi === 0) {
+        columnXPositions.push(currentX);
+      }
       currentX += component.width + componentGap;
       components.push(component);
     }
@@ -502,12 +509,11 @@ export async function generateCheckboxComponents(
   componentSet.x = SECTION_PADDING + labelColumnWidth;
   componentSet.y = SECTION_PADDING + headerRowHeight;
 
-  // Build column headers with positions from first row components
+  // Build column headers with stored original positions
   var columnHeaders: { x: number; text: string }[] = [];
-  // Get first 3 components (first row) for column positions
-  for (var i = 0; i < Math.min(3, components.length); i++) {
+  for (var i = 0; i < columnXPositions.length; i++) {
     columnHeaders.push({
-      x: components[i].x + SECTION_PADDING,
+      x: columnXPositions[i] + SECTION_PADDING,
       text: columnHeaderTexts[i],
     });
   }

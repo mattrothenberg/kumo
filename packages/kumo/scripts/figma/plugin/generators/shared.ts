@@ -182,6 +182,7 @@ export function bindStrokeToVariable(
   node: SceneNode,
   variableId: string,
   weight: number = 1,
+  align: "INSIDE" | "OUTSIDE" | "CENTER" = "INSIDE",
 ): void {
   if (!("strokes" in node)) return;
 
@@ -202,6 +203,14 @@ export function bindStrokeToVariable(
 
   node.strokes = [stroke];
   node.strokeWeight = weight;
+
+  // Set stroke alignment - INSIDE matches CSS border behavior better
+  // and ensures the stroke is fully visible within the node bounds
+  if ("strokeAlign" in node) {
+    (
+      node as unknown as { strokeAlign: "INSIDE" | "OUTSIDE" | "CENTER" }
+    ).strokeAlign = align;
+  }
 }
 
 /**

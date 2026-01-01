@@ -53,7 +53,7 @@
     fill = figma.variables.setBoundVariableForPaint(fill, "color", variable);
     node.fills = [fill];
   }
-  function bindStrokeToVariable(node, variableId, weight = 1) {
+  function bindStrokeToVariable(node, variableId, weight = 1, align = "INSIDE") {
     if (!("strokes" in node)) return;
     const variable = figma.variables.getVariableById(variableId);
     if (!variable) {
@@ -67,6 +67,9 @@
     stroke = figma.variables.setBoundVariableForPaint(stroke, "color", variable);
     node.strokes = [stroke];
     node.strokeWeight = weight;
+    if ("strokeAlign" in node) {
+      node.strokeAlign = align;
+    }
   }
   async function createTextNode(text, fontSize, fontWeight = 400) {
     const textNode = figma.createText();
@@ -496,32 +499,44 @@
 
   // scripts/figma/plugin/logger.ts
   var LOG_LEVEL = 1 /* INFO */;
-  function log(level, levelName, ...args) {
+  function log(level, ...args) {
     if (level < LOG_LEVEL) {
       return;
     }
-    const prefix = `[${levelName}]`;
     switch (level) {
       case 0 /* DEBUG */:
       case 1 /* INFO */:
-        console.log(prefix, ...args);
+        console.log(...args);
         break;
       case 2 /* WARN */:
-        console.warn(prefix, ...args);
+        console.warn(...args);
         break;
       case 3 /* ERROR */:
-        console.error(prefix, ...args);
+        console.error(...args);
         break;
     }
   }
   function logInfo(...args) {
-    log(1 /* INFO */, "INFO", ...args);
+    log(1 /* INFO */, ...args);
   }
   function logWarn(...args) {
-    log(2 /* WARN */, "WARN", ...args);
+    log(2 /* WARN */, "\u26A0\uFE0F", ...args);
   }
   function logError(...args) {
-    log(3 /* ERROR */, "ERROR", ...args);
+    log(3 /* ERROR */, "\u274C", ...args);
+  }
+  function logComplete(...args) {
+    log(1 /* INFO */, "\u2705", ...args);
+  }
+  function logStart(component, context) {
+    var msg = component + ": Starting generation";
+    if (context) {
+      msg += " at " + context;
+    }
+    log(1 /* INFO */, "\u{1F3A8}", msg);
+  }
+  function logProgress(component, message) {
+    log(1 /* INFO */, "\u{1F4E6}", component + ": " + message);
   }
 
   // ai/component-registry.json
@@ -1228,7 +1243,85 @@
         colors: [
           "bg-surface",
           "border-color"
-        ]
+        ],
+        styling: {
+          baseTokens: [
+            "bg-surface",
+            "text-surface",
+            "ring-border",
+            "border-color"
+          ],
+          states: {
+            input: [
+              "bg-secondary",
+              "text-surface",
+              "ring-border"
+            ],
+            text: [
+              "bg-surface",
+              "font-mono"
+            ],
+            button: [
+              "border-color"
+            ]
+          },
+          inputStyles: {
+            base: "bg-secondary text-surface ring ring-border",
+            sizes: {
+              xs: "h-5 gap-1 rounded-sm px-1.5 text-xs",
+              sm: "h-6.5 gap-1 rounded-md px-2 text-xs",
+              base: "h-9 gap-1.5 rounded-lg px-3 text-base",
+              lg: "h-10 gap-2 rounded-lg px-4 text-base"
+            }
+          },
+          sizeVariants: {
+            sm: {
+              height: 26,
+              classes: "text-xs",
+              buttonSize: "sm",
+              dimensions: {
+                paddingX: 8,
+                gap: 1,
+                borderRadius: 6,
+                fontSize: 12
+              }
+            },
+            base: {
+              height: 36,
+              classes: "text-sm",
+              buttonSize: "base",
+              dimensions: {
+                paddingX: 12,
+                gap: 6,
+                borderRadius: 8,
+                fontSize: 14
+              }
+            },
+            lg: {
+              height: 40,
+              classes: "text-sm",
+              buttonSize: "lg",
+              dimensions: {
+                paddingX: 16,
+                gap: 8,
+                borderRadius: 8,
+                fontSize: 14
+              }
+            }
+          },
+          icons: [
+            {
+              name: "ph-clipboard",
+              state: "default",
+              size: 16
+            },
+            {
+              name: "ph-check",
+              state: "copied",
+              size: 16
+            }
+          ]
+        }
       },
       Code: {
         name: "Code",
@@ -4709,8 +4802,8 @@
     lightSection.section.y = startY;
     darkSection.section.x = 100 + totalWidth + 50;
     darkSection.section.y = startY;
-    console.log(
-      "\u2705 Generated Banner ComponentSet with " + variants.length + " variants (light + dark)"
+    logComplete(
+      "Generated Banner ComponentSet with " + variants.length + " variants (light + dark)"
     );
     return startY + totalHeight + SECTION_GAP;
   }
@@ -5351,6 +5444,7 @@
     var headerRowHeight = 24;
     var labelColumnWidth = 180;
     var columnHeaderTexts = ["Unchecked", "Checked", "Indeterminate"];
+    var columnXPositions = [];
     var currentY = headerRowHeight;
     for (var vi = 0; vi < variants.length; vi++) {
       var variant = variants[vi];
@@ -5366,6 +5460,9 @@
         );
         component.x = currentX;
         component.y = currentY;
+        if (vi === 0) {
+          columnXPositions.push(currentX);
+        }
         currentX += component.width + componentGap;
         components.push(component);
       }
@@ -5410,9 +5507,9 @@
     componentSet.x = SECTION_PADDING + labelColumnWidth;
     componentSet.y = SECTION_PADDING + headerRowHeight;
     var columnHeaders = [];
-    for (var i = 0; i < Math.min(3, components.length); i++) {
+    for (var i = 0; i < columnXPositions.length; i++) {
       columnHeaders.push({
-        x: components[i].x + SECTION_PADDING,
+        x: columnXPositions[i] + SECTION_PADDING,
         text: columnHeaderTexts[i]
       });
     }
@@ -5460,32 +5557,52 @@
   var CHECKBOX_VARIANTS_EXPORT = variantProp4.values;
 
   // scripts/figma/plugin/generators/clipboard-text.ts
-  var clipboardTextProps = component_registry_default.components.ClipboardText.props;
+  var clipboardTextComponent = component_registry_default.components.ClipboardText;
+  var clipboardTextProps = clipboardTextComponent.props;
+  var clipboardTextStyling = clipboardTextComponent.styling;
   var sizeProp2 = clipboardTextProps.size;
-  var INPUT_BASE_STYLES = "bg-secondary text-surface ring ring-border";
-  var CLIPBOARD_TEXT_BASE_STYLES = "bg-surface font-mono";
-  var INPUT_SIZE_CLASSES = {
-    xs: "h-5 gap-1 rounded-sm px-1.5 text-xs",
-    sm: "h-6.5 gap-1 rounded-md px-2 text-xs",
-    base: "h-9 gap-1.5 rounded-lg px-3 text-base",
-    lg: "h-10 gap-2 rounded-lg px-4 text-base"
-  };
-  var SIZE_TO_BUTTON_SIZE = {
-    sm: "sm",
-    base: "base",
-    lg: "lg"
-  };
+  function getBaseStyles() {
+    const inputBase = clipboardTextStyling.inputStyles.base;
+    const textTokens = clipboardTextStyling.states.text;
+    return {
+      input: {
+        raw: inputBase,
+        parsed: parseTailwindClasses(inputBase)
+      },
+      text: textTokens
+    };
+  }
+  function getSizeConfig(size) {
+    const sizeVariant = clipboardTextStyling.sizeVariants[size];
+    return {
+      height: sizeVariant.height,
+      classes: sizeVariant.classes,
+      buttonSize: sizeVariant.buttonSize,
+      dimensions: sizeVariant.dimensions
+    };
+  }
+  function getInputSizeClasses(size) {
+    const config = getSizeConfig(size);
+    const buttonSize = config.buttonSize;
+    const inputSizeClasses = clipboardTextStyling.inputStyles.sizes[buttonSize];
+    if (!inputSizeClasses) {
+      const baseClasses = clipboardTextStyling.inputStyles.sizes.base;
+      return parseTailwindClasses(baseClasses);
+    }
+    return parseTailwindClasses(inputSizeClasses);
+  }
   var SECTION_PADDING2 = 48;
   var SECTION_GAP2 = 160;
   async function createClipboardTextComponent(size) {
     const sizeClasses = sizeProp2.classes[size] || "";
     const description = sizeProp2.descriptions[size] || "";
-    const buttonSize = SIZE_TO_BUTTON_SIZE[size] || "base";
-    const inputSizeClasses = INPUT_SIZE_CLASSES[buttonSize] || INPUT_SIZE_CLASSES.base;
-    const inputBaseStyles = parseTailwindClasses(INPUT_BASE_STYLES);
-    const inputSizeStyles = parseTailwindClasses(inputSizeClasses);
-    const clipboardStyles = parseTailwindClasses(CLIPBOARD_TEXT_BASE_STYLES);
+    const sizeConfig = getSizeConfig(size);
+    const baseStyles = getBaseStyles();
+    const inputSizeStyles = getInputSizeClasses(size);
+    const inputBaseStyles = baseStyles.input.parsed;
     const textSizeStyles = parseTailwindClasses(sizeClasses);
+    const clipboardTextStyles = baseStyles.text.join(" ");
+    const clipboardStyles = parseTailwindClasses(clipboardTextStyles);
     const component = figma.createComponent();
     component.name = "size=" + size;
     component.description = description;
@@ -5499,7 +5616,7 @@
     component.paddingBottom = 0;
     component.primaryAxisSizingMode = "AUTO";
     component.counterAxisSizingMode = "AUTO";
-    component.cornerRadius = inputSizeStyles.borderRadius || 8;
+    component.cornerRadius = sizeConfig.dimensions.borderRadius;
     if (clipboardStyles.fillVariable) {
       const fillVar = getVariableByName(clipboardStyles.fillVariable);
       if (fillVar) {
@@ -5525,15 +5642,9 @@
     textFrame.primaryAxisSizingMode = "AUTO";
     textFrame.counterAxisSizingMode = "FIXED";
     textFrame.fills = [];
-    textFrame.paddingLeft = inputSizeStyles.paddingX || 16;
-    textFrame.paddingRight = inputSizeStyles.paddingX || 16;
-    const heights = {
-      xs: 20,
-      sm: 26,
-      base: 36,
-      lg: 40
-    };
-    textFrame.resize(100, heights[buttonSize] || 36);
+    textFrame.paddingLeft = sizeConfig.dimensions.paddingX;
+    textFrame.paddingRight = sizeConfig.dimensions.paddingX;
+    textFrame.resize(100, sizeConfig.height);
     const fontSize = textSizeStyles.fontSize || inputSizeStyles.fontSize || 14;
     const textNode = figma.createText();
     await figma.loadFontAsync({ family: "Roboto Mono", style: "Regular" });
@@ -5557,13 +5668,13 @@
     buttonFrame.primaryAxisSizingMode = "FIXED";
     buttonFrame.counterAxisSizingMode = "FIXED";
     buttonFrame.fills = [];
-    const buttonPadding = 12;
+    const buttonPadding = sizeConfig.dimensions.paddingX;
     buttonFrame.paddingLeft = buttonPadding;
     buttonFrame.paddingRight = buttonPadding;
     buttonFrame.resize(
       buttonPadding * 2 + 16,
       // padding + icon size
-      heights[buttonSize] || 36
+      sizeConfig.height
     );
     const borderColorVar = getVariableByName("color-color");
     if (borderColorVar) {
@@ -5689,8 +5800,8 @@
     lightSection.section.y = startY;
     darkSection.section.x = 100 + totalWidth + 50;
     darkSection.section.y = startY;
-    console.log(
-      "\u2705 Generated ClipboardText ComponentSet with " + sizes.length + " sizes (light + dark)"
+    logComplete(
+      "Generated ClipboardText ComponentSet with " + sizes.length + " variants (light + dark)"
     );
     return startY + totalHeight + SECTION_GAP2;
   }
@@ -5820,8 +5931,8 @@
     lightSection.section.y = startY;
     darkSection.section.x = 100 + totalWidth + 50;
     darkSection.section.y = startY;
-    console.log(
-      "\u2705 Generated Code ComponentSet with " + components.length + " variants (light + dark)"
+    logComplete(
+      "Generated Code ComponentSet with " + components.length + " variants (light + dark)"
     );
     return startY + totalHeight + SECTION_GAP3;
   }
@@ -5964,8 +6075,8 @@
     lightSection.section.y = startY;
     darkSection.section.x = 100 + totalWidth + 50;
     darkSection.section.y = startY;
-    console.log(
-      "\u2705 Generated CodeBlock ComponentSet with " + langs.length + " variants (light + dark)"
+    logComplete(
+      "Generated CodeBlock ComponentSet with " + langs.length + " variants (light + dark)"
     );
     return startY + totalHeight + SECTION_GAP4;
   }
@@ -6228,8 +6339,8 @@
     lightSection.section.y = startY;
     darkSection.section.x = 100 + totalWidth + 50;
     darkSection.section.y = startY;
-    console.log(
-      "\u2705 Generated Collapsible ComponentSet with " + components.length + " variants (light + dark)"
+    logComplete(
+      "Generated Collapsible ComponentSet with " + components.length + " variants (light + dark)"
     );
     return startY + totalHeight + SECTION_GAP5;
   }
@@ -6560,8 +6671,8 @@
     lightSection.section.y = startY;
     darkSection.section.x = 100 + totalWidth + 50;
     darkSection.section.y = startY;
-    console.log(
-      "\u2705 Generated Combobox ComponentSet with " + components.length + " variants (light + dark)"
+    logComplete(
+      "Generated Combobox ComponentSet with " + components.length + " variants (light + dark)"
     );
     return startY + totalHeight + SECTION_GAP6;
   }
@@ -7125,7 +7236,7 @@
     lightSection.section.y = startY;
     darkSection.section.x = 100 + totalWidth + 50;
     darkSection.section.y = startY;
-    console.log(
+    logComplete(
       "\u2705 Generated DateRangePicker ComponentSet with " + components.length + " variants (base size only, light + dark)"
     );
     return startY + totalHeight + SECTION_GAP7;
@@ -7397,7 +7508,7 @@
     lightSection.section.y = startY;
     darkSection.section.x = 100 + totalWidth + 50;
     darkSection.section.y = startY;
-    console.log(
+    logComplete(
       "Generated Dialog ComponentSet with " + components.length + " variants (light + dark)"
     );
     return startY + totalHeight + SECTION_GAP8;
@@ -7879,7 +7990,7 @@
     lightSection.section.y = startY;
     darkSection.section.x = 100 + totalWidth + 50;
     darkSection.section.y = startY;
-    console.log(
+    logComplete(
       "Generated Dropdown ComponentSet with " + components.length + " variants (light + dark)"
     );
     return startY + totalHeight + SECTION_GAP9;
@@ -8209,7 +8320,7 @@
     lightSection.section.y = startY;
     darkSection.section.x = 100 + totalWidth + 50;
     darkSection.section.y = startY;
-    console.log(
+    logComplete(
       "Generated Input ComponentSet with " + components.length + " variants (light + dark)"
     );
     return startY + totalHeight + SECTION_GAP10;
@@ -8547,7 +8658,7 @@
     lightSection.section.y = startY;
     darkSection.section.x = 100 + totalWidth + 50;
     darkSection.section.y = startY;
-    console.log(
+    logComplete(
       "Generated InputArea ComponentSet with " + components.length + " variants (light + dark)"
     );
     return startY + totalHeight + SECTION_GAP11;
@@ -8896,7 +9007,7 @@
   }
   async function generateLoaderComponents(page, startY) {
     if (startY === void 0) startY = 100;
-    console.log("Loader: Starting generation at Y=" + startY);
+    logStart("Loader", "Y=" + startY);
     try {
       figma.currentPage = page;
       var sizes = Object.keys(loader_data_default.sizes);
@@ -8908,7 +9019,7 @@
       for (var i = 0; i < sizes.length; i++) {
         var size = sizes[i];
         var sizeValue = loader_data_default.sizes[size].value;
-        console.log("Loader: Creating size=" + size);
+        logProgress("Loader", "Creating size=" + size);
         var component = await createLoaderComponent(size);
         component.x = labelColumnWidth;
         component.y = currentY;
@@ -8916,7 +9027,7 @@
         components.push(component);
         currentY += sizeValue + componentGap;
       }
-      console.log("Loader: Combining as variants...");
+      logProgress("Loader", "Combining as variants...");
       var componentSet = figma.combineAsVariants(components, page);
       componentSet.name = "Loader";
       componentSet.description = "Loader - Circular loading spinner. Sizes: sm (16px), base (24px), lg (32px). Uses currentColor for stroke, so set text color on parent to change color. Static representation of animated spinner from loader.tsx.";
@@ -8969,7 +9080,7 @@
       lightSection.section.y = startY;
       darkSection.section.x = 100 + totalWidth + 50;
       darkSection.section.y = startY;
-      console.log(
+      logComplete(
         "Generated Loader ComponentSet with " + sizes.length + " variants (light + dark)"
       );
       return startY + totalHeight + SECTION_GAP13;
@@ -9163,7 +9274,7 @@
     darkSection.section.x = 100 + totalWidth + 50;
     darkSection.section.y = startY;
     var totalComponents = variants.length * sizes.length * hasIconOptions.length;
-    console.log(
+    logComplete(
       "\u2705 Generated LinkButton ComponentSet with " + totalComponents + " variants (light + dark)"
     );
     return startY + totalHeight + SECTION_GAP14;
@@ -9514,7 +9625,7 @@
     lightSection.section.y = startY;
     darkSection.section.x = 100 + totalWidth + 50;
     darkSection.section.y = startY;
-    console.log(
+    logComplete(
       "\u2705 Generated Meter ComponentSet with " + fillLevels.length + " fill levels (light + dark)"
     );
     return startY + totalHeight + SECTION_GAP16;
@@ -9765,7 +9876,7 @@
     lightSection.section.y = startY;
     darkSection.section.x = 100 + totalWidth + 50;
     darkSection.section.y = startY;
-    console.log(
+    logComplete(
       "\u2705 Generated Pagination ComponentSet with " + pageStates.length + " states (light + dark)"
     );
     return startY + totalHeight + SECTION_GAP17;
@@ -9921,7 +10032,7 @@
     darkSection.section.x = 100 + totalWidth + 50;
     darkSection.section.y = startY;
     var totalComponents = sizes.length * loadingOptions.length;
-    console.log(
+    logComplete(
       "\u2705 Generated RefreshButton ComponentSet with " + totalComponents + " variants (light + dark)"
     );
     return startY + totalHeight + SECTION_GAP18;
@@ -10268,7 +10379,7 @@
     lightSection.section.y = startY;
     darkSection.section.x = 100 + totalWidth + 50;
     darkSection.section.y = startY;
-    console.log(
+    logComplete(
       "Generated Select ComponentSet with " + components.length + " variants (light + dark)"
     );
     return startY + totalHeight + SECTION_GAP19;
@@ -10626,7 +10737,7 @@
     lightSection.section.y = startY;
     darkSection.section.x = 100 + totalWidth + 50;
     darkSection.section.y = startY;
-    console.log(
+    logComplete(
       "Generated SensitiveInput ComponentSet with " + components.length + " variants (light + dark)"
     );
     return startY + totalHeight + SECTION_GAP20;
@@ -10742,7 +10853,7 @@
     lightSection.section.y = startY;
     darkSection.section.x = 100 + totalWidth + 50;
     darkSection.section.y = startY;
-    console.log(
+    logComplete(
       "Generated Surface ComponentSet with " + components.length + " variants (light + dark)"
     );
     return startY + totalHeight + SECTION_GAP21;
@@ -11367,7 +11478,7 @@
   }
   async function generateTabsComponents(page, startY) {
     if (startY === void 0) startY = 100;
-    console.log("Tabs: Starting generation at Y=" + startY);
+    logStart("Tabs", "Y=" + startY);
     try {
       figma.currentPage = page;
       var components = [];
@@ -11377,7 +11488,7 @@
       var currentY = 0;
       for (var i = 0; i < DEFAULT_TABS.length; i++) {
         var tab = DEFAULT_TABS[i];
-        console.log("Tabs: Creating active=" + tab);
+        logProgress("Tabs", "Creating active=" + tab);
         var component = await createTabsComponent(i);
         component.x = labelColumnWidth;
         component.y = currentY;
@@ -11385,7 +11496,7 @@
         components.push(component);
         currentY = currentY + TABS_CONFIG.containerHeight + rowGap;
       }
-      console.log("Tabs: Combining as variants...");
+      logProgress("Tabs", "Combining as variants...");
       var componentSet = figma.combineAsVariants(components, page);
       componentSet.name = "Tabs";
       componentSet.description = "Tabs - Horizontal tab navigation. Shows active state with elevated pill indicator. Tabs: Tab 1, Tab 2, Tab 3.";
@@ -11439,7 +11550,7 @@
       lightSection.section.y = startY;
       darkSection.section.x = 100 + totalWidth + 50;
       darkSection.section.y = startY;
-      console.log(
+      logComplete(
         "Generated Tabs ComponentSet with " + DEFAULT_TABS.length + " variants (light + dark)"
       );
       return startY + totalHeight + SECTION_GAP22;
@@ -11652,7 +11763,7 @@
     lightSection.section.y = startY;
     darkSection.section.x = 100 + totalWidth + 50;
     darkSection.section.y = startY;
-    console.log(
+    logComplete(
       "\u2705 Generated Text ComponentSet with " + components.length + " variants (light + dark)"
     );
     return startY + totalHeight + SECTION_GAP23;
@@ -11799,7 +11910,7 @@
     lightSection.section.y = startY;
     darkSection.section.x = 100 + totalWidth + 50;
     darkSection.section.y = startY;
-    console.log("Generated Toast ComponentSet (light + dark)");
+    logComplete("Generated Toast ComponentSet (light + dark)");
     return startY + totalHeight + SECTION_GAP24;
   }
 
@@ -11916,7 +12027,7 @@
     lightSection.section.y = startY;
     darkSection.section.x = 100 + totalWidth + 50;
     darkSection.section.y = startY;
-    console.log("Generated Tooltip ComponentSet (light + dark)");
+    logComplete("Generated Tooltip ComponentSet (light + dark)");
     return startY + totalHeight + SECTION_GAP25;
   }
 
