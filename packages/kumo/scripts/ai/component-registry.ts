@@ -1121,6 +1121,31 @@ interface ComponentSchema {
       state?: string;
       size?: string | number;
     }[];
+    /** Size-specific metadata for components with complex size mappings */
+    sizeVariants?: Record<
+      string,
+      {
+        /** Container height in pixels */
+        height?: number;
+        /** Tailwind classes for this size */
+        classes?: string;
+        /** Button size mapping (for compound components) */
+        buttonSize?: string;
+        /** Parsed dimensions */
+        dimensions?: {
+          paddingX?: number;
+          paddingY?: number;
+          gap?: number;
+          borderRadius?: number;
+          fontSize?: number;
+        };
+      }
+    >;
+    /** Input variant styling (for components that use inputVariants) */
+    inputStyles?: {
+      base?: string;
+      sizes?: Record<string, string>;
+    };
   };
 }
 
@@ -1921,6 +1946,70 @@ const COMPONENT_STYLING_METADATA: Record<string, ComponentSchema["styling"]> = {
       },
     ],
   },
+  ClipboardText: {
+    baseTokens: ["bg-surface", "text-surface", "ring-border", "border-color"],
+    states: {
+      input: ["bg-secondary", "text-surface", "ring-border"],
+      text: ["bg-surface", "font-mono"],
+      button: ["border-color"],
+    },
+    inputStyles: {
+      base: "bg-secondary text-surface ring ring-border",
+      sizes: {
+        xs: "h-5 gap-1 rounded-sm px-1.5 text-xs",
+        sm: "h-6.5 gap-1 rounded-md px-2 text-xs",
+        base: "h-9 gap-1.5 rounded-lg px-3 text-base",
+        lg: "h-10 gap-2 rounded-lg px-4 text-base",
+      },
+    },
+    sizeVariants: {
+      sm: {
+        height: 26,
+        classes: "text-xs",
+        buttonSize: "sm",
+        dimensions: {
+          paddingX: 8,
+          gap: 1,
+          borderRadius: 6,
+          fontSize: 12,
+        },
+      },
+      base: {
+        height: 36,
+        classes: "text-sm",
+        buttonSize: "base",
+        dimensions: {
+          paddingX: 12,
+          gap: 6,
+          borderRadius: 8,
+          fontSize: 14,
+        },
+      },
+      lg: {
+        height: 40,
+        classes: "text-sm",
+        buttonSize: "lg",
+        dimensions: {
+          paddingX: 16,
+          gap: 8,
+          borderRadius: 8,
+          fontSize: 14,
+        },
+      },
+    },
+    icons: [
+      {
+        name: "ph-clipboard",
+        state: "default",
+        size: 16,
+      },
+      {
+        name: "ph-check",
+        state: "copied",
+        size: 16,
+      },
+    ],
+  },
 };
 
 /**
@@ -2362,6 +2451,49 @@ ${styleGuide}`;
           const stateInfo = icon.state ? ` (${icon.state})` : "";
           const sizeInfo = icon.size ? ` size ${icon.size}` : "";
           context += `  - \`${icon.name}\`${stateInfo}${sizeInfo}\n`;
+        }
+      }
+      if (comp.styling.inputStyles) {
+        context += `- **Input Styles:**\n`;
+        if (comp.styling.inputStyles.base) {
+          context += `  - Base: \`${comp.styling.inputStyles.base}\`\n`;
+        }
+        if (
+          comp.styling.inputStyles.sizes &&
+          Object.keys(comp.styling.inputStyles.sizes).length > 0
+        ) {
+          context += `  - Sizes:\n`;
+          for (const [sizeName, classes] of Object.entries(
+            comp.styling.inputStyles.sizes,
+          )) {
+            context += `    - \`${sizeName}\`: \`${classes}\`\n`;
+          }
+        }
+      }
+      if (
+        comp.styling.sizeVariants &&
+        Object.keys(comp.styling.sizeVariants).length > 0
+      ) {
+        context += `- **Size Variants:**\n`;
+        for (const [sizeName, sizeData] of Object.entries(
+          comp.styling.sizeVariants,
+        )) {
+          context += `  - \`${sizeName}\`:\n`;
+          if (sizeData.height) {
+            context += `    - Height: ${sizeData.height}px\n`;
+          }
+          if (sizeData.classes) {
+            context += `    - Classes: \`${sizeData.classes}\`\n`;
+          }
+          if (sizeData.buttonSize) {
+            context += `    - Button Size: \`${sizeData.buttonSize}\`\n`;
+          }
+          if (sizeData.dimensions) {
+            context += `    - Dimensions:\n`;
+            for (const [key, value] of Object.entries(sizeData.dimensions)) {
+              context += `      - ${key}: ${value}\n`;
+            }
+          }
         }
       }
     }

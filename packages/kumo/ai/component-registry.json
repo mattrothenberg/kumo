@@ -587,32 +587,14 @@
       "styling": {
         "dimensions": "h-4 w-4",
         "borderRadius": "rounded-sm",
-        "baseTokens": [
-          "bg-surface",
-          "ring-border"
-        ],
+        "baseTokens": ["bg-surface", "ring-border"],
         "states": {
-          "checked": [
-            "bg-surface-inverse",
-            "text-surface-inverse"
-          ],
-          "indeterminate": [
-            "bg-surface-inverse",
-            "text-surface-inverse"
-          ],
-          "error": [
-            "ring-error"
-          ],
-          "hover": [
-            "ring-active"
-          ],
-          "focus": [
-            "ring-active"
-          ],
-          "disabled": [
-            "opacity-50",
-            "cursor-not-allowed"
-          ]
+          "checked": ["bg-surface-inverse", "text-surface-inverse"],
+          "indeterminate": ["bg-surface-inverse", "text-surface-inverse"],
+          "error": ["ring-error"],
+          "hover": ["ring-active"],
+          "focus": ["ring-active"],
+          "disabled": ["opacity-50", "cursor-not-allowed"]
         },
         "icons": [
           {
@@ -670,7 +652,76 @@
         "<ClipboardText text=\"This is a much longer text that demonstrates how the clipboard text component handles overflow with extended content\" />",
         "<ClipboardText text=\"npx create-cloudflare@latest my-app --template kumo\" size=\"base\" />"
       ],
-      "colors": ["bg-surface", "border-color"]
+      "colors": ["bg-surface", "border-color"],
+      "styling": {
+        "baseTokens": [
+          "bg-surface",
+          "text-surface",
+          "ring-border",
+          "border-color"
+        ],
+        "states": {
+          "input": ["bg-secondary", "text-surface", "ring-border"],
+          "text": ["bg-surface", "font-mono"],
+          "button": ["border-color"]
+        },
+        "inputStyles": {
+          "base": "bg-secondary text-surface ring ring-border",
+          "sizes": {
+            "xs": "h-5 gap-1 rounded-sm px-1.5 text-xs",
+            "sm": "h-6.5 gap-1 rounded-md px-2 text-xs",
+            "base": "h-9 gap-1.5 rounded-lg px-3 text-base",
+            "lg": "h-10 gap-2 rounded-lg px-4 text-base"
+          }
+        },
+        "sizeVariants": {
+          "sm": {
+            "height": 26,
+            "classes": "text-xs",
+            "buttonSize": "sm",
+            "dimensions": {
+              "paddingX": 8,
+              "gap": 1,
+              "borderRadius": 6,
+              "fontSize": 12
+            }
+          },
+          "base": {
+            "height": 36,
+            "classes": "text-sm",
+            "buttonSize": "base",
+            "dimensions": {
+              "paddingX": 12,
+              "gap": 6,
+              "borderRadius": 8,
+              "fontSize": 14
+            }
+          },
+          "lg": {
+            "height": 40,
+            "classes": "text-sm",
+            "buttonSize": "lg",
+            "dimensions": {
+              "paddingX": 16,
+              "gap": 8,
+              "borderRadius": 8,
+              "fontSize": 14
+            }
+          }
+        },
+        "icons": [
+          {
+            "name": "ph-clipboard",
+            "state": "default",
+            "size": 16
+          },
+          {
+            "name": "ph-check",
+            "state": "copied",
+            "size": 16
+          }
+        ]
+      }
     },
     "Code": {
       "name": "Code",
@@ -682,13 +733,7 @@
         "lang": {
           "type": "enum",
           "optional": true,
-          "values": [
-            "ts",
-            "tsx",
-            "jsonc",
-            "bash",
-            "css"
-          ],
+          "values": ["ts", "tsx", "jsonc", "bash", "css"],
           "descriptions": {
             "ts": "TypeScript code",
             "tsx": "TypeScript JSX code",
@@ -3063,22 +3108,14 @@
           "type": "enum",
           "optional": true,
           "description": "Size variant",
-          "values": [
-            "xs",
-            "sm",
-            "base",
-            "lg"
-          ],
+          "values": ["xs", "sm", "base", "lg"],
           "default": "base"
         },
         "variant": {
           "type": "enum",
           "optional": true,
           "description": "Style variant",
-          "values": [
-            "default",
-            "error"
-          ],
+          "values": ["default", "error"],
           "default": "default"
         },
         "label": {
@@ -3628,11 +3665,7 @@
         "align": {
           "type": "enum",
           "optional": true,
-          "values": [
-            "start",
-            "center",
-            "end"
-          ]
+          "values": ["start", "center", "end"]
         },
         "asChild": {
           "type": "boolean",

@@ -850,6 +850,52 @@ ClipboardText component
 
 `bg-surface`, `border-color`
 
+**Styling:**
+
+- **Base Tokens:** `bg-surface`, `text-surface`, `ring-border`, `border-color`
+- **States:**
+  - `input`: `bg-secondary`, `text-surface`, `ring-border`
+  - `text`: `bg-surface`, `font-mono`
+  - `button`: `border-color`
+- **Icons:**
+  - `ph-clipboard` (default) size 16
+  - `ph-check` (copied) size 16
+- **Input Styles:**
+  - Base: `bg-secondary text-surface ring ring-border`
+  - Sizes:
+    - `xs`: `h-5 gap-1 rounded-sm px-1.5 text-xs`
+    - `sm`: `h-6.5 gap-1 rounded-md px-2 text-xs`
+    - `base`: `h-9 gap-1.5 rounded-lg px-3 text-base`
+    - `lg`: `h-10 gap-2 rounded-lg px-4 text-base`
+- **Size Variants:**
+  - `sm`:
+    - Height: 26px
+    - Classes: `text-xs`
+    - Button Size: `sm`
+    - Dimensions:
+      - paddingX: 8
+      - gap: 1
+      - borderRadius: 6
+      - fontSize: 12
+  - `base`:
+    - Height: 36px
+    - Classes: `text-sm`
+    - Button Size: `base`
+    - Dimensions:
+      - paddingX: 12
+      - gap: 6
+      - borderRadius: 8
+      - fontSize: 14
+  - `lg`:
+    - Height: 40px
+    - Classes: `text-sm`
+    - Button Size: `lg`
+    - Dimensions:
+      - paddingX: 16
+      - gap: 8
+      - borderRadius: 8
+      - fontSize: 14
+
 **Examples:**
 
 ```tsx
