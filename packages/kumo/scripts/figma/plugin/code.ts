@@ -92,6 +92,18 @@ function purgeExistingContent(): void {
  */
 const START_Y = 100;
 
+/**
+ * Component generator configuration
+ * Each entry defines a component generator with its display name and execution function
+ */
+type GeneratorConfig = {
+  name: string;
+  execute: (
+    page: PageNode,
+    currentY: number,
+  ) => Promise<{ nextY: number } | void>;
+};
+
 figma.ui.onmessage = async (msg: { type: string }) => {
   if (msg.type === "generate") {
     try {
@@ -107,219 +119,241 @@ figma.ui.onmessage = async (msg: { type: string }) => {
       // Track Y position for sequential section placement
       let nextY = START_Y;
 
-      // Total component count for progress indicator
-      const TOTAL_COMPONENTS = 29;
-      let componentIndex = 0;
+      /**
+       * Generator registry - add new generators here
+       * Order matters for layout and dependencies (Icon Library must be early)
+       */
+      const GENERATORS: GeneratorConfig[] = [
+        {
+          name: "Badge",
+          execute: async (_page, y) => {
+            const result = await generateBadgeComponents(y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "Banner",
+          execute: async (_page, y) => {
+            const result = await generateBannerComponents(y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "Icon Library",
+          execute: async () => {
+            await generateIconLibrary();
+          },
+        },
+        {
+          name: "Button",
+          execute: async (page, y) => {
+            const result = await generateButtonComponents(page, y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "LinkButton",
+          execute: async (page, y) => {
+            const result = await generateLinkButtonComponents(page, y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "RefreshButton",
+          execute: async (page, y) => {
+            const result = await generateRefreshButtonComponents(page, y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "Checkbox",
+          execute: async (page, y) => {
+            const result = await generateCheckboxComponents(page, y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "Text",
+          execute: async (page, y) => {
+            const result = await generateTextComponents(page, y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "ClipboardText",
+          execute: async (_page, y) => {
+            const result = await generateClipboardTextComponents(y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "Code",
+          execute: async (page, y) => {
+            const result = await generateCodeComponents(page, y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "CodeBlock",
+          execute: async (page, y) => {
+            const result = await generateCodeBlockComponents(page, y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "Collapsible",
+          execute: async (_page, y) => {
+            const result = await generateCollapsibleComponents(y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "Combobox",
+          execute: async (_page, y) => {
+            const result = await generateComboboxComponents(y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "DateRangePicker",
+          execute: async (page, y) => {
+            const result = await generateDateRangePickerComponents(page, y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "Dialog",
+          execute: async (page, y) => {
+            const result = await generateDialogComponents(page, y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "Dropdown",
+          execute: async (page, y) => {
+            const result = await generateDropdownComponents(page, y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "Input",
+          execute: async (page, y) => {
+            const result = await generateInputComponents(page, y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "InputArea",
+          execute: async (page, y) => {
+            const result = await generateInputAreaComponents(page, y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "LayerCard",
+          execute: async (page, y) => {
+            const result = await generateLayerCardComponents(page, y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "Loader",
+          execute: async (page, y) => {
+            const result = await generateLoaderComponents(page, y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "MenuBar",
+          execute: async (page, y) => {
+            const result = await generateMenuBarComponents(page, y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "Meter",
+          execute: async (_page, y) => {
+            const result = await generateMeterComponents(y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "Pagination",
+          execute: async (_page, y) => {
+            const result = await generatePaginationComponents(y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "Select",
+          execute: async (page, y) => {
+            const result = await generateSelectComponents(page, y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "SensitiveInput",
+          execute: async (page, y) => {
+            const result = await generateSensitiveInputComponents(page, y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "Surface",
+          execute: async (page, y) => {
+            const result = await generateSurfaceComponents(page, y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "Switch",
+          execute: async (page, y) => {
+            const result = await generateSwitchComponents(page, y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "Switch.Group",
+          execute: async (page, y) => {
+            const result = await generateSwitchGroupComponents(page, y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "Tabs",
+          execute: async (page, y) => {
+            const result = await generateTabsComponents(page, y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "Toast",
+          execute: async (page, y) => {
+            const result = await generateToastComponents(page, y);
+            return { nextY: result };
+          },
+        },
+      ];
 
-      // Step 3: Generate Badge components
-      componentIndex++;
-      figma.notify(
-        `Generating Badge (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateBadgeComponents(nextY);
+      // Dynamically calculated total from generator array
+      const TOTAL_COMPONENTS = GENERATORS.length;
 
-      // Step 4: Generate Banner components
-      componentIndex++;
-      figma.notify(
-        `Generating Banner (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateBannerComponents(nextY);
+      // Step 3: Execute all generators sequentially
+      for (let i = 0; i < GENERATORS.length; i++) {
+        const generator = GENERATORS[i];
+        const componentIndex = i + 1;
 
-      // Step 5: Generate Icon Library first (other components depend on it)
-      componentIndex++;
-      figma.notify(
-        `Generating Icon Library (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      await generateIconLibrary();
+        figma.notify(
+          `Generating ${generator.name} (${componentIndex}/${TOTAL_COMPONENTS})...`,
+        );
 
-      // Step 6: Generate Button components (all variants, sizes, shapes, disabled, loading)
-      componentIndex++;
-      figma.notify(
-        `Generating Button (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateButtonComponents(componentsPage, nextY);
+        const result = await generator.execute(componentsPage, nextY);
 
-      // Step 7: Generate LinkButton components
-      componentIndex++;
-      figma.notify(
-        `Generating LinkButton (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateLinkButtonComponents(componentsPage, nextY);
-
-      // Step 8: Generate RefreshButton components
-      componentIndex++;
-      figma.notify(
-        `Generating RefreshButton (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateRefreshButtonComponents(componentsPage, nextY);
-
-      // Step 9: Generate Checkbox components
-      componentIndex++;
-      figma.notify(
-        `Generating Checkbox (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateCheckboxComponents(componentsPage, nextY);
-
-      // Step 10: Generate Text components (typography variants)
-      componentIndex++;
-      figma.notify(
-        `Generating Text (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateTextComponents(componentsPage, nextY);
-
-      // Step 11: Generate ClipboardText components
-      componentIndex++;
-      figma.notify(
-        `Generating ClipboardText (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateClipboardTextComponents(nextY);
-
-      // Step 12: Generate Code components
-      componentIndex++;
-      figma.notify(
-        `Generating Code (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateCodeComponents(componentsPage, nextY);
-
-      // Step 13: Generate CodeBlock components
-      componentIndex++;
-      figma.notify(
-        `Generating CodeBlock (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateCodeBlockComponents(componentsPage, nextY);
-
-      // Step 14: Generate Collapsible components
-      componentIndex++;
-      figma.notify(
-        `Generating Collapsible (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateCollapsibleComponents(nextY);
-
-      // Step 15: Generate Combobox components
-      componentIndex++;
-      figma.notify(
-        `Generating Combobox (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateComboboxComponents(nextY);
-
-      // Step 16: Generate DateRangePicker components
-      componentIndex++;
-      figma.notify(
-        `Generating DateRangePicker (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateDateRangePickerComponents(componentsPage, nextY);
-
-      // Step 17: Generate Dialog components
-      componentIndex++;
-      figma.notify(
-        `Generating Dialog (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateDialogComponents(componentsPage, nextY);
-
-      // Step 18: Generate Dropdown components
-      componentIndex++;
-      figma.notify(
-        `Generating Dropdown (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateDropdownComponents(componentsPage, nextY);
-
-      // Step 19: Generate Input components
-      componentIndex++;
-      figma.notify(
-        `Generating Input (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateInputComponents(componentsPage, nextY);
-
-      // Step 20: Generate InputArea components
-      componentIndex++;
-      figma.notify(
-        `Generating InputArea (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateInputAreaComponents(componentsPage, nextY);
-
-      // Step 21: Generate LayerCard components
-      componentIndex++;
-      figma.notify(
-        `Generating LayerCard (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateLayerCardComponents(componentsPage, nextY);
-
-      // Step 22: Generate Loader components
-      componentIndex++;
-      figma.notify(
-        `Generating Loader (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateLoaderComponents(componentsPage, nextY);
-
-      // Step 23: Generate MenuBar components
-      componentIndex++;
-      figma.notify(
-        `Generating MenuBar (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateMenuBarComponents(componentsPage, nextY);
-
-      // Step 24: Generate Meter components
-      componentIndex++;
-      figma.notify(
-        `Generating Meter (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateMeterComponents(nextY);
-
-      // Step 25: Generate Pagination components
-      componentIndex++;
-      figma.notify(
-        `Generating Pagination (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generatePaginationComponents(nextY);
-
-      // Step 26: Generate Select components
-      componentIndex++;
-      figma.notify(
-        `Generating Select (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateSelectComponents(componentsPage, nextY);
-
-      // Step 27: Generate SensitiveInput components
-      componentIndex++;
-      figma.notify(
-        `Generating SensitiveInput (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateSensitiveInputComponents(componentsPage, nextY);
-
-      // Step 28: Generate Surface components
-      componentIndex++;
-      figma.notify(
-        `Generating Surface (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateSurfaceComponents(componentsPage, nextY);
-
-      // Step 29: Generate Switch components
-      componentIndex++;
-      figma.notify(
-        `Generating Switch (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateSwitchComponents(componentsPage, nextY);
-
-      // Step 30: Generate Switch.Group components
-      componentIndex++;
-      figma.notify(
-        `Generating Switch.Group (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateSwitchGroupComponents(componentsPage, nextY);
-
-      // Step 31: Generate Tabs components
-      componentIndex++;
-      figma.notify(
-        `Generating Tabs (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateTabsComponents(componentsPage, nextY);
-
-      // Step 32: Generate Toast components
-      componentIndex++;
-      figma.notify(
-        `Generating Toast (${componentIndex}/${TOTAL_COMPONENTS})...`,
-      );
-      nextY = await generateToastComponents(componentsPage, nextY);
+        // Update nextY if generator returns a new position
+        if (result && result.nextY !== undefined) {
+          nextY = result.nextY;
+        }
+      }
 
       figma.notify("✅ Generation complete!", { timeout: 3000 });
       figma.closePlugin(
