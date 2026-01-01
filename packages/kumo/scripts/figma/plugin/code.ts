@@ -21,6 +21,7 @@ import { generateDialogComponents } from "./generators/dialog";
 import { generateDropdownComponents } from "./generators/dropdown";
 import { generateInputComponents } from "./generators/input";
 import { generateInputAreaComponents } from "./generators/input-area";
+import { generateLayerCardComponents } from "./generators/layer-card";
 import { generateLinkButtonComponents } from "./generators/link-button";
 import { generateRefreshButtonComponents } from "./generators/refresh-button";
 import { generateTextComponents } from "./generators/text";
@@ -166,9 +167,13 @@ figma.ui.onmessage = async (msg: { type: string }) => {
       figma.notify("Generating InputArea components...");
       nextY = await generateInputAreaComponents(componentsPage, nextY);
 
+      // Step 21: Generate LayerCard components
+      figma.notify("Generating LayerCard components...");
+      nextY = await generateLayerCardComponents(componentsPage, nextY);
+
       figma.notify("✅ Generation complete!", { timeout: 3000 });
       figma.closePlugin(
-        "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, Dialog, Dropdown, Input, InputArea, LinkButton, RefreshButton, Text components, and Icon Library",
+        "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, Dialog, Dropdown, Input, InputArea, LayerCard, LinkButton, RefreshButton, Text components, and Icon Library",
       );
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);

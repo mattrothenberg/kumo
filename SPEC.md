@@ -296,6 +296,7 @@ After building, run the plugin in Figma:
 | Dropdown        | open (2) x variant (6)                             | Icons, danger, groups, checkbox, shortcuts                   |
 | Input           | size (4) x variant (2) x state (3) x withLabel (2) | Bare input or with Field wrapper (label, description, error) |
 | InputArea       | size (4) x variant (2) x state (3) x withLabel (2) | Multi-line textarea, bare or with Field wrapper              |
+| LayerCard       | (no variants)                                      | Compound: Secondary (header) + Primary (content)             |
 | LinkButton      | variant (6) x size (4)                             | Arrow icon                                                   |
 | RefreshButton   | loading (2) x size (4)                             | Refresh icon                                                 |
 | Text            | variant (9) x size (4)                             | Typography scale                                             |
