@@ -9333,6 +9333,257 @@
     return startY + totalHeight + SECTION_GAP19;
   }
 
+  // scripts/figma/plugin/generators/pagination.ts
+  var PAGINATION_HEIGHT = 36;
+  var BUTTON_SIZE = 36;
+  var INPUT_WIDTH = 50;
+  var ICON_SIZE2 = 16;
+  var GAP = 0;
+  var BORDER_RADIUS2 = 6;
+  var SECTION_PADDING20 = 48;
+  var SECTION_GAP20 = 160;
+  async function createNavButton(iconId, ariaLabel, position, disabled) {
+    var button = figma.createFrame();
+    button.name = ariaLabel;
+    button.layoutMode = "HORIZONTAL";
+    button.primaryAxisAlignItems = "CENTER";
+    button.counterAxisAlignItems = "CENTER";
+    button.primaryAxisSizingMode = "FIXED";
+    button.counterAxisSizingMode = "FIXED";
+    button.resize(BUTTON_SIZE, BUTTON_SIZE);
+    if (position === "first") {
+      button.topLeftRadius = BORDER_RADIUS2;
+      button.bottomLeftRadius = BORDER_RADIUS2;
+      button.topRightRadius = 0;
+      button.bottomRightRadius = 0;
+    } else if (position === "last") {
+      button.topLeftRadius = 0;
+      button.bottomLeftRadius = 0;
+      button.topRightRadius = BORDER_RADIUS2;
+      button.bottomRightRadius = BORDER_RADIUS2;
+    } else if (position === "single") {
+      button.cornerRadius = BORDER_RADIUS2;
+    } else {
+      button.cornerRadius = 0;
+    }
+    var bgVar = getVariableByName("color-2");
+    if (bgVar) {
+      bindFillToVariable(button, bgVar.id);
+    }
+    var borderVar = getVariableByName("border");
+    if (borderVar) {
+      bindStrokeToVariable(button, borderVar.id, 1);
+    }
+    var icon = createIconInstance(iconId, ICON_SIZE2);
+    if (icon) {
+      var iconColorVar = disabled ? "text-disabled" : "text-surface";
+      bindIconColor(icon, iconColorVar);
+      button.appendChild(icon);
+    }
+    return button;
+  }
+  async function createPageInput(pageNumber) {
+    var input = figma.createFrame();
+    input.name = "Page Input";
+    input.layoutMode = "HORIZONTAL";
+    input.primaryAxisAlignItems = "CENTER";
+    input.counterAxisAlignItems = "CENTER";
+    input.primaryAxisSizingMode = "FIXED";
+    input.counterAxisSizingMode = "FIXED";
+    input.resize(INPUT_WIDTH, BUTTON_SIZE);
+    input.cornerRadius = 0;
+    var bgVar = getVariableByName("color-2");
+    if (bgVar) {
+      bindFillToVariable(input, bgVar.id);
+    }
+    var borderVar = getVariableByName("border");
+    if (borderVar) {
+      bindStrokeToVariable(input, borderVar.id, 1);
+    }
+    var text = await createTextNode(pageNumber, 14, 400);
+    text.name = "Page Number";
+    text.textAlignHorizontal = "CENTER";
+    var textColorVar = getVariableByName("text-color-surface");
+    if (textColorVar) {
+      bindTextColorToVariable(text, textColorVar.id);
+    }
+    input.appendChild(text);
+    return input;
+  }
+  async function createShowingText(lower, upper, total) {
+    var text = await createTextNode(
+      "Showing " + lower + "-" + upper + " of " + total,
+      14,
+      400
+    );
+    text.name = "Showing Text";
+    var labelVar = getVariableByName("text-color-label");
+    if (labelVar) {
+      bindTextColorToVariable(text, labelVar.id);
+    }
+    return text;
+  }
+  async function createInputGroup(currentPage, maxPage) {
+    var group = figma.createFrame();
+    group.name = "InputGroup";
+    group.layoutMode = "HORIZONTAL";
+    group.primaryAxisAlignItems = "MIN";
+    group.counterAxisAlignItems = "CENTER";
+    group.primaryAxisSizingMode = "AUTO";
+    group.counterAxisSizingMode = "AUTO";
+    group.itemSpacing = GAP;
+    group.fills = [];
+    var isFirstPage = currentPage <= 1;
+    var isLastPage = currentPage >= maxPage;
+    var firstBtn = await createNavButton(
+      "ph-caret-double-left",
+      "First page",
+      "first",
+      isFirstPage
+    );
+    group.appendChild(firstBtn);
+    var prevBtn = await createNavButton(
+      "ph-caret-left",
+      "Previous page",
+      "middle",
+      isFirstPage
+    );
+    group.appendChild(prevBtn);
+    var pageInput = await createPageInput(String(currentPage));
+    group.appendChild(pageInput);
+    var nextBtn = await createNavButton(
+      "ph-caret-right",
+      "Next page",
+      "middle",
+      isLastPage
+    );
+    group.appendChild(nextBtn);
+    var lastBtn = await createNavButton(
+      "ph-caret-double-right",
+      "Last page",
+      "last",
+      isLastPage
+    );
+    group.appendChild(lastBtn);
+    return group;
+  }
+  async function createPaginationComponent(page, perPage, totalCount, variantLabel) {
+    var component = figma.createComponent();
+    component.name = variantLabel;
+    component.description = "Pagination at page " + page;
+    component.layoutMode = "HORIZONTAL";
+    component.primaryAxisAlignItems = "SPACE_BETWEEN";
+    component.counterAxisAlignItems = "CENTER";
+    component.primaryAxisSizingMode = "FIXED";
+    component.counterAxisSizingMode = "AUTO";
+    component.itemSpacing = 8;
+    component.resize(400, PAGINATION_HEIGHT);
+    component.fills = [];
+    var lower = page * perPage - perPage + 1;
+    var upper = Math.min(page * perPage, totalCount);
+    var maxPage = Math.ceil(totalCount / perPage);
+    var showingText = await createShowingText(lower, upper, totalCount);
+    component.appendChild(showingText);
+    var inputGroup = await createInputGroup(page, maxPage);
+    component.appendChild(inputGroup);
+    return component;
+  }
+  async function generatePaginationComponents(startY) {
+    if (startY === void 0) startY = 100;
+    var componentsPage = figma.root.children.find(function(page) {
+      return page.type === "PAGE" && page.name === "Components";
+    });
+    if (!componentsPage) {
+      componentsPage = figma.createPage();
+      componentsPage.name = "Components";
+    }
+    figma.currentPage = componentsPage;
+    var pageStates = [
+      { page: 1, label: "state=first" },
+      // First page (prev disabled)
+      { page: 5, label: "state=middle" },
+      // Middle page (all enabled)
+      { page: 10, label: "state=last" }
+      // Last page (next disabled)
+    ];
+    var perPage = 10;
+    var totalCount = 100;
+    var components = [];
+    var rowLabels = [];
+    var rowGap = 48;
+    var labelColumnWidth = 180;
+    var currentY = 0;
+    for (var i = 0; i < pageStates.length; i++) {
+      var state = pageStates[i];
+      var component = await createPaginationComponent(
+        state.page,
+        perPage,
+        totalCount,
+        state.label
+      );
+      rowLabels.push({ y: currentY, text: state.label });
+      component.x = labelColumnWidth;
+      component.y = currentY;
+      currentY += component.height + rowGap;
+      components.push(component);
+    }
+    var componentSet = figma.combineAsVariants(components, componentsPage);
+    componentSet.name = "Pagination";
+    componentSet.description = "Pagination component showing page navigation at different states";
+    var contentWidth = componentSet.width + labelColumnWidth;
+    var contentHeight = componentSet.height;
+    var lightSection = createModeSection(componentsPage, "Pagination", "light");
+    lightSection.frame.resize(
+      contentWidth + SECTION_PADDING20 * 2,
+      contentHeight + SECTION_PADDING20 * 2
+    );
+    var darkSection = createModeSection(componentsPage, "Pagination", "dark");
+    darkSection.frame.resize(
+      contentWidth + SECTION_PADDING20 * 2,
+      contentHeight + SECTION_PADDING20 * 2
+    );
+    lightSection.frame.appendChild(componentSet);
+    componentSet.x = SECTION_PADDING20 + labelColumnWidth;
+    componentSet.y = SECTION_PADDING20;
+    for (var j = 0; j < rowLabels.length; j++) {
+      var label = rowLabels[j];
+      var labelNode = await createRowLabel(
+        label.text,
+        SECTION_PADDING20,
+        SECTION_PADDING20 + label.y + 10
+      );
+      lightSection.frame.appendChild(labelNode);
+    }
+    for (var k = 0; k < components.length; k++) {
+      var comp = components[k];
+      var instance = comp.createInstance();
+      instance.x = comp.x + SECTION_PADDING20 + labelColumnWidth;
+      instance.y = comp.y + SECTION_PADDING20;
+      darkSection.frame.appendChild(instance);
+    }
+    for (var m = 0; m < rowLabels.length; m++) {
+      var darkLabel = rowLabels[m];
+      var darkLabelNode = await createRowLabel(
+        darkLabel.text,
+        SECTION_PADDING20,
+        SECTION_PADDING20 + darkLabel.y + 10
+      );
+      darkSection.frame.appendChild(darkLabelNode);
+    }
+    var totalWidth = contentWidth + SECTION_PADDING20 * 2;
+    var totalHeight = contentHeight + SECTION_PADDING20 * 2;
+    lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    lightSection.section.x = 100;
+    lightSection.section.y = startY;
+    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.y = startY;
+    console.log(
+      "\u2705 Generated Pagination ComponentSet with " + pageStates.length + " states (light + dark)"
+    );
+    return startY + totalHeight + SECTION_GAP20;
+  }
+
   // scripts/figma/plugin/generators/refresh-button.ts
   var buttonProps3 = component_registry_default.components.Button.props;
   var variantProp6 = buttonProps3.variant;
@@ -9357,8 +9608,8 @@
     var parsed = parseTailwindClasses(sizeClasses);
     return parsed.borderRadius !== void 0 ? parsed.borderRadius : BORDER_RADIUS.lg;
   }
-  var SECTION_PADDING20 = 48;
-  var SECTION_GAP20 = 160;
+  var SECTION_PADDING21 = 48;
+  var SECTION_GAP21 = 160;
   function createRefreshButtonComponent(size, loading) {
     var variant = variantProp6.default;
     var variantClasses = variantProp6.classes[variant] || "";
@@ -9438,44 +9689,44 @@
     var contentHeight = componentSet.height;
     var lightSection = createModeSection(page, "RefreshButton", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING20 * 2,
-      contentHeight + SECTION_PADDING20 * 2
+      contentWidth + SECTION_PADDING21 * 2,
+      contentHeight + SECTION_PADDING21 * 2
     );
     var darkSection = createModeSection(page, "RefreshButton", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING20 * 2,
-      contentHeight + SECTION_PADDING20 * 2
+      contentWidth + SECTION_PADDING21 * 2,
+      contentHeight + SECTION_PADDING21 * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING20 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING20;
+    componentSet.x = SECTION_PADDING21 + labelColumnWidth;
+    componentSet.y = SECTION_PADDING21;
     for (var li = 0; li < rowLabels.length; li++) {
       var label = rowLabels[li];
       var labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING20,
-        SECTION_PADDING20 + label.y + 10
+        SECTION_PADDING21,
+        SECTION_PADDING21 + label.y + 10
       );
       lightSection.frame.appendChild(labelNode);
     }
     for (var i = 0; i < components.length; i++) {
       var comp = components[i];
       var instance = comp.createInstance();
-      instance.x = comp.x + SECTION_PADDING20 + labelColumnWidth;
-      instance.y = comp.y + SECTION_PADDING20;
+      instance.x = comp.x + SECTION_PADDING21 + labelColumnWidth;
+      instance.y = comp.y + SECTION_PADDING21;
       darkSection.frame.appendChild(instance);
     }
     for (var di = 0; di < rowLabels.length; di++) {
       var darkLabel = rowLabels[di];
       var darkLabelNode = await createRowLabel(
         darkLabel.text,
-        SECTION_PADDING20,
-        SECTION_PADDING20 + darkLabel.y + 10
+        SECTION_PADDING21,
+        SECTION_PADDING21 + darkLabel.y + 10
       );
       darkSection.frame.appendChild(darkLabelNode);
     }
-    var totalWidth = contentWidth + SECTION_PADDING20 * 2;
-    var totalHeight = contentHeight + SECTION_PADDING20 * 2;
+    var totalWidth = contentWidth + SECTION_PADDING21 * 2;
+    var totalHeight = contentHeight + SECTION_PADDING21 * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     lightSection.section.x = 100;
@@ -9486,7 +9737,7 @@
     console.log(
       "\u2705 Generated RefreshButton ComponentSet with " + totalComponents + " variants (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP20;
+    return startY + totalHeight + SECTION_GAP21;
   }
   var REFRESH_BUTTON_SIZES_EXPORT = sizeProp5.values;
 
@@ -9494,8 +9745,8 @@
   var textProps = component_registry_default.components.Text.props;
   var variantProp7 = textProps.variant;
   var sizeProp6 = textProps.size;
-  var SECTION_PADDING21 = 48;
-  var SECTION_GAP21 = 160;
+  var SECTION_PADDING22 = 48;
+  var SECTION_GAP22 = 160;
   var TEXT_BASE_CLASS = "text-surface";
   var COPY_VARIANTS = ["body", "secondary", "success", "error"];
   var MONO_VARIANTS = ["mono", "mono-secondary"];
@@ -9638,52 +9889,52 @@
     const contentHeight = componentSet.height + headerRowHeight;
     const lightSection = createModeSection(page, "Text", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING21 * 2,
-      contentHeight + SECTION_PADDING21 * 2
+      contentWidth + SECTION_PADDING22 * 2,
+      contentHeight + SECTION_PADDING22 * 2
     );
     const darkSection = createModeSection(page, "Text", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING21 * 2,
-      contentHeight + SECTION_PADDING21 * 2
+      contentWidth + SECTION_PADDING22 * 2,
+      contentHeight + SECTION_PADDING22 * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING21 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING21 + headerRowHeight;
+    componentSet.x = SECTION_PADDING22 + labelColumnWidth;
+    componentSet.y = SECTION_PADDING22 + headerRowHeight;
     await createColumnHeaders(
-      columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING21, text: h.text })),
-      SECTION_PADDING21,
+      columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING22, text: h.text })),
+      SECTION_PADDING22,
       lightSection.frame
     );
     for (const label of rowLabels) {
       const labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING21,
-        SECTION_PADDING21 + label.y + 8
+        SECTION_PADDING22,
+        SECTION_PADDING22 + label.y + 8
         // +8 to vertically center with text
       );
       lightSection.frame.appendChild(labelNode);
     }
     for (const component of components) {
       const instance = component.createInstance();
-      instance.x = component.x + SECTION_PADDING21 + labelColumnWidth;
-      instance.y = component.y + SECTION_PADDING21 + headerRowHeight;
+      instance.x = component.x + SECTION_PADDING22 + labelColumnWidth;
+      instance.y = component.y + SECTION_PADDING22 + headerRowHeight;
       darkSection.frame.appendChild(instance);
     }
     await createColumnHeaders(
-      columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING21, text: h.text })),
-      SECTION_PADDING21,
+      columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING22, text: h.text })),
+      SECTION_PADDING22,
       darkSection.frame
     );
     for (const label of rowLabels) {
       const labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING21,
-        SECTION_PADDING21 + label.y + 8
+        SECTION_PADDING22,
+        SECTION_PADDING22 + label.y + 8
       );
       darkSection.frame.appendChild(labelNode);
     }
-    const totalWidth = contentWidth + SECTION_PADDING21 * 2;
-    const totalHeight = contentHeight + SECTION_PADDING21 * 2;
+    const totalWidth = contentWidth + SECTION_PADDING22 * 2;
+    const totalHeight = contentHeight + SECTION_PADDING22 * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     lightSection.section.x = 100;
@@ -9693,7 +9944,7 @@
     console.log(
       "\u2705 Generated Text ComponentSet with " + components.length + " variants (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP21;
+    return startY + totalHeight + SECTION_GAP22;
   }
   var TEXT_VARIANTS_EXPORT = variantProp7.values;
   var TEXT_SIZES_EXPORT = sizeProp6.values;
@@ -12692,9 +12943,11 @@
         nextY = await generateMenuBarComponents(componentsPage, nextY);
         figma.notify("Generating Meter components...");
         nextY = await generateMeterComponents(nextY);
+        figma.notify("Generating Pagination components...");
+        nextY = await generatePaginationComponents(nextY);
         figma.notify("\u2705 Generation complete!", { timeout: 3e3 });
         figma.closePlugin(
-          "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, Dialog, Dropdown, Input, InputArea, LayerCard, Loader, LinkButton, MenuBar, Meter, RefreshButton, Text components, and Icon Library"
+          "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, Dialog, Dropdown, Input, InputArea, LayerCard, Loader, LinkButton, MenuBar, Meter, Pagination, RefreshButton, Text components, and Icon Library"
         );
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);

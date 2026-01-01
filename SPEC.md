@@ -301,6 +301,7 @@ After building, run the plugin in Figma:
 | LinkButton      | variant (6) x size (4)                             | Arrow icon                                                   |
 | MenuBar         | active (4)                                         | Icon nav bar, fit-content width (React: className="w-fit")   |
 | Meter           | fill (5)                                           | Progress bar at 0%, 25%, 50%, 75%, 100%                      |
+| Pagination      | state (3)                                          | First/middle/last page states, nav buttons + input           |
 | RefreshButton   | loading (2) x size (4)                             | Refresh icon                                                 |
 | Text            | variant (9) x size (4)                             | Typography scale                                             |
 
