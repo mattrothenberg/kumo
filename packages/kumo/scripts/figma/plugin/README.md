@@ -48,8 +48,7 @@ plugin/
     ├── badge.ts                  # Badge component generator
     ├── button-text.ts            # Button text component generator
     ├── button-icon.ts            # Button icon component generator (Phase 4)
-    ├── placeholders.ts           # Placeholder icon/loader generators
-    └── kumo-variants.ts          # Variant definitions
+    └── placeholders.ts           # Placeholder icon/loader generators
 ```
 
 ## Key Modules

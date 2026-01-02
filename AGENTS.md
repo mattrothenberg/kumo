@@ -27,34 +27,42 @@ pnpm build:ai-metadata  # Generate component-registry.{json,md}
 Kumo provides extensive automated tooling (`packages/kumo/scripts/`):
 
 **1. Component Registry + CLI** (`scripts/ai/`) - AI-readable metadata & CLI
+
 - Auto-generates `ai/component-registry.{json,md}` from TypeScript types + Storybook
 - Includes: props, variants, examples, semantic tokens, sub-components
 - **Exported CLI:** `npx @cloudflare/kumo {ls|doc|docs}` - Quick component reference
 
 **2. Figma Plugin** (`scripts/figma/plugin/`) - React → Figma components
+
 - 30+ generators (Button, Dialog, Tabs, Toast, etc.)
 - Parses Tailwind → Figma auto-layout, binds semantic tokens to variables
 - Icon library generation, loader variants, opacity modifiers
 
 **3. Figma Token Sync** (`scripts/figma/`) - CSS → Figma Variables API
+
 - Syncs semantic tokens (`kumo-binding.css`) to Figma
 - Parses `light-dark()`, converts colors (oklch/hex → Figma RGB)
 
 **4. Custom Lint Rules** (`scripts/linting/`) - Design system enforcement
+
 - `no-primitive-colors`: Blocks `bg-blue-500`, enforces semantic tokens
 - `no-tailwind-dark-variant`: Prevents `dark:` (auto via tokens)
 
 **5. Icon System** (`scripts/icon/`) - SVG sprite + type generation
+
 - CLI: `pnpm add:icon` (auto-normalizes viewBox, currentColor, SVGO)
 - Generates sprite.svg + TypeScript types for `<Icon name="..." />`
 
 **6. Color Analysis** (`scripts/color/`) - Token extraction & usage stats
+
 - Analyzes semantic token usage, generates color docs for Storybook
 
 **7. Primitives Generator** (`scripts/generate-primitives.ts`) - Base UI exports
+
 - Auto-generates tree-shakeable primitive exports, updates package.json
 
 **Key Commands:**
+
 ```bash
 pnpm build:ai-metadata    # Component registry
 npx @cloudflare/kumo doc  # CLI docs (works in any project)
@@ -530,6 +538,81 @@ pnpm --filter @cloudflare/kumo lint
 2. **`no-tailwind-dark-variant`** (`scripts/linting/no-tailwind-dark-variant.js`)
    - Disallows `dark:` variant in class names
    - Dark mode is handled automatically by Kumo tokens
+
+3. **`enforce-variant-standard`** (`scripts/linting/enforce-variant-standard.js`)
+   - Enforces the KUMO\_\*\_VARIANTS naming convention for component exports
+   - Only applies to files matching `src/components/{name}/{name}.tsx`
+   - Extracts component name from path (e.g., `button.tsx` → `BUTTON`, `clipboard-text.tsx` → `CLIPBOARD_TEXT`)
+
+   **Required Exports:**
+   - `KUMO_{COMPONENT}_VARIANTS` - Variant configuration object
+   - `KUMO_{COMPONENT}_DEFAULT_VARIANTS` - Default variant values
+
+   **Optional Exports:**
+   - `KUMO_{COMPONENT}_BASE_STYLES` - Base styles (must have `KUMO_` prefix if present)
+
+   **Examples:**
+
+   ```tsx
+   // ✅ CORRECT - Valid exports in button.tsx
+   export const KUMO_BUTTON_VARIANTS = {
+     variant: ["primary", "secondary", "ghost", "destructive"],
+     size: ["xs", "sm", "base", "lg"],
+   };
+
+   export const KUMO_BUTTON_DEFAULT_VARIANTS = {
+     variant: "secondary",
+     size: "base",
+   };
+
+   // Optional base styles
+   export const KUMO_BUTTON_BASE_STYLES = "flex items-center font-medium";
+   ```
+
+   ```tsx
+   // ✅ CORRECT - Valid exports in clipboard-text.tsx (kebab-case → UPPER_SNAKE_CASE)
+   export const KUMO_CLIPBOARD_TEXT_VARIANTS = {
+     /* ... */
+   };
+   export const KUMO_CLIPBOARD_TEXT_DEFAULT_VARIANTS = {
+     /* ... */
+   };
+   ```
+
+   ```tsx
+   // ❌ WRONG - Missing KUMO_ prefix
+   export const BUTTON_VARIANTS = {
+     /* ... */
+   };
+   export const BUTTON_DEFAULT_VARIANTS = {
+     /* ... */
+   };
+   ```
+
+   ```tsx
+   // ❌ WRONG - Wrong component name
+   // In button.tsx:
+   export const KUMO_INPUT_VARIANTS = {
+     /* ... */
+   };
+   export const KUMO_INPUT_DEFAULT_VARIANTS = {
+     /* ... */
+   };
+   ```
+
+   ```tsx
+   // ❌ WRONG - BASE_STYLES without KUMO_ prefix
+   export const BUTTON_BASE_STYLES = "..."; // Should be KUMO_BUTTON_BASE_STYLES
+   ```
+
+   ```tsx
+   // ❌ WRONG - Missing required exports
+   // In button.tsx - missing KUMO_BUTTON_DEFAULT_VARIANTS
+   export const KUMO_BUTTON_VARIANTS = {
+     /* ... */
+   };
+   // Error: Component must export KUMO_BUTTON_DEFAULT_VARIANTS
+   ```
 
 ### Testing (`vitest`)
 
