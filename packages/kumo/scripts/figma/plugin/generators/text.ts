@@ -405,3 +405,158 @@ export async function generateTextComponents(
  */
 export var TEXT_VARIANTS_EXPORT = variantProp.values;
 export var TEXT_SIZES_EXPORT = sizeProp.values;
+
+/**
+ * Testable export functions for tests
+ *
+ * These functions expose intermediate data structures for testing
+ * without requiring Figma plugin runtime. They follow the pattern
+ * established in badge.ts and code.ts generators.
+ *
+ * Source of truth chain:
+ * text.tsx → component-registry.json → text.ts (generator) → Figma
+ */
+
+/**
+ * Get base styles from registry with parsed data
+ */
+export function getBaseStyles() {
+  const raw = TEXT_BASE_CLASS;
+  const parsed = parseTailwindClasses(raw);
+  return {
+    raw,
+    parsed,
+  };
+}
+
+/**
+ * Get variant configuration from registry
+ */
+export function getVariantConfig() {
+  return {
+    variants: variantProp.values,
+    sizes: sizeProp.values,
+    variantClasses: variantProp.classes,
+    variantDescriptions: variantProp.descriptions,
+    sizeClasses: sizeProp.classes,
+    sizeDescriptions: sizeProp.descriptions,
+    defaultVariant: variantProp.default,
+    defaultSize: sizeProp.default,
+  };
+}
+
+/**
+ * Get all variant data with parsed styles for testing
+ *
+ * This function returns the complete intermediate data structure
+ * that the generator uses to create Figma components. It includes:
+ * - Base styles (raw + parsed)
+ * - Variant configuration
+ * - Complete variant data for all variant/size combinations
+ */
+export function getAllVariantData() {
+  const baseStyles = getBaseStyles();
+  const variantConfig = getVariantConfig();
+
+  // Build complete variant data (same logic as generator)
+  const variants: Array<{
+    variant: string;
+    size: string | null;
+    variantClasses: string;
+    sizeClasses: string;
+    combinedClasses: string;
+    parsed: ReturnType<typeof parseTailwindClasses>;
+    description: string;
+    isCopyVariant: boolean;
+    isMonoVariant: boolean;
+  }> = [];
+
+  for (const variant of variantConfig.variants) {
+    const variantClasses = variantConfig.variantClasses[variant] || "";
+    const variantDesc = variantConfig.variantDescriptions[variant] || "";
+    const isCopy = isCopyVariant(variant);
+    const isMono = isMonoVariant(variant);
+
+    if (isCopy) {
+      // Copy variants: all sizes
+      for (const size of variantConfig.sizes) {
+        const sizeClasses = variantConfig.sizeClasses[size] || "";
+        const sizeDesc = variantConfig.sizeDescriptions[size] || "";
+        const combinedClasses =
+          `${TEXT_BASE_CLASS} ${variantClasses} ${sizeClasses}`.trim();
+        const parsed = parseTailwindClasses(combinedClasses);
+
+        variants.push({
+          variant,
+          size,
+          variantClasses,
+          sizeClasses,
+          combinedClasses,
+          parsed,
+          description: `${variantDesc}. ${sizeDesc}`,
+          isCopyVariant: true,
+          isMonoVariant: false,
+        });
+      }
+    } else if (isMono) {
+      // Mono variants: default (null) and lg only
+      // Default size
+      const defaultSizeClasses = variantConfig.sizeClasses["sm"] || "";
+      const defaultCombined =
+        `${TEXT_BASE_CLASS} ${variantClasses} ${defaultSizeClasses}`.trim();
+      const defaultParsed = parseTailwindClasses(defaultCombined);
+
+      variants.push({
+        variant,
+        size: null,
+        variantClasses,
+        sizeClasses: defaultSizeClasses,
+        combinedClasses: defaultCombined,
+        parsed: defaultParsed,
+        description: `${variantDesc}. Default text (optically adjusted to small)`,
+        isCopyVariant: false,
+        isMonoVariant: true,
+      });
+
+      // lg size
+      const lgSizeClasses = variantConfig.sizeClasses["base"] || "";
+      const lgCombined =
+        `${TEXT_BASE_CLASS} ${variantClasses} ${lgSizeClasses}`.trim();
+      const lgParsed = parseTailwindClasses(lgCombined);
+
+      variants.push({
+        variant,
+        size: "lg",
+        variantClasses,
+        sizeClasses: lgSizeClasses,
+        combinedClasses: lgCombined,
+        parsed: lgParsed,
+        description: `${variantDesc}. Large text (optically adjusted to base)`,
+        isCopyVariant: false,
+        isMonoVariant: true,
+      });
+    } else {
+      // Headings: no size variants
+      const combinedClasses = `${TEXT_BASE_CLASS} ${variantClasses}`.trim();
+      const parsed = parseTailwindClasses(combinedClasses);
+
+      variants.push({
+        variant,
+        size: null,
+        variantClasses,
+        sizeClasses: "",
+        combinedClasses,
+        parsed,
+        description: variantDesc,
+        isCopyVariant: false,
+        isMonoVariant: false,
+      });
+    }
+  }
+
+  return {
+    baseStyles,
+    variantConfig,
+    variants,
+  };
+}

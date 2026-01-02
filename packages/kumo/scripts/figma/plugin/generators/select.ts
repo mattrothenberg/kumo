@@ -600,3 +600,98 @@ export async function generateSelectComponents(
 export var SELECT_VARIANT_VALUES = VARIANT_VALUES;
 export var SELECT_OPEN_VALUES = OPEN_VALUES;
 export var SELECT_STATE_VALUES = STATE_VALUES;
+
+/**
+ * TESTABLE EXPORTS - Pure functions that return intermediate data
+ * These functions compute data without calling Figma APIs, enabling snapshot tests.
+ */
+
+/**
+ * Get trigger configuration from hardcoded values
+ * (Select doesn't use registry yet - these values match select.tsx implementation)
+ */
+export function getTriggerConfig() {
+  return {
+    height: 36, // h-9 = 36px (base button size)
+    paddingX: 12,
+    paddingY: 0,
+    borderRadius: 8, // BORDER_RADIUS.lg
+    fontSize: 16, // text-base
+    fontWeight: 400, // font-normal
+    background: "color-secondary",
+    text: "text-color-surface",
+    ring: "color-border",
+  };
+}
+
+/**
+ * Get popup configuration from hardcoded values
+ */
+export function getPopupConfig() {
+  return {
+    background: "color-secondary",
+    ring: "color-border",
+    borderRadius: 8, // BORDER_RADIUS.lg
+    padding: 6, // p-1.5
+    width: 280, // matches trigger width
+  };
+}
+
+/**
+ * Get option configuration from hardcoded values
+ */
+export function getOptionConfig() {
+  return {
+    paddingX: 8, // px-2
+    paddingY: 6, // py-1.5
+    borderRadius: 4, // rounded
+    fontSize: 16, // text-base
+    fontWeight: 400,
+    text: "text-color-surface",
+    highlightBackground: "color-color-3",
+  };
+}
+
+/**
+ * Get all variant data (for snapshot testing)
+ * Returns intermediate data before Figma API calls
+ */
+export function getAllVariantData() {
+  var triggerConfig = getTriggerConfig();
+  var popupConfig = getPopupConfig();
+  var optionConfig = getOptionConfig();
+
+  var variants = [];
+  for (var vi = 0; vi < VARIANT_VALUES.length; vi++) {
+    var variant = VARIANT_VALUES[vi];
+    var variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
+
+    for (var oi = 0; oi < OPEN_VALUES.length; oi++) {
+      var open = OPEN_VALUES[oi];
+
+      for (var si = 0; si < STATE_VALUES.length; si++) {
+        var state = STATE_VALUES[si];
+        var stateStyle = STATE_STYLES[state] || STATE_STYLES["default"];
+
+        variants.push({
+          variant: variant,
+          open: open,
+          state: state,
+          label: variantConfig.label,
+          description: variantConfig.description,
+          errorMessage: variantConfig.errorMessage,
+          useErrorRing: variantConfig.useErrorRing || false,
+          stateStyle: stateStyle,
+        });
+      }
+    }
+  }
+
+  return {
+    triggerConfig: triggerConfig,
+    popupConfig: popupConfig,
+    optionConfig: optionConfig,
+    variants: variants,
+    variantCount: variants.length,
+  };
+}

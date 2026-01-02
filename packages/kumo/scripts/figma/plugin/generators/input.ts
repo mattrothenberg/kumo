@@ -565,3 +565,104 @@ export async function generateInputComponents(
 export var INPUT_SIZE_VALUES = SIZE_VALUES;
 export var INPUT_VARIANT_VALUES = VARIANT_VALUES;
 export var INPUT_STATE_VALUES = STATE_VALUES;
+
+/**
+ * Testable export functions for input.test.ts
+ * These functions expose internal data structures for testing the source of truth chain:
+ * input.tsx → component-registry.json → input.ts (generator) → Figma
+ */
+
+import registry from "../../../../ai/component-registry.json";
+import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
+
+const inputComponent = registry.components.Input as any;
+
+/**
+ * Get base styling configuration from registry
+ * Returns parsed base styles and styling metadata
+ */
+export function getBaseStyles() {
+  const styling = inputComponent.styling;
+  const baseTokens = styling?.baseTokens || [];
+  const states = styling?.states || {};
+
+  // Parse base state tokens
+  const baseStateClasses = (states.base || []).join(" ");
+  const parsed = parseTailwindClasses(baseStateClasses);
+
+  return {
+    raw: baseTokens,
+    parsed: {
+      backgroundVariable: parsed.fillVariable || null,
+      textVariable: parsed.textVariable || null,
+      placeholderVariable: null, // Placeholder handled separately in component
+      ringVariable: parsed.strokeVariable || null,
+    },
+    styling: styling,
+  };
+}
+
+/**
+ * Get size-specific configuration from registry
+ * Returns dimensions for a specific size variant
+ */
+export function getSizeConfig(size: string) {
+  const styling = inputComponent.styling;
+  const sizeVariants = styling?.sizeVariants || {};
+  const sizeConfig = sizeVariants[size];
+
+  if (!sizeConfig) {
+    throw new Error(`Size "${size}" not found in Input styling metadata`);
+  }
+
+  return {
+    size,
+    ...sizeConfig,
+  };
+}
+
+/**
+ * Get complete variant data for all sizes
+ * Returns structured data including raw registry values and parsed styles
+ */
+export function getAllVariantData() {
+  const props = inputComponent.props;
+  const styling = inputComponent.styling;
+  const sizeVariants = props.size?.values || [];
+  const variantValues = props.variant?.values || [];
+
+  const baseStyles = getBaseStyles();
+
+  const sizes = sizeVariants.map((size: string) => {
+    const sizeConfig = getSizeConfig(size);
+    const sizeClasses = props.size?.classes?.[size] || "";
+    const parsed = parseTailwindClasses(sizeClasses);
+
+    return {
+      size,
+      classes: sizeClasses,
+      description: props.size?.descriptions?.[size] || "",
+      dimensions: sizeConfig,
+      parsed,
+    };
+  });
+
+  const variants = variantValues.map((variant: string) => {
+    const variantClasses = props.variant?.classes?.[variant] || "";
+    const parsed = parseTailwindClasses(variantClasses);
+
+    return {
+      variant,
+      classes: variantClasses,
+      description: props.variant?.descriptions?.[variant] || "",
+      parsed,
+    };
+  });
+
+  return {
+    baseStyles,
+    sizes,
+    variants,
+    stateTokens: styling?.states || {},
+  };
+}

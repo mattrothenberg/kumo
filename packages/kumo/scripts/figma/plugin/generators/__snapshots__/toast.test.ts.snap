@@ -1,0 +1,160 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Toast Generator - Snapshot Tests (Intermediate Data) > should produce consistent close button config from registry 1`] = `
+{
+  "borderRadius": 4,
+  "hoverBackground": "color-toast-button-hover",
+  "hoverColor": "text-color-label",
+  "iconColor": "text-color-muted",
+  "iconName": "ph-x",
+  "iconSize": 16,
+  "raw": {
+    "borderRadius": 4,
+    "hoverBackground": "color-toast-button-hover",
+    "hoverColor": "text-color-label",
+    "iconColor": "text-color-muted",
+    "iconName": "ph-x",
+    "iconSize": 16,
+    "size": 20,
+  },
+  "size": 20,
+}
+`;
+
+exports[`Toast Generator - Snapshot Tests (Intermediate Data) > should produce consistent container config from registry 1`] = `
+{
+  "background": "color-toast",
+  "border": "color-color",
+  "borderRadius": 8,
+  "gap": 4,
+  "padding": 16,
+  "raw": {
+    "background": "color-toast",
+    "border": "color-color",
+    "borderRadius": 8,
+    "gap": 4,
+    "padding": 16,
+    "shadow": "shadow-lg",
+    "width": 300,
+  },
+  "shadow": "shadow-lg",
+  "width": 300,
+}
+`;
+
+exports[`Toast Generator - Snapshot Tests (Intermediate Data) > should produce consistent description config from registry 1`] = `
+{
+  "color": "text-color-muted",
+  "fontSize": 15,
+  "fontWeight": 400,
+  "raw": {
+    "color": "text-color-muted",
+    "fontSize": 15,
+    "fontWeight": 400,
+  },
+}
+`;
+
+exports[`Toast Generator - Snapshot Tests (Intermediate Data) > should produce consistent intermediate data for all styling (golden path) 1`] = `
+{
+  "closeButton": {
+    "borderRadius": 4,
+    "hoverBackground": "color-toast-button-hover",
+    "hoverColor": "text-color-label",
+    "iconColor": "text-color-muted",
+    "iconName": "ph-x",
+    "iconSize": 16,
+    "raw": {
+      "borderRadius": 4,
+      "hoverBackground": "color-toast-button-hover",
+      "hoverColor": "text-color-label",
+      "iconColor": "text-color-muted",
+      "iconName": "ph-x",
+      "iconSize": 16,
+      "size": 20,
+    },
+    "size": 20,
+  },
+  "container": {
+    "background": "color-toast",
+    "border": "color-color",
+    "borderRadius": 8,
+    "gap": 4,
+    "padding": 16,
+    "raw": {
+      "background": "color-toast",
+      "border": "color-color",
+      "borderRadius": 8,
+      "gap": 4,
+      "padding": 16,
+      "shadow": "shadow-lg",
+      "width": 300,
+    },
+    "shadow": "shadow-lg",
+    "width": 300,
+  },
+  "description": {
+    "color": "text-color-muted",
+    "fontSize": 15,
+    "fontWeight": 400,
+    "raw": {
+      "color": "text-color-muted",
+      "fontSize": 15,
+      "fontWeight": 400,
+    },
+  },
+  "styling": {
+    "closeButton": {
+      "borderRadius": 4,
+      "hoverBackground": "color-toast-button-hover",
+      "hoverColor": "text-color-label",
+      "iconColor": "text-color-muted",
+      "iconName": "ph-x",
+      "iconSize": 16,
+      "size": 20,
+    },
+    "container": {
+      "background": "color-toast",
+      "border": "color-color",
+      "borderRadius": 8,
+      "gap": 4,
+      "padding": 16,
+      "shadow": "shadow-lg",
+      "width": 300,
+    },
+    "description": {
+      "color": "text-color-muted",
+      "fontSize": 15,
+      "fontWeight": 400,
+    },
+    "title": {
+      "color": "text-color-surface",
+      "fontSize": 16,
+      "fontWeight": 500,
+    },
+  },
+  "title": {
+    "color": "text-color-surface",
+    "fontSize": 16,
+    "fontWeight": 500,
+    "raw": {
+      "color": "text-color-surface",
+      "fontSize": 16,
+      "fontWeight": 500,
+    },
+  },
+}
+`;
+
+exports[`Toast Generator - Snapshot Tests (Intermediate Data) > should produce consistent title config from registry 1`] = `
+{
+  "color": "text-color-surface",
+  "fontSize": 16,
+  "fontWeight": 500,
+  "raw": {
+    "color": "text-color-surface",
+    "fontSize": 16,
+    "fontWeight": 500,
+  },
+}
+`;

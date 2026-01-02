@@ -395,9 +395,51 @@ Button component
 - `onChange`: React.FormEventHandler<HTMLButtonElement>
 - `onSubmit`: React.FormEventHandler<HTMLButtonElement>
 - `onClick`: React.MouseEventHandler<HTMLButtonElement>
+- `defaultChecked`: boolean
+- `defaultValue`: string | number | string[]
+- `suppressContentEditableWarning`: boolean
+- `suppressHydrationWarning`: boolean
+- `contextMenu`: string
+- `enterKeyHint`: enum
 - `id`: string
 - `lang`: string
+- `nonce`: string
+- `slot`: string
 - `title`: string
+- `radioGroup`: string
+- `role`: React.AriaRole
+- `about`: string
+- `content`: string
+- `datatype`: string
+- `inlist`: unknown
+- `prefix`: string
+- `property`: string
+- `rel`: string
+- `resource`: string
+- `rev`: string
+- `typeof`: string
+- `vocab`: string
+- `autoCorrect`: string
+- `autoSave`: string
+- `color`: string
+- `itemProp`: string
+- `itemScope`: boolean
+- `itemType`: string
+- `itemID`: string
+- `itemRef`: string
+- `results`: number
+- `security`: string
+- `unselectable`: enum
+- `popover`: enum
+- `popoverTargetAction`: enum
+- `popoverTarget`: string
+- `inert`: boolean
+- `inputMode`: enum
+  Hints at the type of data that might be entered by the user while editing the element or its contents
+- `is`: string
+  Specify that a standard HTML element should behave like a defined custom built-in element
+- `exportparts`: string
+- `part`: string
 - `disabled`: boolean
 - `name`: string
 - `type`: enum
@@ -465,6 +507,10 @@ Checkbox component
 - `checked`: boolean
 - `indeterminate`: boolean
 - `disabled`: boolean
+- `alt`: string
+- `autoComplete`: React.HTMLInputAutoCompleteAttribute
+- `height`: number | string
+- `list`: string
 - `name`: string
 - `placeholder`: string
 - `readOnly`: boolean
@@ -472,11 +518,54 @@ Checkbox component
 - `size`: number
 - `type`: React.HTMLInputTypeAttribute
 - `value`: string | string[] | number
+- `width`: number | string
 - `onChange`: React.ChangeEventHandler<HTMLInputElement>
+- `defaultChecked`: boolean
+- `defaultValue`: string | number | string[]
+- `suppressContentEditableWarning`: boolean
+- `suppressHydrationWarning`: boolean
 - `className`: string
+- `contextMenu`: string
+- `enterKeyHint`: enum
 - `id`: string
 - `lang`: string
+- `nonce`: string
+- `slot`: string
 - `title`: string
+- `radioGroup`: string
+- `role`: React.AriaRole
+- `about`: string
+- `content`: string
+- `datatype`: string
+- `inlist`: unknown
+- `prefix`: string
+- `property`: string
+- `rel`: string
+- `resource`: string
+- `rev`: string
+- `typeof`: string
+- `vocab`: string
+- `autoCorrect`: string
+- `autoSave`: string
+- `color`: string
+- `itemProp`: string
+- `itemScope`: boolean
+- `itemType`: string
+- `itemID`: string
+- `itemRef`: string
+- `results`: number
+- `security`: string
+- `unselectable`: enum
+- `popover`: enum
+- `popoverTargetAction`: enum
+- `popoverTarget`: string
+- `inert`: boolean
+- `inputMode`: enum
+  Hints at the type of data that might be entered by the user while editing the element or its contents
+- `is`: string
+  Specify that a standard HTML element should behave like a defined custom built-in element
+- `exportparts`: string
+- `part`: string
 - `onSubmit`: React.FormEventHandler<HTMLInputElement>
 - `onClick`: React.MouseEventHandler<HTMLInputElement>
 - `onValueChange`: (checked: boolean) => void
@@ -520,6 +609,7 @@ Props:
 - `children`: ReactNode (required)
 - `error`: string
 - `description`: ReactNode
+- `defaultValue`: string[]
 - `value`: string[]
 - `allValues`: string[]
 - `disabled`: boolean
@@ -1289,6 +1379,42 @@ Dialog component
 
 `bg-color-3`, `bg-surface`, `text-surface`
 
+**Styling:**
+
+- **Base Tokens:** `bg-surface`, `text-surface`, `border-border`, `shadow-m`
+- **States:**
+  - `base`: `bg-surface`, `text-surface`, `shadow-m`
+  - `backdrop`: `bg-color-3`, `opacity-80`
+- **Size Variants:**
+  - `sm`:
+    - Classes: `min-w-72`
+    - Dimensions:
+      - paddingX: 16
+      - paddingY: 16
+      - gap: 8
+      - borderRadius: 12
+  - `base`:
+    - Classes: `min-w-96`
+    - Dimensions:
+      - paddingX: 24
+      - paddingY: 24
+      - gap: 16
+      - borderRadius: 12
+  - `lg`:
+    - Classes: `min-w-[32rem]`
+    - Dimensions:
+      - paddingX: 24
+      - paddingY: 24
+      - gap: 16
+      - borderRadius: 12
+  - `xl`:
+    - Classes: `min-w-[48rem]`
+    - Dimensions:
+      - paddingX: 24
+      - paddingY: 24
+      - gap: 16
+      - borderRadius: 12
+
 **Sub-Components:**
 
 This is a compound component. Use these sub-components:
@@ -1823,12 +1949,19 @@ Icon component variants configuration / export const KUMO\*ICON_VARIANTS = { siz
 - `onChange`: React.FormEventHandler<SVGSVGElement>
 - `onSubmit`: React.FormEventHandler<SVGSVGElement>
 - `onClick`: React.MouseEventHandler<SVGSVGElement>
+- `suppressHydrationWarning`: boolean
 - `className`: string
+- `color`: string
+- `height`: number | string
 - `id`: string
 - `lang`: string
+- `media`: string
+- `method`: string
 - `name`: string
+- `target`: string
 - `type`: string
-- `crossOrigin`: enum
+- `width`: number | string
+- `role`: React.AriaRole
 - `accentHeight`: number | string
 - `accumulate`: enum
 - `additive`: enum
@@ -2143,6 +2276,44 @@ Input component
 **Colors (kumo tokens used):**
 
 `bg-secondary`, `ring-active`, `ring-border`, `ring-error`, `text-muted`, `text-surface`
+
+**Styling:**
+
+- **Base Tokens:** `bg-secondary`, `text-surface`, `text-muted`, `ring-border`
+- **States:**
+  - `base`: `bg-secondary`, `text-surface`, `ring-border`
+  - `focus`: `ring-active`
+  - `error`: `ring-error`
+  - `disabled`: `opacity-50`, `text-muted`
+- **Size Variants:**
+  - `xs`:
+    - Height: 20px
+    - Classes: `h-5 gap-1 rounded-sm px-1.5 text-xs`
+    - Dimensions:
+      - paddingX: 6
+      - fontSize: 12
+      - borderRadius: 2
+  - `sm`:
+    - Height: 26px
+    - Classes: `h-6.5 gap-1 rounded-md px-2 text-xs`
+    - Dimensions:
+      - paddingX: 8
+      - fontSize: 12
+      - borderRadius: 6
+  - `base`:
+    - Height: 36px
+    - Classes: `h-9 gap-1.5 rounded-lg px-3 text-base`
+    - Dimensions:
+      - paddingX: 12
+      - fontSize: 16
+      - borderRadius: 8
+  - `lg`:
+    - Height: 40px
+    - Classes: `h-10 gap-2 rounded-lg px-4 text-base`
+    - Dimensions:
+      - paddingX: 16
+      - fontSize: 16
+      - borderRadius: 8
 
 **Examples:**
 
@@ -2865,6 +3036,8 @@ Select component
   Tooltip content to display next to the label via an info icon
 - `value`: string
   The currently selected value
+- `defaultValue`: string
+  Initial value for uncontrolled mode
 - `children`: ReactNode
   Child elements (Select.Option components)
 - `description`: ReactNode
@@ -2873,8 +3046,6 @@ Select component
   Error message or validation error object
 - `onValueChange`: (value: string) => void
   Callback when selection changes
-- `defaultValue`: string
-  Initial value for uncontrolled mode
 
 **Colors (kumo tokens used):**
 
@@ -3013,22 +3184,70 @@ SensitiveInput component
 
 **Props:**
 
+- `alt`: string
+- `autoComplete`: React.HTMLInputAutoCompleteAttribute
 - `checked`: boolean
 - `disabled`: boolean
+- `height`: number | string
+- `list`: string
 - `name`: string
 - `placeholder`: string
 - `readOnly`: boolean
 - `required`: boolean
+- `width`: number | string
 - `onChange`: React.ChangeEventHandler<HTMLInputElement>
+- `defaultChecked`: boolean
+- `suppressContentEditableWarning`: boolean
+- `suppressHydrationWarning`: boolean
 - `className`: string
+- `contextMenu`: string
+- `enterKeyHint`: enum
 - `id`: string
 - `lang`: string
+- `nonce`: string
+- `slot`: string
 - `title`: string
+- `radioGroup`: string
+- `role`: React.AriaRole
+- `about`: string
+- `content`: string
+- `datatype`: string
+- `inlist`: unknown
+- `prefix`: string
+- `property`: string
+- `rel`: string
+- `resource`: string
+- `rev`: string
+- `typeof`: string
+- `vocab`: string
+- `autoCorrect`: string
+- `autoSave`: string
+- `color`: string
+- `itemProp`: string
+- `itemScope`: boolean
+- `itemType`: string
+- `itemID`: string
+- `itemRef`: string
+- `results`: number
+- `security`: string
+- `unselectable`: enum
+- `popover`: enum
+- `popoverTargetAction`: enum
+- `popoverTarget`: string
+- `inert`: boolean
+- `inputMode`: enum
+  Hints at the type of data that might be entered by the user while editing the element or its contents
+- `is`: string
+  Specify that a standard HTML element should behave like a defined custom built-in element
+- `exportparts`: string
+- `part`: string
 - `children`: ReactNode
 - `onSubmit`: React.FormEventHandler<HTMLInputElement>
 - `onClick`: React.MouseEventHandler<HTMLInputElement>
 - `value`: string
   Controlled value
+- `defaultValue`: string
+  Uncontrolled default value
 - `size`: enum [default: base]
   Size variant
 - `variant`: enum [default: default]
@@ -3162,6 +3381,9 @@ Surface component
 
 - `as`: React.ElementType
   The element type to render as (default: "div")
+- `color`: enum [default: primary]
+  - `"primary"`: Primary surface color
+  - `"secondary"`: Secondary surface color
 - `className`: string
   Additional CSS classes
 - `children`: ReactNode
@@ -3208,10 +3430,52 @@ Switch component
 - `name`: string
 - `type`: enum
 - `value`: string | string[] | number
+- `defaultChecked`: boolean
+- `defaultValue`: string | number | string[]
+- `suppressContentEditableWarning`: boolean
+- `suppressHydrationWarning`: boolean
 - `className`: string
+- `contextMenu`: string
+- `enterKeyHint`: enum
 - `id`: string
 - `lang`: string
+- `nonce`: string
+- `slot`: string
 - `title`: string
+- `radioGroup`: string
+- `role`: React.AriaRole
+- `about`: string
+- `content`: string
+- `datatype`: string
+- `inlist`: unknown
+- `prefix`: string
+- `property`: string
+- `rel`: string
+- `resource`: string
+- `rev`: string
+- `typeof`: string
+- `vocab`: string
+- `autoCorrect`: string
+- `autoSave`: string
+- `color`: string
+- `itemProp`: string
+- `itemScope`: boolean
+- `itemType`: string
+- `itemID`: string
+- `itemRef`: string
+- `results`: number
+- `security`: string
+- `unselectable`: enum
+- `popover`: enum
+- `popoverTargetAction`: enum
+- `popoverTarget`: string
+- `inert`: boolean
+- `inputMode`: enum
+  Hints at the type of data that might be entered by the user while editing the element or its contents
+- `is`: string
+  Specify that a standard HTML element should behave like a defined custom built-in element
+- `exportparts`: string
+- `part`: string
 - `onChange`: React.FormEventHandler<HTMLButtonElement>
 - `onSubmit`: React.FormEventHandler<HTMLButtonElement>
 - `onClick`: (event: React.MouseEvent) => void
@@ -3606,6 +3870,9 @@ Tabs component
 
 `bg-accent`, `bg-primary`, `bg-surface-elevated`, `border-accent`, `border-border`, `ring-active`, `ring-color-2`, `text-label`, `text-muted`, `text-surface`
 
+**Styling:**
+
+
 **Examples:**
 
 ```tsx
@@ -3690,6 +3957,9 @@ Toasty component
 
 `bg-toast`, `bg-toast-button-hover`, `border-color`, `text-label`, `text-muted`, `text-surface`
 
+**Styling:**
+
+
 ---
 
 ### Tooltip
@@ -3707,13 +3977,13 @@ Tooltip component
 - `align`: enum
 - `asChild`: boolean
 - `className`: string
+- `content`: ReactNode
+  Content to display in the tooltip
 - `side`: enum [default: top]
   - `"top"`: Tooltip appears above the trigger
   - `"bottom"`: Tooltip appears below the trigger
   - `"left"`: Tooltip appears to the left of the trigger
   - `"right"`: Tooltip appears to the right of the trigger
-- `content`: ReactNode (required)
-  Content to display in the tooltip
 
 **Colors (kumo tokens used):**
 

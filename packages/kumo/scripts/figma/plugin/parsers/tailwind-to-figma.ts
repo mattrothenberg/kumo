@@ -131,6 +131,8 @@ const COLOR_TO_VARIABLE: Record<string, string> = {
   "border-info": "color-info",
   "border-alert": "color-alert",
   "ring-border": "color-border",
+  "ring-active": "color-active",
+  "ring-error": "color-error",
 };
 
 /**

@@ -65,6 +65,68 @@ var TABS_CONFIG = {
 var DEFAULT_TABS = ["Tab 1", "Tab 2", "Tab 3"];
 
 /**
+ * Testable export functions for testing
+ * These enable testing without Figma runtime
+ */
+
+/**
+ * Get container configuration from TABS_CONFIG
+ * Used for testing and validation
+ */
+export function getContainerConfig() {
+  return {
+    height: TABS_CONFIG.containerHeight,
+    borderRadius: TABS_CONFIG.borderRadius,
+    padding: TABS_CONFIG.containerPadding,
+  };
+}
+
+/**
+ * Get tab configuration from TABS_CONFIG
+ * Used for testing and validation
+ */
+export function getTabConfig() {
+  return {
+    paddingX: TABS_CONFIG.tabHorizontalPadding,
+    verticalMargin: TABS_CONFIG.tabVerticalMargin,
+    fontSize: TABS_CONFIG.tabFontSize,
+    fontWeight: TABS_CONFIG.tabFontWeight,
+    borderRadius: TABS_CONFIG.borderRadius,
+  };
+}
+
+/**
+ * Get indicator configuration
+ * Used for testing and validation
+ */
+export function getIndicatorConfig() {
+  return {
+    borderRadius: TABS_CONFIG.borderRadius,
+    // Note: Colors and shadow are applied via Figma variables at runtime
+    // These are semantic tokens: color-surface-elevated, color-color-2, shadow-sm
+  };
+}
+
+/**
+ * Get all variant data for testing
+ * Returns complete data structure for snapshot testing
+ */
+export function getAllVariantData() {
+  return {
+    config: TABS_CONFIG,
+    defaultTabs: DEFAULT_TABS,
+    container: getContainerConfig(),
+    tab: getTabConfig(),
+    indicator: getIndicatorConfig(),
+    variants: DEFAULT_TABS.map((tab, index) => ({
+      value: tab,
+      index,
+      isActive: false, // Will be set based on activeIndex
+    })),
+  };
+}
+
+/**
  * Create a single tab button
  *
  * @param label - Tab label text

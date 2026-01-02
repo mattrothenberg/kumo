@@ -470,6 +470,73 @@ export async function generateDialogComponents(
 }
 
 /**
+ * Testable export functions for test suite
+ */
+
+/**
+ * Get size-specific configuration for a given size
+ * @param size - Size variant (sm, base, lg, xl)
+ * @returns Size configuration object
+ */
+export function getSizeConfig(size: string) {
+  return SIZE_CONFIG[size] || SIZE_CONFIG["base"];
+}
+
+/**
+ * Get base configuration for dialog components
+ * @returns Base configuration object with tokens, border radius, shadow
+ */
+export function getBaseConfig() {
+  return {
+    background: "color-surface",
+    text: "text-color-surface",
+    borderRadius: 12,
+    shadow: "shadow-m",
+    backdrop: {
+      background: "color-color-3",
+      opacity: 0.8,
+    },
+    header: {
+      title: { fontWeight: 600, color: "text-color-surface" },
+      closeIcon: { name: "ph-x", size: 20, color: "text-color-muted" },
+    },
+    description: {
+      fontWeight: 400,
+      color: "text-color-muted",
+    },
+    buttons: {
+      primary: { background: "color-primary", text: "white" },
+      secondary: { ring: "color-border", text: "text-color-surface" },
+    },
+  };
+}
+
+/**
+ * Get complete variant data for all dialog sizes
+ * @returns Complete variant data structure with all sizes and configurations
+ */
+export function getAllVariantData() {
+  var baseConfig = getBaseConfig();
+
+  var variants = SIZE_VALUES.map((size) => {
+    var config = getSizeConfig(size);
+    return {
+      size: size,
+      description: sizeProp.descriptions[size] || "Dialog " + size + " variant",
+      config: config,
+      classes: sizeProp.classes[size],
+    };
+  });
+
+  return {
+    baseConfig: baseConfig,
+    sizeConfig: SIZE_CONFIG,
+    variants: variants,
+    sizeValues: SIZE_VALUES,
+  };
+}
+
+/**
  * Exports for tests and backwards compatibility
  */
 export var DIALOG_SIZE_VALUES = SIZE_VALUES;

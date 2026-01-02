@@ -2199,6 +2199,155 @@ const COMPONENT_STYLING_METADATA: Record<string, ComponentSchema["styling"]> = {
       ],
     },
   },
+  Input: {
+    baseTokens: ["bg-secondary", "text-surface", "text-muted", "ring-border"],
+    sizeVariants: {
+      xs: {
+        height: 20,
+        classes: "h-5 gap-1 rounded-sm px-1.5 text-xs",
+        dimensions: {
+          paddingX: 6,
+          fontSize: 12,
+          borderRadius: 2,
+        },
+      },
+      sm: {
+        height: 26,
+        classes: "h-6.5 gap-1 rounded-md px-2 text-xs",
+        dimensions: {
+          paddingX: 8,
+          fontSize: 12,
+          borderRadius: 6,
+        },
+      },
+      base: {
+        height: 36,
+        classes: "h-9 gap-1.5 rounded-lg px-3 text-base",
+        dimensions: {
+          paddingX: 12,
+          fontSize: 16,
+          borderRadius: 8,
+        },
+      },
+      lg: {
+        height: 40,
+        classes: "h-10 gap-2 rounded-lg px-4 text-base",
+        dimensions: {
+          paddingX: 16,
+          fontSize: 16,
+          borderRadius: 8,
+        },
+      },
+    },
+    states: {
+      base: ["bg-secondary", "text-surface", "ring-border"],
+      focus: ["ring-active"],
+      error: ["ring-error"],
+      disabled: ["opacity-50", "text-muted"],
+    },
+  } as any,
+  Tabs: {
+    container: {
+      height: 34,
+      borderRadius: 8,
+      background: "color-accent",
+      padding: 1,
+    },
+    tab: {
+      paddingX: 10,
+      verticalMargin: 1,
+      fontSize: 16,
+      fontWeight: 500,
+      borderRadius: 8,
+      activeColor: "text-color-surface",
+      inactiveColor: "text-color-label",
+    },
+    indicator: {
+      background: "color-surface-elevated",
+      ring: "color-color-2",
+      borderRadius: 8,
+      shadow: "shadow-sm",
+    },
+  } as any,
+  Dialog: {
+    baseTokens: ["bg-surface", "text-surface", "border-border", "shadow-m"],
+    sizeVariants: {
+      sm: {
+        height: 0, // Dialog height is auto (content-driven)
+        classes: "min-w-72",
+        dimensions: {
+          paddingX: 16,
+          paddingY: 16,
+          gap: 8,
+          borderRadius: 12,
+        },
+      },
+      base: {
+        height: 0,
+        classes: "min-w-96",
+        dimensions: {
+          paddingX: 24,
+          paddingY: 24,
+          gap: 16,
+          borderRadius: 12,
+        },
+      },
+      lg: {
+        height: 0,
+        classes: "min-w-[32rem]",
+        dimensions: {
+          paddingX: 24,
+          paddingY: 24,
+          gap: 16,
+          borderRadius: 12,
+        },
+      },
+      xl: {
+        height: 0,
+        classes: "min-w-[48rem]",
+        dimensions: {
+          paddingX: 24,
+          paddingY: 24,
+          gap: 16,
+          borderRadius: 12,
+        },
+      },
+    },
+    states: {
+      base: ["bg-surface", "text-surface", "shadow-m"],
+      backdrop: ["bg-color-3", "opacity-80"],
+    },
+  } as any,
+  Toasty: {
+    container: {
+      width: 300,
+      padding: 16,
+      borderRadius: 8,
+      background: "color-toast",
+      border: "color-color",
+      shadow: "shadow-lg",
+      gap: 4,
+    },
+    title: {
+      fontSize: 16,
+      fontWeight: 500,
+      color: "text-color-surface",
+    },
+    description: {
+      fontSize: 15,
+      fontWeight: 400,
+      color: "text-color-muted",
+    },
+    closeButton: {
+      size: 20,
+      iconSize: 16,
+      iconName: "ph-x",
+      iconColor: "text-color-muted",
+      hoverBackground: "color-toast-button-hover",
+      hoverColor: "text-color-label",
+      borderRadius: 4,
+    },
+  } as any,
 };
 
 /**

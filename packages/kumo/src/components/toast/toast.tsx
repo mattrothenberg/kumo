@@ -54,6 +54,41 @@ export const KUMO_TOAST_VARIANTS = {
 
 export const KUMO_TOAST_DEFAULT_VARIANTS = {} as const;
 
+/**
+ * Toast styling configuration for Figma plugin consumption.
+ * Provides structured metadata for generating Toast components in Figma.
+ */
+export const KUMO_TOAST_STYLING = {
+  container: {
+    width: 300,
+    padding: 16,
+    borderRadius: 8,
+    background: "color-toast",
+    border: "color-color",
+    shadow: "shadow-lg",
+    gap: 4,
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: 500,
+    color: "text-color-surface",
+  },
+  description: {
+    fontSize: 15,
+    fontWeight: 400,
+    color: "text-color-muted",
+  },
+  closeButton: {
+    size: 20,
+    iconSize: 16,
+    iconName: "ph-x",
+    iconColor: "text-color-muted",
+    hoverBackground: "color-toast-button-hover",
+    hoverColor: "text-color-label",
+    borderRadius: 4,
+  },
+} as const;
+
 // Derived types from KUMO_TOAST_VARIANTS
 export interface KumoToastVariantsProps {}
 

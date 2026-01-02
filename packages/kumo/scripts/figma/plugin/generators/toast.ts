@@ -32,6 +32,9 @@ import {
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import { logComplete } from "../logger";
 
+// Import registry as source of truth
+import registry from "../../../../ai/component-registry.json";
+
 /**
  * Section padding for component display
  */
@@ -272,4 +275,116 @@ export async function generateToastComponents(
   logComplete("Generated Toast ComponentSet (light + dark)");
 
   return startY + totalHeight + SECTION_GAP;
+}
+
+/**
+ * ============================================================
+ * TESTABLE EXPORT FUNCTIONS
+ * ============================================================
+ *
+ * These functions extract intermediate data from the registry
+ * to enable testing without Figma plugin runtime.
+ *
+ * Source of truth chain:
+ * toast.tsx (KUMO_TOAST_STYLING) → component-registry.json → toast.ts
+ */
+
+/**
+ * Get container styling configuration from registry
+ */
+export function getContainerConfig() {
+  const toastComponent = (registry.components as any).Toasty;
+  const styling = toastComponent.styling;
+
+  if (!styling || !styling.container) {
+    throw new Error("Toast styling metadata not found in registry");
+  }
+
+  return {
+    raw: styling.container,
+    width: styling.container.width,
+    padding: styling.container.padding,
+    borderRadius: styling.container.borderRadius,
+    background: styling.container.background,
+    border: styling.container.border,
+    shadow: styling.container.shadow,
+    gap: styling.container.gap,
+  };
+}
+
+/**
+ * Get title styling configuration from registry
+ */
+export function getTitleConfig() {
+  const toastComponent = (registry.components as any).Toasty;
+  const styling = toastComponent.styling;
+
+  if (!styling || !styling.title) {
+    throw new Error("Toast styling metadata not found in registry");
+  }
+
+  return {
+    raw: styling.title,
+    fontSize: styling.title.fontSize,
+    fontWeight: styling.title.fontWeight,
+    color: styling.title.color,
+  };
+}
+
+/**
+ * Get description styling configuration from registry
+ */
+export function getDescriptionConfig() {
+  const toastComponent = (registry.components as any).Toasty;
+  const styling = toastComponent.styling;
+
+  if (!styling || !styling.description) {
+    throw new Error("Toast styling metadata not found in registry");
+  }
+
+  return {
+    raw: styling.description,
+    fontSize: styling.description.fontSize,
+    fontWeight: styling.description.fontWeight,
+    color: styling.description.color,
+  };
+}
+
+/**
+ * Get close button styling configuration from registry
+ */
+export function getCloseButtonConfig() {
+  const toastComponent = (registry.components as any).Toasty;
+  const styling = toastComponent.styling;
+
+  if (!styling || !styling.closeButton) {
+    throw new Error("Toast styling metadata not found in registry");
+  }
+
+  return {
+    raw: styling.closeButton,
+    size: styling.closeButton.size,
+    iconSize: styling.closeButton.iconSize,
+    iconName: styling.closeButton.iconName,
+    iconColor: styling.closeButton.iconColor,
+    hoverBackground: styling.closeButton.hoverBackground,
+    hoverColor: styling.closeButton.hoverColor,
+    borderRadius: styling.closeButton.borderRadius,
+  };
+}
+
+/**
+ * Get complete variant data for all Toast styling
+ * This is the golden path test - captures all intermediate data
+ */
+export function getAllVariantData() {
+  const toastComponent = (registry.components as any).Toasty;
+
+  return {
+    styling: toastComponent.styling,
+    container: getContainerConfig(),
+    title: getTitleConfig(),
+    description: getDescriptionConfig(),
+    closeButton: getCloseButtonConfig(),
+  };
 }

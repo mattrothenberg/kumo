@@ -13,6 +13,44 @@ export const KUMO_SELECT_VARIANTS = {
 
 export const KUMO_SELECT_DEFAULT_VARIANTS = {} as const;
 
+/**
+ * Select component styling metadata for Figma plugin code generation
+ * Extracted from select.tsx implementation (source of truth)
+ */
+export const KUMO_SELECT_STYLING = {
+  trigger: {
+    height: 36, // h-9
+    paddingX: 12, // px-3
+    borderRadius: 8, // rounded-lg
+    background: "color-secondary",
+    text: "text-color-surface",
+    ring: "color-border",
+    fontSize: 16, // text-base
+    fontWeight: 400, // font-normal
+  },
+  stateTokens: {
+    focus: { ring: "color-active" },
+    disabled: { opacity: 0.5 },
+  },
+  icons: {
+    caret: { name: "ph-caret-up-down", size: 20 },
+    check: { name: "ph-check", size: 20 },
+  },
+  popup: {
+    background: "color-secondary",
+    ring: "color-border",
+    borderRadius: 8, // rounded-lg
+    padding: 6, // p-1.5
+  },
+  option: {
+    paddingX: 8, // px-2
+    paddingY: 6, // py-1.5
+    borderRadius: 4, // rounded
+    fontSize: 16, // text-base
+    highlightBackground: "color-color-3",
+  },
+} as const;
+
 // Derived types from KUMO_SELECT_VARIANTS
 export interface KumoSelectVariantsProps {}
 
