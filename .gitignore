@@ -19,6 +19,9 @@ pipeline-artifacts
 worker-configuration.d.ts
 ci/reports/
 
+# Component registry cache (auto-generated)
+packages/kumo/.cache/
+
 # generated types for react router https://reactrouter.com/explanation/type-safety
 .react-router
 

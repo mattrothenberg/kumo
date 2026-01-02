@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "pnpm --filter @cloudflare/kumo-docs build",
-    "build:ai-metadata": "pnpm --filter @cloudflare/kumo build:ai-metadata",
+    "codegen": "pnpm --filter @cloudflare/kumo codegen",
     "build:all": "pnpm -r build",
     "changeset": "changeset",
     "clean": "pnpm -r exec rm -rf dist build .react-router .wrangler node_modules",

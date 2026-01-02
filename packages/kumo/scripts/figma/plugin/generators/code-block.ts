@@ -52,6 +52,82 @@ var SECTION_PADDING = 48;
 var SECTION_GAP = 160;
 
 /**
+ * TESTABLE EXPORTS - Pure functions that return intermediate data
+ * These functions compute data without calling Figma APIs, enabling snapshot tests.
+ */
+
+/**
+ * Get base styles for CodeBlock container
+ * Returns container styling and inner padding info
+ */
+export function getBaseStyles() {
+  const codeComponent = registry.components.Code as any;
+  const codeStyling = codeComponent.styling;
+  const containerStyles = (
+    codeStyling.states.code_block_container as string[]
+  ).join(" ");
+
+  return {
+    container: {
+      raw: containerStyles,
+      parsed: parseTailwindClasses(containerStyles),
+    },
+    innerPadding: CODE_INNER_PADDING, // p-2.5 = 10px
+  };
+}
+
+/**
+ * Get container configuration with dimensions and styling
+ * Returns structured config for Figma container creation
+ */
+export function getContainerConfig() {
+  const codeComponent = registry.components.Code as any;
+  const codeStyling = codeComponent.styling;
+  const containerStyles = (
+    codeStyling.states.code_block_container as string[]
+  ).join(" ");
+  const parsed = parseTailwindClasses(containerStyles);
+
+  return {
+    borderRadius: parsed.borderRadius || 6,
+    padding: CODE_INNER_PADDING,
+    border: {
+      hasBorder: parsed.hasBorder || false,
+      strokeWeight: parsed.strokeWeight || 1,
+      strokeVariable: parsed.strokeVariable || "",
+    },
+    fill: {
+      fillVariable: parsed.fillVariable || "",
+    },
+  };
+}
+
+/**
+ * Get complete intermediate data for all variants
+ * Returns containerStyles + all lang variant data (for snapshot testing)
+ */
+export function getAllVariantData() {
+  const codeComponent = registry.components.Code as any;
+  const codeStyling = codeComponent.styling;
+  const containerStyles = (
+    codeStyling.states.code_block_container as string[]
+  ).join(" ");
+  const parsed = parseTailwindClasses(containerStyles);
+
+  return {
+    containerStyles: {
+      raw: containerStyles,
+      parsed,
+    },
+    variants: langProp.values.map((lang) => ({
+      lang,
+      description: langProp.descriptions[lang] || "",
+      placeholderText: getPlaceholderText(lang),
+    })),
+  };
+}
+
+/**
  * Get placeholder text based on lang variant
  */
 function getPlaceholderText(lang: string): string {

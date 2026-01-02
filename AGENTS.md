@@ -15,7 +15,7 @@ import { Button } from "@cloudflare/kumo";
 **CRITICAL:** Only use semantic tokens (`bg-surface`, `text-surface`). Never raw Tailwind colors (`bg-blue-500`).
 
 ```bash
-pnpm build:ai-metadata  # Generate component-registry.{json,md}
+pnpm --filter @cloudflare/kumo codegen:registry  # Generate component-registry.{json,md}
 ```
 
 ## Repository Overview
@@ -64,11 +64,12 @@ Kumo provides extensive automated tooling (`packages/kumo/scripts/`):
 **Key Commands:**
 
 ```bash
-pnpm build:ai-metadata    # Component registry
-npx @cloudflare/kumo doc  # CLI docs (works in any project)
-pnpm build:figma-plugin   # Figma generators
-pnpm add:icon icon.svg    # Add icon with normalization
-pnpm lint                 # Custom rules + oxlint
+pnpm --filter @cloudflare/kumo codegen:registry  # Component registry
+pnpm --filter @cloudflare/kumo codegen           # All codegen (primitives + registry)
+npx @cloudflare/kumo doc                         # CLI docs (works in any project)
+pnpm --filter @cloudflare/kumo figma:plugin      # Figma generators
+pnpm --filter @cloudflare/kumo icons:add         # Add icon with normalization
+pnpm lint                                        # Custom rules + oxlint
 ```
 
 ## Project Structure
@@ -462,7 +463,7 @@ All components must:
 
 4. **Regenerate the component registry:**
    ```bash
-   pnpm build:ai-metadata
+   pnpm --filter @cloudflare/kumo codegen:registry
    ```
 
 ### What Gets Scaffolded
@@ -515,7 +516,7 @@ pnpm --filter @cloudflare/kumo lint       # oxlint with:
 
 # Build
 pnpm --filter @cloudflare/kumo build      # Full build with CSS
-pnpm build:ai-metadata                    # Regenerate component-registry
+pnpm --filter @cloudflare/kumo codegen:registry  # Regenerate component-registry
 
 # Storybook
 pnpm storybook                            # Dev server (http://localhost:6006)
@@ -992,12 +993,12 @@ When working with this codebase as an AI agent:
 2. **Verify semantic tokens** - Ensure no raw Tailwind colors exist
 3. **Run linting** - Custom rules will catch color and dark mode violations
 4. **Update stories** - Ensure Storybook examples reflect changes
-5. **Regenerate registry** - Run `pnpm build:ai-metadata` after changes
+5. **Regenerate registry** - Run `pnpm --filter @cloudflare/kumo codegen:registry` after changes
 
 ## Important Notes
 
 - The component registry (`packages/kumo/ai/component-registry.{json,md}`) is the source of truth for component APIs
-- Always regenerate the registry (`pnpm build:ai-metadata`) after modifying component props or variants
+- Always regenerate the registry (`pnpm --filter @cloudflare/kumo codegen:registry`) after modifying component props or variants
 - Custom lint rules enforce semantic token usage and prevent `dark:` variants
 
 ### Common Mistakes to Avoid

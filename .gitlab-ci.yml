@@ -115,6 +115,18 @@ include:
       workDir: "packages/kumo"
       runOnMR: true
 
+  # Color token validation for @cloudflare/kumo
+  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
+    inputs:
+      stage: checks
+      jobPrefix: validate-colors
+      PNPM_VERSION: *PNPM_VERSION
+      NODE_VERSION: *NODE_VERSION
+      PNPM_RUN_TARGET: "validate:colors"
+      workDir: "packages/kumo"
+      runOnMR: true
+      runOnBranches: "^main$"
+
   # ============= TEST STAGE (Uses build artifacts) =============
 
   # Test @cloudflare/kumo (unit tests + Storybook a11y tests)
@@ -251,6 +263,20 @@ lint-kumo-lint:
 validate-build-run:
   needs:
     - build-kumo-build
+
+# Color validation runs when theme CSS or component files change
+validate-colors-run:
+  rules:
+    - if: $CI_MERGE_REQUEST_IID
+      changes:
+        paths:
+          - packages/kumo/src/styles/theme-*.css
+          - packages/kumo/src/**/*.tsx
+        compare_to: "refs/heads/main"
+      when: on_success
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: on_success
+    - when: never
 
 publish-beta-run:
   needs:

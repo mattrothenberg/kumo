@@ -910,7 +910,7 @@ ClipboardText component
 
 ### Code
 
-Simple code component without syntax highlighting
+Code component
 
 **Type:** component
 
@@ -936,6 +936,28 @@ Simple code component without syntax highlighting
 **Colors (kumo tokens used):**
 
 `bg-surface`, `border-color`, `text-label`
+
+**Styling:**
+
+- **Dimensions:** `m-0 w-auto p-0`
+- **Border Radius:** `rounded-none`
+- **Base Tokens:** `text-label`
+- **States:**
+  - `base`: `bg-transparent`, `border-none`, `font-mono`, `text-sm`, `leading-[20px]`
+  - `code_block_container`: `min-w-0`, `rounded-md`, `border`, `border-color`, `bg-surface`
+
+**Sub-Components:**
+
+This is a compound component. Use these sub-components:
+
+#### Code.Block
+
+Block sub-component
+
+Props:
+
+- `code`: string (required)
+- `lang`: CodeLang
 
 **Examples:**
 
@@ -1379,6 +1401,220 @@ Usage:
   </Dialog>
 </Dialog.Root>
 ```
+
+# <<<<<<< HEAD
+
+```tsx
+<Dialog.Root>
+  <Dialog.Trigger render={<Button>Open Dialog</Button>} />
+  <Dialog className="p-6" size={args.size}>
+    <div className="mb-4 flex items-center justify-between">
+      <Dialog.Title className="text-xl font-semibold">
+        Dialog Title
+      </Dialog.Title>
+      <Dialog.Close
+        render={
+          <button className="text-muted transition-colors hover:text-surface">
+            <Icon glyph="ph-x" size="sm" />
+          </button>
+        }
+      />
+    </div>
+    <Dialog.Description className="mb-4 text-muted">
+      This is a dialog description with some content explaining the purpose of
+      this dialog.
+    </Dialog.Description>
+    <div className="flex justify-end gap-3">
+      <Dialog.Close render={<Button variant="secondary">Cancel</Button>} />
+      <Button variant="primary">Confirm</Button>
+    </div>
+  </Dialog>
+</Dialog.Root>
+```
+
+```tsx
+<Dialog.Root>
+  <Dialog.Trigger render={<Button variant="destructive">Delete</Button>} />
+  <Dialog className="p-6" size="sm">
+    <div className="mb-4 flex items-center justify-between">
+      <Dialog.Title className="text-lg font-semibold">Delete Item</Dialog.Title>
+      <Dialog.Close
+        render={
+          <button className="text-muted transition-colors hover:text-surface">
+            <Icon glyph="ph-x" size="sm" />
+          </button>
+        }
+      />
+    </div>
+    <Dialog.Description className="mb-4 text-muted">
+      Are you sure you want to delete this item? This action cannot be undone.
+    </Dialog.Description>
+    <div className="flex justify-end gap-3">
+      <Dialog.Close render={<Button variant="secondary">Cancel</Button>} />
+      <Button variant="destructive">Delete</Button>
+    </div>
+  </Dialog>
+</Dialog.Root>
+```
+
+```tsx
+<div className="flex flex-wrap gap-4">
+  <Dialog.Root>
+    <Dialog.Trigger render={<Button>Small (sm)</Button>} />
+    <Dialog className="p-6" size="sm">
+      <div className="mb-4 flex items-center justify-between">
+        <Dialog.Title className="text-lg font-semibold">
+          Small Dialog
+        </Dialog.Title>
+        <Dialog.Close
+          render={
+            <button className="text-muted transition-colors hover:text-surface">
+              <Icon glyph="ph-x" size="sm" />
+            </button>
+          }
+        />
+      </div>
+      <Dialog.Description className="mb-4 text-muted">
+        This is a small dialog for simple confirmations.
+      </Dialog.Description>
+      <div className="flex justify-end gap-2">
+        <Dialog.Close render={<Button variant="secondary">Cancel</Button>} />
+        <Button variant="primary">Confirm</Button>
+      </div>
+    </Dialog>
+  </Dialog.Root>
+
+  <Dialog.Root>
+    <Dialog.Trigger render={<Button>Base (default)</Button>} />
+    <Dialog className="p-6" size="base">
+      <div className="mb-4 flex items-center justify-between">
+        <Dialog.Title className="text-xl font-semibold">
+          Base Dialog
+        </Dialog.Title>
+        <Dialog.Close
+          render={
+            <button className="text-muted transition-colors hover:text-surface">
+              <Icon glyph="ph-x" size="sm" />
+            </button>
+          }
+        />
+      </div>
+      <Dialog.Description className="mb-4 text-muted">
+        This is the default dialog size for most use cases.
+      </Dialog.Description>
+      <div className="flex justify-end gap-3">
+        <Dialog.Close render={<Button variant="secondary">Cancel</Button>} />
+        <Button variant="primary">Confirm</Button>
+      </div>
+    </Dialog>
+  </Dialog.Root>
+
+  <Dialog.Root>
+    <Dialog.Trigger render={<Button>Large (lg)</Button>} />
+    <Dialog className="p-6" size="lg">
+      <div className="mb-4 flex items-center justify-between">
+        <Dialog.Title className="text-xl font-semibold">
+          Large Dialog
+        </Dialog.Title>
+        <Dialog.Close
+          render={
+            <button className="text-muted transition-colors hover:text-surface">
+              <Icon glyph="ph-x" size="sm" />
+            </button>
+          }
+        />
+      </div>
+      <Dialog.Description className="mb-4 text-muted">
+        This is a large dialog for complex content that needs more space.
+      </Dialog.Description>
+      <div className="flex justify-end gap-3">
+        <Dialog.Close render={<Button variant="secondary">Cancel</Button>} />
+        <Button variant="primary">Confirm</Button>
+      </div>
+    </Dialog>
+  </Dialog.Root>
+
+  <Dialog.Root>
+    <Dialog.Trigger render={<Button>Extra Large (xl)</Button>} />
+    <Dialog className="p-6" size="xl">
+      <div className="mb-4 flex items-center justify-between">
+        <Dialog.Title className="text-xl font-semibold">
+          Extra Large Dialog
+        </Dialog.Title>
+        <Dialog.Close
+          render={
+            <button className="text-muted transition-colors hover:text-surface">
+              <Icon glyph="ph-x" size="sm" />
+            </button>
+          }
+        />
+      </div>
+      <Dialog.Description className="mb-4 text-muted">
+        This is an extra large dialog for detailed views and complex forms.
+      </Dialog.Description>
+      <div className="flex justify-end gap-3">
+        <Dialog.Close render={<Button variant="secondary">Cancel</Button>} />
+        <Button variant="primary">Confirm</Button>
+      </div>
+    </Dialog>
+  </Dialog.Root>
+</div>
+```
+
+```tsx
+<Dialog.Root>
+  <Dialog.Trigger render={<Button>Edit Profile</Button>} />
+  <Dialog className="p-6" size="base">
+    <div className="mb-4 flex items-center justify-between">
+      <Dialog.Title className="text-xl font-semibold">
+        Edit Profile
+      </Dialog.Title>
+      <Dialog.Close
+        render={
+          <button className="text-muted transition-colors hover:text-surface">
+            <Icon glyph="ph-x" size="sm" />
+          </button>
+        }
+      />
+    </div>
+    <Dialog.Description className="mb-4 text-muted">
+      Update your profile information below.
+    </Dialog.Description>
+    <form className="space-y-4">
+      <div>
+        <label htmlFor="name" className="mb-1 block text-sm font-medium">
+          Name
+        </label>
+        <input
+          id="name"
+          type="text"
+          aria-label="Name"
+          className="w-full rounded-lg bg-secondary px-3 py-2 ring ring-border focus:ring-active"
+          placeholder="Enter your name"
+        />
+      </div>
+      <div>
+        <label htmlFor="email" className="mb-1 block text-sm font-medium">
+          Email
+        </label>
+        <input
+          id="email"
+          type="email"
+          aria-label="Email"
+          className="w-full rounded-lg bg-secondary px-3 py-2 ring ring-border focus:ring-active"
+          placeholder="Enter your email"
+        />
+      </div>
+      <div className="flex justify-end gap-3 pt-2">
+        <Dialog.Close render={<Button variant="secondary">Cancel</Button>} />
+        <Button variant="primary">Save Changes</Button>
+      </div>
+    </form>
+  </Dialog>
+</Dialog.Root>
+```
+
+> > > > > > > 16575c7 (feat(figma): add Code/CodeBlock generators, improve registry caching docs)
 
 ---
 

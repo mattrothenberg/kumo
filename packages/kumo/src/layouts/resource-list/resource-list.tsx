@@ -28,7 +28,10 @@ export function ResourceListPage({
 }: ResourceListPageProps) {
   return (
     <div
-      className={cn("bg-bg-secondary h-full min-h-screen w-full", className)}
+      className={cn(
+        "h-full min-h-screen w-full bg-surface-secondary",
+        className,
+      )}
     >
       <div className="mx-auto flex max-w-[1400px] flex-col p-6 md:gap-4 md:p-8 lg:px-10 lg:py-9 xl:gap-6">
         <div className="flex flex-col">

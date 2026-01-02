@@ -462,7 +462,7 @@ function UpdateEmailDialog({ currentEmail }: { currentEmail: string }) {
         <DialogTitle className="text-base font-semibold text-surface">
           Update Email
         </DialogTitle>
-        <DialogClose className="text-muted-foreground hover:text-surface">
+        <DialogClose className="text-muted hover:text-surface">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
@@ -559,7 +559,7 @@ function DeleteUserDialog({
         <DialogTitle className="text-base font-semibold text-surface">
           Delete User
         </DialogTitle>
-        <DialogClose className="text-muted-foreground hover:text-surface">
+        <DialogClose className="text-muted hover:text-surface">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
