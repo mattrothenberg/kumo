@@ -243,6 +243,7 @@ export const WithForm: Story = {
             <input
               id="name"
               type="text"
+              aria-label="Name"
               className="w-full rounded-lg bg-secondary px-3 py-2 ring ring-border focus:ring-active"
               placeholder="Enter your name"
             />
@@ -254,6 +255,7 @@ export const WithForm: Story = {
             <input
               id="email"
               type="email"
+              aria-label="Email"
               className="w-full rounded-lg bg-secondary px-3 py-2 ring ring-border focus:ring-active"
               placeholder="Enter your email"
             />
