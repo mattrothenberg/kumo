@@ -25,13 +25,13 @@ component.tsx (KUMO_*_VARIANTS + KUMO_*_STYLING)
 | `clipboard-text`    | ✅ Rigorous | ✅             | ❌               | ✅            | **Done**    |
 | `code`              | ✅ Rigorous | ✅             | ❌               | ✅            | **Done**    |
 | `code-block`        | ✅ Rigorous | ✅             | ❌               | ✅            | **Done**    |
-| `text`              | ⚠️ Basic    | ✅             | ❌               | ❌            | Needs work  |
+| `text`              | ✅ Rigorous | ✅             | ❌               | ✅            | **Done**    |
 | `collapsible`       | ❌          | Partial        | ❌               | ❌            | Needs work  |
 | `combobox`          | ❌          | Partial        | ❌               | ❌            | Needs work  |
 | `date-range-picker` | ❌          | Partial        | ❌               | ❌            | Needs work  |
-| `dialog`            | ❌          | Partial        | ❌               | ❌            | Needs work  |
+| `dialog`            | ✅ Rigorous | ✅             | ❌               | ✅            | **Done**    |
 | `dropdown`          | ❌          | ❌             | ❌               | ❌            | Needs work  |
-| `input`             | ❌          | Partial        | ❌               | ❌            | Needs work  |
+| `input`             | ✅ Rigorous | ✅             | ❌               | ✅            | **Done**    |
 | `input-area`        | ❌          | ❌             | ❌               | ❌            | Needs work  |
 | `layer-card`        | ❌          | ❌             | ❌               | ❌            | Needs work  |
 | `link-button`       | ❌          | ✅             | ❌               | ❌            | Needs tests |
@@ -40,12 +40,12 @@ component.tsx (KUMO_*_VARIANTS + KUMO_*_STYLING)
 | `meter`             | ❌          | Partial        | ❌               | ❌            | Needs work  |
 | `pagination`        | ❌          | ❌             | ❌               | ❌            | Needs work  |
 | `refresh-button`    | ❌          | ✅             | ❌               | ❌            | Needs tests |
-| `select`            | ❌          | Partial        | ❌               | ❌            | Needs work  |
+| `select`            | ✅ Rigorous | ✅             | ❌               | ✅            | **Done**    |
 | `sensitive-input`   | ❌          | ❌             | ❌               | ❌            | Needs work  |
 | `surface`           | ❌          | ❌             | ❌               | ❌            | Needs work  |
 | `switch`            | ❌          | ✅             | ❌               | ❌            | Needs tests |
-| `tabs`              | ❌          | Partial        | ❌               | ❌            | Needs work  |
-| `toast`             | ❌          | Partial        | ❌               | ❌            | Needs work  |
+| `tabs`              | ✅ Rigorous | ✅             | ❌               | ✅            | **Done**    |
+| `toast`             | ✅ Rigorous | ✅             | ❌               | ✅            | **Done**    |
 | `tooltip`           | ❌          | ❌             | ❌               | ❌            | Needs work  |
 
 ### Registry Metadata Types
@@ -186,12 +186,12 @@ export const KUMO_COMPONENT_STYLING = {
 
 ### Tasks
 
-- [ ] **4.1** Add `styling` export to `text.tsx`
-- [ ] **4.2** Add `styling` export to `input.tsx`
-- [ ] **4.3** Add `styling` export to `select.tsx`
-- [ ] **4.4** Add `styling` export to `dialog.tsx`
-- [ ] **4.5** Add `styling` export to `tabs.tsx`
-- [ ] **4.6** Add `styling` export to `toast.tsx`
+- [x] **4.1** Add `styling` export to `text.tsx`
+- [x] **4.2** Add `styling` export to `input.tsx`
+- [x] **4.3** Add `styling` export to `select.tsx`
+- [x] **4.4** Add `styling` export to `dialog.tsx`
+- [x] **4.5** Add `styling` export to `tabs.tsx`
+- [x] **4.6** Add `styling` export to `toast.tsx`
 - [ ] **4.8** Document `styling` pattern in AGENTS.md
 
 ---
@@ -204,15 +204,15 @@ export const KUMO_COMPONENT_STYLING = {
 
 **Tier 1 - High Usage:**
 
-- [ ] **5.1** `text.ts` - Add rigorous tests, verify registry reading
-- [ ] **5.2** `input.ts` - Migrate hardcoded values to registry
-- [ ] **5.3** `select.ts` - Migrate hardcoded values to registry
-- [ ] **5.4** `dialog.ts` - Migrate SIZE_CONFIG to registry
+- [x] **5.1** `text.ts` - Add rigorous tests, verify registry reading
+- [x] **5.2** `input.ts` - Migrate hardcoded values to registry
+- [x] **5.3** `select.ts` - Migrate hardcoded values to registry
+- [x] **5.4** `dialog.ts` - Migrate SIZE_CONFIG to registry
 
 **Tier 2 - Medium Usage:**
 
-- [ ] **5.5** `tabs.ts` - Migrate to registry
-- [ ] **5.6** `toast.ts` - Migrate to registry
+- [x] **5.5** `tabs.ts` - Migrate to registry
+- [x] **5.6** `toast.ts` - Migrate to registry
 - [ ] **5.7** `dropdown.ts` - Migrate to registry
 - [ ] **5.8** `combobox.ts` - Migrate to registry
 
@@ -284,12 +284,14 @@ describe("{Component} Generator - Snapshots", () => {
 ### Tasks
 
 - [ ] **6.1** Create test template file
-- [ ] **6.2** Add tests for `text.ts`
-- [ ] **6.3** Add tests for `input.ts`
-- [ ] **6.4** Add tests for `select.ts`
-- [ ] **6.5** Add tests for `dialog.ts`
-- [ ] **6.6** Add tests for remaining Tier 1-2 generators
-- [ ] **6.7** Add tests for remaining Tier 3-4 generators
+- [x] **6.2** Add tests for `text.ts`
+- [x] **6.3** Add tests for `input.ts`
+- [x] **6.4** Add tests for `select.ts`
+- [x] **6.5** Add tests for `dialog.ts`
+- [x] **6.6** Add tests for `tabs.ts`
+- [x] **6.7** Add tests for `toast.ts`
+- [ ] **6.8** Add tests for remaining Tier 1-2 generators
+- [ ] **6.9** Add tests for remaining Tier 3-4 generators
 
 ---
 
@@ -345,12 +347,60 @@ All "Done" generators now use structural assertions instead of exact value check
 - Added `validate:colors` script and CI job for color token validation
 - Renamed `build:ai-metadata` → `codegen:registry` for clarity
 
+### Tier 1 Generator Completion (Jan 2026)
+
+**Text, Input, Select, Dialog, Tabs, Toast** - All migrated to registry with rigorous tests.
+
+#### Component Styling Exports
+
+Added `KUMO_*_STYLING` exports to all Tier 1 components:
+
+1. **text.tsx** - `KUMO_TEXT_STYLING` with dimensions, border radius, base tokens
+2. **input.tsx** - `KUMO_INPUT_STYLING` with states (focus, error, disabled), icon configuration
+3. **select.tsx** - `KUMO_SELECT_STYLING` with trigger/popup dimensions, icon states
+4. **dialog.tsx** - `KUMO_DIALOG_STYLING` with size variants (sm, base, lg, xl, full), overlay styling
+5. **tabs.tsx** - `KUMO_TABS_STYLING` with list/trigger/panel dimensions, state styling
+6. **toast.tsx** - `KUMO_TOAST_STYLING` with position variants, icon configurations for variants
+
+#### Generator Refactoring
+
+All generators now follow the ideal pattern:
+
+- Import from `component-registry.json`
+- Export testable pure functions (`getBaseStyles`, `getParsedVariantStyles`, `getAllVariantData`)
+- Parse styling metadata using `parseTailwindClasses`
+- Generate Figma components with registry-derived values
+
+#### Test Coverage
+
+Created rigorous tests for all 6 generators:
+
+- **text.test.ts** - Registry validation, structural validation, snapshots
+- **input.test.ts** - State validation (default, focus, error, disabled), icon parsing
+- **select.test.ts** - Trigger/popup validation, icon state parsing, size variants
+- **dialog.test.ts** - Size variant validation (5 sizes), overlay parsing, compound component structure
+- **tabs.test.ts** - List/trigger/panel validation, state parsing, variant styles
+- **toast.test.ts** - Position/variant validation (20 combinations), icon configuration parsing
+
+All tests follow the structural + snapshot pattern:
+
+- Registry validation (ensure expected variants exist)
+- Structural validation (ensure parsed styles have expected properties)
+- Snapshot tests (detect unintended changes)
+
+#### Impact
+
+- **6 generators** now fully registry-driven
+- **6 components** now export structured styling metadata
+- **6 test suites** added (~1200 lines of rigorous tests)
+- **Generator Status Table** updated: 13/29 generators now marked as "Done"
+
 ### Next Priority Tasks
 
 1. **Phase 2.2** - Audit remaining generators for dead code
-2. **Phase 4.1-4.6** - Add `styling` exports to remaining components
-3. **Phase 5.1** - Add rigorous tests to `text.ts` generator
-4. **Phase 3** - Parser improvements (arbitrary values, opacity modifiers)
+2. **Phase 5.7-5.8** - Migrate Tier 2 remaining generators (dropdown, combobox)
+3. **Phase 3** - Parser improvements (arbitrary values, opacity modifiers)
+4. **Phase 7** - Documentation updates
 
 ---
 
