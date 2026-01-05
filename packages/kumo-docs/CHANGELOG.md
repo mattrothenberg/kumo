@@ -1,5 +1,49 @@
 # @cloudflare/kumo-docs
 
+## 0.4.0
+
+### Minor Changes
+
+- 45ccaec: Document secondary-destructive button variant
+- 731e636: inputs with built-in fields
+- 167a92b: Removed label prop from input components. Prefer using Field to compose a label with an input.
+
+### Patch Changes
+
+- 933fdf2: Changed all onValueChange={setValue} to onValueChange={(v) => setValue(v as any)} to handle the nullable value from base-ui while maintaining existing state types.
+- 3210b5f: UI-7422 - Adds text sizes to kumo docs
+- e03938f: UI-7421 - Adds links to kumo docs when available
+- b09a671: Remove field link from sidebar
+- 933fdf2: Add base-ui primitive documentation
+- Updated dependencies [010d1f0]
+- Updated dependencies [933fdf2]
+- Updated dependencies [d23783f]
+- Updated dependencies [731e636]
+- Updated dependencies [1db802c]
+- Updated dependencies [fe8fd1b]
+- Updated dependencies [45ccaec]
+- Updated dependencies [ccc03dc]
+- Updated dependencies [933fdf2]
+- Updated dependencies [949fe52]
+- Updated dependencies [2f91f1f]
+- Updated dependencies [ad3c8fa]
+- Updated dependencies [731e636]
+- Updated dependencies [72f0695]
+- Updated dependencies [933fdf2]
+- Updated dependencies [e6326f1]
+- Updated dependencies [abc1a1e]
+- Updated dependencies [e6a6f8c]
+- Updated dependencies [9fbb791]
+- Updated dependencies [a4231cc]
+- Updated dependencies [344372e]
+- Updated dependencies [167a92b]
+- Updated dependencies [d1b80c8]
+- Updated dependencies [8578662]
+- Updated dependencies [38f4424]
+- Updated dependencies [e82f3f7]
+- Updated dependencies [37a703d]
+  - @cloudflare/kumo@0.4.0
+
 ## 0.3.0
 
 ### Minor Changes
