@@ -181,7 +181,7 @@ publish-beta-run:
       vault: gitlab/_ci_components/_dev/npm/kv_token@kv
       file: false
     GITLAB_API_TOKEN:
-      vault: gitlab/cloudflare/fe/kumo/_dev/kumo_preview_bot/data@kv
+      vault: gitlab/cloudflare/fe/kumo/_dev/kumo_preview_bot_v2/data@kv
       file: false
 
 # ============= MANUAL RELEASES STAGE (Production releases) =============
@@ -243,8 +243,8 @@ prod-release-kumo-run:
       vault: gitlab/_ci_components/_dev/npm/kv_token@kv
       file: false
     GITLAB_API_TOKEN:
-      vault: gitlab/cloudflare/fe/kumo/_dev/kumo_preview_bot/data@kv
+      vault: gitlab/cloudflare/fe/kumo/_dev/kumo_preview_bot_v2/data@kv
       file: false
     CI_RELEASE_TOKEN:
-      vault: gitlab/cloudflare/fe/kumo/_dev/ci_release_token/data@kv
+      vault: gitlab/cloudflare/fe/kumo/_dev/ci_release_token_v2/data@kv
       file: false
