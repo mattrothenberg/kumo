@@ -1,0 +1,54 @@
+---
+import DocLayout from "../../layouts/DocLayout.astro";
+import ComponentSection from "../../components/docs/ComponentSection.astro";
+import ComponentExample from "../../components/docs/ComponentExample.astro";
+import CodeBlock from "../../components/docs/CodeBlock.astro";
+import { BadgeVariantsDemo } from "../../components/demos/BadgeDemo";
+---
+
+<DocLayout
+  title="Badge"
+  description="A small label for highlighting status or categories."
+>
+  <ComponentSection>
+    <ComponentExample code={`<Badge variant="primary">Primary</Badge>
+<Badge variant="secondary">Secondary</Badge>
+<Badge variant="outline">Outline</Badge>
+<Badge variant="beta">Beta</Badge>
+<Badge variant="destructive">Destructive</Badge>`}>
+      <BadgeVariantsDemo client:visible />
+    </ComponentExample>
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
+    <CodeBlock code={`import { Badge } from "@cloudflare/kumo";`} lang="tsx" />
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <th class="px-4 py-3 text-left font-semibold">Prop</th>
+            <th class="px-4 py-3 text-left font-semibold">Type</th>
+            <th class="px-4 py-3 text-left font-semibold">Default</th>
+          </tr>
+        </thead>
+        <tbody class="text-neutral-600 dark:text-neutral-400">
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <td class="px-4 py-3 font-mono text-xs">variant</td>
+            <td class="px-4 py-3 font-mono text-xs">"primary" | "secondary" | "outline" | "beta" | "destructive"</td>
+            <td class="px-4 py-3 font-mono text-xs">"primary"</td>
+          </tr>
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <td class="px-4 py-3 font-mono text-xs">children</td>
+            <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
+            <td class="px-4 py-3 font-mono text-xs">-</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ComponentSection>
+</DocLayout>
