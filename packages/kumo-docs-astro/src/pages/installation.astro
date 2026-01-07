@@ -1,0 +1,306 @@
+---
+import { Code } from "astro:components";
+import DocLayout from "../layouts/DocLayout.astro";
+import ComponentSection from "../components/docs/ComponentSection.astro";
+import CodeBlock from "../components/docs/CodeBlock.astro";
+import Callout from "../components/docs/Callout.astro";
+---
+
+<DocLayout
+  title="Installation"
+  description="Get started with Kumo by installing the package and importing components."
+>
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">NPM Registry Configuration</h2>
+    <p class="mb-4 text-neutral-600 dark:text-neutral-400">
+      Follow the steps at <a
+        href="https://wiki.cfdata.org/display/FE/Getting+started+with+the+private+NPM+registry"
+        class="text-blue-600 hover:underline dark:text-blue-400"
+        >Getting started with the private NPM registry</a
+      > to configure your local environment with a <code
+        class="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800"
+        >NPM_TOKEN</code
+      >.
+    </p>
+    <p class="mb-4 text-neutral-600 dark:text-neutral-400">
+      To install <code
+        class="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800"
+        >@cloudflare</code
+      > scoped packages, you need to configure NPM to use the Cloudflare private
+      registry.<br />
+      Add the following to either your user-level NPM configuration (<code
+        class="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800"
+        >~/.npmrc</code
+      >) or your consuming project's <code
+        class="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800"
+        >.npmrc</code
+      > file:
+    </p>
+    <CodeBlock
+      code={`# Cloudflare registry configuration
+@cloudflare:registry=https://registry-gateway.cloudflare-ui.workers.dev
+//registry-gateway.cloudflare-ui.workers.dev/:_authToken="\${NPM_TOKEN}"`}
+      lang="bash"
+    />
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Install Package</h2>
+    <p class="mb-4 text-neutral-600 dark:text-neutral-400">
+      Install Kumo using your preferred package manager:
+    </p>
+    <div class="space-y-4">
+      <div>
+        <p class="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+          npm
+        </p>
+        <CodeBlock code={`npm install @cloudflare/kumo`} lang="bash" />
+      </div>
+      <div>
+        <p class="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+          pnpm
+        </p>
+        <CodeBlock code={`pnpm add @cloudflare/kumo`} lang="bash" />
+      </div>
+      <div>
+        <p class="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+          yarn
+        </p>
+        <CodeBlock code={`yarn add @cloudflare/kumo`} lang="bash" />
+      </div>
+    </div>
+    <div class="mt-4">
+      <p class="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+        Peer Dependencies
+      </p>
+      <p class="mb-3 text-sm text-neutral-600 dark:text-neutral-400">
+        Kumo requires the following peer dependencies. Most React projects will
+        already have these installed:
+      </p>
+      <CodeBlock
+        code={`# Required peer dependencies
+pnpm add react react-dom @phosphor-icons/react`}
+        lang="bash"
+      />
+    </div>
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Import Components</h2>
+    <p class="mb-4 text-neutral-600 dark:text-neutral-400">
+      Import components from the main package or use granular imports for better
+      tree-shaking:
+    </p>
+    <div class="space-y-4">
+      <div>
+        <p class="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+          Main Package Import
+        </p>
+        <CodeBlock
+          code={`import { Button, Input, Surface } from "@cloudflare/kumo";`}
+          lang="tsx"
+        />
+      </div>
+      <div>
+        <p class="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+          Granular Import (Recommended)
+        </p>
+        <CodeBlock
+          code={`import { Button } from "@cloudflare/kumo/components/button";
+import { Input } from "@cloudflare/kumo/components/input";`}
+          lang="tsx"
+        />
+      </div>
+    </div>
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Base UI Primitives</h2>
+    <p class="mb-4 text-neutral-600 dark:text-neutral-400">
+      Kumo is built on top of <a
+        href="https://base-ui.com"
+        class="text-blue-600 hover:underline dark:text-blue-400"
+        target="_blank"
+        rel="noopener noreferrer">Base UI</a
+      >, a library of unstyled, accessible React components. For advanced use
+      cases where you need access to the underlying primitives, Kumo re-exports
+      all 37 Base UI components with both barrel and granular imports:
+    </p>
+    <div class="space-y-4">
+      <div>
+        <p class="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+          Barrel Import (Convenient)
+        </p>
+        <CodeBlock
+          code={`// Import multiple primitives at once
+import { Popover, Slider, Accordion } from "@cloudflare/kumo/primitives";`}
+          lang="tsx"
+        />
+      </div>
+      <div>
+        <p class="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+          Granular Imports (Recommended for Performance)
+        </p>
+        <CodeBlock
+          code={`// Import individual primitives for better tree-shaking
+import { Popover } from "@cloudflare/kumo/primitives/popover";
+import { Slider } from "@cloudflare/kumo/primitives/slider";
+import { Accordion } from "@cloudflare/kumo/primitives/accordion";`}
+          lang="tsx"
+        />
+        <p class="mt-2 text-sm text-neutral-500">
+          Granular imports result in smaller bundle sizes by only including the
+          primitives you actually use.
+        </p>
+      </div>
+    </div>
+    <div class="mt-4 space-y-3">
+      <Callout type="info">
+        <p class="text-sm">
+          <strong>Available Primitives (37 total):</strong>
+        </p>
+        <ul class="mt-2 space-y-1 text-sm">
+          <li>
+            <strong>Layout:</strong> Accordion, Collapsible, Separator, ScrollArea,
+            Toolbar
+          </li>
+          <li>
+            <strong>Overlays:</strong> AlertDialog, Dialog, Popover, PreviewCard,
+            Tooltip, Toast
+          </li>
+          <li><strong>Menus:</strong> Menu, Menubar, ContextMenu, NavigationMenu</li>
+          <li>
+            <strong>Form Controls:</strong> Autocomplete, Button, Checkbox, CheckboxGroup,
+            Combobox, Input, NumberField, Radio, RadioGroup, Select, Slider, Switch,
+            Toggle, ToggleGroup
+          </li>
+          <li><strong>Form Structure:</strong> Field, Fieldset, Form</li>
+          <li><strong>Display:</strong> Avatar, Meter, Progress, Tabs</li>
+        </ul>
+      </Callout>
+      <Callout type="warning">
+        <strong>Note:</strong> Prefer using styled Kumo components when available.
+        Primitives are intended for building custom components that aren't yet available
+        in Kumo, or for cases requiring fine-grained control over styling and behavior.
+      </Callout>
+    </div>
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Import Styles</h2>
+    <p class="mb-4 text-neutral-600 dark:text-neutral-400">
+      Kumo provides two CSS distribution options depending on your setup:
+    </p>
+
+    <div class="space-y-6">
+      <div>
+        <h3 class="mb-3 text-lg font-semibold">
+          For Tailwind CSS Users (Recommended)
+        </h3>
+        <p class="mb-3 text-neutral-600 dark:text-neutral-400">
+          If your application uses Tailwind CSS, add Kumo's source files to your
+          content configuration and import the styles. Make sure to import
+          Tailwind first, then Kumo styles:
+        </p>
+        <CodeBlock
+          code={`/* app.css or main.css */
+@source "../node_modules/@cloudflare/kumo/dist/**/*.{js,jsx,ts,tsx}";
+@import "tailwindcss";
+@import "@cloudflare/kumo/styles/tailwind";
+
+/* Your custom styles */`}
+          lang="css"
+        />
+        <p class="mt-2 text-sm text-neutral-500">
+          Note: You can also use the default export <code
+            class="rounded bg-neutral-100 px-1 py-0.5 text-xs dark:bg-neutral-800"
+            >@cloudflare/kumo/styles</code
+          > which is equivalent to <code
+            class="rounded bg-neutral-100 px-1 py-0.5 text-xs dark:bg-neutral-800"
+            >styles/tailwind</code
+          >.
+        </p>
+      </div>
+
+      <div>
+        <h3 class="mb-3 text-lg font-semibold">
+          For Non-Tailwind Users (Standalone)
+        </h3>
+        <p class="mb-3 text-neutral-600 dark:text-neutral-400">
+          If your application doesn't use Tailwind CSS, use the standalone build
+          which includes all compiled styles:
+        </p>
+        <CodeBlock
+          code={`// In your app entry point (e.g., main.tsx, index.tsx)
+import "@cloudflare/kumo/styles/standalone";`}
+          lang="tsx"
+        />
+        <p class="mt-2 text-sm text-neutral-500">
+          The standalone build includes all Tailwind utilities and Kumo
+          component styles pre-compiled. No Tailwind configuration needed!
+        </p>
+      </div>
+    </div>
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Usage Example</h2>
+    <p class="mb-4 text-neutral-600 dark:text-neutral-400">
+      Here's a complete example of using Kumo components with Tailwind CSS:
+    </p>
+    <div class="space-y-4">
+      <div>
+        <p class="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+          CSS File (app.css)
+        </p>
+        <CodeBlock
+          code={`@import "tailwindcss";
+@import "@cloudflare/kumo/styles/tailwind";`}
+          lang="css"
+        />
+      </div>
+      <div>
+        <p class="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+          Component File (App.tsx)
+        </p>
+        <CodeBlock
+          code={`import { Button, Input, Surface } from "@cloudflare/kumo";
+import "./app.css";
+
+export default function App() {
+  return (
+    <Surface className="p-6 rounded-lg">
+      <h1 className="text-2xl font-bold mb-4">Welcome to Kumo</h1>
+      <Input placeholder="Enter your name..." className="mb-4" />
+      <Button variant="primary">Submit</Button>
+    </Surface>
+  );
+}`}
+          lang="tsx"
+        />
+      </div>
+    </div>
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Utilities</h2>
+    <p class="mb-4 text-neutral-600 dark:text-neutral-400">
+      Kumo also exports utility functions for common tasks:
+    </p>
+    <CodeBlock
+      code={`import { cn, safeRandomId, LinkProvider } from "@cloudflare/kumo";
+
+// Merge class names with Tailwind
+const className = cn("base-class", condition && "conditional-class");
+
+// Generate safe random IDs
+const id = safeRandomId();
+
+// Configure link component for your framework
+<LinkProvider component={YourLinkComponent}>
+  {/* Your app */}
+</LinkProvider>`}
+      lang="tsx"
+    />
+  </ComponentSection>
+</DocLayout>
