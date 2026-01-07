@@ -1,0 +1,200 @@
+---
+import DocLayout from "../../layouts/DocLayout.astro";
+import ComponentSection from "../../components/docs/ComponentSection.astro";
+import ComponentExample from "../../components/docs/ComponentExample.astro";
+import CodeBlock from "../../components/docs/CodeBlock.astro";
+import { ComboboxDemo, ComboboxMultipleDemo, ComboboxWithFieldDemo, ComboboxErrorDemo } from "../../components/demos/ComboboxDemo";
+---
+
+<DocLayout
+  title="Combobox"
+  description="A searchable dropdown for selecting from a list of options."
+>
+  <ComponentSection>
+    <ComponentExample code={`const [value, setValue] = useState(null);
+const items = [
+  { value: "postgres", label: "PostgreSQL" },
+  { value: "mysql", label: "MySQL" },
+  // ...
+];
+
+<Combobox items={items} value={value} onValueChange={setValue}>
+  <Combobox.TriggerInput placeholder="Select database" />
+  <Combobox.Content>
+    <Combobox.Empty />
+    <Combobox.List>
+      {(item) => (
+        <Combobox.Item key={item.value} value={item}>
+          {item.label}
+        </Combobox.Item>
+      )}
+    </Combobox.List>
+  </Combobox.Content>
+</Combobox>`}>
+      <ComboboxDemo client:load />
+    </ComponentExample>
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
+    <CodeBlock code={`import { Combobox } from "@cloudflare/kumo";`} lang="tsx" />
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Multiple Selection</h2>
+    <p class="text-secondary mb-4">Enable multi-select with chips for selected items.</p>
+    <ComponentExample code={`<Combobox
+  value={value}
+  onValueChange={setValue}
+  items={bots}
+  isItemEqualToValue={(bot, selected) => bot.value === selected.value}
+  multiple
+>
+  <Combobox.TriggerMultipleWithInput
+    className="w-[400px]"
+    placeholder="Select bots"
+    renderItem={(selected) => (
+      <Combobox.Chip key={selected.value}>
+        {selected.label}
+      </Combobox.Chip>
+    )}
+    inputSide="right"
+  />
+  <Combobox.Content>
+    <Combobox.Empty />
+    <Combobox.List>
+      {(item) => (
+        <Combobox.Item key={item.value} value={item}>
+          <Text>{item.label}</Text>
+          <Text variant="secondary">{item.author}</Text>
+        </Combobox.Item>
+      )}
+    </Combobox.List>
+  </Combobox.Content>
+</Combobox>`}>
+      <ComboboxMultipleDemo client:load />
+    </ComponentExample>
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">With Field</h2>
+    <p class="text-secondary mb-4">Add label and description using the built-in Field wrapper.</p>
+    <ComponentExample code={`<Combobox
+  items={items}
+  value={value}
+  onValueChange={setValue}
+  label="Database"
+  description="Select your preferred database"
+>
+  <Combobox.TriggerInput placeholder="Select database" />
+  <Combobox.Content>
+    <Combobox.Empty />
+    <Combobox.List>
+      {(item) => (
+        <Combobox.Item key={item.value} value={item}>
+          {item.label}
+        </Combobox.Item>
+      )}
+    </Combobox.List>
+  </Combobox.Content>
+</Combobox>`}>
+      <ComboboxWithFieldDemo client:load />
+    </ComponentExample>
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Error State</h2>
+    <p class="text-secondary mb-4">Display validation errors with the error prop.</p>
+    <ComponentExample code={`<Combobox
+  items={items}
+  value={value}
+  onValueChange={setValue}
+  label="Database"
+  error={{ message: "Please select a database", match: true }}
+>
+  <Combobox.TriggerInput placeholder="Select database" />
+  <Combobox.Content>
+    <Combobox.Empty />
+    <Combobox.List>
+      {(item) => (
+        <Combobox.Item key={item.value} value={item}>
+          {item.label}
+        </Combobox.Item>
+      )}
+    </Combobox.List>
+  </Combobox.Content>
+</Combobox>`}>
+      <ComboboxErrorDemo client:load />
+    </ComponentExample>
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
+    
+    <h3 class="mb-2 text-lg font-semibold mt-6">Combobox</h3>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <th class="px-4 py-3 text-left font-semibold">Prop</th>
+            <th class="px-4 py-3 text-left font-semibold">Type</th>
+            <th class="px-4 py-3 text-left font-semibold">Default</th>
+          </tr>
+        </thead>
+        <tbody class="text-neutral-600 dark:text-neutral-400">
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <td class="px-4 py-3 font-mono text-xs">items</td>
+            <td class="px-4 py-3 font-mono text-xs">T[]</td>
+            <td class="px-4 py-3 font-mono text-xs">required</td>
+          </tr>
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <td class="px-4 py-3 font-mono text-xs">value</td>
+            <td class="px-4 py-3 font-mono text-xs">T | T[]</td>
+            <td class="px-4 py-3 font-mono text-xs">-</td>
+          </tr>
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <td class="px-4 py-3 font-mono text-xs">onValueChange</td>
+            <td class="px-4 py-3 font-mono text-xs">(value: T | T[]) =&gt; void</td>
+            <td class="px-4 py-3 font-mono text-xs">-</td>
+          </tr>
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <td class="px-4 py-3 font-mono text-xs">multiple</td>
+            <td class="px-4 py-3 font-mono text-xs">boolean</td>
+            <td class="px-4 py-3 font-mono text-xs">false</td>
+          </tr>
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <td class="px-4 py-3 font-mono text-xs">inputSide</td>
+            <td class="px-4 py-3 font-mono text-xs">"right" | "top"</td>
+            <td class="px-4 py-3 font-mono text-xs">"right"</td>
+          </tr>
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <td class="px-4 py-3 font-mono text-xs">label</td>
+            <td class="px-4 py-3 font-mono text-xs">string</td>
+            <td class="px-4 py-3 font-mono text-xs">-</td>
+          </tr>
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <td class="px-4 py-3 font-mono text-xs">description</td>
+            <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
+            <td class="px-4 py-3 font-mono text-xs">-</td>
+          </tr>
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <td class="px-4 py-3 font-mono text-xs">error</td>
+            <td class="px-4 py-3 font-mono text-xs">string | object</td>
+            <td class="px-4 py-3 font-mono text-xs">-</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="mb-2 text-lg font-semibold mt-6">Sub-components</h3>
+    <ul class="list-disc list-inside text-secondary space-y-1">
+      <li><code class="text-surface">Combobox.TriggerInput</code> - Single-select input trigger</li>
+      <li><code class="text-surface">Combobox.TriggerMultipleWithInput</code> - Multi-select with chips</li>
+      <li><code class="text-surface">Combobox.Content</code> - Dropdown container</li>
+      <li><code class="text-surface">Combobox.List</code> - List container with render prop</li>
+      <li><code class="text-surface">Combobox.Item</code> - Individual option</li>
+      <li><code class="text-surface">Combobox.Chip</code> - Selected item chip</li>
+      <li><code class="text-surface">Combobox.Empty</code> - Empty state message</li>
+    </ul>
+  </ComponentSection>
+</DocLayout>

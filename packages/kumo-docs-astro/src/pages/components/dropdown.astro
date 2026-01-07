@@ -1,0 +1,42 @@
+---
+import DocLayout from "../../layouts/DocLayout.astro";
+import ComponentSection from "../../components/docs/ComponentSection.astro";
+import ComponentExample from "../../components/docs/ComponentExample.astro";
+import CodeBlock from "../../components/docs/CodeBlock.astro";
+import { DropdownBasicDemo } from "../../components/demos/DropdownDemo";
+---
+
+<DocLayout
+  title="Dropdown"
+  description="A menu that appears from a trigger element."
+  baseUIComponent="menu"
+>
+  <ComponentSection>
+    <ComponentExample code={`<DropdownMenu>
+  <DropdownMenu.Trigger render={<Button>Add</Button>} />
+  <DropdownMenu.Content>
+    <DropdownMenu.Item>Worker</DropdownMenu.Item>
+    <DropdownMenu.Item>Pages</DropdownMenu.Item>
+  </DropdownMenu.Content>
+</DropdownMenu>`}>
+      <DropdownBasicDemo client:load />
+    </ComponentExample>
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
+    <CodeBlock code={`import { DropdownMenu } from "@cloudflare/kumo";`} lang="tsx" />
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Components</h2>
+    <ul class="list-inside list-disc space-y-2 text-neutral-600 dark:text-neutral-400">
+      <li><code class="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">DropdownMenu</code> - Root container</li>
+      <li><code class="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">DropdownMenu.Trigger</code> - Button that opens the menu</li>
+      <li><code class="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">DropdownMenu.Content</code> - The menu popup</li>
+      <li><code class="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">DropdownMenu.Item</code> - Menu item</li>
+      <li><code class="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">DropdownMenu.Separator</code> - Visual separator</li>
+      <li><code class="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">DropdownMenu.CheckboxItem</code> - Checkbox menu item</li>
+    </ul>
+  </ComponentSection>
+</DocLayout>

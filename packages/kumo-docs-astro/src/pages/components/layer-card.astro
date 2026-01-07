@@ -1,0 +1,122 @@
+---
+import DocLayout from "../../layouts/DocLayout.astro";
+import ComponentSection from "../../components/docs/ComponentSection.astro";
+import ComponentExample from "../../components/docs/ComponentExample.astro";
+import CodeBlock from "../../components/docs/CodeBlock.astro";
+import { LayerCardDemo, LayerCardVariantsDemo } from "../../components/demos/LayerCardDemo";
+---
+
+<DocLayout
+  title="LayerCard"
+  description="A card component with primary and secondary sections for layered content."
+>
+  <ComponentSection>
+    <ComponentExample code={`<LayerCard className="w-[250px]">
+  <LayerCard.Secondary className="flex items-center justify-between">
+    <div>Next Steps</div>
+    <Button variant="ghost" size="sm" shape="square">
+      <ArrowRight size={16} />
+    </Button>
+  </LayerCard.Secondary>
+
+  <LayerCard.Primary>
+    <Text>Get started with Kumo</Text>
+  </LayerCard.Primary>
+</LayerCard>`}>
+      <LayerCardDemo client:visible />
+    </ComponentExample>
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
+    <CodeBlock code={`import { LayerCard } from "@cloudflare/kumo";`} lang="tsx" />
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Variations</h2>
+    <p class="text-secondary mb-4">LayerCard can be used with both sections or just the primary section.</p>
+    <ComponentExample code={`// With both sections
+<LayerCard>
+  <LayerCard.Secondary>
+    <Text variant="secondary" size="sm">Getting Started</Text>
+  </LayerCard.Secondary>
+  <LayerCard.Primary>
+    <Text weight="medium">Install the package</Text>
+  </LayerCard.Primary>
+</LayerCard>
+
+// Primary only
+<LayerCard>
+  <LayerCard.Primary>
+    <Text weight="medium">Primary Only</Text>
+  </LayerCard.Primary>
+</LayerCard>
+
+// With actions in secondary
+<LayerCard>
+  <LayerCard.Secondary className="flex items-center justify-between">
+    <Text variant="secondary" size="sm">Documentation</Text>
+    <Button variant="ghost" size="xs">View all</Button>
+  </LayerCard.Secondary>
+  <LayerCard.Primary>
+    <Text weight="medium">Read the docs</Text>
+  </LayerCard.Primary>
+</LayerCard>`}>
+      <LayerCardVariantsDemo client:visible />
+    </ComponentExample>
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
+    
+    <h3 class="mb-2 text-lg font-semibold mt-6">LayerCard</h3>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <th class="px-4 py-3 text-left font-semibold">Prop</th>
+            <th class="px-4 py-3 text-left font-semibold">Type</th>
+            <th class="px-4 py-3 text-left font-semibold">Default</th>
+          </tr>
+        </thead>
+        <tbody class="text-neutral-600 dark:text-neutral-400">
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <td class="px-4 py-3 font-mono text-xs">children</td>
+            <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
+            <td class="px-4 py-3 font-mono text-xs">-</td>
+          </tr>
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <td class="px-4 py-3 font-mono text-xs">className</td>
+            <td class="px-4 py-3 font-mono text-xs">string</td>
+            <td class="px-4 py-3 font-mono text-xs">-</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="mb-2 text-lg font-semibold mt-6">LayerCard.Primary / LayerCard.Secondary</h3>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <th class="px-4 py-3 text-left font-semibold">Prop</th>
+            <th class="px-4 py-3 text-left font-semibold">Type</th>
+            <th class="px-4 py-3 text-left font-semibold">Default</th>
+          </tr>
+        </thead>
+        <tbody class="text-neutral-600 dark:text-neutral-400">
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <td class="px-4 py-3 font-mono text-xs">children</td>
+            <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
+            <td class="px-4 py-3 font-mono text-xs">-</td>
+          </tr>
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <td class="px-4 py-3 font-mono text-xs">className</td>
+            <td class="px-4 py-3 font-mono text-xs">string</td>
+            <td class="px-4 py-3 font-mono text-xs">-</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ComponentSection>
+</DocLayout>

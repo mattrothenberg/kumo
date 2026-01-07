@@ -1,0 +1,151 @@
+---
+import DocLayout from "../../layouts/DocLayout.astro";
+import ComponentSection from "../../components/docs/ComponentSection.astro";
+import ComponentExample from "../../components/docs/ComponentExample.astro";
+import CodeBlock from "../../components/docs/CodeBlock.astro";
+import { ResourceListDemo, ResourceListWithUsageDemo, ResourceListCompleteDemo } from "../../components/demos/ResourceListDemo";
+---
+
+<DocLayout
+  title="ResourceListPage"
+  description="A page layout for resource list views with optional sidebar content."
+>
+  <ComponentSection>
+    <ComponentExample code={`<ResourceListPage
+  title="Databases"
+  description="Manage your database instances"
+  icon={<Database size={32} className="text-label" />}
+>
+  <Surface className="p-6 rounded-lg">
+    {/* Your resource list here */}
+  </Surface>
+</ResourceListPage>`}>
+      <ResourceListDemo client:visible />
+    </ComponentExample>
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
+    <CodeBlock code={`import { ResourceListPage } from "@cloudflare/kumo";`} lang="tsx" />
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">With Usage Sidebar</h2>
+    <p class="text-secondary mb-4">Add a usage panel to show quick start guides or code examples.</p>
+    <ComponentExample code={`<ResourceListPage
+  title="API Keys"
+  description="Create and manage API keys"
+  usage={
+    <Surface className="p-4 rounded-lg">
+      <h3 className="mb-2 font-semibold">Quick Start</h3>
+      <Code lang="bash" code='curl -H "Authorization: Bearer KEY"' />
+    </Surface>
+  }
+>
+  {/* Your content */}
+</ResourceListPage>`}>
+      <ResourceListWithUsageDemo client:visible />
+    </ComponentExample>
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Complete Example</h2>
+    <p class="text-secondary mb-4">A full example with icon, usage panel, and additional sidebar content.</p>
+    <ComponentExample code={`<ResourceListPage
+  title="KV Namespaces"
+  description="Store key-value data globally"
+  icon={<Database size={32} className="text-label" />}
+  usage={
+    <Surface className="p-4 rounded-lg">
+      <h3 className="mb-2 font-semibold">Usage Example</h3>
+      <Code lang="ts" code={codeExample} />
+    </Surface>
+  }
+  additionalContent={
+    <Surface className="p-4 rounded-lg">
+      <h3 className="mb-2 font-semibold">Learn More</h3>
+      <p className="text-sm text-label">Documentation links...</p>
+    </Surface>
+  }
+>
+  <div className="space-y-4">
+    <Surface className="p-6 rounded-lg">
+      <h4>production-kv</h4>
+    </Surface>
+    <Surface className="p-6 rounded-lg">
+      <h4>staging-kv</h4>
+    </Surface>
+  </div>
+</ResourceListPage>`}>
+      <ResourceListCompleteDemo client:visible />
+    </ComponentExample>
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <th class="px-4 py-3 text-left font-semibold">Prop</th>
+            <th class="px-4 py-3 text-left font-semibold">Type</th>
+            <th class="px-4 py-3 text-left font-semibold">Default</th>
+          </tr>
+        </thead>
+        <tbody class="text-neutral-600 dark:text-neutral-400">
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <td class="px-4 py-3 font-mono text-xs">title</td>
+            <td class="px-4 py-3 font-mono text-xs">string</td>
+            <td class="px-4 py-3 font-mono text-xs">-</td>
+          </tr>
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <td class="px-4 py-3 font-mono text-xs">description</td>
+            <td class="px-4 py-3 font-mono text-xs">string</td>
+            <td class="px-4 py-3 font-mono text-xs">-</td>
+          </tr>
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <td class="px-4 py-3 font-mono text-xs">icon</td>
+            <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
+            <td class="px-4 py-3 font-mono text-xs">-</td>
+          </tr>
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <td class="px-4 py-3 font-mono text-xs">usage</td>
+            <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
+            <td class="px-4 py-3 font-mono text-xs">-</td>
+          </tr>
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <td class="px-4 py-3 font-mono text-xs">additionalContent</td>
+            <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
+            <td class="px-4 py-3 font-mono text-xs">-</td>
+          </tr>
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <td class="px-4 py-3 font-mono text-xs">children</td>
+            <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
+            <td class="px-4 py-3 font-mono text-xs">required</td>
+          </tr>
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <td class="px-4 py-3 font-mono text-xs">className</td>
+            <td class="px-4 py-3 font-mono text-xs">string</td>
+            <td class="px-4 py-3 font-mono text-xs">-</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Layout Structure</h2>
+    <p class="text-secondary mb-4">The ResourceListPage layout provides:</p>
+    <ul class="list-disc list-inside text-secondary space-y-2">
+      <li>A header area with optional icon, title, and description</li>
+      <li>A main content area for your resource list (left/main on desktop)</li>
+      <li>An optional sidebar (right on desktop, stacked on mobile) for:
+        <ul class="list-disc list-inside ml-6 mt-2">
+          <li><code class="text-surface">usage</code> - Quick start or code examples</li>
+          <li><code class="text-surface">additionalContent</code> - Links, resources, or tips</li>
+        </ul>
+      </li>
+      <li>Responsive behavior with mobile-friendly stacking</li>
+    </ul>
+  </ComponentSection>
+</DocLayout>

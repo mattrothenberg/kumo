@@ -1,0 +1,67 @@
+---
+import DocLayout from "../../layouts/DocLayout.astro";
+import ComponentSection from "../../components/docs/ComponentSection.astro";
+import ComponentExample from "../../components/docs/ComponentExample.astro";
+import CodeBlock from "../../components/docs/CodeBlock.astro";
+import { TooltipBasicDemo } from "../../components/demos/TooltipDemo";
+---
+
+<DocLayout
+  title="Tooltip"
+  description="A popup that displays information related to an element."
+  baseUIComponent="tooltip"
+>
+  <ComponentSection>
+    <ComponentExample code={`<TooltipProvider>
+  <Tooltip content="Add item" asChild>
+    <Button shape="square" icon={PlusIcon} />
+  </Tooltip>
+</TooltipProvider>`}>
+      <TooltipBasicDemo client:load />
+    </ComponentExample>
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
+    <CodeBlock code={`import { Tooltip, TooltipProvider } from "@cloudflare/kumo";`} lang="tsx" />
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+    <p class="mb-4 text-neutral-600 dark:text-neutral-400">
+      Wrap your app or component tree in <code class="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">TooltipProvider</code> to enable tooltips.
+    </p>
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <th class="px-4 py-3 text-left font-semibold">Prop</th>
+            <th class="px-4 py-3 text-left font-semibold">Type</th>
+            <th class="px-4 py-3 text-left font-semibold">Default</th>
+          </tr>
+        </thead>
+        <tbody class="text-neutral-600 dark:text-neutral-400">
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <td class="px-4 py-3 font-mono text-xs">content</td>
+            <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
+            <td class="px-4 py-3 font-mono text-xs">-</td>
+          </tr>
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <td class="px-4 py-3 font-mono text-xs">asChild</td>
+            <td class="px-4 py-3 font-mono text-xs">boolean</td>
+            <td class="px-4 py-3 font-mono text-xs">false</td>
+          </tr>
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <td class="px-4 py-3 font-mono text-xs">open</td>
+            <td class="px-4 py-3 font-mono text-xs">boolean</td>
+            <td class="px-4 py-3 font-mono text-xs">undefined</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ComponentSection>
+</DocLayout>
