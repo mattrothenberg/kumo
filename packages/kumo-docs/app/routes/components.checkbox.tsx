@@ -65,7 +65,7 @@ export default function Example() {
         <div className="space-y-8">
           <div>
             <h3 className="mb-4 text-xl font-semibold">Default</h3>
-            <p className="mb-4 text-sm text-secondary">
+            <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
               Checkbox with built-in label. The label automatically displays in
               a horizontal layout (checkbox before label).
             </p>
@@ -93,7 +93,7 @@ export default function Example() {
 
           <div>
             <h3 className="mb-4 text-xl font-semibold">Indeterminate</h3>
-            <p className="mb-4 text-sm text-secondary">
+            <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
               Used for "select all" patterns when some but not all items are
               selected.
             </p>
@@ -110,7 +110,7 @@ export default function Example() {
 
           <div>
             <h3 className="mb-4 text-xl font-semibold">Label First Layout</h3>
-            <p className="mb-4 text-sm text-secondary">
+            <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
               Use <code>controlFirst={"{false}"}</code> to place the label
               before the checkbox.
             </p>
@@ -132,7 +132,7 @@ export default function Example() {
 
           <div>
             <h3 className="mb-4 text-xl font-semibold">Error</h3>
-            <p className="mb-4 text-sm text-secondary">
+            <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
               Error variant provides visual styling (red ring). For error
               messages, use Checkbox.Group.
             </p>
@@ -145,7 +145,7 @@ export default function Example() {
 
           <div>
             <h3 className="mb-4 text-xl font-semibold">Checkbox Group</h3>
-            <p className="mb-4 text-sm text-secondary">
+            <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
               Group multiple checkboxes with a legend, description, and shared
               error messages. Uses Checkbox.Group and Checkbox.Item.
             </p>
@@ -178,7 +178,7 @@ export default function Example() {
             <h3 className="mb-4 text-xl font-semibold">
               Checkbox Group with Error
             </h3>
-            <p className="mb-4 text-sm text-secondary">
+            <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
               Show validation errors at the group level. Error replaces
               description when present.
             </p>
@@ -212,7 +212,7 @@ export default function Example() {
         <h2 className="mb-4 text-2xl font-bold">API Reference</h2>
 
         <h3 className="mt-6 mb-2 text-lg font-semibold">Checkbox</h3>
-        <p className="mb-4 text-sm text-secondary">
+        <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
           Single checkbox component with built-in label and horizontal layout.
         </p>
         <div className="overflow-x-auto">
@@ -285,7 +285,7 @@ export default function Example() {
         </div>
 
         <h3 className="mt-6 mb-2 text-lg font-semibold">Checkbox.Group</h3>
-        <p className="mb-4 text-sm text-secondary">
+        <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
           Wrapper for multiple checkboxes with legend, description, and error
           support.
         </p>
@@ -359,7 +359,7 @@ export default function Example() {
         </div>
 
         <h3 className="mt-6 mb-2 text-lg font-semibold">Checkbox.Item</h3>
-        <p className="mb-4 text-sm text-secondary">
+        <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
           Individual checkbox within Checkbox.Group.
         </p>
         <div className="overflow-x-auto">
@@ -414,7 +414,7 @@ export default function Example() {
         <div className="space-y-4 text-sm">
           <div>
             <h3 className="mb-2 font-semibold">Label Requirement</h3>
-            <p className="text-secondary">
+            <p className="text-neutral-600 dark:text-neutral-400">
               Single checkboxes require a <code>label</code> prop or{" "}
               <code>aria-label</code> for accessibility. Missing labels trigger
               console warnings in development.
@@ -422,14 +422,14 @@ export default function Example() {
           </div>
           <div>
             <h3 className="mb-2 font-semibold">Keyboard Navigation</h3>
-            <p className="text-secondary">
+            <p className="text-neutral-600 dark:text-neutral-400">
               <kbd>Space</kbd> toggles the checkbox. <kbd>Tab</kbd> moves focus
               between checkboxes.
             </p>
           </div>
           <div>
             <h3 className="mb-2 font-semibold">Screen Readers</h3>
-            <p className="text-secondary">
+            <p className="text-neutral-600 dark:text-neutral-400">
               Checkbox.Group uses semantic <code>&lt;fieldset&gt;</code> and{" "}
               <code>&lt;legend&gt;</code> elements for proper grouping
               announcement.

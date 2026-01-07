@@ -123,7 +123,7 @@ export default function Example() {
                 <th className="px-4 py-3 text-left font-semibold">Default</th>
               </tr>
             </thead>
-            <tbody className="text-secondary">
+            <tbody className="text-neutral-600 dark:text-neutral-400">
               <tr className="border-b border-border">
                 <td className="px-4 py-3 font-mono text-xs">label</td>
                 <td className="px-4 py-3 font-mono text-xs">string</td>

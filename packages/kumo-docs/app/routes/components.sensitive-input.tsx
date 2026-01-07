@@ -60,7 +60,7 @@ export default function Example() {
             <h3 className="mb-4 text-xl font-semibold">
               Existing Value (Masked)
             </h3>
-            <p className="mb-4 text-sm text-secondary">
+            <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
               When initialized with a value, shows masked dots. Hover to see
               hint, click to reveal.
             </p>
@@ -73,7 +73,7 @@ export default function Example() {
 
           <div>
             <h3 className="mb-4 text-xl font-semibold">Empty (New Input)</h3>
-            <p className="mb-4 text-sm text-secondary">
+            <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
               Empty inputs show placeholder. Type to enter - value is masked.
               Eye icon appears when there's content.
             </p>
@@ -86,7 +86,7 @@ export default function Example() {
 
           <div>
             <h3 className="mb-4 text-xl font-semibold">Read Only</h3>
-            <p className="mb-4 text-sm text-secondary">
+            <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
               View-only mode - click to reveal but cannot edit.
             </p>
             <ComponentExample
@@ -155,7 +155,7 @@ export default function Example() {
                 <th className="px-4 py-3 text-left font-semibold">Default</th>
               </tr>
             </thead>
-            <tbody className="text-secondary">
+            <tbody className="text-neutral-600 dark:text-neutral-400">
               <tr className="border-b border-border">
                 <td className="px-4 py-3 font-mono text-xs">value</td>
                 <td className="px-4 py-3 font-mono text-xs">string</td>
