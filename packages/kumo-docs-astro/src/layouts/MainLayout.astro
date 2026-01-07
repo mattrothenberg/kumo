@@ -23,41 +23,27 @@ const currentPath = Astro.url.pathname;
       <ThemeToggle client:load />
     </div>
 
-    <!-- Main content area with sidebar margin handled by JS -->
+    <!-- Main content area - margin controlled by CSS :has() based on sidebar state -->
     <div
       id="main-content"
-      class="ml-12 h-screen overflow-y-auto overscroll-y-none transition-[margin] duration-300 md:ml-[304px]"
+      class="main-content ml-12 h-screen overflow-y-auto overscroll-y-none transition-[margin] duration-300"
     >
       <slot />
     </div>
   </div>
 </BaseLayout>
 
-<script>
-  // Listen for sidebar state changes and update content margin
-  // This syncs with the SidebarNav component state
-  document.addEventListener("astro:page-load", () => {
-    const contentWrapper = document.getElementById("main-content");
-    if (!contentWrapper) return;
-
-    // MutationObserver to watch for data-content-wrapper changes
-    const sidebarWrapper = document.querySelector("[data-content-wrapper]");
-    if (sidebarWrapper) {
-      const observer = new MutationObserver(() => {
-        const classes = sidebarWrapper.className;
-        const isOpen = classes.includes("md:ml-[304px]");
-        if (isOpen) {
-          contentWrapper.classList.remove("md:ml-12");
-          contentWrapper.classList.add("md:ml-[304px]");
-        } else {
-          contentWrapper.classList.remove("md:ml-[304px]");
-          contentWrapper.classList.add("md:ml-12");
-        }
-      });
-      observer.observe(sidebarWrapper, {
-        attributes: true,
-        attributeFilter: ["class"],
-      });
+<style is:global>
+  /* Use CSS :has() to detect sidebar state and adjust main content margin */
+  @media (min-width: 768px) {
+    /* When sidebar is open, add full margin */
+    body:has(aside[data-sidebar-open="true"]) .main-content {
+      margin-left: 304px; /* 48px rail + 256px sidebar panel */
     }
-  });
-</script>
+    
+    /* When sidebar is closed, only rail margin */
+    body:has(aside[data-sidebar-open="false"]) .main-content {
+      margin-left: 48px; /* w-12 = 3rem = 48px */
+    }
+  }
+</style>

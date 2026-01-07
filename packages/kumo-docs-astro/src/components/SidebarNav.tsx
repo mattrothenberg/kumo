@@ -103,6 +103,7 @@ export function SidebarNav({ currentPath }: SidebarNavProps) {
 
       {/* Sliding panel that opens to the right of the rail */}
       <aside
+        data-sidebar-open={sidebarOpen}
         className={cn(
           "fixed inset-y-0 left-12 z-40 flex w-64 flex-col backdrop-blur",
           "transition-transform duration-300 will-change-transform",
@@ -250,20 +251,6 @@ export function SidebarNav({ currentPath }: SidebarNavProps) {
           </div>
         </div>
       </aside>
-
-      {/* This provides the margin for the content area */}
-      <div
-        className={cn(
-          "transition-[margin] duration-300",
-          sidebarOpen ? "ml-12 md:ml-[304px]" : "ml-12",
-        )}
-        data-content-wrapper
-      />
     </>
   );
-}
-
-// Export a hook-like function to get sidebar state for content wrapper
-export function useSidebarMargin(sidebarOpen: boolean) {
-  return sidebarOpen ? "ml-12 md:ml-[304px]" : "ml-12";
 }
