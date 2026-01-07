@@ -9,6 +9,7 @@ export default function DropdownDoc() {
     <DocLayout
       title="Dropdown Menu"
       description="Displays a menu to the user—such as a set of actions or functions—triggered by a button."
+      baseUIComponent="menu"
     >
       {/* Demo */}
       <ComponentSection>
