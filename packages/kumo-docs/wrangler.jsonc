@@ -4,6 +4,9 @@
 	"account_id": "61e3887ff0554f81e1e175d106c3926f",
 	"compatibility_date": "2025-04-04",
 	"main": "./workers/app.ts",
+	"assets": {
+		"directory": "./build/client"
+	},
 	"observability": {
 		"enabled": true
 	}
