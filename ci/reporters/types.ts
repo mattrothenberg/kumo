@@ -1,0 +1,139 @@
+/**
+ * Types for the MR comment reporter system
+ *
+ * This system collects report items from multiple CI jobs and consolidates
+ * them into a single MR comment. Each job outputs a report artifact that
+ * is collected by the final reporter job.
+ */
+
+import { existsSync, mkdirSync, writeFileSync, readFileSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
+
+/** Directory where report artifacts are stored */
+export const REPORTS_DIR = 'ci/reports';
+
+/**
+ * A single item to be included in the MR comment
+ */
+export interface ReportItem {
+  /** Unique identifier for this report type (e.g., "npm-release", "storybook-preview") */
+  id: string;
+  /** Section title displayed in the comment */
+  title: string;
+  /**
+   * Sort order - lower numbers appear first in comment
+   * 10-19: release info (npm)
+   * 20-29: previews (storybook)
+   */
+  priority: number;
+  /** Markdown content for this section */
+  content: string;
+  /** Whether this item represents a successful operation */
+  success: boolean;
+}
+
+/**
+ * Context available to reporters from CI environment
+ */
+export interface CIContext {
+  /** Full commit SHA */
+  commitSha: string;
+  /** Short commit SHA (first 8 characters) */
+  shortSha: string;
+  /** Merge request IID */
+  mrIid: string;
+  /** Project ID */
+  projectId: string;
+  /** GitLab API URL */
+  apiUrl: string;
+  /** GitLab API token */
+  apiToken: string;
+  /** Package name being released */
+  packageName: string;
+  /** Package version being released */
+  packageVersion: string;
+  /** Storybook preview URL (if deployed) */
+  storybookPreviewUrl?: string;
+  /** Allow additional context to be passed */
+  [key: string]: string | undefined;
+}
+
+/**
+ * Interface for reporter implementations
+ */
+export interface Reporter {
+  /** Unique identifier matching ReportItem.id */
+  id: string;
+  /** Human-readable name for logging */
+  name: string;
+  /**
+   * Collect report data from the CI context
+   * Return null if this reporter should be skipped
+   */
+  collect(context: CIContext): Promise<ReportItem | null>;
+}
+
+/**
+ * Build CI context from environment variables
+ */
+export function buildContextFromEnv(): CIContext {
+  const commitSha = process.env.CI_COMMIT_SHA ?? '';
+  return {
+    commitSha,
+    shortSha: commitSha.substring(0, 8),
+    mrIid: process.env.CI_MERGE_REQUEST_IID ?? '',
+    projectId: process.env.CI_PROJECT_ID ?? '',
+    apiUrl: process.env.CI_API_V4_URL ?? '',
+    apiToken: process.env.GITLAB_API_TOKEN ?? '',
+    packageName: process.env.PACKAGE_NAME ?? '@cloudflare/kumo',
+    packageVersion: process.env.PACKAGE_VERSION ?? '',
+    storybookPreviewUrl: process.env.STORYBOOK_PREVIEW_URL,
+  };
+}
+
+/**
+ * Write a report item to the artifacts directory
+ * Called by individual CI jobs to output their report data
+ */
+export function writeReportArtifact(item: ReportItem): void {
+  if (!existsSync(REPORTS_DIR)) {
+    mkdirSync(REPORTS_DIR, { recursive: true });
+  }
+  const filePath = join(REPORTS_DIR, `${item.id}.json`);
+  writeFileSync(filePath, JSON.stringify(item, null, 2));
+  console.log(`📄 Report artifact written: ${filePath}`);
+}
+
+/**
+ * Result of reading report artifacts
+ */
+export interface ReadReportResult {
+  items: ReportItem[];
+  failures: string[];
+}
+
+/**
+ * Read all report artifacts from the artifacts directory
+ * Called by the final reporter job to collect all reports
+ */
+export function readReportArtifacts(): ReadReportResult {
+  if (!existsSync(REPORTS_DIR)) {
+    return { items: [], failures: [] };
+  }
+
+  const files = readdirSync(REPORTS_DIR).filter((f) => f.endsWith('.json'));
+  const items: ReportItem[] = [];
+  const failures: string[] = [];
+
+  for (const file of files) {
+    try {
+      const content = readFileSync(join(REPORTS_DIR, file), 'utf-8');
+      items.push(JSON.parse(content) as ReportItem);
+    } catch (error) {
+      console.warn(`⚠️  Failed to read report artifact: ${file}`, error);
+      failures.push(file);
+    }
+  }
+
+  return { items, failures };
+}

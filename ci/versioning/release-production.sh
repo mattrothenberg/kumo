@@ -85,11 +85,11 @@ if [ "$DRY_RUN" = "true" ]; then
   echo "🧪 [DRY RUN] Release process completed (no changes published)"
 else
   echo "Pushing release branch to GitLab..."
-  git push origin "$RELEASE_BRANCH"
+  git push --no-verify origin "$RELEASE_BRANCH"
 
   # Push any git tags created by changesets
   echo "Pushing git tags..."
-  git push origin --tags
+  git push --no-verify origin --tags
 
   # Create merge request back to main using TypeScript script
   echo "Creating merge request for release..."

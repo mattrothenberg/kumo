@@ -26,6 +26,9 @@ tests/
 **/*.stories.tsx
 **/*.stories.ts
 
+# Storybook Files
+storybook-static/
+
 # Scaffolding tools
 plop-templates/
 plopfile.js

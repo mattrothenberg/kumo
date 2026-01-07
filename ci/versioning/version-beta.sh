@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Note: Ensure "jq" is installed - sudo apt-get update && sudo apt-get install -y jq
 # Note: Ensure Git is configured - git config --global user.email "you@example.com" && git config --global user.name "Your Name"

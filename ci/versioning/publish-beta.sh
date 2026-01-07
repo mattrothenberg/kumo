@@ -1,8 +1,8 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
 # Beta release script for CI
-# Versions, builds, publishes, verifies, and posts MR comment
+# Versions, builds, publishes, and outputs report artifact
 
 echo "🚀 Starting beta release process..."
 
@@ -56,36 +56,9 @@ else
   exit 1
 fi
 
-# Post MR comment only if in MR context
-if [ -n "$CI_MERGE_REQUEST_IID" ]; then
-  echo "💬 Posting MR comment..."
-  
-  # Use node to generate proper JSON payload
-  JSON_PAYLOAD=$(node -e "
-    const body = \`🎉 **Beta Release Published**
-
-📦 \\\`${PACKAGE_NAME}@${NEW_VERSION}\\\` has been published to the npm registry.
-
-**Installation:**
-\\\`\\\`\\\`bash
-npm install ${PACKAGE_NAME}@${NEW_VERSION}
-# or
-pnpm add ${PACKAGE_NAME}@${NEW_VERSION}
-\\\`\\\`\\\`
-
-**Testing:** You can now test this beta version in your projects before the final release.\`;
-    console.log(JSON.stringify({ body }));
-  ")
-  
-  curl --request POST \
-    --header "PRIVATE-TOKEN: $GITLAB_API_TOKEN" \
-    --header "Content-Type: application/json" \
-    --data "$JSON_PAYLOAD" \
-    "$CI_API_V4_URL/projects/$CI_PROJECT_ID/merge_requests/$CI_MERGE_REQUEST_IID/notes" || echo "⚠️  Failed to post MR comment"
-  
-  echo "✅ MR comment posted successfully"
-else
-  echo "ℹ️  Skipping MR comment (not in MR context)"
-fi
+# Output report artifact for the MR reporter job
+echo "📄 Writing report artifact..."
+export PACKAGE_VERSION="$NEW_VERSION"
+pnpm tsx ci/scripts/write-npm-report.ts
 
 echo "🎉 Beta release complete!"

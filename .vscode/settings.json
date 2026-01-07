@@ -5,7 +5,8 @@
   },
   "tailwindCSS.classFunctions": ["cn"],
   "files.associations": {
-    "*.css": "tailwindcss"
+    "*.css": "tailwindcss",
+    "**/wrangler*.jsonc": "jsonc"
   },
   "editor.quickSuggestions": {
     "strings": "on"
