@@ -49,7 +49,7 @@ export default function InputDoc() {
         <h3 className="mb-2 text-lg font-semibold">
           With Built-in Field (Recommended)
         </h3>
-        <p className="mb-4 text-sm text-secondary">
+        <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
           Use the <code>label</code> prop to enable the built-in Field wrapper
           with label, description, and error support.
         </p>
@@ -71,7 +71,7 @@ export default function Example() {
         <h3 className="mt-6 mb-2 text-lg font-semibold">
           Bare Input (Custom Layouts)
         </h3>
-        <p className="mb-4 text-sm text-secondary">
+        <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
           For custom form layouts, use Input without <code>label</code>. Must
           provide <code>aria-label</code> or <code>aria-labelledby</code> for
           accessibility.
@@ -95,7 +95,7 @@ export default function Example() {
             <h3 className="mb-4 text-xl font-semibold">
               With Label and Description
             </h3>
-            <p className="mb-4 text-sm text-secondary">
+            <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
               The <code>label</code> prop enables the built-in Field wrapper
               with automatic vertical layout (label above input).
             </p>
@@ -116,7 +116,7 @@ export default function Example() {
 
           <div>
             <h3 className="mb-4 text-xl font-semibold">With Error (String)</h3>
-            <p className="mb-4 text-sm text-secondary">
+            <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
               Pass <code>error</code> as a string for simple error messages.
               Error replaces description when present.
             </p>
@@ -143,7 +143,7 @@ export default function Example() {
             <h3 className="mb-4 text-xl font-semibold">
               With Error (Validation Object)
             </h3>
-            <p className="mb-4 text-sm text-secondary">
+            <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
               Pass <code>error</code> as an object with <code>message</code> and{" "}
               <code>match</code> for HTML5 validation. Error shows when field
               validity matches.
@@ -177,7 +177,7 @@ export default function Example() {
 
           <div>
             <h3 className="mb-4 text-xl font-semibold">Input Sizes</h3>
-            <p className="mb-4 text-sm text-secondary">
+            <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
               Four sizes available: <code>xs</code>, <code>sm</code>,{" "}
               <code>base</code> (default), <code>lg</code>.
             </p>
@@ -223,7 +223,7 @@ export default function Example() {
             <h3 className="mb-4 text-xl font-semibold">
               Bare Input (No Label)
             </h3>
-            <p className="mb-4 text-sm text-secondary">
+            <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
               Input without <code>label</code> renders as a bare input. Must
               provide <code>aria-label</code> for accessibility.
             </p>
@@ -236,7 +236,7 @@ export default function Example() {
 
           <div>
             <h3 className="mb-4 text-xl font-semibold">Input Types</h3>
-            <p className="mb-4 text-sm text-secondary">
+            <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
               Supports all HTML input types: <code>text</code>,{" "}
               <code>email</code>, <code>password</code>, <code>number</code>,{" "}
               <code>tel</code>, <code>url</code>, etc.
@@ -275,7 +275,7 @@ export default function Example() {
       {/* API Reference */}
       <ComponentSection>
         <h2 className="mb-4 text-2xl font-bold">API Reference</h2>
-        <p className="mb-4 text-sm text-secondary">
+        <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
           Input accepts all standard HTML input attributes plus the following:
         </p>
         <div className="overflow-x-auto">
@@ -362,7 +362,7 @@ export default function Example() {
         <h3 className="mt-6 mb-2 text-lg font-semibold">
           Validation Error Types
         </h3>
-        <p className="mb-4 text-sm text-secondary">
+        <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
           When using <code>error</code> as an object, the <code>match</code>{" "}
           property corresponds to HTML5 ValidityState values:
         </p>
@@ -430,10 +430,10 @@ export default function Example() {
         <div className="space-y-4 text-sm">
           <div>
             <h3 className="mb-2 font-semibold">Label Requirement</h3>
-            <p className="text-secondary">
+            <p className="text-neutral-600 dark:text-neutral-400">
               Inputs require an accessible name via one of:
             </p>
-            <ul className="mt-2 ml-4 list-disc space-y-1 text-secondary">
+            <ul className="mt-2 ml-4 list-disc space-y-1 text-neutral-600 dark:text-neutral-400">
               <li>
                 <code>label</code> prop (recommended)
               </li>
@@ -445,13 +445,13 @@ export default function Example() {
                 <code>aria-labelledby</code> for custom label association
               </li>
             </ul>
-            <p className="mt-2 text-secondary">
+            <p className="mt-2 text-neutral-600 dark:text-neutral-400">
               Missing accessible names trigger console warnings in development.
             </p>
           </div>
           <div>
             <h3 className="mb-2 font-semibold">Error Association</h3>
-            <p className="text-secondary">
+            <p className="text-neutral-600 dark:text-neutral-400">
               Error messages are automatically associated with the input via
               ARIA attributes for screen reader announcement.
             </p>
