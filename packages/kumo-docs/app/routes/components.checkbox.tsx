@@ -16,6 +16,7 @@ export default function CheckboxDoc() {
     <DocLayout
       title="Checkbox"
       description="A control that allows the user to toggle between checked and not checked. Features built-in label support with automatic horizontal layout."
+      baseUIComponent="checkbox"
     >
       {/* Demo */}
       <ComponentSection>

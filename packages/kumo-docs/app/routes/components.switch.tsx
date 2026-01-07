@@ -9,6 +9,7 @@ export default function SwitchDoc() {
     <DocLayout
       title="Switch"
       description="A two-state button that can be either on or off."
+      baseUIComponent="switch"
     >
       {/* Demo */}
       <ComponentSection>
@@ -65,7 +66,11 @@ export default function Example() {
             <ComponentExample
               code={`<Switch label="Switch" checked={false} onCheckedChange={() => {}} />`}
             >
-              <Switch label="Switch" checked={false} onCheckedChange={() => {}} />
+              <Switch
+                label="Switch"
+                checked={false}
+                onCheckedChange={() => {}}
+              />
             </ComponentExample>
           </div>
 
@@ -74,7 +79,11 @@ export default function Example() {
             <ComponentExample
               code={`<Switch label="Switch" checked={true} onCheckedChange={() => {}} />`}
             >
-              <Switch label="Switch" checked={true} onCheckedChange={() => {}} />
+              <Switch
+                label="Switch"
+                checked={true}
+                onCheckedChange={() => {}}
+              />
             </ComponentExample>
           </div>
         </div>

@@ -31,6 +31,7 @@ export default function ComboboxDoc() {
     <DocLayout
       title="Combobox"
       description="A searchable select component that allows users to filter and select from a list of options."
+      baseUIComponent="combobox"
     >
       <ExampleInputTrigger />
       <ExampleInputInsidePopup />
@@ -83,7 +84,11 @@ const fruits = [
 ];
 `}
       >
-        <Combobox value={value} onValueChange={(v) => setValue(v as any)} items={fruits}>
+        <Combobox
+          value={value}
+          onValueChange={(v) => setValue(v as any)}
+          items={fruits}
+        >
           <Combobox.TriggerInput placeholder="Please select" />
           <Combobox.Content>
             <Combobox.Empty />
@@ -155,7 +160,11 @@ const languages: Language[] = [
 ];
 `}
       >
-        <Combobox value={value} onValueChange={(v) => setValue(v as any)} items={languages}>
+        <Combobox
+          value={value}
+          onValueChange={(v) => setValue(v as any)}
+          items={languages}
+        >
           <Combobox.TriggerValue className="w-[200px]" />
           <Combobox.Content>
             <Combobox.Input placeholder="Please select" />
@@ -282,7 +291,11 @@ interface ServerLocationGroup {
 }
 `}
       >
-        <Combobox value={value} onValueChange={(v) => setValue(v as any)} items={server}>
+        <Combobox
+          value={value}
+          onValueChange={(v) => setValue(v as any)}
+          items={server}
+        >
           <Combobox.TriggerInput
             className="w-[200px]"
             placeholder="Select server"

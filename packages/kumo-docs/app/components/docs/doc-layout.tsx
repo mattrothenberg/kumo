@@ -1,11 +1,14 @@
 import React from "react";
 import { cn } from "@cloudflare/kumo";
+import { ArrowSquareOut } from "@phosphor-icons/react";
 
 interface DocLayoutProps {
   title: string;
   description: string;
   children: React.ReactNode;
   className?: string;
+  /** Base UI component name (e.g., "combobox", "dialog") - will link to Base UI docs */
+  baseUIComponent?: string;
 }
 
 /**
@@ -16,7 +19,12 @@ export function DocLayout({
   description,
   children,
   className,
+  baseUIComponent,
 }: DocLayoutProps) {
+  const baseUIUrl = baseUIComponent
+    ? `https://base-ui.com/react/components/${baseUIComponent}`
+    : null;
+
   return (
     <div className={cn("flex min-h-screen flex-col", className)}>
       {/* Header */}
@@ -36,6 +44,17 @@ export function DocLayout({
             <p className="text-lg text-neutral-600 dark:text-neutral-400">
               {description}
             </p>
+            {baseUIUrl && (
+              <a
+                href={baseUIUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex items-center gap-1.5 text-sm text-blue-600 hover:text-blue-700 hover:underline dark:text-blue-400 dark:hover:text-blue-300"
+              >
+                <span>View Base UI documentation</span>
+                <ArrowSquareOut size={14} weight="bold" />
+              </a>
+            )}
           </div>
         </div>
       </div>

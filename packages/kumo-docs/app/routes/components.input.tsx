@@ -9,6 +9,7 @@ export default function InputDoc() {
     <DocLayout
       title="Input"
       description="A text input field for user input with built-in label, description, and error support."
+      baseUIComponent="input"
     >
       {/* Demo */}
       <ComponentSection>
