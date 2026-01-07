@@ -5,6 +5,8 @@ stages:
   - test
   - review
   - beta-release
+  - beta-preview
+  - mr-report
   - production-release
 
 variables:
@@ -126,6 +128,43 @@ include:
       PNPM_RUN_TARGET: "publish:beta"
       runOnMR: true
 
+  # ============= BETA PREVIEW STAGE (Deploys Storybook preview) =============
+
+  # Storybook preview deployment
+  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
+    inputs:
+      stage: beta-preview
+      jobPrefix: deploy-storybook-preview
+      PNPM_VERSION: *PNPM_VERSION
+      NODE_VERSION: *NODE_VERSION
+      PNPM_RUN_TARGET: "deploy:storybook-preview"
+      runOnMR: true
+
+  # ============= MR REPORT STAGE (Posts consolidated MR comment) =============
+
+  # MR report collection and posting
+  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
+    inputs:
+      stage: mr-report
+      jobPrefix: post-mr-report
+      PNPM_VERSION: *PNPM_VERSION
+      NODE_VERSION: *NODE_VERSION
+      PNPM_RUN_TARGET: "ci:post-mr-report"
+      runOnMR: true
+
+  # ============= STAGING DEPLOYMENT (Deploys Storybook to staging on main merge) =============
+
+  # Storybook staging deployment
+  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
+    inputs:
+      stage: production-release
+      jobPrefix: deploy-storybook-staging
+      PNPM_VERSION: *PNPM_VERSION
+      NODE_VERSION: *NODE_VERSION
+      PNPM_RUN_TARGET: "deploy:storybook-staging"
+      runOnMR: false
+      runOnBranches: "^main$"
+
   # ============= PRODUCTION RELEASE STAGE (Publishes production versions to npm) =============
 
   # Production release using pnpm component
@@ -138,13 +177,15 @@ include:
       PNPM_RUN_TARGET: "release:production"
       runOnMR: false
       runOnBranches: "never"
+
   # ============= REVIEW STAGE (AI-powered code review) =============
 
   # Claude Code Review
   # DevTools docs -> https://gitlab.cfdata.org/cloudflare/ci/ai
   - component: $CI_SERVER_FQDN/cloudflare/ci/ai/review@~latest
 
-# Job overrides for dependencies and additional configuration
+
+# ============= Job overrides for dependencies and additional configuration =============
 
 # kumo-docs depends on kumo being built first (imports from @cloudflare/kumo)
 build-kumo-docs-build:
@@ -176,12 +217,65 @@ publish-beta-run:
         compare_to: "refs/heads/main"
       when: on_success
     - when: never
+  artifacts:
+    paths:
+      - ci/reports/
+    expire_in: 1 day
   secrets:
     NPM_TOKEN:
       vault: gitlab/_ci_components/_dev/npm/kv_token@kv
       file: false
+
+deploy-storybook-preview-run:
+  needs: []
+  rules:
+    - if: $CI_MERGE_REQUEST_IID
+      changes:
+        paths:
+          - packages/kumo/**/*
+        compare_to: "refs/heads/main"
+      when: on_success
+    - when: never
+  artifacts:
+    paths:
+      - ci/reports/
+    expire_in: 1 day
+  secrets:
+    CLOUDFLARE_API_TOKEN:
+      vault: gitlab/cloudflare/fe/kumo/_dev/cloudflare_api_token/data@kv
+      file: false
+    CLOUDFLARE_ACCOUNT_ID:
+      vault: gitlab/cloudflare/fe/kumo/_dev/cloudflare_account_id/data@kv
+      file: false
+
+post-mr-report-run:
+  needs:
+    - job: publish-beta-run
+      artifacts: true
+      optional: true
+    - job: deploy-storybook-preview-run
+      artifacts: true
+      optional: true
+  rules:
+    - if: $CI_MERGE_REQUEST_IID
+      changes:
+        paths:
+          - packages/kumo/**/*
+        compare_to: "refs/heads/main"
+      when: on_success
+    - when: never
+  secrets:
     GITLAB_API_TOKEN:
       vault: gitlab/cloudflare/fe/kumo/_dev/kumo_preview_bot_v2/data@kv
+      file: false
+
+deploy-storybook-staging-run:
+  secrets:
+    CLOUDFLARE_API_TOKEN:
+      vault: gitlab/cloudflare/fe/kumo/_dev/cloudflare_api_token/data@kv
+      file: false
+    CLOUDFLARE_ACCOUNT_ID:
+      vault: gitlab/cloudflare/fe/kumo/_dev/cloudflare_account_id/data@kv
       file: false
 
 # ============= MANUAL RELEASES STAGE (Production releases) =============
@@ -248,3 +342,4 @@ prod-release-kumo-run:
     CI_RELEASE_TOKEN:
       vault: gitlab/cloudflare/fe/kumo/_dev/ci_release_token_v2/data@kv
       file: false
+      

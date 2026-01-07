@@ -17,6 +17,7 @@ build/
 artifacts
 pipeline-artifacts
 worker-configuration.d.ts
+ci/reports/
 
 # generated types for react router https://reactrouter.com/explanation/type-safety
 .react-router
@@ -39,3 +40,10 @@ Thumbs.db
 
 # bv (beads viewer) local config and caches
 .bv/
+
+# wrangler project
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
+.wrangler/
