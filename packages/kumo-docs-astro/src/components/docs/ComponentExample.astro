@@ -1,0 +1,33 @@
+---
+import { Code } from "astro:components";
+import ComponentPreview from "./ComponentPreview.astro";
+
+interface Props {
+  code: string;
+  lang?: "tsx" | "ts" | "jsx" | "js" | "bash" | "css";
+}
+
+const { code, lang = "tsx" } = Astro.props;
+---
+
+<div class="overflow-hidden rounded-lg">
+  <ComponentPreview>
+    <slot />
+  </ComponentPreview>
+  <div
+    class="border border-t-0 border-neutral-200 bg-neutral-900 dark:border-neutral-800"
+  >
+    <Code code={code} lang={lang} theme="github-dark" />
+  </div>
+</div>
+
+<style is:global>
+  /* Style the Astro Code component to match Kumo's CodeBlock */
+  .astro-code {
+    padding: 1rem;
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    overflow-x: auto;
+  }
+</style>

@@ -1,0 +1,63 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import { SidebarNav } from "../components/SidebarNav";
+import { ThemeToggle } from "../components/ThemeToggle";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="min-h-screen">
+    <SidebarNav currentPath={currentPath} client:load />
+
+    <!-- Theme toggle: fixed in top right corner -->
+    <div
+      class="pointer-events-auto fixed top-0 right-2 z-50 flex h-[49px] items-center"
+    >
+      <ThemeToggle client:load />
+    </div>
+
+    <!-- Main content area with sidebar margin handled by JS -->
+    <div
+      id="main-content"
+      class="ml-12 h-screen overflow-y-auto overscroll-y-none transition-[margin] duration-300 md:ml-[304px]"
+    >
+      <slot />
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  // Listen for sidebar state changes and update content margin
+  // This syncs with the SidebarNav component state
+  document.addEventListener("astro:page-load", () => {
+    const contentWrapper = document.getElementById("main-content");
+    if (!contentWrapper) return;
+
+    // MutationObserver to watch for data-content-wrapper changes
+    const sidebarWrapper = document.querySelector("[data-content-wrapper]");
+    if (sidebarWrapper) {
+      const observer = new MutationObserver(() => {
+        const classes = sidebarWrapper.className;
+        const isOpen = classes.includes("md:ml-[304px]");
+        if (isOpen) {
+          contentWrapper.classList.remove("md:ml-12");
+          contentWrapper.classList.add("md:ml-[304px]");
+        } else {
+          contentWrapper.classList.remove("md:ml-[304px]");
+          contentWrapper.classList.add("md:ml-12");
+        }
+      });
+      observer.observe(sidebarWrapper, {
+        attributes: true,
+        attributeFilter: ["class"],
+      });
+    }
+  });
+</script>
