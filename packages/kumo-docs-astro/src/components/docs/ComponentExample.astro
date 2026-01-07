@@ -1,6 +1,6 @@
 ---
-import { Code } from "astro:components";
 import ComponentPreview from "./ComponentPreview.astro";
+import CodeBlock from "./CodeBlock.astro";
 
 interface Props {
   code: string;
@@ -14,20 +14,7 @@ const { code, lang = "tsx" } = Astro.props;
   <ComponentPreview>
     <slot />
   </ComponentPreview>
-  <div
-    class="border border-t-0 border-neutral-200 bg-neutral-900 dark:border-neutral-800"
-  >
-    <Code code={code} lang={lang} theme="vesper" />
+  <div class="[&_.rounded-lg]:rounded-none [&_.rounded-lg]:border-t-0">
+    <CodeBlock code={code} lang={lang} />
   </div>
 </div>
-
-<style is:global>
-  /* Style the Astro Code component to match Kumo's CodeBlock */
-  .astro-code {
-    padding: 1rem;
-    margin: 0;
-    font-size: 0.875rem;
-    line-height: 1.5;
-    overflow-x: auto;
-  }
-</style>
