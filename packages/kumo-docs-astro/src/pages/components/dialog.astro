@@ -1,0 +1,75 @@
+---
+import DocLayout from "../../layouts/DocLayout.astro";
+import ComponentSection from "../../components/docs/ComponentSection.astro";
+import ComponentExample from "../../components/docs/ComponentExample.astro";
+import CodeBlock from "../../components/docs/CodeBlock.astro";
+import { DialogBasicDemo } from "../../components/demos/DialogDemo";
+---
+
+<DocLayout
+  title="Dialog"
+  description="A modal dialog overlay for focused interactions."
+  baseUIComponent="dialog"
+>
+  <ComponentSection>
+    <ComponentExample code={`<Dialog.Root>
+  <Dialog.Trigger render={(p) => <Button {...p}>Open Dialog</Button>} />
+  <Dialog>
+    <Dialog.Title>Hello!</Dialog.Title>
+    <Dialog.Description>
+      This is a dialog. Click outside or press Escape to close.
+    </Dialog.Description>
+  </Dialog>
+</Dialog.Root>`}>
+      <DialogBasicDemo client:load />
+    </ComponentExample>
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
+    <CodeBlock code={`import { Dialog } from "@cloudflare/kumo";`} lang="tsx" />
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+    <p class="mb-4 text-neutral-600 dark:text-neutral-400">
+      Dialog uses a compound component pattern with the following parts:
+    </p>
+    <ul class="list-inside list-disc space-y-2 text-neutral-600 dark:text-neutral-400">
+      <li><code class="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">Dialog.Root</code> - Controls the open state</li>
+      <li><code class="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">Dialog.Trigger</code> - Button that opens the dialog</li>
+      <li><code class="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">Dialog</code> - The dialog container</li>
+      <li><code class="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">Dialog.Title</code> - The dialog title</li>
+      <li><code class="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">Dialog.Description</code> - The dialog description</li>
+      <li><code class="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">Dialog.Close</code> - Button to close the dialog</li>
+    </ul>
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <th class="px-4 py-3 text-left font-semibold">Component</th>
+            <th class="px-4 py-3 text-left font-semibold">Props</th>
+          </tr>
+        </thead>
+        <tbody class="text-neutral-600 dark:text-neutral-400">
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <td class="px-4 py-3 font-mono text-xs">Dialog.Root</td>
+            <td class="px-4 py-3 font-mono text-xs">open?: boolean, onOpenChange?: (open: boolean) =&gt; void</td>
+          </tr>
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <td class="px-4 py-3 font-mono text-xs">Dialog.Trigger</td>
+            <td class="px-4 py-3 font-mono text-xs">render: (props) =&gt; ReactNode</td>
+          </tr>
+          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+            <td class="px-4 py-3 font-mono text-xs">Dialog</td>
+            <td class="px-4 py-3 font-mono text-xs">children: ReactNode</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ComponentSection>
+</DocLayout>
