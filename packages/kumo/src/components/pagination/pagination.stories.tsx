@@ -26,3 +26,13 @@ export const MiddlePage: Story = {
     setPage: () => {},
   },
 };
+
+export const SimpleControls: Story = {
+  args: {
+    page: 5,
+    perPage: 10,
+    totalCount: 100,
+    setPage: () => {},
+    controls: "simple",
+  },
+};

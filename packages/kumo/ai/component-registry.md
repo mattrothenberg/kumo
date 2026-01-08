@@ -1438,6 +1438,28 @@ function InputGroupExamplesRender() {
             {statusText[status]}
           </p>
         </div>
+
+        {/* With multiple inputs - used for  */}
+        <div className="space-y-1">
+          <p className="text-center text-sm text-muted">
+            A group of multiple inputs using individualFocus
+          </p>
+          <InputGroup focusMode={"individual"}>
+            <InputGroup.Button onClick={checkAvailability}>
+              <CaretDoubleLeftIcon size={16} />
+            </InputGroup.Button>
+            <InputGroup.Button onClick={checkAvailability}>
+              <CaretLeftIcon size={16} />
+            </InputGroup.Button>
+            <InputGroup.Input placeholder="page" value={0} />
+            <InputGroup.Button onClick={checkAvailability}>
+              <CaretRightIcon size={16} />
+            </InputGroup.Button>
+            <InputGroup.Button onClick={checkAvailability}>
+              <CaretDoubleRightIcon size={16} />
+            </InputGroup.Button>
+          </InputGroup>
+        </div>
       </div>
     );
   }
@@ -1741,6 +1763,9 @@ Pagination component
 
 **Props:**
 
+- `controls`: enum [default: full]
+  - `"full"`: Full pagination controls with first, previous, page input, next, and last buttons
+  - `"simple"`: Simple pagination controls with only previous and next buttons
 - `setPage`: (page: number) => void (required)
   Callback when page changes
 - `page`: number
@@ -1755,6 +1780,10 @@ Pagination component
 
 ```tsx
 <Pagination page={1} perPage={10} totalCount={100} setPage={() => {}} />
+```
+
+```tsx
+<Pagination page={5} perPage={10} totalCount={100} setPage={() => {}} controls="simple" />
 ```
 
 
