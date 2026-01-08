@@ -8,6 +8,8 @@ export default function CodeDoc() {
     <DocLayout
       title="Code"
       description="Syntax-highlighted code blocks with support for multiple languages."
+      sourceFile="components/code"
+      storybookPath="story/components-code"
     >
       {/* Demo */}
       <ComponentSection>

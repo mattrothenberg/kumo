@@ -8,6 +8,8 @@ export default function BadgeDoc() {
     <DocLayout
       title="Badge"
       description="Displays a small label for status, categorization, or metadata."
+      sourceFile="components/badge"
+      storybookPath="story/components-badge"
     >
       {/* Demo */}
       <ComponentSection>

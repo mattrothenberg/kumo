@@ -11,6 +11,8 @@ export default function ButtonDoc() {
     <DocLayout
       title="Button"
       description="Displays a button or a component that looks like a button."
+      sourceFile="components/button"
+      storybookPath="story/components-button"
     >
       {/* Demo */}
       <ComponentSection>

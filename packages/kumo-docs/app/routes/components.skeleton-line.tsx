@@ -9,6 +9,7 @@ export default function SkeletonLineDoc() {
     <DocLayout
       title="Skeleton Line"
       description="A skeleton loading placeholder for text content."
+      sourceFile="primitives/skeleton-line"
     >
       {/* Demo */}
       <ComponentSection>

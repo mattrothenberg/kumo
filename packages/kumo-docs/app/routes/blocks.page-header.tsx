@@ -15,6 +15,8 @@ export default function PageHeaderDoc() {
     <DocLayout
       title="Page Header"
       description="A composite component that combines breadcrumbs and tabs for page navigation."
+      sourceFile="blocks/page-header"
+      storybookPath="story/blocks-pageheader"
     >
       {/* Demo */}
       <ComponentSection>

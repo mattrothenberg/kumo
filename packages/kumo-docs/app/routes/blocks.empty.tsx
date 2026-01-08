@@ -16,6 +16,8 @@ export default function EmptyDoc() {
     <DocLayout
       title="Empty State"
       description="A component to display when there's no content or data to show, with optional command line and actions."
+      sourceFile="blocks/empty"
+      storybookPath="story/blocks-empty"
     >
       {/* Demo */}
       <ComponentSection>

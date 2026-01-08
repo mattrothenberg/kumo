@@ -10,6 +10,8 @@ export default function LayerCardDoc() {
     <DocLayout
       title="Layer Card"
       description="A card component with a layered visual effect, perfect for navigation or feature highlights."
+      sourceFile="components/layer-card"
+      storybookPath="story/components-layercard"
     >
       {/* Demo */}
       <ComponentSection>

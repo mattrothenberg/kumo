@@ -9,6 +9,8 @@ export default function TooltipDoc() {
     <DocLayout
       title="Tooltip"
       description="A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it."
+      sourceFile="components/tooltip"
+      storybookPath="story/components-tooltip"
       baseUIComponent="tooltip"
     >
       {/* Demo */}

@@ -15,6 +15,8 @@ export default function ResourceListDoc() {
     <DocLayout
       title="Resource List"
       description="A layout component for displaying resource lists with a title, description, and optional sidebar content."
+      sourceFile="layouts/resource-list"
+      storybookPath="story/layouts-resourcelistpage"
     >
       {/* Demo */}
       <ComponentSection>
