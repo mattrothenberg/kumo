@@ -20,7 +20,7 @@ const currentPath = Astro.url.pathname;
     <div
       class="pointer-events-auto fixed top-0 right-2 z-50 flex h-[49px] items-center"
     >
-      <ThemeToggle client:load />
+      <ThemeToggle client:only="react" />
     </div>
 
     <!-- Main content area - margin controlled by CSS :has() based on sidebar state -->
