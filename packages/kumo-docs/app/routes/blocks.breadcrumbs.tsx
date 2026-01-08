@@ -9,6 +9,8 @@ export default function BreadcrumbsDoc() {
     <DocLayout
       title="Breadcrumbs"
       description="A navigation component that shows the current page's location within a navigational hierarchy."
+      sourceFile="blocks/breadcrumbs"
+      storybookPath="story/blocks-breadcrumbs"
     >
       {/* Demo */}
       <ComponentSection>

@@ -9,6 +9,8 @@ export default function SurfaceDoc() {
     <DocLayout
       title="Surface"
       description="A container component that provides a surface for content with proper styling."
+      sourceFile="components/surface"
+      storybookPath="story/components-surface"
     >
       {/* Demo */}
       <ComponentSection>

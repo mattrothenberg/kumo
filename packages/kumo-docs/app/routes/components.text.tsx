@@ -8,6 +8,8 @@ export default function TextDoc() {
     <DocLayout
       title="Text"
       description="A typography component for various heading and copy styles."
+      sourceFile="components/text"
+      storybookPath="story/components-text"
     >
       {/* Demo */}
       <ComponentSection>

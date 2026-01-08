@@ -8,6 +8,8 @@ export default function ClipboardTextDoc() {
     <DocLayout
       title="Clipboard Text"
       description="A text component with a copy-to-clipboard button."
+      sourceFile="components/clipboard-text"
+      storybookPath="story/components-clipboardtext"
     >
       {/* Demo */}
       <ComponentSection>

@@ -11,6 +11,8 @@ export default function SensitiveInputDoc() {
     <DocLayout
       title="Sensitive Input"
       description="A masked input for sensitive values like API keys and passwords. Click to reveal."
+      sourceFile="components/sensitive-input"
+      storybookPath="story/components-sensitiveinput"
     >
       {/* Demo */}
       <ComponentSection>

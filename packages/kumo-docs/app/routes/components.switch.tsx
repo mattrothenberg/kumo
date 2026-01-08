@@ -9,6 +9,8 @@ export default function SwitchDoc() {
     <DocLayout
       title="Switch"
       description="A two-state button that can be either on or off."
+      sourceFile="components/switch"
+      storybookPath="story/components-switch"
       baseUIComponent="switch"
     >
       {/* Demo */}

@@ -56,6 +56,8 @@ export default function DialogDoc() {
     <DocLayout
       title="Dialog"
       description="A window overlaid on either the primary window or another dialog window, rendering the content underneath inert."
+      sourceFile="components/dialog"
+      storybookPath="story/components-dialog"
       baseUIComponent="dialog"
     >
       {/* Demo */}

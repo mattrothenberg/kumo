@@ -31,6 +31,8 @@ export default function ComboboxDoc() {
     <DocLayout
       title="Combobox"
       description="A searchable select component that allows users to filter and select from a list of options."
+      sourceFile="components/combobox"
+      storybookPath="story/components-combobox"
       baseUIComponent="combobox"
     >
       <ExampleInputTrigger />

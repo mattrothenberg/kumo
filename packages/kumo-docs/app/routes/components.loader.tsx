@@ -9,6 +9,8 @@ export default function LoaderDoc() {
     <DocLayout
       title="Loader"
       description="A loading spinner to indicate loading state."
+      sourceFile="components/loader"
+      storybookPath="story/components-loader"
     >
       {/* Demo */}
       <ComponentSection>

@@ -10,6 +10,8 @@ export default function SelectDoc() {
     <DocLayout
       title="Select"
       description="Displays a list of options for the user to pick from—triggered by a button."
+      sourceFile="components/select"
+      storybookPath="story/components-select"
       baseUIComponent="select"
     >
       <Example1 />

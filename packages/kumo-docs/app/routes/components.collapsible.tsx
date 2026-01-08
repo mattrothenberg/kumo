@@ -10,6 +10,8 @@ export default function CollapsibleDoc() {
     <DocLayout
       title="Collapsible"
       description="A vertically stacked set of interactive headings that each reveal a section of content."
+      sourceFile="components/collapsible"
+      storybookPath="story/components-collapsible"
     >
       {/* Demo */}
       <ComponentSection>

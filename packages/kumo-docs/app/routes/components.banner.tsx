@@ -9,6 +9,8 @@ export default function BannerDoc() {
     <DocLayout
       title="Banner"
       description="Displays contextual inline messages for informational, alert, or error states."
+      sourceFile="components/banner"
+      storybookPath="story/components-banner"
     >
       {/* Demo */}
       <ComponentSection>

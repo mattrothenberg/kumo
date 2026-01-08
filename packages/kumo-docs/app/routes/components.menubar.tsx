@@ -10,6 +10,8 @@ export default function MenuBarDoc() {
     <DocLayout
       title="MenuBar"
       description="A horizontal menu bar with icon buttons, commonly used for text editors or toolbars."
+      sourceFile="components/menubar"
+      storybookPath="story/components-menubar"
     >
       {/* Demo */}
       <ComponentSection>
