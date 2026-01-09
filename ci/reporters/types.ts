@@ -6,11 +6,17 @@
  * is collected by the final reporter job.
  */
 
-import { existsSync, mkdirSync, writeFileSync, readFileSync, readdirSync } from 'node:fs';
-import { join } from 'node:path';
+import {
+  existsSync,
+  mkdirSync,
+  writeFileSync,
+  readFileSync,
+  readdirSync,
+} from "node:fs";
+import { join } from "node:path";
 
 /** Directory where report artifacts are stored */
-export const REPORTS_DIR = 'ci/reports';
+export const REPORTS_DIR = "ci/reports";
 
 /**
  * A single item to be included in the MR comment
@@ -54,6 +60,8 @@ export interface CIContext {
   packageVersion: string;
   /** Storybook preview URL (if deployed) */
   storybookPreviewUrl?: string;
+  /** Kumo docs preview URL (if deployed) */
+  kumoDocsPreviewUrl?: string;
   /** Allow additional context to be passed */
   [key: string]: string | undefined;
 }
@@ -77,17 +85,18 @@ export interface Reporter {
  * Build CI context from environment variables
  */
 export function buildContextFromEnv(): CIContext {
-  const commitSha = process.env.CI_COMMIT_SHA ?? '';
+  const commitSha = process.env.CI_COMMIT_SHA ?? "";
   return {
     commitSha,
     shortSha: commitSha.substring(0, 8),
-    mrIid: process.env.CI_MERGE_REQUEST_IID ?? '',
-    projectId: process.env.CI_PROJECT_ID ?? '',
-    apiUrl: process.env.CI_API_V4_URL ?? '',
-    apiToken: process.env.GITLAB_API_TOKEN ?? '',
-    packageName: process.env.PACKAGE_NAME ?? '@cloudflare/kumo',
-    packageVersion: process.env.PACKAGE_VERSION ?? '',
+    mrIid: process.env.CI_MERGE_REQUEST_IID ?? "",
+    projectId: process.env.CI_PROJECT_ID ?? "",
+    apiUrl: process.env.CI_API_V4_URL ?? "",
+    apiToken: process.env.GITLAB_API_TOKEN ?? "",
+    packageName: process.env.PACKAGE_NAME ?? "@cloudflare/kumo",
+    packageVersion: process.env.PACKAGE_VERSION ?? "",
     storybookPreviewUrl: process.env.STORYBOOK_PREVIEW_URL,
+    kumoDocsPreviewUrl: process.env.KUMO_DOCS_PREVIEW_URL,
   };
 }
 
@@ -121,13 +130,13 @@ export function readReportArtifacts(): ReadReportResult {
     return { items: [], failures: [] };
   }
 
-  const files = readdirSync(REPORTS_DIR).filter((f) => f.endsWith('.json'));
+  const files = readdirSync(REPORTS_DIR).filter((f) => f.endsWith(".json"));
   const items: ReportItem[] = [];
   const failures: string[] = [];
 
   for (const file of files) {
     try {
-      const content = readFileSync(join(REPORTS_DIR, file), 'utf-8');
+      const content = readFileSync(join(REPORTS_DIR, file), "utf-8");
       items.push(JSON.parse(content) as ReportItem);
     } catch (error) {
       console.warn(`⚠️  Failed to read report artifact: ${file}`, error);

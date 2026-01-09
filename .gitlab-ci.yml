@@ -140,6 +140,16 @@ include:
       PNPM_RUN_TARGET: "deploy:storybook-preview"
       runOnMR: true
 
+  # Kumo docs preview deployment
+  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
+    inputs:
+      stage: beta-preview
+      jobPrefix: deploy-kumo-docs-preview
+      PNPM_VERSION: *PNPM_VERSION
+      NODE_VERSION: *NODE_VERSION
+      PNPM_RUN_TARGET: "deploy:kumo-docs-preview"
+      runOnMR: true
+
   # ============= MR REPORT STAGE (Posts consolidated MR comment) =============
 
   # MR report collection and posting
@@ -165,6 +175,17 @@ include:
       runOnMR: false
       runOnBranches: "^main$"
 
+  # Kumo docs staging deployment
+  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
+    inputs:
+      stage: production-release
+      jobPrefix: deploy-kumo-docs-staging
+      PNPM_VERSION: *PNPM_VERSION
+      NODE_VERSION: *NODE_VERSION
+      PNPM_RUN_TARGET: "deploy:kumo-docs-staging"
+      runOnMR: false
+      runOnBranches: "^main$"
+
   # ============= PRODUCTION RELEASE STAGE (Publishes production versions to npm) =============
 
   # Production release using pnpm component
@@ -183,7 +204,6 @@ include:
   # Claude Code Review
   # DevTools docs -> https://gitlab.cfdata.org/cloudflare/ci/ai
   - component: $CI_SERVER_FQDN/cloudflare/ci/ai/review@~latest
-
 
 # ============= Job overrides for dependencies and additional configuration =============
 
@@ -248,6 +268,33 @@ deploy-storybook-preview-run:
       vault: gitlab/cloudflare/fe/kumo/_dev/cloudflare_account_id/data@kv
       file: false
 
+deploy-kumo-docs-preview-run:
+  needs:
+    - job: build-kumo-build
+      artifacts: true
+    - job: build-kumo-docs-build
+      artifacts: true
+  rules:
+    - if: $CI_MERGE_REQUEST_IID
+      changes:
+        paths:
+          - packages/kumo-docs/**/*
+          - packages/kumo/**/*
+        compare_to: "refs/heads/main"
+      when: on_success
+    - when: never
+  artifacts:
+    paths:
+      - ci/reports/
+    expire_in: 1 day
+  secrets:
+    CLOUDFLARE_API_TOKEN:
+      vault: gitlab/cloudflare/fe/kumo/_dev/cloudflare_api_token/data@kv
+      file: false
+    CLOUDFLARE_ACCOUNT_ID:
+      vault: gitlab/cloudflare/fe/kumo/_dev/cloudflare_account_id/data@kv
+      file: false
+
 post-mr-report-run:
   needs:
     - job: publish-beta-run
@@ -256,11 +303,15 @@ post-mr-report-run:
     - job: deploy-storybook-preview-run
       artifacts: true
       optional: true
+    - job: deploy-kumo-docs-preview-run
+      artifacts: true
+      optional: true
   rules:
     - if: $CI_MERGE_REQUEST_IID
       changes:
         paths:
           - packages/kumo/**/*
+          - packages/kumo-docs/**/*
         compare_to: "refs/heads/main"
       when: on_success
     - when: never
@@ -270,6 +321,20 @@ post-mr-report-run:
       file: false
 
 deploy-storybook-staging-run:
+  secrets:
+    CLOUDFLARE_API_TOKEN:
+      vault: gitlab/cloudflare/fe/kumo/_dev/cloudflare_api_token/data@kv
+      file: false
+    CLOUDFLARE_ACCOUNT_ID:
+      vault: gitlab/cloudflare/fe/kumo/_dev/cloudflare_account_id/data@kv
+      file: false
+
+deploy-kumo-docs-staging-run:
+  needs:
+    - job: build-kumo-build
+      artifacts: true
+    - job: build-kumo-docs-build
+      artifacts: true
   secrets:
     CLOUDFLARE_API_TOKEN:
       vault: gitlab/cloudflare/fe/kumo/_dev/cloudflare_api_token/data@kv
@@ -342,4 +407,3 @@ prod-release-kumo-run:
     CI_RELEASE_TOKEN:
       vault: gitlab/cloudflare/fe/kumo/_dev/ci_release_token_v2/data@kv
       file: false
-      
