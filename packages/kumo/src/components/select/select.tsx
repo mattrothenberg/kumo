@@ -159,7 +159,7 @@ export function Select<T, Multiple extends boolean | undefined = false>({
         ) : (
           <SelectBase.Value>{renderValue}</SelectBase.Value>
         )}
-        <SelectBase.Icon>
+        <SelectBase.Icon className="flex items-center">
           <CaretUpDownIcon />
         </SelectBase.Icon>
       </SelectBase.Trigger>

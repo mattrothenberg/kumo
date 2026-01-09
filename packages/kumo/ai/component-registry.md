@@ -1674,7 +1674,7 @@ PageHeader component
 
 **Colors (kumo tokens used):**
 
-`border-color-4`
+`border-color`
 
 **Examples:**
 
