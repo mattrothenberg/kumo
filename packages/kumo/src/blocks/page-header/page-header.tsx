@@ -41,6 +41,8 @@ export function pageHeaderVariants({
 
 export interface PageHeaderProps extends KumoPageHeaderVariantsProps {
   breadcrumbs: ReactNode;
+  title?: string;
+  description?: string;
   tabs?: TabsItem[];
   defaultTab?: string;
   onValueChange?: (value: string) => void;
@@ -50,6 +52,8 @@ export interface PageHeaderProps extends KumoPageHeaderVariantsProps {
 
 export function PageHeader({
   breadcrumbs,
+  title,
+  description,
   tabs,
   defaultTab,
   onValueChange,
@@ -60,6 +64,21 @@ export function PageHeader({
   return (
     <div className={cn(pageHeaderVariants({ spacing }), className)}>
       <div className="border-b border-color-4">{breadcrumbs}</div>
+
+      {(title || description) && (
+        <div className="flex flex-col gap-2 py-3 pl-3">
+          {title && (
+            <h1 className="font-heading text-3xl font-semibold text-surface">
+              {title}
+            </h1>
+          )}
+          {description && (
+            <p className="text-base text-muted max-w-prose">
+              {description}
+            </p>
+          )}
+        </div>
+      )}
 
       {tabs && (
         <div className="flex w-full items-center justify-between border-b border-color-4 pt-1 pb-3 pl-3">
