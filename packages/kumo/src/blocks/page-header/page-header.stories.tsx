@@ -116,3 +116,73 @@ export const WithTabsAndActions: Story = {
   ),
   args: { breadcrumbs: undefined as any },
 };
+
+export const WithTitle: Story = {
+  render: () => (
+    <PageHeader
+      breadcrumbs={
+        <Breadcrumbs>
+          <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+          <Breadcrumbs.Separator />
+          <Breadcrumbs.Link href="/products">Products</Breadcrumbs.Link>
+          <Breadcrumbs.Separator />
+          <Breadcrumbs.Current>Page title</Breadcrumbs.Current>
+        </Breadcrumbs>
+      }
+      title="Page title"
+    />
+  ),
+  args: { breadcrumbs: undefined as any },
+};
+
+export const WithTitleAndDescription: Story = {
+  render: () => (
+    <PageHeader
+      breadcrumbs={
+        <Breadcrumbs>
+          <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+          <Breadcrumbs.Separator />
+          <Breadcrumbs.Link href="/products">Products</Breadcrumbs.Link>
+          <Breadcrumbs.Separator />
+          <Breadcrumbs.Current>Page title</Breadcrumbs.Current>
+        </Breadcrumbs>
+      }
+      title="Page title"
+      description="Action-led, value-oriented description of what this page does. Optional second sentence with use cases or prerequisites."
+    />
+  ),
+  args: { breadcrumbs: undefined as any },
+};
+
+export const CompleteExample: Story = {
+  render: () => (
+    <PageHeader
+      breadcrumbs={
+        <Breadcrumbs>
+          <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+          <Breadcrumbs.Separator />
+          <Breadcrumbs.Link href="/products">Products</Breadcrumbs.Link>
+          <Breadcrumbs.Separator />
+          <Breadcrumbs.Current>Page title</Breadcrumbs.Current>
+        </Breadcrumbs>
+      }
+      title="Page title"
+      description="Action-led, value-oriented description of what this page does. Optional second sentence with use cases or prerequisites."
+      tabs={[
+        { label: "Overview", value: "overview" },
+        { label: "Analytics", value: "analytics" },
+        { label: "Settings", value: "settings" },
+      ]}
+      defaultTab="overview"
+    >
+      <Button variant="outline" size="sm">
+        Export
+      </Button>
+      <Button variant="primary" size="sm">
+        <PlusIcon size={16} />
+        New Item
+      </Button>
+    </PageHeader>
+  ),
+  args: { breadcrumbs: undefined as any },
+};
