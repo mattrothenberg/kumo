@@ -226,7 +226,7 @@ export function HomeGrid() {
       id: "collapsible",
       Component: (
         <Collapsible label="What is Kumo?">
-          Kumo is Cloudflare's new design system.
+          Kumo is Cloudflare's component library.
         </Collapsible>
       ),
     },
@@ -273,7 +273,7 @@ export function HomeGrid() {
       name: "Surface",
       id: "surface",
       Component: (
-        <Surface className="flex h-24 w-40 items-center justify-center rounded-lg bg-surface text-sm text-neutral-500">
+        <Surface className="flex h-24 w-40 items-center justify-center rounded-lg bg-surface text-sm text-muted">
           <em>To put things over.</em>
         </Surface>
       ),
@@ -368,23 +368,23 @@ export function HomeGrid() {
         const route = componentRoutes[c.id] || null;
         return (
           <li
-            className="relative flex aspect-square items-center justify-center bg-surface-secondary ring-1 ring-neutral-200 dark:ring-neutral-800"
+            className="relative flex aspect-square items-center justify-center bg-surface-secondary ring-1 ring-border"
             key={c.name}
           >
             {route ? (
               <a
                 href={route}
-                className="absolute top-4 left-4 text-base font-medium text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300"
+                className="absolute top-4 left-4 text-base font-medium text-muted hover:text-secondary"
               >
                 {c.name}
               </a>
             ) : (
-              <span className="absolute top-4 left-4 text-base font-medium text-neutral-400 italic dark:text-neutral-600">
+              <span className="absolute top-4 left-4 text-base font-medium text-muted italic">
                 {c.name}
               </span>
             )}
             {c.Component ?? (
-              <p className="text-base font-medium text-neutral-400">TBD</p>
+              <p className="text-base font-medium text-muted">TBD</p>
             )}
           </li>
         );

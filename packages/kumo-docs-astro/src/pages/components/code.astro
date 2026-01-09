@@ -25,7 +25,7 @@ import { CodeDemo, CodeLanguagesDemo, CodeWithValuesDemo } from "../../component
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Languages</h2>
-    <p class="text-secondary mb-4">Code supports multiple languages including TypeScript, TSX, Bash, and CSS.</p>
+    <p class="text-label mb-4">Code supports multiple languages including TypeScript, TSX, Bash, and CSS.</p>
     <ComponentExample code={`<Code lang="ts" code={code} />
 <Code lang="tsx" code={jsxCode} />
 <Code lang="bash" code="npm install @cloudflare/kumo" />
@@ -36,7 +36,7 @@ import { CodeDemo, CodeLanguagesDemo, CodeWithValuesDemo } from "../../component
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Template Values</h2>
-    <p class="text-secondary mb-4">Use the values prop to interpolate and highlight dynamic content.</p>
+    <p class="text-label mb-4">Use the values prop to interpolate and highlight dynamic content.</p>
     <ComponentExample code={`<Code 
   lang="bash" 
   code="export API_KEY={{apiKey}}" 
@@ -53,29 +53,29 @@ import { CodeDemo, CodeLanguagesDemo, CodeWithValuesDemo } from "../../component
     <div class="overflow-x-auto">
       <table class="w-full text-sm">
         <thead>
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+          <tr class="border-b border-border">
             <th class="px-4 py-3 text-left font-semibold">Prop</th>
             <th class="px-4 py-3 text-left font-semibold">Type</th>
             <th class="px-4 py-3 text-left font-semibold">Default</th>
           </tr>
         </thead>
-        <tbody class="text-neutral-600 dark:text-neutral-400">
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+        <tbody class="text-label">
+          <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">code</td>
             <td class="px-4 py-3 font-mono text-xs">string</td>
             <td class="px-4 py-3 font-mono text-xs">required</td>
           </tr>
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+          <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">lang</td>
             <td class="px-4 py-3 font-mono text-xs">"ts" | "tsx" | "jsonc" | "bash" | "css"</td>
             <td class="px-4 py-3 font-mono text-xs">-</td>
           </tr>
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+          <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">values</td>
             <td class="px-4 py-3 font-mono text-xs">Record&lt;string, &#123; value: string; highlight?: boolean &#125;&gt;</td>
             <td class="px-4 py-3 font-mono text-xs">-</td>
           </tr>
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+          <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">className</td>
             <td class="px-4 py-3 font-mono text-xs">string</td>
             <td class="px-4 py-3 font-mono text-xs">-</td>

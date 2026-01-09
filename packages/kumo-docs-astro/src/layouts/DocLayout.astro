@@ -1,6 +1,6 @@
 ---
 import MainLayout from "./MainLayout.astro";
-import Header from "../components/Header.astro";
+import { StickyDocHeader } from "../components/docs/StickyDocHeader";
 import BaseUIIcon from "../components/docs/icons/BaseUIIcon.astro";
 import StorybookIcon from "../components/docs/icons/StorybookIcon.astro";
 import GitlabIcon from "../components/docs/icons/GitlabIcon.astro";
@@ -39,14 +39,21 @@ const storybookUrl = storybookPath
 
 <MainLayout title={`${title} - Kumo`} description={description}>
   <div class="flex min-h-screen flex-col">
-    <Header />
+    <StickyDocHeader
+      title={title}
+      gitlabSourceUrl={gitlabSourceUrl}
+      storybookUrl={storybookUrl}
+      baseUIUrl={baseUIUrl}
+      client:load
+    />
 
     <!-- Page Header -->
     <div
-      class="border-b border-neutral-200 bg-surface-secondary pr-12 dark:border-neutral-800"
+      id="page-header"
+      class="border-b border-border bg-surface-secondary pr-12"
     >
       <div
-        class="mx-auto border-r border-neutral-200 dark:border-neutral-800"
+        class="mx-auto border-r border-border"
       >
         <div class="mx-auto max-w-5xl px-8 py-12">
           <div class="mb-3 flex items-center gap-3">
@@ -57,7 +64,7 @@ const storybookUrl = storybookPath
                   href={gitlabSourceUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-neutral-400 transition-colors hover:text-neutral-600 dark:hover:text-neutral-300"
+                  class="text-muted transition-colors hover:text-label"
                   title="View source on GitLab"
                   aria-label="View source on GitLab"
                 >
@@ -71,7 +78,7 @@ const storybookUrl = storybookPath
                   href={storybookUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-neutral-400 transition-colors hover:text-neutral-600 dark:hover:text-neutral-300"
+                  class="text-muted transition-colors hover:text-label"
                   title="View in Storybook"
                   aria-label="View in Storybook"
                 >
@@ -85,7 +92,7 @@ const storybookUrl = storybookPath
                   href={baseUIUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-neutral-400 transition-colors hover:text-neutral-600 dark:hover:text-neutral-300"
+                  class="text-muted transition-colors hover:text-label"
                   title="View Base UI documentation"
                   aria-label="View Base UI documentation"
                 >
@@ -94,7 +101,7 @@ const storybookUrl = storybookPath
               )
             }
           </div>
-          <p class="text-lg text-neutral-600 dark:text-neutral-400">
+          <p class="text-lg text-label">
             {description}
           </p>
         </div>
@@ -102,12 +109,12 @@ const storybookUrl = storybookPath
     </div>
 
     <!-- Content -->
-    <main class="flex grow flex-col pr-12">
+    <main class="flex grow flex-col bg-surface-secondary pr-12">
       <div
-        class="mx-auto w-full grow border-r border-neutral-200 dark:border-neutral-800"
+        class="mx-auto w-full grow border-r border-border"
       >
         <div class="mx-auto max-w-5xl px-8 py-12">
-          <div class="prose prose-neutral dark:prose-invert max-w-none">
+          <div class="max-w-none">
             <slot />
           </div>
         </div>

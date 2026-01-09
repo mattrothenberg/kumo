@@ -34,16 +34,16 @@ import { DialogBasicDemo } from "../../components/demos/DialogDemo";
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Usage</h2>
-    <p class="mb-4 text-neutral-600 dark:text-neutral-400">
+    <p class="mb-4 text-label">
       Dialog uses a compound component pattern with the following parts:
     </p>
-    <ul class="list-inside list-disc space-y-2 text-neutral-600 dark:text-neutral-400">
-      <li><code class="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">Dialog.Root</code> - Controls the open state</li>
-      <li><code class="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">Dialog.Trigger</code> - Button that opens the dialog</li>
-      <li><code class="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">Dialog</code> - The dialog container</li>
-      <li><code class="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">Dialog.Title</code> - The dialog title</li>
-      <li><code class="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">Dialog.Description</code> - The dialog description</li>
-      <li><code class="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">Dialog.Close</code> - Button to close the dialog</li>
+    <ul class="list-inside list-disc space-y-2 text-label">
+      <li><code class="rounded bg-secondary px-1 py-0.5 text-sm">Dialog.Root</code> - Controls the open state</li>
+      <li><code class="rounded bg-secondary px-1 py-0.5 text-sm">Dialog.Trigger</code> - Button that opens the dialog</li>
+      <li><code class="rounded bg-secondary px-1 py-0.5 text-sm">Dialog</code> - The dialog container</li>
+      <li><code class="rounded bg-secondary px-1 py-0.5 text-sm">Dialog.Title</code> - The dialog title</li>
+      <li><code class="rounded bg-secondary px-1 py-0.5 text-sm">Dialog.Description</code> - The dialog description</li>
+      <li><code class="rounded bg-secondary px-1 py-0.5 text-sm">Dialog.Close</code> - Button to close the dialog</li>
     </ul>
   </ComponentSection>
 
@@ -52,21 +52,21 @@ import { DialogBasicDemo } from "../../components/demos/DialogDemo";
     <div class="overflow-x-auto">
       <table class="w-full text-sm">
         <thead>
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+          <tr class="border-b border-border">
             <th class="px-4 py-3 text-left font-semibold">Component</th>
             <th class="px-4 py-3 text-left font-semibold">Props</th>
           </tr>
         </thead>
-        <tbody class="text-neutral-600 dark:text-neutral-400">
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+        <tbody class="text-label">
+          <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">Dialog.Root</td>
             <td class="px-4 py-3 font-mono text-xs">open?: boolean, onOpenChange?: (open: boolean) =&gt; void</td>
           </tr>
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+          <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">Dialog.Trigger</td>
             <td class="px-4 py-3 font-mono text-xs">render: (props) =&gt; ReactNode</td>
           </tr>
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+          <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">Dialog</td>
             <td class="px-4 py-3 font-mono text-xs">children: ReactNode</td>
           </tr>

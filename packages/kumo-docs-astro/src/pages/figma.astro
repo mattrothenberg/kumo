@@ -4,12 +4,12 @@ import Header from "../components/Header.astro";
 import { FigmaPage } from "../components/demos/FigmaPage";
 ---
 
-<MainLayout title="Figma Resources - Kumo" description="Figma design system resources for Kumo">
+<MainLayout title="Figma Resources - Kumo" description="Figma resources for Kumo component library">
   <div class="flex min-h-screen flex-col">
     <Header />
-    <main class="flex grow flex-col pr-12">
+    <main class="flex grow flex-col bg-surface-secondary pr-12">
       <div
-        class="mx-auto flex w-full grow items-center justify-center border-r border-neutral-200 dark:border-neutral-800"
+        class="mx-auto flex w-full grow items-center justify-center border-r border-border"
       >
         <FigmaPage client:load />
       </div>

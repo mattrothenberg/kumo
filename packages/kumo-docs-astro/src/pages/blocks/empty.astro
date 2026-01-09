@@ -29,7 +29,7 @@ import { EmptyDemo, EmptySizesDemo, EmptyWithCommandDemo, EmptyWithActionsDemo, 
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Sizes</h2>
-    <p class="text-secondary mb-4">Empty states come in three sizes to fit different container contexts.</p>
+    <p class="text-label mb-4">Empty states come in three sizes to fit different container contexts.</p>
     <ComponentExample code={`<Empty size="sm" icon={...} title="..." description="..." />
 <Empty size="base" icon={...} title="..." description="..." />
 <Empty size="lg" icon={...} title="..." description="..." />`}>
@@ -39,7 +39,7 @@ import { EmptyDemo, EmptySizesDemo, EmptyWithCommandDemo, EmptyWithActionsDemo, 
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">With Command Line</h2>
-    <p class="text-secondary mb-4">Include a copyable command to help users get started.</p>
+    <p class="text-label mb-4">Include a copyable command to help users get started.</p>
     <ComponentExample code={`<Empty 
   icon={<FolderOpen size={48} className="text-disabled" />}
   title="No projects found"
@@ -52,7 +52,7 @@ import { EmptyDemo, EmptySizesDemo, EmptyWithCommandDemo, EmptyWithActionsDemo, 
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">With Actions</h2>
-    <p class="text-secondary mb-4">Add custom action buttons using the contents prop.</p>
+    <p class="text-label mb-4">Add custom action buttons using the contents prop.</p>
     <ComponentExample code={`<Empty 
   icon={<CloudSlash size={48} className="text-disabled" />}
   title="No connection"
@@ -70,7 +70,7 @@ import { EmptyDemo, EmptySizesDemo, EmptyWithCommandDemo, EmptyWithActionsDemo, 
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Minimal</h2>
-    <p class="text-secondary mb-4">At minimum, only a title is required.</p>
+    <p class="text-label mb-4">At minimum, only a title is required.</p>
     <ComponentExample code={`<Empty title="Nothing here" />`}>
       <EmptyMinimalDemo client:visible />
     </ComponentExample>
@@ -81,39 +81,39 @@ import { EmptyDemo, EmptySizesDemo, EmptyWithCommandDemo, EmptyWithActionsDemo, 
     <div class="overflow-x-auto">
       <table class="w-full text-sm">
         <thead>
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+          <tr class="border-b border-border">
             <th class="px-4 py-3 text-left font-semibold">Prop</th>
             <th class="px-4 py-3 text-left font-semibold">Type</th>
             <th class="px-4 py-3 text-left font-semibold">Default</th>
           </tr>
         </thead>
-        <tbody class="text-neutral-600 dark:text-neutral-400">
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+        <tbody class="text-label">
+          <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">title</td>
             <td class="px-4 py-3 font-mono text-xs">string</td>
             <td class="px-4 py-3 font-mono text-xs">required</td>
           </tr>
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+          <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">size</td>
             <td class="px-4 py-3 font-mono text-xs">"sm" | "base" | "lg"</td>
             <td class="px-4 py-3 font-mono text-xs">"base"</td>
           </tr>
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+          <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">icon</td>
             <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
             <td class="px-4 py-3 font-mono text-xs">-</td>
           </tr>
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+          <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">description</td>
             <td class="px-4 py-3 font-mono text-xs">string</td>
             <td class="px-4 py-3 font-mono text-xs">-</td>
           </tr>
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+          <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">commandLine</td>
             <td class="px-4 py-3 font-mono text-xs">string</td>
             <td class="px-4 py-3 font-mono text-xs">-</td>
           </tr>
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+          <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">contents</td>
             <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
             <td class="px-4 py-3 font-mono text-xs">-</td>

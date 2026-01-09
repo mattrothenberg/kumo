@@ -31,7 +31,7 @@ import { BreadcrumbsDemo, BreadcrumbsSizesDemo, BreadcrumbsWithIconsDemo, Breadc
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Sizes</h2>
-    <p class="text-secondary mb-4">Breadcrumbs come in two sizes for different contexts.</p>
+    <p class="text-label mb-4">Breadcrumbs come in two sizes for different contexts.</p>
     <ComponentExample code={`<Breadcrumbs size="sm">...</Breadcrumbs>
 <Breadcrumbs size="base">...</Breadcrumbs>`}>
       <BreadcrumbsSizesDemo client:visible />
@@ -40,7 +40,7 @@ import { BreadcrumbsDemo, BreadcrumbsSizesDemo, BreadcrumbsWithIconsDemo, Breadc
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">With Icons</h2>
-    <p class="text-secondary mb-4">Add icons to breadcrumb items for better visual context.</p>
+    <p class="text-label mb-4">Add icons to breadcrumb items for better visual context.</p>
     <ComponentExample code={`<Breadcrumbs>
   <Breadcrumbs.Link href="/" icon={<House size={16} />}>
     Home
@@ -60,7 +60,7 @@ import { BreadcrumbsDemo, BreadcrumbsSizesDemo, BreadcrumbsWithIconsDemo, Breadc
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Long Breadcrumb Trail</h2>
-    <p class="text-secondary mb-4">Deep navigation hierarchies are handled gracefully.</p>
+    <p class="text-label mb-4">Deep navigation hierarchies are handled gracefully.</p>
     <ComponentExample code={`<Breadcrumbs>
   <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
   <Breadcrumbs.Separator />
@@ -78,7 +78,7 @@ import { BreadcrumbsDemo, BreadcrumbsSizesDemo, BreadcrumbsWithIconsDemo, Breadc
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">With Clipboard</h2>
-    <p class="text-secondary mb-4">Add a copy-to-clipboard button for the current page URL.</p>
+    <p class="text-label mb-4">Add a copy-to-clipboard button for the current page URL.</p>
     <ComponentExample code={`<Breadcrumbs>
   <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
   <Breadcrumbs.Separator />
@@ -98,19 +98,19 @@ import { BreadcrumbsDemo, BreadcrumbsSizesDemo, BreadcrumbsWithIconsDemo, Breadc
     <div class="overflow-x-auto">
       <table class="w-full text-sm">
         <thead>
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+          <tr class="border-b border-border">
             <th class="px-4 py-3 text-left font-semibold">Prop</th>
             <th class="px-4 py-3 text-left font-semibold">Type</th>
             <th class="px-4 py-3 text-left font-semibold">Default</th>
           </tr>
         </thead>
-        <tbody class="text-neutral-600 dark:text-neutral-400">
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+        <tbody class="text-label">
+          <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">size</td>
             <td class="px-4 py-3 font-mono text-xs">"sm" | "base"</td>
             <td class="px-4 py-3 font-mono text-xs">"base"</td>
           </tr>
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+          <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">children</td>
             <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
             <td class="px-4 py-3 font-mono text-xs">-</td>
@@ -120,7 +120,7 @@ import { BreadcrumbsDemo, BreadcrumbsSizesDemo, BreadcrumbsWithIconsDemo, Breadc
     </div>
 
     <h3 class="mb-2 text-lg font-semibold mt-6">Sub-components</h3>
-    <ul class="list-disc list-inside text-secondary space-y-1">
+    <ul class="list-disc list-inside text-label space-y-1">
       <li><code class="text-surface">Breadcrumbs.Link</code> - Navigable breadcrumb item (props: href, icon)</li>
       <li><code class="text-surface">Breadcrumbs.Current</code> - Current page indicator (props: loading, icon)</li>
       <li><code class="text-surface">Breadcrumbs.Separator</code> - Visual separator between items</li>

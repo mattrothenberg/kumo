@@ -54,9 +54,8 @@ const layoutItems: NavItem[] = [
 ];
 
 const LI_STYLE =
-  "block rounded-lg text-neutral-600 hover:text-neutral-800 dark:hover:text-white hover:bg-neutral-200/30 dark:hover:bg-neutral-800/50 p-2 my-[.05rem] cursor-pointer transition-colors no-underline relative z-10";
-const LI_ACTIVE_STYLE =
-  "font-semibold text-neutral-800 dark:text-white bg-neutral-200/50 dark:bg-neutral-800";
+  "block rounded-lg text-label hover:text-surface hover:bg-subtle p-2 my-[.05rem] cursor-pointer transition-colors no-underline relative z-10";
+const LI_ACTIVE_STYLE = "font-semibold text-surface bg-subtle";
 
 interface SidebarNavProps {
   currentPath: string;
@@ -76,10 +75,10 @@ export function SidebarNav({ currentPath }: SidebarNavProps) {
       <div
         className={cn(
           "fixed inset-y-0 left-0 z-50 w-12 bg-surface-secondary",
-          "border-r border-neutral-200 dark:border-neutral-800",
+          "border-r border-border",
         )}
       >
-        <div className="relative h-[49px] border-b border-neutral-200 dark:border-neutral-800">
+        <div className="relative h-[49px] border-b border-border">
           <div className="absolute top-2 right-1">
             <Button
               variant="ghost"
@@ -105,10 +104,10 @@ export function SidebarNav({ currentPath }: SidebarNavProps) {
       <aside
         data-sidebar-open={sidebarOpen}
         className={cn(
-          "fixed inset-y-0 left-12 z-40 flex w-64 flex-col backdrop-blur",
+          "fixed inset-y-0 left-12 z-40 flex w-64 flex-col bg-surface-secondary backdrop-blur",
           "transition-transform duration-300 will-change-transform",
           sidebarOpen
-            ? "translate-x-0 border-r border-neutral-200 dark:border-neutral-800"
+            ? "translate-x-0 border-r border-border"
             : "-translate-x-full",
         )}
       >
@@ -116,10 +115,10 @@ export function SidebarNav({ currentPath }: SidebarNavProps) {
         <div
           className={cn(
             "flex h-[49px] flex-none items-center px-4 font-medium",
-            "border-b border-neutral-200 dark:border-neutral-800",
+            "border-b border-border",
           )}
         />
-        <div className="min-h-0 grow overflow-y-auto overscroll-contain p-4 text-sm text-neutral-600">
+        <div className="min-h-0 grow overflow-y-auto overscroll-contain p-4 text-sm text-label">
           <div>
             <ul className="flex flex-col">
               {staticPages.map((item) => (
@@ -141,7 +140,7 @@ export function SidebarNav({ currentPath }: SidebarNavProps) {
           <div className="mb-6">
             {/* Components Section */}
             <h4
-              className="mt-4 mb-2 ml-2 flex cursor-pointer items-center justify-between text-xs font-medium text-neutral-400 uppercase transition-colors select-none hover:text-neutral-700 dark:hover:text-neutral-300"
+              className="mt-4 mb-2 ml-2 flex cursor-pointer items-center justify-between text-xs font-medium text-muted uppercase transition-colors select-none hover:text-surface"
               onClick={() => setComponentsOpen(!componentsOpen)}
             >
               <span>Components</span>
@@ -179,7 +178,7 @@ export function SidebarNav({ currentPath }: SidebarNavProps) {
 
             {/* Blocks Section */}
             <h4
-              className="mt-4 mb-2 ml-2 flex cursor-pointer items-center justify-between text-xs font-medium text-neutral-400 uppercase transition-colors select-none hover:text-neutral-700 dark:hover:text-neutral-300"
+              className="mt-4 mb-2 ml-2 flex cursor-pointer items-center justify-between text-xs font-medium text-muted uppercase transition-colors select-none hover:text-surface"
               onClick={() => setBlocksOpen(!blocksOpen)}
             >
               <span>Blocks</span>
@@ -215,7 +214,7 @@ export function SidebarNav({ currentPath }: SidebarNavProps) {
 
             {/* Layouts Section */}
             <h4
-              className="mt-4 mb-2 ml-2 flex cursor-pointer items-center justify-between text-xs font-medium text-neutral-400 uppercase transition-colors select-none hover:text-neutral-700 dark:hover:text-neutral-300"
+              className="mt-4 mb-2 ml-2 flex cursor-pointer items-center justify-between text-xs font-medium text-muted uppercase transition-colors select-none hover:text-surface"
               onClick={() => setLayoutsOpen(!layoutsOpen)}
             >
               <span>Layouts</span>

@@ -45,7 +45,7 @@ const items = [
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Multiple Selection</h2>
-    <p class="text-secondary mb-4">Enable multi-select with chips for selected items.</p>
+    <p class="text-label mb-4">Enable multi-select with chips for selected items.</p>
     <ComponentExample code={`<Combobox
   value={value}
   onValueChange={setValue}
@@ -81,7 +81,7 @@ const items = [
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">With Field</h2>
-    <p class="text-secondary mb-4">Add label and description using the built-in Field wrapper.</p>
+    <p class="text-label mb-4">Add label and description using the built-in Field wrapper.</p>
     <ComponentExample code={`<Combobox
   items={items}
   value={value}
@@ -107,7 +107,7 @@ const items = [
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Error State</h2>
-    <p class="text-secondary mb-4">Display validation errors with the error prop.</p>
+    <p class="text-label mb-4">Display validation errors with the error prop.</p>
     <ComponentExample code={`<Combobox
   items={items}
   value={value}
@@ -138,49 +138,49 @@ const items = [
     <div class="overflow-x-auto">
       <table class="w-full text-sm">
         <thead>
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+          <tr class="border-b border-border">
             <th class="px-4 py-3 text-left font-semibold">Prop</th>
             <th class="px-4 py-3 text-left font-semibold">Type</th>
             <th class="px-4 py-3 text-left font-semibold">Default</th>
           </tr>
         </thead>
-        <tbody class="text-neutral-600 dark:text-neutral-400">
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+        <tbody class="text-label">
+          <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">items</td>
             <td class="px-4 py-3 font-mono text-xs">T[]</td>
             <td class="px-4 py-3 font-mono text-xs">required</td>
           </tr>
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+          <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">value</td>
             <td class="px-4 py-3 font-mono text-xs">T | T[]</td>
             <td class="px-4 py-3 font-mono text-xs">-</td>
           </tr>
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+          <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">onValueChange</td>
             <td class="px-4 py-3 font-mono text-xs">(value: T | T[]) =&gt; void</td>
             <td class="px-4 py-3 font-mono text-xs">-</td>
           </tr>
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+          <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">multiple</td>
             <td class="px-4 py-3 font-mono text-xs">boolean</td>
             <td class="px-4 py-3 font-mono text-xs">false</td>
           </tr>
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+          <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">inputSide</td>
             <td class="px-4 py-3 font-mono text-xs">"right" | "top"</td>
             <td class="px-4 py-3 font-mono text-xs">"right"</td>
           </tr>
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+          <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">label</td>
             <td class="px-4 py-3 font-mono text-xs">string</td>
             <td class="px-4 py-3 font-mono text-xs">-</td>
           </tr>
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+          <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">description</td>
             <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
             <td class="px-4 py-3 font-mono text-xs">-</td>
           </tr>
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+          <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">error</td>
             <td class="px-4 py-3 font-mono text-xs">string | object</td>
             <td class="px-4 py-3 font-mono text-xs">-</td>
@@ -190,7 +190,7 @@ const items = [
     </div>
 
     <h3 class="mb-2 text-lg font-semibold mt-6">Sub-components</h3>
-    <ul class="list-disc list-inside text-secondary space-y-1">
+    <ul class="list-disc list-inside text-label space-y-1">
       <li><code class="text-surface">Combobox.TriggerInput</code> - Single-select input trigger</li>
       <li><code class="text-surface">Combobox.TriggerMultipleWithInput</code> - Multi-select with chips</li>
       <li><code class="text-surface">Combobox.Content</code> - Dropdown container</li>

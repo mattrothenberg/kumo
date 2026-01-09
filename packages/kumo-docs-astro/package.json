@@ -7,7 +7,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "typecheck": "astro check"
   },
   "dependencies": {
     "@cloudflare/kumo": "workspace:*",
@@ -17,6 +18,7 @@
     "tailwind-merge": "catalog:"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.4",
     "@astrojs/react": "^4.2.1",
     "@tailwindcss/vite": "catalog:",
     "@types/react": "catalog:",
