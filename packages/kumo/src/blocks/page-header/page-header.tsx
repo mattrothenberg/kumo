@@ -59,10 +59,10 @@ export function PageHeader({
 }: PageHeaderProps) {
   return (
     <div className={cn(pageHeaderVariants({ spacing }), className)}>
-      <div className="border-b border-color-4">{breadcrumbs}</div>
+      <div className="border-b border-color">{breadcrumbs}</div>
 
       {tabs && (
-        <div className="flex w-full items-center justify-between border-b border-color-4 pt-1 pb-3 pl-3">
+        <div className="flex w-full items-center justify-between border-b border-color pt-1 pb-3 pl-3">
           <Tabs
             tabs={tabs}
             selectedValue={defaultTab}

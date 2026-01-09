@@ -1534,7 +1534,7 @@
         "<PageHeader\n      breadcrumbs={\n        <Breadcrumbs>\n          <Breadcrumbs.Link href=\"/\">Home</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Link href=\"/projects\">Projects</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Current>My Project</Breadcrumbs.Current>\n        </Breadcrumbs>\n      }\n      tabs={[\n        { label: \"Overview\", value: \"overview\" },\n        { label: \"Analytics\", value: \"analytics\" },\n        { label: \"Settings\", value: \"settings\" },\n      ]}\n      defaultTab=\"overview\"\n    >\n      <Button variant=\"outline\" size=\"sm\">\n        Export\n      </Button>\n      <Button variant=\"primary\" size=\"sm\">\n        <PlusIcon size={16} />\n        New Item\n      </Button>\n    </PageHeader>"
       ],
       "colors": [
-        "border-color-4"
+        "border-color"
       ]
     },
     "Pagination": {
