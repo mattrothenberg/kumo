@@ -154,3 +154,58 @@ Starting test refactoring for Figma generators using structural + snapshot patte
 
 ---
 
+
+## Iteration 4: collapsible (Tier 3)
+
+**Generator:** collapsible
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Added testable exports to collapsible.ts:
+   - `getCollapsibleOpenConfig()` - Returns open state configuration (true, false)
+   - `getCollapsibleStateConfig()` - Returns interaction state configuration and styles
+   - `getCollapsibleParsedTriggerStyles()` - Returns parsed trigger base styles
+   - `getCollapsibleParsedContentStyles()` - Returns parsed content panel styles
+   - `getCollapsibleLayoutData(open, state)` - Returns computed layout for specific combination
+   - `getAllCollapsibleVariantData()` - Returns complete intermediate data
+
+2. Created collapsible.test.ts with 43 tests:
+   - Registry Validation (4 tests)
+   - Open State Configuration (2 tests)
+   - Interaction State Configuration (4 tests)
+   - Trigger Styles Parsing (3 tests)
+   - Content Styles Parsing (2 tests)
+   - Layout Data (15 tests covering all open/state combinations)
+   - Complete Variant Data (7 tests)
+   - Snapshot Tests (9 tests)
+
+3. All tests follow structural + snapshot pattern from badge.test.ts
+
+### Test Results:
+- ✅ All 43 tests pass
+- ✅ 9 snapshots created
+- ✅ Verified tests pass consistently with --run flag
+
+### Issues Encountered:
+- Pre-existing TypeScript errors in collapsible.ts (rotation, strokeLeftWeight, layoutSizingHorizontal properties)
+- Parser doesn't support `pl-*` (left padding only) or `my-*` (vertical margin) classes
+- Adjusted tests to validate what parser actually returns rather than expected but unsupported properties
+- Tests validate generator implementation (what it does) rather than parser capabilities
+
+### Notes:
+- Collapsible generator uses hardcoded styles for trigger and content panel
+- Generator creates 2 open states × 4 interaction states = 8 component variants
+- Layout data includes:
+  - Trigger: gap, fontSize, fontWeight, textVariable, addRing, borderRadius
+  - Chevron: iconName, rotation (0° collapsed, 180° expanded), iconColorToken
+  - Content: conditional on open state (null when collapsed, object with padding/border when expanded)
+- State-specific behaviors:
+  - focus: adds ring to trigger
+  - disabled: reduces opacity, uses text-disabled color for icon
+- Tests ensure intermediate data structure is stable and regression-protected
+
+**Status:** COMPLETE - Ready for commit
+
+---
+

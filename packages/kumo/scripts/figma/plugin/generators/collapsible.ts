@@ -467,6 +467,110 @@ export async function generateCollapsibleComponents(
 }
 
 /**
+ * Testable exports for tests (pure functions, no Figma API calls)
+ */
+
+/**
+ * Get open state configuration
+ */
+export function getCollapsibleOpenConfig() {
+  return {
+    values: OPEN_VALUES,
+  };
+}
+
+/**
+ * Get state configuration
+ */
+export function getCollapsibleStateConfig() {
+  return {
+    values: STATE_VALUES,
+    styles: STATE_STYLES,
+  };
+}
+
+/**
+ * Get parsed trigger base styles
+ */
+export function getCollapsibleParsedTriggerStyles() {
+  return parseTailwindClasses(TRIGGER_BASE_STYLES);
+}
+
+/**
+ * Get parsed content panel styles
+ */
+export function getCollapsibleParsedContentStyles() {
+  return parseTailwindClasses(CONTENT_PANEL_STYLES);
+}
+
+/**
+ * Get computed layout data for a specific open/state combination
+ */
+export function getCollapsibleLayoutData(open: boolean, state: string) {
+  var triggerStyles = parseTailwindClasses(TRIGGER_BASE_STYLES);
+  var contentStyles = parseTailwindClasses(CONTENT_PANEL_STYLES);
+  var stateStyle = STATE_STYLES[state] || STATE_STYLES["default"];
+
+  return {
+    open: open,
+    state: state,
+    trigger: {
+      gap: triggerStyles.gap || 4,
+      fontSize: triggerStyles.fontSize || 14,
+      fontWeight: 400,
+      textVariable: stateStyle.textVariable || "text-color-info",
+      addRing: stateStyle.addRing || false,
+      borderRadius: BORDER_RADIUS.sm,
+    },
+    content: open
+      ? {
+          paddingX: contentStyles.paddingX || 16,
+          paddingTop: 8,
+          paddingBottom: 8,
+          itemSpacing: 16,
+          borderVariable: "color-border",
+          borderWeight: 2,
+        }
+      : null,
+    chevron: {
+      iconName: "ph-caret-down",
+      rotation: open ? 180 : 0,
+      iconColorToken: state === "disabled" ? "text-disabled" : "text-info",
+    },
+    opacity: stateStyle.opacity,
+  };
+}
+
+/**
+ * Get all collapsible variant data (for snapshot testing)
+ */
+export function getAllCollapsibleVariantData() {
+  var triggerStyles = getCollapsibleParsedTriggerStyles();
+  var contentStyles = getCollapsibleParsedContentStyles();
+  var openConfig = getCollapsibleOpenConfig();
+  var stateConfig = getCollapsibleStateConfig();
+
+  return {
+    triggerStyles: {
+      raw: TRIGGER_BASE_STYLES,
+      parsed: triggerStyles,
+    },
+    contentStyles: {
+      raw: CONTENT_PANEL_STYLES,
+      parsed: contentStyles,
+    },
+    openStates: openConfig.values,
+    interactionStates: stateConfig.values,
+    stateStyles: stateConfig.styles,
+    variants: OPEN_VALUES.flatMap(function (open) {
+      return STATE_VALUES.map(function (state) {
+        return getCollapsibleLayoutData(open, state);
+      });
+    }),
+  };
+}
+
+/**
  * Exports for tests and backwards compatibility
  */
 export var COLLAPSIBLE_OPEN_VALUES = OPEN_VALUES;

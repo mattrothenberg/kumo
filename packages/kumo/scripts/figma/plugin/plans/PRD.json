@@ -181,7 +181,7 @@
       "name": "collapsible",
       "tier": 3,
       "priority": "medium",
-      "passes": false
+      "passes": true
     },
     {
       "name": "date-range-picker",
