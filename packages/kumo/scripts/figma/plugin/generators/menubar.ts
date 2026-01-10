@@ -27,6 +27,7 @@ import {
   bindStrokeToVariable,
 } from "./shared";
 import { createIconInstance, bindIconColor } from "./icon-utils";
+import registry from "../../../../ai/component-registry.json";
 
 /**
  * Section padding for component display
@@ -337,4 +338,84 @@ export async function generateMenuBarComponents(
     console.error("Stack: " + errorStack);
     throw error;
   }
+}
+
+// ============================================================================
+// TESTABLE EXPORTS
+// ============================================================================
+
+/**
+ * Get MenuBar dimensions configuration
+ *
+ * Returns the layout dimensions for the MenuBar component.
+ */
+export function getMenuBarDimensionsConfig() {
+  return MENUBAR_CONFIG;
+}
+
+/**
+ * Get MenuBar default options
+ *
+ * Returns the default menu options used in the generator.
+ */
+export function getMenuBarDefaultOptions() {
+  return DEFAULT_OPTIONS;
+}
+
+/**
+ * Get MenuBar color bindings
+ *
+ * Returns the semantic color tokens used for MenuBar styling.
+ */
+export function getMenuBarColorBindings() {
+  return {
+    container: {
+      background: "color-color",
+      border: "color-color",
+    },
+    button: {
+      inactive: {
+        background: "color-color",
+      },
+      active: {
+        background: "color-surface",
+      },
+      icon: "fill-surface-inverse",
+    },
+  };
+}
+
+/**
+ * Get MenuBar shadow configuration
+ *
+ * Returns the shadow effect configuration (shadow-xs).
+ */
+export function getMenuBarShadowConfig() {
+  return {
+    type: "DROP_SHADOW",
+    color: { r: 0, g: 0, b: 0, a: 0.05 },
+    offset: { x: 0, y: 1 },
+    radius: 2,
+    spread: 0,
+  };
+}
+
+/**
+ * Get all MenuBar data
+ *
+ * Returns complete intermediate data structure for the MenuBar component.
+ * This is used for snapshot testing to catch unintended changes.
+ */
+export function getAllMenuBarData() {
+  var dimensions = getMenuBarDimensionsConfig();
+  var defaultOptions = getMenuBarDefaultOptions();
+  var colorBindings = getMenuBarColorBindings();
+  var shadowConfig = getMenuBarShadowConfig();
+
+  return {
+    dimensions: dimensions,
+    defaultOptions: defaultOptions,
+    colorBindings: colorBindings,
+    shadowConfig: shadowConfig,
+  };
 }

@@ -806,3 +806,65 @@ Starting test refactoring for Figma generators using structural + snapshot patte
 
 ---
 
+
+## Iteration 16: menubar (Tier 4)
+
+**Generator:** menubar
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Added testable exports to menubar.ts:
+   - `getMenuBarDimensionsConfig()` - Returns layout dimensions (height, button width, icon size, border radius)
+   - `getMenuBarDefaultOptions()` - Returns default menu options (home, search, notifications, settings)
+   - `getMenuBarColorBindings()` - Returns semantic color tokens for container and buttons
+   - `getMenuBarShadowConfig()` - Returns shadow-xs effect configuration
+   - `getAllMenuBarData()` - Returns complete intermediate data
+
+2. Created menubar.test.ts with 35 tests:
+   - Registry Validation (4 tests)
+   - Dimensions Configuration (6 tests)
+   - Default Options Configuration (3 tests)
+   - Color Bindings (6 tests)
+   - Shadow Configuration (6 tests)
+   - Complete Data Structure (5 tests)
+   - Snapshot Tests (5 tests)
+
+3. All tests follow structural + snapshot pattern from badge.test.ts
+
+### Test Results:
+- ✅ All 35 tests pass
+- ✅ 5 snapshots created
+- ✅ Verified tests pass consistently with --run flag
+
+### Issues Encountered:
+- Pre-existing TypeScript error in menubar.ts (effects property)
+- This error exists in the original code and is not related to test refactoring
+- Tests pass successfully despite this type error (same as other generators)
+
+### Notes:
+- MenuBar generator uses hardcoded MENUBAR_CONFIG and DEFAULT_OPTIONS (not reading from registry like newer generators)
+- MenuBar has no variants - creates active state variants dynamically (active=home, active=search, etc.)
+- Default options:
+  - Home (ph-house icon)
+  - Search (ph-magnifying-glass icon)
+  - Notifications (ph-bell icon)
+  - Settings (ph-gear icon)
+- Dimensions:
+  - Height: 32px (compact)
+  - Button width: 36px
+  - Icon size: 18px
+  - Border radius: 8px (rounded-lg)
+  - Button border radius: 6px (rounded-md)
+- Color bindings:
+  - Container: bg-color, border-color
+  - Inactive button: bg-color
+  - Active button: bg-surface (elevated)
+  - Icon: fill-surface-inverse
+- Shadow: DROP_SHADOW with 0.05 opacity, 1px offset, 2px radius
+- Tests validate registry alignment, options structure, and intermediate data
+
+**Status:** COMPLETE - Ready for commit
+
+---
+

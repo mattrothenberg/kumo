@@ -1,0 +1,136 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`MenuBar Generator - Snapshot Tests (Intermediate Data) > should produce consistent color bindings 1`] = `
+{
+  "button": {
+    "active": {
+      "background": "color-surface",
+    },
+    "icon": "fill-surface-inverse",
+    "inactive": {
+      "background": "color-color",
+    },
+  },
+  "container": {
+    "background": "color-color",
+    "border": "color-color",
+  },
+}
+`;
+
+exports[`MenuBar Generator - Snapshot Tests (Intermediate Data) > should produce consistent default options 1`] = `
+[
+  {
+    "icon": "ph-house",
+    "id": "home",
+    "tooltip": "Home",
+  },
+  {
+    "icon": "ph-magnifying-glass",
+    "id": "search",
+    "tooltip": "Search",
+  },
+  {
+    "icon": "ph-bell",
+    "id": "notifications",
+    "tooltip": "Notifications",
+  },
+  {
+    "icon": "ph-gear",
+    "id": "settings",
+    "tooltip": "Settings",
+  },
+]
+`;
+
+exports[`MenuBar Generator - Snapshot Tests (Intermediate Data) > should produce consistent dimensions configuration 1`] = `
+{
+  "borderRadius": 8,
+  "buttonBorderRadius": 6,
+  "buttonWidth": 36,
+  "height": 32,
+  "iconSize": 18,
+}
+`;
+
+exports[`MenuBar Generator - Snapshot Tests (Intermediate Data) > should produce consistent intermediate data (golden path) 1`] = `
+{
+  "colorBindings": {
+    "button": {
+      "active": {
+        "background": "color-surface",
+      },
+      "icon": "fill-surface-inverse",
+      "inactive": {
+        "background": "color-color",
+      },
+    },
+    "container": {
+      "background": "color-color",
+      "border": "color-color",
+    },
+  },
+  "defaultOptions": [
+    {
+      "icon": "ph-house",
+      "id": "home",
+      "tooltip": "Home",
+    },
+    {
+      "icon": "ph-magnifying-glass",
+      "id": "search",
+      "tooltip": "Search",
+    },
+    {
+      "icon": "ph-bell",
+      "id": "notifications",
+      "tooltip": "Notifications",
+    },
+    {
+      "icon": "ph-gear",
+      "id": "settings",
+      "tooltip": "Settings",
+    },
+  ],
+  "dimensions": {
+    "borderRadius": 8,
+    "buttonBorderRadius": 6,
+    "buttonWidth": 36,
+    "height": 32,
+    "iconSize": 18,
+  },
+  "shadowConfig": {
+    "color": {
+      "a": 0.05,
+      "b": 0,
+      "g": 0,
+      "r": 0,
+    },
+    "offset": {
+      "x": 0,
+      "y": 1,
+    },
+    "radius": 2,
+    "spread": 0,
+    "type": "DROP_SHADOW",
+  },
+}
+`;
+
+exports[`MenuBar Generator - Snapshot Tests (Intermediate Data) > should produce consistent shadow configuration 1`] = `
+{
+  "color": {
+    "a": 0.05,
+    "b": 0,
+    "g": 0,
+    "r": 0,
+  },
+  "offset": {
+    "x": 0,
+    "y": 1,
+  },
+  "radius": 2,
+  "spread": 0,
+  "type": "DROP_SHADOW",
+}
+`;
