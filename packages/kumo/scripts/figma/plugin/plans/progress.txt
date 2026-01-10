@@ -533,3 +533,48 @@ Starting test refactoring for Figma generators using structural + snapshot patte
 
 ---
 
+
+## Iteration 11: refresh-button (Tier 4)
+
+**Generator:** refresh-button
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Created refresh-button.test.ts with 40 tests:
+   - Registry Validation (8 tests - variants and sizes from Button component)
+   - Compact Size Configuration (3 tests - square button dimensions)
+   - Icon Size Configuration (3 tests - refresh icon sizes)
+   - Variant Styles Parsing (6 tests - secondary variant parsing)
+   - Size Styles Parsing (8 tests - all 4 sizes)
+   - Complete Variant Data (5 tests - structure validation)
+   - Snapshot Tests (7 tests)
+
+2. All tests follow structural + snapshot pattern from badge.test.ts
+
+### Test Results:
+- ✅ All 40 tests pass
+- ✅ 7 snapshots created
+- ✅ Verified tests pass consistently with --run flag
+
+### Issues Encountered:
+- None - RefreshButton is straightforward, uses Button's registry data
+
+### Notes:
+- RefreshButton generator does NOT export testable functions (unlike newer generators)
+- This is okay because it uses Button's variants/sizes directly from registry
+- Generator creates 4 sizes × 2 loading states = 8 component variants
+- Uses secondary variant (default) from Button component
+- Square shape with compact size mapping:
+  - xs: 14px, sm: 26px, base: 36px, lg: 40px
+- Icon sizes proportional to button size:
+  - xs: 12px, sm: 16px (size-4), base: 18px (size-4.5), lg: 20px (size-5)
+- Loading state shows loader animation instead of refresh icon
+- Tests validate registry structure and intermediate data directly (no need for exported functions)
+- All structural assertions use typeof and toBeDefined()
+- No exact-value assertions for Tailwind classes (flexible to design changes)
+
+**Status:** COMPLETE - Ready for commit
+
+---
+
