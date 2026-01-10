@@ -15,6 +15,11 @@ import {
   bindTextColorToVariable,
 } from "./shared";
 
+// Import registry as source of truth
+import registry from "../../../../ai/component-registry.json";
+
+const meterComponent = registry.components.Meter;
+
 /**
  * Meter base layout constants
  */
@@ -31,6 +36,109 @@ const SECTION_PADDING = 48;
  * Gap between sections on the page
  */
 const SECTION_GAP = 160;
+
+/**
+ * Fill levels to demonstrate: 0%, 25%, 50%, 75%, 100%
+ */
+const FILL_LEVELS = [0, 25, 50, 75, 100];
+
+/**
+ * ============================================================================
+ * TESTABLE EXPORTS - Pure functions for testing (no Figma API calls)
+ * ============================================================================
+ */
+
+/**
+ * Get fill level configuration
+ * Returns the fill levels that will be generated as variants
+ */
+export function getMeterFillLevelConfig() {
+  return {
+    fillLevels: FILL_LEVELS,
+    description: "Fill levels to demonstrate meter progress states",
+  };
+}
+
+/**
+ * Get meter dimensions configuration
+ * Returns the layout constants used for meter sizing
+ */
+export function getMeterDimensionsConfig() {
+  return {
+    meterWidth: METER_WIDTH,
+    trackHeight: METER_TRACK_HEIGHT,
+    gap: METER_GAP,
+    description: "Meter base layout dimensions",
+  };
+}
+
+/**
+ * Get color bindings configuration
+ * Returns the semantic tokens used for meter colors
+ */
+export function getMeterColorBindings() {
+  return {
+    label: "text-color-label",
+    value: "text-color-surface",
+    track: "color-color-4",
+    indicator: "color-primary",
+    description: "Semantic color tokens bound to meter elements",
+  };
+}
+
+/**
+ * Get computed indicator width for a specific fill percentage
+ * @param fillPercentage - Fill percentage (0-100)
+ * @returns Computed indicator width in pixels
+ */
+export function getMeterIndicatorWidth(fillPercentage: number) {
+  return (METER_WIDTH * fillPercentage) / 100;
+}
+
+/**
+ * Get all meter variant data (for snapshot testing)
+ * Returns intermediate data before Figma API calls
+ */
+export function getAllMeterVariantData() {
+  const fillLevelConfig = getMeterFillLevelConfig();
+  const dimensionsConfig = getMeterDimensionsConfig();
+  const colorBindings = getMeterColorBindings();
+
+  return {
+    registry: {
+      name: meterComponent.name,
+      description: meterComponent.description,
+      category: meterComponent.category,
+      colors: meterComponent.colors,
+    },
+    fillLevels: fillLevelConfig.fillLevels.map((fillLevel) => {
+      return {
+        fillPercentage: fillLevel,
+        indicatorWidth: getMeterIndicatorWidth(fillLevel),
+        label: "Progress",
+        valueText: fillLevel + "%",
+      };
+    }),
+    dimensions: dimensionsConfig,
+    colorBindings: colorBindings,
+    layout: {
+      headerRowMode: "HORIZONTAL",
+      headerRowAlign: "SPACE_BETWEEN",
+      trackCornerRadius: 9999,
+      indicatorCornerRadius: 9999,
+      labelFontSize: 12,
+      labelFontWeight: 400,
+      valueFontSize: 14,
+      valueFontWeight: 500,
+    },
+  };
+}
+
+/**
+ * ============================================================================
+ * FIGMA COMPONENT GENERATION
+ * ============================================================================
+ */
 
 /**
  * Create a single Meter component with the specified fill percentage
@@ -166,7 +274,7 @@ export async function generateMeterComponents(startY: number): Promise<number> {
   figma.currentPage = componentsPage;
 
   // Fill levels to demonstrate: 0%, 25%, 50%, 75%, 100%
-  const fillLevels = [0, 25, 50, 75, 100];
+  const fillLevels = FILL_LEVELS;
   const components: ComponentNode[] = [];
 
   // Track row labels: { y, text }
