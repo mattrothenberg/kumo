@@ -156,8 +156,8 @@
       "name": "switch",
       "tier": 2,
       "priority": "medium",
-      "status": "hardcoded",
-      "notes": "SWITCH_DIMENSIONS hardcoded. Should read from registry.components.Switch.styling or props.size.classes"
+      "status": "complete",
+      "notes": "Migrated. SWITCH_DIMENSIONS now parsed from registry.components.Switch.props.size.classes using manual regex parsing for fractional Tailwind classes (h-5.5, w-8.5, etc.)"
     },
     {
       "name": "input-area",

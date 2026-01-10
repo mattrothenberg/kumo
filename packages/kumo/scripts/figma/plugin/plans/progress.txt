@@ -966,3 +966,53 @@ None - Input component has comprehensive registry data including:
 
 **Status:** COMPLETE - Ready for commit
 
+
+---
+
+## Iteration 18: switch (Tier 2 - PHASE 2: Registry Integration)
+
+**Generator:** switch
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Migrated SWITCH_DIMENSIONS from hardcoded values to registry-based parsing:
+   - Added parseSwitchDimensions() function that reads from sizeProp.classes
+   - Parses fractional Tailwind classes (h-5.5 w-8.5, h-6.5 w-10.5, h-7.5 w-12.5) using regex
+   - Converts Tailwind units to pixels (1 unit = 4px)
+   - SWITCH_DIMENSIONS now dynamically computed from registry at generator load time
+   
+2. Parsing approach:
+   - Manual regex parsing: /h-(\d+(?:\.\d+)?)/ and /w-(\d+(?:\.\d+)?)/
+   - Fallback to hardcoded values if parsing fails (defensive programming)
+   - Parser doesn't support width property or fractional classes, so manual parsing required
+
+3. What remains hardcoded (by design):
+   - SWITCH_PADDING: 4px (p-1 from component, layout constant)
+   - SWITCH_LABEL_GAP: 8px (gap-2 from component, layout constant)
+   - Track color logic (bg-surface-3/bg-primary/bg-error based on state)
+   - Thumb color (white, hardcoded in React component)
+
+### Test Results:
+- ✅ All 50 tests pass
+- ✅ No snapshots changed (parsed values match previous hardcoded values exactly)
+- ✅ Verified tests pass with --run flag
+
+### Registry Gaps Found:
+None - Switch component has comprehensive registry data:
+- props.size.values (sm, base, lg)
+- props.size.classes with fractional Tailwind units
+- props.variant.values (default, error)
+
+No KUMO_SWITCH_STYLING export needed - size classes provide sufficient data.
+
+### Notes:
+- Switch was marked "hardcoded" in PRD because SWITCH_DIMENSIONS was hardcoded
+- Now fully migrated - dimensions computed from registry at generator init time
+- Parser limitation documented: doesn't support width property or fractional Tailwind classes
+- Manual regex parsing works reliably for Switch's specific class pattern (h-X.Y w-A.B)
+- Pre-existing TypeScript errors for opacity, layoutWrap, counterAxisSpacing properties
+- Switch is second Tier 2 generator fully migrated to registry (after input from Tier 1)
+
+**Status:** COMPLETE - Ready for commit
+
