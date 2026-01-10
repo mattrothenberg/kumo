@@ -1068,3 +1068,55 @@ KUMO_SELECT_STYLING exists in select.tsx but not yet in component-registry.json.
 
 **Status:** COMPLETE - Ready for commit
 
+
+---
+
+## Iteration 20: tooltip (Tier 2 - PHASE 2: Registry Integration)
+
+**Generator:** tooltip
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Migrated from hardcoded styles to correct React component styles:
+   - Changed TOOLTIP_BOX_STYLES from "bg-surface-3 text-surface" to "bg-black-icon text-white"
+   - Updated arrow fill binding from "color-surface-3" to "color-black-icon"
+   - Changed text color from semantic token to hardcoded white using setWhiteTextColor()
+   - Added tooltipComponent registry reference at top of file
+   
+2. Added new testable export:
+   - getTooltipStylingConfig() - Returns popup and arrow styling configuration from React component
+   - Includes popup (background, text, padding, fontSize, borderRadius, shadow)
+   - Includes arrow (fill, path, width, height)
+
+3. Updated existing testable exports:
+   - getTooltipSideConfig() - Now uses tooltipComponent variable instead of re-reading registry
+   - getAllTooltipData() - Added stylingConfig to returned data
+
+4. Updated component comments to reflect actual implementation:
+   - Documentation now correctly states bg-black-icon and text-white
+   - Clarified that text-white is hardcoded (not a semantic token)
+   - Updated arrow documentation to mention fill-black-icon and fill-icon-path
+
+### Test Results:
+- ✅ All 29 tests pass
+- ✅ 3 snapshots updated (intentional changes to align with React component)
+- ✅ Verified tests pass consistently with --run flag
+
+### Registry Gaps Found:
+None - Tooltip component has sufficient registry data (props.side). The actual popup styling is hardcoded in the React component's className, not in KUMO_TOOLTIP_VARIANTS, so no styling section needed in registry.
+
+### Notes:
+- Tooltip was marked "hardcoded" in PRD because it used incorrect colors (bg-surface-3 instead of bg-black-icon)
+- Now fully aligned with React component implementation in tooltip.tsx
+- The React component uses hardcoded classes in the Popup component, not variant-based styling
+- Snapshot changes were intentional and expected:
+  - textVariable changed from "text-color-surface" to null (white is hardcoded)
+  - isWhiteText changed from undefined to true
+  - raw box styles reflect new bg-black-icon and text-white classes
+  - Added stylingConfig section documenting popup and arrow configuration
+- Pre-existing TypeScript errors for textAutoResize, createVector properties (documented in earlier iterations)
+- Tooltip is first Tier 2 generator fully migrated to correct component-aligned styling
+
+**Status:** COMPLETE - Ready for commit
+

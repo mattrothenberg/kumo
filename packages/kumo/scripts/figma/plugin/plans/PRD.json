@@ -121,8 +121,8 @@
       "name": "tooltip",
       "tier": 2,
       "priority": "medium",
-      "status": "hardcoded",
-      "notes": "Uses hardcoded styles (bg-surface-3, text-surface). Need to add KUMO_TOOLTIP_STYLING or read from registry"
+      "status": "complete",
+      "notes": "Fully migrated. Now uses correct colors from React component (bg-black-icon, text-white instead of bg-surface-3, text-surface). Added getTooltipStylingConfig() export. All 29 tests pass."
     },
     {
       "name": "collapsible",

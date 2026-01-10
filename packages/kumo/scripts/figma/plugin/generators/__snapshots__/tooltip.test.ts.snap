@@ -13,10 +13,10 @@ exports[`Tooltip Generator - Snapshot Tests (Intermediate Data) > should produce
   "fillVariable": undefined,
   "fontSize": 14,
   "fontWeight": 400,
-  "isWhiteText": undefined,
+  "isWhiteText": true,
   "paddingX": 10,
   "paddingY": 6,
-  "textVariable": "text-color-surface",
+  "textVariable": null,
 }
 `;
 
@@ -31,20 +31,21 @@ exports[`Tooltip Generator - Snapshot Tests (Intermediate Data) > should produce
     "fillVariable": undefined,
     "fontSize": 14,
     "fontWeight": 400,
-    "isWhiteText": undefined,
+    "isWhiteText": true,
     "paddingX": 10,
     "paddingY": 6,
-    "textVariable": "text-color-surface",
+    "textVariable": null,
   },
   "boxStyles": {
     "parsed": {
       "borderRadius": 6,
       "fontSize": 14,
+      "isWhiteText": true,
       "paddingX": 10,
       "paddingY": 6,
-      "textVariable": "text-color-surface",
+      "textVariable": null,
     },
-    "raw": "bg-surface-3 text-surface rounded-md px-2.5 py-1.5 text-sm",
+    "raw": "rounded-md bg-black-icon px-2.5 py-1.5 text-sm text-white",
   },
   "sideConfig": {
     "default": "top",
@@ -61,6 +62,23 @@ exports[`Tooltip Generator - Snapshot Tests (Intermediate Data) > should produce
       "right",
     ],
   },
+  "stylingConfig": {
+    "arrow": {
+      "fill": "fill-black-icon",
+      "height": 10,
+      "path": "fill-icon-path",
+      "width": 20,
+    },
+    "popup": {
+      "background": "bg-black-icon",
+      "borderRadius": "rounded-md",
+      "fontSize": "text-sm",
+      "paddingX": "px-2.5",
+      "paddingY": "py-1.5",
+      "shadow": "shadow-lg shadow-icon-path",
+      "text": "text-white",
+    },
+  },
   "text": {
     "fontSize": 14,
     "fontWeight": 400,
@@ -72,9 +90,10 @@ exports[`Tooltip Generator - Snapshot Tests (Intermediate Data) > should produce
 {
   "borderRadius": 6,
   "fontSize": 14,
+  "isWhiteText": true,
   "paddingX": 10,
   "paddingY": 6,
-  "textVariable": "text-color-surface",
+  "textVariable": null,
 }
 `;
 

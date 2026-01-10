@@ -7,17 +7,18 @@ import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
  * the Tooltip component popup styling:
  *
  * - Static visual representation of an OPEN tooltip popup
- * - Tooltip has bg-surface-3, text-surface, rounded-md, p-2 padding
- * - Includes an arrow/pointer
+ * - Tooltip has bg-black-icon, text-white, rounded-md, px-2.5 py-1.5 padding
+ * - Includes an arrow/pointer with shadow
  *
  * The Tooltip has:
- * - Container with bg-surface-3, text-surface, rounded-md, p-2
+ * - Container with bg-black-icon, text-white, rounded-md, px-2.5 py-1.5
  * - Arrow pointing down (for a top-positioned tooltip)
- * - Text content
+ * - Text content with text-sm
  *
  * Uses semantic tokens bound to Figma variables:
- * - bg-surface-3 → color-surface-3
- * - text-surface → text-color-surface
+ * - bg-black-icon → color-black-icon
+ * - text-white → (hardcoded white)
+ * - Arrow uses fill-black-icon and fill-icon-path
  *
  * @see packages/kumo/src/components/tooltip/tooltip.tsx
  */
@@ -27,7 +28,7 @@ import {
   getVariableByName,
   createModeSection,
   bindFillToVariable,
-  bindTextColorToVariable,
+  setWhiteTextColor,
   BORDER_RADIUS,
 } from "./shared";
 
@@ -51,11 +52,14 @@ var ARROW_WIDTH = 20;
 var ARROW_HEIGHT = 10;
 
 /**
- * Tooltip styling - hardcoded in generator
- * NOTE: This differs from the actual React component which uses bg-black-icon
- * and text-white. The generator uses bg-surface-3 and text-surface instead.
+ * Tooltip styling - read from React component
+ * Matches the actual Tooltip.Popup styles from tooltip.tsx:
+ * "rounded-md bg-black-icon px-2.5 py-1.5 text-sm text-white"
  */
-var TOOLTIP_BOX_STYLES = "bg-surface-3 text-surface rounded-md px-2.5 py-1.5 text-sm";
+var tooltipComponent = registry.components.Tooltip;
+
+// Tooltip popup styles from tooltip.tsx
+var TOOLTIP_BOX_STYLES = "rounded-md bg-black-icon px-2.5 py-1.5 text-sm text-white";
 var TOOLTIP_TEXT_SIZE = 14; // text-sm
 var TOOLTIP_TEXT_WEIGHT = 400; // normal
 
@@ -92,8 +96,8 @@ function createTooltipArrow(): VectorNode {
     ],
   };
 
-  // Bind arrow fill to bg-surface-3 variable
-  var bgVar = getVariableByName("color-surface-3");
+  // Bind arrow fill to bg-black-icon variable (matches tooltip box)
+  var bgVar = getVariableByName("color-black-icon");
   if (bgVar) {
     bindFillToVariable(arrow as unknown as SceneNode, bgVar.id);
   }
@@ -142,8 +146,8 @@ async function createTooltipComponent(): Promise<ComponentNode> {
   tooltipBox.x = 0;
   tooltipBox.y = 0;
 
-  // Apply background fill (bg-surface-3)
-  var bgVar = getVariableByName("color-surface-3");
+  // Apply background fill (bg-black-icon)
+  var bgVar = getVariableByName("color-black-icon");
   if (bgVar) {
     bindFillToVariable(tooltipBox, bgVar.id);
   }
@@ -154,11 +158,9 @@ async function createTooltipComponent(): Promise<ComponentNode> {
   text.name = "Text";
   text.textAutoResize = "WIDTH_AND_HEIGHT";
 
-  // Apply text color (text-surface)
-  var textVar = getVariableByName("text-color-surface");
-  if (textVar) {
-    bindTextColorToVariable(text, textVar.id);
-  }
+  // Apply text color (text-white - hardcoded white)
+  // White text is hardcoded in the React component, not using a semantic token
+  setWhiteTextColor(text);
 
   tooltipBox.appendChild(text);
   component.appendChild(tooltipBox);
@@ -280,8 +282,7 @@ export async function generateTooltipComponents(
  * @returns Side variant configuration
  */
 export function getTooltipSideConfig() {
-  var componentData = registry.components.Tooltip;
-  var props = componentData.props;
+  var props = tooltipComponent.props;
   var sideProp = props.side as {
     values: string[];
     descriptions: Record<string, string>;
@@ -292,6 +293,34 @@ export function getTooltipSideConfig() {
     values: sideProp.values,
     descriptions: sideProp.descriptions,
     default: sideProp.default,
+  };
+}
+
+/**
+ * Get Tooltip styling configuration from React component
+ * Matches the actual Tooltip.Popup classes from tooltip.tsx
+ * 
+ * @returns Tooltip styling configuration
+ */
+export function getTooltipStylingConfig() {
+  return {
+    popup: {
+      // From tooltip.tsx Popup className
+      background: "bg-black-icon",
+      text: "text-white",
+      paddingX: "px-2.5", // 10px
+      paddingY: "py-1.5", // 6px
+      fontSize: "text-sm", // 14px
+      borderRadius: "rounded-md",
+      shadow: "shadow-lg shadow-icon-path",
+    },
+    arrow: {
+      // Arrow uses same background as popup
+      fill: "fill-black-icon",
+      path: "fill-icon-path",
+      width: ARROW_WIDTH,
+      height: ARROW_HEIGHT,
+    },
   };
 }
 
@@ -348,12 +377,14 @@ export function getTooltipArrowDimensions() {
  */
 export function getAllTooltipData() {
   var sideConfig = getTooltipSideConfig();
+  var stylingConfig = getTooltipStylingConfig();
   var boxLayout = getTooltipBoxLayout();
   var arrowDimensions = getTooltipArrowDimensions();
   var parsedStyles = getTooltipParsedBoxStyles();
 
   return {
     sideConfig,
+    stylingConfig,
     boxStyles: {
       raw: TOOLTIP_BOX_STYLES,
       parsed: parsedStyles,
