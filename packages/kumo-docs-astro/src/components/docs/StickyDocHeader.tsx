@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { cn } from "@cloudflare/kumo";
-import { GitlabIcon } from "./icons/GitlabIcon";
+import { GitlabLogoSimple } from "@phosphor-icons/react";
 import { StorybookIcon } from "./icons/StorybookIcon";
 import { BaseUIIcon } from "./icons/BaseUIIcon";
 
@@ -90,7 +90,7 @@ export function StickyDocHeader({
                 aria-label="View source on GitLab"
                 tabIndex={showStickyTitle ? 0 : -1}
               >
-                <GitlabIcon size={18} />
+                <GitlabLogoSimple size={18} weight="fill" />
               </a>
             )}
             {storybookUrl && (
@@ -145,7 +145,7 @@ export function StickyDocHeader({
                 aria-label="View source on GitLab"
                 tabIndex={showStickyTitle && sidebarOpen ? 0 : -1}
               >
-                <GitlabIcon size={20} />
+                <GitlabLogoSimple size={20} weight="fill" />
               </a>
             )}
             {storybookUrl && (

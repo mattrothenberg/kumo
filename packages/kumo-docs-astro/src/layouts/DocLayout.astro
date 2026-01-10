@@ -1,9 +1,9 @@
 ---
 import MainLayout from "./MainLayout.astro";
 import { StickyDocHeader } from "../components/docs/StickyDocHeader";
-import BaseUIIcon from "../components/docs/icons/BaseUIIcon.astro";
-import StorybookIcon from "../components/docs/icons/StorybookIcon.astro";
-import GitlabIcon from "../components/docs/icons/GitlabIcon.astro";
+import { BaseUIIcon } from "../components/docs/icons/BaseUIIcon";
+import { StorybookIcon } from "../components/docs/icons/StorybookIcon";
+import { GitlabLogoSimple } from "@phosphor-icons/react";
 
 interface Props {
   title: string;
@@ -68,7 +68,7 @@ const storybookUrl = storybookPath
                   title="View source on GitLab"
                   aria-label="View source on GitLab"
                 >
-                  <GitlabIcon size={28} />
+                  <GitlabLogoSimple size={28} weight="fill" />
                 </a>
               )
             }
