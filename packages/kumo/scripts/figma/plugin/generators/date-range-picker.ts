@@ -1,4 +1,6 @@
 import { logComplete } from "../logger";
+import registry from "../../../../ai/component-registry.json";
+
 /**
  * DateRangePicker Component Generator
  *
@@ -35,20 +37,38 @@ import {
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 
 /**
+ * Extract DateRangePicker configuration from registry
+ */
+var dateRangePickerComponent = registry.components.DateRangePicker;
+var dateRangePickerProps = dateRangePickerComponent.props;
+var sizeProp = dateRangePickerProps.size as {
+  values: string[];
+  classes: Record<string, string>;
+  descriptions: Record<string, string>;
+  default: string;
+};
+var variantProp = dateRangePickerProps.variant as {
+  values: string[];
+  classes: Record<string, string>;
+  descriptions: Record<string, string>;
+  default: string;
+};
+
+/**
  * Section padding and spacing
  */
 var SECTION_PADDING = 48;
 var SECTION_GAP = 160;
 
 /**
- * Size values
+ * Size values (from registry)
  */
-var SIZE_VALUES = ["sm", "base", "lg"];
+var SIZE_VALUES = sizeProp.values;
 
 /**
- * Variant values
+ * Variant values (from registry)
  */
-var VARIANT_VALUES = ["default", "subtle"];
+var VARIANT_VALUES = variantProp.values;
 
 /**
  * Selected state values
@@ -57,6 +77,10 @@ var SELECTED_VALUES = [false, true];
 
 /**
  * Size-specific configurations (from date-range-picker.tsx)
+ * 
+ * TODO: These values should ideally come from registry when KUMO_DATE_RANGE_PICKER_VARIANTS
+ * is extracted with full size metadata (cellHeight, cellWidth, calendarWidth, textSize, iconSize).
+ * For now, these values match the React component's KUMO_DATE_RANGE_PICKER_VARIANTS exactly.
  */
 var SIZE_CONFIG: Record<
   string,
@@ -100,12 +124,24 @@ var SIZE_CONFIG: Record<
 };
 
 /**
- * Variant-specific background colors
+ * Variant-specific background colors (from registry)
  */
-var VARIANT_CONFIG: Record<string, { bgVariable: string }> = {
-  default: { bgVariable: "color-calendar" },
-  subtle: { bgVariable: "color-surface" },
-};
+function getVariantBackground(variant: string): string {
+  var classes = variantProp.classes[variant] || variantProp.classes.default;
+  // Extract semantic token from class (e.g., "bg-calendar" -> "color-calendar")
+  if (classes.indexOf("bg-calendar") >= 0) {
+    return "color-calendar";
+  } else if (classes.indexOf("bg-surface") >= 0) {
+    return "color-surface";
+  }
+  return "color-calendar"; // fallback
+}
+
+var VARIANT_CONFIG: Record<string, { bgVariable: string }> = {};
+for (var vi = 0; vi < VARIANT_VALUES.length; vi++) {
+  var v = VARIANT_VALUES[vi];
+  VARIANT_CONFIG[v] = { bgVariable: getVariantBackground(v) };
+}
 
 /**
  * Day-of-week labels
@@ -882,22 +918,26 @@ export var DATE_RANGE_PICKER_SELECTED_VALUES = SELECTED_VALUES;
  */
 
 /**
- * Returns size configuration from SIZE_CONFIG
+ * Returns size configuration from SIZE_CONFIG (values from registry)
  */
 export function getDateRangePickerSizeConfig() {
   return {
-    values: SIZE_VALUES,
-    config: SIZE_CONFIG,
+    values: SIZE_VALUES, // from registry
+    config: SIZE_CONFIG, // hardcoded (TODO: extract from KUMO_DATE_RANGE_PICKER_VARIANTS)
+    registryClasses: sizeProp.classes,
+    registryDescriptions: sizeProp.descriptions,
   };
 }
 
 /**
- * Returns variant configuration from VARIANT_CONFIG
+ * Returns variant configuration from VARIANT_CONFIG (derived from registry)
  */
 export function getDateRangePickerVariantConfig() {
   return {
-    values: VARIANT_VALUES,
-    config: VARIANT_CONFIG,
+    values: VARIANT_VALUES, // from registry
+    config: VARIANT_CONFIG, // derived from registry classes
+    registryClasses: variantProp.classes,
+    registryDescriptions: variantProp.descriptions,
   };
 }
 

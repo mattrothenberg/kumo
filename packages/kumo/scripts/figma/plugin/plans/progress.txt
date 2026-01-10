@@ -1178,3 +1178,66 @@ No KUMO_COLLAPSIBLE_STYLING needed - component is simple with no size/variant di
 
 **Status:** COMPLETE - Ready for commit
 
+
+---
+
+## Iteration 22: date-range-picker (Tier 2 - PHASE 2: Registry Integration)
+
+**Generator:** date-range-picker
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Migrated SIZE_VALUES and VARIANT_VALUES from hardcoded arrays to registry:
+   - SIZE_VALUES: Changed from ["sm", "base", "lg"] to sizeProp.values (from registry)
+   - VARIANT_VALUES: Changed from ["default", "subtle"] to variantProp.values (from registry)
+   - Added registry imports at top of file
+   
+2. Migrated VARIANT_CONFIG from hardcoded to registry-derived:
+   - Created getVariantBackground() helper that extracts semantic tokens from registry classes
+   - VARIANT_CONFIG now dynamically computed from variantProp.classes
+   - "bg-calendar" -> "color-calendar", "bg-surface" -> "color-surface"
+   
+3. Updated testable exports to include registry data:
+   - getDateRangePickerSizeConfig() - Added registryClasses and registryDescriptions
+   - getDateRangePickerVariantConfig() - Added registryClasses and registryDescriptions
+   - Both functions now return registry data alongside hardcoded config
+   
+4. What remains hardcoded (documented with TODO):
+   - SIZE_CONFIG: Detailed dimensions (calendarWidth, cellHeight, cellWidth, textSize, iconSize, padding, gap)
+   - Reason: KUMO_DATE_RANGE_PICKER_VARIANTS in React component has these values, but they're not extracted to registry yet
+   - TODO comment added: "These values should ideally come from registry when KUMO_DATE_RANGE_PICKER_VARIANTS is extracted with full size metadata"
+
+### Test Results:
+- ✅ All 40 tests pass
+- ✅ 3 snapshots updated (intentionally added registry data)
+- ✅ Verified tests pass consistently with --run flag
+
+### Registry Gaps Found:
+KUMO_DATE_RANGE_PICKER_VARIANTS exists in date-range-picker.tsx with detailed size metadata:
+- sm: { classes, cellHeight, cellWidth, calendarWidth, textSize, iconSize, description }
+- base: { classes, cellHeight, cellWidth, calendarWidth, textSize, iconSize, description }
+- lg: { classes, cellHeight, cellWidth, calendarWidth, textSize, iconSize, description }
+
+This structure is NOT extracted to registry yet. Registry has:
+- props.size.values ✅
+- props.size.classes ✅ (p-3 gap-2, etc.)
+- props.size.descriptions ✅
+
+Missing from registry:
+- cellHeight, cellWidth, calendarWidth (from KUMO_DATE_RANGE_PICKER_VARIANTS)
+- textSize, iconSize (from KUMO_DATE_RANGE_PICKER_VARIANTS)
+
+Action needed: Run `pnpm --filter @cloudflare/kumo codegen:registry` after updating extractor to handle complex variant structures with nested properties beyond just "classes" and "description".
+
+### Notes:
+- DateRangePicker was marked "hardcoded" in PRD because SIZE_CONFIG and VARIANT_CONFIG were entirely hardcoded
+- Now partially migrated - values and variant backgrounds from registry, detailed dimensions documented as needing registry enhancement
+- Generator creates 3 sizes × 2 variants × 2 selected states = 12 component variants (only base actually generated for performance)
+- SIZE_CONFIG values match React component's KUMO_DATE_RANGE_PICKER_VARIANTS exactly
+- Pre-existing TypeScript errors for textAlignHorizontal, resize, radius properties (documented in earlier iterations)
+- DateRangePicker is first Tier 2 generator in Phase 2 with complex nested variant metadata
+- Snapshot changes were intentional - added registryClasses and registryDescriptions to exports
+
+**Status:** COMPLETE - Ready for commit
+

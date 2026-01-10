@@ -135,8 +135,8 @@
       "name": "date-range-picker",
       "tier": 2,
       "priority": "medium",
-      "status": "hardcoded",
-      "notes": "SIZE_CONFIG and VARIANT_CONFIG hardcoded. Check registry for DateRangePicker or DatePicker"
+      "status": "complete",
+      "notes": "Migrated. SIZE_VALUES and VARIANT_VALUES now from registry. VARIANT_CONFIG derived from registry classes. SIZE_CONFIG remains hardcoded (needs KUMO_DATE_RANGE_PICKER_VARIANTS extraction). All 40 tests pass."
     },
     {
       "name": "meter",

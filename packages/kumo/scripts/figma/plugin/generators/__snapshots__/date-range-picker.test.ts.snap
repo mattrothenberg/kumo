@@ -124,6 +124,16 @@ exports[`DateRangePicker Generator - Snapshot Tests (Intermediate Data) > should
         "textSize": 12,
       },
     },
+    "registryClasses": {
+      "base": "p-4 gap-2.5",
+      "lg": "p-5 gap-3",
+      "sm": "p-3 gap-2",
+    },
+    "registryDescriptions": {
+      "base": "Default calendar size",
+      "lg": "Large calendar for prominent date selection",
+      "sm": "Compact calendar for tight spaces",
+    },
     "values": [
       "sm",
       "base",
@@ -138,6 +148,14 @@ exports[`DateRangePicker Generator - Snapshot Tests (Intermediate Data) > should
       "subtle": {
         "bgVariable": "color-surface",
       },
+    },
+    "registryClasses": {
+      "default": "bg-calendar",
+      "subtle": "bg-surface",
+    },
+    "registryDescriptions": {
+      "default": "Default calendar appearance",
+      "subtle": "Subtle calendar with minimal background",
     },
     "values": [
       "default",
@@ -432,6 +450,16 @@ exports[`DateRangePicker Generator - Snapshot Tests (Intermediate Data) > should
       "textSize": 12,
     },
   },
+  "registryClasses": {
+    "base": "p-4 gap-2.5",
+    "lg": "p-5 gap-3",
+    "sm": "p-3 gap-2",
+  },
+  "registryDescriptions": {
+    "base": "Default calendar size",
+    "lg": "Large calendar for prominent date selection",
+    "sm": "Compact calendar for tight spaces",
+  },
   "values": [
     "sm",
     "base",
@@ -449,6 +477,14 @@ exports[`DateRangePicker Generator - Snapshot Tests (Intermediate Data) > should
     "subtle": {
       "bgVariable": "color-surface",
     },
+  },
+  "registryClasses": {
+    "default": "bg-calendar",
+    "subtle": "bg-surface",
+  },
+  "registryDescriptions": {
+    "default": "Default calendar appearance",
+    "subtle": "Subtle calendar with minimal background",
   },
   "values": [
     "default",
