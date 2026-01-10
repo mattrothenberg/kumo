@@ -20,7 +20,7 @@ for ((i=1; i<=MAX_ITERATIONS; i++)); do
   echo "Ralph iteration $i of $MAX_ITERATIONS"
   echo "==============================="
   
-  result=$(cat "$SCRIPT_DIR/ralph-prompt.md" | opencode run --new --model openai/gpt-5.2 -f "$SCRIPT_DIR/PRD.json" -f "$SCRIPT_DIR/SPEC.md" -f "$SCRIPT_DIR/progress.txt")
+  result=$(cat "$SCRIPT_DIR/ralph-prompt.md" | opencode run --model openai/gpt-5.2 --title "Ralph iteration $i" -f "$SCRIPT_DIR/PRD.json" -f "$SCRIPT_DIR/SPEC.md" -f "$SCRIPT_DIR/progress.txt")
 
   echo "$result"
 
