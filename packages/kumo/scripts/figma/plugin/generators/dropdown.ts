@@ -735,3 +735,81 @@ export async function generateDropdownComponents(
  */
 export var DROPDOWN_OPEN_VALUES = OPEN_VALUES;
 export var DROPDOWN_VARIANT_VALUES = VARIANT_VALUES;
+
+// ============================================================================
+// TESTABLE EXPORTS - Pure functions for testing (no Figma API calls)
+// ============================================================================
+
+/**
+ * Get dropdown variant configuration
+ * Returns the variants used for Figma display purposes
+ */
+export function getDropdownVariantConfig() {
+  return {
+    openValues: OPEN_VALUES,
+    variantValues: VARIANT_VALUES,
+    descriptions: {
+      default: "Basic dropdown with simple menu items",
+      withIcons: "Dropdown with icons for each menu item",
+      withDanger: "Dropdown with destructive action item",
+      withGroups: "Dropdown with grouped menu sections",
+      withCheckbox: "Dropdown with checkbox menu items",
+      withShortcuts: "Dropdown with keyboard shortcuts",
+    },
+  };
+}
+
+/**
+ * Get dropdown panel dimensions
+ */
+export function getDropdownPanelDimensions() {
+  return {
+    width: DROPDOWN_WIDTH,
+    itemHeight: 32,
+    padding: 6,
+    itemSpacing: 2,
+    cornerRadius: BORDER_RADIUS.lg,
+  };
+}
+
+/**
+ * Get menu item layout properties
+ */
+export function getMenuItemLayout(hasShortcut: boolean) {
+  return {
+    mode: "HORIZONTAL",
+    alignment: hasShortcut ? "SPACE_BETWEEN" : "MIN",
+    width: DROPDOWN_WIDTH - 12,
+    height: 32,
+    paddingX: 8,
+    paddingY: 6,
+    itemSpacing: 8,
+    cornerRadius: 6,
+  };
+}
+
+/**
+ * Get all dropdown variant data
+ * Returns complete intermediate data structure for snapshot testing
+ */
+export function getAllDropdownVariantData() {
+  var config = getDropdownVariantConfig();
+  var panelDims = getDropdownPanelDimensions();
+  var descriptions = config.descriptions as Record<string, string>;
+
+  return {
+    config: config,
+    panelDimensions: panelDims,
+    menuItems: {
+      withShortcut: getMenuItemLayout(true),
+      withoutShortcut: getMenuItemLayout(false),
+    },
+    variants: config.variantValues.map(function (variant) {
+      return {
+        variant: variant,
+        description: descriptions[variant] || "",
+        openStates: config.openValues,
+      };
+    }),
+  };
+}

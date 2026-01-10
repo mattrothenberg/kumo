@@ -17,3 +17,45 @@ Starting test refactoring for Figma generators using structural + snapshot patte
 - Tier 4: switch, link-button, refresh-button, input-area, sensitive-input, surface, layer-card, menubar
 
 ---
+
+## Iteration 1: dropdown (Tier 2)
+
+**Generator:** dropdown
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Added testable exports to dropdown.ts:
+   - `getDropdownVariantConfig()` - Returns variant configuration
+   - `getDropdownPanelDimensions()` - Returns panel dimensions
+   - `getMenuItemLayout(hasShortcut)` - Returns menu item layout
+   - `getAllDropdownVariantData()` - Returns complete intermediate data
+
+2. Created dropdown.test.ts with 36 tests:
+   - Registry Validation (6 tests)
+   - Variant Configuration (5 tests)
+   - Panel Dimensions (6 tests)
+   - Menu Item Layout (10 tests)
+   - Complete Variant Data (4 tests)
+   - Snapshot Tests (5 tests)
+
+3. All tests follow structural + snapshot pattern from badge.test.ts
+
+### Test Results:
+- ✅ All 36 tests pass
+- ✅ 5 snapshots created
+- ✅ Verified tests pass consistently with --run flag
+
+### Issues Encountered:
+- Pre-existing TypeScript errors in dropdown.ts (layoutAlign, opacity, textAutoResize properties)
+- These errors exist in the original code and are not related to test refactoring
+- Tests pass successfully despite these type errors
+
+### Notes:
+- Dropdown generator uses Figma-specific variants (default, withIcons, withDanger, etc.) for display purposes
+- These differ from React component's simpler variant structure (default, danger)
+- Tests validate generator implementation rather than React component API
+
+**Status:** COMPLETE - Ready for commit
+
+---

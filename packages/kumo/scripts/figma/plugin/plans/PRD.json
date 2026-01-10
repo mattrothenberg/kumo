@@ -163,7 +163,7 @@
       "name": "dropdown",
       "tier": 2,
       "priority": "high",
-      "passes": false
+      "passes": true
     },
     {
       "name": "combobox",
