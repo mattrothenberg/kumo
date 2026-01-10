@@ -752,3 +752,57 @@ Starting test refactoring for Figma generators using structural + snapshot patte
 
 ---
 
+
+## Iteration 15: layer-card (Tier 4)
+
+**Generator:** layer-card
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Added testable exports to layer-card.ts:
+   - `getLayerCardDimensionsConfig()` - Returns layout dimensions for root, secondary, primary
+   - `getLayerCardColorBindings()` - Returns semantic color tokens for all sections
+   - `getLayerCardSubComponentConfig()` - Returns metadata about Secondary and Primary sub-components
+   - `getLayerCardContentConfig()` - Returns text content configuration
+   - `getAllLayerCardData()` - Returns complete intermediate data
+
+2. Created layer-card.test.ts with 34 tests:
+   - Registry Validation (5 tests)
+   - Dimensions Configuration (5 tests)
+   - Color Bindings (5 tests)
+   - Sub-Component Configuration (6 tests)
+   - Content Configuration (2 tests)
+   - Complete Data Structure (5 tests)
+   - Snapshot Tests (5 tests)
+
+3. All tests follow structural + snapshot pattern from badge.test.ts
+
+### Test Results:
+- ✅ All 34 tests pass
+- ✅ 5 snapshots created
+- ✅ Verified tests pass consistently with --run flag
+
+### Issues Encountered:
+- Pre-existing TypeScript errors in layer-card.ts (resizeWithoutConstraints, textAutoResize, layoutSizingHorizontal properties)
+- These errors exist in the original code and are not related to test refactoring
+- Tests pass successfully despite these type errors (same as other generators)
+
+### Notes:
+- LayerCard generator uses hardcoded LAYER_CARD_CONFIG (not reading from registry like newer generators)
+- LayerCard is a compound component with Secondary (header) and Primary (content) sub-components
+- No variants - single component style unlike other components
+- Generator creates layered structure:
+  - Root: bg-surface-2, ring-border (color-border)
+  - Secondary: text-color-label, includes arrow-right icon button
+  - Primary: bg-layer-card-primary, ring-color (with fallbacks)
+- Sub-components in registry:
+  - Secondary: "Secondary sub-component" (header)
+  - Primary: "Primary sub-component" (main content)
+- All color bindings use semantic tokens with fallbacks defined
+- Tests validate registry alignment, sub-component metadata, and intermediate data structure
+
+**Status:** COMPLETE - Ready for commit
+
+---
+

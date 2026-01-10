@@ -1,0 +1,142 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`LayerCard Generator - Snapshot Tests (Intermediate Data) > should produce consistent color bindings 1`] = `
+{
+  "primary": {
+    "background": "color-layer-card-primary",
+    "backgroundFallback": "color-surface",
+    "border": "color-color",
+    "borderFallback": "color-border",
+    "text": "text-color-surface",
+  },
+  "root": {
+    "background": "color-surface-2",
+    "backgroundFallback": "color-surface",
+    "border": "color-border",
+  },
+  "secondary": {
+    "text": "text-color-label",
+  },
+}
+`;
+
+exports[`LayerCard Generator - Snapshot Tests (Intermediate Data) > should produce consistent content configuration 1`] = `
+{
+  "primary": {
+    "content": "Get started with Kumo",
+  },
+  "secondary": {
+    "iconName": "arrow-right",
+    "iconSize": 16,
+    "title": "Next Steps",
+  },
+}
+`;
+
+exports[`LayerCard Generator - Snapshot Tests (Intermediate Data) > should produce consistent dimensions configuration 1`] = `
+{
+  "borderRadius": 8,
+  "primary": {
+    "borderRadius": 8,
+    "fontSize": 16,
+    "fontWeight": 400,
+    "gap": 8,
+    "paddingRight": 12,
+    "paddingX": 16,
+    "paddingY": 16,
+  },
+  "secondary": {
+    "fontSize": 16,
+    "fontWeight": 500,
+    "gap": 8,
+    "paddingX": 8,
+    "paddingY": 8,
+  },
+  "width": 280,
+}
+`;
+
+exports[`LayerCard Generator - Snapshot Tests (Intermediate Data) > should produce consistent intermediate data (golden path) 1`] = `
+{
+  "colorBindings": {
+    "primary": {
+      "background": "color-layer-card-primary",
+      "backgroundFallback": "color-surface",
+      "border": "color-color",
+      "borderFallback": "color-border",
+      "text": "text-color-surface",
+    },
+    "root": {
+      "background": "color-surface-2",
+      "backgroundFallback": "color-surface",
+      "border": "color-border",
+    },
+    "secondary": {
+      "text": "text-color-label",
+    },
+  },
+  "content": {
+    "primary": {
+      "content": "Get started with Kumo",
+    },
+    "secondary": {
+      "iconName": "arrow-right",
+      "iconSize": 16,
+      "title": "Next Steps",
+    },
+  },
+  "dimensions": {
+    "borderRadius": 8,
+    "primary": {
+      "borderRadius": 8,
+      "fontSize": 16,
+      "fontWeight": 400,
+      "gap": 8,
+      "paddingRight": 12,
+      "paddingX": 16,
+      "paddingY": 16,
+    },
+    "secondary": {
+      "fontSize": 16,
+      "fontWeight": 500,
+      "gap": 8,
+      "paddingX": 8,
+      "paddingY": 8,
+    },
+    "width": 280,
+  },
+  "subComponents": {
+    "hasSubComponents": true,
+    "subComponents": {
+      "Primary": {
+        "description": "Primary sub-component",
+        "name": "Primary",
+        "props": {},
+      },
+      "Secondary": {
+        "description": "Secondary sub-component",
+        "name": "Secondary",
+        "props": {},
+      },
+    },
+  },
+}
+`;
+
+exports[`LayerCard Generator - Snapshot Tests (Intermediate Data) > should produce consistent sub-component configuration 1`] = `
+{
+  "hasSubComponents": true,
+  "subComponents": {
+    "Primary": {
+      "description": "Primary sub-component",
+      "name": "Primary",
+      "props": {},
+    },
+    "Secondary": {
+      "description": "Secondary sub-component",
+      "name": "Secondary",
+      "props": {},
+    },
+  },
+}
+`;

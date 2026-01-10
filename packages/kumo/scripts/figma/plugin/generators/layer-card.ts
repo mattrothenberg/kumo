@@ -24,6 +24,7 @@ import {
   BORDER_RADIUS,
 } from "./shared";
 import { createIconInstance, bindIconColor, DEFAULT_ICONS } from "./icon-utils";
+import registry from "../../../../ai/component-registry.json";
 
 /**
  * Section padding for component display
@@ -378,4 +379,95 @@ export async function generateLayerCardComponents(
     console.error("Stack: " + errorStack);
     throw error;
   }
+}
+
+// ============================================================================
+// TESTABLE EXPORTS
+// ============================================================================
+
+/**
+ * Get LayerCard dimensions configuration
+ *
+ * Returns the layout dimensions for the LayerCard component including
+ * dimensions for both Secondary (header) and Primary (content) sections.
+ */
+export function getLayerCardDimensionsConfig() {
+  return LAYER_CARD_CONFIG;
+}
+
+/**
+ * Get LayerCard color bindings
+ *
+ * Returns the semantic color tokens used for LayerCard styling.
+ * Includes color bindings for root, secondary, and primary sections.
+ */
+export function getLayerCardColorBindings() {
+  return {
+    root: {
+      background: "color-surface-2",
+      backgroundFallback: "color-surface",
+      border: "color-border",
+    },
+    secondary: {
+      text: "text-color-label",
+    },
+    primary: {
+      background: "color-layer-card-primary",
+      backgroundFallback: "color-surface",
+      border: "color-color",
+      borderFallback: "color-border",
+      text: "text-color-surface",
+    },
+  };
+}
+
+/**
+ * Get LayerCard sub-component configuration
+ *
+ * Returns metadata about the Secondary and Primary sub-components.
+ */
+export function getLayerCardSubComponentConfig() {
+  var layerCardComponent = registry.components.LayerCard;
+  return {
+    subComponents: layerCardComponent.subComponents || {},
+    hasSubComponents: Object.keys(layerCardComponent.subComponents || {}).length > 0,
+  };
+}
+
+/**
+ * Get LayerCard content configuration
+ *
+ * Returns the text content used in the LayerCard example.
+ */
+export function getLayerCardContentConfig() {
+  return {
+    secondary: {
+      title: "Next Steps",
+      iconName: "arrow-right",
+      iconSize: 16,
+    },
+    primary: {
+      content: "Get started with Kumo",
+    },
+  };
+}
+
+/**
+ * Get all LayerCard data
+ *
+ * Returns complete intermediate data structure for the LayerCard component.
+ * This is used for snapshot testing to catch unintended changes.
+ */
+export function getAllLayerCardData() {
+  var dimensions = getLayerCardDimensionsConfig();
+  var colorBindings = getLayerCardColorBindings();
+  var subComponentConfig = getLayerCardSubComponentConfig();
+  var contentConfig = getLayerCardContentConfig();
+
+  return {
+    dimensions: dimensions,
+    colorBindings: colorBindings,
+    subComponents: subComponentConfig,
+    content: contentConfig,
+  };
 }
