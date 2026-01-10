@@ -3,38 +3,88 @@ import DocLayout from "../../layouts/DocLayout.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
-import { SwitchBasicDemo, SwitchDisabledDemo } from "../../components/demos/SwitchDemo";
+import {
+  SwitchBasicDemo,
+  SwitchOffDemo,
+  SwitchOnDemo,
+} from "../../components/demos/SwitchDemo";
 ---
 
 <DocLayout
   title="Switch"
-  description="A toggle switch for binary on/off states."
+  description="A two-state button that can be either on or off."
   sourceFile="components/switch"
   storybookPath="story/components-switch"
   baseUIComponent="switch"
 >
+  <!-- Demo -->
   <ComponentSection>
-    <ComponentExample code={`<Switch checked={checked} onClick={() => setChecked(!checked)} />`}>
+    <ComponentExample
+      code={`<Switch label="Switch" checked={false} onCheckedChange={() => {}} />`}
+    >
       <SwitchBasicDemo client:visible />
     </ComponentExample>
   </ComponentSection>
 
+  <!-- Installation -->
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Installation</h2>
+    <h3 class="mb-2 text-lg font-semibold">Barrel</h3>
     <CodeBlock code={`import { Switch } from "@cloudflare/kumo";`} lang="tsx" />
+    <h3 class="mb-2 mt-4 text-lg font-semibold">Granular</h3>
+    <CodeBlock
+      code={`import { Switch } from "@cloudflare/kumo/components/switch";`}
+      lang="tsx"
+    />
   </ComponentSection>
 
+  <!-- Usage -->
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+    <CodeBlock
+      code={`import { Switch } from "@cloudflare/kumo";
+import { useState } from "react";
+
+export default function Example() {
+  const [checked, setChecked] = useState(false);
+  
+  return (
+    <Switch 
+      checked={checked} 
+      onCheckedChange={(val) => setChecked(val)} 
+    />
+  );
+}`}
+      lang="tsx"
+    />
+  </ComponentSection>
+
+  <!-- Examples -->
   <ComponentSection>
     <h2 class="mb-6 text-2xl font-bold">Examples</h2>
 
-    <div class="mb-12">
-      <h3 class="mb-4 text-xl font-semibold">Disabled</h3>
-      <ComponentExample code={`<Switch checked={false} disabled />`}>
-        <SwitchDisabledDemo client:visible />
-      </ComponentExample>
+    <div class="space-y-8">
+      <div>
+        <h3 class="mb-4 text-xl font-semibold">Off State</h3>
+        <ComponentExample
+          code={`<Switch label="Switch" checked={false} onCheckedChange={() => {}} />`}
+        >
+          <SwitchOffDemo client:visible />
+        </ComponentExample>
+      </div>
+
+      <div>
+        <h3 class="mb-4 text-xl font-semibold">On State</h3>
+        <ComponentExample
+          code={`<Switch label="Switch" checked={true} onCheckedChange={() => {}} />`}
+        >
+          <SwitchOnDemo client:visible />
+        </ComponentExample>
+      </div>
     </div>
   </ComponentSection>
 
+  <!-- API Reference -->
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
     <div class="overflow-x-auto">
@@ -53,9 +103,34 @@ import { SwitchBasicDemo, SwitchDisabledDemo } from "../../components/demos/Swit
             <td class="px-4 py-3 font-mono text-xs">false</td>
           </tr>
           <tr class="border-b border-border">
+            <td class="px-4 py-3 font-mono text-xs">onCheckedChange</td>
+            <td class="px-4 py-3 font-mono text-xs">(checked: boolean) =&gt; void</td>
+            <td class="px-4 py-3 font-mono text-xs">undefined</td>
+          </tr>
+          <tr class="border-b border-border">
+            <td class="px-4 py-3 font-mono text-xs">label</td>
+            <td class="px-4 py-3 font-mono text-xs">string</td>
+            <td class="px-4 py-3 font-mono text-xs">undefined</td>
+          </tr>
+          <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">disabled</td>
             <td class="px-4 py-3 font-mono text-xs">boolean</td>
             <td class="px-4 py-3 font-mono text-xs">false</td>
+          </tr>
+          <tr class="border-b border-border">
+            <td class="px-4 py-3 font-mono text-xs">size</td>
+            <td class="px-4 py-3 font-mono text-xs">"sm" | "base" | "lg"</td>
+            <td class="px-4 py-3 font-mono text-xs">"base"</td>
+          </tr>
+          <tr class="border-b border-border">
+            <td class="px-4 py-3 font-mono text-xs">variant</td>
+            <td class="px-4 py-3 font-mono text-xs">"default" | "error"</td>
+            <td class="px-4 py-3 font-mono text-xs">"default"</td>
+          </tr>
+          <tr class="border-b border-border">
+            <td class="px-4 py-3 font-mono text-xs">controlFirst</td>
+            <td class="px-4 py-3 font-mono text-xs">boolean</td>
+            <td class="px-4 py-3 font-mono text-xs">true</td>
           </tr>
         </tbody>
       </table>

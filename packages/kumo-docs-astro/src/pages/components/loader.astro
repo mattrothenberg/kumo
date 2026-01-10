@@ -3,39 +3,73 @@ import DocLayout from "../../layouts/DocLayout.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
-import { LoaderBasicDemo, LoaderSizesDemo } from "../../components/demos/LoaderDemo";
+import {
+  LoaderBasicDemo,
+  LoaderSizesDemo,
+  LoaderCustomSizeDemo,
+} from "../../components/demos/LoaderDemo";
 ---
 
 <DocLayout
   title="Loader"
-  description="A spinning loading indicator."
+  description="A loading spinner to indicate loading state."
   sourceFile="components/loader"
   storybookPath="story/components-loader"
 >
+  <!-- Demo -->
   <ComponentSection>
     <ComponentExample code={`<Loader />`}>
       <LoaderBasicDemo client:visible />
     </ComponentExample>
   </ComponentSection>
 
+  <!-- Installation -->
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Installation</h2>
+    <h3 class="mb-2 text-lg font-semibold">Barrel</h3>
     <CodeBlock code={`import { Loader } from "@cloudflare/kumo";`} lang="tsx" />
+    <h3 class="mb-2 mt-4 text-lg font-semibold">Granular</h3>
+    <CodeBlock
+      code={`import { Loader } from "@cloudflare/kumo/components/loader";`}
+      lang="tsx"
+    />
   </ComponentSection>
 
+  <!-- Usage -->
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+    <CodeBlock
+      code={`import { Loader } from "@cloudflare/kumo";
+
+export default function Example() {
+  return <Loader />;
+}`}
+      lang="tsx"
+    />
+  </ComponentSection>
+
+  <!-- Examples -->
   <ComponentSection>
     <h2 class="mb-6 text-2xl font-bold">Examples</h2>
 
-    <div class="mb-12">
-      <h3 class="mb-4 text-xl font-semibold">Sizes</h3>
-      <ComponentExample code={`<Loader size="sm" />
-<Loader size="base" />
-<Loader size="lg" />`}>
-        <LoaderSizesDemo client:visible />
-      </ComponentExample>
+    <div class="space-y-8">
+      <div>
+        <h3 class="mb-4 text-xl font-semibold">Default Size</h3>
+        <ComponentExample code={`<Loader />`}>
+          <LoaderBasicDemo client:visible />
+        </ComponentExample>
+      </div>
+
+      <div>
+        <h3 class="mb-4 text-xl font-semibold">Custom Size</h3>
+        <ComponentExample code={`<Loader size={24} />`}>
+          <LoaderCustomSizeDemo client:visible />
+        </ComponentExample>
+      </div>
     </div>
   </ComponentSection>
 
+  <!-- API Reference -->
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
     <div class="overflow-x-auto">
@@ -50,8 +84,13 @@ import { LoaderBasicDemo, LoaderSizesDemo } from "../../components/demos/LoaderD
         <tbody class="text-label">
           <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">size</td>
-            <td class="px-4 py-3 font-mono text-xs">"sm" | "base" | "lg"</td>
+            <td class="px-4 py-3 font-mono text-xs">"sm" | "base" | "lg" | number</td>
             <td class="px-4 py-3 font-mono text-xs">"base"</td>
+          </tr>
+          <tr class="border-b border-border">
+            <td class="px-4 py-3 font-mono text-xs">className</td>
+            <td class="px-4 py-3 font-mono text-xs">string</td>
+            <td class="px-4 py-3 font-mono text-xs">undefined</td>
           </tr>
         </tbody>
       </table>

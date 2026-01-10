@@ -13,3 +13,7 @@ export function LoaderSizesDemo() {
     </div>
   );
 }
+
+export function LoaderCustomSizeDemo() {
+  return <Loader size={24} />;
+}

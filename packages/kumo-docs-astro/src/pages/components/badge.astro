@@ -3,30 +3,115 @@ import DocLayout from "../../layouts/DocLayout.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
-import { BadgeVariantsDemo } from "../../components/demos/BadgeDemo";
+import {
+  BadgeVariantsDemo,
+  BadgePrimaryDemo,
+  BadgeSecondaryDemo,
+  BadgeDestructiveDemo,
+  BadgeOutlineDemo,
+  BadgeBetaDemo,
+  BadgeInSentenceDemo,
+} from "../../components/demos/BadgeDemo";
 ---
 
 <DocLayout
   title="Badge"
-  description="A small label for highlighting status or categories."
+  description="Displays a small label for status, categorization, or metadata."
   sourceFile="components/badge"
   storybookPath="story/components-badge"
 >
+  <!-- Demo -->
   <ComponentSection>
-    <ComponentExample code={`<Badge variant="primary">Primary</Badge>
+    <ComponentExample
+      code={`<Badge variant="primary">Primary</Badge>
 <Badge variant="secondary">Secondary</Badge>
+<Badge variant="destructive">Destructive</Badge>
 <Badge variant="outline">Outline</Badge>
-<Badge variant="beta">Beta</Badge>
-<Badge variant="destructive">Destructive</Badge>`}>
+<Badge variant="beta">Beta</Badge>`}
+    >
       <BadgeVariantsDemo client:visible />
     </ComponentExample>
   </ComponentSection>
 
+  <!-- Installation -->
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Installation</h2>
-    <CodeBlock code={`import { Badge } from "@cloudflare/kumo";`} lang="tsx" />
+    <CodeBlock code={`npm install @cloudflare/kumo`} lang="bash" />
   </ComponentSection>
 
+  <!-- Usage -->
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+    <CodeBlock
+      code={`import { Badge } from "@cloudflare/kumo";
+
+export default function Example() {
+  return <Badge variant="primary">Beta</Badge>;
+}`}
+      lang="tsx"
+    />
+  </ComponentSection>
+
+  <!-- Examples -->
+  <ComponentSection>
+    <h2 class="mb-6 text-2xl font-bold">Examples</h2>
+
+    <!-- Variants -->
+    <div class="mb-12">
+      <h3 class="mb-4 text-xl font-semibold">Variants</h3>
+      <div class="space-y-8">
+        <div>
+          <h4 class="mb-3 text-base font-medium">Primary</h4>
+          <ComponentExample code={`<Badge variant="primary">Primary</Badge>`}>
+            <BadgePrimaryDemo client:visible />
+          </ComponentExample>
+        </div>
+
+        <div>
+          <h4 class="mb-3 text-base font-medium">Secondary</h4>
+          <ComponentExample code={`<Badge variant="secondary">Secondary</Badge>`}>
+            <BadgeSecondaryDemo client:visible />
+          </ComponentExample>
+        </div>
+
+        <div>
+          <h4 class="mb-3 text-base font-medium">Destructive</h4>
+          <ComponentExample code={`<Badge variant="destructive">Destructive</Badge>`}>
+            <BadgeDestructiveDemo client:visible />
+          </ComponentExample>
+        </div>
+
+        <div>
+          <h4 class="mb-3 text-base font-medium">Outline</h4>
+          <ComponentExample code={`<Badge variant="outline">Outline</Badge>`}>
+            <BadgeOutlineDemo client:visible />
+          </ComponentExample>
+        </div>
+
+        <div>
+          <h4 class="mb-3 text-base font-medium">Beta</h4>
+          <ComponentExample code={`<Badge variant="beta">Beta</Badge>`}>
+            <BadgeBetaDemo client:visible />
+          </ComponentExample>
+        </div>
+      </div>
+    </div>
+
+    <!-- In a sentence -->
+    <div class="mb-12">
+      <h3 class="mb-4 text-xl font-semibold">In a sentence</h3>
+      <ComponentExample
+        code={`<p className="flex items-center gap-2">
+  Workers
+  <Badge variant="beta">Beta</Badge>
+</p>`}
+      >
+        <BadgeInSentenceDemo client:visible />
+      </ComponentExample>
+    </div>
+  </ComponentSection>
+
+  <!-- API Reference -->
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
     <div class="overflow-x-auto">
@@ -41,13 +126,20 @@ import { BadgeVariantsDemo } from "../../components/demos/BadgeDemo";
         <tbody class="text-label">
           <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">variant</td>
-            <td class="px-4 py-3 font-mono text-xs">"primary" | "secondary" | "outline" | "beta" | "destructive"</td>
+            <td class="px-4 py-3 font-mono text-xs"
+              >"primary" | "secondary" | "destructive" | "outline" | "beta"</td
+            >
             <td class="px-4 py-3 font-mono text-xs">"primary"</td>
           </tr>
           <tr class="border-b border-border">
+            <td class="px-4 py-3 font-mono text-xs">className</td>
+            <td class="px-4 py-3 font-mono text-xs">string</td>
+            <td class="px-4 py-3 font-mono text-xs">undefined</td>
+          </tr>
+          <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">children</td>
-            <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
-            <td class="px-4 py-3 font-mono text-xs">-</td>
+            <td class="px-4 py-3 font-mono text-xs">React.ReactNode</td>
+            <td class="px-4 py-3 font-mono text-xs">required</td>
           </tr>
         </tbody>
       </table>
