@@ -422,3 +422,57 @@ Starting test refactoring for Figma generators using structural + snapshot patte
 
 ---
 
+
+## Iteration 9: switch (Tier 4)
+
+**Generator:** switch
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Added testable exports to switch.ts:
+   - `getSwitchVariantConfig()` - Returns variant configuration (default, error)
+   - `getSwitchSizeConfig()` - Returns size configuration (sm, base, lg)
+   - `getSwitchDimensions(size)` - Returns computed dimensions for specific size
+   - `getSwitchTrackColorBinding(variant, checked, disabled)` - Returns track color binding for state
+   - `getAllSwitchVariantData()` - Returns complete intermediate data
+
+2. Created switch.test.ts with 50 tests:
+   - Registry Validation (8 tests - variants and sizes)
+   - Variant Configuration (2 tests)
+   - Size Configuration (2 tests)
+   - Dimensions Calculation (11 tests - all sizes, error handling, ratio checks)
+   - Track Color Binding (12 tests - all variant/checked/disabled combinations)
+   - Complete Variant Data (7 tests - structure validation)
+   - Snapshot Tests (10 tests)
+
+3. All tests follow structural + snapshot pattern from badge.test.ts
+
+### Test Results:
+- ✅ All 50 tests pass
+- ✅ 10 snapshots created
+- ✅ Verified tests pass consistently with --run flag
+
+### Issues Encountered:
+- Pre-existing TypeScript errors in switch.ts (opacity, layoutWrap, counterAxisSpacing properties)
+- These errors exist in the original code and are not related to test refactoring
+- Tests pass successfully despite these type errors
+
+### Notes:
+- Switch generator uses hardcoded SWITCH_DIMENSIONS (not from registry classes)
+- Dimensions are calculated from Tailwind classes: h-5.5 w-8.5 (sm), h-6.5 w-10.5 (base), h-7.5 w-12.5 (lg)
+- Track color binding logic:
+  - Unchecked: bg-surface-3 (all states)
+  - Checked + default: bg-primary
+  - Checked + error: bg-error
+  - Disabled + checked: bg-surface-3 (overrides checked color)
+- Thumb is always white (hardcoded color)
+- Disabled state uses 0.5 opacity
+- Label gap is 8px (gap-2)
+- Tests validate all 2 variants × 2 checked states × 2 disabled states = 8 track color combinations
+- Generator creates comprehensive ComponentSet with size/checked/variant/disabled/controlFirst properties
+
+**Status:** COMPLETE - Ready for commit
+
+---
+

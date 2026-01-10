@@ -844,7 +844,124 @@ export async function generateSwitchGroupComponents(
 }
 
 /**
- * Exports for tests
+ * Testable exports (pure functions for testing - no Figma API calls)
+ */
+
+/**
+ * Get variant configuration from registry
+ */
+export function getSwitchVariantConfig() {
+  return {
+    values: variantProp.values,
+    classes: variantProp.classes,
+    descriptions: variantProp.descriptions,
+    default: variantProp.default,
+  };
+}
+
+/**
+ * Get size configuration from registry
+ */
+export function getSwitchSizeConfig() {
+  return {
+    values: sizeProp.values,
+    classes: sizeProp.classes,
+    descriptions: sizeProp.descriptions,
+    default: sizeProp.default,
+  };
+}
+
+/**
+ * Get switch dimensions for a specific size
+ */
+export function getSwitchDimensions(size: string) {
+  var dimensions = SWITCH_DIMENSIONS[size];
+  if (!dimensions) {
+    throw new Error("Invalid size: " + size);
+  }
+  return {
+    size: size,
+    width: dimensions.width,
+    height: dimensions.height,
+    thumbSize: dimensions.height - SWITCH_PADDING * 2,
+    padding: SWITCH_PADDING,
+  };
+}
+
+/**
+ * Get switch track color binding for a specific state
+ */
+export function getSwitchTrackColorBinding(
+  variant: string,
+  checked: boolean,
+  disabled: boolean,
+) {
+  var bgVariableName = "color-surface-3";
+  if (checked && !disabled) {
+    if (variant === "error") {
+      bgVariableName = "color-error";
+    } else {
+      bgVariableName = "color-primary";
+    }
+  }
+  return {
+    variant: variant,
+    checked: checked,
+    disabled: disabled,
+    bgVariableName: bgVariableName,
+  };
+}
+
+/**
+ * Get complete switch data for all variants (golden path)
+ */
+export function getAllSwitchVariantData() {
+  var variantConfig = getSwitchVariantConfig();
+  var sizeConfig = getSwitchSizeConfig();
+
+  var allDimensions = sizeConfig.values.map(function (size) {
+    return getSwitchDimensions(size);
+  });
+
+  var allTrackColors: {
+    variant: string;
+    checked: boolean;
+    disabled: boolean;
+    bgVariableName: string;
+  }[] = [];
+
+  // Generate all meaningful combinations
+  var variantValues = variantConfig.values;
+  var checkedValues = [false, true];
+  var disabledValues = [false, true];
+
+  for (var v = 0; v < variantValues.length; v++) {
+    for (var c = 0; c < checkedValues.length; c++) {
+      for (var d = 0; d < disabledValues.length; d++) {
+        allTrackColors.push(
+          getSwitchTrackColorBinding(
+            variantValues[v],
+            checkedValues[c],
+            disabledValues[d],
+          ),
+        );
+      }
+    }
+  }
+
+  return {
+    variantConfig: variantConfig,
+    sizeConfig: sizeConfig,
+    dimensions: allDimensions,
+    trackColors: allTrackColors,
+    labelGap: SWITCH_LABEL_GAP,
+    thumbColor: { r: 1, g: 1, b: 1 }, // white
+    disabledOpacity: 0.5,
+  };
+}
+
+/**
+ * Legacy exports for backwards compatibility
  */
 export var SWITCH_VARIANTS_EXPORT = variantProp.values;
 export var SWITCH_SIZES_EXPORT = sizeProp.values;
