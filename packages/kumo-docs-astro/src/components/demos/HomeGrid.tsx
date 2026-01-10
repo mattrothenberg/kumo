@@ -374,7 +374,7 @@ export function HomeGrid() {
             {route ? (
               <a
                 href={route}
-                className="absolute top-4 left-4 text-base font-medium text-muted hover:text-secondary"
+                className="absolute top-4 left-4 text-base font-medium text-muted hover:text-surface"
               >
                 {c.name}
               </a>
