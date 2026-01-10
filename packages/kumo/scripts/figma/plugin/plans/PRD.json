@@ -1,372 +1,335 @@
 {
-  "title": "Figma Generator Test Refactoring - Structural + Snapshot Pattern",
-  "overview": "Refactor remaining Figma generator tests from brittle exact-value assertions to flexible structural + snapshot pattern. This enables design iteration while maintaining regression protection.",
+  "title": "Figma Generator Registry Integration - Dynamic Configuration from component-registry.json",
+  "overview": "Migrate remaining Figma generators from hardcoded configuration to dynamic reading from component-registry.json. This ensures generators stay in sync with React component changes automatically.",
   "context": {
-    "problem": "Current tests are too tightly coupled to design implementation details (exact Tailwind classes, pixel values, color strings). This makes them brittle - they fail when design changes even though the functional contract (AST → Parser → Figma data structure) remains valid.",
-    "current_state": "13/29 generators (45%) have been refactored to use structural + snapshot pattern. Tier 1 generators (Badge, Banner, Button, Checkbox, ClipboardText, Code, Text, Input, Select, Dialog, Tabs, Toast) are complete.",
-    "why_now": "Continuing Phase 6 (Test Coverage) from PLAN.md. Need to complete remaining Tier 2-4 generators before starting Phase 3 (Parser Improvements) and Phase 7 (Documentation)."
+    "problem": "Many generators use hardcoded SIZE_CONFIG, VARIANT_CONFIG, STATE_STYLES objects instead of reading from component-registry.json. When React components change, generators become out of sync and require manual updates.",
+    "current_state": "Tests are complete (29/29 generators have structural + snapshot tests). However, only ~6 generators fully read from registry. The rest use hardcoded values that may drift from actual component implementations.",
+    "why_now": "Tests are in place to catch regressions. Now is the time to standardize generators to use registry as single source of truth, making the system self-maintaining."
   },
   "goals": {
     "primary": [
-      "Refactor remaining 16 generator tests to use structural + snapshot pattern",
-      "Ensure tests verify functional contract, not design details",
-      "Maintain regression protection through snapshots",
-      "Document test patterns for future contributors"
+      "Migrate all generators to read configuration from component-registry.json",
+      "Eliminate hardcoded SIZE_CONFIG, VARIANT_CONFIG, STATE_STYLES objects",
+      "Ensure generators automatically reflect React component changes",
+      "Maintain test coverage and snapshot stability"
     ],
     "metrics": [
-      "100% of generators have tests (currently 45%)",
-      "0 exact-value assertions for Tailwind classes (brittle pattern eliminated)",
-      "All tests follow structural + snapshot template",
-      "Test execution time remains under 5s for full suite"
+      "100% of generators import and use component-registry.json",
+      "0 hardcoded variant/size configuration objects",
+      "All existing tests continue to pass",
+      "Generators produce identical Figma output (snapshots unchanged or intentionally updated)"
     ]
   },
   "requirements": {
     "functional": [
       {
         "id": "FR-1",
-        "title": "Structural Validation",
-        "description": "Tests must verify that required properties exist and have correct types, not exact values",
+        "title": "Registry Import Pattern",
+        "description": "All generators must import configuration from component-registry.json",
         "acceptance": [
-          "No exact string matches for Tailwind classes",
-          "Type assertions use typeof checks",
-          "Existence checks use toBeDefined()",
-          "Example: expect(typeof parsed.paddingX).toBe('number')"
+          "Import statement: import registry from '../../../../ai/component-registry.json'",
+          "Extract component: const componentProps = registry.components.ComponentName.props",
+          "Use props.variant.values, props.size.values, props.variant.classes, etc.",
+          "Remove hardcoded SIZE_CONFIG, VARIANT_CONFIG, STATE_STYLES objects"
         ]
       },
       {
         "id": "FR-2",
-        "title": "Snapshot Regression Protection",
-        "description": "Tests must use snapshots to catch unintended changes in parsed output",
+        "title": "Styling Metadata Usage",
+        "description": "Generators should use styling section from registry when available",
         "acceptance": [
-          "Each generator has getAllComponentVariantData() export",
-          "Snapshot test for complete variant data",
-          "Snapshots captured for each variant individually",
-          "Example: expect(getAllBadgeVariantData()).toMatchSnapshot()"
+          "Check for registry.components.ComponentName.styling",
+          "Use styling.dimensions, styling.baseTokens, styling.states when present",
+          "Fall back to parsed Tailwind classes when styling section not available",
+          "Document which components need KUMO_*_STYLING exports added"
         ]
       },
       {
         "id": "FR-3",
-        "title": "Registry Validation",
-        "description": "Tests must verify component-registry.json structure matches expectations",
+        "title": "Backward Compatibility",
+        "description": "Generated Figma output must remain consistent",
         "acceptance": [
-          "Verify expected variants exist in registry",
-          "Verify classes defined for all variants",
-          "Verify descriptions defined for all variants",
-          "Verify default variant is set"
+          "Existing snapshots should not change (or changes must be intentional)",
+          "Figma component structure remains identical",
+          "Variable bindings remain correct",
+          "Layout dimensions remain accurate"
         ]
       },
       {
         "id": "FR-4",
-        "title": "Testable Exports",
-        "description": "All generators must export pure functions for testing (no Figma API calls)",
+        "title": "Testable Export Updates",
+        "description": "Testable exports must reflect registry-based configuration",
         "acceptance": [
-          "getComponentVariantConfig() exported",
-          "getComponentParsedBaseStyles() exported (if baseStyles exist)",
-          "getComponentParsedVariantStyles(variant) exported",
-          "getAllComponentVariantData() exported",
-          "Functions return plain objects, no Figma API calls"
+          "getComponentVariantConfig() returns registry data",
+          "getComponentSizeConfig() returns registry data",
+          "getAllComponentVariantData() uses registry-sourced values",
+          "Tests validate registry structure, not hardcoded values"
         ]
       }
     ],
     "non_functional": [
       {
         "id": "NFR-1",
-        "title": "Test Performance",
-        "description": "Full test suite must run in under 5 seconds",
-        "rationale": "Fast feedback loop for developers"
+        "title": "Code Consistency",
+        "description": "All generators follow same pattern for registry access",
+        "rationale": "Easier maintenance and onboarding"
       },
       {
         "id": "NFR-2",
-        "title": "Pattern Consistency",
-        "description": "All tests follow the same 3-section structure",
-        "sections": [
-          "1. Registry Validation - Verify source of truth",
-          "2. Structural Validation - Verify parsed output structure",
-          "3. Snapshot Tests - Catch unintended drift"
-        ]
-      },
-      {
-        "id": "NFR-3",
-        "title": "Maintainability",
-        "description": "Tests should be easy to update when design changes",
+        "title": "Error Handling",
+        "description": "Graceful handling when registry data is missing",
         "acceptance": [
-          "No hardcoded expected values in assertions",
-          "Clear separation: structure vs. values",
-          "Snapshots can be updated with single command"
+          "Log warnings for missing registry entries",
+          "Use sensible fallbacks when possible",
+          "Throw clear errors for critical missing data"
         ]
       }
     ]
   },
   "scope": {
     "in_scope": [
-      "Refactor Tier 2 generators: dropdown, combobox (2 generators)",
-      "Refactor Tier 3 generators: tooltip, collapsible, date-range-picker, loader, meter, pagination (6 generators)",
-      "Refactor Tier 4 generators: switch, link-button, refresh-button, input-area, sensitive-input, surface, layer-card, menubar (8 generators)",
-      "Add testable exports to all generators (getVariantConfig, getParsedStyles, getAllVariantData)",
-      "Update PLAN.md status after completion",
-      "Create test template documentation"
+      "Migrate 12-15 generators to use component-registry.json",
+      "Update testable exports to reflect registry-based configuration",
+      "Verify all existing tests continue to pass",
+      "Update progress.txt after each generator migration",
+      "Document any components needing KUMO_*_STYLING exports"
     ],
     "out_of_scope": [
-      "Adding new generators for missing components (Breadcrumbs, Empty, Field, PageHeader)",
-      "Parser enhancements (Phase 3 - arbitrary values, opacity modifiers)",
-      "Documentation updates (Phase 7)",
-      "E2E Figma API integration tests",
-      "Visual regression testing"
-    ]
-  },
-  "technical_approach": {
-    "pattern": "Structural + Snapshot",
-    "template": {
-      "file_structure": [
-        "1. Imports (generator functions, registry)",
-        "2. Registry Validation describe block",
-        "3. Structural Validation describe block",
-        "4. Snapshot Tests describe block"
-      ],
-      "test_sections": {
-        "registry_validation": {
-          "purpose": "Verify component-registry.json has expected structure",
-          "tests": [
-            "should have all expected variants in registry",
-            "should have classes defined for all variants",
-            "should have descriptions defined for all variants",
-            "should have correct default variant"
-          ]
-        },
-        "structural_validation": {
-          "purpose": "Verify parsed output has required properties with correct types",
-          "tests": [
-            "should parse base styles correctly (if baseStyles exist)",
-            "should parse variant styles correctly (for each variant)",
-            "should parse styling metadata correctly (if styling exists)"
-          ]
-        },
-        "snapshot_tests": {
-          "purpose": "Catch unintended changes via snapshot comparison",
-          "tests": [
-            "should produce consistent variant config",
-            "should produce consistent parsed base styles",
-            "should produce consistent parsed variant styles (for each variant)",
-            "should produce consistent complete variant data (golden path)"
-          ]
-        }
-      }
-    },
-    "implementation_order": [
-      "1. Tier 2 (Medium Usage): dropdown, combobox",
-      "2. Tier 3 (Lower Usage): tooltip, collapsible, date-range-picker, loader, meter, pagination",
-      "3. Tier 4 (Specialized): switch, link-button, refresh-button, input-area, sensitive-input, surface, layer-card, menubar"
+      "Adding new generators",
+      "Modifying React components",
+      "Adding new KUMO_*_STYLING exports (document as follow-up)",
+      "Changing Figma output structure",
+      "Parser improvements"
     ]
   },
   "generators": [
     {
-      "name": "dropdown",
-      "tier": 2,
+      "name": "input",
+      "tier": 1,
       "priority": "high",
-      "passes": true
+      "status": "complete",
+      "notes": "Fully migrated. SIZE_CONFIG now reads from registry.components.Input.styling.sizeVariants. All 68 tests pass."
     },
     {
-      "name": "combobox",
-      "tier": 2,
+      "name": "select",
+      "tier": 1,
       "priority": "high",
-      "passes": true
+      "status": "hardcoded",
+      "notes": "VARIANT_VALUES, STATE_STYLES entirely hardcoded. Need to read from registry.components.Select.props"
     },
     {
       "name": "tooltip",
-      "tier": 3,
+      "tier": 2,
       "priority": "medium",
-      "passes": true
+      "status": "hardcoded",
+      "notes": "Uses hardcoded styles (bg-surface-3, text-surface). Need to add KUMO_TOOLTIP_STYLING or read from registry"
     },
     {
       "name": "collapsible",
-      "tier": 3,
+      "tier": 2,
       "priority": "medium",
-      "passes": true
+      "status": "hardcoded",
+      "notes": "Uses hardcoded TRIGGER_STYLES, CONTENT_STYLES. Read from registry.components.Collapsible"
     },
     {
       "name": "date-range-picker",
-      "tier": 3,
+      "tier": 2,
       "priority": "medium",
-      "passes": true
-    },
-    {
-      "name": "loader",
-      "tier": 3,
-      "priority": "medium",
-      "passes": true
+      "status": "hardcoded",
+      "notes": "SIZE_CONFIG and VARIANT_CONFIG hardcoded. Check registry for DateRangePicker or DatePicker"
     },
     {
       "name": "meter",
-      "tier": 3,
+      "tier": 2,
       "priority": "medium",
-      "passes": true
+      "status": "hardcoded",
+      "notes": "Fixed fill levels, dimensions not from registry. Check registry.components.Meter"
     },
     {
       "name": "pagination",
-      "tier": 3,
+      "tier": 2,
       "priority": "medium",
-      "passes": true
+      "status": "hardcoded",
+      "notes": "Layout constants hardcoded. Check registry.components.Pagination"
     },
     {
       "name": "switch",
-      "tier": 4,
-      "priority": "low",
-      "passes": true
-    },
-    {
-      "name": "link-button",
-      "tier": 4,
-      "priority": "low",
-      "passes": true
-    },
-    {
-      "name": "refresh-button",
-      "tier": 4,
-      "priority": "low",
-      "passes": true
+      "tier": 2,
+      "priority": "medium",
+      "status": "hardcoded",
+      "notes": "SWITCH_DIMENSIONS hardcoded. Should read from registry.components.Switch.styling or props.size.classes"
     },
     {
       "name": "input-area",
-      "tier": 4,
+      "tier": 3,
       "priority": "low",
-      "passes": true
+      "status": "hardcoded",
+      "notes": "SIZE_CONFIG, VARIANT_CONFIG, STATE_STYLES hardcoded. Uses Input's inputVariants - check if InputArea in registry"
     },
     {
       "name": "sensitive-input",
-      "tier": 4,
+      "tier": 3,
       "priority": "low",
-      "passes": true
+      "status": "partial",
+      "notes": "Uses Input's registry data but adds hardcoded mode/state dimensions"
     },
     {
       "name": "surface",
-      "tier": 4,
+      "tier": 3,
       "priority": "low",
-      "passes": true
+      "status": "hardcoded",
+      "notes": "Layout dimensions hardcoded. Check registry.components.Surface"
     },
     {
       "name": "layer-card",
-      "tier": 4,
+      "tier": 3,
       "priority": "low",
-      "passes": true
+      "status": "hardcoded",
+      "notes": "LAYER_CARD_CONFIG hardcoded. Check registry.components.LayerCard"
     },
     {
       "name": "menubar",
-      "tier": 4,
+      "tier": 3,
       "priority": "low",
-      "passes": true
+      "status": "hardcoded",
+      "notes": "MENUBAR_CONFIG, DEFAULT_OPTIONS hardcoded. Check registry.components.MenuBar"
+    },
+    {
+      "name": "dropdown",
+      "tier": 3,
+      "priority": "low",
+      "status": "partial",
+      "notes": "Tests validate registry, but some config hardcoded. Full migration needed"
+    },
+    {
+      "name": "combobox",
+      "tier": 3,
+      "priority": "low",
+      "status": "partial",
+      "notes": "Tests use registry, but generator config mixed. Full migration needed"
     }
   ],
+  "technical_approach": {
+    "pattern": "Registry-First Configuration",
+    "template": {
+      "imports": [
+        "import registry from '../../../../ai/component-registry.json';",
+        "import { parseTailwindClasses } from '../parsers/tailwind-to-figma';"
+      ],
+      "extraction": [
+        "const componentProps = registry.components.ComponentName.props;",
+        "const variantProp = componentProps.variant as { values: string[]; classes: Record<string, string>; descriptions: Record<string, string>; default: string; };",
+        "const sizeProp = componentProps.size as { values: string[]; classes: Record<string, string>; default: string; };",
+        "const componentStyling = registry.components.ComponentName.styling; // if available"
+      ],
+      "usage": [
+        "// Instead of hardcoded: const SIZES = ['xs', 'sm', 'base', 'lg'];",
+        "// Use: const SIZES = sizeProp.values;",
+        "",
+        "// Instead of hardcoded: const SIZE_CONFIG = { xs: { height: 20 }, ... };",
+        "// Use: const sizeClasses = sizeProp.classes[size];",
+        "// Then: const parsed = parseTailwindClasses(sizeClasses);",
+        "// Access: parsed.height, parsed.paddingX, parsed.fontSize, etc."
+      ]
+    },
+    "migration_steps": [
+      "1. Read current generator to understand hardcoded values",
+      "2. Check component-registry.json for corresponding data",
+      "3. Add registry import and extract props/styling",
+      "4. Replace hardcoded arrays with registry.props.*.values",
+      "5. Replace hardcoded config objects with parsed registry classes",
+      "6. Update testable exports to use registry data",
+      "7. Run tests to verify snapshots unchanged (or update intentionally)",
+      "8. Document if component needs KUMO_*_STYLING export added"
+    ],
+    "example_good_generators": [
+      "badge.ts - Full registry integration with baseStyles and variant classes",
+      "button.ts - Complex multi-variant using registry props",
+      "checkbox.ts - Uses props and styling sections from registry"
+    ]
+  },
   "deliverables": [
     {
-      "name": "Refactored Test Files",
-      "description": "16 test files following structural + snapshot pattern",
+      "name": "Migrated Generator Files",
+      "description": "15 generator files updated to use component-registry.json",
       "files": [
-        "dropdown.test.ts",
-        "combobox.test.ts",
-        "tooltip.test.ts",
-        "collapsible.test.ts",
-        "date-range-picker.test.ts",
-        "loader.test.ts",
-        "meter.test.ts",
-        "pagination.test.ts",
-        "switch.test.ts",
-        "link-button.test.ts",
-        "refresh-button.test.ts",
-        "input-area.test.ts",
-        "sensitive-input.test.ts",
-        "surface.test.ts",
-        "layer-card.test.ts",
-        "menubar.test.ts"
+        "input.ts (complete migration)",
+        "select.ts",
+        "tooltip.ts",
+        "collapsible.ts",
+        "date-range-picker.ts",
+        "meter.ts",
+        "pagination.ts",
+        "switch.ts",
+        "input-area.ts",
+        "sensitive-input.ts",
+        "surface.ts",
+        "layer-card.ts",
+        "menubar.ts",
+        "dropdown.ts (complete migration)",
+        "combobox.ts (complete migration)"
       ]
     },
     {
-      "name": "Testable Generator Exports",
-      "description": "Pure functions exported from each generator for testing",
-      "exports": [
-        "getComponentVariantConfig()",
-        "getComponentParsedBaseStyles()",
-        "getComponentParsedVariantStyles(variant)",
-        "getAllComponentVariantData()"
-      ]
+      "name": "Registry Gap Documentation",
+      "description": "List of components needing KUMO_*_STYLING exports added to React components",
+      "format": "Add to progress.txt or create REGISTRY_GAPS.md"
     },
     {
-      "name": "Updated Snapshots",
-      "description": "Snapshot files for all refactored tests",
-      "location": "generators/__snapshots__/"
-    },
-    {
-      "name": "Test Template Documentation",
-      "description": "Markdown file documenting test pattern for future contributors",
-      "sections": [
-        "Pattern overview (structural + snapshot)",
-        "Required test sections",
-        "Example test file",
-        "Common pitfalls to avoid",
-        "How to update snapshots"
-      ]
-    },
-    {
-      "name": "Updated PLAN.md",
-      "description": "Phase 6 status updated to reflect completion",
-      "changes": [
-        "Update generator status table (29/29 have tests)",
-        "Mark Phase 6 tasks as complete",
-        "Update completion metrics"
-      ]
+      "name": "Updated progress.txt",
+      "description": "Track migration progress after each generator"
     }
   ],
   "constraints": [
-    "Must not change generator implementation (only tests)",
-    "Must maintain existing test coverage (no reduction)",
-    "Must follow existing test patterns from Tier 1 generators",
-    "Test execution time must remain under 5s",
-    "All tests must pass before moving to next tier"
+    "Must not change Figma output structure",
+    "All existing tests must continue to pass",
+    "Snapshots should remain stable (or changes documented)",
+    "Must handle missing registry data gracefully",
+    "Follow existing patterns from badge.ts, button.ts, checkbox.ts"
   ],
   "risks": [
     {
-      "risk": "Some generators may not have sufficient metadata in registry",
-      "mitigation": "Phase 4 already added styling exports to key components. If needed, add KUMO_*_STYLING exports during refactoring.",
-      "likelihood": "Medium",
+      "risk": "Some components may not have sufficient metadata in registry",
+      "mitigation": "Document gaps. Use parsed Tailwind classes as fallback. Create follow-up task to add KUMO_*_STYLING exports.",
+      "likelihood": "High",
       "impact": "Medium"
     },
     {
-      "risk": "Complex generators (Dialog, Toast) may have too many test permutations",
-      "mitigation": "Follow existing pattern: test key examples + snapshot full data structure",
-      "likelihood": "Low",
+      "risk": "Registry data may differ from hardcoded values (intentionally or not)",
+      "mitigation": "Compare parsed registry values with hardcoded. Investigate discrepancies. Update snapshots intentionally if registry is correct.",
+      "likelihood": "Medium",
       "impact": "Low"
     },
     {
-      "risk": "Snapshot files may become large and hard to review",
-      "mitigation": "Break into multiple snapshot tests per variant. Use descriptive snapshot names.",
+      "risk": "Parser may not support all Tailwind classes needed",
+      "mitigation": "Document unsupported classes. Use fallback values. Create follow-up task for parser improvements.",
       "likelihood": "Medium",
       "impact": "Low"
     }
   ],
   "success_criteria": [
-    "All 29 generators have test files",
-    "All tests follow structural + snapshot pattern",
-    "No exact-value assertions for Tailwind classes",
-    "All tests pass in CI",
-    "Test execution time under 5s",
-    "PLAN.md Phase 6 marked complete",
-    "Test template documentation created"
+    "All 15 generators import and use component-registry.json",
+    "No hardcoded SIZE_CONFIG, VARIANT_CONFIG objects remain",
+    "All existing tests pass",
+    "Snapshots unchanged or intentionally updated with documentation",
+    "Registry gaps documented for follow-up",
+    "progress.txt updated with migration status"
   ],
   "timeline": {
-    "estimated_effort": "3-4 hours",
+    "estimated_effort": "4-6 hours",
     "breakdown": {
-      "tier_2": "30-45 minutes (2 generators)",
-      "tier_3": "90-120 minutes (6 generators)",
-      "tier_4": "60-90 minutes (8 generators, simpler)",
-      "documentation": "15-20 minutes"
+      "tier_1_high_priority": "60-90 minutes (input, select - most impactful)",
+      "tier_2_medium_priority": "90-120 minutes (tooltip, collapsible, date-range-picker, meter, pagination, switch)",
+      "tier_3_low_priority": "60-90 minutes (input-area, sensitive-input, surface, layer-card, menubar, dropdown, combobox)"
     }
   },
   "references": {
-    "existing_patterns": [
-      "packages/kumo/scripts/figma/plugin/generators/badge.test.ts",
-      "packages/kumo/scripts/figma/plugin/generators/button.test.ts",
-      "packages/kumo/scripts/figma/plugin/generators/input.test.ts"
+    "good_examples": [
+      "packages/kumo/scripts/figma/plugin/generators/badge.ts",
+      "packages/kumo/scripts/figma/plugin/generators/button.ts",
+      "packages/kumo/scripts/figma/plugin/generators/checkbox.ts"
     ],
-    "plan": "packages/kumo/scripts/figma/plugin/PLAN.md",
-    "spec": "packages/kumo/scripts/figma/plugin/plans/SPEC.md"
+    "registry": "packages/kumo/ai/component-registry.json",
+    "parser": "packages/kumo/scripts/figma/plugin/parsers/tailwind-to-figma.ts"
   }
 }

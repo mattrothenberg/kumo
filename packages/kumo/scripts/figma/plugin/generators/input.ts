@@ -27,6 +27,8 @@ import {
   BORDER_RADIUS,
 } from "./shared";
 import { logComplete } from "../logger";
+import registry from "../../../../ai/component-registry.json";
+import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 
 /**
  * Section padding for component display
@@ -39,7 +41,63 @@ var SECTION_PADDING = 48;
 var SECTION_GAP = 160;
 
 /**
- * Size configuration matching KUMO_INPUT_VARIANTS
+ * Extract Input component from registry
+ */
+var inputRegistry = registry.components.Input as any;
+var inputProps = inputRegistry.props;
+var inputStyling = inputRegistry.styling;
+
+/**
+ * Size values from registry
+ */
+var SIZE_VALUES = inputProps.size.values;
+
+/**
+ * Variant values from registry
+ */
+var VARIANT_VALUES = inputProps.variant.values;
+
+/**
+ * State values
+ */
+var STATE_VALUES = ["default", "focus", "disabled"];
+
+/**
+ * WithLabel values - whether to show Field wrapper (label, description, error)
+ */
+var WITH_LABEL_VALUES = [false, true];
+
+/**
+ * Get size configuration from registry
+ * @param size - Size variant (xs, sm, base, lg)
+ * @returns Size dimensions including layout-specific width
+ */
+function getSizeConfigFromRegistry(size: string) {
+  var sizeVariant = inputStyling.sizeVariants[size];
+  if (!sizeVariant) {
+    // Fallback to base if size not found
+    sizeVariant = inputStyling.sizeVariants.base;
+  }
+
+  // Layout-specific widths (not in registry - generator specific)
+  var widthMap: Record<string, number> = {
+    xs: 160,
+    sm: 200,
+    base: 280,
+    lg: 320,
+  };
+
+  return {
+    height: sizeVariant.height,
+    paddingX: sizeVariant.dimensions.paddingX,
+    fontSize: sizeVariant.dimensions.fontSize,
+    borderRadius: sizeVariant.dimensions.borderRadius,
+    width: widthMap[size] || widthMap.base,
+  };
+}
+
+/**
+ * Size configuration from registry
  */
 var SIZE_CONFIG: Record<
   string,
@@ -51,55 +109,11 @@ var SIZE_CONFIG: Record<
     width: number;
   }
 > = {
-  xs: {
-    height: 20, // h-5
-    paddingX: 6, // px-1.5
-    fontSize: 12, // text-xs
-    borderRadius: BORDER_RADIUS.sm,
-    width: 160,
-  },
-  sm: {
-    height: 26, // h-6.5
-    paddingX: 8, // px-2
-    fontSize: 12, // text-xs
-    borderRadius: BORDER_RADIUS.md,
-    width: 200,
-  },
-  base: {
-    height: 36, // h-9
-    paddingX: 12, // px-3
-    fontSize: 16, // text-base
-    borderRadius: BORDER_RADIUS.lg,
-    width: 280,
-  },
-  lg: {
-    height: 40, // h-10
-    paddingX: 16, // px-4
-    fontSize: 16, // text-base
-    borderRadius: BORDER_RADIUS.lg,
-    width: 320,
-  },
+  xs: getSizeConfigFromRegistry("xs"),
+  sm: getSizeConfigFromRegistry("sm"),
+  base: getSizeConfigFromRegistry("base"),
+  lg: getSizeConfigFromRegistry("lg"),
 };
-
-/**
- * Size values
- */
-var SIZE_VALUES = ["xs", "sm", "base", "lg"];
-
-/**
- * Variant values
- */
-var VARIANT_VALUES = ["default", "error"];
-
-/**
- * State values
- */
-var STATE_VALUES = ["default", "focus", "disabled"];
-
-/**
- * WithLabel values - whether to show Field wrapper (label, description, error)
- */
-var WITH_LABEL_VALUES = [false, true];
 
 /**
  * State-specific style overrides
@@ -572,10 +586,7 @@ export var INPUT_STATE_VALUES = STATE_VALUES;
  * input.tsx → component-registry.json → input.ts (generator) → Figma
  */
 
-import registry from "../../../../ai/component-registry.json";
-import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
-
-const inputComponent = registry.components.Input as any;
+const inputComponent = inputRegistry;
 
 /**
  * Get base styling configuration from registry

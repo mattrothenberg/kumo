@@ -1,20 +1,62 @@
 # Progress Log
 
-This file tracks Ralph's progress through the test refactoring PRD.
+This file tracks Ralph's progress through the PRD tasks.
 
-## Session Start
+---
 
-Starting test refactoring for Figma generators using structural + snapshot pattern.
+## PHASE 2: Registry Integration (Current)
 
-**Status:**
+### Goal
+Migrate all Figma generators from hardcoded configuration to dynamic reading from component-registry.json.
+
+### Status Summary
+- **Total generators needing migration:** 15
+- **Fully integrated:** 0
+- **Partially integrated:** 5 (input, select tests read registry but generators hardcoded)
+- **Hardcoded:** 10
+
+### Generators to Migrate (by priority)
+
+**Tier 1 - High Priority:**
+- [ ] input.ts - SIZE_CONFIG hardcoded, needs full migration
+- [ ] select.ts - VARIANT_VALUES, STATE_STYLES entirely hardcoded
+
+**Tier 2 - Medium Priority:**
+- [ ] tooltip.ts - hardcoded styles
+- [ ] collapsible.ts - TRIGGER_STYLES, CONTENT_STYLES hardcoded
+- [ ] date-range-picker.ts - SIZE_CONFIG, VARIANT_CONFIG hardcoded
+- [ ] meter.ts - fixed fill levels, dimensions hardcoded
+- [ ] pagination.ts - layout constants hardcoded
+- [ ] switch.ts - SWITCH_DIMENSIONS hardcoded
+
+**Tier 3 - Low Priority:**
+- [ ] input-area.ts - SIZE_CONFIG, VARIANT_CONFIG, STATE_STYLES hardcoded
+- [ ] sensitive-input.ts - partial (uses Input registry, adds hardcoded)
+- [ ] surface.ts - layout dimensions hardcoded
+- [ ] layer-card.ts - LAYER_CARD_CONFIG hardcoded
+- [ ] menubar.ts - MENUBAR_CONFIG, DEFAULT_OPTIONS hardcoded
+- [ ] dropdown.ts - partial migration needed
+- [ ] combobox.ts - partial migration needed
+
+### Reference Implementations
+Good examples of fully integrated generators:
+- badge.ts - Full registry with baseStyles and variant classes
+- button.ts - Complex multi-variant using registry props
+- checkbox.ts - Uses props and styling sections
+
+---
+
+## PHASE 1: Test Refactoring (COMPLETE)
+
+### Summary
+All 29 generators now have structural + snapshot tests.
+
+### Final Status
 - Total generators: 29
-- Complete with tests: 13 (45%)
-- Remaining: 16 generators across Tiers 2-4
+- Complete with tests: 29 (100%)
+- Test pattern: Structural + Snapshot
 
-**Next Steps:**
-- Tier 2: dropdown, combobox
-- Tier 3: tooltip, collapsible, date-range-picker, loader, meter, pagination
-- Tier 4: switch, link-button, refresh-button, input-area, sensitive-input, surface, layer-card, menubar
+### Completed Iterations (16 total)
 
 ---
 
@@ -867,4 +909,60 @@ Starting test refactoring for Figma generators using structural + snapshot patte
 **Status:** COMPLETE - Ready for commit
 
 ---
+
+
+---
+
+## Iteration 17: input (Tier 1 - PHASE 2: Registry Integration)
+
+**Generator:** input
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Migrated SIZE_CONFIG from hardcoded values to registry-based configuration:
+   - Added registry import at top of file (with parseTailwindClasses)
+   - Created getSizeConfigFromRegistry() function that reads from inputStyling.sizeVariants
+   - SIZE_CONFIG now dynamically populated from registry data
+   - Layout-specific widths (160, 200, 280, 320) remain in widthMap as generator-specific
+
+2. Updated variable declarations to use registry:
+   - SIZE_VALUES: Changed from hardcoded array to inputProps.size.values
+   - VARIANT_VALUES: Changed from hardcoded array to inputProps.variant.values
+   - STATE_VALUES, WITH_LABEL_VALUES: Kept as-is (not in registry)
+
+3. Consolidated imports:
+   - Moved registry and parseTailwindClasses imports to top of file
+   - Removed duplicate imports that were at bottom (lines 589-592)
+   - Updated testable exports to use inputRegistry variable instead of re-importing
+
+4. Generator now reads from registry.components.Input.styling.sizeVariants:
+   - xs: height 20, paddingX 6, fontSize 12, borderRadius 2
+   - sm: height 26, paddingX 8, fontSize 12, borderRadius 6
+   - base: height 36, paddingX 12, fontSize 16, borderRadius 8
+   - lg: height 40, paddingX 16, fontSize 16, borderRadius 8
+
+### Test Results:
+- ✅ All 68 tests pass
+- ✅ No snapshots changed (registry values match previous hardcoded values)
+- ✅ Verified tests pass with --run flag
+
+### Registry Gaps Found:
+None - Input component has comprehensive registry data including:
+- props.size.values (xs, sm, base, lg)
+- props.variant.values (default, error)
+- styling.sizeVariants with height, paddingX, fontSize, borderRadius for each size
+- styling.baseTokens and styling.states
+
+### Notes:
+- Input was marked "partial" in PRD because testable exports already read from registry
+- Main SIZE_CONFIG was hardcoded - now fully migrated to registry
+- State styles (STATE_STYLES) and variant config (VARIANT_CONFIG) remain hardcoded as they contain:
+  - ringVariable logic for focus/error states
+  - Text content (labels, descriptions, error messages)
+  - These are presentation-specific and not in registry styling section
+- Pre-existing TypeScript errors for textAutoResize property (documented in earlier iterations)
+- Input is first Tier 1 generator fully migrated to registry (high impact)
+
+**Status:** COMPLETE - Ready for commit
 
