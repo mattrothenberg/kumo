@@ -205,7 +205,7 @@
       "name": "pagination",
       "tier": 3,
       "priority": "medium",
-      "passes": false
+      "passes": true
     },
     {
       "name": "switch",

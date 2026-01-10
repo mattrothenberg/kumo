@@ -38,6 +38,142 @@ var SECTION_PADDING = 48;
 var SECTION_GAP = 160;
 
 /**
+ * ============================================================================
+ * TESTABLE EXPORTS - Pure functions for testing (no Figma API calls)
+ * ============================================================================
+ */
+
+/**
+ * Get pagination layout dimensions configuration
+ */
+export function getPaginationDimensionsConfig() {
+  return {
+    paginationHeight: PAGINATION_HEIGHT,
+    buttonSize: BUTTON_SIZE,
+    inputWidth: INPUT_WIDTH,
+    iconSize: ICON_SIZE,
+    gap: GAP,
+    borderRadius: BORDER_RADIUS,
+  };
+}
+
+/**
+ * Get page state configurations
+ */
+export function getPaginationStateConfig() {
+  return [
+    { page: 1, label: "state=first" },
+    { page: 5, label: "state=middle" },
+    { page: 10, label: "state=last" },
+  ];
+}
+
+/**
+ * Get pagination color bindings (semantic tokens)
+ */
+export function getPaginationColorBindings() {
+  return {
+    buttonBackground: "color-surface-2", // bg-secondary
+    buttonBorder: "color-border", // ring-border
+    iconEnabled: "text-color-surface",
+    iconDisabled: "text-color-disabled",
+    inputBackground: "color-surface-2", // bg-secondary
+    inputBorder: "color-border", // ring-border
+    inputText: "text-color-surface",
+    showingTextLabel: "text-color-label",
+  };
+}
+
+/**
+ * Calculate showing range text data
+ */
+export function calculateShowingRange(
+  page: number,
+  perPage: number,
+  totalCount: number,
+) {
+  var lower = page * perPage - perPage + 1;
+  var upper = Math.min(page * perPage, totalCount);
+  var maxPage = Math.ceil(totalCount / perPage);
+  return {
+    lower: lower,
+    upper: upper,
+    maxPage: maxPage,
+    text: "Showing " + lower + "-" + upper + " of " + totalCount,
+  };
+}
+
+/**
+ * Get button states for a given page
+ */
+export function getButtonStates(page: number, maxPage: number) {
+  var isFirstPage = page <= 1;
+  var isLastPage = page >= maxPage;
+  return {
+    isFirstPage: isFirstPage,
+    isLastPage: isLastPage,
+    buttons: [
+      {
+        iconId: "ph-caret-double-left",
+        ariaLabel: "First page",
+        position: "first" as "first" | "middle" | "last" | "single",
+        disabled: isFirstPage,
+      },
+      {
+        iconId: "ph-caret-left",
+        ariaLabel: "Previous page",
+        position: "middle" as "first" | "middle" | "last" | "single",
+        disabled: isFirstPage,
+      },
+      {
+        iconId: "ph-caret-right",
+        ariaLabel: "Next page",
+        position: "middle" as "first" | "middle" | "last" | "single",
+        disabled: isLastPage,
+      },
+      {
+        iconId: "ph-caret-double-right",
+        ariaLabel: "Last page",
+        position: "last" as "first" | "middle" | "last" | "single",
+        disabled: isLastPage,
+      },
+    ],
+  };
+}
+
+/**
+ * Get all pagination intermediate data (for snapshot testing)
+ */
+export function getAllPaginationData() {
+  var dimensions = getPaginationDimensionsConfig();
+  var states = getPaginationStateConfig();
+  var colors = getPaginationColorBindings();
+  var perPage = 10;
+  var totalCount = 100;
+
+  return {
+    dimensions: dimensions,
+    colors: colors,
+    states: states.map(function (state) {
+      var showingRange = calculateShowingRange(
+        state.page,
+        perPage,
+        totalCount,
+      );
+      var buttonStates = getButtonStates(state.page, showingRange.maxPage);
+      return {
+        label: state.label,
+        page: state.page,
+        perPage: perPage,
+        totalCount: totalCount,
+        showingRange: showingRange,
+        buttonStates: buttonStates,
+      };
+    }),
+  };
+}
+
+/**
  * Create a navigation button with icon
  */
 async function createNavButton(
