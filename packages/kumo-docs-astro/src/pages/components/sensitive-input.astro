@@ -23,7 +23,21 @@ import { SensitiveInputDemo, SensitiveInputSizesDemo, SensitiveInputControlledDe
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Installation</h2>
+    <h3 class="mb-2 text-lg font-semibold">Barrel</h3>
     <CodeBlock code={`import { SensitiveInput } from "@cloudflare/kumo";`} lang="tsx" />
+    <h3 class="mt-4 mb-2 text-lg font-semibold">Granular</h3>
+    <CodeBlock code={`import { SensitiveInput } from "@cloudflare/kumo/components/sensitive-input";`} lang="tsx" />
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+    <CodeBlock code={`import { SensitiveInput } from "@cloudflare/kumo";
+
+export default function Example() {
+  return (
+    <SensitiveInput label="Secret" defaultValue="my-secret-key" />
+  );
+}`} lang="tsx" />
   </ComponentSection>
 
   <ComponentSection>
@@ -99,6 +113,16 @@ import { SensitiveInputDemo, SensitiveInputSizesDemo, SensitiveInputControlledDe
           <tr class="border-b border-border">
             <td class="px-4 py-3 font-mono text-xs">value</td>
             <td class="px-4 py-3 font-mono text-xs">string</td>
+            <td class="px-4 py-3 font-mono text-xs">-</td>
+          </tr>
+          <tr class="border-b border-border">
+            <td class="px-4 py-3 font-mono text-xs">defaultValue</td>
+            <td class="px-4 py-3 font-mono text-xs">string</td>
+            <td class="px-4 py-3 font-mono text-xs">""</td>
+          </tr>
+          <tr class="border-b border-border">
+            <td class="px-4 py-3 font-mono text-xs">onValueChange</td>
+            <td class="px-4 py-3 font-mono text-xs">(value: string) =&gt; void</td>
             <td class="px-4 py-3 font-mono text-xs">-</td>
           </tr>
           <tr class="border-b border-border">

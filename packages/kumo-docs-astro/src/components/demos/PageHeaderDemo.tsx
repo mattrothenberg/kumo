@@ -1,89 +1,87 @@
 import { PageHeader, Breadcrumbs, Button } from "@cloudflare/kumo";
-import { Plus } from "@phosphor-icons/react";
+import {
+  HouseIcon,
+  GearIcon,
+  CodeIcon,
+  GlobeIcon,
+} from "@phosphor-icons/react";
 
-export function PageHeaderDemo() {
+// Full-featured hero demo matching original
+export function PageHeaderHeroDemo() {
+  return (
+    <PageHeader
+      className="w-full"
+      breadcrumbs={
+        <Breadcrumbs>
+          <Breadcrumbs.Link icon={<HouseIcon size={16} />} href="#">
+            Workers & Pages
+          </Breadcrumbs.Link>
+          <Breadcrumbs.Separator />
+          <Breadcrumbs.Current>cloudflare-dev-platform</Breadcrumbs.Current>
+        </Breadcrumbs>
+      }
+      tabs={[
+        { label: "Overview", value: "overview" },
+        { label: "Metrics", value: "metrics" },
+        { label: "Deployments", value: "deployments" },
+        { label: "Bindings", value: "bindings" },
+        { label: "Observability", value: "observability" },
+        { label: "Settings", value: "settings" },
+      ]}
+      defaultTab="overview"
+      onValueChange={(v) => console.log(v)}
+    >
+      <Button icon={<CodeIcon />} className="h-8">
+        Edit code
+      </Button>
+      <Button icon={<GlobeIcon />} variant="primary" className="h-8">
+        Visit
+      </Button>
+    </PageHeader>
+  );
+}
+
+// Basic breadcrumbs-only demo
+export function PageHeaderBasicDemo() {
   return (
     <PageHeader
       breadcrumbs={
         <Breadcrumbs>
-          <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+          <Breadcrumbs.Link href="#">Home</Breadcrumbs.Link>
           <Breadcrumbs.Separator />
-          <Breadcrumbs.Link href="/projects">Projects</Breadcrumbs.Link>
-          <Breadcrumbs.Separator />
-          <Breadcrumbs.Current>Current Project</Breadcrumbs.Current>
+          <Breadcrumbs.Current>Dashboard</Breadcrumbs.Current>
         </Breadcrumbs>
       }
     />
   );
 }
 
-export function PageHeaderSpacingDemo() {
+// With icons in breadcrumbs
+export function PageHeaderWithIconsDemo() {
   return (
-    <div className="flex flex-col gap-8">
-      <div>
-        <p className="mb-2 text-sm text-muted">Compact</p>
-        <PageHeader
-          spacing="compact"
-          breadcrumbs={
-            <Breadcrumbs>
-              <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
-              <Breadcrumbs.Separator />
-              <Breadcrumbs.Current>Current</Breadcrumbs.Current>
-            </Breadcrumbs>
-          }
-          tabs={[
-            { label: "General", value: "general" },
-            { label: "Settings", value: "settings" },
-          ]}
-          defaultTab="general"
-        />
-      </div>
-      <div>
-        <p className="mb-2 text-sm text-muted">Base</p>
-        <PageHeader
-          spacing="base"
-          breadcrumbs={
-            <Breadcrumbs>
-              <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
-              <Breadcrumbs.Separator />
-              <Breadcrumbs.Current>Current</Breadcrumbs.Current>
-            </Breadcrumbs>
-          }
-          tabs={[
-            { label: "General", value: "general" },
-            { label: "Settings", value: "settings" },
-          ]}
-          defaultTab="general"
-        />
-      </div>
-      <div>
-        <p className="mb-2 text-sm text-muted">Relaxed</p>
-        <PageHeader
-          spacing="relaxed"
-          breadcrumbs={
-            <Breadcrumbs>
-              <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
-              <Breadcrumbs.Separator />
-              <Breadcrumbs.Current>Current</Breadcrumbs.Current>
-            </Breadcrumbs>
-          }
-          tabs={[
-            { label: "General", value: "general" },
-            { label: "Settings", value: "settings" },
-          ]}
-          defaultTab="general"
-        />
-      </div>
-    </div>
+    <PageHeader
+      breadcrumbs={
+        <Breadcrumbs>
+          <Breadcrumbs.Link icon={<HouseIcon size={16} />} href="#">
+            Home
+          </Breadcrumbs.Link>
+          <Breadcrumbs.Separator />
+          <Breadcrumbs.Current icon={<GearIcon size={16} />}>
+            Settings
+          </Breadcrumbs.Current>
+        </Breadcrumbs>
+      }
+    />
   );
 }
 
+// With tabs
 export function PageHeaderWithTabsDemo() {
   return (
     <PageHeader
       breadcrumbs={
         <Breadcrumbs>
-          <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+          <Breadcrumbs.Link href="#">Home</Breadcrumbs.Link>
           <Breadcrumbs.Separator />
           <Breadcrumbs.Current>Settings</Breadcrumbs.Current>
         </Breadcrumbs>
@@ -92,38 +90,33 @@ export function PageHeaderWithTabsDemo() {
         { label: "General", value: "general" },
         { label: "Security", value: "security" },
         { label: "Notifications", value: "notifications" },
-        { label: "Billing", value: "billing" },
       ]}
       defaultTab="general"
     />
   );
 }
 
+// With actions
 export function PageHeaderWithActionsDemo() {
   return (
     <PageHeader
       breadcrumbs={
         <Breadcrumbs>
-          <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+          <Breadcrumbs.Link href="#">Home</Breadcrumbs.Link>
           <Breadcrumbs.Separator />
-          <Breadcrumbs.Link href="/projects">Projects</Breadcrumbs.Link>
+          <Breadcrumbs.Link href="#">Projects</Breadcrumbs.Link>
           <Breadcrumbs.Separator />
           <Breadcrumbs.Current>My Project</Breadcrumbs.Current>
         </Breadcrumbs>
       }
       tabs={[
         { label: "Overview", value: "overview" },
-        { label: "Analytics", value: "analytics" },
         { label: "Settings", value: "settings" },
       ]}
       defaultTab="overview"
     >
-      <Button variant="secondary" size="sm">
-        Export
-      </Button>
-      <Button variant="primary" size="sm">
-        <Plus size={16} />
-        New Item
+      <Button variant="primary" size="base">
+        Deploy
       </Button>
     </PageHeader>
   );

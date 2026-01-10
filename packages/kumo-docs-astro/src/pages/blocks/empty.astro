@@ -3,7 +3,7 @@ import DocLayout from "../../layouts/DocLayout.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
-import { EmptyDemo, EmptySizesDemo, EmptyWithCommandDemo, EmptyWithActionsDemo, EmptyMinimalDemo } from "../../components/demos/EmptyDemo";
+import { EmptyDemo, EmptySizesDemo, EmptyWithCommandDemo, EmptyWithActionsDemo, EmptyMinimalDemo, EmptyBasicDemo } from "../../components/demos/EmptyDemo";
 ---
 
 <DocLayout
@@ -24,7 +24,42 @@ import { EmptyDemo, EmptySizesDemo, EmptyWithCommandDemo, EmptyWithActionsDemo, 
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Installation</h2>
-    <CodeBlock code={`import { Empty } from "@cloudflare/kumo";`} lang="tsx" />
+    <CodeBlock code={`import { Empty } from "@cloudflare/kumo";
+// or
+import { Empty } from "@cloudflare/kumo/blocks/empty";`} lang="tsx" />
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+    <CodeBlock code={`import { Empty } from "@cloudflare/kumo";
+import { PackageIcon } from "@phosphor-icons/react";
+
+export default function Example() {
+  return (
+    <Empty
+      icon={<PackageIcon size={48} />}
+      title="No packages found"
+      description="Get started by installing your first package."
+      commandLine="npm install @kumo/ui"
+    />
+  );
+}`} lang="tsx" />
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-6 text-2xl font-bold">Examples</h2>
+
+    <div class="space-y-8">
+      <div>
+        <h3 class="mb-4 text-xl font-semibold">Basic</h3>
+        <ComponentExample code={`<Empty
+  title="No results found"
+  description="Try adjusting your search or filter to find what you're looking for."
+/>`}>
+          <EmptyBasicDemo client:visible />
+        </ComponentExample>
+      </div>
+    </div>
   </ComponentSection>
 
   <ComponentSection>

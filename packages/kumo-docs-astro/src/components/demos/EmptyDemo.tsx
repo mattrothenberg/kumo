@@ -75,3 +75,12 @@ export function EmptyWithActionsDemo() {
 export function EmptyMinimalDemo() {
   return <Empty title="Nothing here" />;
 }
+
+export function EmptyBasicDemo() {
+  return (
+    <Empty
+      title="No results found"
+      description="Try adjusting your search or filter to find what you're looking for."
+    />
+  );
+}

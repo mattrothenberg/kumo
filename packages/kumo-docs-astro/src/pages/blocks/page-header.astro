@@ -3,53 +3,124 @@ import DocLayout from "../../layouts/DocLayout.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
-import { PageHeaderDemo, PageHeaderSpacingDemo, PageHeaderWithTabsDemo, PageHeaderWithActionsDemo } from "../../components/demos/PageHeaderDemo";
+import { PageHeaderHeroDemo, PageHeaderBasicDemo, PageHeaderWithIconsDemo, PageHeaderWithTabsDemo, PageHeaderWithActionsDemo } from "../../components/demos/PageHeaderDemo";
 ---
 
 <DocLayout
-  title="PageHeader"
-  description="A page header component with breadcrumbs, tabs, and actions."
+  title="Page Header"
+  description="A composite component that combines breadcrumbs and tabs for page navigation."
   sourceFile="blocks/page-header"
   storybookPath="story/blocks-pageheader"
 >
   <ComponentSection>
     <ComponentExample code={`<PageHeader
+  className="w-full"
   breadcrumbs={
     <Breadcrumbs>
-      <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+      <Breadcrumbs.Link icon={<HouseIcon size={16} />} href="#">
+        Workers & Pages
+      </Breadcrumbs.Link>
       <Breadcrumbs.Separator />
-      <Breadcrumbs.Link href="/projects">Projects</Breadcrumbs.Link>
-      <Breadcrumbs.Separator />
-      <Breadcrumbs.Current>Current Project</Breadcrumbs.Current>
+      <Breadcrumbs.Current>cloudflare-dev-platform</Breadcrumbs.Current>
     </Breadcrumbs>
   }
-/>`}>
-      <PageHeaderDemo client:visible />
+  tabs={[
+    { label: "Overview", value: "overview" },
+    { label: "Metrics", value: "metrics" },
+    { label: "Deployments", value: "deployments" },
+    { label: "Bindings", value: "bindings" },
+    { label: "Observability", value: "observability" },
+    { label: "Settings", value: "settings" },
+  ]}
+  defaultTab="overview"
+  onValueChange={(v) => console.log(v)}
+>
+  <Button icon={<CodeIcon />} className="h-8">Edit code</Button>
+  <Button icon={<GlobeIcon />} variant="primary" className="h-8">Visit</Button>
+</PageHeader>`}>
+      <PageHeaderHeroDemo client:visible />
     </ComponentExample>
   </ComponentSection>
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Installation</h2>
-    <CodeBlock code={`import { PageHeader, Breadcrumbs } from "@cloudflare/kumo";`} lang="tsx" />
+    <CodeBlock code={`import { PageHeader } from "@cloudflare/kumo";
+// or
+import { PageHeader } from "@cloudflare/kumo/blocks/page-header";`} lang="tsx" />
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Spacing</h2>
-    <p class="text-label mb-4">PageHeader supports three spacing variants for different visual densities.</p>
-    <ComponentExample code={`<PageHeader spacing="compact" breadcrumbs={...} tabs={...} />
-<PageHeader spacing="base" breadcrumbs={...} tabs={...} />
-<PageHeader spacing="relaxed" breadcrumbs={...} tabs={...} />`}>
-      <PageHeaderSpacingDemo client:visible />
-    </ComponentExample>
+    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+    <CodeBlock code={`import { PageHeader, Breadcrumbs } from "@cloudflare/kumo";
+
+export default function Example() {
+  return (
+    <PageHeader
+      breadcrumbs={
+        <Breadcrumbs>
+          <Breadcrumbs.Link href="#">Home</Breadcrumbs.Link>
+          <Breadcrumbs.Separator />
+          <Breadcrumbs.Link href="#">Projects</Breadcrumbs.Link>
+          <Breadcrumbs.Separator />
+          <Breadcrumbs.Current>My Project</Breadcrumbs.Current>
+        </Breadcrumbs>
+      }
+      tabs={[
+        { label: "Overview", value: "overview" },
+        { label: "Settings", value: "settings" }
+      ]}
+      defaultTab="overview"
+      onValueChange={(value) => {
+        console.log(value);
+      }}
+    />
+  );
+}`} lang="tsx" />
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">With Tabs</h2>
-    <p class="text-label mb-4">Add navigation tabs for sub-pages within a section.</p>
-    <ComponentExample code={`<PageHeader
+    <h2 class="mb-6 text-2xl font-bold">Examples</h2>
+
+    <div class="mb-12">
+      <h3 class="mb-4 text-xl font-semibold">Basic</h3>
+      <ComponentExample code={`<PageHeader
   breadcrumbs={
     <Breadcrumbs>
-      <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+      <Breadcrumbs.Link href="#">Home</Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Current>Dashboard</Breadcrumbs.Current>
+    </Breadcrumbs>
+  }
+/>`}>
+        <PageHeaderBasicDemo client:visible />
+      </ComponentExample>
+    </div>
+
+    <div class="mb-12">
+      <h3 class="mb-4 text-xl font-semibold">With Icons</h3>
+      <ComponentExample code={`<PageHeader
+  breadcrumbs={
+    <Breadcrumbs>
+      <Breadcrumbs.Link icon={<HouseIcon size={16} />} href="#">
+        Home
+      </Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Current icon={<GearIcon size={16} />}>
+        Settings
+      </Breadcrumbs.Current>
+    </Breadcrumbs>
+  }
+/>`}>
+        <PageHeaderWithIconsDemo client:visible />
+      </ComponentExample>
+    </div>
+
+    <div class="mb-12">
+      <h3 class="mb-4 text-xl font-semibold">With Tabs</h3>
+      <ComponentExample code={`<PageHeader
+  breadcrumbs={
+    <Breadcrumbs>
+      <Breadcrumbs.Link href="#">Home</Breadcrumbs.Link>
       <Breadcrumbs.Separator />
       <Breadcrumbs.Current>Settings</Breadcrumbs.Current>
     </Breadcrumbs>
@@ -58,32 +129,38 @@ import { PageHeaderDemo, PageHeaderSpacingDemo, PageHeaderWithTabsDemo, PageHead
     { label: "General", value: "general" },
     { label: "Security", value: "security" },
     { label: "Notifications", value: "notifications" },
-    { label: "Billing", value: "billing" },
   ]}
   defaultTab="general"
 />`}>
-      <PageHeaderWithTabsDemo client:visible />
-    </ComponentExample>
-  </ComponentSection>
+        <PageHeaderWithTabsDemo client:visible />
+      </ComponentExample>
+    </div>
 
-  <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">With Actions</h2>
-    <p class="text-label mb-4">Add action buttons as children for page-level operations.</p>
-    <ComponentExample code={`<PageHeader
-  breadcrumbs={...}
-  tabs={...}
+    <div class="mb-12">
+      <h3 class="mb-4 text-xl font-semibold">With Actions</h3>
+      <ComponentExample code={`<PageHeader
+  breadcrumbs={
+    <Breadcrumbs>
+      <Breadcrumbs.Link href="#">Home</Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Link href="#">Projects</Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Current>My Project</Breadcrumbs.Current>
+    </Breadcrumbs>
+  }
+  tabs={[
+    { label: "Overview", value: "overview" },
+    { label: "Settings", value: "settings" }
+  ]}
   defaultTab="overview"
 >
-  <Button variant="secondary" size="sm">
-    Export
-  </Button>
-  <Button variant="primary" size="sm">
-    <Plus size={16} />
-    New Item
+  <Button variant="primary" size="base">
+    Deploy
   </Button>
 </PageHeader>`}>
-      <PageHeaderWithActionsDemo client:visible />
-    </ComponentExample>
+        <PageHeaderWithActionsDemo client:visible />
+      </ComponentExample>
+    </div>
   </ComponentSection>
 
   <ComponentSection>

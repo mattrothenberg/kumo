@@ -1,51 +1,56 @@
-import { Code } from "@cloudflare/kumo";
+import { Code, CodeBlock } from "@cloudflare/kumo";
 
 export function CodeDemo() {
-  return <Code lang="ts" code='const hello = "world";' />;
+  return (
+    <CodeBlock
+      lang="tsx"
+      code={`const greeting = "Hello, World!";
+console.log(greeting);`}
+    />
+  );
 }
 
-export function CodeLanguagesDemo() {
+export function CodeTypeScriptDemo() {
   return (
-    <div className="flex flex-col gap-4">
-      <div>
-        <p className="mb-2 text-sm text-muted">TypeScript</p>
-        <Code
-          lang="ts"
-          code={`interface User {
+    <CodeBlock
+      lang="tsx"
+      code={`interface User {
+  id: string;
   name: string;
   email: string;
 }
 
 const user: User = {
-  name: "John",
+  id: "1",
+  name: "John Doe",
   email: "john@example.com"
 };`}
-        />
-      </div>
-      <div>
-        <p className="mb-2 text-sm text-muted">TSX</p>
-        <Code
-          lang="tsx"
-          code={`<Button variant="primary">
-  Click me
-</Button>`}
-        />
-      </div>
-      <div>
-        <p className="mb-2 text-sm text-muted">Bash</p>
-        <Code lang="bash" code="npm install @cloudflare/kumo" />
-      </div>
-      <div>
-        <p className="mb-2 text-sm text-muted">CSS</p>
-        <Code
-          lang="css"
-          code={`.button {
-  background: var(--color-primary);
-  color: white;
+    />
+  );
+}
+
+export function CodeBashDemo() {
+  return (
+    <CodeBlock
+      lang="bash"
+      code={`npm install @cloudflare/kumo
+pnpm add @cloudflare/kumo`}
+    />
+  );
+}
+
+export function CodeJsonDemo() {
+  return (
+    <CodeBlock
+      lang="jsonc"
+      code={`{
+  "name": "kumo",
+  "version": "1.0.0",
+  "dependencies": {
+    "react": "^19.0.0"
+  }
 }`}
-        />
-      </div>
-    </div>
+    />
   );
 }
 

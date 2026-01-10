@@ -8,8 +8,7 @@ export function DropdownBasicDemo() {
       <DropdownMenu.Content>
         <DropdownMenu.Item>Worker</DropdownMenu.Item>
         <DropdownMenu.Item>Pages</DropdownMenu.Item>
-        <DropdownMenu.Separator />
-        <DropdownMenu.Item>Import Project</DropdownMenu.Item>
+        <DropdownMenu.Item>KV Namespace</DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu>
   );

@@ -3,7 +3,7 @@ import DocLayout from "../../layouts/DocLayout.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
-import { LayerCardDemo, LayerCardVariantsDemo } from "../../components/demos/LayerCardDemo";
+import { LayerCardDemo, LayerCardBasicDemo, LayerCardMultipleDemo } from "../../components/demos/LayerCardDemo";
 ---
 
 <DocLayout
@@ -13,17 +13,9 @@ import { LayerCardDemo, LayerCardVariantsDemo } from "../../components/demos/Lay
   storybookPath="story/components-layercard"
 >
   <ComponentSection>
-    <ComponentExample code={`<LayerCard className="w-[250px]">
-  <LayerCard.Secondary className="flex items-center justify-between">
-    <div>Next Steps</div>
-    <Button variant="ghost" size="sm" shape="square">
-      <ArrowRight size={16} />
-    </Button>
-  </LayerCard.Secondary>
-
-  <LayerCard.Primary>
-    <Text>Get started with Kumo</Text>
-  </LayerCard.Primary>
+    <ComponentExample code={`<LayerCard className="w-[200px]">
+  <LayerCard.Secondary>Next Steps</LayerCard.Secondary>
+  <LayerCard.Primary>Get started with Kumo</LayerCard.Primary>
 </LayerCard>`}>
       <LayerCardDemo client:visible />
     </ComponentExample>
@@ -31,41 +23,66 @@ import { LayerCardDemo, LayerCardVariantsDemo } from "../../components/demos/Lay
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Installation</h2>
+    <h3 class="mb-2 text-lg font-semibold">Barrel</h3>
     <CodeBlock code={`import { LayerCard } from "@cloudflare/kumo";`} lang="tsx" />
+    <h3 class="mt-4 mb-2 text-lg font-semibold">Granular</h3>
+    <CodeBlock code={`import { LayerCard } from "@cloudflare/kumo/components/layer-card";`} lang="tsx" />
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Variations</h2>
-    <p class="text-label mb-4">LayerCard can be used with both sections or just the primary section.</p>
-    <ComponentExample code={`// With both sections
-<LayerCard>
-  <LayerCard.Secondary>
-    <Text variant="secondary" size="sm">Getting Started</Text>
-  </LayerCard.Secondary>
-  <LayerCard.Primary>
-    <Text weight="medium">Install the package</Text>
-  </LayerCard.Primary>
-</LayerCard>
+    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+    <CodeBlock code={`import { LayerCard } from "@cloudflare/kumo";
 
-// Primary only
-<LayerCard>
-  <LayerCard.Primary>
-    <Text weight="medium">Primary Only</Text>
-  </LayerCard.Primary>
-</LayerCard>
+export default function Example() {
+  return (
+    <LayerCard className="w-[250px]">
+      <LayerCard.Secondary>Documentation</LayerCard.Secondary>
+      <LayerCard.Primary>
+        Learn how to use Kumo components
+      </LayerCard.Primary>
+    </LayerCard>
+  );
+}`} lang="tsx" />
+  </ComponentSection>
 
-// With actions in secondary
-<LayerCard>
-  <LayerCard.Secondary className="flex items-center justify-between">
-    <Text variant="secondary" size="sm">Documentation</Text>
-    <Button variant="ghost" size="xs">View all</Button>
-  </LayerCard.Secondary>
+  <ComponentSection>
+    <h2 class="mb-6 text-2xl font-bold">Examples</h2>
+
+    <div class="space-y-8">
+      <div>
+        <h3 class="mb-4 text-xl font-semibold">Basic Card</h3>
+        <ComponentExample code={`<LayerCard className="w-[250px]">
+  <LayerCard.Secondary>Getting Started</LayerCard.Secondary>
   <LayerCard.Primary>
-    <Text weight="medium">Read the docs</Text>
+    <p className="text-sm text-secondary">
+      Quick start guide for new users
+    </p>
   </LayerCard.Primary>
 </LayerCard>`}>
-      <LayerCardVariantsDemo client:visible />
-    </ComponentExample>
+          <LayerCardBasicDemo client:visible />
+        </ComponentExample>
+      </div>
+
+      <div>
+        <h3 class="mb-4 text-xl font-semibold">Multiple Cards</h3>
+        <ComponentExample code={`<div className="flex gap-4">
+  <LayerCard className="w-[200px]">
+    <LayerCard.Secondary>Components</LayerCard.Secondary>
+    <LayerCard.Primary>
+      <p className="text-sm">Browse all components</p>
+    </LayerCard.Primary>
+  </LayerCard>
+  <LayerCard className="w-[200px]">
+    <LayerCard.Secondary>Examples</LayerCard.Secondary>
+    <LayerCard.Primary>
+      <p className="text-sm">View code examples</p>
+    </LayerCard.Primary>
+  </LayerCard>
+</div>`}>
+          <LayerCardMultipleDemo client:visible />
+        </ComponentExample>
+      </div>
+    </div>
   </ComponentSection>
 
   <ComponentSection>

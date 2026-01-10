@@ -3,24 +3,26 @@ import DocLayout from "../../layouts/DocLayout.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
-import { BreadcrumbsDemo, BreadcrumbsSizesDemo, BreadcrumbsWithIconsDemo, BreadcrumbsLongDemo, BreadcrumbsWithClipboardDemo } from "../../components/demos/BreadcrumbsDemo";
+import { BreadcrumbsDemo, BreadcrumbsWithIconsDemo, BreadcrumbsWithClipboardDemo, BreadcrumbsLoadingDemo, BreadcrumbsRootDemo } from "../../components/demos/BreadcrumbsDemo";
 ---
 
 <DocLayout
   title="Breadcrumbs"
-  description="A navigation component showing the current page location within a hierarchy."
+  description="A navigation component that shows the current page's location within a navigational hierarchy."
   sourceFile="blocks/breadcrumbs"
   storybookPath="story/blocks-breadcrumbs"
 >
   <ComponentSection>
     <ComponentExample code={`<Breadcrumbs>
-  <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+  <Breadcrumbs.Link icon={<HouseIcon size={16} />} href="/">
+    Home
+  </Breadcrumbs.Link>
   <Breadcrumbs.Separator />
-  <Breadcrumbs.Link href="/projects">Projects</Breadcrumbs.Link>
+  <Breadcrumbs.Link href="/docs">Projects</Breadcrumbs.Link>
   <Breadcrumbs.Separator />
   <Breadcrumbs.Current>Current Project</Breadcrumbs.Current>
 </Breadcrumbs>`}>
-      <BreadcrumbsDemo client:visible />
+      <BreadcrumbsWithIconsDemo client:visible />
     </ComponentExample>
   </ComponentSection>
 
@@ -30,101 +32,216 @@ import { BreadcrumbsDemo, BreadcrumbsSizesDemo, BreadcrumbsWithIconsDemo, Breadc
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Sizes</h2>
-    <p class="text-label mb-4">Breadcrumbs come in two sizes for different contexts.</p>
-    <ComponentExample code={`<Breadcrumbs size="sm">...</Breadcrumbs>
-<Breadcrumbs size="base">...</Breadcrumbs>`}>
-      <BreadcrumbsSizesDemo client:visible />
-    </ComponentExample>
+    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+    <CodeBlock code={`import { Breadcrumbs } from "@cloudflare/kumo";
+
+export default function Example() {
+  return (
+    <Breadcrumbs>
+      <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Link href="/docs">Docs</Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Current>Breadcrumbs</Breadcrumbs.Current>
+    </Breadcrumbs>
+  );
+}`} lang="tsx" />
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">With Icons</h2>
-    <p class="text-label mb-4">Add icons to breadcrumb items for better visual context.</p>
-    <ComponentExample code={`<Breadcrumbs>
-  <Breadcrumbs.Link href="/" icon={<House size={16} />}>
+    <h2 class="mb-6 text-2xl font-bold">Examples</h2>
+
+    <div class="mb-12">
+      <h3 class="mb-4 text-xl font-semibold">Basic</h3>
+      <ComponentExample code={`<Breadcrumbs>
+  <Breadcrumbs.Link href="#">Home</Breadcrumbs.Link>
+  <Breadcrumbs.Separator />
+  <Breadcrumbs.Link href="/docs">Docs</Breadcrumbs.Link>
+  <Breadcrumbs.Separator />
+  <Breadcrumbs.Current>Breadcrumbs</Breadcrumbs.Current>
+</Breadcrumbs>`}>
+        <BreadcrumbsDemo client:visible />
+      </ComponentExample>
+    </div>
+  </ComponentSection>
+
+  <ComponentSection>
+    <div class="mb-12">
+      <h3 class="mb-4 text-xl font-semibold">Loading</h3>
+      <ComponentExample code={`<Breadcrumbs>
+  <Breadcrumbs.Link href="#" icon={<HouseIcon size={16} />}>
     Home
   </Breadcrumbs.Link>
   <Breadcrumbs.Separator />
-  <Breadcrumbs.Link href="/documents" icon={<Folder size={16} />}>
-    Documents
-  </Breadcrumbs.Link>
+  <Breadcrumbs.Link href="/docs">Docs</Breadcrumbs.Link>
   <Breadcrumbs.Separator />
-  <Breadcrumbs.Current icon={<File size={16} />}>
-    File.txt
+  <Breadcrumbs.Current loading></Breadcrumbs.Current>
+</Breadcrumbs>`}>
+        <BreadcrumbsLoadingDemo client:visible />
+      </ComponentExample>
+    </div>
+  </ComponentSection>
+
+  <ComponentSection>
+    <div class="mb-12">
+      <h3 class="mb-4 text-xl font-semibold">Root</h3>
+      <ComponentExample code={`<Breadcrumbs>
+  <Breadcrumbs.Current icon={<HouseIcon size={16} />}>
+    Worker Analytics
   </Breadcrumbs.Current>
 </Breadcrumbs>`}>
-      <BreadcrumbsWithIconsDemo client:visible />
-    </ComponentExample>
+        <BreadcrumbsRootDemo client:visible />
+      </ComponentExample>
+    </div>
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Long Breadcrumb Trail</h2>
-    <p class="text-label mb-4">Deep navigation hierarchies are handled gracefully.</p>
-    <ComponentExample code={`<Breadcrumbs>
-  <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+    <div class="mb-12">
+      <h3 class="mb-4 text-xl font-semibold">Clipboard</h3>
+      <ComponentExample code={`<Breadcrumbs>
+  <Breadcrumbs.Link href="#">Home</Breadcrumbs.Link>
   <Breadcrumbs.Separator />
-  <Breadcrumbs.Link href="/projects">Projects</Breadcrumbs.Link>
-  <Breadcrumbs.Separator />
-  <Breadcrumbs.Link href="/projects/web">Web Applications</Breadcrumbs.Link>
-  <Breadcrumbs.Separator />
-  <Breadcrumbs.Link href="/projects/web/dashboard">Dashboard</Breadcrumbs.Link>
-  <Breadcrumbs.Separator />
-  <Breadcrumbs.Current>Settings</Breadcrumbs.Current>
+  <Breadcrumbs.Current>Breadcrumbs</Breadcrumbs.Current>
+  <Breadcrumbs.Clipboard text="#" />
 </Breadcrumbs>`}>
-      <BreadcrumbsLongDemo client:visible />
-    </ComponentExample>
-  </ComponentSection>
-
-  <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">With Clipboard</h2>
-    <p class="text-label mb-4">Add a copy-to-clipboard button for the current page URL.</p>
-    <ComponentExample code={`<Breadcrumbs>
-  <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
-  <Breadcrumbs.Separator />
-  <Breadcrumbs.Link href="/projects">Projects</Breadcrumbs.Link>
-  <Breadcrumbs.Separator />
-  <Breadcrumbs.Current>Current Project</Breadcrumbs.Current>
-  <Breadcrumbs.Clipboard text="https://example.com/projects/current-project" />
-</Breadcrumbs>`}>
-      <BreadcrumbsWithClipboardDemo client:visible />
-    </ComponentExample>
+        <BreadcrumbsWithClipboardDemo client:visible />
+      </ComponentExample>
+    </div>
   </ComponentSection>
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
     
-    <h3 class="mb-2 text-lg font-semibold mt-6">Breadcrumbs</h3>
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm">
-        <thead>
-          <tr class="border-b border-border">
-            <th class="px-4 py-3 text-left font-semibold">Prop</th>
-            <th class="px-4 py-3 text-left font-semibold">Type</th>
-            <th class="px-4 py-3 text-left font-semibold">Default</th>
-          </tr>
-        </thead>
-        <tbody class="text-label">
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">size</td>
-            <td class="px-4 py-3 font-mono text-xs">"sm" | "base"</td>
-            <td class="px-4 py-3 font-mono text-xs">"base"</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">children</td>
-            <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
-            <td class="px-4 py-3 font-mono text-xs">-</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <div class="space-y-8">
+      <div>
+        <h3 class="mb-3 text-lg font-semibold">Breadcrumbs</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-border">
+                <th class="px-4 py-3 text-left font-semibold">Prop</th>
+                <th class="px-4 py-3 text-left font-semibold">Type</th>
+                <th class="px-4 py-3 text-left font-semibold">Default</th>
+              </tr>
+            </thead>
+            <tbody class="text-label">
+              <tr class="border-b border-border">
+                <td class="px-4 py-3 font-mono text-xs">children</td>
+                <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
+                <td class="px-4 py-3 font-mono text-xs">required</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-    <h3 class="mb-2 text-lg font-semibold mt-6">Sub-components</h3>
-    <ul class="list-disc list-inside text-label space-y-1">
-      <li><code class="text-surface">Breadcrumbs.Link</code> - Navigable breadcrumb item (props: href, icon)</li>
-      <li><code class="text-surface">Breadcrumbs.Current</code> - Current page indicator (props: loading, icon)</li>
-      <li><code class="text-surface">Breadcrumbs.Separator</code> - Visual separator between items</li>
-      <li><code class="text-surface">Breadcrumbs.Clipboard</code> - Copy-to-clipboard button (props: text)</li>
-    </ul>
+      <div>
+        <h3 class="mb-3 text-lg font-semibold">Breadcrumbs.Link</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-border">
+                <th class="px-4 py-3 text-left font-semibold">Prop</th>
+                <th class="px-4 py-3 text-left font-semibold">Type</th>
+                <th class="px-4 py-3 text-left font-semibold">Default</th>
+              </tr>
+            </thead>
+            <tbody class="text-label">
+              <tr class="border-b border-border">
+                <td class="px-4 py-3 font-mono text-xs">children</td>
+                <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
+                <td class="px-4 py-3 font-mono text-xs">required</td>
+              </tr>
+              <tr class="border-b border-border">
+                <td class="px-4 py-3 font-mono text-xs">href</td>
+                <td class="px-4 py-3 font-mono text-xs">string</td>
+                <td class="px-4 py-3 font-mono text-xs">required</td>
+              </tr>
+              <tr class="border-b border-border">
+                <td class="px-4 py-3 font-mono text-xs">icon</td>
+                <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
+                <td class="px-4 py-3 font-mono text-xs">undefined</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="mb-3 text-lg font-semibold">Breadcrumbs.Current</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-border">
+                <th class="px-4 py-3 text-left font-semibold">Prop</th>
+                <th class="px-4 py-3 text-left font-semibold">Type</th>
+                <th class="px-4 py-3 text-left font-semibold">Default</th>
+              </tr>
+            </thead>
+            <tbody class="text-label">
+              <tr class="border-b border-border">
+                <td class="px-4 py-3 font-mono text-xs">children</td>
+                <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
+                <td class="px-4 py-3 font-mono text-xs">required</td>
+              </tr>
+              <tr class="border-b border-border">
+                <td class="px-4 py-3 font-mono text-xs">icon</td>
+                <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
+                <td class="px-4 py-3 font-mono text-xs">undefined</td>
+              </tr>
+              <tr class="border-b border-border">
+                <td class="px-4 py-3 font-mono text-xs">loading</td>
+                <td class="px-4 py-3 font-mono text-xs">boolean</td>
+                <td class="px-4 py-3 font-mono text-xs">false</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="mb-3 text-lg font-semibold">Breadcrumbs.Separator</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-border">
+                <th class="px-4 py-3 text-left font-semibold">Prop</th>
+                <th class="px-4 py-3 text-left font-semibold">Type</th>
+                <th class="px-4 py-3 text-left font-semibold">Default</th>
+              </tr>
+            </thead>
+            <tbody class="text-label">
+              <tr class="border-b border-border">
+                <td class="px-4 py-3 font-mono text-xs">-</td>
+                <td class="px-4 py-3 font-mono text-xs">-</td>
+                <td class="px-4 py-3 font-mono text-xs">-</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="mb-3 text-lg font-semibold">Breadcrumbs.Clipboard</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-border">
+                <th class="px-4 py-3 text-left font-semibold">Prop</th>
+                <th class="px-4 py-3 text-left font-semibold">Type</th>
+                <th class="px-4 py-3 text-left font-semibold">Default</th>
+              </tr>
+            </thead>
+            <tbody class="text-label">
+              <tr class="border-b border-border">
+                <td class="px-4 py-3 font-mono text-xs">text</td>
+                <td class="px-4 py-3 font-mono text-xs">string</td>
+                <td class="px-4 py-3 font-mono text-xs">required</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </ComponentSection>
 </DocLayout>
