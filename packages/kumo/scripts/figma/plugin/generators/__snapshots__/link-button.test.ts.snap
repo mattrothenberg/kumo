@@ -1,0 +1,446 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should produce consistent intermediate data for all variants (golden path) 1`] = `
+{
+  "exampleLayouts": [
+    {
+      "fill": {
+        "hasBackground": true,
+        "variable": "color-primary",
+      },
+      "hasIcon": false,
+      "layout": {
+        "cornerRadius": 8,
+        "fontSize": 16,
+        "gap": 6,
+        "height": 36,
+        "paddingX": 12,
+      },
+      "size": "base",
+      "sizeDescription": "Default button size",
+      "stroke": {
+        "hasBorder": false,
+        "variable": null,
+      },
+      "text": {
+        "isWhiteText": true,
+        "variable": null,
+      },
+      "variant": "primary",
+      "variantDescription": "High-emphasis button for primary actions",
+    },
+    {
+      "fill": {
+        "hasBackground": false,
+        "variable": null,
+      },
+      "hasIcon": true,
+      "layout": {
+        "cornerRadius": 8,
+        "fontSize": 16,
+        "gap": 6,
+        "height": 36,
+        "paddingX": 12,
+      },
+      "size": "base",
+      "sizeDescription": "Default button size",
+      "stroke": {
+        "hasBorder": false,
+        "variable": null,
+      },
+      "text": {
+        "isWhiteText": false,
+        "variable": "text-color-surface",
+      },
+      "variant": "ghost",
+      "variantDescription": "Minimal button with no background",
+    },
+    {
+      "fill": {
+        "hasBackground": true,
+        "variable": "color-error",
+      },
+      "hasIcon": true,
+      "layout": {
+        "cornerRadius": 8,
+        "fontSize": 16,
+        "gap": 8,
+        "height": 40,
+        "paddingX": 16,
+      },
+      "size": "lg",
+      "sizeDescription": "Large button for primary CTAs",
+      "stroke": {
+        "hasBorder": false,
+        "variable": null,
+      },
+      "text": {
+        "isWhiteText": true,
+        "variable": null,
+      },
+      "variant": "destructive",
+      "variantDescription": "Danger button for destructive actions like delete",
+    },
+  ],
+  "hasIconOptions": [
+    false,
+    true,
+  ],
+  "sizeConfig": {
+    "classes": {
+      "base": "h-9 gap-1.5 rounded-lg px-3 text-base",
+      "lg": "h-10 gap-2 rounded-lg px-4 text-base",
+      "sm": "h-6.5 gap-1 rounded-md px-2 text-xs",
+      "xs": "h-5 gap-1 rounded-sm px-1.5 text-xs",
+    },
+    "default": "base",
+    "descriptions": {
+      "base": "Default button size",
+      "lg": "Large button for primary CTAs",
+      "sm": "Small button for secondary actions",
+      "xs": "Extra small button for compact UIs",
+    },
+    "values": [
+      "xs",
+      "sm",
+      "base",
+      "lg",
+    ],
+  },
+  "sizes": [
+    {
+      "classes": "h-5 gap-1 rounded-sm px-1.5 text-xs",
+      "description": "Extra small button for compact UIs",
+      "parsed": {
+        "borderRadius": 2,
+        "fontSize": 12,
+        "gap": 4,
+        "height": 20,
+        "paddingX": 6,
+      },
+      "size": "xs",
+    },
+    {
+      "classes": "h-6.5 gap-1 rounded-md px-2 text-xs",
+      "description": "Small button for secondary actions",
+      "parsed": {
+        "borderRadius": 6,
+        "fontSize": 12,
+        "gap": 4,
+        "height": 26,
+        "paddingX": 8,
+      },
+      "size": "sm",
+    },
+    {
+      "classes": "h-9 gap-1.5 rounded-lg px-3 text-base",
+      "description": "Default button size",
+      "parsed": {
+        "borderRadius": 8,
+        "fontSize": 16,
+        "gap": 6,
+        "height": 36,
+        "paddingX": 12,
+      },
+      "size": "base",
+    },
+    {
+      "classes": "h-10 gap-2 rounded-lg px-4 text-base",
+      "description": "Large button for primary CTAs",
+      "parsed": {
+        "borderRadius": 8,
+        "fontSize": 16,
+        "gap": 8,
+        "height": 40,
+        "paddingX": 16,
+      },
+      "size": "lg",
+    },
+  ],
+  "variantConfig": {
+    "classes": {
+      "destructive": "bg-error !text-white hover:bg-error/70",
+      "ghost": "text-surface hover:bg-accent shadow-none bg-inherit",
+      "outline": "bg-surface text-surface ring ring-border",
+      "primary": "bg-primary !text-white hover:bg-primary/70 disabled:bg-primary/50",
+      "secondary": "bg-secondary !text-surface ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-surface/70 ring-border data-[state=open]:bg-subtle",
+      "secondary-destructive": "bg-secondary !text-error ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-error/70 ring-border data-[state=open]:bg-subtle",
+    },
+    "default": "secondary",
+    "descriptions": {
+      "destructive": "Danger button for destructive actions like delete",
+      "ghost": "Minimal button with no background",
+      "outline": "Bordered button with transparent background",
+      "primary": "High-emphasis button for primary actions",
+      "secondary": "Default button style for most actions",
+      "secondary-destructive": "Secondary button with destructive text for less prominent dangerous actions",
+    },
+    "values": [
+      "primary",
+      "secondary",
+      "ghost",
+      "destructive",
+      "secondary-destructive",
+      "outline",
+    ],
+  },
+  "variants": [
+    {
+      "classes": "bg-primary !text-white hover:bg-primary/70 disabled:bg-primary/50",
+      "description": "High-emphasis button for primary actions",
+      "parsed": {
+        "fillVariable": "color-primary",
+        "isWhiteText": true,
+        "textVariable": null,
+      },
+      "variant": "primary",
+    },
+    {
+      "classes": "bg-secondary !text-surface ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-surface/70 ring-border data-[state=open]:bg-subtle",
+      "description": "Default button style for most actions",
+      "parsed": {
+        "fillVariable": "color-secondary",
+        "hasBorder": true,
+        "strokeVariable": "color-border",
+        "textVariable": "text-color-surface",
+      },
+      "variant": "secondary",
+    },
+    {
+      "classes": "text-surface hover:bg-accent shadow-none bg-inherit",
+      "description": "Minimal button with no background",
+      "parsed": {
+        "fillVariable": null,
+        "textVariable": "text-color-surface",
+      },
+      "variant": "ghost",
+    },
+    {
+      "classes": "bg-error !text-white hover:bg-error/70",
+      "description": "Danger button for destructive actions like delete",
+      "parsed": {
+        "fillVariable": "color-error",
+        "isWhiteText": true,
+        "textVariable": null,
+      },
+      "variant": "destructive",
+    },
+    {
+      "classes": "bg-secondary !text-error ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-error/70 ring-border data-[state=open]:bg-subtle",
+      "description": "Secondary button with destructive text for less prominent dangerous actions",
+      "parsed": {
+        "fillVariable": "color-secondary",
+        "hasBorder": true,
+        "strokeVariable": "color-border",
+        "textVariable": "text-color-error",
+      },
+      "variant": "secondary-destructive",
+    },
+    {
+      "classes": "bg-surface text-surface ring ring-border",
+      "description": "Bordered button with transparent background",
+      "parsed": {
+        "fillVariable": "color-surface",
+        "hasBorder": true,
+        "strokeVariable": "color-border",
+        "textVariable": "text-color-surface",
+      },
+      "variant": "outline",
+    },
+  ],
+}
+`;
+
+exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for base size 1`] = `
+{
+  "classes": "h-9 gap-1.5 rounded-lg px-3 text-base",
+  "description": "Default button size",
+  "parsed": {
+    "borderRadius": 8,
+    "fontSize": 16,
+    "gap": 6,
+    "height": 36,
+    "paddingX": 12,
+  },
+  "size": "base",
+}
+`;
+
+exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for destructive variant 1`] = `
+{
+  "classes": "bg-error !text-white hover:bg-error/70",
+  "description": "Danger button for destructive actions like delete",
+  "parsed": {
+    "fillVariable": "color-error",
+    "isWhiteText": true,
+    "textVariable": null,
+  },
+  "variant": "destructive",
+}
+`;
+
+exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for ghost variant 1`] = `
+{
+  "classes": "text-surface hover:bg-accent shadow-none bg-inherit",
+  "description": "Minimal button with no background",
+  "parsed": {
+    "fillVariable": null,
+    "textVariable": "text-color-surface",
+  },
+  "variant": "ghost",
+}
+`;
+
+exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for lg size 1`] = `
+{
+  "classes": "h-10 gap-2 rounded-lg px-4 text-base",
+  "description": "Large button for primary CTAs",
+  "parsed": {
+    "borderRadius": 8,
+    "fontSize": 16,
+    "gap": 8,
+    "height": 40,
+    "paddingX": 16,
+  },
+  "size": "lg",
+}
+`;
+
+exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for outline variant 1`] = `
+{
+  "classes": "bg-surface text-surface ring ring-border",
+  "description": "Bordered button with transparent background",
+  "parsed": {
+    "fillVariable": "color-surface",
+    "hasBorder": true,
+    "strokeVariable": "color-border",
+    "textVariable": "text-color-surface",
+  },
+  "variant": "outline",
+}
+`;
+
+exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for primary variant 1`] = `
+{
+  "classes": "bg-primary !text-white hover:bg-primary/70 disabled:bg-primary/50",
+  "description": "High-emphasis button for primary actions",
+  "parsed": {
+    "fillVariable": "color-primary",
+    "isWhiteText": true,
+    "textVariable": null,
+  },
+  "variant": "primary",
+}
+`;
+
+exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for secondary variant 1`] = `
+{
+  "classes": "bg-secondary !text-surface ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-surface/70 ring-border data-[state=open]:bg-subtle",
+  "description": "Default button style for most actions",
+  "parsed": {
+    "fillVariable": "color-secondary",
+    "hasBorder": true,
+    "strokeVariable": "color-border",
+    "textVariable": "text-color-surface",
+  },
+  "variant": "secondary",
+}
+`;
+
+exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for secondary-destructive variant 1`] = `
+{
+  "classes": "bg-secondary !text-error ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-error/70 ring-border data-[state=open]:bg-subtle",
+  "description": "Secondary button with destructive text for less prominent dangerous actions",
+  "parsed": {
+    "fillVariable": "color-secondary",
+    "hasBorder": true,
+    "strokeVariable": "color-border",
+    "textVariable": "text-color-error",
+  },
+  "variant": "secondary-destructive",
+}
+`;
+
+exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for sm size 1`] = `
+{
+  "classes": "h-6.5 gap-1 rounded-md px-2 text-xs",
+  "description": "Small button for secondary actions",
+  "parsed": {
+    "borderRadius": 6,
+    "fontSize": 12,
+    "gap": 4,
+    "height": 26,
+    "paddingX": 8,
+  },
+  "size": "sm",
+}
+`;
+
+exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for xs size 1`] = `
+{
+  "classes": "h-5 gap-1 rounded-sm px-1.5 text-xs",
+  "description": "Extra small button for compact UIs",
+  "parsed": {
+    "borderRadius": 2,
+    "fontSize": 12,
+    "gap": 4,
+    "height": 20,
+    "paddingX": 6,
+  },
+  "size": "xs",
+}
+`;
+
+exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should produce consistent size config from registry 1`] = `
+{
+  "classes": {
+    "base": "h-9 gap-1.5 rounded-lg px-3 text-base",
+    "lg": "h-10 gap-2 rounded-lg px-4 text-base",
+    "sm": "h-6.5 gap-1 rounded-md px-2 text-xs",
+    "xs": "h-5 gap-1 rounded-sm px-1.5 text-xs",
+  },
+  "default": "base",
+  "descriptions": {
+    "base": "Default button size",
+    "lg": "Large button for primary CTAs",
+    "sm": "Small button for secondary actions",
+    "xs": "Extra small button for compact UIs",
+  },
+  "values": [
+    "xs",
+    "sm",
+    "base",
+    "lg",
+  ],
+}
+`;
+
+exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should produce consistent variant config from registry 1`] = `
+{
+  "classes": {
+    "destructive": "bg-error !text-white hover:bg-error/70",
+    "ghost": "text-surface hover:bg-accent shadow-none bg-inherit",
+    "outline": "bg-surface text-surface ring ring-border",
+    "primary": "bg-primary !text-white hover:bg-primary/70 disabled:bg-primary/50",
+    "secondary": "bg-secondary !text-surface ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-surface/70 ring-border data-[state=open]:bg-subtle",
+    "secondary-destructive": "bg-secondary !text-error ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-error/70 ring-border data-[state=open]:bg-subtle",
+  },
+  "default": "secondary",
+  "descriptions": {
+    "destructive": "Danger button for destructive actions like delete",
+    "ghost": "Minimal button with no background",
+    "outline": "Bordered button with transparent background",
+    "primary": "High-emphasis button for primary actions",
+    "secondary": "Default button style for most actions",
+    "secondary-destructive": "Secondary button with destructive text for less prominent dangerous actions",
+  },
+  "values": [
+    "primary",
+    "secondary",
+    "ghost",
+    "destructive",
+    "secondary-destructive",
+    "outline",
+  ],
+}
+`;

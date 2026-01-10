@@ -336,7 +336,130 @@ export async function generateLinkButtonComponents(
 }
 
 /**
- * Exports for tests
+ * Testable exports for link-button.test.ts
  */
+
+/**
+ * Get variant configuration from registry
+ */
+export function getLinkButtonVariantConfig() {
+  return {
+    values: variantProp.values,
+    classes: variantProp.classes,
+    descriptions: variantProp.descriptions,
+    default: variantProp.default,
+  };
+}
+
+/**
+ * Get size configuration from registry
+ */
+export function getLinkButtonSizeConfig() {
+  return {
+    values: sizeProp.values,
+    classes: sizeProp.classes,
+    descriptions: sizeProp.descriptions,
+    default: sizeProp.default,
+  };
+}
+
+/**
+ * Get parsed styles for a specific variant
+ */
+export function getLinkButtonParsedVariantStyles(variant: string) {
+  var classes = variantProp.classes[variant] || "";
+  return {
+    variant: variant,
+    classes: classes,
+    description: variantProp.descriptions[variant] || "",
+    parsed: parseTailwindClasses(classes),
+  };
+}
+
+/**
+ * Get parsed styles for a specific size
+ */
+export function getLinkButtonParsedSizeStyles(size: string) {
+  var classes = sizeProp.classes[size] || "";
+  return {
+    size: size,
+    classes: classes,
+    description: sizeProp.descriptions[size] || "",
+    parsed: parseTailwindClasses(classes),
+  };
+}
+
+/**
+ * Get layout data for a link button with specific variant, size, and icon state
+ */
+export function getLinkButtonLayoutData(
+  variant: string,
+  size: string,
+  hasIcon: boolean,
+) {
+  var variantClasses = variantProp.classes[variant] || "";
+  var sizeClasses = sizeProp.classes[size] || "";
+
+  var variantStyles = parseTailwindClasses(variantClasses);
+  var sizeStyles = parseTailwindClasses(sizeClasses);
+
+  return {
+    variant: variant,
+    size: size,
+    hasIcon: hasIcon,
+    variantDescription: variantProp.descriptions[variant] || "",
+    sizeDescription: sizeProp.descriptions[size] || "",
+    layout: {
+      paddingX: sizeStyles.paddingX || 12,
+      height: sizeStyles.height || 36,
+      gap: sizeStyles.gap || 6,
+      cornerRadius:
+        sizeStyles.borderRadius !== undefined ? sizeStyles.borderRadius : 8,
+      fontSize: sizeStyles.fontSize || 16,
+    },
+    fill: {
+      hasBackground: !!variantStyles.fillVariable,
+      variable: variantStyles.fillVariable || null,
+    },
+    stroke: {
+      hasBorder: variantStyles.hasBorder || false,
+      variable: variantStyles.strokeVariable || null,
+    },
+    text: {
+      isWhiteText: variantStyles.isWhiteText || false,
+      variable: variantStyles.textVariable || null,
+    },
+  };
+}
+
+/**
+ * Get complete intermediate data for all link button variants
+ */
+export function getAllLinkButtonVariantData() {
+  var variantConfig = getLinkButtonVariantConfig();
+  var sizeConfig = getLinkButtonSizeConfig();
+
+  return {
+    variantConfig: variantConfig,
+    sizeConfig: sizeConfig,
+    variants: variantConfig.values.map(function (variant) {
+      return getLinkButtonParsedVariantStyles(variant);
+    }),
+    sizes: sizeConfig.values.map(function (size) {
+      return getLinkButtonParsedSizeStyles(size);
+    }),
+    hasIconOptions: [false, true],
+    exampleLayouts: [
+      // Primary + base + no icon (typical)
+      getLinkButtonLayoutData("primary", "base", false),
+      // Ghost + base + with icon (typical for link buttons)
+      getLinkButtonLayoutData("ghost", "base", true),
+      // Destructive + lg + with icon
+      getLinkButtonLayoutData("destructive", "lg", true),
+    ],
+  };
+}
+
+// Legacy exports (kept for backwards compatibility if needed)
 export var LINK_BUTTON_VARIANTS_EXPORT = variantProp.values;
 export var LINK_BUTTON_SIZES_EXPORT = sizeProp.values;

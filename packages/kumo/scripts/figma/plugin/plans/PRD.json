@@ -217,7 +217,7 @@
       "name": "link-button",
       "tier": 4,
       "priority": "low",
-      "passes": false
+      "passes": true
     },
     {
       "name": "refresh-button",
