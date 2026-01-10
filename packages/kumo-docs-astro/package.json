@@ -15,6 +15,7 @@
     "@phosphor-icons/react": "catalog:",
     "astro": "^5.16.7",
     "clsx": "catalog:",
+    "pagefind": "^1.4.0",
     "tailwind-merge": "catalog:"
   },
   "devDependencies": {

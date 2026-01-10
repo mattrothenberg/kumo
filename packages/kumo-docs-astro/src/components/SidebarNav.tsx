@@ -1,16 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn, Button } from "@cloudflare/kumo";
-import { CaretDownIcon } from "@phosphor-icons/react";
+import { CaretDownIcon, MagnifyingGlassIcon } from "@phosphor-icons/react";
 import { KumoMenuIcon } from "./KumoMenuIcon";
+import { SearchDialog } from "./SearchDialog";
 
 interface NavItem {
   label: string;
   href: string;
-}
-
-interface NavSection {
-  title: string;
-  items: NavItem[];
 }
 
 const staticPages: NavItem[] = [
@@ -68,8 +64,21 @@ export function SidebarNav({ currentPath }: SidebarNavProps) {
   const [componentsOpen, setComponentsOpen] = useState(true);
   const [blocksOpen, setBlocksOpen] = useState(true);
   const [layoutsOpen, setLayoutsOpen] = useState(true);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   const toggleSidebar = () => setSidebarOpen((v) => !v);
+
+  // Keyboard shortcut: Cmd+K / Ctrl+K
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setSearchOpen(true);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   return (
     <>
@@ -95,8 +104,13 @@ export function SidebarNav({ currentPath }: SidebarNavProps) {
         </div>
       </div>
 
-      {/* Kumo brand label: fixed next to the rail */}
-      <div className="pointer-events-none fixed top-0 left-12 z-50 flex h-[49px] items-center px-4 font-medium select-none">
+      {/* Kumo brand label: only visible when sidebar is closed */}
+      <div
+        className={cn(
+          "pointer-events-none fixed top-0 left-12 z-50 flex h-[49px] items-center px-4 font-medium transition-opacity duration-300 select-none",
+          sidebarOpen ? "opacity-0" : "opacity-100",
+        )}
+      >
         <h1 className="flex gap-2 text-base">
           <span>Kumo</span>
         </h1>
@@ -113,13 +127,26 @@ export function SidebarNav({ currentPath }: SidebarNavProps) {
             : "-translate-x-full",
         )}
       >
-        {/* Panel header */}
+        {/* Panel header with Kumo title and search button */}
         <div
           className={cn(
-            "flex h-[49px] flex-none items-center px-4 font-medium",
+            "flex h-[49px] flex-none items-center gap-3 px-3",
             "border-b border-border",
           )}
-        />
+        >
+          <h1 className="shrink-0 text-base font-medium">Kumo</h1>
+          <button
+            onClick={() => setSearchOpen(true)}
+            className="flex min-w-0 flex-1 items-center gap-2 rounded-md border border-border bg-secondary px-2 py-1 text-sm text-muted transition-colors hover:bg-subtle"
+          >
+            <MagnifyingGlassIcon size={14} className="shrink-0" />
+            <span className="flex-1 truncate text-left text-xs">Search...</span>
+            <kbd className="hidden shrink-0 items-center gap-0.5 rounded border border-border bg-surface px-1 py-0.5 text-[10px] sm:inline-flex">
+              ⌘K
+            </kbd>
+          </button>
+        </div>
+
         <div className="min-h-0 grow overflow-y-auto overscroll-contain p-4 text-sm text-label">
           <div>
             <ul className="flex flex-col">
@@ -252,6 +279,9 @@ export function SidebarNav({ currentPath }: SidebarNavProps) {
           </div>
         </div>
       </aside>
+
+      {/* Search Dialog */}
+      <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
     </>
   );
 }

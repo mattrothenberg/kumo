@@ -10,7 +10,7 @@ interface Props {
 const { code, lang = "tsx" } = Astro.props;
 ---
 
-<div class="overflow-hidden rounded-lg">
+<div class="overflow-hidden rounded-lg" data-pagefind-ignore>
   <ComponentPreview>
     <slot />
   </ComponentPreview>
