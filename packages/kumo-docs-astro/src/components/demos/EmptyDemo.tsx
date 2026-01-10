@@ -1,12 +1,28 @@
 import { Empty, Button } from "@cloudflare/kumo";
-import { Database, FolderOpen, CloudSlash } from "@phosphor-icons/react";
+import {
+  Database,
+  FolderOpen,
+  CloudSlash,
+  PackageIcon,
+  CodeIcon,
+  GlobeIcon,
+} from "@phosphor-icons/react";
 
 export function EmptyDemo() {
   return (
     <Empty
-      icon={<Database size={48} className="text-disabled" />}
-      title="No data available"
-      description="There is no data to display at the moment. Try creating a new item to get started."
+      icon={<PackageIcon size={48} />}
+      title="No packages found"
+      description="Get started by installing your first package."
+      commandLine="npm install @cloudflare/kumo"
+      contents={
+        <div className="flex items-center gap-2">
+          <Button icon={<CodeIcon />}>See examples</Button>
+          <Button icon={<GlobeIcon />} variant="primary">
+            View documentation
+          </Button>
+        </div>
+      }
     />
   );
 }
