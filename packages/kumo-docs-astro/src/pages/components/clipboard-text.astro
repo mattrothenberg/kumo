@@ -1,0 +1,104 @@
+---
+import DocLayout from "../../layouts/DocLayout.astro";
+import ComponentSection from "../../components/docs/ComponentSection.astro";
+import ComponentExample from "../../components/docs/ComponentExample.astro";
+import CodeBlock from "../../components/docs/CodeBlock.astro";
+import {
+  ClipboardTextBasicDemo,
+  ClipboardTextShortDemo,
+  ClipboardTextApiKeyDemo,
+  ClipboardTextLongDemo,
+} from "../../components/demos/ClipboardTextDemo";
+---
+
+<DocLayout
+  title="Clipboard Text"
+  description="A text component with a copy-to-clipboard button."
+  sourceFile="components/clipboard-text"
+  storybookPath="story/components-clipboardtext"
+>
+  <!-- Demo -->
+  <ComponentSection>
+    <ComponentExample code={`<ClipboardText text="0c239dd2" />`}>
+      <ClipboardTextBasicDemo client:visible />
+    </ComponentExample>
+  </ComponentSection>
+
+  <!-- Installation -->
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
+    <h3 class="mb-2 text-lg font-semibold">Barrel</h3>
+    <CodeBlock code={`import { ClipboardText } from "@cloudflare/kumo";`} lang="tsx" />
+    <h3 class="mb-2 mt-4 text-lg font-semibold">Granular</h3>
+    <CodeBlock
+      code={`import { ClipboardText } from "@cloudflare/kumo/components/clipboard-text";`}
+      lang="tsx"
+    />
+  </ComponentSection>
+
+  <!-- Usage -->
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+    <CodeBlock
+      code={`import { ClipboardText } from "@cloudflare/kumo";
+
+export default function Example() {
+  return <ClipboardText text="Copy this text" />;
+}`}
+      lang="tsx"
+    />
+  </ComponentSection>
+
+  <!-- Examples -->
+  <ComponentSection>
+    <h2 class="mb-6 text-2xl font-bold">Examples</h2>
+
+    <div class="space-y-8">
+      <div>
+        <h3 class="mb-4 text-xl font-semibold">Short Text</h3>
+        <ComponentExample code={`<ClipboardText text="abc123" />`}>
+          <ClipboardTextShortDemo client:visible />
+        </ComponentExample>
+      </div>
+
+      <div>
+        <h3 class="mb-4 text-xl font-semibold">API Key</h3>
+        <ComponentExample code={`<ClipboardText text="sk_live_51H8..." />`}>
+          <ClipboardTextApiKeyDemo client:visible />
+        </ComponentExample>
+      </div>
+
+      <div>
+        <h3 class="mb-4 text-xl font-semibold">Long Text</h3>
+        <ComponentExample
+          code={`<ClipboardText text="https://example.com/very/long/url/path" />`}
+        >
+          <ClipboardTextLongDemo client:visible />
+        </ComponentExample>
+      </div>
+    </div>
+  </ComponentSection>
+
+  <!-- API Reference -->
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-border">
+            <th class="px-4 py-3 text-left font-semibold">Prop</th>
+            <th class="px-4 py-3 text-left font-semibold">Type</th>
+            <th class="px-4 py-3 text-left font-semibold">Default</th>
+          </tr>
+        </thead>
+        <tbody class="text-label">
+          <tr class="border-b border-border">
+            <td class="px-4 py-3 font-mono text-xs">text</td>
+            <td class="px-4 py-3 font-mono text-xs">string</td>
+            <td class="px-4 py-3 font-mono text-xs">undefined</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ComponentSection>
+</DocLayout>
