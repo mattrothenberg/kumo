@@ -578,3 +578,66 @@ Starting test refactoring for Figma generators using structural + snapshot patte
 
 ---
 
+
+
+## Iteration 12: input-area (Tier 4)
+
+**Generator:** input-area
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Added testable exports to input-area.ts:
+   - `getInputAreaSizeConfig()` - Returns size values and SIZE_CONFIG object
+   - `getInputAreaVariantConfig()` - Returns variant values and VARIANT_CONFIG object
+   - `getInputAreaStateConfig()` - Returns state values and STATE_STYLES object
+   - `getInputAreaWithLabelConfig()` - Returns withLabel boolean values
+   - `getInputAreaSizeDimensions(size)` - Returns computed dimensions for specific size
+   - `getInputAreaRingVariable(variant, state)` - Returns ring variable for variant/state combo
+   - `getAllInputAreaVariantData()` - Returns complete intermediate data
+
+2. Created input-area.test.ts with 40 tests:
+   - Size Configuration (3 tests)
+   - Variant Configuration (5 tests)
+   - State Configuration (4 tests)
+   - WithLabel Configuration (2 tests)
+   - Size Dimensions Calculation (5 tests)
+   - Ring Variable Logic (5 tests)
+   - Complete Variant Data (7 tests)
+   - Snapshot Tests (9 tests)
+
+3. All tests follow structural + snapshot pattern from badge.test.ts
+
+### Test Results:
+- ✅ All 40 tests pass
+- ✅ 9 snapshots created
+- ✅ Verified tests pass consistently with --run flag
+
+### Issues Encountered:
+- Pre-existing TypeScript errors in input-area.ts (textAutoResize property)
+- These errors exist in the original code and are not related to test refactoring
+- Tests pass successfully despite these type errors (same as other generators)
+
+### Notes:
+- InputArea generator uses hardcoded SIZE_CONFIG, VARIANT_CONFIG, STATE_STYLES (not reading from registry)
+- InputArea is NOT in component-registry.json because it uses Input's inputVariants from input.tsx
+- Generator creates 4 sizes × 2 variants × 3 states × 2 withLabel options = 48 component variants
+- WithLabel options:
+  - false: Bare textarea without Field wrapper
+  - true: Textarea with Field wrapper (label, description, error)
+- Ring variable logic:
+  - Default state: Uses variant's ringVariable
+  - Focus + default variant: color-active
+  - Focus + error variant: color-error
+- Size dimensions include:
+  - minHeight: 60-100px (taller than Input for multi-line)
+  - paddingX/paddingY: Spacing
+  - fontSize: Text size
+  - borderRadius: Corner radius
+  - width: Fixed width per size
+- All color bindings use semantic tokens (color-secondary, color-border, text-color-muted, etc.)
+
+**Status:** COMPLETE - Ready for commit
+
+---
+

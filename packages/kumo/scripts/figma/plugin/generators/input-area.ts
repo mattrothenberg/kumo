@@ -567,6 +567,123 @@ export async function generateInputAreaComponents(
 }
 
 /**
+ * Testable exports for input-area.test.ts (no Figma API calls)
+ */
+
+/**
+ * Get size configuration from SIZE_CONFIG
+ * @returns Size values and config object
+ */
+export function getInputAreaSizeConfig() {
+  return {
+    values: SIZE_VALUES,
+    config: SIZE_CONFIG,
+  };
+}
+
+/**
+ * Get variant configuration from VARIANT_CONFIG
+ * @returns Variant values and config object
+ */
+export function getInputAreaVariantConfig() {
+  return {
+    values: VARIANT_VALUES,
+    config: VARIANT_CONFIG,
+  };
+}
+
+/**
+ * Get state configuration from STATE_STYLES
+ * @returns State values and styles object
+ */
+export function getInputAreaStateConfig() {
+  return {
+    values: STATE_VALUES,
+    styles: STATE_STYLES,
+  };
+}
+
+/**
+ * Get withLabel configuration
+ * @returns WithLabel values
+ */
+export function getInputAreaWithLabelConfig() {
+  return {
+    values: WITH_LABEL_VALUES,
+  };
+}
+
+/**
+ * Get computed dimensions for a specific size
+ * @param size - Size value
+ * @returns Size dimensions object
+ */
+export function getInputAreaSizeDimensions(size: string) {
+  var sizeConfig = SIZE_CONFIG[size] || SIZE_CONFIG["base"];
+  return {
+    size: size,
+    minHeight: sizeConfig.minHeight,
+    paddingX: sizeConfig.paddingX,
+    paddingY: sizeConfig.paddingY,
+    fontSize: sizeConfig.fontSize,
+    borderRadius: sizeConfig.borderRadius,
+    width: sizeConfig.width,
+  };
+}
+
+/**
+ * Get ring variable for a specific variant and state combination
+ * @param variant - Variant value
+ * @param state - State value
+ * @returns Ring variable name
+ */
+export function getInputAreaRingVariable(variant: string, state: string) {
+  var variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
+  var stateStyle = STATE_STYLES[state] || STATE_STYLES["default"];
+
+  // Determine ring variable based on variant and state
+  var ringVarName = variantConfig.ringVariable;
+  if (state === "focus" && variant === "default") {
+    ringVarName = "color-active";
+  } else if (state === "focus" && variant === "error") {
+    ringVarName = "color-error";
+  }
+
+  return ringVarName;
+}
+
+/**
+ * Get complete intermediate data for all InputArea variants
+ * This captures all data computed before Figma API calls
+ * @returns Complete variant data structure
+ */
+export function getAllInputAreaVariantData() {
+  return {
+    sizes: SIZE_VALUES.map(function (size) {
+      return {
+        size: size,
+        dimensions: getInputAreaSizeDimensions(size),
+      };
+    }),
+    variants: VARIANT_VALUES.map(function (variant) {
+      var variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
+      return {
+        variant: variant,
+        config: variantConfig,
+        states: STATE_VALUES.map(function (state) {
+          return {
+            state: state,
+            ringVariable: getInputAreaRingVariable(variant, state),
+            stateStyle: STATE_STYLES[state] || STATE_STYLES["default"],
+          };
+        }),
+      };
+    }),
+    withLabelOptions: WITH_LABEL_VALUES,
+  };
+}
+
+/**
  * Exports for tests and backwards compatibility
  */
 export var INPUT_AREA_SIZE_VALUES = SIZE_VALUES;
