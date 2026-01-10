@@ -1,0 +1,372 @@
+{
+  "title": "Figma Generator Test Refactoring - Structural + Snapshot Pattern",
+  "overview": "Refactor remaining Figma generator tests from brittle exact-value assertions to flexible structural + snapshot pattern. This enables design iteration while maintaining regression protection.",
+  "context": {
+    "problem": "Current tests are too tightly coupled to design implementation details (exact Tailwind classes, pixel values, color strings). This makes them brittle - they fail when design changes even though the functional contract (AST → Parser → Figma data structure) remains valid.",
+    "current_state": "13/29 generators (45%) have been refactored to use structural + snapshot pattern. Tier 1 generators (Badge, Banner, Button, Checkbox, ClipboardText, Code, Text, Input, Select, Dialog, Tabs, Toast) are complete.",
+    "why_now": "Continuing Phase 6 (Test Coverage) from PLAN.md. Need to complete remaining Tier 2-4 generators before starting Phase 3 (Parser Improvements) and Phase 7 (Documentation)."
+  },
+  "goals": {
+    "primary": [
+      "Refactor remaining 16 generator tests to use structural + snapshot pattern",
+      "Ensure tests verify functional contract, not design details",
+      "Maintain regression protection through snapshots",
+      "Document test patterns for future contributors"
+    ],
+    "metrics": [
+      "100% of generators have tests (currently 45%)",
+      "0 exact-value assertions for Tailwind classes (brittle pattern eliminated)",
+      "All tests follow structural + snapshot template",
+      "Test execution time remains under 5s for full suite"
+    ]
+  },
+  "requirements": {
+    "functional": [
+      {
+        "id": "FR-1",
+        "title": "Structural Validation",
+        "description": "Tests must verify that required properties exist and have correct types, not exact values",
+        "acceptance": [
+          "No exact string matches for Tailwind classes",
+          "Type assertions use typeof checks",
+          "Existence checks use toBeDefined()",
+          "Example: expect(typeof parsed.paddingX).toBe('number')"
+        ]
+      },
+      {
+        "id": "FR-2",
+        "title": "Snapshot Regression Protection",
+        "description": "Tests must use snapshots to catch unintended changes in parsed output",
+        "acceptance": [
+          "Each generator has getAllComponentVariantData() export",
+          "Snapshot test for complete variant data",
+          "Snapshots captured for each variant individually",
+          "Example: expect(getAllBadgeVariantData()).toMatchSnapshot()"
+        ]
+      },
+      {
+        "id": "FR-3",
+        "title": "Registry Validation",
+        "description": "Tests must verify component-registry.json structure matches expectations",
+        "acceptance": [
+          "Verify expected variants exist in registry",
+          "Verify classes defined for all variants",
+          "Verify descriptions defined for all variants",
+          "Verify default variant is set"
+        ]
+      },
+      {
+        "id": "FR-4",
+        "title": "Testable Exports",
+        "description": "All generators must export pure functions for testing (no Figma API calls)",
+        "acceptance": [
+          "getComponentVariantConfig() exported",
+          "getComponentParsedBaseStyles() exported (if baseStyles exist)",
+          "getComponentParsedVariantStyles(variant) exported",
+          "getAllComponentVariantData() exported",
+          "Functions return plain objects, no Figma API calls"
+        ]
+      }
+    ],
+    "non_functional": [
+      {
+        "id": "NFR-1",
+        "title": "Test Performance",
+        "description": "Full test suite must run in under 5 seconds",
+        "rationale": "Fast feedback loop for developers"
+      },
+      {
+        "id": "NFR-2",
+        "title": "Pattern Consistency",
+        "description": "All tests follow the same 3-section structure",
+        "sections": [
+          "1. Registry Validation - Verify source of truth",
+          "2. Structural Validation - Verify parsed output structure",
+          "3. Snapshot Tests - Catch unintended drift"
+        ]
+      },
+      {
+        "id": "NFR-3",
+        "title": "Maintainability",
+        "description": "Tests should be easy to update when design changes",
+        "acceptance": [
+          "No hardcoded expected values in assertions",
+          "Clear separation: structure vs. values",
+          "Snapshots can be updated with single command"
+        ]
+      }
+    ]
+  },
+  "scope": {
+    "in_scope": [
+      "Refactor Tier 2 generators: dropdown, combobox (2 generators)",
+      "Refactor Tier 3 generators: tooltip, collapsible, date-range-picker, loader, meter, pagination (6 generators)",
+      "Refactor Tier 4 generators: switch, link-button, refresh-button, input-area, sensitive-input, surface, layer-card, menubar (8 generators)",
+      "Add testable exports to all generators (getVariantConfig, getParsedStyles, getAllVariantData)",
+      "Update PLAN.md status after completion",
+      "Create test template documentation"
+    ],
+    "out_of_scope": [
+      "Adding new generators for missing components (Breadcrumbs, Empty, Field, PageHeader)",
+      "Parser enhancements (Phase 3 - arbitrary values, opacity modifiers)",
+      "Documentation updates (Phase 7)",
+      "E2E Figma API integration tests",
+      "Visual regression testing"
+    ]
+  },
+  "technical_approach": {
+    "pattern": "Structural + Snapshot",
+    "template": {
+      "file_structure": [
+        "1. Imports (generator functions, registry)",
+        "2. Registry Validation describe block",
+        "3. Structural Validation describe block",
+        "4. Snapshot Tests describe block"
+      ],
+      "test_sections": {
+        "registry_validation": {
+          "purpose": "Verify component-registry.json has expected structure",
+          "tests": [
+            "should have all expected variants in registry",
+            "should have classes defined for all variants",
+            "should have descriptions defined for all variants",
+            "should have correct default variant"
+          ]
+        },
+        "structural_validation": {
+          "purpose": "Verify parsed output has required properties with correct types",
+          "tests": [
+            "should parse base styles correctly (if baseStyles exist)",
+            "should parse variant styles correctly (for each variant)",
+            "should parse styling metadata correctly (if styling exists)"
+          ]
+        },
+        "snapshot_tests": {
+          "purpose": "Catch unintended changes via snapshot comparison",
+          "tests": [
+            "should produce consistent variant config",
+            "should produce consistent parsed base styles",
+            "should produce consistent parsed variant styles (for each variant)",
+            "should produce consistent complete variant data (golden path)"
+          ]
+        }
+      }
+    },
+    "implementation_order": [
+      "1. Tier 2 (Medium Usage): dropdown, combobox",
+      "2. Tier 3 (Lower Usage): tooltip, collapsible, date-range-picker, loader, meter, pagination",
+      "3. Tier 4 (Specialized): switch, link-button, refresh-button, input-area, sensitive-input, surface, layer-card, menubar"
+    ]
+  },
+  "generators": [
+    {
+      "name": "dropdown",
+      "tier": 2,
+      "priority": "high",
+      "passes": false
+    },
+    {
+      "name": "combobox",
+      "tier": 2,
+      "priority": "high",
+      "passes": false
+    },
+    {
+      "name": "tooltip",
+      "tier": 3,
+      "priority": "medium",
+      "passes": false
+    },
+    {
+      "name": "collapsible",
+      "tier": 3,
+      "priority": "medium",
+      "passes": false
+    },
+    {
+      "name": "date-range-picker",
+      "tier": 3,
+      "priority": "medium",
+      "passes": false
+    },
+    {
+      "name": "loader",
+      "tier": 3,
+      "priority": "medium",
+      "passes": false
+    },
+    {
+      "name": "meter",
+      "tier": 3,
+      "priority": "medium",
+      "passes": false
+    },
+    {
+      "name": "pagination",
+      "tier": 3,
+      "priority": "medium",
+      "passes": false
+    },
+    {
+      "name": "switch",
+      "tier": 4,
+      "priority": "low",
+      "passes": false
+    },
+    {
+      "name": "link-button",
+      "tier": 4,
+      "priority": "low",
+      "passes": false
+    },
+    {
+      "name": "refresh-button",
+      "tier": 4,
+      "priority": "low",
+      "passes": false
+    },
+    {
+      "name": "input-area",
+      "tier": 4,
+      "priority": "low",
+      "passes": false
+    },
+    {
+      "name": "sensitive-input",
+      "tier": 4,
+      "priority": "low",
+      "passes": false
+    },
+    {
+      "name": "surface",
+      "tier": 4,
+      "priority": "low",
+      "passes": false
+    },
+    {
+      "name": "layer-card",
+      "tier": 4,
+      "priority": "low",
+      "passes": false
+    },
+    {
+      "name": "menubar",
+      "tier": 4,
+      "priority": "low",
+      "passes": false
+    }
+  ],
+  "deliverables": [
+    {
+      "name": "Refactored Test Files",
+      "description": "16 test files following structural + snapshot pattern",
+      "files": [
+        "dropdown.test.ts",
+        "combobox.test.ts",
+        "tooltip.test.ts",
+        "collapsible.test.ts",
+        "date-range-picker.test.ts",
+        "loader.test.ts",
+        "meter.test.ts",
+        "pagination.test.ts",
+        "switch.test.ts",
+        "link-button.test.ts",
+        "refresh-button.test.ts",
+        "input-area.test.ts",
+        "sensitive-input.test.ts",
+        "surface.test.ts",
+        "layer-card.test.ts",
+        "menubar.test.ts"
+      ]
+    },
+    {
+      "name": "Testable Generator Exports",
+      "description": "Pure functions exported from each generator for testing",
+      "exports": [
+        "getComponentVariantConfig()",
+        "getComponentParsedBaseStyles()",
+        "getComponentParsedVariantStyles(variant)",
+        "getAllComponentVariantData()"
+      ]
+    },
+    {
+      "name": "Updated Snapshots",
+      "description": "Snapshot files for all refactored tests",
+      "location": "generators/__snapshots__/"
+    },
+    {
+      "name": "Test Template Documentation",
+      "description": "Markdown file documenting test pattern for future contributors",
+      "sections": [
+        "Pattern overview (structural + snapshot)",
+        "Required test sections",
+        "Example test file",
+        "Common pitfalls to avoid",
+        "How to update snapshots"
+      ]
+    },
+    {
+      "name": "Updated PLAN.md",
+      "description": "Phase 6 status updated to reflect completion",
+      "changes": [
+        "Update generator status table (29/29 have tests)",
+        "Mark Phase 6 tasks as complete",
+        "Update completion metrics"
+      ]
+    }
+  ],
+  "constraints": [
+    "Must not change generator implementation (only tests)",
+    "Must maintain existing test coverage (no reduction)",
+    "Must follow existing test patterns from Tier 1 generators",
+    "Test execution time must remain under 5s",
+    "All tests must pass before moving to next tier"
+  ],
+  "risks": [
+    {
+      "risk": "Some generators may not have sufficient metadata in registry",
+      "mitigation": "Phase 4 already added styling exports to key components. If needed, add KUMO_*_STYLING exports during refactoring.",
+      "likelihood": "Medium",
+      "impact": "Medium"
+    },
+    {
+      "risk": "Complex generators (Dialog, Toast) may have too many test permutations",
+      "mitigation": "Follow existing pattern: test key examples + snapshot full data structure",
+      "likelihood": "Low",
+      "impact": "Low"
+    },
+    {
+      "risk": "Snapshot files may become large and hard to review",
+      "mitigation": "Break into multiple snapshot tests per variant. Use descriptive snapshot names.",
+      "likelihood": "Medium",
+      "impact": "Low"
+    }
+  ],
+  "success_criteria": [
+    "All 29 generators have test files",
+    "All tests follow structural + snapshot pattern",
+    "No exact-value assertions for Tailwind classes",
+    "All tests pass in CI",
+    "Test execution time under 5s",
+    "PLAN.md Phase 6 marked complete",
+    "Test template documentation created"
+  ],
+  "timeline": {
+    "estimated_effort": "3-4 hours",
+    "breakdown": {
+      "tier_2": "30-45 minutes (2 generators)",
+      "tier_3": "90-120 minutes (6 generators)",
+      "tier_4": "60-90 minutes (8 generators, simpler)",
+      "documentation": "15-20 minutes"
+    }
+  },
+  "references": {
+    "existing_patterns": [
+      "packages/kumo/scripts/figma/plugin/generators/badge.test.ts",
+      "packages/kumo/scripts/figma/plugin/generators/button.test.ts",
+      "packages/kumo/scripts/figma/plugin/generators/input.test.ts"
+    ],
+    "plan": "packages/kumo/scripts/figma/plugin/PLAN.md",
+    "spec": "packages/kumo/scripts/figma/plugin/plans/SPEC.md"
+  }
+}

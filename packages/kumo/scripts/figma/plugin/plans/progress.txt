@@ -1,0 +1,19 @@
+# Progress Log
+
+This file tracks Ralph's progress through the test refactoring PRD.
+
+## Session Start
+
+Starting test refactoring for Figma generators using structural + snapshot pattern.
+
+**Status:**
+- Total generators: 29
+- Complete with tests: 13 (45%)
+- Remaining: 16 generators across Tiers 2-4
+
+**Next Steps:**
+- Tier 2: dropdown, combobox
+- Tier 3: tooltip, collapsible, date-range-picker, loader, meter, pagination
+- Tier 4: switch, link-button, refresh-button, input-area, sensitive-input, surface, layer-card, menubar
+
+---
