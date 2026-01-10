@@ -59,3 +59,50 @@ Starting test refactoring for Figma generators using structural + snapshot patte
 **Status:** COMPLETE - Ready for commit
 
 ---
+
+## Iteration 2: combobox (Tier 2)
+
+**Generator:** combobox
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Added testable exports to combobox.ts:
+   - `getComboboxVariantConfig()` - Returns variant, open state, interaction state configuration
+   - `getComboboxParsedTriggerStyles()` - Returns parsed trigger input styles
+   - `getComboboxParsedDropdownStyles()` - Returns parsed dropdown panel styles
+   - `getComboboxLayoutData(variant, open, state)` - Returns computed layout for specific combination
+   - `getAllComboboxVariantData()` - Returns complete intermediate data
+
+2. Created combobox.test.ts with 42 tests:
+   - Variant Configuration (8 tests)
+   - Trigger Styles Parsing (5 tests)
+   - Dropdown Styles Parsing (4 tests)
+   - Layout Data (10 tests covering all variants and states)
+   - Complete Variant Data (6 tests)
+   - Snapshot Tests (9 tests)
+
+3. All tests follow structural + snapshot pattern from badge.test.ts
+
+### Test Results:
+- ✅ All 42 tests pass
+- ✅ 9 snapshots created
+- ✅ Verified tests pass consistently with --run flag
+
+### Issues Encountered:
+- Pre-existing TypeScript errors in combobox.ts (textAutoResize, rotation properties)
+- These errors exist in the original code and are not related to test refactoring
+- Tests pass successfully despite these type errors (same as dropdown)
+
+### Notes:
+- Combobox generator has 3-dimensional variants:
+  - variant: default, withLabel, withError
+  - open: false, true
+  - state: default, focus, disabled
+- Total combinations: 3 × 2 × 3 = 18 component variants
+- Tests validate all combinations through intermediate data structure
+- Layout data includes conditional dropdown data (null when closed, object when open)
+
+**Status:** COMPLETE - Ready for commit
+
+---

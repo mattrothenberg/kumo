@@ -116,6 +116,131 @@ var VARIANT_CONFIG: Record<
 };
 
 /**
+ * ========================================
+ * TESTABLE EXPORTS - Pure functions for testing
+ * ========================================
+ */
+
+/**
+ * Get variant configuration from generator constants
+ * @returns Object with variants, open states, interaction states, and configuration
+ */
+export function getComboboxVariantConfig() {
+  return {
+    variants: VARIANT_VALUES,
+    openStates: OPEN_VALUES,
+    interactionStates: STATE_VALUES,
+    variantConfig: VARIANT_CONFIG,
+    stateStyles: STATE_STYLES,
+  };
+}
+
+/**
+ * Get parsed base styles for TriggerInput
+ * @returns Parsed Tailwind classes for trigger base styles
+ */
+export function getComboboxParsedTriggerStyles() {
+  return {
+    raw: TRIGGER_BASE_STYLES,
+    parsed: parseTailwindClasses(TRIGGER_BASE_STYLES),
+  };
+}
+
+/**
+ * Get parsed dropdown panel styles
+ * @returns Parsed Tailwind classes for dropdown panel
+ */
+export function getComboboxParsedDropdownStyles() {
+  return {
+    raw: DROPDOWN_PANEL_STYLES,
+    parsed: parseTailwindClasses(DROPDOWN_PANEL_STYLES),
+  };
+}
+
+/**
+ * Get computed layout data for a specific variant + state combination
+ * @param variant - Variant type (default, withLabel, withError)
+ * @param open - Whether dropdown is open
+ * @param state - Interaction state (default, focus, disabled)
+ * @returns Object with computed layout properties
+ */
+export function getComboboxLayoutData(
+  variant: string,
+  open: boolean,
+  state: string,
+) {
+  var config = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
+  var stateStyle = STATE_STYLES[state] || STATE_STYLES["default"];
+
+  return {
+    variant,
+    open,
+    state,
+    hasLabel: !!config.label,
+    hasDescription: !!config.description,
+    hasError: !!config.errorMessage,
+    ringVariable: config.useErrorRing
+      ? "color-error"
+      : stateStyle.ringVariable || "color-border",
+    opacity: stateStyle.opacity,
+    trigger: {
+      width: 280,
+      height: 36,
+      borderRadius: BORDER_RADIUS.lg,
+      paddingX: 12,
+      itemSpacing: 8,
+    },
+    dropdown: open
+      ? {
+          width: 280,
+          height: 120,
+          borderRadius: BORDER_RADIUS.lg,
+          paddingY: 4,
+          itemHeight: 32,
+          itemPaddingX: 12,
+          itemPaddingY: 8,
+        }
+      : null,
+  };
+}
+
+/**
+ * Get all combobox variant data (complete intermediate data structure)
+ * @returns Complete data structure for all variants
+ */
+export function getAllComboboxVariantData() {
+  var triggerStyles = getComboboxParsedTriggerStyles();
+  var dropdownStyles = getComboboxParsedDropdownStyles();
+  var config = getComboboxVariantConfig();
+
+  var variants: any[] = [];
+
+  for (var vi = 0; vi < config.variants.length; vi++) {
+    var variant = config.variants[vi];
+    for (var oi = 0; oi < config.openStates.length; oi++) {
+      var open = config.openStates[oi];
+      for (var si = 0; si < config.interactionStates.length; si++) {
+        var state = config.interactionStates[si];
+        variants.push(getComboboxLayoutData(variant, open, state));
+      }
+    }
+  }
+
+  return {
+    triggerStyles,
+    dropdownStyles,
+    config,
+    variants,
+  };
+}
+
+/**
+ * ========================================
+ * END TESTABLE EXPORTS
+ * ========================================
+ */
+
+/**
  * Create a single Combobox component variant
  *
  * @param variant - Variant type (default, withLabel, withError)

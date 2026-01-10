@@ -169,7 +169,7 @@
       "name": "combobox",
       "tier": 2,
       "priority": "high",
-      "passes": false
+      "passes": true
     },
     {
       "name": "tooltip",
