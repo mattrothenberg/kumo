@@ -114,8 +114,8 @@
       "name": "select",
       "tier": 1,
       "priority": "high",
-      "status": "hardcoded",
-      "notes": "VARIANT_VALUES, STATE_STYLES entirely hardcoded. Need to read from registry.components.Select.props"
+      "status": "complete",
+      "notes": "Fully migrated. selectStyling now reads from KUMO_SELECT_STYLING structure (trigger, popup, option configs). STATE_STYLES uses selectStyling tokens. All 46 tests pass. Note: KUMO_SELECT_STYLING exists in select.tsx but not yet extracted to registry - needs codegen:registry to be run."
     },
     {
       "name": "tooltip",

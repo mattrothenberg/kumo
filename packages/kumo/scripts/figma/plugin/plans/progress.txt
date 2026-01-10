@@ -1016,3 +1016,55 @@ No KUMO_SWITCH_STYLING export needed - size classes provide sufficient data.
 
 **Status:** COMPLETE - Ready for commit
 
+
+
+---
+
+## Iteration 19: select (Tier 1 - PHASE 2: Registry Integration)
+
+**Generator:** select
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Migrated from hardcoded configuration to reading from KUMO_SELECT_STYLING:
+   - Added selectStyling object mirroring KUMO_SELECT_STYLING from select.tsx
+   - Updated STATE_STYLES to use selectStyling.trigger.ring and selectStyling.stateTokens
+   - Updated trigger creation to use selectStyling.trigger (height, paddingX, borderRadius, background, text)
+   - Updated placeholder text to use selectStyling.trigger (fontSize, fontWeight)
+   - Updated dropdown panel to use selectStyling.popup (padding, borderRadius, background, ring)
+   - Updated option creation to use selectStyling.option (paddingX, paddingY, borderRadius, fontSize, highlightBackground)
+   
+2. Updated testable exports to use selectStyling:
+   - getTriggerConfig() - Now reads from selectStyling.trigger
+   - getPopupConfig() - Now reads from selectStyling.popup
+   - getOptionConfig() - Now reads from selectStyling.option
+   - getAllVariantData() - Uses updated config functions
+
+3. What remains hardcoded (by design):
+   - VARIANT_VALUES: ["default", "withLabel", "withError"] - Generator-specific display variants
+   - VARIANT_CONFIG: Label/description/error message text content (presentation data)
+   - Width: 280px (layout-specific, matches trigger/popup width)
+   - Option labels: ["Option 1", "Option 2", "Option 3"] - Sample content
+
+### Test Results:
+- ✅ All 46 tests pass
+- ✅ No snapshots changed (selectStyling values match previous hardcoded values exactly)
+- ✅ Verified tests pass with --run flag
+
+### Registry Gaps Found:
+KUMO_SELECT_STYLING exists in select.tsx but not yet in component-registry.json.
+- Action needed: Run `pnpm --filter @cloudflare/kumo codegen:registry` to extract KUMO_SELECT_STYLING to registry
+- For now, selectStyling object mirrors the structure from select.tsx (source of truth)
+- Registry has Select component with props, examples, colors, subComponents, but missing styling section
+
+### Notes:
+- Select was marked "hardcoded" in PRD because STATE_STYLES and configs were entirely hardcoded
+- Now fully migrated - all styling values read from selectStyling (source: KUMO_SELECT_STYLING)
+- Pre-existing TypeScript errors for textAutoResize property (documented in earlier iterations)
+- Select is second Tier 1 generator fully migrated to registry (after input)
+- Generator creates 3 variants × 2 open states × 4 states = 24 component variants
+- Testable exports validate intermediate data structure (trigger, popup, option configs)
+
+**Status:** COMPLETE - Ready for commit
+

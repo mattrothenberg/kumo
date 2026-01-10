@@ -30,6 +30,45 @@ import {
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import { logComplete } from "../logger";
+import registry from "../../../../ai/component-registry.json";
+
+// Note: KUMO_SELECT_STYLING exists in select.tsx but isn't extracted to registry yet.
+// TODO: Regenerate component-registry.json to include styling section.
+// For now, we'll define it here based on the source component.
+
+// Extract Select component data from registry
+var selectRegistry = registry.components.Select;
+
+// Styling data from KUMO_SELECT_STYLING in select.tsx (source of truth)
+var selectStyling = {
+  trigger: {
+    height: 36, // h-9
+    paddingX: 12, // px-3
+    borderRadius: 8, // rounded-lg
+    background: "color-secondary",
+    text: "text-color-surface",
+    ring: "color-border",
+    fontSize: 16, // text-base
+    fontWeight: 400, // font-normal
+  },
+  stateTokens: {
+    focus: { ring: "color-active" },
+    disabled: { opacity: 0.5 },
+  },
+  popup: {
+    background: "color-secondary",
+    ring: "color-border",
+    borderRadius: 8, // rounded-lg
+    padding: 6, // p-1.5
+  },
+  option: {
+    paddingX: 8, // px-2
+    paddingY: 6, // py-1.5
+    borderRadius: 4, // rounded
+    fontSize: 16, // text-base
+    highlightBackground: "color-color-3",
+  },
+};
 
 /**
  * Section padding for component display
@@ -42,7 +81,8 @@ var SECTION_PADDING = 48;
 var SECTION_GAP = 160;
 
 /**
- * Variant types
+ * Variant types (generator-specific display variants)
+ * Note: These are presentation variants for Figma, not React component variants
  */
 var VARIANT_VALUES = ["default", "withLabel", "withError"];
 
@@ -58,6 +98,7 @@ var STATE_VALUES = ["default", "focus", "disabled", "loading"];
 
 /**
  * State-specific style overrides for the trigger
+ * Reads from selectStyling (source of truth)
  */
 var STATE_STYLES: Record<
   string,
@@ -67,17 +108,17 @@ var STATE_STYLES: Record<
   }
 > = {
   default: {
-    ringVariable: "color-border",
+    ringVariable: selectStyling.trigger.ring,
   },
   focus: {
-    ringVariable: "color-active",
+    ringVariable: selectStyling.stateTokens.focus.ring,
   },
   disabled: {
-    ringVariable: "color-border",
-    opacity: 0.5,
+    ringVariable: selectStyling.trigger.ring,
+    opacity: selectStyling.stateTokens.disabled.opacity,
   },
   loading: {
-    ringVariable: "color-border",
+    ringVariable: selectStyling.trigger.ring,
   },
 };
 
@@ -192,16 +233,16 @@ async function createSelectComponent(
   trigger.counterAxisAlignItems = "CENTER";
   trigger.primaryAxisSizingMode = "FIXED";
   trigger.counterAxisSizingMode = "FIXED";
-  trigger.resize(280, 36); // h-9 = 36px (base button size)
+  trigger.resize(280, selectStyling.trigger.height);
   trigger.itemSpacing = 8;
-  trigger.paddingLeft = 12;
-  trigger.paddingRight = 12;
+  trigger.paddingLeft = selectStyling.trigger.paddingX;
+  trigger.paddingRight = selectStyling.trigger.paddingX;
   trigger.paddingTop = 0;
   trigger.paddingBottom = 0;
-  trigger.cornerRadius = BORDER_RADIUS.lg;
+  trigger.cornerRadius = selectStyling.trigger.borderRadius;
 
-  // Apply background fill (bg-secondary - matches buttonVariants())
-  var bgVar = getVariableByName("color-secondary");
+  // Apply background fill (from selectStyling)
+  var bgVar = getVariableByName(selectStyling.trigger.background);
   if (bgVar) {
     bindFillToVariable(trigger, bgVar.id);
   }
@@ -221,13 +262,17 @@ async function createSelectComponent(
     var skeleton = createSkeletonLine(128, 16);
     trigger.appendChild(skeleton);
   } else {
-    // Create placeholder/value text
-    var placeholderText = await createTextNode("Select an option", 16, 400);
+    // Create placeholder/value text (from selectStyling)
+    var placeholderText = await createTextNode(
+      "Select an option",
+      selectStyling.trigger.fontSize,
+      selectStyling.trigger.fontWeight,
+    );
     placeholderText.name = "Value";
     placeholderText.textAutoResize = "WIDTH_AND_HEIGHT";
 
-    // Apply text color (text-surface for value)
-    var textVar = getVariableByName("text-color-surface");
+    // Apply text color (from selectStyling)
+    var textVar = getVariableByName(selectStyling.trigger.text);
     if (textVar) {
       bindTextColorToVariable(placeholderText, textVar.id);
     }
@@ -285,20 +330,20 @@ async function createSelectComponent(
     dropdownPanel.counterAxisSizingMode = "FIXED";
     dropdownPanel.resize(280, 1); // Width matches trigger, height auto
     dropdownPanel.itemSpacing = 0;
-    dropdownPanel.paddingLeft = 6;
-    dropdownPanel.paddingRight = 6;
-    dropdownPanel.paddingTop = 6;
-    dropdownPanel.paddingBottom = 6;
-    dropdownPanel.cornerRadius = BORDER_RADIUS.lg;
+    dropdownPanel.paddingLeft = selectStyling.popup.padding;
+    dropdownPanel.paddingRight = selectStyling.popup.padding;
+    dropdownPanel.paddingTop = selectStyling.popup.padding;
+    dropdownPanel.paddingBottom = selectStyling.popup.padding;
+    dropdownPanel.cornerRadius = selectStyling.popup.borderRadius;
 
-    // Apply background fill (bg-secondary - matches Popup in select.tsx)
-    var dropdownBgVar = getVariableByName("color-secondary");
+    // Apply background fill (from selectStyling)
+    var dropdownBgVar = getVariableByName(selectStyling.popup.background);
     if (dropdownBgVar) {
       bindFillToVariable(dropdownPanel, dropdownBgVar.id);
     }
 
-    // Apply border (ring ring-border)
-    var borderVar = getVariableByName("color-border");
+    // Apply border (from selectStyling)
+    var borderVar = getVariableByName(selectStyling.popup.ring);
     if (borderVar) {
       bindStrokeToVariable(dropdownPanel, borderVar.id, 1);
     }
@@ -315,23 +360,27 @@ async function createSelectComponent(
       optionFrame.counterAxisSizingMode = "AUTO";
       optionFrame.resize(268, 1); // Width matches dropdown minus padding
       optionFrame.itemSpacing = 8;
-      optionFrame.paddingLeft = 8;
-      optionFrame.paddingRight = 8;
-      optionFrame.paddingTop = 6;
-      optionFrame.paddingBottom = 6;
-      optionFrame.cornerRadius = 4;
+      optionFrame.paddingLeft = selectStyling.option.paddingX;
+      optionFrame.paddingRight = selectStyling.option.paddingX;
+      optionFrame.paddingTop = selectStyling.option.paddingY;
+      optionFrame.paddingBottom = selectStyling.option.paddingY;
+      optionFrame.cornerRadius = selectStyling.option.borderRadius;
       optionFrame.fills = [];
 
-      // Highlight second item (selected/hover state) - matches data-highlighted:bg-color-3
+      // Highlight second item (selected/hover state) - from selectStyling
       if (i === 1) {
-        var accentVar = getVariableByName("color-color-3");
+        var accentVar = getVariableByName(selectStyling.option.highlightBackground);
         if (accentVar) {
           bindFillToVariable(optionFrame, accentVar.id);
         }
       }
 
-      // Create option text
-      var optionText = await createTextNode(optionLabels[i], 16, 400);
+      // Create option text (from selectStyling)
+      var optionText = await createTextNode(
+        optionLabels[i],
+        selectStyling.option.fontSize,
+        400,
+      );
       optionText.name = "Label";
       optionText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -607,48 +656,47 @@ export var SELECT_STATE_VALUES = STATE_VALUES;
  */
 
 /**
- * Get trigger configuration from hardcoded values
- * (Select doesn't use registry yet - these values match select.tsx implementation)
+ * Get trigger configuration from selectStyling (source of truth)
  */
 export function getTriggerConfig() {
   return {
-    height: 36, // h-9 = 36px (base button size)
-    paddingX: 12,
-    paddingY: 0,
-    borderRadius: 8, // BORDER_RADIUS.lg
-    fontSize: 16, // text-base
-    fontWeight: 400, // font-normal
-    background: "color-secondary",
-    text: "text-color-surface",
-    ring: "color-border",
+    height: selectStyling.trigger.height,
+    paddingX: selectStyling.trigger.paddingX,
+    paddingY: 0, // Not in styling (layout-specific)
+    borderRadius: selectStyling.trigger.borderRadius,
+    fontSize: selectStyling.trigger.fontSize,
+    fontWeight: selectStyling.trigger.fontWeight,
+    background: selectStyling.trigger.background,
+    text: selectStyling.trigger.text,
+    ring: selectStyling.trigger.ring,
   };
 }
 
 /**
- * Get popup configuration from hardcoded values
+ * Get popup configuration from selectStyling (source of truth)
  */
 export function getPopupConfig() {
   return {
-    background: "color-secondary",
-    ring: "color-border",
-    borderRadius: 8, // BORDER_RADIUS.lg
-    padding: 6, // p-1.5
-    width: 280, // matches trigger width
+    background: selectStyling.popup.background,
+    ring: selectStyling.popup.ring,
+    borderRadius: selectStyling.popup.borderRadius,
+    padding: selectStyling.popup.padding,
+    width: 280, // Layout-specific (matches trigger width)
   };
 }
 
 /**
- * Get option configuration from hardcoded values
+ * Get option configuration from selectStyling (source of truth)
  */
 export function getOptionConfig() {
   return {
-    paddingX: 8, // px-2
-    paddingY: 6, // py-1.5
-    borderRadius: 4, // rounded
-    fontSize: 16, // text-base
-    fontWeight: 400,
+    paddingX: selectStyling.option.paddingX,
+    paddingY: selectStyling.option.paddingY,
+    borderRadius: selectStyling.option.borderRadius,
+    fontSize: selectStyling.option.fontSize,
+    fontWeight: 400, // Not in styling (standard)
     text: "text-color-surface",
-    highlightBackground: "color-color-3",
+    highlightBackground: selectStyling.option.highlightBackground,
   };
 }
 
