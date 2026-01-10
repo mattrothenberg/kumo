@@ -641,3 +641,62 @@ Starting test refactoring for Figma generators using structural + snapshot patte
 
 ---
 
+
+
+## Iteration 13: sensitive-input (Tier 4)
+
+**Generator:** sensitive-input
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Created sensitive-input.test.ts with 29 tests:
+   - Registry Validation (8 tests - sizes and variants from Input component)
+   - Size Configuration (2 tests - alignment with Input component)
+   - Variant Configuration (2 tests - alignment with Input component)
+   - State Configuration (2 tests - default, focus, disabled)
+   - Mode Configuration (2 tests - masked, revealed)
+   - WithLabel Configuration (1 test - bare vs Field-wrapped)
+   - Component Variant Combinations (5 tests - validation of all dimensions)
+   - Snapshot Tests (7 tests)
+
+2. SensitiveInput generator does NOT export testable functions (similar to RefreshButton)
+   - Generator uses Input's size/variant configuration directly from registry
+   - Tests validate configuration structure and intermediate data
+
+3. All tests follow structural + snapshot pattern from badge.test.ts
+
+### Test Results:
+- ✅ All 29 tests pass
+- ✅ 7 snapshots created
+- ✅ Verified tests pass consistently with --run flag
+
+### Issues Encountered:
+- Pre-existing TypeScript errors in sensitive-input.ts (textAutoResize property)
+- These errors exist in the original code and are not related to test refactoring
+- Tests pass successfully despite these type errors
+
+### Notes:
+- SensitiveInput generator uses Input's size/variant props from component-registry.json
+- Generator adds SensitiveInput-specific dimensions:
+  - state: default, focus, disabled (3 states)
+  - mode: masked (●●●●●●●●), revealed (actual text) (2 modes)
+  - withLabel: false (bare input), true (Field wrapper with label/description/error) (2 options)
+- Generator creates 4 sizes × 2 variants × 3 states × 2 modes × 2 withLabel = 96 component variants
+- Mode-specific behaviors:
+  - Masked: Shows bullet dots (●●●●●●●●) with Eye icon
+  - Revealed: Shows actual text (sk_live_abc123) with EyeSlash icon
+- State-specific behaviors:
+  - Focus: Adds active ring (color-active for default, color-error for error variant)
+  - Disabled: 0.5 opacity, uses text-disabled color for icon
+- WithLabel options:
+  - false: Bare input without Field wrapper
+  - true: Input with Field wrapper (label + input + description/error)
+- All color bindings use semantic tokens (color-secondary, color-active, color-error, text-color-surface, etc.)
+- Tests validate all 96 combinations through configuration structure
+- No testable exports needed - tests validate registry alignment and configuration directly
+
+**Status:** COMPLETE - Ready for commit
+
+---
+
