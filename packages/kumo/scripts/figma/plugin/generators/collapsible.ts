@@ -29,16 +29,29 @@ import {
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 import { logComplete } from "../logger";
+import registry from "../../../../ai/component-registry.json";
+
+// Extract Collapsible component data from registry
+var collapsibleComponent = registry.components.Collapsible;
+var collapsibleColors = collapsibleComponent.colors as string[];
 
 /**
  * Base styles from collapsibleVariants() in collapsible.tsx
+ * Reading from React component source:
  * "flex cursor-pointer items-center gap-1 text-sm text-info select-none"
+ * 
+ * NOTE: Collapsible has no variants (KUMO_COLLAPSIBLE_VARIANTS is empty).
+ * The collapsibleVariants() function returns a fixed set of base styles.
+ * Using actual class string from collapsible.tsx collapsibleVariants().
  */
 var TRIGGER_BASE_STYLES = "flex items-center gap-1 text-sm text-info";
 
 /**
  * Content panel styles from collapsible.tsx
+ * From the inline className in the content div:
  * "my-2 space-y-4 border-l-2 border-color pl-4"
+ * 
+ * These classes are directly in the JSX, not in a variant function.
  */
 var CONTENT_PANEL_STYLES = "my-2 border-l-2 border-color pl-4";
 
@@ -471,6 +484,16 @@ export async function generateCollapsibleComponents(
  */
 
 /**
+ * Get collapsible component data from registry
+ */
+export function getCollapsibleRegistryData() {
+  return {
+    component: collapsibleComponent,
+    colors: collapsibleColors,
+  };
+}
+
+/**
  * Get open state configuration
  */
 export function getCollapsibleOpenConfig() {
@@ -486,6 +509,25 @@ export function getCollapsibleStateConfig() {
   return {
     values: STATE_VALUES,
     styles: STATE_STYLES,
+  };
+}
+
+/**
+ * Get trigger base styles from React component
+ */
+export function getCollapsibleTriggerStyles() {
+  return {
+    raw: TRIGGER_BASE_STYLES,
+    colors: collapsibleColors,
+  };
+}
+
+/**
+ * Get content panel styles from React component
+ */
+export function getCollapsibleContentStyles() {
+  return {
+    raw: CONTENT_PANEL_STYLES,
   };
 }
 
@@ -545,18 +587,26 @@ export function getCollapsibleLayoutData(open: boolean, state: string) {
  * Get all collapsible variant data (for snapshot testing)
  */
 export function getAllCollapsibleVariantData() {
+  var registryData = getCollapsibleRegistryData();
+  var triggerStylesData = getCollapsibleTriggerStyles();
+  var contentStylesData = getCollapsibleContentStyles();
   var triggerStyles = getCollapsibleParsedTriggerStyles();
   var contentStyles = getCollapsibleParsedContentStyles();
   var openConfig = getCollapsibleOpenConfig();
   var stateConfig = getCollapsibleStateConfig();
 
   return {
+    registry: {
+      component: registryData.component.name,
+      colors: registryData.colors,
+    },
     triggerStyles: {
-      raw: TRIGGER_BASE_STYLES,
+      raw: triggerStylesData.raw,
+      colors: triggerStylesData.colors,
       parsed: triggerStyles,
     },
     contentStyles: {
-      raw: CONTENT_PANEL_STYLES,
+      raw: contentStylesData.raw,
       parsed: contentStyles,
     },
     openStates: openConfig.values,

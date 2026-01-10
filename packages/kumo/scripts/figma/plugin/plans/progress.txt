@@ -1120,3 +1120,61 @@ None - Tooltip component has sufficient registry data (props.side). The actual p
 
 **Status:** COMPLETE - Ready for commit
 
+
+---
+
+## Iteration 21: collapsible (Tier 2 - PHASE 2: Registry Integration)
+
+**Generator:** collapsible
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Migrated from hardcoded styles to registry-aware configuration:
+   - Added import of registry at top of file
+   - Extracted collapsibleComponent and collapsibleColors from registry
+   - Updated comments to clarify source of trigger and content styles
+   - Added documentation explaining Collapsible has no variants (KUMO_COLLAPSIBLE_VARIANTS is empty)
+   
+2. Added registry awareness to testable exports:
+   - getCollapsibleRegistryData() - Returns component metadata and colors from registry
+   - getCollapsibleTriggerStyles() - Returns raw styles and colors
+   - getCollapsibleContentStyles() - Returns raw content panel styles
+   - Updated getAllCollapsibleVariantData() to include registry data in output
+
+3. What remains hardcoded (by design):
+   - TRIGGER_BASE_STYLES: "flex items-center gap-1 text-sm text-info" - From collapsibleVariants() in collapsible.tsx
+   - CONTENT_PANEL_STYLES: "my-2 border-l-2 border-color pl-4" - From inline className in content div
+   - OPEN_VALUES: [false, true] - Generator-specific open states
+   - STATE_VALUES: ["default", "hover", "focus", "disabled"] - Generator-specific interaction states
+   - STATE_STYLES: State-specific overrides (textVariable, addRing, opacity) - Presentation logic
+
+### Test Results:
+- ✅ All 43 tests pass
+- ✅ 1 snapshot updated (intentionally added registry data)
+- ✅ Verified tests pass consistently with --run flag
+
+### Registry Gaps Found:
+None - but documented that Collapsible has no variants. The React component has:
+- KUMO_COLLAPSIBLE_VARIANTS = {} (empty)
+- KUMO_COLLAPSIBLE_DEFAULT_VARIANTS = {} (empty)
+- collapsibleVariants() function returns fixed base styles
+
+Registry has:
+- Component metadata (name, description, props)
+- colors array: ["border-color", "text-info"]
+
+No KUMO_COLLAPSIBLE_STYLING needed - component is simple with no size/variant dimensions.
+
+### Notes:
+- Collapsible was marked "hardcoded" in PRD because it used hardcoded TRIGGER_STYLES and CONTENT_STYLES
+- Now migrated to read from registry for component metadata and semantic color tokens
+- Generator still uses actual class strings from React component (which is correct - they're not in variant objects)
+- The React component has no variants - just a single style with dynamic open/state behavior
+- Generator creates 2 open states × 4 interaction states = 8 component variants
+- Pre-existing TypeScript errors for rotation, strokeLeftWeight, layoutSizingHorizontal properties (documented in earlier iterations)
+- Collapsible is first Tier 2 generator migrated in Phase 2 after tooltip
+- Registry now provides source of truth for component metadata, colors used tracked correctly
+
+**Status:** COMPLETE - Ready for commit
+

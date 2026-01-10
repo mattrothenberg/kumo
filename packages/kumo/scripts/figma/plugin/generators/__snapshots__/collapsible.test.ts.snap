@@ -46,6 +46,13 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
     false,
     true,
   ],
+  "registry": {
+    "colors": [
+      "border-color",
+      "text-info",
+    ],
+    "component": "Collapsible",
+  },
   "stateStyles": {
     "default": {
       "textVariable": "text-color-info",
@@ -63,6 +70,10 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
     },
   },
   "triggerStyles": {
+    "colors": [
+      "border-color",
+      "text-info",
+    ],
     "parsed": {
       "fontSize": 14,
       "gap": 4,

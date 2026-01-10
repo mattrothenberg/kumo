@@ -128,8 +128,8 @@
       "name": "collapsible",
       "tier": 2,
       "priority": "medium",
-      "status": "hardcoded",
-      "notes": "Uses hardcoded TRIGGER_STYLES, CONTENT_STYLES. Read from registry.components.Collapsible"
+      "status": "complete",
+      "notes": "Migrated. Now reads from registry.components.Collapsible for component metadata and colors. TRIGGER_BASE_STYLES and CONTENT_PANEL_STYLES sourced from React component (no variants). Added registry awareness to testable exports. All 43 tests pass."
     },
     {
       "name": "date-range-picker",
