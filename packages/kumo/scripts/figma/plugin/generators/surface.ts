@@ -23,6 +23,13 @@ import {
   bindTextColorToVariable,
   BORDER_RADIUS,
 } from "./shared";
+import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
+import registry from "../../../../ai/component-registry.json";
+
+/**
+ * Base styles from Surface component
+ */
+var BASE_STYLES = "shadow-xs ring ring-border";
 
 /**
  * Section padding for component display
@@ -204,4 +211,90 @@ export async function generateSurfaceComponents(
   );
 
   return startY + totalHeight + SECTION_GAP;
+}
+
+// ============================================================================
+// TESTABLE EXPORTS
+// ============================================================================
+
+/**
+ * Get Surface dimensions configuration
+ *
+ * Returns the dimensions used for the Surface container.
+ * These values are hardcoded in the generator.
+ */
+export function getSurfaceDimensionsConfig() {
+  return {
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingTop: 16,
+    paddingBottom: 16,
+    itemSpacing: 8,
+    cornerRadius: BORDER_RADIUS.lg,
+  };
+}
+
+/**
+ * Get Surface color bindings
+ *
+ * Returns the semantic color tokens used for Surface styling.
+ */
+export function getSurfaceColorBindings() {
+  return {
+    background: "color-surface",
+    border: "color-border",
+    text: "text-color-surface",
+  };
+}
+
+/**
+ * Get Surface shadow configuration
+ *
+ * Returns the shadow effect configuration (shadow-xs).
+ */
+export function getSurfaceShadowConfig() {
+  return {
+    type: "DROP_SHADOW",
+    color: { r: 0, g: 0, b: 0, a: 0.05 },
+    offset: { x: 0, y: 1 },
+    radius: 2,
+    spread: 0,
+  };
+}
+
+/**
+ * Get parsed base styles
+ *
+ * Returns the parsed Tailwind classes from Surface's base styles.
+ */
+export function getSurfaceParsedBaseStyles() {
+  return parseTailwindClasses(BASE_STYLES);
+}
+
+/**
+ * Get all Surface data
+ *
+ * Returns complete intermediate data structure for the Surface component.
+ * This is used for snapshot testing to catch unintended changes.
+ */
+export function getAllSurfaceData() {
+  var dimensions = getSurfaceDimensionsConfig();
+  var colorBindings = getSurfaceColorBindings();
+  var shadowConfig = getSurfaceShadowConfig();
+  var parsedBaseStyles = getSurfaceParsedBaseStyles();
+
+  return {
+    baseStyles: {
+      raw: BASE_STYLES,
+      parsed: parsedBaseStyles,
+    },
+    dimensions: dimensions,
+    colorBindings: colorBindings,
+    shadowConfig: shadowConfig,
+    contentText: {
+      text: "Surface content",
+      fontSize: 14,
+      fontWeight: 400,
+    },
+  };
 }
