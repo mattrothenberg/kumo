@@ -155,6 +155,61 @@ Starting test refactoring for Figma generators using structural + snapshot patte
 ---
 
 
+## Iteration 5: date-range-picker (Tier 3)
+
+**Generator:** date-range-picker
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Added testable exports to date-range-picker.ts:
+   - `getDateRangePickerSizeConfig()` - Returns size values and SIZE_CONFIG object
+   - `getDateRangePickerVariantConfig()` - Returns variant values and VARIANT_CONFIG object
+   - `getDateRangePickerSelectedConfig()` - Returns selected state values (true, false)
+   - `getDateRangePickerSizeDimensions(size)` - Returns computed dimensions for specific size
+   - `getDateRangePickerVariantBackground(variant)` - Returns background variable for variant
+   - `getDateRangePickerDayLabels()` - Returns day-of-week labels array
+   - `getDateRangePickerMonthConfig()` - Returns month configuration for calendar display
+   - `getAllDateRangePickerVariantData()` - Returns complete intermediate data
+
+2. Created date-range-picker.test.ts with 40 tests:
+   - Registry Validation (8 tests - size and variant props)
+   - Size Configuration (6 tests - config structure, dimensions for all sizes)
+   - Variant Configuration (5 tests - config structure, background variables)
+   - Selected State Configuration (1 test)
+   - Day Labels (2 tests)
+   - Month Configuration (2 tests)
+   - Complete Variant Data (5 tests - structure, combinations, consistency)
+   - Snapshot Tests (11 tests)
+
+3. All tests follow structural + snapshot pattern from badge.test.ts
+
+### Test Results:
+- ✅ All 40 tests pass
+- ✅ 11 snapshots created
+- ✅ Verified tests pass consistently with --run flag
+
+### Issues Encountered:
+- Pre-existing TypeScript errors in date-range-picker.ts (textAlignHorizontal, resize, radius properties)
+- These errors exist in the original code and are not related to test refactoring
+- Tests pass successfully despite these type errors
+
+### Notes:
+- DateRangePicker generator uses hardcoded SIZE_CONFIG and VARIANT_CONFIG (not reading from registry like newer generators)
+- Generator creates 3 sizes × 2 variants × 2 selected states = 12 component variants
+- Only base size is actually generated in Figma (sm, lg available in code but not generated for performance)
+- Size dimensions include:
+  - calendarWidth, cellHeight, cellWidth (layout)
+  - textSize, iconSize (typography and icons)
+  - padding, gap (spacing)
+- Month configuration provides realistic calendar display (December 2025 → January 2026)
+- Tests ensure intermediate data structure is stable and regression-protected
+
+**Status:** COMPLETE - Ready for commit
+
+---
+
+
 ## Iteration 4: collapsible (Tier 3)
 
 **Generator:** collapsible

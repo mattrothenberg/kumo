@@ -873,3 +873,120 @@ export async function generateDateRangePickerComponents(
 export var DATE_RANGE_PICKER_SIZE_VALUES = SIZE_VALUES;
 export var DATE_RANGE_PICKER_VARIANT_VALUES = VARIANT_VALUES;
 export var DATE_RANGE_PICKER_SELECTED_VALUES = SELECTED_VALUES;
+
+/**
+ * TESTABLE EXPORTS - Pure functions for testing without Figma API
+ *
+ * These exports enable structural + snapshot testing pattern.
+ * They return intermediate data structures BEFORE Figma API calls.
+ */
+
+/**
+ * Returns size configuration from SIZE_CONFIG
+ */
+export function getDateRangePickerSizeConfig() {
+  return {
+    values: SIZE_VALUES,
+    config: SIZE_CONFIG,
+  };
+}
+
+/**
+ * Returns variant configuration from VARIANT_CONFIG
+ */
+export function getDateRangePickerVariantConfig() {
+  return {
+    values: VARIANT_VALUES,
+    config: VARIANT_CONFIG,
+  };
+}
+
+/**
+ * Returns selected state configuration
+ */
+export function getDateRangePickerSelectedConfig() {
+  return {
+    values: SELECTED_VALUES,
+  };
+}
+
+/**
+ * Returns size-specific dimensions for a given size
+ */
+export function getDateRangePickerSizeDimensions(size: string) {
+  var sizeConfig = SIZE_CONFIG[size] || SIZE_CONFIG["base"];
+  return {
+    size: size,
+    calendarWidth: sizeConfig.calendarWidth,
+    cellHeight: sizeConfig.cellHeight,
+    cellWidth: sizeConfig.cellWidth,
+    textSize: sizeConfig.textSize,
+    iconSize: sizeConfig.iconSize,
+    padding: sizeConfig.padding,
+    gap: sizeConfig.gap,
+  };
+}
+
+/**
+ * Returns variant-specific background variable
+ */
+export function getDateRangePickerVariantBackground(variant: string) {
+  var variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
+  return {
+    variant: variant,
+    bgVariable: variantConfig.bgVariable,
+  };
+}
+
+/**
+ * Returns day-of-week labels
+ */
+export function getDateRangePickerDayLabels() {
+  return DAYS_OF_WEEK;
+}
+
+/**
+ * Returns month configuration for calendar display
+ */
+export function getDateRangePickerMonthConfig() {
+  return MONTH_CONFIG;
+}
+
+/**
+ * Returns complete intermediate data for all size/variant/selected combinations
+ */
+export function getAllDateRangePickerVariantData() {
+  var allData: {
+    size: string;
+    variant: string;
+    selected: boolean;
+    sizeConfig: ReturnType<typeof getDateRangePickerSizeDimensions>;
+    variantConfig: ReturnType<typeof getDateRangePickerVariantBackground>;
+  }[] = [];
+
+  for (var si = 0; si < SIZE_VALUES.length; si++) {
+    var size = SIZE_VALUES[si];
+    for (var vi = 0; vi < VARIANT_VALUES.length; vi++) {
+      var variant = VARIANT_VALUES[vi];
+      for (var seli = 0; seli < SELECTED_VALUES.length; seli++) {
+        var selected = SELECTED_VALUES[seli];
+        allData.push({
+          size: size,
+          variant: variant,
+          selected: selected,
+          sizeConfig: getDateRangePickerSizeDimensions(size),
+          variantConfig: getDateRangePickerVariantBackground(variant),
+        });
+      }
+    }
+  }
+
+  return {
+    sizeConfig: getDateRangePickerSizeConfig(),
+    variantConfig: getDateRangePickerVariantConfig(),
+    selectedConfig: getDateRangePickerSelectedConfig(),
+    dayLabels: getDateRangePickerDayLabels(),
+    monthConfig: getDateRangePickerMonthConfig(),
+    variants: allData,
+  };
+}
