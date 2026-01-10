@@ -20,8 +20,8 @@ for ((i=1; i<=MAX_ITERATIONS; i++)); do
   echo "Ralph iteration $i of $MAX_ITERATIONS"
   echo "==============================="
   
-  # Run opencode and capture full output (uses default model - Claude Sonnet 4.5)
-  result=$(cat "$SCRIPT_DIR/ralph-prompt.md" | opencode run -f "$SCRIPT_DIR/PRD.json" -f "$SCRIPT_DIR/SPEC.md" -f "$SCRIPT_DIR/progress.txt")
+  # Run opencode with GPT-5.2 and capture full output
+  result=$(cat "$SCRIPT_DIR/ralph-prompt.md" | opencode run --model openai/gpt-5.2 -f "$SCRIPT_DIR/PRD.json" -f "$SCRIPT_DIR/SPEC.md" -f "$SCRIPT_DIR/progress.txt")
 
   echo "$result"
 
