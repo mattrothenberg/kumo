@@ -138,6 +138,96 @@ function traverseAndBindStrokes(node: SceneNode, variableId: string): void {
   }
 }
 
+// ============================================================
+// TESTABLE EXPORTS - Pure functions for testing (no Figma API calls)
+// ============================================================
+
+/**
+ * Get Loader size configuration from loader-data.json
+ *
+ * Returns the size values and their metadata.
+ *
+ * @returns Object with size values array and size configs
+ */
+export function getLoaderSizeConfig() {
+  return {
+    values: Object.keys(loaderData.sizes),
+    sizes: loaderData.sizes,
+  };
+}
+
+/**
+ * Get SVG data from loader-data.json
+ *
+ * Returns the SVG string and viewBox dimensions.
+ *
+ * @returns Object with SVG string, viewBox, and dimensions
+ */
+export function getLoaderSvgData() {
+  return {
+    svgString: loaderData.svgString,
+    viewBox: loaderData.viewBox,
+    width: loaderData.width,
+    height: loaderData.height,
+    circles: loaderData.circles,
+  };
+}
+
+/**
+ * Get computed dimensions for a specific size
+ *
+ * @param size - Size key (sm, base, lg)
+ * @returns Object with dimension data for the size
+ */
+export function getLoaderSizeDimensions(size: string) {
+  var sizeConfig = loaderData.sizes[size as keyof typeof loaderData.sizes];
+  if (!sizeConfig) {
+    throw new Error("Invalid size: " + size);
+  }
+
+  return {
+    size,
+    value: sizeConfig.value,
+    description: sizeConfig.description,
+  };
+}
+
+/**
+ * Get color binding for Loader
+ *
+ * Returns the semantic token used for stroke color.
+ *
+ * @returns Object with color token name
+ */
+export function getLoaderColorBinding() {
+  return {
+    strokeVariable: "text-color-surface",
+  };
+}
+
+/**
+ * Get all Loader data for snapshot testing
+ *
+ * Returns complete intermediate data structure that the generator
+ * computes before making Figma API calls.
+ *
+ * @returns Complete Loader data structure
+ */
+export function getAllLoaderData() {
+  var sizeConfig = getLoaderSizeConfig();
+  var svgData = getLoaderSvgData();
+  var colorBinding = getLoaderColorBinding();
+
+  return {
+    sizeConfig,
+    svgData,
+    colorBinding,
+    sizes: sizeConfig.values.map((size) => {
+      return getLoaderSizeDimensions(size);
+    }),
+  };
+}
+
 /**
  * Generate Loader ComponentSet
  *

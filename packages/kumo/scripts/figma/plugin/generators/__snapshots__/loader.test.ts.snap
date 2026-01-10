@@ -1,0 +1,194 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Loader Generator - Snapshot Tests (Intermediate Data) > should produce consistent SVG data 1`] = `
+{
+  "circles": [
+    {
+      "cx": 12,
+      "cy": 12,
+      "fill": "none",
+      "r": 9.5,
+      "strokeDasharray": "42 150",
+      "strokeDashoffset": "-16",
+      "strokeLinecap": "round",
+      "strokeWidth": 2,
+    },
+    {
+      "cx": 12,
+      "cy": 12,
+      "fill": "none",
+      "opacity": 0.1,
+      "r": 9.5,
+      "strokeLinecap": "round",
+      "strokeWidth": 2,
+    },
+  ],
+  "height": 24,
+  "svgString": "<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <circle
+    cx="12"
+    cy="12"
+    r="9.5"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    opacity="0.1"
+  />
+  <path
+    d="M 12 2.5 A 9.5 9.5 0 1 1 3.072920102533871 15.249191361593855"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+  />
+</svg>",
+  "viewBox": "0 0 24 24",
+  "width": 24,
+}
+`;
+
+exports[`Loader Generator - Snapshot Tests (Intermediate Data) > should produce consistent color binding 1`] = `
+{
+  "strokeVariable": "text-color-surface",
+}
+`;
+
+exports[`Loader Generator - Snapshot Tests (Intermediate Data) > should produce consistent dimensions for base size 1`] = `
+{
+  "description": "Default loader size",
+  "size": "base",
+  "value": 24,
+}
+`;
+
+exports[`Loader Generator - Snapshot Tests (Intermediate Data) > should produce consistent dimensions for lg size 1`] = `
+{
+  "description": "Large loader for prominent loading states",
+  "size": "lg",
+  "value": 32,
+}
+`;
+
+exports[`Loader Generator - Snapshot Tests (Intermediate Data) > should produce consistent dimensions for sm size 1`] = `
+{
+  "description": "Small loader for inline use",
+  "size": "sm",
+  "value": 16,
+}
+`;
+
+exports[`Loader Generator - Snapshot Tests (Intermediate Data) > should produce consistent intermediate data for all sizes (golden path) 1`] = `
+{
+  "colorBinding": {
+    "strokeVariable": "text-color-surface",
+  },
+  "sizeConfig": {
+    "sizes": {
+      "base": {
+        "description": "Default loader size",
+        "value": 24,
+      },
+      "lg": {
+        "description": "Large loader for prominent loading states",
+        "value": 32,
+      },
+      "sm": {
+        "description": "Small loader for inline use",
+        "value": 16,
+      },
+    },
+    "values": [
+      "sm",
+      "base",
+      "lg",
+    ],
+  },
+  "sizes": [
+    {
+      "description": "Small loader for inline use",
+      "size": "sm",
+      "value": 16,
+    },
+    {
+      "description": "Default loader size",
+      "size": "base",
+      "value": 24,
+    },
+    {
+      "description": "Large loader for prominent loading states",
+      "size": "lg",
+      "value": 32,
+    },
+  ],
+  "svgData": {
+    "circles": [
+      {
+        "cx": 12,
+        "cy": 12,
+        "fill": "none",
+        "r": 9.5,
+        "strokeDasharray": "42 150",
+        "strokeDashoffset": "-16",
+        "strokeLinecap": "round",
+        "strokeWidth": 2,
+      },
+      {
+        "cx": 12,
+        "cy": 12,
+        "fill": "none",
+        "opacity": 0.1,
+        "r": 9.5,
+        "strokeLinecap": "round",
+        "strokeWidth": 2,
+      },
+    ],
+    "height": 24,
+    "svgString": "<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <circle
+    cx="12"
+    cy="12"
+    r="9.5"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    opacity="0.1"
+  />
+  <path
+    d="M 12 2.5 A 9.5 9.5 0 1 1 3.072920102533871 15.249191361593855"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+  />
+</svg>",
+    "viewBox": "0 0 24 24",
+    "width": 24,
+  },
+}
+`;
+
+exports[`Loader Generator - Snapshot Tests (Intermediate Data) > should produce consistent size configuration 1`] = `
+{
+  "sizes": {
+    "base": {
+      "description": "Default loader size",
+      "value": 24,
+    },
+    "lg": {
+      "description": "Large loader for prominent loading states",
+      "value": 32,
+    },
+    "sm": {
+      "description": "Small loader for inline use",
+      "value": 16,
+    },
+  },
+  "values": [
+    "sm",
+    "base",
+    "lg",
+  ],
+}
+`;

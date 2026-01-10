@@ -193,7 +193,7 @@
       "name": "loader",
       "tier": 3,
       "priority": "medium",
-      "passes": false
+      "passes": true
     },
     {
       "name": "meter",
