@@ -1,4 +1,5 @@
 import { logComplete } from "../logger";
+import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 /**
  * Tooltip Component Generator
  *
@@ -30,6 +31,9 @@ import {
   BORDER_RADIUS,
 } from "./shared";
 
+// Import registry as source of truth
+import registry from "../../../../ai/component-registry.json";
+
 /**
  * Section padding for component display
  */
@@ -45,6 +49,15 @@ var SECTION_GAP = 160;
  */
 var ARROW_WIDTH = 20;
 var ARROW_HEIGHT = 10;
+
+/**
+ * Tooltip styling - hardcoded in generator
+ * NOTE: This differs from the actual React component which uses bg-black-icon
+ * and text-white. The generator uses bg-surface-3 and text-surface instead.
+ */
+var TOOLTIP_BOX_STYLES = "bg-surface-3 text-surface rounded-md px-2.5 py-1.5 text-sm";
+var TOOLTIP_TEXT_SIZE = 14; // text-sm
+var TOOLTIP_TEXT_WEIGHT = 400; // normal
 
 /**
  * Create a tooltip arrow as a simple triangle pointing down using vector path
@@ -253,4 +266,103 @@ export async function generateTooltipComponents(
   logComplete("Generated Tooltip ComponentSet (light + dark)");
 
   return startY + totalHeight + SECTION_GAP;
+}
+
+/**
+ * ============================================================================
+ * TESTABLE EXPORTS - Pure functions for testing (no Figma API calls)
+ * ============================================================================
+ */
+
+/**
+ * Get Tooltip configuration from registry
+ * 
+ * @returns Side variant configuration
+ */
+export function getTooltipSideConfig() {
+  var componentData = registry.components.Tooltip;
+  var props = componentData.props;
+  var sideProp = props.side as {
+    values: string[];
+    descriptions: Record<string, string>;
+    default: string;
+  };
+
+  return {
+    values: sideProp.values,
+    descriptions: sideProp.descriptions,
+    default: sideProp.default,
+  };
+}
+
+/**
+ * Get parsed styles for Tooltip box
+ * 
+ * @returns Parsed Tailwind styles
+ */
+export function getTooltipParsedBoxStyles() {
+  return parseTailwindClasses(TOOLTIP_BOX_STYLES);
+}
+
+/**
+ * Get Tooltip box layout data
+ * 
+ * @returns Layout dimensions and styling
+ */
+export function getTooltipBoxLayout() {
+  var parsed = parseTailwindClasses(TOOLTIP_BOX_STYLES);
+
+  return {
+    // Padding
+    paddingX: parsed.paddingX,
+    paddingY: parsed.paddingY,
+    // Border radius
+    borderRadius: parsed.borderRadius,
+    // Typography
+    fontSize: TOOLTIP_TEXT_SIZE,
+    fontWeight: TOOLTIP_TEXT_WEIGHT,
+    // Fill
+    fillVariable: parsed.fillVariable,
+    // Text
+    textVariable: parsed.textVariable,
+    isWhiteText: parsed.isWhiteText,
+  };
+}
+
+/**
+ * Get Tooltip arrow dimensions
+ * 
+ * @returns Arrow dimensions
+ */
+export function getTooltipArrowDimensions() {
+  return {
+    width: ARROW_WIDTH,
+    height: ARROW_HEIGHT,
+  };
+}
+
+/**
+ * Get complete Tooltip intermediate data
+ * 
+ * @returns All intermediate data for Tooltip component
+ */
+export function getAllTooltipData() {
+  var sideConfig = getTooltipSideConfig();
+  var boxLayout = getTooltipBoxLayout();
+  var arrowDimensions = getTooltipArrowDimensions();
+  var parsedStyles = getTooltipParsedBoxStyles();
+
+  return {
+    sideConfig,
+    boxStyles: {
+      raw: TOOLTIP_BOX_STYLES,
+      parsed: parsedStyles,
+    },
+    boxLayout,
+    arrowDimensions,
+    text: {
+      fontSize: TOOLTIP_TEXT_SIZE,
+      fontWeight: TOOLTIP_TEXT_WEIGHT,
+    },
+  };
 }

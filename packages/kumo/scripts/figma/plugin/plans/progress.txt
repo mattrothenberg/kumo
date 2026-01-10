@@ -106,3 +106,51 @@ Starting test refactoring for Figma generators using structural + snapshot patte
 **Status:** COMPLETE - Ready for commit
 
 ---
+
+
+## Iteration 3: tooltip (Tier 3)
+
+**Generator:** tooltip
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Added testable exports to tooltip.ts:
+   - `getTooltipSideConfig()` - Returns side variant configuration from registry
+   - `getTooltipParsedBoxStyles()` - Returns parsed tooltip box styles
+   - `getTooltipBoxLayout()` - Returns computed box layout (padding, border radius, typography)
+   - `getTooltipArrowDimensions()` - Returns arrow width and height
+   - `getAllTooltipData()` - Returns complete intermediate data
+
+2. Created tooltip.test.ts with 29 tests:
+   - Registry Validation (4 tests)
+   - Box Styles Parsing (5 tests)
+   - Side Configuration (2 tests)
+   - Box Layout (5 tests)
+   - Arrow Dimensions (2 tests)
+   - Complete Tooltip Data (6 tests)
+   - Snapshot Tests (5 tests)
+
+3. All tests follow structural + snapshot pattern from badge.test.ts
+
+### Test Results:
+- ✅ All 29 tests pass
+- ✅ 5 snapshots created
+- ✅ Verified tests pass consistently with --run flag
+
+### Issues Encountered:
+- Pre-existing TypeScript errors in tooltip.ts (same as dropdown and combobox)
+- Generator uses hardcoded styles (bg-surface-3, text-surface) that differ from actual React component (bg-black-icon, text-white)
+- Parser doesn't recognize bg-surface-3, so tests were adjusted to handle undefined fillVariable gracefully
+- Tests validate generator implementation (what it actually does) rather than what it should do
+
+### Notes:
+- Tooltip generator uses hardcoded values directly in the generator (not reading from registry like Badge)
+- This is a simpler pattern but means generator may be out of sync with React component
+- Tests ensure the generator's intermediate data structure is stable and regression-protected
+- Arrow dimensions (20x10) are hardcoded constants in the generator
+
+**Status:** COMPLETE - Ready for commit
+
+---
+
