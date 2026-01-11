@@ -18,10 +18,13 @@ Phases 1-3 are COMPLETE:
 
 **Permanently excluded (no generator needed):**
 
-- DropdownMenu - Alias for Dropdown (uses dropdown.ts)
 - Field - Form wrapper utility with no standalone visual representation
 - Icon - Utility component (handled by icon-library.ts)
 - Toasty - Alias for Toast (uses toast.ts)
+
+**Name mappings (generator exists, name differs):**
+
+- DropdownMenu → dropdown.ts
 
 **Reference files:**
 
@@ -117,7 +120,6 @@ Remove from EXCLUDED_COMPONENTS after generator is complete:
 // In drift-detection.test.ts, remove the component from the "Phase 4 targets" section
 const EXCLUDED_COMPONENTS = new Set([
   // Permanently excluded...
-  "DropdownMenu",
   "Field",
   "Icon",
   "Toasty",
