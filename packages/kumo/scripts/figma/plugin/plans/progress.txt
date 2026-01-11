@@ -1431,3 +1431,66 @@ InputArea is NOT in registry because:
 
 **Status:** COMPLETE - Ready for commit
 
+
+---
+
+## Iteration 28: sensitive-input (Tier 3 - PHASE 2: Registry Integration)
+
+**Generator:** sensitive-input
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Migrated SIZE_VALUES and VARIANT_VALUES from hardcoded arrays to Input registry:
+   - SIZE_VALUES: Changed from ["xs", "sm", "base", "lg"] to sizeProp.values (from Input registry)
+   - VARIANT_VALUES: Changed from ["default", "error"] to variantProp.values (from Input registry)
+   - Added registry import at top of file
+   
+2. Migrated SIZE_CONFIG from hardcoded to registry-derived:
+   - Created getSizeConfigFromRegistry() helper that reads from inputStyling.sizeVariants
+   - SIZE_CONFIG now dynamically computed from Input registry dimensions
+   - Uses: height, paddingX, fontSize, borderRadius from registry
+   - Layout-specific values remain hardcoded: width (200-320px), iconSize (sm/base)
+   
+3. Added comprehensive testable exports:
+   - getSensitiveInputSizeConfig() - Returns size config with registry source
+   - getSensitiveInputVariantConfig() - Returns variant config with registry source
+   - getSensitiveInputStateConfig() - Returns state configuration
+   - getSensitiveInputModeConfig() - Returns mode configuration (masked/revealed)
+   - getSensitiveInputWithLabelConfig() - Returns withLabel configuration
+   - getSensitiveInputSizeDimensions(size) - Returns computed dimensions for specific size
+   - getAllSensitiveInputVariantData() - Returns complete intermediate data with registry metadata
+   
+4. What remains hardcoded (by design):
+   - SIZE_WIDTHS: { xs: 200, sm: 220, base: 280, lg: 320 } - Layout-specific (SensitiveInput demonstration)
+   - ICON_SIZES: { xs: "sm", sm: "sm", base: "base", lg: "base" } - Icon size mapping
+   - STATE_VALUES: ["default", "focus", "disabled"] - Generator-specific interaction states
+   - MODE_VALUES: ["masked", "revealed"] - SensitiveInput-specific feature
+   - WITH_LABEL_VALUES: [false, true] - Generator-specific Field wrapper option
+   - STATE_STYLES: State-specific overrides (ringVariable, opacity) - Presentation logic
+   - VARIANT_CONFIG: Label/description/error message text content (presentation data)
+
+### Test Results:
+- ✅ All 29 tests pass
+- ✅ No snapshots changed (registry values match previous hardcoded values exactly)
+- ✅ Verified tests pass consistently with --run flag
+
+### Registry Gaps Found:
+None - SensitiveInput correctly uses Input registry data:
+- Input.props.size.values ✅ (xs, sm, base, lg)
+- Input.props.variant.values ✅ (default, error)
+- Input.styling.sizeVariants ✅ (height, paddingX, fontSize, borderRadius)
+
+No additional registry extraction needed - SensitiveInput is a specialized Input variant.
+
+### Notes:
+- SensitiveInput was marked "partial" in PRD because it used Input's registry but had hardcoded SIZE_CONFIG
+- Now fully migrated - SIZE_CONFIG computed from Input registry at generator init time
+- SensitiveInput is a specialized version of Input with additional mode (masked/revealed) and eye icon toggle
+- Generator creates 4 sizes × 2 variants × 3 states × 2 modes × 2 withLabel = 96 component variants
+- Layout-specific values (width, iconSize) intentionally remain hardcoded for demonstration purposes
+- Pre-existing TypeScript errors for textAutoResize property (documented in earlier iterations)
+- SensitiveInput is first Tier 3 generator fully migrated in Phase 2
+
+**Status:** COMPLETE - Ready for commit
+

@@ -29,6 +29,7 @@ import {
   BORDER_RADIUS,
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
+import registry from "../../../../ai/component-registry.json";
 
 /**
  * Section padding for component display
@@ -41,7 +42,96 @@ var SECTION_PADDING = 48;
 var SECTION_GAP = 160;
 
 /**
- * Size configuration matching KUMO_INPUT_VARIANTS
+ * Extract Input component data from registry
+ * SensitiveInput uses Input's size and variant configuration
+ */
+var inputComponent = registry.components.Input;
+var inputProps = inputComponent.props;
+var inputStyling = inputComponent.styling;
+
+var sizeProp = inputProps.size as {
+  values: string[];
+  classes: Record<string, string>;
+  descriptions: Record<string, string>;
+  default: string;
+};
+
+var variantProp = inputProps.variant as {
+  values: string[];
+  classes: Record<string, string>;
+  descriptions: Record<string, string>;
+  default: string;
+};
+
+/**
+ * Size values from Input registry
+ */
+var SIZE_VALUES = sizeProp.values;
+
+/**
+ * Variant values from Input registry
+ */
+var VARIANT_VALUES = variantProp.values;
+
+/**
+ * Width mapping for SensitiveInput (layout-specific)
+ */
+var SIZE_WIDTHS: Record<string, number> = {
+  xs: 200,
+  sm: 220,
+  base: 280,
+  lg: 320,
+};
+
+/**
+ * Icon size mapping for SensitiveInput (layout-specific)
+ */
+var ICON_SIZES: Record<string, string> = {
+  xs: "sm",
+  sm: "sm",
+  base: "base",
+  lg: "base",
+};
+
+/**
+ * Get size configuration from Input registry styling
+ */
+function getSizeConfigFromRegistry(
+  size: string,
+): {
+  height: number;
+  paddingX: number;
+  fontSize: number;
+  borderRadius: number;
+  width: number;
+  iconSize: string;
+} {
+  var sizeVariants = inputStyling.sizeVariants as Record<
+    string,
+    {
+      height: number;
+      classes: string;
+      dimensions: {
+        paddingX: number;
+        fontSize: number;
+        borderRadius: number;
+      };
+    }
+  >;
+  var sizeVariant = sizeVariants[size] || sizeVariants["base"];
+
+  return {
+    height: sizeVariant.height,
+    paddingX: sizeVariant.dimensions.paddingX,
+    fontSize: sizeVariant.dimensions.fontSize,
+    borderRadius: sizeVariant.dimensions.borderRadius,
+    width: SIZE_WIDTHS[size] || SIZE_WIDTHS["base"],
+    iconSize: ICON_SIZES[size] || ICON_SIZES["base"],
+  };
+}
+
+/**
+ * Size configuration from registry (dynamically computed)
  */
 var SIZE_CONFIG: Record<
   string,
@@ -53,50 +143,13 @@ var SIZE_CONFIG: Record<
     width: number;
     iconSize: string;
   }
-> = {
-  xs: {
-    height: 20, // h-5
-    paddingX: 6, // px-1.5
-    fontSize: 12, // text-xs
-    borderRadius: BORDER_RADIUS.sm,
-    width: 200,
-    iconSize: "sm",
-  },
-  sm: {
-    height: 26, // h-6.5
-    paddingX: 8, // px-2
-    fontSize: 12, // text-xs
-    borderRadius: BORDER_RADIUS.md,
-    width: 220,
-    iconSize: "sm",
-  },
-  base: {
-    height: 36, // h-9
-    paddingX: 12, // px-3
-    fontSize: 16, // text-base
-    borderRadius: BORDER_RADIUS.lg,
-    width: 280,
-    iconSize: "base",
-  },
-  lg: {
-    height: 40, // h-10
-    paddingX: 16, // px-4
-    fontSize: 16, // text-base
-    borderRadius: BORDER_RADIUS.lg,
-    width: 320,
-    iconSize: "base",
-  },
-};
+> = {};
 
-/**
- * Size values
- */
-var SIZE_VALUES = ["xs", "sm", "base", "lg"];
-
-/**
- * Variant values
- */
-var VARIANT_VALUES = ["default", "error"];
+// Populate SIZE_CONFIG from registry at generator init time
+for (var i = 0; i < SIZE_VALUES.length; i++) {
+  var sizeKey = SIZE_VALUES[i];
+  SIZE_CONFIG[sizeKey] = getSizeConfigFromRegistry(sizeKey);
+}
 
 /**
  * State values
@@ -589,7 +642,87 @@ export async function generateSensitiveInputComponents(
 }
 
 /**
- * Exports for tests
+ * Testable exports
+ */
+
+/**
+ * Get size configuration from Input registry
+ */
+export function getSensitiveInputSizeConfig() {
+  return {
+    values: SIZE_VALUES,
+    config: SIZE_CONFIG,
+    registrySource: "Input.props.size.values",
+    registryStyling: inputStyling.sizeVariants,
+  };
+}
+
+/**
+ * Get variant configuration from Input registry
+ */
+export function getSensitiveInputVariantConfig() {
+  return {
+    values: VARIANT_VALUES,
+    config: VARIANT_CONFIG,
+    registrySource: "Input.props.variant.values",
+  };
+}
+
+/**
+ * Get state configuration (generator-specific)
+ */
+export function getSensitiveInputStateConfig() {
+  return {
+    values: STATE_VALUES,
+    styles: STATE_STYLES,
+  };
+}
+
+/**
+ * Get mode configuration (SensitiveInput-specific)
+ */
+export function getSensitiveInputModeConfig() {
+  return {
+    values: MODE_VALUES,
+  };
+}
+
+/**
+ * Get withLabel configuration (generator-specific)
+ */
+export function getSensitiveInputWithLabelConfig() {
+  return {
+    values: WITH_LABEL_VALUES,
+  };
+}
+
+/**
+ * Get computed size dimensions for a specific size
+ */
+export function getSensitiveInputSizeDimensions(size: string) {
+  return SIZE_CONFIG[size] || SIZE_CONFIG["base"];
+}
+
+/**
+ * Get complete intermediate data
+ */
+export function getAllSensitiveInputVariantData() {
+  return {
+    sizeConfig: getSensitiveInputSizeConfig(),
+    variantConfig: getSensitiveInputVariantConfig(),
+    stateConfig: getSensitiveInputStateConfig(),
+    modeConfig: getSensitiveInputModeConfig(),
+    withLabelConfig: getSensitiveInputWithLabelConfig(),
+    registryMetadata: {
+      component: inputComponent.name,
+      description: inputComponent.description,
+      colors: inputComponent.colors,
+    },
+  };
+}
+
+/**
+ * Legacy exports for backward compatibility
  */
 export var SENSITIVE_INPUT_SIZE_VALUES = SIZE_VALUES;
 export var SENSITIVE_INPUT_VARIANT_VALUES = VARIANT_VALUES;

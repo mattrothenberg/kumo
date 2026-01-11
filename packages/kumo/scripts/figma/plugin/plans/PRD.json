@@ -170,8 +170,8 @@
       "name": "sensitive-input",
       "tier": 3,
       "priority": "low",
-      "status": "partial",
-      "notes": "Uses Input's registry data but adds hardcoded mode/state dimensions"
+      "status": "complete",
+      "notes": "Fully migrated. SIZE_VALUES and VARIANT_VALUES from Input registry. SIZE_CONFIG derived from inputStyling.sizeVariants. Width and iconSize mappings remain layout-specific. STATE_STYLES, MODE_VALUES, and VARIANT_CONFIG remain generator-specific (text content and presentation logic). Added testable exports. All 29 tests pass."
     },
     {
       "name": "surface",
