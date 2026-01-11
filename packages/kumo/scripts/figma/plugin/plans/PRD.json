@@ -1,458 +1,277 @@
 {
-  "title": "Figma Plugin Robustness - Test Brittleness & Parser Enhancement",
-  "overview": "Fix brittle tests and enhance the Tailwind parser to handle advanced patterns. The registry integration phase (15 generators) is COMPLETE. This phase focuses on removing test brittleness and improving parser capabilities.",
+  "title": "Figma Plugin Phase 4 - Missing Generator Coverage",
+  "overview": "Add Figma generators for the 4 components currently excluded from drift detection: Breadcrumbs, Empty, Field, PageHeader. This completes 100% coverage of components in the registry.",
   "context": {
-    "problem": "1) Some tests use hardcoded variant counts/names that break when components change. 2) Parser doesn't handle advanced Tailwind patterns (state variants, arbitrary values, opacity modifiers). 3) Some generators need tests added.",
-    "current_state": "Registry integration COMPLETE (15/15 generators). Tests exist for 29/29 generators but some have brittle assertions. Parser handles basic patterns but misses hover:, focus:, w-[350px], bg-primary/70 patterns.",
-    "why_now": "Registry integration is done - the dynamic parsing works. Now we need to: 1) Make tests resilient to component changes, 2) Extend parser for advanced patterns, 3) Add missing tests."
+    "problem": "4 components in component-registry.json don't have Figma generators and are excluded in drift-detection.test.ts. This creates gaps in the Figma UI kit.",
+    "current_state": "26/30 registry components have generators. 4 are explicitly excluded: Breadcrumbs, Empty, Field, PageHeader. All Phase 3 parser enhancements complete.",
+    "why_now": "Phase 3 (parser enhancements + test brittleness fixes) is COMPLETE. Next logical step is achieving 100% component coverage."
   },
   "goals": {
     "primary": [
-      "Fix brittle tests - replace hardcoded variant counts with dynamic checks",
-      "Add tests for generators missing rigorous coverage",
-      "Enhance parser to handle state variants (hover:, focus:)",
-      "Enhance parser to handle arbitrary values (w-[350px])",
-      "Enhance parser to handle opacity modifiers (bg-primary/70)"
+      "Create generator for Breadcrumbs component",
+      "Create generator for Empty component",
+      "Create generator for Field component",
+      "Create generator for PageHeader component",
+      "Remove components from EXCLUDED_COMPONENTS in drift-detection.test.ts"
     ],
     "metrics": [
-      "0 tests with hardcoded variant counts",
-      "All tests pass when new variants are added to components",
-      "Parser handles 90%+ of Tailwind patterns used in components",
-      "All generators have rigorous structural + snapshot tests"
+      "30/30 components have generators (100% coverage)",
+      "Drift detection test validates all components",
+      "All new generators have rigorous tests with snapshots"
     ]
   },
   "requirements": {
     "functional": [
       {
         "id": "FR-1",
-        "title": "Remove Brittle Variant Count Tests",
-        "description": "Replace hardcoded variant lists/counts with dynamic checks",
+        "title": "Breadcrumbs Generator",
+        "description": "Create a generator for the Breadcrumbs block component",
         "acceptance": [
-          "Replace `expect(values).toHaveLength(5)` with `expect(values.length).toBeGreaterThan(0)`",
-          "Replace `expect(values).toEqual([...])` with `expect(values).toContain('primary')` for required variants",
-          "Use registry as source for expected variants where needed",
-          "Tests should pass when new variants are added to components"
+          "Generator creates Figma ComponentSet with breadcrumb items",
+          "Uses Icon components from Icon Library for separators",
+          "Reads from component-registry.json",
+          "Has testable exports following badge.ts pattern",
+          "Has rigorous test file with structural + snapshot tests"
         ]
       },
       {
         "id": "FR-2",
-        "title": "Add Missing Rigorous Tests",
-        "description": "Add structural + snapshot tests for generators missing coverage",
+        "title": "Empty Generator",
+        "description": "Create a generator for the Empty display component",
         "acceptance": [
-          "link-button.test.ts - Verify registry integration and structural validation",
-          "refresh-button.test.ts - Verify registry integration and structural validation",
-          "switch.test.ts - Verify registry integration and structural validation",
-          "All new tests follow structural + snapshot pattern from badge.test.ts"
+          "Generator creates Figma component showing empty state pattern",
+          "Includes icon, title, and description layout",
+          "Reads from component-registry.json",
+          "Has testable exports",
+          "Has rigorous test file"
         ]
       },
       {
         "id": "FR-3",
-        "title": "Parser: State Variant Parsing",
-        "description": "Extend parser to handle hover:, focus:, active:, disabled: pseudo-class variants",
+        "title": "Field Generator",
+        "description": "Create a generator for the Field form wrapper component",
         "acceptance": [
-          "parseTailwindClasses('hover:bg-primary/70') extracts hover state with opacity",
-          "parseTailwindClasses('focus:ring-active') extracts focus ring binding",
-          "Returns parsed.states object with state-specific overrides",
-          "Generator state styles can be derived from parsed registry classes"
+          "Generator creates Figma component with label, input slot, description, error",
+          "Shows different states (default, error, disabled)",
+          "Reads from component-registry.json",
+          "Has testable exports",
+          "Has rigorous test file"
         ]
       },
       {
         "id": "FR-4",
-        "title": "Parser: Arbitrary Value Parsing",
-        "description": "Extend parser to handle arbitrary Tailwind values",
+        "title": "PageHeader Generator",
+        "description": "Create a generator for the PageHeader block component",
         "acceptance": [
-          "parseTailwindClasses('w-[350px]') returns width: 350",
-          "parseTailwindClasses('min-w-[32rem]') returns minWidth: 512 (32*16)",
-          "parseTailwindClasses('h-[2.5rem]') returns height: 40 (2.5*16)",
-          "Handle px, rem, em units"
+          "Generator creates Figma component with title, description, actions",
+          "Uses Breadcrumbs sub-component if available",
+          "Reads from component-registry.json",
+          "Has testable exports",
+          "Has rigorous test file"
         ]
       },
       {
         "id": "FR-5",
-        "title": "Parser: Opacity Modifier Parsing",
-        "description": "Extend parser to handle opacity modifiers on colors",
+        "title": "Update Drift Detection",
+        "description": "Remove completed components from EXCLUDED_COMPONENTS",
         "acceptance": [
-          "parseTailwindClasses('bg-primary/70') returns fillVariable: 'color-primary', fillOpacity: 0.7",
-          "parseTailwindClasses('text-surface/50') returns textVariable: 'text-color-surface', textOpacity: 0.5",
-          "Works with semantic tokens (bg-error/20, text-info/80)",
-          "Generator can use opacity values for Figma fill/text opacity"
+          "Remove Breadcrumbs from EXCLUDED_COMPONENTS after generator complete",
+          "Remove Empty from EXCLUDED_COMPONENTS after generator complete",
+          "Remove Field from EXCLUDED_COMPONENTS after generator complete",
+          "Remove PageHeader from EXCLUDED_COMPONENTS after generator complete",
+          "Drift detection test still passes with 0 excluded"
         ]
       }
     ],
     "non_functional": [
       {
         "id": "NFR-1",
-        "title": "Backward Compatibility",
-        "description": "Parser changes must not break existing generators",
+        "title": "Follow Established Patterns",
+        "description": "All generators must follow the established patterns from Phase 1-3",
         "acceptance": [
-          "All existing tests pass after parser changes",
-          "Generators produce identical output (snapshots unchanged)",
-          "New parsed properties are additive, not replacing existing"
-        ]
-      },
-      {
-        "id": "NFR-2",
-        "title": "Test Resilience",
-        "description": "Tests should be resilient to design changes",
-        "acceptance": [
-          "Tests validate structure and types, not exact values",
-          "Snapshots catch value drift without hardcoding",
-          "Adding new variants doesn't break tests"
+          "Import from component-registry.json",
+          "Use parseTailwindClasses for styling",
+          "Export testable pure functions",
+          "Follow structural + snapshot test pattern"
         ]
       }
     ]
   },
   "scope": {
     "in_scope": [
-      "Fix brittle tests in existing test files",
-      "Add rigorous tests for 3 generators (link-button, refresh-button, switch)",
-      "Enhance tailwind-to-figma.ts parser with state, arbitrary, opacity parsing",
-      "Update progress.txt after each task",
-      "Document parser capabilities and limitations"
+      "4 new generators (Breadcrumbs, Empty, Field, PageHeader)",
+      "4 new test files with rigorous coverage",
+      "Updating drift-detection.test.ts EXCLUDED_COMPONENTS",
+      "Registering new generators in code.ts"
     ],
     "out_of_scope": [
-      "Adding new generators",
-      "Modifying React components",
-      "Registry integration (COMPLETE)",
-      "Changing Figma output structure",
-      "E2E Figma API tests"
+      "Modifying existing generators",
+      "Changing React components",
+      "Parser enhancements (Phase 3 complete)",
+      "Documentation updates"
     ]
   },
   "tasks": [
     {
       "id": "T1",
-      "name": "fix-brittle-badge-tests",
-      "title": "Fix Brittle Tests in badge.test.ts",
+      "name": "create-field-generator",
+      "title": "Create Field Generator",
       "priority": "high",
-      "status": "complete",
-      "description": "Replace hardcoded variant counts and exact lists with dynamic checks",
-      "files": [
-        "generators/badge.test.ts"
-      ],
+      "status": "pending",
+      "description": "Field is a utility component - may be simple or could be skipped if purely a wrapper",
+      "files": ["generators/field.ts", "generators/field.test.ts"],
       "acceptance": [
-        "Replace `expect(variantProp.values).toHaveLength(5)` with `expect(variantProp.values.length).toBeGreaterThan(0)`",
-        "Replace `expect(variantProp.values).toEqual([...])` with contains checks for required variants",
-        "Replace `expect(allData.variants).toHaveLength(5)` with dynamic check",
-        "All 59 tests still pass"
+        "Analyze Field component in registry to understand structure",
+        "Create generator or document why it should remain excluded",
+        "If created, add testable exports and tests",
+        "Update EXCLUDED_COMPONENTS if keeping excluded"
       ],
-      "estimated_minutes": 15
+      "estimated_minutes": 30
     },
     {
       "id": "T2",
-      "name": "fix-brittle-button-tests",
-      "title": "Fix Brittle Tests in button.test.ts",
+      "name": "create-empty-generator",
+      "title": "Create Empty Generator",
       "priority": "high",
-      "status": "complete",
-      "description": "Replace hardcoded variant/size counts with dynamic checks",
-      "files": [
-        "generators/button.test.ts"
-      ],
+      "status": "pending",
+      "description": "Empty is a display component for empty states",
+      "files": ["generators/empty.ts", "generators/empty.test.ts"],
       "acceptance": [
-        "Replace hardcoded variant count checks with dynamic",
-        "Replace hardcoded size count checks with dynamic",
-        "Ensure required variants (primary, secondary, ghost, destructive) are checked with contains",
-        "All tests still pass"
-      ],
-      "estimated_minutes": 20
-    },
-    {
-      "id": "T3",
-      "name": "fix-brittle-other-tests",
-      "title": "Fix Brittle Tests in Remaining Test Files",
-      "priority": "high",
-      "status": "complete",
-      "description": "Audit and fix any remaining brittle tests across all generators",
-      "files": [
-        "generators/*.test.ts"
-      ],
-      "acceptance": [
-        "Audit all test files for hardcoded toHaveLength() or toEqual() on variant arrays",
-        "Replace with dynamic checks (length > 0, contains required)",
-        "Document any intentionally exact checks (e.g., size must be exactly 4)",
-        "All tests pass"
-      ],
-      "estimated_minutes": 30
-    },
-    {
-      "id": "T4",
-      "name": "add-link-button-tests",
-      "title": "Add Rigorous Tests for link-button",
-      "priority": "medium",
-      "status": "complete",
-      "description": "Ensure link-button.test.ts has comprehensive structural + snapshot tests",
-      "files": [
-        "generators/link-button.ts",
-        "generators/link-button.test.ts"
-      ],
-      "acceptance": [
-        "Verify testable exports exist (getVariantConfig, getSizeConfig, etc.)",
-        "Add structural tests for all exported functions",
-        "Add snapshot tests for intermediate data",
-        "Follow badge.test.ts pattern",
-        "All tests pass"
-      ],
-      "estimated_minutes": 20
-    },
-    {
-      "id": "T5",
-      "name": "add-refresh-button-tests",
-      "title": "Add Rigorous Tests for refresh-button",
-      "priority": "medium",
-      "status": "complete",
-      "description": "Ensure refresh-button.test.ts has comprehensive structural + snapshot tests",
-      "files": [
-        "generators/refresh-button.ts",
-        "generators/refresh-button.test.ts"
-      ],
-      "acceptance": [
-        "Add testable exports if missing",
-        "Add structural tests for configuration",
-        "Add snapshot tests for intermediate data",
-        "Follow badge.test.ts pattern",
-        "All tests pass"
-      ],
-      "estimated_minutes": 20
-    },
-    {
-      "id": "T6",
-      "name": "add-switch-tests",
-      "title": "Add Rigorous Tests for switch",
-      "priority": "medium",
-      "status": "complete",
-      "description": "Ensure switch.test.ts has comprehensive structural + snapshot tests",
-      "files": [
-        "generators/switch.ts",
-        "generators/switch.test.ts"
-      ],
-      "acceptance": [
-        "Verify testable exports exist",
-        "Add structural tests for dimension parsing",
-        "Add snapshot tests for intermediate data",
-        "Follow badge.test.ts pattern",
-        "All tests pass"
-      ],
-      "estimated_minutes": 20
-    },
-    {
-      "id": "T7",
-      "name": "parser-opacity-modifiers",
-      "title": "Add Opacity Modifier Parsing to Parser",
-      "priority": "medium",
-      "status": "complete",
-      "description": "Extend tailwind-to-figma.ts to handle bg-primary/70, text-surface/50 patterns",
-      "files": [
-        "parsers/tailwind-to-figma.ts",
-        "parsers/tailwind-to-figma.test.ts"
-      ],
-      "acceptance": [
-        "Parse opacity modifiers: /70 -> 0.7, /50 -> 0.5, /20 -> 0.2",
-        "Return fillOpacity, textOpacity, strokeOpacity properties",
-        "Work with all semantic tokens",
-        "Add tests for opacity parsing",
-        "Existing tests still pass"
-      ],
-      "estimated_minutes": 30
-    },
-    {
-      "id": "T8",
-      "name": "parser-arbitrary-values",
-      "title": "Add Arbitrary Value Parsing to Parser",
-      "priority": "medium",
-      "status": "complete",
-      "description": "Extend tailwind-to-figma.ts to handle w-[350px], h-[2.5rem] patterns",
-      "files": [
-        "parsers/tailwind-to-figma.ts",
-        "parsers/tailwind-to-figma.test.ts"
-      ],
-      "acceptance": [
-        "Parse arbitrary values: [350px] -> 350, [32rem] -> 512, [2.5rem] -> 40",
-        "Handle px, rem, em units (rem/em * 16 = px)",
-        "Support width, height, minWidth, minHeight, maxWidth, maxHeight",
-        "Add tests for arbitrary value parsing",
-        "Existing tests still pass"
-      ],
-      "estimated_minutes": 30
-    },
-    {
-      "id": "T9",
-      "name": "parser-state-variants",
-      "title": "Add State Variant Parsing to Parser",
-      "priority": "low",
-      "status": "complete",
-      "description": "Extend tailwind-to-figma.ts to handle hover:, focus:, active:, disabled: prefixes",
-      "files": [
-        "parsers/tailwind-to-figma.ts",
-        "parsers/tailwind-to-figma.test.ts"
-      ],
-      "acceptance": [
-        "Parse state prefixes: hover:bg-primary/70 -> states.hover.fillVariable",
-        "Support hover, focus, active, disabled, pressed states",
-        "Return parsed.states object with state-specific overrides",
-        "Add tests for state variant parsing",
-        "Existing tests still pass"
+        "Create generator with icon, title, description layout",
+        "Add testable exports following badge.ts pattern",
+        "Create rigorous test file",
+        "Register in code.ts",
+        "Remove from EXCLUDED_COMPONENTS"
       ],
       "estimated_minutes": 45
     },
     {
-      "id": "T10",
-      "name": "document-parser-capabilities",
-      "title": "Document Parser Capabilities",
-      "priority": "low",
-      "status": "complete",
-      "description": "Update PLAN.md or create PARSER.md documenting supported Tailwind patterns",
-      "files": [
-        "PLAN.md",
-        "parsers/tailwind-to-figma.ts"
-      ],
+      "id": "T3",
+      "name": "create-breadcrumbs-generator",
+      "title": "Create Breadcrumbs Generator",
+      "priority": "medium",
+      "status": "pending",
+      "description": "Breadcrumbs is a block component with multiple items",
+      "files": ["generators/breadcrumbs.ts", "generators/breadcrumbs.test.ts"],
       "acceptance": [
-        "Document all supported Tailwind patterns with examples",
-        "Document known limitations and workarounds",
-        "Include usage examples for generators",
-        "Update PLAN.md Phase 3 status"
+        "Create generator with breadcrumb items and separators",
+        "Use Icon Library icons for separators",
+        "Add testable exports",
+        "Create rigorous test file",
+        "Register in code.ts",
+        "Remove from EXCLUDED_COMPONENTS"
       ],
-      "estimated_minutes": 20
+      "estimated_minutes": 60
+    },
+    {
+      "id": "T4",
+      "name": "create-pageheader-generator",
+      "title": "Create PageHeader Generator",
+      "priority": "medium",
+      "status": "pending",
+      "description": "PageHeader is a block component with title, description, actions",
+      "files": ["generators/page-header.ts", "generators/page-header.test.ts"],
+      "acceptance": [
+        "Create generator with header layout",
+        "Include title, description, action buttons area",
+        "Add testable exports",
+        "Create rigorous test file",
+        "Register in code.ts",
+        "Remove from EXCLUDED_COMPONENTS"
+      ],
+      "estimated_minutes": 60
+    },
+    {
+      "id": "T5",
+      "name": "verify-coverage",
+      "title": "Verify 100% Coverage",
+      "priority": "low",
+      "status": "pending",
+      "description": "Ensure all generators are registered and drift detection passes",
+      "files": ["generators/drift-detection.test.ts", "code.ts"],
+      "acceptance": [
+        "Run pnpm validate:figma - all tests pass",
+        "EXCLUDED_COMPONENTS has only truly excluded items (Icon, Toasty, DropdownMenu)",
+        "All 30 registry components accounted for",
+        "Document any intentionally excluded components"
+      ],
+      "estimated_minutes": 15
     }
   ],
   "technical_approach": {
-    "brittle_test_fixes": {
-      "before": [
-        "expect(variantProp.values).toEqual(['primary', 'secondary', 'destructive', 'outline', 'beta'])",
-        "expect(variantProp.values).toHaveLength(5)",
-        "expect(allData.variants).toHaveLength(5)"
+    "generator_pattern": {
+      "imports": [
+        "import registry from '../../../../ai/component-registry.json'",
+        "import { parseTailwindClasses } from '../parsers/tailwind-to-figma'",
+        "import { createTextNode, bindFillToVariable, ... } from './shared'"
       ],
-      "after": [
-        "// Dynamic count check",
-        "expect(variantProp.values.length).toBeGreaterThan(0);",
-        "",
-        "// Required variants check (not all variants)",
-        "expect(variantProp.values).toContain('primary');",
-        "expect(variantProp.values).toContain('secondary');",
-        "",
-        "// Dynamic variant count alignment",
-        "expect(allData.variants.length).toBe(variantProp.values.length);"
-      ],
-      "rationale": "Tests should verify structure and required elements, not exact counts that change when design evolves"
+      "exports": [
+        "export function get{Component}Config() { ... }",
+        "export function get{Component}ParsedStyles() { ... }",
+        "export function getAll{Component}Data() { ... }",
+        "export async function generate{Component}Components() { ... }"
+      ]
     },
-    "parser_opacity": {
-      "pattern": "bg-{token}/{opacity} or text-{token}/{opacity}",
-      "regex": "/(bg|text|border|ring)-([\\w-]+)\\/(\\d+)/",
-      "example": {
-        "input": "bg-primary/70",
-        "output": {
-          "fillVariable": "color-primary",
-          "fillOpacity": 0.7
-        }
-      }
-    },
-    "parser_arbitrary": {
-      "pattern": "{property}-[{value}{unit}]",
-      "regex": "/(w|h|min-w|min-h|max-w|max-h)-\\[(\\d+(?:\\.\\d+)?)(px|rem|em)?\\]/",
-      "example": {
-        "input": "w-[350px]",
-        "output": {
-          "width": 350
-        }
-      }
-    },
-    "parser_states": {
-      "pattern": "{state}:{class}",
-      "regex": "/(hover|focus|active|disabled|pressed):([\\w-\\/\\[\\]]+)/",
-      "example": {
-        "input": "hover:bg-primary/70 focus:ring-active",
-        "output": {
-          "states": {
-            "hover": {
-              "fillVariable": "color-primary",
-              "fillOpacity": 0.7
-            },
-            "focus": {
-              "hasRing": true,
-              "ringVariable": "color-active"
-            }
-          }
-        }
-      }
+    "test_pattern": {
+      "sections": [
+        "Registry Validation - verify component exists in registry",
+        "Configuration - test exported config functions",
+        "Structural Validation - test parsed styles have expected properties",
+        "Snapshots - capture intermediate data for regression"
+      ]
     }
   },
   "deliverables": [
     {
-      "name": "Fixed Brittle Tests",
-      "description": "All test files updated to use dynamic variant checks",
+      "name": "New Generators",
+      "description": "4 new generator files following established patterns",
       "files": [
-        "generators/*.test.ts"
+        "generators/field.ts",
+        "generators/empty.ts",
+        "generators/breadcrumbs.ts",
+        "generators/page-header.ts"
       ]
     },
     {
-      "name": "Enhanced Parser",
-      "description": "tailwind-to-figma.ts with opacity, arbitrary value, and state variant support",
+      "name": "Test Coverage",
+      "description": "4 new test files with structural + snapshot tests",
       "files": [
-        "parsers/tailwind-to-figma.ts",
-        "parsers/tailwind-to-figma.test.ts"
+        "generators/field.test.ts",
+        "generators/empty.test.ts",
+        "generators/breadcrumbs.test.ts",
+        "generators/page-header.test.ts"
       ]
     },
     {
-      "name": "Complete Test Coverage",
-      "description": "All generators have rigorous structural + snapshot tests",
-      "files": [
-        "generators/link-button.test.ts",
-        "generators/refresh-button.test.ts",
-        "generators/switch.test.ts"
-      ]
-    },
-    {
-      "name": "Updated Documentation",
-      "description": "Parser capabilities documented in PLAN.md",
-      "files": [
-        "PLAN.md"
-      ]
+      "name": "Updated Code.ts",
+      "description": "New generators registered in GENERATORS array",
+      "files": ["code.ts"]
     }
   ],
   "constraints": [
-    "Must not break existing generators",
-    "All existing tests must continue to pass",
-    "Parser changes must be backward compatible (additive properties)",
-    "Follow existing patterns from badge.test.ts and button.test.ts"
-  ],
-  "risks": [
-    {
-      "risk": "Parser regex may not handle all edge cases",
-      "mitigation": "Add comprehensive tests, use fallbacks, document limitations",
-      "likelihood": "Medium",
-      "impact": "Low"
-    },
-    {
-      "risk": "State variant parsing may be complex for nested states",
-      "mitigation": "Start with simple cases (single state prefix), iterate",
-      "likelihood": "Medium",
-      "impact": "Medium"
-    }
+    "Must follow established generator patterns from Phase 1-3",
+    "Must read from component-registry.json",
+    "Must have rigorous tests with snapshots",
+    "Must not break existing generators"
   ],
   "success_criteria": [
-    "All tests pass when adding a new variant to any component",
-    "Parser handles opacity modifiers correctly",
-    "Parser handles arbitrary values correctly",
-    "All generators have structural + snapshot tests",
-    "progress.txt updated after each task"
+    "All 4 new generators created and registered",
+    "All new tests pass",
+    "Drift detection test passes with reduced exclusions",
+    "pnpm validate:figma passes"
   ],
-  "timeline": {
-    "estimated_effort": "4-5 hours",
-    "breakdown": {
-      "brittle_test_fixes": "60-90 minutes (T1, T2, T3)",
-      "missing_tests": "60 minutes (T4, T5, T6)",
-      "parser_enhancements": "90-120 minutes (T7, T8, T9)",
-      "documentation": "20 minutes (T10)"
-    }
-  },
   "references": {
-    "good_test_examples": [
-      "packages/kumo/scripts/figma/plugin/generators/badge.test.ts",
-      "packages/kumo/scripts/figma/plugin/generators/button.test.ts"
+    "good_examples": [
+      "generators/badge.ts - Simple component pattern",
+      "generators/button.ts - Multi-variant pattern",
+      "generators/dialog.ts - Compound component pattern"
     ],
-    "parser": "packages/kumo/scripts/figma/plugin/parsers/tailwind-to-figma.ts",
-    "plan": "packages/kumo/scripts/figma/plugin/PLAN.md"
+    "registry": "packages/kumo/ai/component-registry.json",
+    "drift_test": "generators/drift-detection.test.ts"
   },
   "completed_phases": {
     "phase_1_test_refactoring": "COMPLETE - All 29 generators have tests",
-    "phase_2_registry_integration": "COMPLETE - All 15 generators migrated to registry"
+    "phase_2_registry_integration": "COMPLETE - All 15 generators migrated to registry",
+    "phase_3_parser_enhancement": "COMPLETE - Opacity, arbitrary values, state variants supported"
   }
 }
