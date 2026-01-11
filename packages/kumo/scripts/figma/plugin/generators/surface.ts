@@ -25,6 +25,7 @@ import {
   SECTION_PADDING,
   SECTION_GAP,
   SECTION_LAYOUT,
+  SHADOWS,
 } from "./shared";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 import registry from "../../../../ai/component-registry.json";
@@ -70,14 +71,14 @@ async function createSurfaceComponent(): Promise<ComponentNode> {
     bindStrokeToVariable(component, borderVar.id, 1);
   }
 
-  // Apply shadow effect (shadow-xs)
+  // Apply shadow effect (shadow-xs) - using centralized SHADOWS preset
   component.effects = [
     {
       type: "DROP_SHADOW",
-      color: { r: 0, g: 0, b: 0, a: 0.05 },
-      offset: { x: 0, y: 1 },
-      radius: 2,
-      spread: 0,
+      color: { r: 0, g: 0, b: 0, a: SHADOWS.xs.opacity },
+      offset: { x: SHADOWS.xs.offsetX, y: SHADOWS.xs.offsetY },
+      radius: SHADOWS.xs.blur,
+      spread: SHADOWS.xs.spread,
       visible: true,
       blendMode: "NORMAL",
     },
@@ -246,14 +247,15 @@ export function getSurfaceColorBindings() {
  * Get Surface shadow configuration
  *
  * Returns the shadow effect configuration (shadow-xs).
+ * Uses centralized SHADOWS.xs preset for consistency.
  */
 export function getSurfaceShadowConfig() {
   return {
     type: "DROP_SHADOW",
-    color: { r: 0, g: 0, b: 0, a: 0.05 },
-    offset: { x: 0, y: 1 },
-    radius: 2,
-    spread: 0,
+    color: { r: 0, g: 0, b: 0, a: SHADOWS.xs.opacity },
+    offset: { x: SHADOWS.xs.offsetX, y: SHADOWS.xs.offsetY },
+    radius: SHADOWS.xs.blur,
+    spread: SHADOWS.xs.spread,
   };
 }
 

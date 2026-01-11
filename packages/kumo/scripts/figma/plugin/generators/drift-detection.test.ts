@@ -604,7 +604,7 @@ describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
           f !== "shared.ts"
       );
 
-    const warnings: string[] = [];
+    const violations: string[] = [];
 
     for (const file of generatorFiles) {
       const filePath = join(__dirname, file);
@@ -618,23 +618,28 @@ describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
       const hasHardcodedRGB = /\{\s*r:\s*0\.[0-9]+\s*,\s*g:\s*0\.[0-9]+\s*,\s*b:\s*0\.[0-9]+\s*\}/.test(content);
 
       if (hasHardcodedRGB && !importsColors) {
-        warnings.push(`${file}: Has hardcoded RGB color object - consider using COLORS from shared.ts`);
+        violations.push(`${file}: Has hardcoded RGB color object - use COLORS from shared.ts`);
       }
     }
 
-    // This is a warning, not a failure - allows for intentional color specifications
-    if (warnings.length > 0) {
-      console.warn(
-        `\n⚠️  Hardcoded RGB colors found:\n  - ${warnings.join("\n  - ")}\n` +
-          `  Consider importing COLORS from shared.ts:\n` +
-          `  - COLORS.placeholder for { r: 0.5, g: 0.5, b: 0.5 }\n` +
-          `  - COLORS.fallbackWhite for { r: 1, g: 1, b: 1 }\n` +
-          `  - COLORS.spinnerStroke for { r: 0.4, g: 0.4, b: 0.4 }\n`
+    if (violations.length > 0) {
+      throw new Error(
+        `❌ Hardcoded RGB colors found:\n` +
+          `  - ${violations.join("\n  - ")}\n\n` +
+          `🔧 To fix:\n` +
+          `  1. Import COLORS from shared.ts\n` +
+          `  2. Replace hardcoded RGB values with COLORS constants:\n` +
+          `     - COLORS.placeholder for { r: 0.5, g: 0.5, b: 0.5 }\n` +
+          `     - COLORS.fallbackWhite for { r: 1, g: 1, b: 1 }\n` +
+          `     - COLORS.spinnerStroke for { r: 0.4, g: 0.4, b: 0.4 }\n` +
+          `     - COLORS.borderGray for { r: 0.8, g: 0.8, b: 0.8 }\n` +
+          `     - COLORS.lightGrayBg for { r: 0.95, g: 0.95, b: 0.95 }\n` +
+          `     - COLORS.skeletonGray for { r: 0.9, g: 0.9, b: 0.9 }\n` +
+          `     - COLORS.fallbackPrimary for { r: 0.0, g: 0.5, b: 1.0 }\n`
       );
     }
 
-    // Always pass - this is guidance
-    expect(true).toBe(true);
+    expect(violations).toEqual([]);
   });
 
   it("should use GRID_LAYOUT.labelVerticalOffset for label positioning", () => {
@@ -727,5 +732,120 @@ describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
     expect(hasLabelOffsetSm).toBe(true);
     expect(hasLabelOffsetMd).toBe(true);
     expect(hasLabelOffsetLg).toBe(true);
+  });
+
+  it("should not have hardcoded COMPACT_SIZE_MAP definition in test files without using FALLBACK_VALUES", () => {
+    const testFiles = readdirSync(__dirname)
+      .filter((f: string) => f.endsWith(".test.ts"));
+
+    const warnings: string[] = [];
+
+    for (const file of testFiles) {
+      if (file === "drift-detection.test.ts") continue; // Skip self
+      
+      const filePath = join(__dirname, file);
+      const content = readFileSync(filePath, "utf-8");
+
+      // Check if file imports FALLBACK_VALUES
+      const importsFallbackValues = /import\s+\{[^}]*FALLBACK_VALUES[^}]*\}\s+from\s+["']\.\/shared["']/.test(content);
+
+      // Check for explicit hardcoded COMPACT_SIZE_MAP definition: { xs: 14, sm: 26, base: 36, lg: 40 }
+      // This is the most drift-prone pattern - explicit recreation of button compact sizes
+      const hasHardcodedCompactMap = /(?:const|let|var)\s+COMPACT_SIZE_MAP[^=]*=\s*\{[^}]*xs:\s*14[^}]*sm:\s*26/.test(content);
+
+      if (hasHardcodedCompactMap && !importsFallbackValues) {
+        warnings.push(`${file}: Has hardcoded COMPACT_SIZE_MAP definition - import FALLBACK_VALUES.buttonCompactSize from shared.ts`);
+      }
+    }
+
+    if (warnings.length > 0) {
+      throw new Error(
+        `❌ Hardcoded COMPACT_SIZE_MAP definitions found in test files:\n` +
+          `  - ${warnings.join("\n  - ")}\n\n` +
+          `🔧 To fix:\n` +
+          `  1. Import FALLBACK_VALUES from shared.ts\n` +
+          `  2. Replace hardcoded definitions:\n` +
+          `     - const COMPACT_SIZE_MAP = FALLBACK_VALUES.buttonCompactSize;\n` +
+          `  Or reference values directly:\n` +
+          `     - FALLBACK_VALUES.buttonCompactSize.xs  (14px)\n` +
+          `     - FALLBACK_VALUES.buttonCompactSize.sm  (26px)\n` +
+          `     - FALLBACK_VALUES.buttonCompactSize.base (36px)\n` +
+          `     - FALLBACK_VALUES.buttonCompactSize.lg  (40px)\n`
+      );
+    }
+
+    expect(warnings).toEqual([]);
+  });
+
+  it("should not have hardcoded opacity 0.5 in test files without using OPACITY constant", () => {
+    const testFiles = readdirSync(__dirname)
+      .filter((f: string) => f.endsWith(".test.ts"));
+
+    const warnings: string[] = [];
+
+    for (const file of testFiles) {
+      if (file === "drift-detection.test.ts") continue; // Skip self
+      
+      const filePath = join(__dirname, file);
+      const content = readFileSync(filePath, "utf-8");
+
+      // Check if file imports OPACITY
+      const importsOpacity = /import\s+\{[^}]*OPACITY[^}]*\}\s+from\s+["']\.\/shared["']/.test(content);
+
+      // Look for hardcoded opacity = 0.5 in assertions or data
+      const hasHardcodedOpacity = /(?:toBe|toEqual|opacity[:\s]*[=:])\s*0\.5\b/.test(content);
+
+      if (hasHardcodedOpacity && !importsOpacity) {
+        warnings.push(`${file}: Has hardcoded opacity 0.5 - import OPACITY.disabled from shared.ts`);
+      }
+    }
+
+    if (warnings.length > 0) {
+      throw new Error(
+        `❌ Hardcoded opacity values found in test files:\n` +
+          `  - ${warnings.join("\n  - ")}\n\n` +
+          `🔧 To fix:\n` +
+          `  1. Import OPACITY from shared.ts\n` +
+          `  2. Replace: opacity = 0.5 or toBe(0.5) → OPACITY.disabled\n`
+      );
+    }
+
+    expect(warnings).toEqual([]);
+  });
+
+  it("should not have hardcoded BORDER_RADIUS.full (9999) in test files without importing BORDER_RADIUS", () => {
+    const testFiles = readdirSync(__dirname)
+      .filter((f: string) => f.endsWith(".test.ts"));
+
+    const warnings: string[] = [];
+
+    for (const file of testFiles) {
+      if (file === "drift-detection.test.ts") continue; // Skip self
+      
+      const filePath = join(__dirname, file);
+      const content = readFileSync(filePath, "utf-8");
+
+      // Check if file imports BORDER_RADIUS
+      const importsBorderRadius = /import\s+\{[^}]*BORDER_RADIUS[^}]*\}\s+from\s+["']\.\/shared["']/.test(content);
+
+      // Look for hardcoded 9999 (BORDER_RADIUS.full)
+      const hasHardcoded9999 = /\b9999\b/.test(content);
+
+      if (hasHardcoded9999 && !importsBorderRadius) {
+        warnings.push(`${file}: Has hardcoded 9999 (rounded-full) - import BORDER_RADIUS.full from shared.ts`);
+      }
+    }
+
+    if (warnings.length > 0) {
+      throw new Error(
+        `❌ Hardcoded border radius values found in test files:\n` +
+          `  - ${warnings.join("\n  - ")}\n\n` +
+          `🔧 To fix:\n` +
+          `  1. Import BORDER_RADIUS from shared.ts\n` +
+          `  2. Replace: 9999 → BORDER_RADIUS.full\n`
+      );
+    }
+
+    expect(warnings).toEqual([]);
   });
 });

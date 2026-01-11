@@ -16,6 +16,7 @@
 
 import { describe, it, expect } from "vitest";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
+import { FALLBACK_VALUES } from "./shared";
 
 // Import registry as source of truth
 import registry from "../../../../ai/component-registry.json";
@@ -98,63 +99,59 @@ describe("RefreshButton Generator - Registry Validation", () => {
 });
 
 describe("RefreshButton Generator - Compact Size Configuration", () => {
-  it("should have compact size mapping for all sizes", () => {
-    const COMPACT_SIZE_MAP: Record<string, number> = {
-      xs: 14,
-      sm: 26,
-      base: 36,
-      lg: 40,
-    };
+  // Use centralized constant from shared.ts to prevent drift
+  const COMPACT_SIZE_MAP = FALLBACK_VALUES.buttonCompactSize;
 
+  it("should have compact size mapping for all sizes", () => {
     expect(Object.keys(COMPACT_SIZE_MAP)).toHaveLength(4);
     for (const size of sizeProp.values) {
-      expect(COMPACT_SIZE_MAP[size]).toBeDefined();
-      expect(typeof COMPACT_SIZE_MAP[size]).toBe("number");
-      expect(COMPACT_SIZE_MAP[size]).toBeGreaterThan(0);
+      expect(COMPACT_SIZE_MAP[size as keyof typeof COMPACT_SIZE_MAP]).toBeDefined();
+      expect(typeof COMPACT_SIZE_MAP[size as keyof typeof COMPACT_SIZE_MAP]).toBe("number");
+      expect(COMPACT_SIZE_MAP[size as keyof typeof COMPACT_SIZE_MAP]).toBeGreaterThan(0);
     }
   });
 
   it("should have correct compact size values", () => {
-    const COMPACT_SIZE_MAP: Record<string, number> = {
-      xs: 14,
-      sm: 26,
-      base: 36,
-      lg: 40,
-    };
-
     // Validate square aspect ratio (width === height)
-    for (const [size, dimension] of Object.entries(COMPACT_SIZE_MAP)) {
+    for (const [_size, dimension] of Object.entries(COMPACT_SIZE_MAP)) {
       expect(dimension).toBe(dimension); // Square button (width === height)
     }
   });
 
   it("should have increasing size values", () => {
-    const COMPACT_SIZE_MAP: Record<string, number> = {
-      xs: 14,
-      sm: 26,
-      base: 36,
-      lg: 40,
-    };
-
-    const xs = COMPACT_SIZE_MAP.xs;
-    const sm = COMPACT_SIZE_MAP.sm;
-    const base = COMPACT_SIZE_MAP.base;
-    const lg = COMPACT_SIZE_MAP.lg;
-
-    expect(sm).toBeGreaterThan(xs);
-    expect(base).toBeGreaterThan(sm);
-    expect(lg).toBeGreaterThan(base);
+    expect(COMPACT_SIZE_MAP.sm).toBeGreaterThan(COMPACT_SIZE_MAP.xs);
+    expect(COMPACT_SIZE_MAP.base).toBeGreaterThan(COMPACT_SIZE_MAP.sm);
+    expect(COMPACT_SIZE_MAP.lg).toBeGreaterThan(COMPACT_SIZE_MAP.base);
   });
 });
 
 describe("RefreshButton Generator - Icon Size Configuration", () => {
+  // RefreshButton-specific icon sizes (not in shared.ts as these are component-specific)
+  const REFRESH_ICON_SIZE: Record<string, number> = {
+    xs: 12,
+    sm: 16,
+    base: 18,
+    lg: 20,
+  };
+
   it("should have icon size mapping for all sizes", () => {
-    const REFRESH_ICON_SIZE: Record<string, number> = {
-      xs: 12,
-      sm: 16,
-      base: 18,
-      lg: 20,
-    };
+    expect(Object.keys(REFRESH_ICON_SIZE)).toHaveLength(4);
+    for (const size of sizeProp.values) {
+      expect(REFRESH_ICON_SIZE[size]).toBeDefined();
+      expect(typeof REFRESH_ICON_SIZE[size]).toBe("number");
+      expect(REFRESH_ICON_SIZE[size]).toBeGreaterThan(0);
+    }
+  });
+
+  it("should have icon sizes smaller than button sizes", () => {
+    for (const size of sizeProp.values) {
+      expect(REFRESH_ICON_SIZE[size]).toBeLessThan(
+        FALLBACK_VALUES.buttonCompactSize[size as keyof typeof FALLBACK_VALUES.buttonCompactSize]
+      );
+    }
+  });
+
+  it("should have increasing icon size values", () => {
 
     expect(Object.keys(REFRESH_ICON_SIZE)).toHaveLength(4);
     for (const size of sizeProp.values) {

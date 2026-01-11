@@ -64,14 +64,23 @@ export const OPACITY = {
 
 /**
  * RGB color constants for Figma
+ * All hardcoded RGB values should be centralized here for consistency
  */
 export const COLORS = {
-  /** Placeholder/fallback gray */
+  /** Placeholder/fallback gray (0.5) - used for icon placeholders, fallback strokes */
   placeholder: { r: 0.5, g: 0.5, b: 0.5 },
-  /** Fallback white */
+  /** Fallback white (1.0) - used for backgrounds, container fills */
   fallbackWhite: { r: 1, g: 1, b: 1 },
-  /** Spinner stroke color */
+  /** Spinner stroke color (0.4) - used for loader animations, muted text */
   spinnerStroke: { r: 0.4, g: 0.4, b: 0.4 },
+  /** Border/stroke gray (0.8) - used for borders when variable binding fails */
+  borderGray: { r: 0.8, g: 0.8, b: 0.8 },
+  /** Light gray background (0.95) - used for icon library example frames */
+  lightGrayBg: { r: 0.95, g: 0.95, b: 0.95 },
+  /** Skeleton/track gray (0.9) - used for skeleton loaders, meter tracks */
+  skeletonGray: { r: 0.9, g: 0.9, b: 0.9 },
+  /** Fallback primary blue - used for meter indicator when variable unavailable */
+  fallbackPrimary: { r: 0.0, g: 0.5, b: 1.0 },
 } as const;
 
 /**
@@ -93,6 +102,39 @@ export const SECTION_GAP = 160;
  * Values match Figma shadow designs for elevated UI elements
  */
 export const SHADOWS = {
+  /** Extra small shadow - minimal elevation (0px 1px 2px rgba(0,0,0,0.05))
+   *  Used for: Surface, MenuBar, subtle elevation
+   *  Matches Tailwind: shadow-xs
+   */
+  xs: {
+    offsetX: 0,
+    offsetY: 1,
+    blur: 2,
+    spread: 0,
+    opacity: 0.05,
+  },
+  /** Large shadow - high elevation with two layers
+   *  Used for: Toast, popups, floating elements
+   *  Matches Tailwind: shadow-lg
+   *  Primary layer: 0px 10px 15px rgba(0,0,0,0.1)
+   *  Secondary layer: 0px 4px 6px rgba(0,0,0,0.1)
+   */
+  lg: {
+    primary: {
+      offsetX: 0,
+      offsetY: 10,
+      blur: 15,
+      spread: 0,
+      opacity: 0.1,
+    },
+    secondary: {
+      offsetX: 0,
+      offsetY: 4,
+      blur: 6,
+      spread: 0,
+      opacity: 0.1,
+    },
+  },
   /** Dialog shadow - elevated appearance (0px 8px 32px rgba(0,0,0,0.16)) */
   dialog: {
     offsetX: 0,
@@ -101,7 +143,9 @@ export const SHADOWS = {
     spread: 0,
     opacity: 0.16,
   },
-  /** Subtle shadow for tabs indicator (0px 1px 2px rgba(0,0,0,0.05)) */
+  /** Subtle shadow for tabs indicator (0px 1px 2px rgba(0,0,0,0.05))
+   *  @deprecated Use SHADOWS.xs instead - same values
+   */
   subtle: {
     offsetX: 0,
     offsetY: 1,
@@ -211,16 +255,38 @@ export const FALLBACK_VALUES = {
     /** Base input/button height (h-9 = 36px) */
     base: 36,
   },
+  /**
+   * Button compact sizes (square/circle shapes)
+   * From button.tsx KUMO_BUTTON_VARIANTS.compactSize:
+   * - xs: size-3.5 = 14px
+   * - sm: size-6.5 = 26px
+   * - base: size-9 = 36px
+   * - lg: size-10 = 40px
+   */
+  buttonCompactSize: {
+    /** Extra small compact button (size-3.5 = 14px) */
+    xs: 14,
+    /** Small compact button (size-6.5 = 26px) */
+    sm: 26,
+    /** Base compact button (size-9 = 36px) */
+    base: 36,
+    /** Large compact button (size-10 = 40px) */
+    lg: 40,
+  },
   /** Default stroke weight for borders */
   strokeWeight: 1,
-  /** Default icon size (size-5 = 20px, size-4.5 = 18px, size-3 = 12px) */
+  /** Default icon size (size-5 = 20px, size-4.5 = 18px, size-4 = 16px, size-3 = 12px) */
   iconSize: {
-    /** Small icon (size-3 = 12px) */
-    small: 12,
+    /** Extra small icon (size-3 = 12px) */
+    xs: 12,
+    /** Small icon (size-4 = 16px) */
+    sm: 16,
     /** Medium icon (size-4.5 = 18px) */
     medium: 18,
     /** Base icon (size-5 = 20px) */
     base: 20,
+    /** @deprecated Use xs instead */
+    small: 12,
   },
 } as const;
 

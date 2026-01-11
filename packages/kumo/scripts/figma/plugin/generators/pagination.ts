@@ -21,6 +21,7 @@ import {
   SECTION_PADDING,
   SECTION_GAP,
   SECTION_LAYOUT,
+  GRID_LAYOUT,
 } from "./shared";
 import { createIconInstance, bindIconColor } from "./icon-utils";
 
@@ -465,9 +466,9 @@ export async function generatePaginationComponents(
   var components: ComponentNode[] = [];
   var rowLabels: { y: number; text: string }[] = [];
 
-  // Layout spacing
-  var rowGap = 48;
-  var labelColumnWidth = 180;
+  // Layout spacing - using centralized GRID_LAYOUT constants
+  var rowGap = GRID_LAYOUT.rowGap.standard; // 48px
+  var labelColumnWidth = GRID_LAYOUT.labelColumnWidth.medium; // 180px
   var currentY = 0;
 
   for (var i = 0; i < pageStates.length; i++) {

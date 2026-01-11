@@ -26,6 +26,7 @@ import {
   SECTION_GAP,
   SECTION_LAYOUT,
   GRID_LAYOUT,
+  COLORS,
 } from "./shared";
 import { logComplete, logStart, logProgress } from "../logger";
 
@@ -87,7 +88,7 @@ async function createLoaderComponent(size: string): Promise<ComponentNode> {
     fallbackCircle.y = 2;
     fallbackCircle.fills = [];
     fallbackCircle.strokes = [
-      { type: "SOLID", color: { r: 0.5, g: 0.5, b: 0.5 } },
+      { type: "SOLID", color: COLORS.placeholder },
     ];
     fallbackCircle.strokeWeight = 2;
     component.appendChild(fallbackCircle);

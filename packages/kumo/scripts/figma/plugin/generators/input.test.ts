@@ -312,40 +312,44 @@ describe("Input Generator - Testable Export Functions", () => {
   });
 
   describe("getSizeConfig", () => {
-    it("should return dimensions for xs size", () => {
+    it("should return dimensions for xs size matching registry", () => {
       const config = getSizeConfig("xs");
+      const registryValues = inputStyling.sizeVariants.xs;
       expect(config.size).toBe("xs");
-      expect(config.height).toBe(20);
-      expect(config.dimensions.paddingX).toBe(6);
-      expect(config.dimensions.fontSize).toBe(12);
-      expect(config.dimensions.borderRadius).toBe(2);
+      expect(config.height).toBe(registryValues.height);
+      expect(config.dimensions.paddingX).toBe(registryValues.dimensions.paddingX);
+      expect(config.dimensions.fontSize).toBe(registryValues.dimensions.fontSize);
+      expect(config.dimensions.borderRadius).toBe(registryValues.dimensions.borderRadius);
     });
 
-    it("should return dimensions for sm size", () => {
+    it("should return dimensions for sm size matching registry", () => {
       const config = getSizeConfig("sm");
+      const registryValues = inputStyling.sizeVariants.sm;
       expect(config.size).toBe("sm");
-      expect(config.height).toBe(26);
-      expect(config.dimensions.paddingX).toBe(8);
-      expect(config.dimensions.fontSize).toBe(12);
-      expect(config.dimensions.borderRadius).toBe(6);
+      expect(config.height).toBe(registryValues.height);
+      expect(config.dimensions.paddingX).toBe(registryValues.dimensions.paddingX);
+      expect(config.dimensions.fontSize).toBe(registryValues.dimensions.fontSize);
+      expect(config.dimensions.borderRadius).toBe(registryValues.dimensions.borderRadius);
     });
 
-    it("should return dimensions for base size", () => {
+    it("should return dimensions for base size matching registry", () => {
       const config = getSizeConfig("base");
+      const registryValues = inputStyling.sizeVariants.base;
       expect(config.size).toBe("base");
-      expect(config.height).toBe(36);
-      expect(config.dimensions.paddingX).toBe(12);
-      expect(config.dimensions.fontSize).toBe(16);
-      expect(config.dimensions.borderRadius).toBe(8);
+      expect(config.height).toBe(registryValues.height);
+      expect(config.dimensions.paddingX).toBe(registryValues.dimensions.paddingX);
+      expect(config.dimensions.fontSize).toBe(registryValues.dimensions.fontSize);
+      expect(config.dimensions.borderRadius).toBe(registryValues.dimensions.borderRadius);
     });
 
-    it("should return dimensions for lg size", () => {
+    it("should return dimensions for lg size matching registry", () => {
       const config = getSizeConfig("lg");
+      const registryValues = inputStyling.sizeVariants.lg;
       expect(config.size).toBe("lg");
-      expect(config.height).toBe(40);
-      expect(config.dimensions.paddingX).toBe(16);
-      expect(config.dimensions.fontSize).toBe(16);
-      expect(config.dimensions.borderRadius).toBe(8);
+      expect(config.height).toBe(registryValues.height);
+      expect(config.dimensions.paddingX).toBe(registryValues.dimensions.paddingX);
+      expect(config.dimensions.fontSize).toBe(registryValues.dimensions.fontSize);
+      expect(config.dimensions.borderRadius).toBe(registryValues.dimensions.borderRadius);
     });
 
     it("should throw error for unknown size", () => {
@@ -497,20 +501,22 @@ describe("Input Generator - Expected Figma Output", () => {
 
   it("should produce correct Figma properties for xs size input", () => {
     const xsConfig = getSizeConfig("xs");
+    const registryValues = inputStyling.sizeVariants.xs;
 
-    expect(xsConfig.height).toBe(20);
-    expect(xsConfig.dimensions.paddingX).toBe(6);
-    expect(xsConfig.dimensions.fontSize).toBe(12);
-    expect(xsConfig.dimensions.borderRadius).toBe(2);
+    expect(xsConfig.height).toBe(registryValues.height);
+    expect(xsConfig.dimensions.paddingX).toBe(registryValues.dimensions.paddingX);
+    expect(xsConfig.dimensions.fontSize).toBe(registryValues.dimensions.fontSize);
+    expect(xsConfig.dimensions.borderRadius).toBe(registryValues.dimensions.borderRadius);
   });
 
   it("should produce correct Figma properties for lg size input", () => {
     const lgConfig = getSizeConfig("lg");
+    const registryValues = inputStyling.sizeVariants.lg;
 
-    expect(lgConfig.height).toBe(40);
-    expect(lgConfig.dimensions.paddingX).toBe(16);
-    expect(lgConfig.dimensions.fontSize).toBe(16);
-    expect(lgConfig.dimensions.borderRadius).toBe(8);
+    expect(lgConfig.height).toBe(registryValues.height);
+    expect(lgConfig.dimensions.paddingX).toBe(registryValues.dimensions.paddingX);
+    expect(lgConfig.dimensions.fontSize).toBe(registryValues.dimensions.fontSize);
+    expect(lgConfig.dimensions.borderRadius).toBe(registryValues.dimensions.borderRadius);
   });
 });
 

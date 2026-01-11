@@ -24,8 +24,8 @@ const PLACEHOLDER_CORNER_RADIUS_MULTIPLIER = 0.2;
  * Matches Tailwind size classes used in components
  */
 export var ICON_SIZE_MAP: Record<string, number> = {
-  xs: FALLBACK_VALUES.iconSize.small, // size-3 = 12px
-  sm: 16, // size-4 = 16px (between small and medium)
+  xs: FALLBACK_VALUES.iconSize.xs, // size-3 = 12px
+  sm: FALLBACK_VALUES.iconSize.sm, // size-4 = 16px
   base: FALLBACK_VALUES.iconSize.base, // size-5 = 20px
   lg: FALLBACK_VALUES.iconSize.base, // size-5 = 20px
 };

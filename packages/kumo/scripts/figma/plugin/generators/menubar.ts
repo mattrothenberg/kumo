@@ -28,6 +28,8 @@ import {
   SECTION_PADDING,
   SECTION_GAP,
   SECTION_LAYOUT,
+  GRID_LAYOUT,
+  SHADOWS,
 } from "./shared";
 import { createIconInstance, bindIconColor } from "./icon-utils";
 import registry from "../../../../ai/component-registry.json";
@@ -172,14 +174,14 @@ async function createMenuBarComponent(
     bindFillToVariable(component, bgVar.id);
   }
 
-  // Add shadow effect (shadow-xs)
+  // Add shadow effect (shadow-xs) - using centralized SHADOWS preset
   component.effects = [
     {
       type: "DROP_SHADOW",
-      color: { r: 0, g: 0, b: 0, a: 0.05 },
-      offset: { x: 0, y: 1 },
-      radius: 2,
-      spread: 0,
+      color: { r: 0, g: 0, b: 0, a: SHADOWS.xs.opacity },
+      offset: { x: SHADOWS.xs.offsetX, y: SHADOWS.xs.offsetY },
+      radius: SHADOWS.xs.blur,
+      spread: SHADOWS.xs.spread,
       visible: true,
       blendMode: "NORMAL",
     },
@@ -221,8 +223,9 @@ export async function generateMenuBarComponents(
     var components: ComponentNode[] = [];
     var rowLabels: { y: number; text: string }[] = [];
 
-    var labelColumnWidth = 160;
-    var rowGap = 24;
+    // Layout spacing - using centralized GRID_LAYOUT constants
+    var labelColumnWidth = GRID_LAYOUT.labelColumnWidth.standard; // 160px
+    var rowGap = GRID_LAYOUT.rowGap.compact; // 24px
     var currentY = 0;
 
     // Create a component for each active state
@@ -384,14 +387,15 @@ export function getMenuBarColorBindings() {
  * Get MenuBar shadow configuration
  *
  * Returns the shadow effect configuration (shadow-xs).
+ * Uses centralized SHADOWS.xs preset for consistency.
  */
 export function getMenuBarShadowConfig() {
   return {
     type: "DROP_SHADOW",
-    color: { r: 0, g: 0, b: 0, a: 0.05 },
-    offset: { x: 0, y: 1 },
-    radius: 2,
-    spread: 0,
+    color: { r: 0, g: 0, b: 0, a: SHADOWS.xs.opacity },
+    offset: { x: SHADOWS.xs.offsetX, y: SHADOWS.xs.offsetY },
+    radius: SHADOWS.xs.blur,
+    spread: SHADOWS.xs.spread,
   };
 }
 

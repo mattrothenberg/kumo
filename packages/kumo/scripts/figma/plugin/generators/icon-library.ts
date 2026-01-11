@@ -24,6 +24,7 @@ import {
   getVariableByName,
   bindFillToVariable,
   SECTION_LAYOUT,
+  COLORS,
 } from "./shared";
 
 /**
@@ -201,7 +202,7 @@ async function createSizeExamplesFrame(
   frame.fills = [
     {
       type: "SOLID",
-      color: { r: 0.95, g: 0.95, b: 0.95 }, // Light gray background
+      color: COLORS.lightGrayBg, // Light gray background
     },
   ];
   frame.cornerRadius = 8;
@@ -222,7 +223,7 @@ async function createSizeExamplesFrame(
     label.fills = [
       {
         type: "SOLID",
-        color: { r: 0.4, g: 0.4, b: 0.4 },
+        color: COLORS.spinnerStroke, // Muted text color
       },
     ];
 
@@ -341,7 +342,7 @@ export async function generateIconLibrary(
   containerFrame.fills = [
     {
       type: "SOLID",
-      color: { r: 1, g: 1, b: 1 }, // White background
+      color: COLORS.fallbackWhite, // White background
     },
   ];
 

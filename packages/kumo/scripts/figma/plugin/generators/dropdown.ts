@@ -34,6 +34,7 @@ import {
   SECTION_PADDING,
   SECTION_GAP,
   SECTION_LAYOUT,
+  OPACITY,
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import registry from "../../../../ai/component-registry.json";
@@ -109,7 +110,7 @@ async function createMenuItem(
 
   // Apply disabled opacity
   if (opts.disabled) {
-    itemFrame.opacity = 0.5;
+    itemFrame.opacity = OPACITY.disabled;
   }
 
   // Left side container (icon + label)

@@ -24,6 +24,7 @@ import {
   SECTION_GAP,
   GRID_LAYOUT,
   SECTION_LAYOUT,
+  COLORS,
 } from "./shared";
 
 // Import registry as source of truth
@@ -264,7 +265,7 @@ async function createMeterComponent(
     track.fills = [
       {
         type: "SOLID",
-        color: { r: 0.9, g: 0.9, b: 0.9 },
+        color: COLORS.skeletonGray,
       },
     ];
   }
@@ -284,11 +285,11 @@ async function createMeterComponent(
   if (primaryVar) {
     bindFillToVariable(indicator, primaryVar.id);
   } else {
-    // Fallback to blue
+    // Fallback to primary blue
     indicator.fills = [
       {
         type: "SOLID",
-        color: { r: 0.0, g: 0.5, b: 1.0 },
+        color: COLORS.fallbackPrimary,
       },
     ];
   }

@@ -721,7 +721,7 @@ export async function generateSwitchComponents(
     var labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 4, // +4 to vertically center with switch
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.sm, // vertically center with switch
     );
     lightSection.frame.appendChild(labelNode);
   }
@@ -746,7 +746,7 @@ export async function generateSwitchComponents(
     var labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 4,
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.sm,
     );
     darkSection.frame.appendChild(labelNode);
   }

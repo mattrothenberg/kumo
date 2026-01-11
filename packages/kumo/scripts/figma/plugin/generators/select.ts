@@ -31,6 +31,7 @@ import {
   SECTION_GAP,
   SECTION_LAYOUT,
   OPACITY,
+  COLORS,
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import { logComplete } from "../logger";
@@ -156,7 +157,7 @@ function createSkeletonLine(width: number, height: number): FrameNode {
   if (bgVar) {
     bindFillToVariable(skeleton, bgVar.id);
   } else {
-    skeleton.fills = [{ type: "SOLID", color: { r: 0.9, g: 0.9, b: 0.9 } }];
+    skeleton.fills = [{ type: "SOLID", color: COLORS.skeletonGray }];
   }
 
   return skeleton;

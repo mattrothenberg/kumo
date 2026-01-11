@@ -24,6 +24,7 @@ import {
   getMeterIndicatorWidth,
   getAllMeterVariantData,
 } from "./meter";
+import { BORDER_RADIUS } from "./shared";
 
 // Import registry as source of truth
 import registry from "../../../../ai/component-registry.json";
@@ -268,9 +269,9 @@ describe("Meter Generator - Complete Variant Data", () => {
 
   it("should have fully rounded corners", () => {
     const data = getAllMeterVariantData();
-    // 9999 is used for fully rounded corners
-    expect(data.layout.trackCornerRadius).toBe(9999);
-    expect(data.layout.indicatorCornerRadius).toBe(9999);
+    // Uses BORDER_RADIUS.full for fully rounded corners
+    expect(data.layout.trackCornerRadius).toBe(BORDER_RADIUS.full);
+    expect(data.layout.indicatorCornerRadius).toBe(BORDER_RADIUS.full);
   });
 });
 

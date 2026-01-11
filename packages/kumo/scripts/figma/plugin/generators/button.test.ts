@@ -21,6 +21,7 @@ import {
   BUTTON_LOADING_OPTIONS,
   BUTTON_STATE_OPTIONS,
 } from "./button";
+import { FALLBACK_VALUES, BORDER_RADIUS, OPACITY } from "./shared";
 
 // Import registry as source of truth
 import registry from "../../../../ai/component-registry.json";
@@ -57,13 +58,10 @@ const BUTTON_BASE_STYLES = "flex items-center font-medium";
 /**
  * Compact size mapping from button.tsx KUMO_BUTTON_VARIANTS.compactSize
  * Used for square and circle shapes
+ * 
+ * Derived from FALLBACK_VALUES.buttonCompactSize in shared.ts to prevent drift
  */
-const COMPACT_SIZE_MAP: Record<string, number> = {
-  xs: 14, // size-3.5 = 14px
-  sm: 26, // size-6.5 = 26px
-  base: 36, // size-9 = 36px
-  lg: 40, // size-10 = 40px
-};
+const COMPACT_SIZE_MAP: Record<string, number> = FALLBACK_VALUES.buttonCompactSize;
 
 /**
  * State-specific style overrides (from button.ts STATE_STYLES)
@@ -233,12 +231,12 @@ export function getButtonCompleteConfig(
 
   // Set corner radius based on shape
   if (shape === "circle") {
-    layout.cornerRadius = 9999; // BORDER_RADIUS.full
+    layout.cornerRadius = BORDER_RADIUS.full;
   } else {
     layout.cornerRadius =
       sizeData.parsed.borderRadius !== undefined
         ? sizeData.parsed.borderRadius
-        : 8; // BORDER_RADIUS.lg
+        : BORDER_RADIUS.lg;
   }
 
   // Build fill/stroke/text data
@@ -281,7 +279,7 @@ export function getButtonCompleteConfig(
     stroke,
     text,
     stateOverrides,
-    opacity: disabled ? 0.5 : 1.0,
+    opacity: disabled ? OPACITY.disabled : 1.0,
   };
 }
 
@@ -905,7 +903,7 @@ describe("Button Generator - Expected Figma Output", () => {
     expect(config.layout.cornerRadius).toBeGreaterThan(100); // rounded-full is a large value
   });
 
-  it("should produce correct Figma properties for disabled button (opacity 0.5)", () => {
+  it("should produce correct Figma properties for disabled button (opacity OPACITY.disabled)", () => {
     const config = getButtonCompleteConfig(
       "primary",
       "base",
@@ -916,7 +914,7 @@ describe("Button Generator - Expected Figma Output", () => {
     );
 
     expect(config.disabled).toBe(true);
-    expect(config.opacity).toBe(0.5);
+    expect(config.opacity).toBe(OPACITY.disabled);
   });
 
   it("should produce correct Figma properties for hover state", () => {

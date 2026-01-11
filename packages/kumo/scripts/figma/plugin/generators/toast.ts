@@ -31,6 +31,7 @@ import {
   SECTION_PADDING,
   SECTION_GAP,
   SECTION_LAYOUT,
+  SHADOWS,
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import { logComplete } from "../logger";
@@ -85,23 +86,23 @@ async function createToastComponent(): Promise<ComponentNode> {
     bindStrokeToVariable(component, borderVar.id, 1);
   }
 
-  // Apply shadow effect (shadow-lg)
+  // Apply shadow effect (shadow-lg) - using centralized SHADOWS preset
   component.effects = [
     {
       type: "DROP_SHADOW",
-      color: { r: 0, g: 0, b: 0, a: 0.1 },
-      offset: { x: 0, y: 10 },
-      radius: 15,
-      spread: 0,
+      color: { r: 0, g: 0, b: 0, a: SHADOWS.lg.primary.opacity },
+      offset: { x: SHADOWS.lg.primary.offsetX, y: SHADOWS.lg.primary.offsetY },
+      radius: SHADOWS.lg.primary.blur,
+      spread: SHADOWS.lg.primary.spread,
       visible: true,
       blendMode: "NORMAL",
     },
     {
       type: "DROP_SHADOW",
-      color: { r: 0, g: 0, b: 0, a: 0.1 },
-      offset: { x: 0, y: 4 },
-      radius: 6,
-      spread: 0,
+      color: { r: 0, g: 0, b: 0, a: SHADOWS.lg.secondary.opacity },
+      offset: { x: SHADOWS.lg.secondary.offsetX, y: SHADOWS.lg.secondary.offsetY },
+      radius: SHADOWS.lg.secondary.blur,
+      spread: SHADOWS.lg.secondary.spread,
       visible: true,
       blendMode: "NORMAL",
     },

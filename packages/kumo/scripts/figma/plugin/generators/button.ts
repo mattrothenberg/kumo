@@ -188,15 +188,10 @@ export function getCompactSizeMap(): Record<string, number> {
     const classes = compactSizeClasses[size];
     if (classes) {
       const parsed = parseTailwindClasses(classes);
-      // Use parsed width if available, otherwise fallback to hardcoded value
+      // Use parsed width if available, otherwise fallback to centralized constants
       // (this fallback should never trigger if parser is working correctly)
-      result[size] = parsed.width ?? (
-        size === "xs" ? 14 :
-        size === "sm" ? 26 :
-        size === "base" ? 36 :
-        size === "lg" ? 40 :
-        36 // default fallback
-      );
+      const fallbackSize = FALLBACK_VALUES.buttonCompactSize[size as keyof typeof FALLBACK_VALUES.buttonCompactSize];
+      result[size] = parsed.width ?? fallbackSize ?? FALLBACK_VALUES.height.base;
     }
   }
 

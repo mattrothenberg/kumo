@@ -28,6 +28,7 @@ import {
   GRID_LAYOUT,
   FALLBACK_VALUES,
   SECTION_LAYOUT,
+  COLORS,
 } from "./shared";
 import { createIconInstance, bindIconColor } from "./icon-utils";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
@@ -290,13 +291,13 @@ async function createClipboardTextComponent(
     buttonFrame.strokes = [
       {
         type: "SOLID",
-        color: { r: 0.8, g: 0.8, b: 0.8 },
+        color: COLORS.borderGray,
       },
     ];
     // Bind stroke to variable
     var stroke: SolidPaint = {
       type: "SOLID",
-      color: { r: 0.8, g: 0.8, b: 0.8 },
+      color: COLORS.borderGray,
     };
     stroke = figma.variables.setBoundVariableForPaint(
       stroke,
@@ -322,7 +323,7 @@ async function createClipboardTextComponent(
     iconPlaceholder.resize(iconSize, iconSize);
     iconPlaceholder.cornerRadius = 2;
     iconPlaceholder.fills = [
-      { type: "SOLID", color: { r: 0.5, g: 0.5, b: 0.5 } },
+      { type: "SOLID", color: COLORS.placeholder },
     ];
     buttonFrame.appendChild(iconPlaceholder);
   }

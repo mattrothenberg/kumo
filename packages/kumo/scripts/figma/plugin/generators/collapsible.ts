@@ -30,6 +30,7 @@ import {
   SECTION_GAP,
   FALLBACK_VALUES,
   SECTION_LAYOUT,
+  OPACITY,
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
@@ -96,7 +97,7 @@ var STATE_STYLES: Record<
   },
   disabled: {
     textVariable: "text-color-disabled",
-    opacity: 0.5,
+    opacity: OPACITY.disabled,
   },
 };
 
