@@ -5069,3 +5069,56 @@ Eliminate fragile hardcoded numeric assertions in test files by replacing them w
 - Next: T8-T10 (remaining Phase 8 tasks)
 
 **Status:** COMPLETE - All generator tests pass with correct Kumo font sizes
+
+---
+
+## Iteration 29: T8 - Fix Remaining Test File Assertions (PHASE 8)
+
+**Task:** T8 - Fix Remaining Test File Assertions
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Ran drift detection to identify remaining warnings**:
+   - 3 initial warnings: select.test.ts:386, text.test.ts:173, text.test.ts:417
+   - Analyzed each warning to determine if genuine issue or false positive
+
+2. **Fixed text.test.ts:173**:
+   - Changed: `expect(parsed.fontSize).toBe(16)` 
+   - To: `expect(parsed.fontSize).toBe(FONT_SIZE.lg)`
+   - This assertion now uses correct constant and will track future changes
+
+3. **Identified false positives**:
+   - select.test.ts:386: `.toBe(12)` for variant COUNT (not font size)
+   - text.test.ts:417: `.toBe(16)` for variant COUNT (not font size)
+   - Both use `.length` property, clearly count assertions
+
+4. **Enhanced drift detection filter**:
+   - Added skip logic for lines with `.length).toBe` pattern
+   - Prevents false positives on count assertions vs dimensional values
+   - Updated drift-detection.test.ts lines 960-963
+
+### Test Results:
+- ✅ All text.test.ts tests pass (74/74)
+- ✅ All drift detection tests pass (24/24)
+- ✅ **0 fragile assertion warnings** (down from 3 → reduced to 0)
+- ✅ All false positives eliminated via enhanced filtering
+
+### Files Modified:
+- `scripts/figma/plugin/generators/text.test.ts` - Fixed line 173 to use FONT_SIZE.lg
+- `scripts/figma/plugin/generators/drift-detection.test.ts` - Added .length filter to skip count assertions
+- `plans/PRD.json` - T8 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- Only 1 genuine fragile assertion found (text.test.ts:173)
+- 2 false positives were count assertions (not dimensional values)
+- Enhanced drift detector now correctly distinguishes between:
+  - Font size assertions: `.fontSize).toBe(16)` → ❌ Should use FONT_SIZE.base
+  - Count assertions: `.length).toBe(16)` → ✅ Intentional count value
+- This completes Phase 8 test assertion hardening
+- T4-T7 (Phase 9) already fixed the FONT_SIZE values themselves
+- T8 ensures all tests use correct constants
+
+**Status:** COMPLETE - All fragile assertions fixed, drift detector enhanced
+

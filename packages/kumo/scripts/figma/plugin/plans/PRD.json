@@ -279,7 +279,7 @@
       "name": "fix-remaining-test-assertions",
       "title": "[Phase 8] Fix Remaining Test File Assertions",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Address remaining 22+ fragile assertions in other test files",
       "files": ["scripts/figma/plugin/generators/*.test.ts"],
       "acceptance": [

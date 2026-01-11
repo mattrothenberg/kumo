@@ -958,6 +958,11 @@ describe("Figma Plugin - Test File Assertions Enforcement", () => {
           continue;
         }
 
+        // Skip lines with .length (these are count assertions, not dimensional values)
+        if (/\.length\)\.toBe/.test(line)) {
+          continue;
+        }
+
         for (const { pattern, description } of FRAGILE_PATTERNS) {
           if (pattern.test(line)) {
             // For files that import constants, only warn if this specific assertion doesn't use them

@@ -170,7 +170,7 @@ describe("Text Generator - Variant Styles Parsing", () => {
       const parsed = parseTailwindClasses(classes);
       expect(parsed.fontSize).toBeDefined();
       expect(typeof parsed.fontSize).toBe("number");
-      expect(parsed.fontSize).toBe(16); // text-lg = 16px (Kumo override from Tailwind's 18px)
+      expect(parsed.fontSize).toBe(FONT_SIZE.lg); // text-lg = 16px (Kumo override from Tailwind's 18px)
     });
 
     it("should parse font weight (font-semibold)", () => {
