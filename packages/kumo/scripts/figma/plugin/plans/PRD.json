@@ -106,7 +106,10 @@
       "priority": "high",
       "status": "complete",
       "description": "Empty is a display component for empty states with icon, title, description",
-      "files": ["generators/empty.ts", "generators/empty.test.ts"],
+      "files": [
+        "generators/empty.ts",
+        "generators/empty.test.ts"
+      ],
       "acceptance": [
         "Create generator with icon, title, description layout",
         "Add testable exports following badge.ts pattern",
@@ -123,7 +126,10 @@
       "priority": "medium",
       "status": "complete",
       "description": "Breadcrumbs is a block component with multiple items and separators",
-      "files": ["generators/breadcrumbs.ts", "generators/breadcrumbs.test.ts"],
+      "files": [
+        "generators/breadcrumbs.ts",
+        "generators/breadcrumbs.test.ts"
+      ],
       "acceptance": [
         "Create generator with breadcrumb items and separators",
         "Use Icon Library icons for separators (ph-caret-right or similar)",
@@ -139,9 +145,12 @@
       "name": "create-pageheader-generator",
       "title": "Create PageHeader Generator",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "PageHeader is a block component with title, description, actions",
-      "files": ["generators/page-header.ts", "generators/page-header.test.ts"],
+      "files": [
+        "generators/page-header.ts",
+        "generators/page-header.test.ts"
+      ],
       "acceptance": [
         "Create generator with header layout",
         "Include title, description, action buttons area",
@@ -157,9 +166,12 @@
       "name": "verify-coverage",
       "title": "Verify Coverage Complete",
       "priority": "low",
-      "status": "pending",
+      "status": "complete",
       "description": "Ensure all generators are registered and drift detection passes",
-      "files": ["generators/drift-detection.test.ts", "code.ts"],
+      "files": [
+        "generators/drift-detection.test.ts",
+        "code.ts"
+      ],
       "acceptance": [
         "Run pnpm validate:figma - all tests pass",
         "EXCLUDED_COMPONENTS has only permanent exclusions (Field, Icon, Toasty)",
@@ -214,7 +226,9 @@
     {
       "name": "Updated Code.ts",
       "description": "New generators registered in GENERATORS array",
-      "files": ["code.ts"]
+      "files": [
+        "code.ts"
+      ]
     }
   ],
   "constraints": [

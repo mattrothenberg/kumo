@@ -28,6 +28,7 @@ import { generateLoaderComponents } from "./generators/loader";
 import { generateLinkButtonComponents } from "./generators/link-button";
 import { generateMenuBarComponents } from "./generators/menubar";
 import { generateMeterComponents } from "./generators/meter";
+import { generatePageHeaderComponents } from "./generators/page-header";
 import { generatePaginationComponents } from "./generators/pagination";
 import { generateRefreshButtonComponents } from "./generators/refresh-button";
 import { generateSelectComponents } from "./generators/select";
@@ -281,6 +282,13 @@ figma.ui.onmessage = async (msg: { type: string }) => {
           name: "Meter",
           execute: async (_page, y) => {
             const result = await generateMeterComponents(y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "PageHeader",
+          execute: async (_page, y) => {
+            const result = await generatePageHeaderComponents(y);
             return { nextY: result };
           },
         },
