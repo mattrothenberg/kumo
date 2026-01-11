@@ -4763,6 +4763,36 @@
         "<Tooltip content=\"This is a tooltip\" asChild>\n      <Button>Hover me</Button>\n    </Tooltip>"
       ],
       "colors": ["bg-black-icon", "fill-black-icon", "fill-icon-path"]
+    },
+    "InputArea": {
+      "name": "InputArea",
+      "type": "component",
+      "description": "Multi-line textarea input with Input variants and InputArea-specific dimensions",
+      "importPath": "@cloudflare/kumo (synthetic - uses Input component)",
+      "category": "Input",
+      "props": {},
+      "styling": {
+        "sizeVariants": {
+          "xs": {
+            "minHeight": 60,
+            "width": 200
+          },
+          "sm": {
+            "minHeight": 72,
+            "width": 240
+          },
+          "base": {
+            "minHeight": 88,
+            "width": 320
+          },
+          "lg": {
+            "minHeight": 100,
+            "width": 360
+          }
+        }
+      },
+      "examples": [],
+      "colors": []
     }
   },
   "search": {

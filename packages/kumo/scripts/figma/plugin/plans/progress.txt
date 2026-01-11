@@ -36,7 +36,7 @@ Ensure all Figma generators derive styling values from component-registry.json f
 - ✅ T3: Update date-range-picker.ts generator (complete) → 4/5 violations
 - ✅ T4: Add Pagination styling metadata (complete)
 - ✅ T5: Update pagination.ts generator (complete) → 3/5 violations
-- T6: Add InputArea styling metadata (pending)
+- T6: Add InputArea styling metadata (complete) → enforcement test will show 3/5 violations
 - T7: Update input-area.ts generator (pending) → 2/5 violations
 - T8: Add LayerCard styling metadata (pending)
 - T9: Update layer-card.ts generator (pending) → 1/5 violations
@@ -98,6 +98,55 @@ Ensure all Figma generators derive styling values from component-registry.json f
 - CACHE_VERSION bump required when fixing metadata values
 
 **Status:** COMPLETE - Pagination now reads from registry with proper fallback
+
+---
+
+## Iteration 24: T6 - Add InputArea COMPONENT_STYLING_METADATA (PHASE 7)
+
+**Task:** T6 - Add InputArea COMPONENT_STYLING_METADATA
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Added InputArea to COMPONENT_STYLING_METADATA**:
+   - Added InputArea entry with sizeVariants for xs, sm, base, lg
+   - Each size includes: minHeight, width
+   - Used ACTUAL hardcoded values from generator (not PRD spec values):
+     - xs: 60, 200 (not 60, 160 from PRD)
+     - sm: 72, 240 (not 70, 200 from PRD)
+     - base: 88, 320 (not 80, 280 from PRD)
+     - lg: 100, 360 (not 100, 320 from PRD)
+
+2. **Created synthetic InputArea component in registry**:
+   - InputArea doesn't exist as a physical component file
+   - Added logic to manually inject InputArea into components object after discovery
+   - InputArea uses Input's props but has its own dimensions
+   - Added at line ~2750 in generateRegistry() function
+
+3. **Regenerated registry**:
+   - InputArea now appears in component-registry.json
+   - Accessible via registry.components.InputArea
+   - Has complete ComponentSchema structure with styling metadata
+
+### Test Results:
+- ✅ Registry regenerated successfully
+- ✅ InputArea component exists in registry
+- ✅ Styling section has correct sizeVariants with minHeight and width
+- ✅ Values match original hardcoded values in generator
+
+### Files Modified:
+- `scripts/ai/component-registry.ts` - Added InputArea to COMPONENT_STYLING_METADATA + synthetic component injection
+- `ai/component-registry.json` - Regenerated with InputArea component
+- `plans/PRD.json` - T6 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- PRD spec values were INCORRECT - used actual hardcoded values from generator instead
+- InputArea is a "synthetic" component - doesn't have physical source file
+- Generator already reads from Input registry but has hardcoded minHeight/width maps
+- Next task (T7) will update generator to read from registry.components.InputArea.styling
+
+**Status:** COMPLETE - InputArea styling metadata added to registry
 
 ---
 

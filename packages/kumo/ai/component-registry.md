@@ -3024,7 +3024,6 @@ Pagination component
 
 **Styling:**
 
-
 **Examples:**
 
 ```tsx
@@ -4031,6 +4030,28 @@ Tooltip component
   <Button>Hover me</Button>
 </Tooltip>
 ```
+
+---
+
+### InputArea
+
+Multi-line textarea input with Input variants and InputArea-specific dimensions
+
+**Type:** component
+
+**Import:** `import { InputArea } from "@cloudflare/kumo (synthetic - uses Input component)";`
+
+**Category:** Input
+
+**Props:**
+
+**Styling:**
+
+- **Size Variants:**
+  - `xs`:
+  - `sm`:
+  - `base`:
+  - `lg`:
 
 ## Quick Reference
 

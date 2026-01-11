@@ -2401,6 +2401,14 @@ const COMPONENT_STYLING_METADATA: Record<string, ComponentSchema["styling"]> = {
       borderRadius: 6,
     },
   } as any,
+  InputArea: {
+    sizeVariants: {
+      xs: { minHeight: 60, width: 200 },
+      sm: { minHeight: 72, width: 240 },
+      base: { minHeight: 88, width: 320 },
+      lg: { minHeight: 100, width: 360 },
+    },
+  } as any,
 };
 
 /**
@@ -2738,6 +2746,27 @@ async function generateRegistry(): Promise<GenerateRegistryResult> {
 
   // Save updated cache
   saveCache(newCache);
+
+  // Add InputArea as a synthetic component (uses Input's variants but has its own dimensions)
+  // InputArea doesn't exist as a separate component file but needs registry metadata for Figma plugin
+  if (COMPONENT_STYLING_METADATA.InputArea) {
+    components.InputArea = {
+      name: "InputArea",
+      type: "component",
+      description: "Multi-line textarea input with Input variants and InputArea-specific dimensions",
+      importPath: "@cloudflare/kumo (synthetic - uses Input component)",
+      category: "Input",
+      props: {}, // Uses Input's props
+      styling: COMPONENT_STYLING_METADATA.InputArea,
+      examples: [],
+      colors: [],
+    };
+    // Add to Input category
+    if (!byCategory.Input) {
+      byCategory.Input = [];
+    }
+    // Don't add to byName search (it's a synthetic entry for Figma plugin only)
+  }
 
   const elapsed = ((Date.now() - startTime) / 1000).toFixed(2);
   const cached = results.filter((r) => r.cached).length;
