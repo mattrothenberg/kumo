@@ -5181,3 +5181,149 @@ Eliminate fragile hardcoded numeric assertions in test files by replacing them w
 
 **Status:** COMPLETE - Drift detection now enforces zero fragile assertions
 
+
+---
+
+## Iteration 31: T10 - Final Verification and Documentation (PHASE 9)
+
+**Task:** T10 - Final Verification and Documentation
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### Final Verification Results:
+
+#### 1. Drift Detection Tests: ✅ PASS
+```
+Test Files: 1 passed (1)
+Tests: 24 passed (24)
+- CSS theme sync validation: PASS
+- Fragile assertion enforcement: PASS (0 warnings)
+- Registry styling integration: PASS
+```
+
+#### 2. All Generator Tests: ✅ PASS
+```
+Test Files: 32 passed (32)
+Tests: 1505 passed (1505)
+Duration: 1.41s
+```
+
+#### 3. Font Size Alignment: ✅ COMPLETE
+| Token | theme-kumo.css | Parser (FONT_SIZE_SCALE) | shared.ts (FONT_SIZE) | Status |
+|-------|---------------|-------------------------|----------------------|--------|
+| xs    | 12px          | 12px ✅                | 12px ✅             | MATCH  |
+| sm    | 13px          | 13px ✅                | 13px ✅             | MATCH  |
+| base  | 14px          | 14px ✅                | 14px ✅             | MATCH  |
+| lg    | 16px          | 16px ✅                | 16px ✅             | MATCH  |
+
+**Before Phase 9:** 3 of 4 values were WRONG (75% drift)
+**After Phase 9:** 4 of 4 values are CORRECT (100% alignment)
+
+#### 4. Fragile Assertions: ✅ FIXED
+- Initial warnings (Phase 8 start): 30+ fragile assertions
+- After T1-T3: 22+ remaining
+- After T8: 0 warnings
+- Enforcement enabled (T9): Test FAILS on violations
+
+### Phase 9 Summary (T4-T7, T10)
+
+**Goal:** Fix critical font size drift between Kumo's CSS theme and Figma plugin parser/constants.
+
+**Root Cause:**
+- Kumo uses Tailwind v4 with CSS `@theme` directive
+- `theme-kumo.css` defines custom font sizes (13px, 14px, 16px)
+- Parser and shared.ts used old Tailwind defaults (14px, 16px, 18px)
+
+**Tasks Completed:**
+
+| Task | Title | Impact |
+|------|-------|--------|
+| T4 | Fix FONT_SIZE_SCALE in Parser | Parser now returns correct Kumo sizes |
+| T5 | Fix FONT_SIZE in shared.ts | Fallback constants match theme |
+| T6 | Add CSS Theme Drift Detection | Automated validation prevents future drift |
+| T7 | Update Snapshots | 56 snapshots updated with correct sizes |
+| T10 | Final Verification | All systems validated and documented |
+
+**Files Modified:**
+1. `parsers/tailwind-to-figma.ts` - FONT_SIZE_SCALE: sm=13, base=14, lg=16
+2. `parsers/tailwind-to-figma.test.ts` - 4 test assertions updated
+3. `generators/shared.ts` - FONT_SIZE: added sm=13, fixed base=14, lg=16
+4. `generators/drift-detection.test.ts` - Added 2 CSS theme sync tests
+5. 15 test files with 56 snapshot updates
+
+**Test Coverage:**
+- CSS theme parsing test validates theme-kumo.css values
+- Parser FONT_SIZE_SCALE sync test
+- shared.ts FONT_SIZE sync test
+- All tests enforce alignment with theme-kumo.css
+
+**Impact on Figma Components:**
+- All Figma-generated components now use CORRECT typography
+- Button, Input, Dialog, Banner, etc. - all fixed
+- Design-code alignment restored
+- Future CSS theme changes will be caught by CI
+
+### Phase 8 Summary (T1-T3, T8-T9)
+
+**Goal:** Replace hardcoded numeric assertions with shared constants.
+
+**Tasks Completed:**
+
+| Task | Title | Warnings Fixed |
+|------|-------|---------------|
+| T1 | Fix banner.test.ts | 8 assertions |
+| T2 | Fix text.test.ts | 5+ assertions |
+| T3 | Fix select.test.ts | 2 assertions |
+| T8 | Fix remaining assertions + enhance detector | 1 assertion + false positive filtering |
+| T9 | Convert warning to enforcement | Enabled fail-on-violation |
+
+**Files Modified:**
+1. `generators/banner.test.ts` - Uses FONT_SIZE, FALLBACK_VALUES
+2. `generators/text.test.ts` - Uses FONT_SIZE, FALLBACK_VALUES  
+3. `generators/select.test.ts` - Uses SPACING, FONT_SIZE
+4. `generators/drift-detection.test.ts` - Enhanced filtering + enforcement
+
+**Enforcement:**
+- Before: `expect(true).toBe(true)` (warning only)
+- After: `expect(warnings).toEqual([])` (fails if violations)
+- CI now prevents fragile assertion regressions
+
+### Combined Impact (Phase 8 + Phase 9)
+
+**Code Quality:**
+- ✅ All font sizes aligned with theme-kumo.css (100%)
+- ✅ All test assertions use shared constants (100%)
+- ✅ Zero fragile assertion warnings
+- ✅ Automated drift detection (CSS theme + test patterns)
+- ✅ CI enforcement active
+
+**Maintenance:**
+- Future font size changes in theme-kumo.css → tests automatically catch drift
+- Future hardcoded assertions → CI rejects (drift detector fails)
+- Single source of truth: theme-kumo.css → parser + shared.ts → tests
+
+**Testing:**
+- 1505 generator tests passing
+- 24 drift detection tests passing (including 2 new CSS sync tests)
+- 56 snapshots updated with correct values
+- All tests run in ~1.4s
+
+### Success Criteria: ✅ ALL MET
+
+| Criteria | Status | Evidence |
+|----------|--------|----------|
+| FONT_SIZE_SCALE matches theme-kumo.css | ✅ | xs=12, sm=13, base=14, lg=16 |
+| FONT_SIZE constant matches theme-kumo.css | ✅ | xs=12, sm=13, base=14, lg=16 |
+| CSS theme sync test passes | ✅ | 24/24 drift tests pass |
+| Fragile assertion warnings = 0 | ✅ | Zero warnings, enforcement active |
+| All 1500+ tests pass | ✅ | 1505/1505 tests pass |
+
+### Notes:
+- **Phase 9 (CSS Sync):** Completed T4-T7, T10
+- **Phase 8 (Test Hardening):** Completed T1-T3, T8-T9
+- **Combined effort:** 10 tasks across 2 phases
+- **Total test coverage:** 1505 generator tests + 24 drift detection tests
+- **Zero regressions:** All snapshots validated, all tests pass
+
+**Status:** COMPLETE - Phase 9 CSS-to-Constants Sync successfully completed
+
