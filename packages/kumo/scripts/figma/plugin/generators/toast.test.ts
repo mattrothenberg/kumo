@@ -19,6 +19,7 @@ import {
   getCloseButtonConfig,
   getAllVariantData,
 } from "./toast";
+import { FONT_SIZE, FALLBACK_VALUES } from "./shared";
 
 // Import registry as source of truth
 import registry from "../../../../ai/component-registry.json";
@@ -178,7 +179,7 @@ describe("Toast Generator - Testable Export Functions", () => {
       expect(config).toBeDefined();
       expect(config.raw).toBeDefined();
       expect(config.width).toBe(300);
-      expect(config.padding).toBe(16);
+      expect(config.padding).toBe(FONT_SIZE.base);
       expect(config.borderRadius).toBe(8);
       expect(config.background).toBe("color-toast");
       expect(config.border).toBe("color-color");
@@ -219,8 +220,8 @@ describe("Toast Generator - Testable Export Functions", () => {
       const config = getTitleConfig();
       expect(config).toBeDefined();
       expect(config.raw).toBeDefined();
-      expect(config.fontSize).toBe(16);
-      expect(config.fontWeight).toBe(500);
+      expect(config.fontSize).toBe(FONT_SIZE.base);
+      expect(config.fontWeight).toBe(FALLBACK_VALUES.fontWeight.medium);
       expect(config.color).toBe("text-color-surface");
     });
 
@@ -249,8 +250,8 @@ describe("Toast Generator - Testable Export Functions", () => {
       const config = getDescriptionConfig();
       expect(config).toBeDefined();
       expect(config.raw).toBeDefined();
-      expect(config.fontSize).toBe(15);
-      expect(config.fontWeight).toBe(400);
+      expect(config.fontSize).toBe(15); // Toast description uses 15px, not a standard FONT_SIZE
+      expect(config.fontWeight).toBe(FALLBACK_VALUES.fontWeight.normal);
       expect(config.color).toBe("text-color-muted");
     });
 
@@ -279,8 +280,8 @@ describe("Toast Generator - Testable Export Functions", () => {
       const config = getCloseButtonConfig();
       expect(config).toBeDefined();
       expect(config.raw).toBeDefined();
-      expect(config.size).toBe(20);
-      expect(config.iconSize).toBe(16);
+      expect(config.size).toBe(FONT_SIZE.lg);
+      expect(config.iconSize).toBe(FONT_SIZE.base);
       expect(config.iconName).toBe("ph-x");
       expect(config.iconColor).toBe("text-color-muted");
       expect(config.hoverBackground).toBe("color-toast-button-hover");
@@ -337,8 +338,8 @@ describe("Toast Generator - Testable Export Functions", () => {
 
     it("should include parsed container config", () => {
       const allData = getAllVariantData();
-      expect(allData.container.width).toBe(300);
-      expect(allData.container.padding).toBe(16);
+      expect(allData.container.width).toBe(300); // Toast-specific width
+      expect(allData.container.padding).toBe(FONT_SIZE.base);
       expect(allData.container.borderRadius).toBe(8);
       expect(allData.container.background).toBe("color-toast");
       expect(allData.container.border).toBe("color-color");
@@ -346,22 +347,22 @@ describe("Toast Generator - Testable Export Functions", () => {
 
     it("should include parsed title config", () => {
       const allData = getAllVariantData();
-      expect(allData.title.fontSize).toBe(16);
-      expect(allData.title.fontWeight).toBe(500);
+      expect(allData.title.fontSize).toBe(FONT_SIZE.base);
+      expect(allData.title.fontWeight).toBe(FALLBACK_VALUES.fontWeight.medium);
       expect(allData.title.color).toBe("text-color-surface");
     });
 
     it("should include parsed description config", () => {
       const allData = getAllVariantData();
-      expect(allData.description.fontSize).toBe(15);
-      expect(allData.description.fontWeight).toBe(400);
+      expect(allData.description.fontSize).toBe(15); // Toast description uses 15px, not a standard FONT_SIZE
+      expect(allData.description.fontWeight).toBe(FALLBACK_VALUES.fontWeight.normal);
       expect(allData.description.color).toBe("text-color-muted");
     });
 
     it("should include parsed close button config", () => {
       const allData = getAllVariantData();
-      expect(allData.closeButton.size).toBe(20);
-      expect(allData.closeButton.iconSize).toBe(16);
+      expect(allData.closeButton.size).toBe(FONT_SIZE.lg);
+      expect(allData.closeButton.iconSize).toBe(FONT_SIZE.base);
       expect(allData.closeButton.iconName).toBe("ph-x");
       expect(allData.closeButton.iconColor).toBe("text-color-muted");
     });
@@ -431,9 +432,9 @@ describe("Toast Generator - Expected Figma Output", () => {
     // Structural assertions
     expect(figmaProps.layoutMode).toBe("VERTICAL");
     expect(typeof figmaProps.width).toBe("number");
-    expect(figmaProps.width).toBe(300);
+    expect(figmaProps.width).toBe(300); // Toast-specific width
     expect(typeof figmaProps.padding).toBe("number");
-    expect(figmaProps.padding).toBe(16);
+    expect(figmaProps.padding).toBe(FONT_SIZE.base);
     expect(typeof figmaProps.cornerRadius).toBe("number");
     expect(figmaProps.cornerRadius).toBe(8);
     expect(typeof figmaProps.itemSpacing).toBe("number");
@@ -452,9 +453,9 @@ describe("Toast Generator - Expected Figma Output", () => {
     };
 
     expect(typeof figmaProps.fontSize).toBe("number");
-    expect(figmaProps.fontSize).toBe(16);
+    expect(figmaProps.fontSize).toBe(FONT_SIZE.base);
     expect(typeof figmaProps.fontWeight).toBe("number");
-    expect(figmaProps.fontWeight).toBe(500);
+    expect(figmaProps.fontWeight).toBe(FALLBACK_VALUES.fontWeight.medium);
     expect(typeof figmaProps.textVariable).toBe("string");
   });
 
@@ -468,9 +469,9 @@ describe("Toast Generator - Expected Figma Output", () => {
     };
 
     expect(typeof figmaProps.fontSize).toBe("number");
-    expect(figmaProps.fontSize).toBe(15);
+    expect(figmaProps.fontSize).toBe(15); // Toast description uses 15px, not a standard FONT_SIZE
     expect(typeof figmaProps.fontWeight).toBe("number");
-    expect(figmaProps.fontWeight).toBe(400);
+    expect(figmaProps.fontWeight).toBe(FALLBACK_VALUES.fontWeight.normal);
     expect(typeof figmaProps.textVariable).toBe("string");
   });
 
@@ -490,9 +491,9 @@ describe("Toast Generator - Expected Figma Output", () => {
 
     // Structural assertions
     expect(typeof figmaProps.size).toBe("number");
-    expect(figmaProps.size).toBe(20);
+    expect(figmaProps.size).toBe(FONT_SIZE.lg);
     expect(typeof figmaProps.iconSize).toBe("number");
-    expect(figmaProps.iconSize).toBe(16);
+    expect(figmaProps.iconSize).toBe(FONT_SIZE.base);
     expect(typeof figmaProps.iconName).toBe("string");
     expect(figmaProps.iconName).toBe("ph-x");
     expect(typeof figmaProps.iconColor).toBe("string");
