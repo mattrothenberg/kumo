@@ -28,7 +28,6 @@ const EXCLUDED_COMPONENTS = new Set([
 
   // Components not yet implemented in Figma (Phase 4 targets)
   "Breadcrumbs", // Block component with navigation path
-  "Empty", // Display component for empty states
   "PageHeader", // Block component with title, description, actions
 ]);
 

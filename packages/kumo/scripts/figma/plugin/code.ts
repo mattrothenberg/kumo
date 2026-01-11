@@ -19,6 +19,7 @@ import { generateComboboxComponents } from "./generators/combobox";
 import { generateDateRangePickerComponents } from "./generators/date-range-picker";
 import { generateDialogComponents } from "./generators/dialog";
 import { generateDropdownComponents } from "./generators/dropdown";
+import { generateEmptyComponents } from "./generators/empty";
 import { generateInputComponents } from "./generators/input";
 import { generateInputAreaComponents } from "./generators/input-area";
 import { generateLayerCardComponents } from "./generators/layer-card";
@@ -216,6 +217,13 @@ figma.ui.onmessage = async (msg: { type: string }) => {
           name: "Dropdown",
           execute: async (page, y) => {
             const result = await generateDropdownComponents(page, y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "Empty",
+          execute: async (_page, y) => {
+            const result = await generateEmptyComponents(y);
             return { nextY: result };
           },
         },

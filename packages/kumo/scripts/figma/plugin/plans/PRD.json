@@ -104,7 +104,7 @@
       "name": "create-empty-generator",
       "title": "Create Empty Generator",
       "priority": "high",
-      "status": "pending",
+      "status": "complete",
       "description": "Empty is a display component for empty states with icon, title, description",
       "files": ["generators/empty.ts", "generators/empty.test.ts"],
       "acceptance": [
