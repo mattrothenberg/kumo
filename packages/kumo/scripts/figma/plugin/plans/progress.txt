@@ -4726,3 +4726,61 @@ Replace 37 fragile hardcoded assertions in test files with shared constants from
 
 **Status:** COMPLETE - text.test.ts now uses shared constants for all applicable assertions
 
+
+---
+
+## PHASE 8: Test File Assertion Hardening (IN PROGRESS)
+
+### Goal
+Eliminate fragile hardcoded numeric assertions in test files by replacing them with shared constants (FONT_SIZE, FALLBACK_VALUES, etc.) to prevent drift when design values change.
+
+### Status Summary
+- **Tasks:** 6
+- **Completed:** 3 (T1, T2, T3)
+- **In Progress:** 0
+- **Pending:** 3 (T4, T5, T6)
+
+---
+
+## Iteration 26: T3 - Fix select.test.ts Hardcoded Assertions (PHASE 8)
+
+**Task:** T3 - Fix select.test.ts Hardcoded Assertions
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Added shared constants import**:
+   - Added `import { FONT_SIZE } from "./shared";` at top of file
+
+2. **Replaced hardcoded font size assertion**:
+   - Line 261: `.toBe(16)` → `.toBe(FONT_SIZE.base)`
+   - Context: option.fontSize in "should include option config matching registry" test
+
+3. **Identified false positive**:
+   - Line 386: `.toBe(12)` is variant count (3 variants × 4 states = 12), NOT font size
+   - Should remain as-is - this is intentional logic validation, not a design value
+   - Drift detector flags it as warning but it's not actually fragile
+
+### Test Results:
+- ✅ All 46 select tests pass
+- ✅ Drift detection now shows 20 warnings (down from ~22)
+- ✅ No snapshot changes
+
+### Files Modified:
+- `scripts/figma/plugin/generators/select.test.ts` - Added FONT_SIZE import, replaced 1 assertion
+- `plans/PRD.json` - T3 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- PRD listed 2 replacements but only 1 was actually a font size assertion
+- Line 386 `.toBe(12)` is checking variant count logic, not a design value
+- This is a good example of where drift detector warnings need human review
+- The actual fragile assertion (line 261 fontSize) has been fixed
+
+### Warnings Remaining:
+- 20 total warnings (mostly in text.test.ts and toast.test.ts)
+- select.test.ts has 1 false positive warning (variant count)
+- Next task (T4) will address remaining files
+
+**Status:** COMPLETE - select.test.ts font size assertions hardened
+

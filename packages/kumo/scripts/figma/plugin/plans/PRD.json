@@ -275,7 +275,7 @@
       "name": "fix-select-test-assertions",
       "title": "Fix select.test.ts Hardcoded Assertions",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Replace 2 hardcoded numeric assertions with shared constants",
       "files": ["scripts/figma/plugin/generators/select.test.ts"],
       "acceptance": [

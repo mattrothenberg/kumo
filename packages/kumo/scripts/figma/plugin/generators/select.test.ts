@@ -21,6 +21,7 @@ import {
   SELECT_OPEN_VALUES,
   SELECT_STATE_VALUES,
 } from "./select";
+import { FONT_SIZE } from "./shared";
 
 // Import registry as source of truth
 import registry from "../../../../ai/component-registry.json";
@@ -258,7 +259,7 @@ describe("Select Generator - All Variant Data", () => {
     expect(option.paddingX).toBe(selectStyling.option.paddingX);
     expect(option.paddingY).toBe(selectStyling.option.paddingY);
     expect(option.borderRadius).toBe(selectStyling.option.borderRadius);
-    expect(option.fontSize).toBe(16);
+    expect(option.fontSize).toBe(FONT_SIZE.base);
   });
 
   it("should have correct variant structure for each combination", () => {
