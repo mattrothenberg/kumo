@@ -225,7 +225,7 @@
       "name": "extend-grid-layout",
       "title": "Extend GRID_LAYOUT with labelVerticalOffset",
       "priority": "high",
-      "status": "pending",
+      "status": "complete",
       "description": "Add label vertical centering offsets to GRID_LAYOUT",
       "files": ["generators/shared.ts"],
       "acceptance": [

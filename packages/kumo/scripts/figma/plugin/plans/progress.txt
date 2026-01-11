@@ -3126,3 +3126,44 @@ Address remaining magic numbers identified in comprehensive audit to achieve ful
 **Next Task:** T4 - Extend GRID_LAYOUT with labelVerticalOffset
 
 ---
+
+## Task T4: Extend GRID_LAYOUT with labelVerticalOffset (COMPLETE)
+
+**Date:** 2026-01-11
+**Status:** ✅ Complete
+
+### What was done:
+1. Extended GRID_LAYOUT constant in shared.ts with labelVerticalOffset object:
+   ```typescript
+   labelVerticalOffset: {
+     /** Small offset for compact components (badge, loader) */
+     sm: 4,
+     /** Medium offset for standard components (input, checkbox) */
+     md: 8,
+     /** Large offset for larger components (button, dialog) */
+     lg: 12,
+   }
+   ```
+
+2. Added JSDoc documentation explaining when to use each size:
+   - sm (4px): Compact components like badge and loader
+   - md (8px): Standard components like input and checkbox
+   - lg (12px): Larger components like button and dialog
+
+### Files Modified:
+- generators/shared.ts (lines 145-153)
+
+### Test Results:
+- ✅ All 1489 tests pass across 32 test files
+- ✅ No breaking changes
+- ✅ Verified with `pnpm --filter @cloudflare/kumo test generators/ --run`
+
+### Notes:
+- This constant will be used in subsequent refactoring tasks (T5, T6, T10)
+- Provides semantic sizing for label vertical centering offsets
+- Eliminates hardcoded 4, 8, 12 values scattered across generators
+- Follows the same pattern as existing GRID_LAYOUT properties (rowGap, labelColumnWidth)
+
+**Next Task:** T5 - Refactor Generators to Use SECTION_LAYOUT
+
+---

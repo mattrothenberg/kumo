@@ -142,6 +142,15 @@ export const GRID_LAYOUT = {
   },
   /** Height of header row for column headers (typically 24px) */
   headerRowHeight: 24,
+  /** Label vertical centering offsets by size */
+  labelVerticalOffset: {
+    /** Small offset for compact components (badge, loader) */
+    sm: 4,
+    /** Medium offset for standard components (input, checkbox) */
+    md: 8,
+    /** Large offset for larger components (button, dialog) */
+    lg: 12,
+  },
 } as const;
 
 /**
