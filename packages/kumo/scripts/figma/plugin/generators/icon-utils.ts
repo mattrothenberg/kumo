@@ -5,16 +5,28 @@
  * Icons are created by icon-library.ts with names like "Icon/ph-check", "Icon/cf-workers-outline".
  */
 
-import { getVariableByName, bindFillToVariable } from "./shared";
+import {
+  getVariableByName,
+  bindFillToVariable,
+  COLORS,
+  FALLBACK_VALUES,
+} from "./shared";
+
+/**
+ * Corner radius multiplier for placeholder icons
+ * Creates softly rounded corners (0.2 = 20% of icon size)
+ */
+const PLACEHOLDER_CORNER_RADIUS_MULTIPLIER = 0.2;
 
 /**
  * Icon size mapping for different button sizes
+ * Matches Tailwind size classes used in components
  */
 export var ICON_SIZE_MAP: Record<string, number> = {
-  xs: 12,
-  sm: 16,
-  base: 20,
-  lg: 20,
+  xs: FALLBACK_VALUES.iconSize.small, // size-3 = 12px
+  sm: 16, // size-4 = 16px (between small and medium)
+  base: FALLBACK_VALUES.iconSize.base, // size-5 = 20px
+  lg: FALLBACK_VALUES.iconSize.base, // size-5 = 20px
 };
 
 /**
@@ -112,8 +124,8 @@ export function createPlaceholderIcon(size: number): FrameNode {
   rect.resize(size, size);
   rect.x = 0;
   rect.y = 0;
-  rect.cornerRadius = size * 0.2;
-  rect.fills = [{ type: "SOLID", color: { r: 0.6, g: 0.6, b: 0.6 } }];
+  rect.cornerRadius = size * PLACEHOLDER_CORNER_RADIUS_MULTIPLIER;
+  rect.fills = [{ type: "SOLID", color: COLORS.placeholder }];
 
   frame.appendChild(rect);
   return frame;
@@ -130,7 +142,7 @@ export function getButtonIcon(
   iconId: string,
   size: string,
 ): InstanceNode | FrameNode {
-  var iconSize = ICON_SIZE_MAP[size] || 20;
+  var iconSize = ICON_SIZE_MAP[size] || FALLBACK_VALUES.iconSize.base;
   var instance = createIconInstance(iconId, iconSize);
 
   if (instance) {
@@ -151,7 +163,7 @@ export function getButtonIcon(
  * @returns FrameNode with a circular spinner shape
  */
 export function createLoader(size: number): FrameNode {
-  if (size === undefined) size = 16;
+  if (size === undefined) size = 16; // Default loader size (sm)
 
   var frame = figma.createFrame();
   frame.name = "Loader";
@@ -166,12 +178,12 @@ export function createLoader(size: number): FrameNode {
 
   // Transparent fill, visible stroke
   spinner.fills = [];
-  spinner.strokes = [{ type: "SOLID", color: { r: 0.4, g: 0.4, b: 0.4 } }];
-  spinner.strokeWeight = 2;
+  spinner.strokes = [{ type: "SOLID", color: COLORS.spinnerStroke }];
+  spinner.strokeWeight = 2; // Loader stroke weight (visually balanced for spinner)
   spinner.strokeAlign = "CENTER";
 
   // Dashed stroke to create spinner appearance
-  spinner.dashPattern = [4, 4];
+  spinner.dashPattern = [4, 4]; // Standard dash pattern for animated spinner
 
   frame.appendChild(spinner);
   return frame;

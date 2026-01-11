@@ -3281,3 +3281,65 @@ grep -n "\.x = 100\|\.y = 100\|+ 50" generators/*.ts | grep -v "shared.ts"
 
 **Status:** COMPLETE - Ready for commit
 
+
+---
+
+## PHASE 6: Magic Numbers Audit Remediation
+
+### Iteration 1: T7 - Refactor icon-utils.ts Magic Numbers
+
+**Task:** T7 - refactor-icon-utils
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Imported COLORS and FALLBACK_VALUES from shared.ts
+2. Created PLACEHOLDER_CORNER_RADIUS_MULTIPLIER constant (0.2) with JSDoc documentation
+3. Updated ICON_SIZE_MAP to use FALLBACK_VALUES.iconSize:
+   - xs: FALLBACK_VALUES.iconSize.small (12px)
+   - sm: 16 (explicit, between small and medium)
+   - base: FALLBACK_VALUES.iconSize.base (20px)
+   - lg: FALLBACK_VALUES.iconSize.base (20px)
+4. Replaced hardcoded placeholder color { r: 0.6, g: 0.6, b: 0.6 } with COLORS.placeholder (line 120)
+5. Replaced hardcoded corner radius (size * 0.2) with PLACEHOLDER_CORNER_RADIUS_MULTIPLIER (line 119)
+6. Replaced hardcoded spinner stroke color { r: 0.4, g: 0.4, b: 0.4 } with COLORS.spinnerStroke (line 173)
+7. Added documentation comments for:
+   - Loader default size (line 158)
+   - Spinner stroke weight (line 174 - documented as "visually balanced for spinner")
+   - Dash pattern (line 177 - documented as "Standard dash pattern for animated spinner")
+8. Replaced hardcoded fallback (|| 20) with FALLBACK_VALUES.iconSize.base (line 137)
+
+### Files Modified:
+- generators/icon-utils.ts
+
+### Test Results:
+- ✅ All 1489 generator tests pass
+- ✅ No test files exist specifically for icon-utils.ts (utility file used by other generators)
+- ✅ All generators using icon-utils continue to pass
+
+### Acceptance Criteria Met:
+- ✅ ICON_SIZE_MAP uses FALLBACK_VALUES.iconSize or centralized constant
+- ✅ Placeholder colors use COLORS.placeholder
+- ✅ Spinner stroke color uses COLORS.spinnerStroke
+- ✅ Spinner stroke weight documented (2px for visually balanced spinner)
+- ✅ Corner radius multiplier (0.2) centralized as PLACEHOLDER_CORNER_RADIUS_MULTIPLIER
+- ✅ All tests pass
+
+### Magic Numbers Eliminated:
+1. Line 13-18: ICON_SIZE_MAP (12, 16, 20) → FALLBACK_VALUES.iconSize
+2. Line 115: Corner radius multiplier (0.2) → PLACEHOLDER_CORNER_RADIUS_MULTIPLIER constant
+3. Line 116: Placeholder color { r: 0.6, ... } → COLORS.placeholder
+4. Line 133: Default icon size (20) → FALLBACK_VALUES.iconSize.base
+5. Line 169: Spinner stroke { r: 0.4, ... } → COLORS.spinnerStroke
+6. Line 170: Spinner stroke weight (2) → Documented as layout constant
+7. Line 174: Dash pattern [4, 4] → Documented as standard spinner pattern
+
+### Notes:
+- Pre-existing TypeScript error (MinimalFillsMixin) exists in the file - not related to this refactor
+- Stroke weight (2) and dash pattern [4, 4] are documented but not centralized (generator-specific)
+- These values are specific to the loader's visual appearance and don't need DASH_PATTERN constant yet
+- icon-utils.ts is a utility file used by button, refresh-button, and other icon-using generators
+- All downstream generators continue to work correctly with the new constants
+
+**Status:** COMPLETE - Ready for commit
+

@@ -311,7 +311,7 @@
       "name": "refactor-icon-utils",
       "title": "Refactor icon-utils.ts Magic Numbers",
       "priority": "high",
-      "status": "pending",
+      "status": "complete",
       "description": "Replace hardcoded values in icon-utils.ts with shared constants",
       "files": ["generators/icon-utils.ts"],
       "acceptance": [
