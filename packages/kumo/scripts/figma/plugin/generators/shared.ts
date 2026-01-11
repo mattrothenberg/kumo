@@ -41,6 +41,18 @@ export const FONT_SIZE = {
 } as const;
 
 /**
+ * Section positioning constants for Figma canvas layout
+ */
+export const SECTION_LAYOUT = {
+  /** X position for section start */
+  startX: 100,
+  /** Y position for section start */
+  startY: 100,
+  /** Gap between light/dark mode sections */
+  modeGap: 50,
+} as const;
+
+/**
  * Layout constants for component display sections
  */
 export const SECTION_PADDING = 48;

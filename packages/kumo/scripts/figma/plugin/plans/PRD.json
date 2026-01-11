@@ -1,82 +1,147 @@
 {
-  "title": "Figma Plugin Phase 5 - Eliminate Magic Numbers",
-  "overview": "Remove hardcoded magic numbers from Figma generators to ensure they stay in sync with component source code. All dimensional values should be derived from component-registry.json or centralized constants.",
+  "title": "Figma Plugin Phase 6 - Magic Numbers Audit Remediation",
+  "overview": "Address remaining magic numbers identified in comprehensive audit. Phase 5 centralized major constants, but ~40% of generators still have hardcoded values that need remediation for full Figma-code sync capability.",
   "context": {
-    "problem": "Generators contain hardcoded magic numbers (widths, padding, gaps, font sizes, shadows) that could drift from actual component implementations. These values are duplicated across files and not derived from the source of truth.",
-    "current_state": "Variant names and Tailwind classes are correctly read from registry, but dimensional values (SIZE_CONFIG, COMPACT_SIZE_MAP, STATE_STYLES, shadows) are hardcoded in individual generators.",
-    "why_now": "Phase 4 (missing generator coverage) is COMPLETE. Next logical step is ensuring generators stay in sync with code changes automatically."
+    "problem": "Audit revealed scattered magic numbers across generators: section positioning (100, 50), disabled opacity (0.5), label vertical offsets (4, 8, 12), hardcoded RGB colors, and font sizes/weights not using centralized constants.",
+    "current_state": "Phase 5 added SHADOWS, GRID_LAYOUT, FALLBACK_VALUES to shared.ts. However, generators still contain: (1) hardcoded section positioning, (2) scattered opacity values, (3) inconsistent label offsets, (4) hardcoded RGB placeholder colors, (5) typography values not using FALLBACK_VALUES.",
+    "why_now": "Phase 5 (initial magic number elimination) is COMPLETE. This phase addresses remaining issues from comprehensive audit to achieve full sync capability.",
+    "audit_summary": {
+      "overall_grade": "B-",
+      "architecture": "Good - shared.ts pattern is solid",
+      "implementation": "Inconsistent - ~40% of values still hardcoded",
+      "highest_risk_files": ["dialog.ts", "icon-utils.ts", "input.ts"]
+    }
   },
   "goals": {
     "primary": [
-      "Centralize all layout constants in shared.ts",
-      "Parse dimensional values from registry Tailwind classes where possible",
-      "Remove duplicate constant declarations across generators",
-      "Add shadow scale to shared.ts for Dialog and Tabs",
-      "Derive COMPACT_SIZE_MAP from Tailwind size-* classes"
+      "Add SECTION_LAYOUT constants for section positioning (startX, startY, modeGap)",
+      "Add OPACITY constants for disabled states and backdrops",
+      "Add COLORS constants for placeholder RGB values",
+      "Extend GRID_LAYOUT with labelVerticalOffset variants",
+      "Refactor high-risk files: dialog.ts, icon-utils.ts, input.ts",
+      "Ensure icon-utils.ts ICON_SIZE_MAP derives from registry or shared constants"
     ],
     "metrics": [
-      "Zero duplicate SECTION_PADDING/SECTION_GAP declarations",
-      "SIZE_CONFIG values derived from registry where possible",
-      "All shadow values centralized",
-      "Tests validate values match registry"
+      "Zero hardcoded 100/50 section positioning values",
+      "Zero hardcoded 0.5 opacity values",
+      "All placeholder colors use COLORS constants",
+      "All label offsets use GRID_LAYOUT.labelVerticalOffset",
+      "All typography fallbacks use FALLBACK_VALUES"
     ]
   },
   "requirements": {
     "functional": [
       {
         "id": "FR-1",
-        "title": "Centralize Layout Constants",
-        "description": "Move all layout magic numbers to shared.ts and remove duplicates",
+        "title": "Add SECTION_LAYOUT Constants",
+        "description": "Centralize section positioning values used across all generators",
         "acceptance": [
-          "SECTION_PADDING and SECTION_GAP only declared in shared.ts",
-          "All generators import from shared.ts instead of redeclaring",
-          "Add LAYOUT_CONSTANTS object for grid spacing values",
-          "All tests pass after refactor"
+          "Add SECTION_LAYOUT to shared.ts with startX: 100, startY: 100, modeGap: 50",
+          "All generators use SECTION_LAYOUT instead of hardcoded 100/50",
+          "Tests validate section positioning uses constants",
+          "All tests pass"
         ]
       },
       {
         "id": "FR-2",
-        "title": "Add Shadow Scale to Shared",
-        "description": "Centralize shadow effect values used by Dialog and Tabs",
+        "title": "Add OPACITY Constants",
+        "description": "Centralize opacity values for disabled states and backdrops",
         "acceptance": [
-          "Add SHADOWS constant to shared.ts with dialog and tabs presets",
-          "Dialog uses SHADOWS.dialog instead of hardcoded values",
-          "Tabs uses SHADOWS.subtle instead of hardcoded values",
-          "Shadow values documented with source reference"
+          "Add OPACITY to shared.ts with disabled: 0.5, backdrop: 0.8",
+          "All generators use OPACITY.disabled instead of hardcoded 0.5",
+          "Tests validate opacity uses constants",
+          "All tests pass"
         ]
       },
       {
         "id": "FR-3",
-        "title": "Parse Dialog SIZE_CONFIG from Registry",
-        "description": "Derive dialog size dimensions from Tailwind classes in registry",
+        "title": "Add COLORS Constants",
+        "description": "Centralize placeholder RGB color values",
         "acceptance": [
-          "Parse min-w-* classes to get width values",
-          "Parse p-* classes to get padding values",
-          "Parse gap-* classes to get gap values",
-          "Fallback to current values if parsing fails",
-          "Add tests validating parsed values"
+          "Add COLORS to shared.ts with placeholder gray and fallback white",
+          "icon-utils.ts uses COLORS instead of hardcoded RGB objects",
+          "dialog.ts uses COLORS instead of hardcoded RGB objects",
+          "All tests pass"
         ]
       },
       {
         "id": "FR-4",
-        "title": "Derive Button COMPACT_SIZE_MAP",
-        "description": "Parse compact button sizes from Tailwind size-* classes",
+        "title": "Extend GRID_LAYOUT with labelVerticalOffset",
+        "description": "Add label vertical centering offsets to GRID_LAYOUT",
         "acceptance": [
-          "Parse size-3.5, size-6.5, size-9, size-10 from compactSize classes",
-          "Remove hardcoded COMPACT_SIZE_MAP object",
-          "Add helper function to extract compact sizes",
-          "Tests validate sizes match registry"
+          "Add labelVerticalOffset to GRID_LAYOUT with sm: 4, md: 8, lg: 12",
+          "Generators use GRID_LAYOUT.labelVerticalOffset instead of hardcoded values",
+          "Consistent offset selection based on component size",
+          "All tests pass"
         ]
       },
       {
         "id": "FR-5",
-        "title": "Centralize Fallback Values",
-        "description": "Create FALLBACK_VALUES constant for scattered inline fallbacks",
+        "title": "Refactor dialog.ts Magic Numbers",
+        "description": "Replace remaining hardcoded values in dialog.ts with shared constants",
         "acceptance": [
-          "Add FALLBACK_VALUES to shared.ts with common defaults",
-          "Replace inline || fallbacks with FALLBACK_VALUES references",
-          "Document why each fallback exists",
-          "No magic numbers in fallback expressions"
+          "All font sizes use FALLBACK_VALUES or derive from registry",
+          "All font weights use FALLBACK_VALUES",
+          "All padding/gap values use FALLBACK_VALUES or parse from registry",
+          "Button dimensions in dialog use Button registry values where possible",
+          "All tests pass"
+        ]
+      },
+      {
+        "id": "FR-6",
+        "title": "Refactor icon-utils.ts Magic Numbers",
+        "description": "Replace hardcoded values in icon-utils.ts with shared constants",
+        "acceptance": [
+          "ICON_SIZE_MAP derived from registry or uses FALLBACK_VALUES.iconSize",
+          "Placeholder colors use COLORS constants",
+          "Spinner stroke weight uses FALLBACK_VALUES.strokeWeight",
+          "Dash patterns centralized",
+          "All tests pass"
+        ]
+      },
+      {
+        "id": "FR-7",
+        "title": "Refactor input.ts Magic Numbers",
+        "description": "Replace hardcoded values in input.ts with shared constants",
+        "acceptance": [
+          "Width map documented as generator-specific layout helper",
+          "Font sizes/weights use FALLBACK_VALUES",
+          "itemSpacing values use SPACING or FALLBACK_VALUES.gap",
+          "All tests pass"
+        ]
+      },
+      {
+        "id": "FR-8",
+        "title": "Update Remaining Generators",
+        "description": "Apply constants to all remaining generators with hardcoded values",
+        "acceptance": [
+          "button.ts uses OPACITY.disabled, GRID_LAYOUT.labelVerticalOffset",
+          "checkbox.ts uses centralized constants",
+          "tabs.ts uses SECTION_LAYOUT, GRID_LAYOUT.labelVerticalOffset",
+          "loader.ts uses centralized constants",
+          "All tests pass"
+        ]
+      },
+      {
+        "id": "FR-9",
+        "title": "Add Enforcement Tests",
+        "description": "Extend drift-detection.test.ts to catch new magic number patterns",
+        "acceptance": [
+          "Test fails if generator has hardcoded section positioning (100, 50)",
+          "Test fails if generator has hardcoded opacity (0.5)",
+          "Test warns if generator has hardcoded RGB color objects",
+          "All enforcement tests pass"
+        ]
+      },
+      {
+        "id": "FR-10",
+        "title": "Final Verification",
+        "description": "Comprehensive verification that all magic numbers are addressed",
+        "acceptance": [
+          "Run audit script to verify no remaining magic numbers",
+          "All generators pass drift detection",
+          "Document any intentional exceptions",
+          "All tests pass: pnpm validate:figma"
         ]
       }
     ],
@@ -84,7 +149,7 @@
       {
         "id": "NFR-1",
         "title": "Backward Compatibility",
-        "description": "All existing tests must pass without snapshot updates (unless values were wrong)",
+        "description": "All existing tests must pass without breaking changes",
         "acceptance": [
           "No visual changes to generated Figma components",
           "All existing snapshot tests pass",
@@ -95,303 +160,373 @@
   },
   "scope": {
     "in_scope": [
-      "Centralizing constants in shared.ts",
-      "Removing duplicate declarations from generators",
-      "Parsing dimensional values from registry",
-      "Adding shadow scale",
-      "Updating tests to validate against registry"
+      "Adding new constants to shared.ts (SECTION_LAYOUT, OPACITY, COLORS)",
+      "Extending GRID_LAYOUT with labelVerticalOffset",
+      "Refactoring generators to use centralized constants",
+      "Adding enforcement tests for new patterns",
+      "Documenting generator-specific layout helpers"
     ],
     "out_of_scope": [
       "Adding new generators",
       "Changing component-registry.json format",
       "Modifying React components",
-      "Parser enhancements beyond what exists"
+      "Changing visual output of generators"
     ]
   },
   "tasks": [
     {
       "id": "T1",
-      "name": "centralize-section-constants",
-      "title": "Centralize Section Layout Constants",
+      "name": "add-section-layout-constants",
+      "title": "Add SECTION_LAYOUT Constants to shared.ts",
       "priority": "high",
       "status": "complete",
-      "description": "Remove duplicate SECTION_PADDING and SECTION_GAP declarations from all generators",
-      "files": [
-        "generators/shared.ts",
-        "generators/dialog.ts",
-        "generators/input.ts",
-        "generators/tabs.ts",
-        "generators/text.ts",
-        "generators/banner.ts"
-      ],
+      "description": "Add centralized section positioning constants",
+      "files": ["generators/shared.ts"],
       "acceptance": [
-        "SECTION_PADDING (48) only in shared.ts",
-        "SECTION_GAP (160) only in shared.ts",
-        "All generators import from shared.ts",
-        "All tests pass"
+        "Add SECTION_LAYOUT with startX: 100, startY: 100, modeGap: 50",
+        "Add JSDoc documentation explaining each value",
+        "Export from shared.ts"
       ],
-      "estimated_minutes": 20
+      "estimated_minutes": 10
     },
     {
       "id": "T2",
-      "name": "add-shadow-scale",
-      "title": "Add Shadow Scale to Shared",
+      "name": "add-opacity-constants",
+      "title": "Add OPACITY Constants to shared.ts",
       "priority": "high",
-      "status": "complete",
-      "description": "Create centralized SHADOWS constant for dialog and tabs shadow effects",
-      "files": [
-        "generators/shared.ts",
-        "generators/dialog.ts",
-        "generators/tabs.ts"
-      ],
+      "status": "pending",
+      "description": "Add centralized opacity constants for disabled states",
+      "files": ["generators/shared.ts"],
       "acceptance": [
-        "Add SHADOWS constant with dialog preset (offset 0/8, radius 32, opacity 0.16)",
-        "Add SHADOWS constant with subtle preset (offset 0/1, radius 2, opacity 0.05)",
-        "Dialog uses SHADOWS.dialog",
-        "Tabs uses SHADOWS.subtle",
-        "All tests pass"
+        "Add OPACITY with disabled: 0.5, backdrop: 0.8",
+        "Add JSDoc documentation",
+        "Export from shared.ts"
       ],
-      "estimated_minutes": 25
+      "estimated_minutes": 10
     },
     {
       "id": "T3",
-      "name": "add-layout-grid-constants",
-      "title": "Add Layout Grid Constants",
-      "priority": "medium",
-      "status": "complete",
-      "description": "Centralize component grid layout values (row gaps, label widths, header heights)",
+      "name": "add-colors-constants",
+      "title": "Add COLORS Constants to shared.ts",
+      "priority": "high",
+      "status": "pending",
+      "description": "Add centralized placeholder color constants",
+      "files": ["generators/shared.ts"],
+      "acceptance": [
+        "Add COLORS with placeholder: { r: 0.5, g: 0.5, b: 0.5 }",
+        "Add fallbackWhite: { r: 1, g: 1, b: 1 }",
+        "Add spinnerStroke: { r: 0.4, g: 0.4, b: 0.4 }",
+        "Export from shared.ts"
+      ],
+      "estimated_minutes": 10
+    },
+    {
+      "id": "T4",
+      "name": "extend-grid-layout",
+      "title": "Extend GRID_LAYOUT with labelVerticalOffset",
+      "priority": "high",
+      "status": "pending",
+      "description": "Add label vertical centering offsets to GRID_LAYOUT",
+      "files": ["generators/shared.ts"],
+      "acceptance": [
+        "Add labelVerticalOffset: { sm: 4, md: 8, lg: 12 } to GRID_LAYOUT",
+        "Add JSDoc documentation explaining when to use each size",
+        "All tests pass"
+      ],
+      "estimated_minutes": 10
+    },
+    {
+      "id": "T5",
+      "name": "refactor-generators-section-layout",
+      "title": "Refactor Generators to Use SECTION_LAYOUT",
+      "priority": "high",
+      "status": "pending",
+      "description": "Replace hardcoded 100/50 section positioning across all generators",
       "files": [
-        "generators/shared.ts",
         "generators/button.ts",
         "generators/input.ts",
         "generators/dialog.ts",
         "generators/badge.ts",
         "generators/tabs.ts",
-        "generators/text.ts"
+        "generators/checkbox.ts",
+        "generators/loader.ts",
+        "generators/text.ts",
+        "generators/banner.ts",
+        "generators/toast.ts",
+        "generators/tooltip.ts",
+        "generators/dropdown.ts",
+        "generators/select.ts",
+        "generators/combobox.ts",
+        "generators/switch.ts",
+        "generators/meter.ts",
+        "generators/pagination.ts",
+        "generators/collapsible.ts",
+        "generators/code.ts",
+        "generators/code-block.ts",
+        "generators/clipboard-text.ts",
+        "generators/surface.ts",
+        "generators/link-button.ts",
+        "generators/refresh-button.ts",
+        "generators/input-area.ts",
+        "generators/sensitive-input.ts",
+        "generators/layer-card.ts",
+        "generators/menubar.ts",
+        "generators/date-range-picker.ts",
+        "generators/breadcrumbs.ts",
+        "generators/empty.ts",
+        "generators/page-header.ts"
       ],
       "acceptance": [
-        "Add GRID_LAYOUT constant with rowGap, labelWidth, headerHeight values",
-        "Generators use GRID_LAYOUT instead of local magic numbers",
-        "Document values (e.g., labelColumnWidth: 160-200, rowGap: 24-40)",
+        "All generators import SECTION_LAYOUT from shared.ts",
+        "Replace hardcoded 100 with SECTION_LAYOUT.startX",
+        "Replace hardcoded 50 (modeGap) with SECTION_LAYOUT.modeGap",
+        "All tests pass"
+      ],
+      "estimated_minutes": 60
+    },
+    {
+      "id": "T6",
+      "name": "refactor-generators-opacity",
+      "title": "Refactor Generators to Use OPACITY Constants",
+      "priority": "medium",
+      "status": "pending",
+      "description": "Replace hardcoded 0.5 opacity values with OPACITY.disabled",
+      "files": [
+        "generators/button.ts",
+        "generators/input.ts",
+        "generators/checkbox.ts",
+        "generators/switch.ts",
+        "generators/select.ts",
+        "generators/combobox.ts"
+      ],
+      "acceptance": [
+        "All generators with disabled states import OPACITY from shared.ts",
+        "Replace hardcoded 0.5 with OPACITY.disabled",
         "All tests pass"
       ],
       "estimated_minutes": 30
     },
     {
-      "id": "T4",
-      "name": "parse-dialog-sizes",
-      "title": "Parse Dialog SIZE_CONFIG from Registry",
-      "priority": "medium",
-      "status": "complete",
-      "description": "Derive dialog width, padding, gap from registry Tailwind classes",
-      "files": [
-        "generators/dialog.ts",
-        "generators/dialog.test.ts",
-        "parsers/tailwind-to-figma.ts"
-      ],
+      "id": "T7",
+      "name": "refactor-icon-utils",
+      "title": "Refactor icon-utils.ts Magic Numbers",
+      "priority": "high",
+      "status": "pending",
+      "description": "Replace hardcoded values in icon-utils.ts with shared constants",
+      "files": ["generators/icon-utils.ts"],
       "acceptance": [
-        "Parser handles min-w-96, min-w-[32rem], min-w-[48rem] classes",
-        "Dialog SIZE_CONFIG derives width from parsed classes",
-        "Fallback to current hardcoded values if parsing fails",
-        "Add test validating parsed sizes match expected",
-        "All existing tests pass"
+        "ICON_SIZE_MAP uses FALLBACK_VALUES.iconSize or centralized constant",
+        "Placeholder colors use COLORS.placeholder",
+        "Spinner stroke color uses COLORS.spinnerStroke",
+        "Spinner stroke weight uses centralized constant",
+        "Corner radius multiplier (0.2) documented or centralized",
+        "All tests pass"
       ],
-      "estimated_minutes": 45
+      "estimated_minutes": 25
     },
     {
-      "id": "T5",
-      "name": "derive-compact-size-map",
-      "title": "Derive Button COMPACT_SIZE_MAP from Registry",
-      "priority": "medium",
-      "status": "complete",
-      "description": "Parse button compact sizes from Tailwind size-* classes in registry",
-      "files": [
-        "generators/button.ts",
-        "generators/button.test.ts",
-        "parsers/tailwind-to-figma.ts"
-      ],
+      "id": "T8",
+      "name": "refactor-dialog-typography",
+      "title": "Refactor dialog.ts Typography and Layout Values",
+      "priority": "high",
+      "status": "pending",
+      "description": "Replace hardcoded typography and layout values in dialog.ts",
+      "files": ["generators/dialog.ts", "generators/dialog.test.ts"],
       "acceptance": [
-        "Parser handles size-3.5, size-6.5, size-9, size-10 classes",
-        "Add helper function getCompactSizeFromRegistry(size: string)",
-        "COMPACT_SIZE_MAP derived from registry compactSize classes",
-        "Add test validating compact sizes match registry",
-        "All existing tests pass"
+        "Font sizes (14, 16, 20) use FALLBACK_VALUES or FONT_SIZE constants",
+        "Font weights (500, 600) use FALLBACK_VALUES",
+        "Padding values use FALLBACK_VALUES.padding or SPACING",
+        "Gap values use FALLBACK_VALUES.gap or SPACING",
+        "Button dimensions documented as derived from Button component",
+        "White color uses COLORS.fallbackWhite",
+        "All tests pass"
       ],
       "estimated_minutes": 40
     },
     {
-      "id": "T6",
-      "name": "add-fallback-constants",
-      "title": "Centralize Fallback Values",
-      "priority": "low",
-      "status": "complete",
-      "description": "Replace scattered inline fallbacks with centralized constants",
-      "files": [
-        "generators/shared.ts",
-        "generators/button.ts",
-        "generators/badge.ts",
-        "generators/input.ts"
-      ],
+      "id": "T9",
+      "name": "refactor-input-typography",
+      "title": "Refactor input.ts Typography Values",
+      "priority": "medium",
+      "status": "pending",
+      "description": "Replace hardcoded typography values in input.ts with shared constants",
+      "files": ["generators/input.ts"],
       "acceptance": [
-        "Add FALLBACK_VALUES to shared.ts",
-        "Include: fontSize (16), fontWeight (400/500), padding (8/12), borderRadius (8), gap (6/8)",
-        "Replace inline || fallbacks with FALLBACK_VALUES.x",
-        "Document each fallback with comment",
+        "Width map documented as generator-specific layout helper (OK to keep)",
+        "Font sizes (12, 14) use FONT_SIZE constants",
+        "Font weights (400, 500) use FALLBACK_VALUES.fontWeight",
+        "itemSpacing values use SPACING or FALLBACK_VALUES.gap",
         "All tests pass"
       ],
       "estimated_minutes": 25
     },
     {
-      "id": "T7",
-      "name": "add-registry-validation-tests",
-      "title": "Add Registry Sync Validation Tests",
-      "priority": "low",
-      "status": "complete",
-      "description": "Add tests that validate generator constants match registry values",
+      "id": "T10",
+      "name": "refactor-generators-label-offset",
+      "title": "Refactor Generators to Use labelVerticalOffset",
+      "priority": "medium",
+      "status": "pending",
+      "description": "Replace hardcoded label vertical offsets (4, 8, 12) with GRID_LAYOUT.labelVerticalOffset",
       "files": [
-        "generators/dialog.test.ts",
-        "generators/button.test.ts",
-        "generators/drift-detection.test.ts"
+        "generators/button.ts",
+        "generators/input.ts",
+        "generators/dialog.ts",
+        "generators/badge.ts",
+        "generators/tabs.ts",
+        "generators/checkbox.ts",
+        "generators/loader.ts"
       ],
       "acceptance": [
-        "Add test: Dialog widths match parsed min-w-* values",
-        "Add test: Button compact sizes match parsed size-* values",
-        "Add test: Shadow values are documented constants",
-        "Tests fail if registry changes break assumptions"
+        "All generators with label centering use GRID_LAYOUT.labelVerticalOffset",
+        "Consistent offset selection (sm: 4, md: 8, lg: 12) based on component",
+        "All tests pass"
+      ],
+      "estimated_minutes": 35
+    },
+    {
+      "id": "T11",
+      "name": "add-dash-pattern-constant",
+      "title": "Add DASH_PATTERN Constant",
+      "priority": "low",
+      "status": "pending",
+      "description": "Centralize dash pattern arrays used for dashed borders/strokes",
+      "files": [
+        "generators/shared.ts",
+        "generators/icon-utils.ts",
+        "generators/badge.ts"
+      ],
+      "acceptance": [
+        "Add DASH_PATTERN to shared.ts with standard: [4, 4]",
+        "icon-utils.ts uses DASH_PATTERN.standard",
+        "badge.ts uses DASH_PATTERN.standard for dashed variant",
+        "All tests pass"
+      ],
+      "estimated_minutes": 15
+    },
+    {
+      "id": "T12",
+      "name": "add-enforcement-tests",
+      "title": "Add Enforcement Tests for New Patterns",
+      "priority": "high",
+      "status": "pending",
+      "description": "Extend drift-detection.test.ts to catch new magic number patterns",
+      "files": ["generators/drift-detection.test.ts"],
+      "acceptance": [
+        "Test fails if generator has hardcoded section positioning (x = 100, y = 100, + 50)",
+        "Test fails if generator has hardcoded opacity = 0.5 without import",
+        "Test warns if generator has hardcoded RGB objects like { r: 0.5, g: 0.5, b: 0.5 }",
+        "All enforcement tests pass"
       ],
       "estimated_minutes": 30
     },
     {
-      "id": "T8",
-      "name": "add-enforcement-tests",
-      "title": "Add Enforcement Tests for Magic Numbers",
-      "priority": "high",
-      "status": "complete",
-      "description": "Add tests to drift-detection.test.ts that prevent redeclaring centralized constants",
-      "files": ["generators/drift-detection.test.ts"],
-      "acceptance": [
-        "Test fails if any generator redeclares SECTION_PADDING or SECTION_GAP",
-        "Test warns if generator uses constants without importing from shared.ts",
-        "Test warns about hardcoded shadow effects",
-        "All 6 drift detection tests pass"
-      ],
-      "estimated_minutes": 20
-    },
-    {
-      "id": "T9",
-      "name": "verify-no-magic-numbers",
-      "title": "Verify No Magic Numbers Remain",
+      "id": "T13",
+      "name": "final-verification",
+      "title": "Final Verification and Cleanup",
       "priority": "low",
-      "status": "complete",
-      "description": "Final verification that all magic numbers are centralized or derived",
-      "files": ["generators/*.ts", "MAGIC_NUMBERS.md"],
+      "status": "pending",
+      "description": "Comprehensive verification that all magic numbers are addressed",
+      "files": ["generators/*.ts"],
       "acceptance": [
-        "Run grep for hardcoded pixel values in generators",
-        "All dimensional values traced to constants or registry",
-        "Document any intentional remaining hardcoded values",
-        "All tests pass: pnpm validate:figma"
+        "Run grep/search for remaining magic number patterns",
+        "Document any intentional exceptions with comments",
+        "All tests pass: pnpm validate:figma",
+        "Update MAGIC_NUMBERS.md if it exists with final status"
       ],
       "estimated_minutes": 20
     }
   ],
   "technical_approach": {
-    "shared_constants_pattern": {
-      "description": "All reusable constants in shared.ts with JSDoc documentation",
-      "example": "export const SHADOWS = {\n  /** Dialog shadow - offset 0/8px, blur 32px, opacity 16% */\n  dialog: { offsetY: 8, blur: 32, opacity: 0.16 },\n  /** Subtle shadow for tabs - offset 0/1px, blur 2px, opacity 5% */\n  subtle: { offsetY: 1, blur: 2, opacity: 0.05 },\n};"
+    "new_constants_pattern": {
+      "description": "Add new constants to shared.ts following existing patterns",
+      "example": "export const SECTION_LAYOUT = {\n  /** X position for section start */\n  startX: 100,\n  /** Y position for section start */\n  startY: 100,\n  /** Gap between light/dark mode sections */\n  modeGap: 50,\n} as const;"
     },
-    "registry_parsing_pattern": {
-      "description": "Parse Tailwind classes from registry, fallback to constants if parsing fails",
-      "example": "const sizeClasses = registry.components.Dialog.props.size.classes.base;\nconst parsed = parseTailwindClasses(sizeClasses);\nconst width = parsed.minWidth ?? FALLBACK_VALUES.dialogWidth.base;"
+    "refactoring_pattern": {
+      "description": "Import constants and replace hardcoded values",
+      "example": "// Before\nlightSection.x = 100;\ndarkSection.x = lightSection.x + lightSection.width + 50;\n\n// After\nimport { SECTION_LAYOUT } from './shared';\nlightSection.x = SECTION_LAYOUT.startX;\ndarkSection.x = lightSection.x + lightSection.width + SECTION_LAYOUT.modeGap;"
     }
   },
   "deliverables": [
     {
-      "name": "Updated shared.ts",
-      "description": "Centralized constants for shadows, layout, fallbacks",
+      "name": "Extended shared.ts",
+      "description": "New constants: SECTION_LAYOUT, OPACITY, COLORS, extended GRID_LAYOUT",
       "files": ["generators/shared.ts"]
     },
     {
       "name": "Refactored Generators",
-      "description": "Generators using shared constants instead of local magic numbers",
-      "files": [
-        "generators/dialog.ts",
-        "generators/button.ts",
-        "generators/tabs.ts",
-        "generators/input.ts"
-      ]
+      "description": "All 30+ generators using centralized constants",
+      "files": ["generators/*.ts"]
     },
     {
-      "name": "Enhanced Parser",
-      "description": "Parser handling min-w-*, size-* classes",
-      "files": ["parsers/tailwind-to-figma.ts"]
-    },
-    {
-      "name": "Validation Tests",
-      "description": "Tests ensuring generator values stay in sync with registry",
-      "files": ["generators/*.test.ts"]
+      "name": "Enhanced Enforcement Tests",
+      "description": "Tests catching new magic number patterns",
+      "files": ["generators/drift-detection.test.ts"]
     }
   ],
   "constraints": [
     "Must not change visual output of generators",
     "Must not break existing snapshot tests",
     "Must maintain backward compatibility",
-    "Fallbacks required for any parsed values"
+    "Document any intentional hardcoded values"
   ],
-  "magic_numbers_inventory": {
-    "dialog.ts": {
-      "SIZE_CONFIG widths": ["350 (sm)", "384 (base)", "512 (lg)", "768 (xl)"],
-      "SIZE_CONFIG padding": ["16 (sm)", "24 (base/lg/xl)"],
-      "SIZE_CONFIG gaps": ["8 (sm)", "16 (base/lg/xl)"],
-      "shadow": ["offsetY: 8", "radius: 32", "opacity: 0.16"]
+  "magic_numbers_audit": {
+    "high_risk": {
+      "section_positioning": {
+        "pattern": "100, 50",
+        "locations": "Every generator (~30+ files)",
+        "fix": "SECTION_LAYOUT.startX, SECTION_LAYOUT.modeGap"
+      },
+      "disabled_opacity": {
+        "pattern": "0.5",
+        "locations": "button.ts, input.ts, checkbox.ts, switch.ts, select.ts, combobox.ts",
+        "fix": "OPACITY.disabled"
+      }
     },
-    "button.ts": {
-      "COMPACT_SIZE_MAP": ["14 (xs)", "26 (sm)", "36 (base)", "40 (lg)"],
-      "layout": ["80 (spacing)", "16 (padding)", "500 (fontWeight)"]
+    "medium_risk": {
+      "label_vertical_offsets": {
+        "pattern": "4, 8, 12",
+        "locations": "Most generators with labels",
+        "fix": "GRID_LAYOUT.labelVerticalOffset.sm/md/lg"
+      },
+      "rgb_colors": {
+        "pattern": "{ r: 0.4-0.6, g: 0.4-0.6, b: 0.4-0.6 }",
+        "locations": "icon-utils.ts, dialog.ts",
+        "fix": "COLORS.placeholder, COLORS.spinnerStroke"
+      },
+      "font_sizes_weights": {
+        "pattern": "14, 16, 500, 600",
+        "locations": "dialog.ts, input.ts",
+        "fix": "FONT_SIZE.xs/base, FALLBACK_VALUES.fontWeight"
+      }
     },
-    "tabs.ts": {
-      "TABS_CONFIG": [
-        "containerHeight: 34",
-        "borderRadius: 8",
-        "padding: 1",
-        "tabHorizontalPadding: 10"
-      ],
-      "shadow": ["offsetY: 1", "radius: 2", "opacity: 0.05"]
-    },
-    "duplicated": {
-      "SECTION_PADDING": [
-        "dialog.ts",
-        "input.ts",
-        "tabs.ts",
-        "text.ts",
-        "banner.ts"
-      ],
-      "SECTION_GAP": [
-        "dialog.ts",
-        "input.ts",
-        "tabs.ts",
-        "text.ts",
-        "banner.ts"
-      ]
+    "low_risk": {
+      "dash_patterns": {
+        "pattern": "[4, 4]",
+        "locations": "icon-utils.ts, badge.ts",
+        "fix": "DASH_PATTERN.standard"
+      }
     }
   },
   "success_criteria": [
-    "Zero duplicate SECTION_PADDING/SECTION_GAP declarations",
-    "SHADOWS constant in shared.ts used by Dialog and Tabs",
-    "GRID_LAYOUT constant for component grid values",
-    "Dialog widths parseable from registry (with fallback)",
-    "Button compact sizes parseable from registry (with fallback)",
+    "Zero hardcoded section positioning (100, 50) values",
+    "Zero hardcoded opacity (0.5) values without OPACITY constant",
+    "All placeholder colors use COLORS constants",
+    "All label offsets use GRID_LAYOUT.labelVerticalOffset",
+    "All typography fallbacks use FALLBACK_VALUES",
+    "Enforcement tests catch regressions",
     "All tests pass including drift detection",
     "No visual changes to generated components"
   ],
   "references": {
-    "analysis": "See conversation above for full magic number inventory",
-    "shared_ts": "generators/shared.ts - existing constants",
-    "parser": "parsers/tailwind-to-figma.ts - Tailwind class parser"
+    "audit_source": "Comprehensive magic numbers audit conducted before Phase 6",
+    "shared_ts": "generators/shared.ts - existing constants from Phase 5",
+    "phase_5_learnings": "SHADOWS, GRID_LAYOUT, FALLBACK_VALUES patterns work well"
   },
   "completed_phases": {
     "phase_1_test_refactoring": "COMPLETE",
     "phase_2_registry_integration": "COMPLETE",
     "phase_3_parser_enhancement": "COMPLETE",
-    "phase_4_generator_coverage": "COMPLETE"
+    "phase_4_generator_coverage": "COMPLETE",
+    "phase_5_magic_numbers": "COMPLETE"
   }
 }

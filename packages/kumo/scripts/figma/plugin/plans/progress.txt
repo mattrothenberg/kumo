@@ -2967,3 +2967,91 @@ Only minor improvement: Centralize disabled opacity (0.5) - LOW priority.
 
 **Status:** COMPLETE - Ready for commit
 
+---
+
+## Phase 6: Magic Numbers Audit Remediation
+
+**Start Date:** 2026-01-10
+**Goal:** Address remaining magic numbers identified in comprehensive audit
+
+### Audit Summary (Pre-Phase 6)
+
+A comprehensive audit revealed Phase 5 addressed major constants but ~40% of generators still have hardcoded values:
+
+| Pattern | Locations | Risk |
+|---------|-----------|------|
+| `100, 50` section positioning | Every generator (~30+ files) | High |
+| `0.5` disabled opacity | button, input, checkbox, etc. | Medium |
+| Label offsets `4, 8, 12` | Most generators | Medium |
+| RGB colors `{ r: 0.5, ... }` | icon-utils.ts, dialog.ts | Medium |
+| Font sizes/weights | dialog.ts, input.ts | Medium |
+
+### Highest Risk Files
+1. **dialog.ts** - 15+ magic numbers
+2. **icon-utils.ts** - 10+ magic numbers  
+3. **input.ts** - 10+ magic numbers
+
+### Phase 6 Tasks (13 total)
+- T1: Add SECTION_LAYOUT constants
+- T2: Add OPACITY constants
+- T3: Add COLORS constants
+- T4: Extend GRID_LAYOUT with labelVerticalOffset
+- T5: Refactor generators to use SECTION_LAYOUT
+- T6: Refactor generators to use OPACITY
+- T7: Refactor icon-utils.ts
+- T8: Refactor dialog.ts typography
+- T9: Refactor input.ts typography
+- T10: Refactor generators to use labelVerticalOffset
+- T11: Add DASH_PATTERN constant
+- T12: Add enforcement tests
+- T13: Final verification
+
+---
+
+
+---
+
+## PHASE 6: Magic Numbers Audit Remediation (Current)
+
+### Goal
+Address remaining magic numbers identified in comprehensive audit to achieve full Figma-code sync capability.
+
+### Status Summary
+- **Tasks:** 13
+- **Completed:** 1
+- **In Progress:** 0
+- **Pending:** 12
+
+---
+
+## Task T1: Add SECTION_LAYOUT Constants (COMPLETE)
+
+**Date:** 2026-01-10
+**Status:** ✅ Complete
+
+### What was done:
+1. Added SECTION_LAYOUT constant to shared.ts with:
+   - startX: 100 (X position for section start)
+   - startY: 100 (Y position for section start)
+   - modeGap: 50 (Gap between light/dark mode sections)
+
+2. Added comprehensive JSDoc documentation explaining each value
+
+3. Constant is properly exported and available for import
+
+### Files Modified:
+- generators/shared.ts (added SECTION_LAYOUT constant at line 46-53)
+
+### Test Results:
+- ✅ All 32 test files pass (1489 tests total)
+- ✅ No snapshots changed
+- ✅ Tests run time: 1.46s
+
+### Notes:
+- Pre-existing TypeScript errors in shared.ts (x, y properties on TextNode) are unrelated to this change
+- SECTION_LAYOUT follows the same pattern as existing constants (SHADOWS, GRID_LAYOUT)
+- Ready for use by all generators to replace hardcoded 100/50 positioning values
+- Next task (T2) will add OPACITY constants
+
+**Status:** COMPLETE - Ready for commit
+
