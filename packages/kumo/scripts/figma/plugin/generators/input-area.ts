@@ -1,4 +1,3 @@
-import { logComplete } from "../logger";
 /**
  * InputArea Component Generator
  *
@@ -11,6 +10,7 @@ import { logComplete } from "../logger";
  * - withLabel: false (bare textarea), true (with Field wrapper)
  *
  * The InputArea is a multi-line textarea with optional label, description, and error states.
+ * InputArea uses Input's inputVariants, so we read from the Input component registry.
  *
  * @see packages/kumo/src/components/input/input-area.tsx
  */
@@ -26,6 +26,8 @@ import {
   bindTextColorToVariable,
   BORDER_RADIUS,
 } from "./shared";
+import { logComplete } from "../logger";
+import registry from "../../../../ai/component-registry.json";
 
 /**
  * Section padding for component display
@@ -38,8 +40,64 @@ var SECTION_PADDING = 48;
 var SECTION_GAP = 160;
 
 /**
- * Size configuration matching KUMO_INPUT_VARIANTS (shared with Input)
- * InputArea uses the same sizing but with variable height for multi-line content
+ * Extract Input component from registry (InputArea uses Input's inputVariants)
+ */
+var inputRegistry = registry.components.Input as any;
+var inputProps = inputRegistry.props;
+var inputStyling = inputRegistry.styling;
+
+/**
+ * Size values from Input registry
+ */
+var SIZE_VALUES = inputProps.size.values;
+
+/**
+ * Variant values from Input registry
+ */
+var VARIANT_VALUES = inputProps.variant.values;
+
+/**
+ * Get size configuration from Input registry
+ * InputArea uses the same paddingX, fontSize, borderRadius as Input,
+ * but with larger minHeight for multi-line content and py-2 instead of Input's height
+ * @param size - Size variant (xs, sm, base, lg)
+ * @returns Size dimensions including layout-specific width
+ */
+function getSizeConfigFromRegistry(size: string) {
+  var sizeVariant = inputStyling.sizeVariants[size];
+  if (!sizeVariant) {
+    // Fallback to base if size not found
+    sizeVariant = inputStyling.sizeVariants.base;
+  }
+
+  // InputArea-specific minHeight (taller than Input for multi-line)
+  var minHeightMap: Record<string, number> = {
+    xs: 60, // Taller than input (20) for multi-line
+    sm: 72, // Taller than input (26) for multi-line
+    base: 88, // Taller than input (36) for multi-line
+    lg: 100, // Taller than input (40) for multi-line
+  };
+
+  // Layout-specific widths (not in registry - generator specific)
+  var widthMap: Record<string, number> = {
+    xs: 200,
+    sm: 240,
+    base: 320,
+    lg: 360,
+  };
+
+  return {
+    minHeight: minHeightMap[size] || minHeightMap.base,
+    paddingX: sizeVariant.dimensions.paddingX,
+    paddingY: 8, // py-2 for all sizes (InputArea-specific, not in registry)
+    fontSize: sizeVariant.dimensions.fontSize,
+    borderRadius: sizeVariant.dimensions.borderRadius,
+    width: widthMap[size] || widthMap.base,
+  };
+}
+
+/**
+ * Size configuration from registry (computed at generator init time)
  */
 var SIZE_CONFIG: Record<
   string,
@@ -52,49 +110,11 @@ var SIZE_CONFIG: Record<
     width: number;
   }
 > = {
-  xs: {
-    minHeight: 60, // Taller than input for multi-line
-    paddingX: 6, // px-1.5
-    paddingY: 8, // py-2
-    fontSize: 12, // text-xs
-    borderRadius: BORDER_RADIUS.sm,
-    width: 200,
-  },
-  sm: {
-    minHeight: 72, // Taller than input for multi-line
-    paddingX: 8, // px-2
-    paddingY: 8, // py-2
-    fontSize: 12, // text-xs
-    borderRadius: BORDER_RADIUS.md,
-    width: 240,
-  },
-  base: {
-    minHeight: 88, // Taller than input for multi-line
-    paddingX: 12, // px-3
-    paddingY: 8, // py-2
-    fontSize: 16, // text-base
-    borderRadius: BORDER_RADIUS.lg,
-    width: 320,
-  },
-  lg: {
-    minHeight: 100, // Taller than input for multi-line
-    paddingX: 16, // px-4
-    paddingY: 8, // py-2
-    fontSize: 16, // text-base
-    borderRadius: BORDER_RADIUS.lg,
-    width: 360,
-  },
+  xs: getSizeConfigFromRegistry("xs"),
+  sm: getSizeConfigFromRegistry("sm"),
+  base: getSizeConfigFromRegistry("base"),
+  lg: getSizeConfigFromRegistry("lg"),
 };
-
-/**
- * Size values
- */
-var SIZE_VALUES = ["xs", "sm", "base", "lg"];
-
-/**
- * Variant values
- */
-var VARIANT_VALUES = ["default", "error"];
 
 /**
  * State values
@@ -571,24 +591,28 @@ export async function generateInputAreaComponents(
  */
 
 /**
- * Get size configuration from SIZE_CONFIG
- * @returns Size values and config object
+ * Get size configuration from registry
+ * @returns Size values, config object, and registry metadata
  */
 export function getInputAreaSizeConfig() {
   return {
     values: SIZE_VALUES,
     config: SIZE_CONFIG,
+    registryClasses: inputProps.size.classes,
+    registryDescriptions: inputProps.size.descriptions,
   };
 }
 
 /**
- * Get variant configuration from VARIANT_CONFIG
- * @returns Variant values and config object
+ * Get variant configuration from registry
+ * @returns Variant values, config object, and registry metadata
  */
 export function getInputAreaVariantConfig() {
   return {
     values: VARIANT_VALUES,
     config: VARIANT_CONFIG,
+    registryClasses: inputProps.variant.classes,
+    registryDescriptions: inputProps.variant.descriptions,
   };
 }
 
@@ -659,18 +683,18 @@ export function getInputAreaRingVariable(variant: string, state: string) {
  */
 export function getAllInputAreaVariantData() {
   return {
-    sizes: SIZE_VALUES.map(function (size) {
+    sizes: SIZE_VALUES.map(function (size: string) {
       return {
         size: size,
         dimensions: getInputAreaSizeDimensions(size),
       };
     }),
-    variants: VARIANT_VALUES.map(function (variant) {
+    variants: VARIANT_VALUES.map(function (variant: string) {
       var variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
       return {
         variant: variant,
         config: variantConfig,
-        states: STATE_VALUES.map(function (state) {
+        states: STATE_VALUES.map(function (state: string) {
           return {
             state: state,
             ringVariable: getInputAreaRingVariable(variant, state),
@@ -680,6 +704,10 @@ export function getAllInputAreaVariantData() {
       };
     }),
     withLabelOptions: WITH_LABEL_VALUES,
+    registryMetadata: {
+      component: "Input",
+      note: "InputArea uses Input's inputVariants (size and variant props)",
+    },
   };
 }
 

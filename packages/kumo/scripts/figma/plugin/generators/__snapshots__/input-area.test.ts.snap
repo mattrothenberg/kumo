@@ -2,6 +2,10 @@
 
 exports[`InputArea Generator - Snapshot Tests (Intermediate Data) > should produce consistent complete data for all variants (golden path) 1`] = `
 {
+  "registryMetadata": {
+    "component": "Input",
+    "note": "InputArea uses Input's inputVariants (size and variant props)",
+  },
   "sizes": [
     {
       "dimensions": {
@@ -215,6 +219,18 @@ exports[`InputArea Generator - Snapshot Tests (Intermediate Data) > should produ
       "width": 200,
     },
   },
+  "registryClasses": {
+    "base": "h-9 gap-1.5 rounded-lg px-3 text-base",
+    "lg": "h-10 gap-2 rounded-lg px-4 text-base",
+    "sm": "h-6.5 gap-1 rounded-md px-2 text-xs",
+    "xs": "h-5 gap-1 rounded-sm px-1.5 text-xs",
+  },
+  "registryDescriptions": {
+    "base": "Default input size",
+    "lg": "Large input for prominent fields",
+    "sm": "Small input for secondary fields",
+    "xs": "Extra small input for compact UIs",
+  },
   "values": [
     "xs",
     "sm",
@@ -262,6 +278,14 @@ exports[`InputArea Generator - Snapshot Tests (Intermediate Data) > should produ
       "label": "Message",
       "ringVariable": "color-error",
     },
+  },
+  "registryClasses": {
+    "default": "focus:ring-active",
+    "error": "!ring-error focus:ring-error",
+  },
+  "registryDescriptions": {
+    "default": "Default input appearance",
+    "error": "Error state for validation failures",
   },
   "values": [
     "default",

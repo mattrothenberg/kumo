@@ -163,8 +163,8 @@
       "name": "input-area",
       "tier": 3,
       "priority": "low",
-      "status": "hardcoded",
-      "notes": "SIZE_CONFIG, VARIANT_CONFIG, STATE_STYLES hardcoded. Uses Input's inputVariants - check if InputArea in registry"
+      "status": "complete",
+      "notes": "Fully migrated. SIZE_VALUES and VARIANT_VALUES now from Input registry. SIZE_CONFIG derived from inputStyling.sizeVariants with InputArea-specific minHeight and paddingY. VARIANT_CONFIG and STATE_STYLES remain hardcoded (text content and presentation logic). All 40 tests pass."
     },
     {
       "name": "sensitive-input",

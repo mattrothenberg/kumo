@@ -1368,3 +1368,66 @@ No KUMO_PAGINATION_STYLING needed - component is a composite using Button and In
 
 **Status:** COMPLETE - Ready for commit
 
+
+---
+
+## Iteration 24: input-area (Tier 3 - PHASE 2: Registry Integration)
+
+**Generator:** input-area
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Migrated from hardcoded configuration to reading from Input registry:
+   - Added registry import at top of file
+   - Extracted inputRegistry, inputProps, inputStyling from registry.components.Input
+   - SIZE_VALUES: Changed from hardcoded array ["xs", "sm", "base", "lg"] to inputProps.size.values
+   - VARIANT_VALUES: Changed from hardcoded array ["default", "error"] to inputProps.variant.values
+   
+2. Created getSizeConfigFromRegistry() helper function:
+   - Reads paddingX, fontSize, borderRadius from inputStyling.sizeVariants
+   - Uses InputArea-specific minHeight (60, 72, 88, 100) - taller than Input for multi-line
+   - Uses paddingY: 8 (py-2) for all sizes - InputArea-specific, not in registry
+   - Layout-specific widths (200, 240, 320, 360) remain generator-specific
+   - SIZE_CONFIG now computed at generator init time from registry
+   
+3. Updated testable exports to include registry data:
+   - getInputAreaSizeConfig() - Added registryClasses and registryDescriptions
+   - getInputAreaVariantConfig() - Added registryClasses and registryDescriptions
+   - getAllInputAreaVariantData() - Added registryMetadata documenting use of Input registry
+   
+4. What remains hardcoded (by design):
+   - STATE_STYLES: State-specific overrides (ringVariable, opacity, textColorVariable)
+   - VARIANT_CONFIG: Text content (label, description, errorMessage) - presentation data
+   - minHeightMap: InputArea-specific (taller than Input for multi-line)
+   - widthMap: Layout-specific for Figma display
+   - paddingY: 8 (py-2) for all sizes - InputArea-specific vertical padding
+
+### Test Results:
+- ✅ All 40 tests pass
+- ✅ 3 snapshots updated (intentionally added registry metadata)
+- ✅ Verified tests pass consistently with --run flag
+
+### Registry Gaps Found:
+None - InputArea uses Input's inputVariants from component registry:
+- Input has props.size.values (xs, sm, base, lg)
+- Input has props.variant.values (default, error)
+- Input has styling.sizeVariants with height, paddingX, fontSize, borderRadius
+- InputArea applies these with modifications for multi-line textarea
+
+InputArea is NOT in registry because:
+- It uses Input's inputVariants function directly (import { inputVariants } from "./input")
+- No KUMO_INPUT_AREA_VARIANTS export exists
+- Component applies `"h-auto py-2"` classes on top of inputVariants for textarea behavior
+
+### Notes:
+- InputArea was marked "hardcoded" in PRD because SIZE_CONFIG was entirely hardcoded
+- Now fully migrated - SIZE_CONFIG derived from Input registry with InputArea-specific adjustments
+- Pre-existing TypeScript errors for textAutoResize property (documented in earlier iterations)
+- InputArea is first Tier 3 generator fully migrated to registry integration
+- Generator creates 4 sizes × 2 variants × 3 states × 2 withLabel = 48 component variants
+- InputArea correctly reads from Input component as source of truth (matches React implementation)
+- This is a good example of composite component migration pattern (reusing another component's registry data)
+
+**Status:** COMPLETE - Ready for commit
+
