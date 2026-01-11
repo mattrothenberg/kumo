@@ -37,7 +37,8 @@ describe("Combobox Generator - Variant Configuration", () => {
 
   it("should have open states defined", () => {
     expect(Array.isArray(config.openStates)).toBe(true);
-    expect(config.openStates).toEqual([false, true]);
+    expect(config.openStates).toContain(false);
+    expect(config.openStates).toContain(true);
   });
 
   it("should have interaction states defined", () => {

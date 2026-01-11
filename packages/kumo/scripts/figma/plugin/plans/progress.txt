@@ -1798,3 +1798,102 @@ Fix brittle tests that break when variants are added/removed from components.
 
 **Status:** COMPLETE - Committed as 2311ca1
 
+
+
+---
+
+## Task T3: fix-brittle-other-tests
+
+**Task ID:** T3
+**Task Name:** Fix Brittle Tests in Remaining Test Files
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+Fixed brittle tests across 11 test files to make them resilient to component changes:
+
+1. **text.test.ts** - Fixed 6 brittle assertions:
+   - Changed `toHaveLength(9)` to `length).toBeGreaterThan(0)` for variants
+   - Changed `toHaveLength(4)` to `length).toBeGreaterThan(0)` for sizes
+   - Changed `toHaveLength(23)` to `length).toBeGreaterThan(0)` for variant combinations
+   
+2. **banner.test.ts** - Fixed 2 brittle assertions:
+   - Changed `toHaveLength(3)` to `length).toBeGreaterThan(0)` for variants
+   
+3. **checkbox.test.ts** - Fixed 8 brittle assertions:
+   - Changed `toHaveLength(2)` to `length).toBeGreaterThan(0)` for icons
+   - Changed `toEqual(["default", "error"])` to `toContain` checks
+   - Changed `toHaveLength(3)` to `length).toBeGreaterThan(0)` for states
+   - Changed `toEqual([...])` to `toContain` checks for arrays
+   - Changed `toHaveLength(12)` to dynamic box config check
+   
+4. **clipboard-text.test.ts** - Fixed 3 brittle assertions:
+   - All `toHaveLength(3)` changed to `length).toBeGreaterThan(0)`
+   
+5. **code-block.test.ts** - Fixed 3 brittle assertions:
+   - All `toHaveLength(5)` changed to `length).toBeGreaterThan(0)`
+   
+6. **code.test.ts** - Fixed 5 brittle assertions:
+   - Changed `toEqual([...])` to `toContain` checks for required langs
+   - Changed all `toHaveLength(5)` to `length).toBeGreaterThan(0)`
+   
+7. **combobox.test.ts** - Fixed 1 brittle assertion:
+   - Changed `toEqual([false, true])` to `toContain` checks
+   
+8. **dialog.test.ts** - Fixed 3 brittle assertions:
+   - All `toHaveLength(4)` changed to `length).toBeGreaterThan(0)`
+   
+9. **input.test.ts** - Fixed 6 brittle assertions:
+   - Changed `toEqual(["xs", "sm", "base", "lg"])` to `toContain` checks
+   - Changed `toEqual(["default", "error"])` to `toContain` checks
+   - Changed all `toHaveLength` to `length).toBeGreaterThan(0)`
+   
+10. **select.test.ts** - Fixed 2 brittle assertions:
+    - Changed `toHaveLength(24)` to `length).toBeGreaterThan(0)`
+    
+11. **tabs.test.ts** - Fixed 4 brittle assertions:
+    - Changed `toEqual(["Tab 1", "Tab 2", "Tab 3"])` to `toContain` checks
+    - Changed all `toHaveLength(3)` to `length).toBeGreaterThan(0)`
+
+### Pattern Applied:
+**Before (brittle):**
+```typescript
+expect(variantProp.values).toHaveLength(5);
+expect(variantProp.values).toEqual([...]);
+expect(allData.variants).toHaveLength(23);
+```
+
+**After (resilient):**
+```typescript
+expect(variantProp.values.length).toBeGreaterThan(0);
+expect(variantProp.values).toContain("primary"); // Only required variants
+expect(allData.variants.length).toBeGreaterThan(0);
+```
+
+### Test Results:
+- ✅ text.test.ts - 74 tests passed
+- ✅ banner.test.ts - 37 tests passed
+- ✅ checkbox.test.ts - 70 tests passed
+- ✅ clipboard-text.test.ts - 48 tests passed
+- ✅ code-block.test.ts - 41 tests passed
+- ✅ code.test.ts - 49 tests passed
+- ✅ combobox.test.ts - 42 tests passed
+- ✅ dialog.test.ts - 45 tests passed
+- ✅ input.test.ts - 68 tests passed
+- ✅ select.test.ts - 46 tests passed
+- ✅ tabs.test.ts - 60 tests passed
+
+**Total: 580 tests passed** across 11 files
+
+### Issues Encountered:
+None - all tests pass after refactoring
+
+### Notes:
+- Tests now validate structure and types, not exact counts
+- Adding new variants won't break these tests
+- Required variants are still validated with `toContain` checks
+- Dynamic counts are validated with `length).toBeGreaterThan(0)`
+- This completes the brittle test fixes across ALL test files
+- Tests are now resilient to design system evolution
+
+**Status:** COMPLETE - Ready for commit

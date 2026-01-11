@@ -156,7 +156,7 @@
       "name": "fix-brittle-other-tests",
       "title": "Fix Brittle Tests in Remaining Test Files",
       "priority": "high",
-      "status": "pending",
+      "status": "complete",
       "description": "Audit and fix any remaining brittle tests across all generators",
       "files": ["generators/*.test.ts"],
       "acceptance": [
