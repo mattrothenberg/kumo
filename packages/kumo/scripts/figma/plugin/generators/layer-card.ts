@@ -24,6 +24,7 @@ import {
   BORDER_RADIUS,
   SECTION_PADDING,
   SECTION_GAP,
+  SECTION_LAYOUT,
 } from "./shared";
 import { createIconInstance, bindIconColor, DEFAULT_ICONS } from "./icon-utils";
 import registry from "../../../../ai/component-registry.json";
@@ -349,10 +350,10 @@ export async function generateLayerCardComponents(
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
 
     // Position sections side by side
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
 
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
 
     console.log("Generated LayerCard ComponentSet (light + dark)");

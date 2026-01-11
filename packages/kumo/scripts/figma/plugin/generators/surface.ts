@@ -24,6 +24,7 @@ import {
   BORDER_RADIUS,
   SECTION_PADDING,
   SECTION_GAP,
+  SECTION_LAYOUT,
 } from "./shared";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 import registry from "../../../../ai/component-registry.json";
@@ -192,10 +193,10 @@ export async function generateSurfaceComponents(
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
 
-  lightSection.section.x = 100;
+  lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = 100 + totalWidth + 50;
+  darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
   logComplete(

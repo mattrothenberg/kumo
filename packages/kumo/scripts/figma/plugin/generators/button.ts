@@ -32,6 +32,7 @@ import {
   SECTION_GAP,
   GRID_LAYOUT,
   FALLBACK_VALUES,
+  SECTION_LAYOUT,
 } from "./shared";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 import {
@@ -925,10 +926,10 @@ export async function generateButtonComponents(
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
 
   // Position sections
-  lightSection.section.x = 100;
+  lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = 100 + totalWidth + 50; // Side by side with gap
+  darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap; // Side by side with gap
   darkSection.section.y = startY;
 
   logInfo(

@@ -20,7 +20,11 @@
 // Icon data is generated at build time by build-icon-data.ts
 // esbuild will inline this JSON into the bundle
 import iconData from "../generated/icon-data.json";
-import { getVariableByName, bindFillToVariable } from "./shared";
+import {
+  getVariableByName,
+  bindFillToVariable,
+  SECTION_LAYOUT,
+} from "./shared";
 
 /**
  * Icon data extracted from sprite.svg
@@ -369,8 +373,8 @@ export async function generateIconLibrary(
       sampleIcon,
       finalConfig.sizeExampleDimensions,
     );
-    sizeExamplesFrame.x = 100;
-    sizeExamplesFrame.y = 100;
+    sizeExamplesFrame.x = SECTION_LAYOUT.startX;
+    sizeExamplesFrame.y = SECTION_LAYOUT.startY;
     containerFrame.appendChild(sizeExamplesFrame);
     console.log("✅ Size examples created");
   }

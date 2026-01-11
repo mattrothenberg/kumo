@@ -3167,3 +3167,63 @@ Address remaining magic numbers identified in comprehensive audit to achieve ful
 **Next Task:** T5 - Refactor Generators to Use SECTION_LAYOUT
 
 ---
+
+---
+
+## Task T5: Refactor Generators to Use SECTION_LAYOUT (Phase 6)
+
+**Task ID:** T5
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+
+1. **Systematic refactoring of 32 generator files:**
+   - Added `SECTION_LAYOUT` to imports from shared.ts in all generators
+   - Replaced hardcoded `lightSection.section.x = 100` with `SECTION_LAYOUT.startX`
+   - Replaced hardcoded `darkSection.section.x = 100 + totalWidth + 50` with `lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap`
+   - Updated icon-library.ts positioning for `sizeExamplesFrame` (x and y)
+
+2. **Files modified (32 total):**
+   - badge.ts, banner.ts, breadcrumbs.ts, button.ts, checkbox.ts
+   - clipboard-text.ts, code.ts, code-block.ts, collapsible.ts, combobox.ts
+   - date-range-picker.ts, dialog.ts, dropdown.ts, empty.ts, input.ts
+   - input-area.ts, layer-card.ts, link-button.ts, loader.ts, menubar.ts
+   - meter.ts, pagination.ts, refresh-button.ts, select.ts, sensitive-input.ts
+   - surface.ts, switch.ts (2 sections), tabs.ts, text.ts, toast.ts
+   - tooltip.ts, icon-library.ts
+
+3. **Pattern applied:**
+   ```typescript
+   // BEFORE
+   lightSection.section.x = 100;
+   darkSection.section.x = 100 + totalWidth + 50;
+   
+   // AFTER
+   import { SECTION_LAYOUT } from "./shared";
+   lightSection.section.x = SECTION_LAYOUT.startX;
+   darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+   ```
+
+### Test Results:
+- ✅ All 1489 tests pass across 32 test files
+- ✅ No snapshots changed (values remain identical)
+- ✅ Zero hardcoded 100/50 values remain in generators (except shared.ts definition)
+- ✅ Duration: 1.42s
+
+### Verification:
+```bash
+# Confirmed no hardcoded section positioning remains
+grep -n "\.x = 100\|\.y = 100\|+ 50" generators/*.ts | grep -v "shared.ts"
+# Returns empty (all hardcoded values eliminated)
+```
+
+### Impact:
+- **High Priority Task Complete:** All generators now use centralized SECTION_LAYOUT constants
+- **Consistency:** Section positioning is now centralized in shared.ts
+- **Maintainability:** Single source of truth for canvas layout positioning
+- **32 files updated** with consistent refactoring pattern
+- **Next:** Move to T6 (refactor OPACITY constants)
+
+**Status:** COMPLETE ✅
+

@@ -29,6 +29,7 @@ import {
   SECTION_PADDING,
   SECTION_GAP,
   FALLBACK_VALUES,
+  SECTION_LAYOUT,
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
@@ -460,10 +461,10 @@ export async function generateCollapsibleComponents(
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
 
   // Position sections side by side
-  lightSection.section.x = 100;
+  lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = 100 + totalWidth + 50;
+  darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
   logComplete(
