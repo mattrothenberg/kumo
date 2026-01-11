@@ -348,7 +348,7 @@
       "name": "refactor-input-typography",
       "title": "Refactor input.ts Typography Values",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Replace hardcoded typography values in input.ts with shared constants",
       "files": ["generators/input.ts"],
       "acceptance": [

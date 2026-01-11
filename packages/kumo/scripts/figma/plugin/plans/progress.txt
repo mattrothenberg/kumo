@@ -3407,3 +3407,71 @@ grep -n "\.x = 100\|\.y = 100\|+ 50" generators/*.ts | grep -v "shared.ts"
 - Pre-existing TypeScript errors remain (minWidth, textAutoResize, layoutAlign properties) but do not affect runtime
 - dialog.ts now fully compliant with centralized constants pattern
 
+
+---
+
+## PHASE 6: Magic Numbers Audit Remediation
+
+### Goal
+Address remaining magic numbers identified in comprehensive audit. Tasks T1-T8 are complete (constants added, section positioning refactored, opacity refactored, icon-utils and dialog refactored). Now continuing with T9-T13.
+
+---
+
+## Iteration 1: T9 - Refactor input.ts Typography Values
+
+**Task:** T9 - refactor-input-typography
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Added new imports to input.ts:
+   - SPACING (for itemSpacing values)
+   - FONT_SIZE (for font sizes 12, 14, 16)
+   - FALLBACK_VALUES (for font weights 400, 500)
+
+2. Replaced hardcoded typography values:
+   - Line 210: `itemSpacing = 4` → `SPACING.xs` (gap between label, input, description/error)
+   - Line 220: `fontSize: 14, fontWeight: 500` → `FONT_SIZE.xs, FALLBACK_VALUES.fontWeight.medium` (label text)
+   - Line 241: `itemSpacing = 8` → `SPACING.base` (gap between icon/prefix and input text)
+   - Line 272: `fontWeight: 400` → `FALLBACK_VALUES.fontWeight.normal` (placeholder text)
+   - Line 291: `fontSize: 12, fontWeight: 400` → `FONT_SIZE.xs, FALLBACK_VALUES.fontWeight.normal` (description text)
+   - Line 304: `fontSize: 12, fontWeight: 400` → `FONT_SIZE.xs, FALLBACK_VALUES.fontWeight.normal` (error text)
+
+3. Replaced hardcoded label offsets:
+   - Line 516: `+ 8` → `GRID_LAYOUT.labelVerticalOffset.md` (light section row labels)
+   - Line 544: `+ 8` → `GRID_LAYOUT.labelVerticalOffset.md` (dark section row labels)
+   - Used `.md` because Input is a medium-sized component
+
+4. Width map kept as documented:
+   - Lines 80-85: Width map (160, 200, 280, 320) kept as generator-specific layout helper
+   - These are display widths for Figma grid layout, not component-derived values
+
+### Test Results:
+- ✅ All 68 input.test.ts tests pass
+- ✅ All 1489 generator tests pass (32 test files)
+- ✅ No snapshots changed (values unchanged, just sources changed)
+
+### Magic Numbers Eliminated:
+- Font sizes: 14 → FONT_SIZE.xs
+- Font weights: 400 → FALLBACK_VALUES.fontWeight.normal, 500 → FALLBACK_VALUES.fontWeight.medium
+- itemSpacing: 4 → SPACING.xs, 8 → SPACING.base
+- Label offset: 8 → GRID_LAYOUT.labelVerticalOffset.md (2 occurrences)
+
+### Files Modified:
+- generators/input.ts
+
+### Acceptance Criteria Met:
+- ✅ Width map documented as generator-specific layout helper (OK to keep)
+- ✅ Font sizes (12, 14) use FONT_SIZE constants
+- ✅ Font weights (400, 500) use FALLBACK_VALUES.fontWeight
+- ✅ itemSpacing values use SPACING or FALLBACK_VALUES.gap
+- ✅ All tests pass
+
+### Notes:
+- Pre-existing TypeScript errors remain (textAutoResize property) but do not affect tests
+- Input generator was already migrated to registry in Phase 2, so this task only addressed remaining typography magic numbers
+- All hardcoded typography values now use centralized constants from shared.ts
+- Label vertical offset uses medium (md) variant as Input is a standard-sized component
+
+**Status:** COMPLETE - Ready for commit
+

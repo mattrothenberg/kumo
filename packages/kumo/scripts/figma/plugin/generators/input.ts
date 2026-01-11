@@ -30,6 +30,9 @@ import {
   GRID_LAYOUT,
   SECTION_LAYOUT,
   OPACITY,
+  SPACING,
+  FONT_SIZE,
+  FALLBACK_VALUES,
 } from "./shared";
 import { logComplete } from "../logger";
 import registry from "../../../../ai/component-registry.json";
@@ -207,7 +210,7 @@ async function createInputComponent(
   component.primaryAxisSizingMode = "AUTO";
   component.counterAxisSizingMode = "AUTO";
   component.counterAxisAlignItems = "MIN";
-  component.itemSpacing = 4;
+  component.itemSpacing = SPACING.xs; // Gap between label, input, and description/error
   component.fills = [];
 
   // Apply disabled opacity to entire component
@@ -217,7 +220,7 @@ async function createInputComponent(
 
   // Create label (only if withLabel is true)
   if (withLabel && variantConfig.label) {
-    var labelText = await createTextNode(variantConfig.label, 14, 500);
+    var labelText = await createTextNode(variantConfig.label, FONT_SIZE.xs, FALLBACK_VALUES.fontWeight.medium);
     labelText.name = "Label";
     labelText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -238,7 +241,7 @@ async function createInputComponent(
   inputFrame.primaryAxisSizingMode = "FIXED";
   inputFrame.counterAxisSizingMode = "FIXED";
   inputFrame.resize(sizeConfig.width, sizeConfig.height);
-  inputFrame.itemSpacing = 8;
+  inputFrame.itemSpacing = SPACING.base; // Gap between icon/prefix and input text
   inputFrame.paddingLeft = sizeConfig.paddingX;
   inputFrame.paddingRight = sizeConfig.paddingX;
   inputFrame.paddingTop = 0;
@@ -269,7 +272,7 @@ async function createInputComponent(
   var placeholderText = await createTextNode(
     placeholderValue,
     sizeConfig.fontSize,
-    400,
+    FALLBACK_VALUES.fontWeight.normal,
   );
   placeholderText.name = "Placeholder";
   placeholderText.textAutoResize = "WIDTH_AND_HEIGHT";
@@ -288,7 +291,7 @@ async function createInputComponent(
 
   // Create description or error message (only if withLabel is true)
   if (withLabel && variantConfig.description && variant === "default") {
-    var descText = await createTextNode(variantConfig.description, 12, 400);
+    var descText = await createTextNode(variantConfig.description, FONT_SIZE.xs, FALLBACK_VALUES.fontWeight.normal);
     descText.name = "Description";
     descText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -301,7 +304,7 @@ async function createInputComponent(
   }
 
   if (withLabel && variantConfig.errorMessage && variant === "error") {
-    var errorText = await createTextNode(variantConfig.errorMessage, 12, 400);
+    var errorText = await createTextNode(variantConfig.errorMessage, FONT_SIZE.xs, FALLBACK_VALUES.fontWeight.normal);
     errorText.name = "Error";
     errorText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -513,7 +516,7 @@ export async function generateInputComponents(
     var labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 8,
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md,
     );
     lightSection.frame.appendChild(labelNode);
   }
@@ -542,7 +545,7 @@ export async function generateInputComponents(
     var darkLabelNode = await createRowLabel(
       darkLabel.text,
       SECTION_PADDING,
-      SECTION_PADDING + darkLabel.y + 8,
+      SECTION_PADDING + darkLabel.y + GRID_LAYOUT.labelVerticalOffset.md,
     );
     darkSection.frame.appendChild(darkLabelNode);
   }
