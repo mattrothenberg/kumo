@@ -1,22 +1,21 @@
 {
   "title": "Figma Plugin Phase 4 - Missing Generator Coverage",
-  "overview": "Add Figma generators for the 4 components currently excluded from drift detection: Breadcrumbs, Empty, Field, PageHeader. This completes 100% coverage of components in the registry.",
+  "overview": "Add Figma generators for the 3 components currently excluded from drift detection: Breadcrumbs, Empty, PageHeader. Field is permanently excluded as a utility wrapper with no visual representation.",
   "context": {
-    "problem": "4 components in component-registry.json don't have Figma generators and are excluded in drift-detection.test.ts. This creates gaps in the Figma UI kit.",
-    "current_state": "26/30 registry components have generators. 4 are explicitly excluded: Breadcrumbs, Empty, Field, PageHeader. All Phase 3 parser enhancements complete.",
-    "why_now": "Phase 3 (parser enhancements + test brittleness fixes) is COMPLETE. Next logical step is achieving 100% component coverage."
+    "problem": "3 components in component-registry.json don't have Figma generators and are temporarily excluded in drift-detection.test.ts. This creates gaps in the Figma UI kit.",
+    "current_state": "26/30 registry components have generators. 4 are permanently excluded (DropdownMenu, Field, Icon, Toasty) as aliases/utilities. 3 need generators: Breadcrumbs, Empty, PageHeader.",
+    "why_now": "Phase 3 (parser enhancements + test brittleness fixes) is COMPLETE. Next logical step is achieving full visual component coverage."
   },
   "goals": {
     "primary": [
       "Create generator for Breadcrumbs component",
       "Create generator for Empty component",
-      "Create generator for Field component",
       "Create generator for PageHeader component",
-      "Remove components from EXCLUDED_COMPONENTS in drift-detection.test.ts"
+      "Remove completed components from EXCLUDED_COMPONENTS in drift-detection.test.ts"
     ],
     "metrics": [
-      "30/30 components have generators (100% coverage)",
-      "Drift detection test validates all components",
+      "29/30 visual components have generators",
+      "Drift detection test validates all non-utility components",
       "All new generators have rigorous tests with snapshots"
     ]
   },
@@ -24,18 +23,6 @@
     "functional": [
       {
         "id": "FR-1",
-        "title": "Breadcrumbs Generator",
-        "description": "Create a generator for the Breadcrumbs block component",
-        "acceptance": [
-          "Generator creates Figma ComponentSet with breadcrumb items",
-          "Uses Icon components from Icon Library for separators",
-          "Reads from component-registry.json",
-          "Has testable exports following badge.ts pattern",
-          "Has rigorous test file with structural + snapshot tests"
-        ]
-      },
-      {
-        "id": "FR-2",
         "title": "Empty Generator",
         "description": "Create a generator for the Empty display component",
         "acceptance": [
@@ -47,19 +34,19 @@
         ]
       },
       {
-        "id": "FR-3",
-        "title": "Field Generator",
-        "description": "Create a generator for the Field form wrapper component",
+        "id": "FR-2",
+        "title": "Breadcrumbs Generator",
+        "description": "Create a generator for the Breadcrumbs block component",
         "acceptance": [
-          "Generator creates Figma component with label, input slot, description, error",
-          "Shows different states (default, error, disabled)",
+          "Generator creates Figma ComponentSet with breadcrumb items",
+          "Uses Icon components from Icon Library for separators",
           "Reads from component-registry.json",
-          "Has testable exports",
-          "Has rigorous test file"
+          "Has testable exports following badge.ts pattern",
+          "Has rigorous test file with structural + snapshot tests"
         ]
       },
       {
-        "id": "FR-4",
+        "id": "FR-3",
         "title": "PageHeader Generator",
         "description": "Create a generator for the PageHeader block component",
         "acceptance": [
@@ -71,15 +58,14 @@
         ]
       },
       {
-        "id": "FR-5",
+        "id": "FR-4",
         "title": "Update Drift Detection",
         "description": "Remove completed components from EXCLUDED_COMPONENTS",
         "acceptance": [
           "Remove Breadcrumbs from EXCLUDED_COMPONENTS after generator complete",
           "Remove Empty from EXCLUDED_COMPONENTS after generator complete",
-          "Remove Field from EXCLUDED_COMPONENTS after generator complete",
           "Remove PageHeader from EXCLUDED_COMPONENTS after generator complete",
-          "Drift detection test still passes with 0 excluded"
+          "Drift detection test passes with only permanent exclusions (DropdownMenu, Field, Icon, Toasty)"
         ]
       }
     ],
@@ -99,12 +85,13 @@
   },
   "scope": {
     "in_scope": [
-      "4 new generators (Breadcrumbs, Empty, Field, PageHeader)",
-      "4 new test files with rigorous coverage",
+      "3 new generators (Breadcrumbs, Empty, PageHeader)",
+      "3 new test files with rigorous coverage",
       "Updating drift-detection.test.ts EXCLUDED_COMPONENTS",
       "Registering new generators in code.ts"
     ],
     "out_of_scope": [
+      "Field generator (permanently excluded - utility wrapper)",
       "Modifying existing generators",
       "Changing React components",
       "Parser enhancements (Phase 3 complete)",
@@ -114,27 +101,11 @@
   "tasks": [
     {
       "id": "T1",
-      "name": "create-field-generator",
-      "title": "Create Field Generator",
-      "priority": "high",
-      "status": "pending",
-      "description": "Field is a utility component - may be simple or could be skipped if purely a wrapper",
-      "files": ["generators/field.ts", "generators/field.test.ts"],
-      "acceptance": [
-        "Analyze Field component in registry to understand structure",
-        "Create generator or document why it should remain excluded",
-        "If created, add testable exports and tests",
-        "Update EXCLUDED_COMPONENTS if keeping excluded"
-      ],
-      "estimated_minutes": 30
-    },
-    {
-      "id": "T2",
       "name": "create-empty-generator",
       "title": "Create Empty Generator",
       "priority": "high",
       "status": "pending",
-      "description": "Empty is a display component for empty states",
+      "description": "Empty is a display component for empty states with icon, title, description",
       "files": ["generators/empty.ts", "generators/empty.test.ts"],
       "acceptance": [
         "Create generator with icon, title, description layout",
@@ -146,16 +117,16 @@
       "estimated_minutes": 45
     },
     {
-      "id": "T3",
+      "id": "T2",
       "name": "create-breadcrumbs-generator",
       "title": "Create Breadcrumbs Generator",
       "priority": "medium",
       "status": "pending",
-      "description": "Breadcrumbs is a block component with multiple items",
+      "description": "Breadcrumbs is a block component with multiple items and separators",
       "files": ["generators/breadcrumbs.ts", "generators/breadcrumbs.test.ts"],
       "acceptance": [
         "Create generator with breadcrumb items and separators",
-        "Use Icon Library icons for separators",
+        "Use Icon Library icons for separators (ph-caret-right or similar)",
         "Add testable exports",
         "Create rigorous test file",
         "Register in code.ts",
@@ -164,7 +135,7 @@
       "estimated_minutes": 60
     },
     {
-      "id": "T4",
+      "id": "T3",
       "name": "create-pageheader-generator",
       "title": "Create PageHeader Generator",
       "priority": "medium",
@@ -182,18 +153,18 @@
       "estimated_minutes": 60
     },
     {
-      "id": "T5",
+      "id": "T4",
       "name": "verify-coverage",
-      "title": "Verify 100% Coverage",
+      "title": "Verify Coverage Complete",
       "priority": "low",
       "status": "pending",
       "description": "Ensure all generators are registered and drift detection passes",
       "files": ["generators/drift-detection.test.ts", "code.ts"],
       "acceptance": [
         "Run pnpm validate:figma - all tests pass",
-        "EXCLUDED_COMPONENTS has only truly excluded items (Icon, Toasty, DropdownMenu)",
-        "All 30 registry components accounted for",
-        "Document any intentionally excluded components"
+        "EXCLUDED_COMPONENTS has only permanent exclusions (DropdownMenu, Field, Icon, Toasty)",
+        "All visual components have generators",
+        "Document permanent exclusions in test comments"
       ],
       "estimated_minutes": 15
     }
@@ -224,9 +195,8 @@
   "deliverables": [
     {
       "name": "New Generators",
-      "description": "4 new generator files following established patterns",
+      "description": "3 new generator files following established patterns",
       "files": [
-        "generators/field.ts",
         "generators/empty.ts",
         "generators/breadcrumbs.ts",
         "generators/page-header.ts"
@@ -234,9 +204,8 @@
     },
     {
       "name": "Test Coverage",
-      "description": "4 new test files with structural + snapshot tests",
+      "description": "3 new test files with structural + snapshot tests",
       "files": [
-        "generators/field.test.ts",
         "generators/empty.test.ts",
         "generators/breadcrumbs.test.ts",
         "generators/page-header.test.ts"
@@ -254,10 +223,16 @@
     "Must have rigorous tests with snapshots",
     "Must not break existing generators"
   ],
+  "permanently_excluded": {
+    "DropdownMenu": "Alias for Dropdown - uses dropdown.ts generator",
+    "Field": "Form wrapper utility - provides label/description/error layout, no standalone visual representation in Figma",
+    "Icon": "Utility component - handled by icon-library.ts which generates all icons",
+    "Toasty": "Alias for Toast - uses toast.ts generator"
+  },
   "success_criteria": [
-    "All 4 new generators created and registered",
+    "All 3 new generators created and registered",
     "All new tests pass",
-    "Drift detection test passes with reduced exclusions",
+    "Drift detection test passes with only permanent exclusions",
     "pnpm validate:figma passes"
   ],
   "references": {

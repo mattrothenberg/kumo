@@ -22,7 +22,7 @@ for ((i=1; i<=MAX_ITERATIONS; i++)); do
   
   # Run opencode and capture full output
   # Run from plugin/ directory to avoid external directory permission prompts
-  result=$(cd "$SCRIPT_DIR/.." && cat "$SCRIPT_DIR/ralph-prompt.md" | opencode run -f "$SCRIPT_DIR/PRD.json" -f "$SCRIPT_DIR/SPEC.md" -f "$SCRIPT_DIR/progress.txt" --title "Ralph iteration $i")
+  result=$(cd "$SCRIPT_DIR/.." && cat "$SCRIPT_DIR/ralph-prompt.md" | opencode run -f "$SCRIPT_DIR/PRD.json" -f "$SCRIPT_DIR/progress.txt" --title "Ralph iteration $i")
 
   echo "$result"
 

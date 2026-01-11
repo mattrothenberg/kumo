@@ -22,14 +22,16 @@ const __dirname = dirname(__filename);
 // Components that intentionally don't have Figma generators
 // Add components here that shouldn't be in Figma (e.g., layout-only, utility components)
 const EXCLUDED_COMPONENTS = new Set([
-  // Components not yet implemented in Figma
-  "Breadcrumbs",
-  "DropdownMenu",
-  "Empty",
-  "Field",
-  "Icon", // Utility component
-  "PageHeader",
-  "Toasty", // Alias for Toast
+  // Permanently excluded - no visual representation needed in Figma
+  "DropdownMenu", // Alias for Dropdown - uses dropdown.ts generator
+  "Field", // Form wrapper utility - provides label/description/error layout, no standalone visual
+  "Icon", // Utility component - handled by icon-library.ts
+  "Toasty", // Alias for Toast - uses toast.ts generator
+
+  // Components not yet implemented in Figma (Phase 4 targets)
+  "Breadcrumbs", // Block component with navigation path
+  "Empty", // Display component for empty states
+  "PageHeader", // Block component with title, description, actions
 ]);
 
 // Map registry component names to generator file names (if they differ)
@@ -165,7 +167,7 @@ describe("Figma Plugin Drift Detection", () => {
             `${component} (${fileName}.ts): No testable exports found. Consider adding get*Config() or get*Data() functions for snapshot testing.`
           );
         }
-      } catch (e) {
+      } catch {
         // Generator doesn't exist - will be caught by first test
       }
     }

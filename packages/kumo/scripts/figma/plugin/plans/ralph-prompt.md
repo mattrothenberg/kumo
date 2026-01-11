@@ -10,12 +10,18 @@ Phases 1-3 are COMPLETE:
 - Phase 2: Registry integration (all generators read from component-registry.json)
 - Phase 3: Parser enhancements (opacity, arbitrary values, state variants)
 
-**Current gap:** 4 components are excluded from drift detection:
+**Current gap:** 3 components need generators (temporarily excluded):
 
-- Breadcrumbs (block component)
-- Empty (display component)
-- Field (utility wrapper)
-- PageHeader (block component)
+- Empty (display component for empty states)
+- Breadcrumbs (block component with navigation path)
+- PageHeader (block component with title, description, actions)
+
+**Permanently excluded (no generator needed):**
+
+- DropdownMenu - Alias for Dropdown (uses dropdown.ts)
+- Field - Form wrapper utility with no standalone visual representation
+- Icon - Utility component (handled by icon-library.ts)
+- Toasty - Alias for Toast (uses toast.ts)
 
 **Reference files:**
 
@@ -26,13 +32,13 @@ Phases 1-3 are COMPLETE:
 
 ## Your Task
 
-Create generators for the excluded components OR document why they should remain excluded.
+Create generators for the 3 temporarily excluded components.
 
 ## Requirements
 
 ### 1. Analyze Component in Registry
 
-First, check if the component exists in registry and understand its structure:
+First, check the component structure in registry:
 
 ```typescript
 import registry from "../../../../ai/component-registry.json";
@@ -44,18 +50,7 @@ console.log(componentData.colors);
 console.log(componentData.subComponents);
 ```
 
-### 2. Decide: Create Generator or Keep Excluded
-
-Some components may be intentionally excluded:
-
-- **Icon** - Utility component, icon library handles this
-- **Toasty** - Alias for Toast
-- **DropdownMenu** - Alias for Dropdown
-- **Field** - May be a wrapper-only component with no visual representation
-
-If creating a generator, follow the established pattern.
-
-### 3. Generator Pattern
+### 2. Generator Pattern
 
 ```typescript
 import registry from "../../../../ai/component-registry.json";
@@ -76,7 +71,7 @@ export async function generateComponentComponents(startY: number): Promise<numbe
 }
 ```
 
-### 4. Test Pattern
+### 3. Test Pattern
 
 ```typescript
 import { getComponentConfig, getAllComponentData } from "./component";
@@ -97,7 +92,7 @@ describe("Component Generator - Snapshots", () => {
 });
 ```
 
-### 5. Register in code.ts
+### 4. Register in code.ts
 
 Add import and register in GENERATORS array:
 
@@ -114,24 +109,23 @@ import { generateComponentComponents } from "./generators/component";
 },
 ```
 
-### 6. Update Drift Detection
+### 5. Update Drift Detection
 
 Remove from EXCLUDED_COMPONENTS after generator is complete:
 
 ```typescript
-// Before
+// In drift-detection.test.ts, remove the component from the "Phase 4 targets" section
 const EXCLUDED_COMPONENTS = new Set([
-  "Breadcrumbs",
-  "Empty",
+  // Permanently excluded...
+  "DropdownMenu",
   "Field",
-  ...
-]);
+  "Icon",
+  "Toasty",
 
-// After (if Field generator created)
-const EXCLUDED_COMPONENTS = new Set([
+  // Components not yet implemented (remove as you complete them)
   "Breadcrumbs",
   "Empty",
-  ...
+  "PageHeader",
 ]);
 ```
 
@@ -140,10 +134,10 @@ const EXCLUDED_COMPONENTS = new Set([
 Before marking a task complete:
 
 - [ ] Generator imports from component-registry.json
-- [ ] Generator has testable exports
+- [ ] Generator has testable exports (get*Config, get*Data functions)
 - [ ] Test file exists with structural + snapshot tests
-- [ ] Generator registered in code.ts
-- [ ] Removed from EXCLUDED_COMPONENTS (if applicable)
+- [ ] Generator registered in code.ts GENERATORS array
+- [ ] Removed from EXCLUDED_COMPONENTS in drift-detection.test.ts
 - [ ] All tests pass: `pnpm --filter @cloudflare/kumo test generators/ --run`
 - [ ] Drift detection passes: `pnpm --filter @cloudflare/kumo validate:figma`
 
@@ -164,16 +158,15 @@ pnpm --filter @cloudflare/kumo validate:figma
 
 1. Find the NEXT incomplete task from PRD.json (first task with status: "pending")
 2. Analyze the component in registry
-3. Create generator OR document why it should remain excluded
-4. Create test file if generator created
-5. Register in code.ts if generator created
-6. Update EXCLUDED_COMPONENTS in drift-detection.test.ts
-7. Run tests to verify
+3. Create generator following the established pattern
+4. Create test file with structural + snapshot tests
+5. Register in code.ts
+6. Remove from EXCLUDED_COMPONENTS in drift-detection.test.ts
+7. Run tests to verify all pass
 8. Update PRD.json task status to "complete"
 9. Append progress to progress.txt with:
    - Component name
-   - Decision (created generator or kept excluded)
-   - What was changed
+   - What was created
    - Test results
 10. **CRITICAL GIT INSTRUCTIONS:**
     - DO NOT create new branches or switch branches
@@ -185,20 +178,25 @@ ONLY WORK ON A SINGLE COMPONENT PER ITERATION.
 
 If ALL tasks in PRD.json are complete (status: "complete"), output <promise>COMPLETE</promise>.
 
-## Notes on Specific Components
+## Component-Specific Notes
 
-### Field
+### Empty (T1 - First Priority)
 
-Field is a form wrapper component that provides label, description, and error message layout around form controls. Check if it has visual representation or is just a wrapper.
+- Display component for empty states (no data, no results, etc.)
+- Should show: icon (centered), title text, description text
+- Layout: vertical stack, centered
+- Check registry for props like `icon`, `title`, `description`
 
-### Empty
+### Breadcrumbs (T2)
 
-Empty is a display component for empty states (no data, no results, etc.). Should show icon, title, and description.
+- Navigation path component with multiple items
+- Items separated by icons (typically ph-caret-right)
+- Last item is current page (different styling)
+- Check registry for separator icon and item structure
 
-### Breadcrumbs
+### PageHeader (T3)
 
-Breadcrumbs shows navigation path with separator icons. Uses Icon components.
-
-### PageHeader
-
-PageHeader is a block component for page titles with optional breadcrumbs, description, and action buttons.
+- Page title block with optional breadcrumbs, description, actions
+- May include Breadcrumbs component reference
+- Action buttons area on the right
+- Check registry for subComponents
