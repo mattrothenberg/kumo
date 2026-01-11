@@ -127,6 +127,18 @@ include:
       runOnMR: true
       runOnBranches: "^main$"
 
+  # Figma plugin drift detection for @cloudflare/kumo
+  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
+    inputs:
+      stage: checks
+      jobPrefix: validate-figma-sync
+      PNPM_VERSION: *PNPM_VERSION
+      NODE_VERSION: *NODE_VERSION
+      PNPM_RUN_TARGET: "validate:figma"
+      workDir: "packages/kumo"
+      runOnMR: true
+      runOnBranches: "^main$"
+
   # ============= TEST STAGE (Uses build artifacts) =============
 
   # Test @cloudflare/kumo (unit tests + Storybook a11y tests)
@@ -272,6 +284,21 @@ validate-colors-run:
         paths:
           - packages/kumo/src/styles/theme-*.css
           - packages/kumo/src/**/*.tsx
+        compare_to: "refs/heads/main"
+      when: on_success
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: on_success
+    - when: never
+
+# Figma sync validation runs when component registry or figma generators change
+validate-figma-sync-run:
+  rules:
+    - if: $CI_MERGE_REQUEST_IID
+      changes:
+        paths:
+          - packages/kumo/ai/component-registry.json
+          - packages/kumo/scripts/figma/plugin/generators/**/*
+          - packages/kumo/scripts/figma/plugin/code.ts
         compare_to: "refs/heads/main"
       when: on_success
     - if: '$CI_COMMIT_BRANCH == "main"'

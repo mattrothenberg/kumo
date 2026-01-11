@@ -234,3 +234,126 @@ The plugin uses Inter font. Ensure Inter is available in Figma (it's a default F
 - ⏳ **Phase 5:** Polish - state variants, icons, documentation
 
 See [SPEC.md](../../../../SPEC.md) for full specification.
+
+## Drift Prevention System
+
+The plugin includes automated drift detection to ensure Figma generators stay in sync with component definitions.
+
+### How It Works
+
+1. **Automatic Detection**: `drift-detection.test.ts` compares:
+   - Components in `component-registry.json` (auto-generated from source)
+   - Generator files in `generators/` directory
+   - Registration in `code.ts` GENERATORS array
+
+2. **CI Enforcement**: GitLab CI runs `validate:figma` on every MR that changes:
+   - `component-registry.json`
+   - Any files in `generators/`
+   - `code.ts`
+
+3. **Failure = Blocked PR**: If drift is detected, CI fails with clear instructions on what to fix.
+
+### Adding a New Component
+
+When you add a new component to Kumo, follow these steps to add Figma support:
+
+#### 1. Component Implementation
+```bash
+# Your component code in packages/kumo/src/components/
+# component-registry.json updates automatically via build:ai-metadata
+```
+
+#### 2. Create Figma Generator
+
+Create `generators/yourcomponent.ts`:
+```typescript
+import {
+  createTextNode,
+  bindFillToVariable,
+  getVariableByName,
+  createModeSection,
+  SECTION_PADDING,
+  SECTION_GAP,
+} from "./shared";
+import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
+import registry from "../../../../ai/component-registry.json";
+
+const componentSpec = registry.components.YourComponent;
+
+// CRITICAL: Export testable functions
+export function getYourComponentConfig() {
+  return componentSpec.props;
+}
+
+export async function generateYourComponentComponents(
+  page: PageNode,
+  startY: number
+): Promise<number> {
+  // Implementation here
+  return startY + 500 + SECTION_GAP;
+}
+```
+
+#### 3. Register in code.ts
+
+Add to the `GENERATORS` array in `code.ts`:
+```typescript
+import { generateYourComponentComponents } from "./generators/yourcomponent";
+
+const GENERATORS = [
+  // ... existing generators
+  {
+    name: "YourComponent",
+    execute: async (page, y) => {
+      const result = await generateYourComponentComponents(page, y);
+      return { nextY: result };
+    },
+  },
+];
+```
+
+#### 4. Run Tests Locally
+```bash
+cd packages/kumo
+pnpm validate:figma  # Runs drift detection test
+```
+
+#### 5. Test the Plugin
+```bash
+cd packages/kumo/scripts/figma/plugin
+./build.sh
+# Open Figma Desktop and run the plugin
+```
+
+### What If I Don't Want to Add a Generator?
+
+Some components (like utility components or layout-only components) don't need Figma representation. To exclude a component:
+
+1. Open `generators/drift-detection.test.ts`
+2. Add the component name to `EXCLUDED_COMPONENTS`:
+   ```typescript
+   const EXCLUDED_COMPONENTS = new Set([
+     "Container",  // Example: layout-only component
+     "YourComponent",  // Your excluded component
+   ]);
+   ```
+
+### Common Issues
+
+**Q: CI fails with "Missing Figma generators"**
+A: Follow the instructions in the error message. Either create a generator or add to `EXCLUDED_COMPONENTS`.
+
+**Q: I created a generator but CI still fails**
+A: Make sure you registered it in `code.ts` GENERATORS array. The test checks both file existence and registration.
+
+**Q: My generator has a different name than the component**
+A: Add a mapping in `drift-detection.test.ts`:
+   ```typescript
+   const COMPONENT_NAME_MAPPING: Record<string, string> = {
+     "Switch.Group": "switch",  // Both in same file
+     "YourComponent": "special-name",  // Custom mapping
+   };
+   ```
+
+**Q: How do I test my generator logic?**
+A: Export pure functions (like `getYourComponentConfig()`) and write tests in `generators/yourcomponent.test.ts`. See `badge.test.ts` for examples.
