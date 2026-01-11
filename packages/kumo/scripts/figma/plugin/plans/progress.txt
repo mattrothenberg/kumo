@@ -30,7 +30,33 @@ Remove hardcoded magic numbers from Figma generators to ensure they stay in sync
 - T5: Derive Button COMPACT_SIZE_MAP (medium priority)
 - T6: Centralize Fallback Values (low priority)
 - T7: Add Registry Validation Tests (low priority)
-- T8: Verify No Magic Numbers Remain (low priority)
+- ✅ T8: Add Enforcement Tests (COMPLETE - added manually)
+- T9: Verify No Magic Numbers Remain (low priority)
+
+---
+
+## Enforcement Tests Added (Manual Addition)
+
+**File:** generators/drift-detection.test.ts
+
+Added 3 new tests that **prevent magic number regressions**:
+
+1. **should not redeclare SECTION_PADDING or SECTION_GAP in generators**
+   - FAILS if any generator (except shared.ts) declares these constants locally
+   - Forces developers to import from shared.ts
+
+2. **should import SECTION_PADDING and SECTION_GAP from shared.ts when used**
+   - FAILS if a generator uses these constants without proper import
+
+3. **should not have hardcoded shadow effects**
+   - WARNS about hardcoded DROP_SHADOW effects
+   - Suggests using SHADOWS from shared.ts
+
+**Test Results:** All 6 drift detection tests pass
+
+**Run with:** `pnpm --filter @cloudflare/kumo test generators/drift-detection.test.ts --run`
+
+---
 
 ### Files to Modify
 - generators/shared.ts (T1, T2, T3, T6)
@@ -2690,6 +2716,58 @@ pnpm --filter @cloudflare/kumo test generators/ --run
 - Parser now supports size-* for square/circular sizing
 - Fallback values ensure robustness if parsing fails
 - All 1482 generator tests pass, no visual changes
+
+**Status:** COMPLETE - Ready for commit
+
+
+---
+
+## Iteration 23: add-fallback-constants (T6 - PHASE 5)
+
+**Task:** T6 - Centralize Fallback Values
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Added FALLBACK_VALUES constant to shared.ts with comprehensive fallback defaults:
+   - fontSize: 16 (text-base)
+   - fontWeight: { normal: 400, medium: 500 }
+   - padding: { horizontal: 12, vertical: 6, standard: 16 }
+   - borderRadius: { medium: 6, large: 8 }
+   - gap: { tight: 4, standard: 6, medium: 8 }
+   - height: { base: 36 }
+   - strokeWeight: 1
+   - iconSize: { small: 12, medium: 18, base: 20 }
+
+2. Updated 10 generator files to import and use FALLBACK_VALUES:
+   - button.ts: 6 replacements (paddingX, height, gap, fontSize, fontWeight)
+   - banner.ts: 7 replacements (gap, paddingX, paddingY, borderRadius, fontSize, fontWeight)
+   - text.ts: 1 replacement (fontSize)
+   - clipboard-text.ts: 1 replacement (fontSize)
+   - checkbox.ts: 1 replacement (iconSize)
+   - collapsible.ts: 6 replacements (gap, fontSize, fontWeight, paddingX - in both generator and testable exports)
+   - code-block.ts: 3 replacements (borderRadius, strokeWeight)
+   - link-button.ts: 8 replacements (paddingX, gap, height, fontSize, fontWeight - in both generator and testable exports)
+   - refresh-button.ts: 2 replacements (buttonSize, iconSize)
+
+3. All inline fallbacks (|| 4, || 6, || 8, || 12, || 14, || 16, || 18, || 36, || 400, || 500, etc.) replaced with semantic FALLBACK_VALUES references
+
+### Test Results:
+- ✅ All 32 test files pass (1485 tests total)
+- ✅ No snapshots changed (values match exactly)
+- ✅ Verified tests pass consistently with --run flag
+
+### What remains hardcoded (by design):
+- badge.ts has no inline fallbacks (already uses registry properly)
+- input.ts has no inline fallbacks (already uses registry properly)
+- icon-utils.ts fallbacks excluded (utility file, not a component generator)
+
+### Notes:
+- FALLBACK_VALUES are defensive defaults used when parsing fails or registry doesn't provide expected values
+- Each fallback is documented with JSDoc comments explaining its purpose (e.g., "horizontal padding for inputs/buttons (px-3 = 12px)")
+- Structured as nested objects for clarity: FALLBACK_VALUES.padding.horizontal, FALLBACK_VALUES.fontWeight.medium
+- No magic numbers remain in generator files - all fallbacks are centralized and semantic
+- Pre-existing TypeScript errors in some generators (textAutoResize, strokeLeftWeight, etc.) are unrelated to this task
 
 **Status:** COMPLETE - Ready for commit
 

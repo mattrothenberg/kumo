@@ -33,6 +33,7 @@ import {
   SECTION_PADDING,
   SECTION_GAP,
   GRID_LAYOUT,
+  FALLBACK_VALUES,
 } from "./shared";
 import { createIconInstance, bindIconColor } from "./icon-utils";
 import { logInfo } from "../logger";
@@ -117,7 +118,7 @@ export function getCheckboxBoxSize(): number {
  */
 export function getCheckboxIconSize(): number {
   var styling = getCheckboxStylingConfig();
-  return styling.icons[0]?.size || 12;
+  return styling.icons[0]?.size || FALLBACK_VALUES.iconSize.small;
 }
 
 /**

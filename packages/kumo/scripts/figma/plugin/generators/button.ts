@@ -31,6 +31,7 @@ import {
   SECTION_PADDING,
   SECTION_GAP,
   GRID_LAYOUT,
+  FALLBACK_VALUES,
 } from "./shared";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 import {
@@ -367,7 +368,7 @@ async function createButtonComponent(
 
   if (isCompactShape) {
     // Square/circle: fixed size, no padding
-    var buttonSize = COMPACT_SIZE_MAP_LOCAL[size] || 36;
+    var buttonSize = COMPACT_SIZE_MAP_LOCAL[size] || FALLBACK_VALUES.height.base;
     component.primaryAxisSizingMode = "FIXED";
     component.counterAxisSizingMode = "FIXED";
     component.resize(buttonSize, buttonSize);
@@ -377,14 +378,14 @@ async function createButtonComponent(
     // Base shape: hug contents with padding
     component.primaryAxisSizingMode = "AUTO";
     component.counterAxisSizingMode = "FIXED";
-    component.paddingLeft = sizeStyles.paddingX || 12;
-    component.paddingRight = sizeStyles.paddingX || 12;
-    component.resize(100, sizeStyles.height || 36);
+    component.paddingLeft = sizeStyles.paddingX || FALLBACK_VALUES.padding.horizontal;
+    component.paddingRight = sizeStyles.paddingX || FALLBACK_VALUES.padding.horizontal;
+    component.resize(100, sizeStyles.height || FALLBACK_VALUES.height.base);
   }
 
   component.paddingTop = 0;
   component.paddingBottom = 0;
-  component.itemSpacing = sizeStyles.gap || 6;
+  component.itemSpacing = sizeStyles.gap || FALLBACK_VALUES.gap.standard;
 
   // Set corner radius based on shape
   if (shape === "circle") {
@@ -512,11 +513,11 @@ async function createButtonComponent(
 
   // Add text label for base shape
   if (shape === "base") {
-    var fontWeight = 500; // font-medium
+    var fontWeight = FALLBACK_VALUES.fontWeight.medium; // font-medium
     var labelText = loading ? "Loading..." : "Button";
     var textNode = await createTextNode(
       labelText,
-      sizeStyles.fontSize || 16,
+      sizeStyles.fontSize || FALLBACK_VALUES.fontSize,
       fontWeight,
     );
     textNode.name = "Label";

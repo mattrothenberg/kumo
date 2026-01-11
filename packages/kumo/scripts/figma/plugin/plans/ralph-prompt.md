@@ -145,14 +145,27 @@ Before marking a task complete:
 
 ```bash
 # Run specific generator test
-pnpm --filter @cloudflare/kumo test generators/shared.test.ts --run
+pnpm --filter @cloudflare/kumo test generators/[name].test.ts --run
 
 # Run all generator tests
 pnpm --filter @cloudflare/kumo test generators/ --run
 
-# Run drift detection
+# Run drift detection (includes magic number enforcement)
 pnpm --filter @cloudflare/kumo validate:figma
+
+# Run drift detection tests specifically
+pnpm --filter @cloudflare/kumo test generators/drift-detection.test.ts --run
 ```
+
+## Enforcement Tests (Already Active)
+
+The drift-detection.test.ts file now includes enforcement tests that will **fail** if you:
+
+1. **Redeclare SECTION_PADDING or SECTION_GAP** in any generator (must import from shared.ts)
+2. **Use SECTION_PADDING/SECTION_GAP without importing** from shared.ts
+3. **Add hardcoded shadow effects** without importing SHADOWS from shared.ts (warning)
+
+These tests run automatically with `pnpm validate:figma` and will catch regressions.
 
 ## Your Task (Single Task Per Iteration)
 

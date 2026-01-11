@@ -20,6 +20,7 @@ import {
   bindTextColorToVariable,
   SECTION_PADDING,
   SECTION_GAP,
+  FALLBACK_VALUES,
 } from "./shared";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 import { logComplete } from "../logger";
@@ -83,11 +84,11 @@ export function getContainerConfig() {
   const parsed = parseTailwindClasses(containerStyles);
 
   return {
-    borderRadius: parsed.borderRadius || 6,
+    borderRadius: parsed.borderRadius || FALLBACK_VALUES.borderRadius.medium,
     padding: CODE_INNER_PADDING,
     border: {
       hasBorder: parsed.hasBorder || false,
-      strokeWeight: parsed.strokeWeight || 1,
+      strokeWeight: parsed.strokeWeight || FALLBACK_VALUES.strokeWeight,
       strokeVariable: parsed.strokeVariable || "",
     },
     fill: {
@@ -164,7 +165,7 @@ async function createCodeBlockComponent(lang: string): Promise<ComponentNode> {
   component.paddingBottom = CODE_INNER_PADDING;
   component.primaryAxisSizingMode = "AUTO";
   component.counterAxisSizingMode = "AUTO";
-  component.cornerRadius = wrapperStyles.borderRadius || 6;
+  component.cornerRadius = wrapperStyles.borderRadius || FALLBACK_VALUES.borderRadius.medium;
 
   // Apply background (bg-surface)
   if (wrapperStyles.fillVariable) {

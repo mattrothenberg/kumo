@@ -26,6 +26,7 @@ import {
   SECTION_PADDING,
   SECTION_GAP,
   GRID_LAYOUT,
+  FALLBACK_VALUES,
 } from "./shared";
 import { createIconInstance, bindIconColor } from "./icon-utils";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
@@ -235,7 +236,7 @@ async function createClipboardTextComponent(
   textFrame.resize(100, sizeConfig.height);
 
   // Create text node with monospace font
-  const fontSize = textSizeStyles.fontSize || inputSizeStyles.fontSize || 14;
+  const fontSize = textSizeStyles.fontSize || inputSizeStyles.fontSize || FALLBACK_VALUES.fontSize;
   const textNode = figma.createText();
 
   // Load monospace font

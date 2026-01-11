@@ -27,6 +27,7 @@ import {
   bindTextColorToVariable,
   SECTION_PADDING,
   SECTION_GAP,
+  FALLBACK_VALUES,
 } from "./shared";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 import { getButtonIcon, bindIconColor, DEFAULT_ICONS } from "./icon-utils";
@@ -80,14 +81,14 @@ async function createLinkButtonComponent(
   component.layoutMode = "HORIZONTAL";
   component.primaryAxisAlignItems = "CENTER";
   component.counterAxisAlignItems = "CENTER";
-  component.paddingLeft = sizeStyles.paddingX || 12;
-  component.paddingRight = sizeStyles.paddingX || 12;
+  component.paddingLeft = sizeStyles.paddingX || FALLBACK_VALUES.padding.horizontal;
+  component.paddingRight = sizeStyles.paddingX || FALLBACK_VALUES.padding.horizontal;
   component.paddingTop = 0;
   component.paddingBottom = 0;
-  component.itemSpacing = sizeStyles.gap || 6;
+  component.itemSpacing = sizeStyles.gap || FALLBACK_VALUES.gap.standard;
   component.primaryAxisSizingMode = "AUTO";
   component.counterAxisSizingMode = "FIXED";
-  component.resize(100, sizeStyles.height || 36);
+  component.resize(100, sizeStyles.height || FALLBACK_VALUES.height.base);
 
   // Set corner radius from size classes
   var cornerRadius =
@@ -130,10 +131,10 @@ async function createLinkButtonComponent(
   }
 
   // Create text label
-  var fontWeight = 500;
+  var fontWeight = FALLBACK_VALUES.fontWeight.medium;
   var textNode = await createTextNode(
     "Link Button",
-    sizeStyles.fontSize || 16,
+    sizeStyles.fontSize || FALLBACK_VALUES.fontSize,
     fontWeight,
   );
   textNode.name = "Label";
@@ -404,12 +405,12 @@ export function getLinkButtonLayoutData(
     variantDescription: variantProp.descriptions[variant] || "",
     sizeDescription: sizeProp.descriptions[size] || "",
     layout: {
-      paddingX: sizeStyles.paddingX || 12,
-      height: sizeStyles.height || 36,
-      gap: sizeStyles.gap || 6,
+      paddingX: sizeStyles.paddingX || FALLBACK_VALUES.padding.horizontal,
+      height: sizeStyles.height || FALLBACK_VALUES.height.base,
+      gap: sizeStyles.gap || FALLBACK_VALUES.gap.standard,
       cornerRadius:
-        sizeStyles.borderRadius !== undefined ? sizeStyles.borderRadius : 8,
-      fontSize: sizeStyles.fontSize || 16,
+        sizeStyles.borderRadius !== undefined ? sizeStyles.borderRadius : FALLBACK_VALUES.borderRadius.large,
+      fontSize: sizeStyles.fontSize || FALLBACK_VALUES.fontSize,
     },
     fill: {
       hasBackground: !!variantStyles.fillVariable,

@@ -111,6 +111,63 @@ export const GRID_LAYOUT = {
 } as const;
 
 /**
+ * Fallback values when parsing fails
+ * Used as defensive defaults when registry or parser doesn't provide expected values
+ */
+export const FALLBACK_VALUES = {
+  /** Default font size (text-base = 16px) */
+  fontSize: 16,
+  /** Default font weight (normal = 400, medium = 500) */
+  fontWeight: {
+    /** Normal weight (CSS default) */
+    normal: 400,
+    /** Medium weight (commonly used in UI) */
+    medium: 500,
+  },
+  /** Default padding values (px-3 = 12px, py-1.5 = 6px) */
+  padding: {
+    /** Horizontal padding for inputs/buttons (px-3 = 12px) */
+    horizontal: 12,
+    /** Vertical padding for compact components (py-1.5 = 6px) */
+    vertical: 6,
+    /** Standard padding for content areas (p-4 = 16px) */
+    standard: 16,
+  },
+  /** Default border radius (rounded-lg = 8px, rounded-md = 6px) */
+  borderRadius: {
+    /** Medium radius (rounded-md = 6px) */
+    medium: 6,
+    /** Large radius (rounded-lg = 8px) */
+    large: 8,
+  },
+  /** Default gap between elements (gap-1.5 = 6px, gap-2 = 8px, gap-1 = 4px) */
+  gap: {
+    /** Tight gap (gap-1 = 4px) */
+    tight: 4,
+    /** Standard gap (gap-1.5 = 6px) */
+    standard: 6,
+    /** Medium gap (gap-2 = 8px) */
+    medium: 8,
+  },
+  /** Default height for inputs/buttons (h-9 = 36px) */
+  height: {
+    /** Base input/button height (h-9 = 36px) */
+    base: 36,
+  },
+  /** Default stroke weight for borders */
+  strokeWeight: 1,
+  /** Default icon size (size-5 = 20px, size-4.5 = 18px, size-3 = 12px) */
+  iconSize: {
+    /** Small icon (size-3 = 12px) */
+    small: 12,
+    /** Medium icon (size-4.5 = 18px) */
+    medium: 18,
+    /** Base icon (size-5 = 20px) */
+    base: 20,
+  },
+} as const;
+
+/**
  * Auto-layout configuration
  */
 export type AutoLayoutConfig = {

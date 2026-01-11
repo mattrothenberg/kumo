@@ -32,6 +32,7 @@ import {
   SECTION_PADDING,
   SECTION_GAP,
   GRID_LAYOUT,
+  FALLBACK_VALUES,
 } from "./shared";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 
@@ -169,7 +170,7 @@ async function createTextComponent(
   }
 
   // Create text node with parsed font size
-  const fontSize = styles.fontSize || 16; // Default to base (16px)
+  const fontSize = styles.fontSize || FALLBACK_VALUES.fontSize; // Default to base (16px)
   const textNode = await createTextNode(
     getPlaceholderText(variant),
     fontSize,

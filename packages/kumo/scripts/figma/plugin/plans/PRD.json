@@ -224,7 +224,7 @@
       "name": "add-fallback-constants",
       "title": "Centralize Fallback Values",
       "priority": "low",
-      "status": "pending",
+      "status": "complete",
       "description": "Replace scattered inline fallbacks with centralized constants",
       "files": [
         "generators/shared.ts",
@@ -263,6 +263,22 @@
     },
     {
       "id": "T8",
+      "name": "add-enforcement-tests",
+      "title": "Add Enforcement Tests for Magic Numbers",
+      "priority": "high",
+      "status": "complete",
+      "description": "Add tests to drift-detection.test.ts that prevent redeclaring centralized constants",
+      "files": ["generators/drift-detection.test.ts"],
+      "acceptance": [
+        "Test fails if any generator redeclares SECTION_PADDING or SECTION_GAP",
+        "Test warns if generator uses constants without importing from shared.ts",
+        "Test warns about hardcoded shadow effects",
+        "All 6 drift detection tests pass"
+      ],
+      "estimated_minutes": 20
+    },
+    {
+      "id": "T9",
       "name": "verify-no-magic-numbers",
       "title": "Verify No Magic Numbers Remain",
       "priority": "low",

@@ -23,6 +23,7 @@ import {
   BORDER_RADIUS,
   SECTION_PADDING,
   SECTION_GAP,
+  FALLBACK_VALUES,
 } from "./shared";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 import {
@@ -103,7 +104,7 @@ function createRefreshButtonComponent(
   component.description = "Refresh button for triggering data refresh";
 
   // Get dimensions from compact size (square button)
-  var buttonSize = COMPACT_SIZE_MAP[size] || 36;
+  var buttonSize = COMPACT_SIZE_MAP[size] || FALLBACK_VALUES.height.base;
 
   // Configure auto-layout
   component.layoutMode = "HORIZONTAL";
@@ -133,7 +134,7 @@ function createRefreshButtonComponent(
   }
 
   // Add refresh icon or loader
-  var iconSize = REFRESH_ICON_SIZE[size] || 18;
+  var iconSize = REFRESH_ICON_SIZE[size] || FALLBACK_VALUES.iconSize.medium;
 
   if (loading) {
     var loader = createLoader(iconSize);

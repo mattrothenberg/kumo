@@ -28,6 +28,7 @@ import {
   BORDER_RADIUS,
   SECTION_PADDING,
   SECTION_GAP,
+  FALLBACK_VALUES,
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
@@ -146,7 +147,7 @@ async function createCollapsibleComponent(
   trigger.counterAxisAlignItems = "CENTER";
   trigger.primaryAxisSizingMode = "AUTO";
   trigger.counterAxisSizingMode = "AUTO";
-  trigger.itemSpacing = triggerStyles.gap || 4;
+  trigger.itemSpacing = triggerStyles.gap || FALLBACK_VALUES.gap.tight;
   trigger.fills = [];
   trigger.paddingTop = 4;
   trigger.paddingBottom = 4;
@@ -165,7 +166,7 @@ async function createCollapsibleComponent(
   // Create label text
   var labelText = await createTextNode(
     "Click to expand",
-    triggerStyles.fontSize || 14,
+    triggerStyles.fontSize || FALLBACK_VALUES.fontSize,
     400,
   );
   labelText.name = "Label";
@@ -203,7 +204,7 @@ async function createCollapsibleComponent(
     contentPanel.primaryAxisSizingMode = "AUTO";
     contentPanel.counterAxisSizingMode = "AUTO";
     contentPanel.itemSpacing = 16; // space-y-4
-    contentPanel.paddingLeft = contentStyles.paddingX || 16;
+    contentPanel.paddingLeft = contentStyles.paddingX || FALLBACK_VALUES.padding.standard;
     contentPanel.paddingTop = 8;
     contentPanel.paddingBottom = 8;
     contentPanel.fills = [];
@@ -552,16 +553,16 @@ export function getCollapsibleLayoutData(open: boolean, state: string) {
     open: open,
     state: state,
     trigger: {
-      gap: triggerStyles.gap || 4,
-      fontSize: triggerStyles.fontSize || 14,
-      fontWeight: 400,
+      gap: triggerStyles.gap || FALLBACK_VALUES.gap.tight,
+      fontSize: triggerStyles.fontSize || FALLBACK_VALUES.fontSize,
+      fontWeight: FALLBACK_VALUES.fontWeight.normal,
       textVariable: stateStyle.textVariable || "text-color-info",
       addRing: stateStyle.addRing || false,
       borderRadius: BORDER_RADIUS.sm,
     },
     content: open
       ? {
-          paddingX: contentStyles.paddingX || 16,
+          paddingX: contentStyles.paddingX || FALLBACK_VALUES.padding.standard,
           paddingTop: 8,
           paddingBottom: 8,
           itemSpacing: 16,

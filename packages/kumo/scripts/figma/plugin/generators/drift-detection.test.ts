@@ -179,3 +179,137 @@ describe("Figma Plugin Drift Detection", () => {
     expect(true).toBe(true);
   });
 });
+
+/**
+ * Magic Number Prevention Tests
+ *
+ * These tests enforce that generators use centralized constants from shared.ts
+ * instead of redeclaring magic numbers locally. This prevents drift and duplication.
+ */
+describe("Figma Plugin - No Magic Numbers", () => {
+  // Constants that must only be declared in shared.ts
+  const CENTRALIZED_CONSTANTS = [
+    { name: "SECTION_PADDING", pattern: /(?:var|const|let)\s+SECTION_PADDING\s*=/ },
+    { name: "SECTION_GAP", pattern: /(?:var|const|let)\s+SECTION_GAP\s*=/ },
+  ];
+
+  // Files that are allowed to declare constants (the source files)
+  const ALLOWED_DECLARATION_FILES = new Set(["shared.ts"]);
+
+  it("should not redeclare SECTION_PADDING or SECTION_GAP in generators", () => {
+    const generatorFiles = readdirSync(__dirname)
+      .filter(
+        (f: string) =>
+          f.endsWith(".ts") &&
+          !f.endsWith(".test.ts") &&
+          !ALLOWED_DECLARATION_FILES.has(f)
+      );
+
+    const violations: string[] = [];
+
+    for (const file of generatorFiles) {
+      const filePath = join(__dirname, file);
+      const content = readFileSync(filePath, "utf-8");
+
+      for (const constant of CENTRALIZED_CONSTANTS) {
+        if (constant.pattern.test(content)) {
+          violations.push(`${file}: Redeclares ${constant.name} - import from shared.ts instead`);
+        }
+      }
+    }
+
+    if (violations.length > 0) {
+      throw new Error(
+        `❌ Magic number violations found:\n` +
+          `  - ${violations.join("\n  - ")}\n\n` +
+          `🔧 To fix:\n` +
+          `  1. Remove the local declaration\n` +
+          `  2. Add import: import { SECTION_PADDING, SECTION_GAP } from "./shared";\n\n` +
+          `📖 These constants must only be declared in shared.ts`
+      );
+    }
+
+    expect(violations).toEqual([]);
+  });
+
+  it("should import SECTION_PADDING and SECTION_GAP from shared.ts when used", () => {
+    const generatorFiles = readdirSync(__dirname)
+      .filter(
+        (f: string) =>
+          f.endsWith(".ts") &&
+          !f.endsWith(".test.ts") &&
+          !ALLOWED_DECLARATION_FILES.has(f)
+      );
+
+    const warnings: string[] = [];
+
+    for (const file of generatorFiles) {
+      const filePath = join(__dirname, file);
+      const content = readFileSync(filePath, "utf-8");
+
+      // Check if file uses SECTION_PADDING or SECTION_GAP
+      const usesPadding = /SECTION_PADDING/.test(content);
+      const usesGap = /SECTION_GAP/.test(content);
+
+      if (usesPadding || usesGap) {
+        // Check if it imports from shared
+        const importsFromShared = /import\s+\{[^}]*(?:SECTION_PADDING|SECTION_GAP)[^}]*\}\s+from\s+["']\.\/shared["']/.test(content);
+
+        if (!importsFromShared) {
+          const missing = [];
+          if (usesPadding) missing.push("SECTION_PADDING");
+          if (usesGap) missing.push("SECTION_GAP");
+          warnings.push(`${file}: Uses ${missing.join(", ")} but doesn't import from shared.ts`);
+        }
+      }
+    }
+
+    if (warnings.length > 0) {
+      throw new Error(
+        `❌ Missing imports from shared.ts:\n` +
+          `  - ${warnings.join("\n  - ")}\n\n` +
+          `🔧 To fix, add import:\n` +
+          `  import { SECTION_PADDING, SECTION_GAP } from "./shared";\n`
+      );
+    }
+
+    expect(warnings).toEqual([]);
+  });
+
+  it("should not have hardcoded shadow effects (use SHADOWS from shared.ts)", () => {
+    // Files known to use shadows
+    const shadowFiles = ["dialog.ts", "tabs.ts", "surface.ts", "menubar.ts"];
+
+    const violations: string[] = [];
+
+    // Pattern to detect hardcoded DROP_SHADOW with inline numeric values
+    // This catches: { type: "DROP_SHADOW", ... radius: 32 ... }
+    const hardcodedShadowPattern = /type:\s*["']DROP_SHADOW["'][^}]*(?:radius|blur):\s*\d+/;
+
+    for (const file of shadowFiles) {
+      const filePath = join(__dirname, file);
+      if (!existsSync(filePath)) continue;
+
+      const content = readFileSync(filePath, "utf-8");
+
+      // Check if file has hardcoded shadow values without importing SHADOWS
+      const hasShadowEffect = hardcodedShadowPattern.test(content);
+      const importsShadows = /import\s+\{[^}]*SHADOWS[^}]*\}\s+from\s+["']\.\/shared["']/.test(content);
+
+      if (hasShadowEffect && !importsShadows) {
+        violations.push(`${file}: Has hardcoded shadow effect - consider using SHADOWS from shared.ts`);
+      }
+    }
+
+    // This is currently a warning, not a failure, to allow gradual migration
+    if (violations.length > 0) {
+      console.warn(
+        `\n⚠️  Shadow centralization suggestions:\n  - ${violations.join("\n  - ")}\n` +
+          `  Consider importing SHADOWS from shared.ts for consistency.`
+      );
+    }
+
+    // Always pass for now - this is guidance for future work
+    expect(true).toBe(true);
+  });
+});

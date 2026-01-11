@@ -16,6 +16,7 @@ import {
   SECTION_PADDING,
   SECTION_GAP,
   GRID_LAYOUT,
+  FALLBACK_VALUES,
 } from "./shared";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 import { createIconInstance, bindIconColor } from "./icon-utils";
@@ -156,14 +157,14 @@ async function createBannerComponent(variant: string): Promise<ComponentNode> {
   component.layoutMode = "HORIZONTAL";
   component.primaryAxisAlignItems = "CENTER";
   component.counterAxisAlignItems = "CENTER";
-  component.itemSpacing = baseStyles.gap || 8; // gap-2 = 8px
-  component.paddingLeft = baseStyles.paddingX || 16; // px-4 = 16px
-  component.paddingRight = baseStyles.paddingX || 16;
-  component.paddingTop = baseStyles.paddingY || 6; // py-1.5 = 6px
-  component.paddingBottom = baseStyles.paddingY || 6;
+  component.itemSpacing = baseStyles.gap || FALLBACK_VALUES.gap.medium; // gap-2 = 8px
+  component.paddingLeft = baseStyles.paddingX || FALLBACK_VALUES.padding.standard; // px-4 = 16px
+  component.paddingRight = baseStyles.paddingX || FALLBACK_VALUES.padding.standard;
+  component.paddingTop = baseStyles.paddingY || FALLBACK_VALUES.padding.vertical; // py-1.5 = 6px
+  component.paddingBottom = baseStyles.paddingY || FALLBACK_VALUES.padding.vertical;
   component.primaryAxisSizingMode = "AUTO";
   component.counterAxisSizingMode = "AUTO";
-  component.cornerRadius = baseStyles.borderRadius || 8; // rounded-lg = 8px
+  component.cornerRadius = baseStyles.borderRadius || FALLBACK_VALUES.borderRadius.large; // rounded-lg = 8px
 
   // Apply fill from variant (bg-info/20, bg-alert/20, bg-error/20)
   // Opacity variants are stored as separate Figma variables (e.g., "color-info/20")
@@ -223,8 +224,8 @@ async function createBannerComponent(variant: string): Promise<ComponentNode> {
   // Create text label
   const textNode = await createTextNode(
     "This is a banner message",
-    baseStyles.fontSize || 16, // text-base = 16px
-    baseStyles.fontWeight || 400, // normal weight (CSS default)
+    baseStyles.fontSize || FALLBACK_VALUES.fontSize, // text-base = 16px
+    baseStyles.fontWeight || FALLBACK_VALUES.fontWeight.normal, // normal weight (CSS default)
   );
   textNode.name = "Text";
 
