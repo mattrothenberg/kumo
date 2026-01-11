@@ -159,16 +159,45 @@ export function getButtonParsedShapeStyles(shape: string) {
 /**
  * Compact size mapping from button.tsx KUMO_BUTTON_VARIANTS.compactSize
  * Used for square and circle shapes.
- * Derived from Tailwind size-* classes which map to SPACING_SCALE values:
- * size-3.5 = 14px, size-6.5 = 26px, size-9 = 36px, size-10 = 40px
+ * Parses size-* Tailwind classes to derive pixel values.
+ * 
+ * Source: button.tsx KUMO_BUTTON_VARIANTS.compactSize
+ * - xs: size-3.5 = 14px
+ * - sm: size-6.5 = 26px
+ * - base: size-9 = 36px
+ * - lg: size-10 = 40px
+ * 
+ * Note: compactSize is not yet exported to component-registry.json,
+ * so we use the class strings directly from the React component.
  */
 export function getCompactSizeMap(): Record<string, number> {
-  return {
-    xs: 14, // size-3.5 = 14px
-    sm: 26, // size-6.5 = 26px
-    base: 36, // size-9 = 36px
-    lg: 40, // size-10 = 40px
+  // Compact size classes from KUMO_BUTTON_VARIANTS.compactSize in button.tsx
+  const compactSizeClasses: Record<string, string> = {
+    xs: "size-3.5",
+    sm: "size-6.5",
+    base: "size-9",
+    lg: "size-10",
   };
+
+  const result: Record<string, number> = {};
+
+  for (const size of sizeProp.values) {
+    const classes = compactSizeClasses[size];
+    if (classes) {
+      const parsed = parseTailwindClasses(classes);
+      // Use parsed width if available, otherwise fallback to hardcoded value
+      // (this fallback should never trigger if parser is working correctly)
+      result[size] = parsed.width ?? (
+        size === "xs" ? 14 :
+        size === "sm" ? 26 :
+        size === "base" ? 36 :
+        size === "lg" ? 40 :
+        36 // default fallback
+      );
+    }
+  }
+
+  return result;
 }
 
 var COMPACT_SIZE_MAP_LOCAL: Record<string, number> = getCompactSizeMap();

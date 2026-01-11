@@ -281,6 +281,19 @@ export function parseTailwindClasses(classes: string): ParsedStyles {
       continue;
     }
 
+    // Size (width and height): size-3.5, size-6.5, size-9, size-10
+    const sizeMatch = cls.match(/^size-(\d+\.?\d*)$/);
+    if (sizeMatch) {
+      const size = getOrDefault(
+        SPACING_SCALE,
+        sizeMatch[1],
+        parseFloat(sizeMatch[1]) * 4,
+      );
+      result.width = size;
+      result.height = size;
+      continue;
+    }
+
     // Padding X: px-1.5, px-2, px-3, px-4
     const pxMatch = cls.match(/^px-(\d+\.?\d*)$/);
     if (pxMatch) {

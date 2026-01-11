@@ -18,6 +18,30 @@ describe("parseTailwindClasses", () => {
       expect(parseTailwindClasses("h-15")).toEqual({ height: 60 }); // 15 * 4
     });
 
+    it("should parse size (square dimensions) from Tailwind scale", () => {
+      expect(parseTailwindClasses("size-3.5")).toEqual({
+        width: 14,
+        height: 14,
+      });
+      expect(parseTailwindClasses("size-6.5")).toEqual({
+        width: 26,
+        height: 26,
+      });
+      expect(parseTailwindClasses("size-9")).toEqual({ width: 36, height: 36 });
+      expect(parseTailwindClasses("size-10")).toEqual({
+        width: 40,
+        height: 40,
+      });
+    });
+
+    it("should parse size with fallback calculation for unknown values", () => {
+      // For values not in SPACING_SCALE, it should multiply by 4
+      expect(parseTailwindClasses("size-15")).toEqual({
+        width: 60,
+        height: 60,
+      }); // 15 * 4
+    });
+
     it("should parse horizontal padding", () => {
       expect(parseTailwindClasses("px-2")).toEqual({ paddingX: 8 });
       expect(parseTailwindClasses("px-3")).toEqual({ paddingX: 12 });

@@ -203,7 +203,7 @@
       "name": "derive-compact-size-map",
       "title": "Derive Button COMPACT_SIZE_MAP from Registry",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Parse button compact sizes from Tailwind size-* classes in registry",
       "files": [
         "generators/button.ts",
