@@ -132,6 +132,29 @@ exports[`Pagination Generator - Snapshot Tests (Intermediate Data) > should prod
     "inputWidth": 50,
     "paginationHeight": 36,
   },
+  "registry": {
+    "category": "Navigation",
+    "colors": [
+      "text-label",
+    ],
+    "description": "Pagination component",
+    "name": "Pagination",
+    "props": {
+      "controls": {
+        "default": "full",
+        "descriptions": {
+          "full": "Full pagination controls with first, previous, page input, next, and last buttons",
+          "simple": "Simple pagination controls with only previous and next buttons",
+        },
+        "optional": true,
+        "type": "enum",
+        "values": [
+          "full",
+          "simple",
+        ],
+      },
+    },
+  },
   "states": [
     {
       "buttonStates": {

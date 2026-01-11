@@ -4,6 +4,10 @@ import { logComplete } from "../logger";
  *
  * Generates a Pagination ComponentSet in Figma showing page navigation controls.
  * Structure: "Showing X-Y of Z" text + InputGroup with navigation buttons.
+ *
+ * NOTE: Layout constants are specific to Figma display and not directly from React component.
+ * The React Pagination component uses Button and Input primitives, but the generator creates
+ * a custom layout for demonstration purposes.
  */
 
 import {
@@ -17,8 +21,17 @@ import {
 } from "./shared";
 import { createIconInstance, bindIconColor } from "./icon-utils";
 
+// Import component metadata from registry
+import registry from "../../../../ai/component-registry.json";
+
+const paginationComponent = registry.components.Pagination;
+const paginationProps = paginationComponent.props;
+const paginationColors = paginationComponent.colors;
+
 /**
  * Pagination layout constants
+ * NOTE: These are Figma display-specific dimensions for showing the navigation control variants.
+ * The React component uses Button (h-9, 36px) and Input components, which have their own sizing.
  */
 var PAGINATION_HEIGHT = 36;
 var BUTTON_SIZE = 36;
@@ -44,7 +57,23 @@ var SECTION_GAP = 160;
  */
 
 /**
+ * Get registry data for Pagination component
+ */
+export function getPaginationRegistryData() {
+  return {
+    name: paginationComponent.name,
+    description: paginationComponent.description,
+    category: paginationComponent.category,
+    colors: paginationColors,
+    props: {
+      controls: paginationProps.controls,
+    },
+  };
+}
+
+/**
  * Get pagination layout dimensions configuration
+ * NOTE: These are Figma display-specific, not directly from React component
  */
 export function getPaginationDimensionsConfig() {
   return {
@@ -59,6 +88,7 @@ export function getPaginationDimensionsConfig() {
 
 /**
  * Get page state configurations
+ * Demonstrates first page (prev disabled), middle page (all enabled), last page (next disabled)
  */
 export function getPaginationStateConfig() {
   return [
@@ -70,6 +100,7 @@ export function getPaginationStateConfig() {
 
 /**
  * Get pagination color bindings (semantic tokens)
+ * Maps visual elements to Kumo semantic color tokens
  */
 export function getPaginationColorBindings() {
   return {
@@ -80,7 +111,7 @@ export function getPaginationColorBindings() {
     inputBackground: "color-surface-2", // bg-secondary
     inputBorder: "color-border", // ring-border
     inputText: "text-color-surface",
-    showingTextLabel: "text-color-label",
+    showingTextLabel: "text-color-label", // From registry.colors: text-label
   };
 }
 
@@ -145,6 +176,7 @@ export function getButtonStates(page: number, maxPage: number) {
  * Get all pagination intermediate data (for snapshot testing)
  */
 export function getAllPaginationData() {
+  var registry = getPaginationRegistryData();
   var dimensions = getPaginationDimensionsConfig();
   var states = getPaginationStateConfig();
   var colors = getPaginationColorBindings();
@@ -152,6 +184,7 @@ export function getAllPaginationData() {
   var totalCount = 100;
 
   return {
+    registry: registry,
     dimensions: dimensions,
     colors: colors,
     states: states.map(function (state) {

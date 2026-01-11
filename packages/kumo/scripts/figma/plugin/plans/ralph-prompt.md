@@ -1,39 +1,137 @@
-# Ralph Prompt - Figma Generator Test Refactoring
+# Ralph Prompt - Figma Generator Registry Integration
 
-You are refactoring Figma generator tests to use a flexible structural + snapshot pattern instead of brittle exact-value assertions. This enables design iteration while maintaining regression protection.
+You are migrating Figma generators from hardcoded configuration to dynamic reading from component-registry.json. This ensures generators stay in sync with React component changes automatically.
 
 ## Context
 
-I'm refactoring Figma generator tests to use a flexible structural + snapshot pattern instead of brittle exact-value assertions. This enables design iteration while maintaining regression protection.
+The tests are complete. Now we need to standardize all generators to use component-registry.json as the single source of truth.
 
 **Reference files:**
 
 - @SPEC.md - Architecture specification and observations
-- @PRD.json - Product requirements document
-- @badge.test.ts - Example of correctly refactored test (Tier 1 complete)
-- @button.test.ts - Example of complex component with multiple variants
-- @input.test.ts - Example with state validation (focus, error, disabled)
+- @PRD.json - Product requirements document (registry integration task)
+- @badge.ts - Example of fully integrated generator
+- @button.ts - Complex example with multi-variant registry integration
+- @checkbox.ts - Example using props and styling sections
 
 ## Your Task
 
-Refactor the test file for the **[GENERATOR_NAME]** component following the structural + snapshot pattern used in badge.test.ts.
+Migrate the **[GENERATOR_NAME]** generator from hardcoded configuration to reading from component-registry.json.
 
 ## Requirements
 
-### 1. Read Current Implementation
+### 1. Analyze Current Implementation
 
 First, examine:
 
-- `[generator-name].ts` - The generator implementation
-- `[generator-name].test.ts` (if exists) - Current test file
-- `../../../../ai/component-registry.json` - Component metadata (source of truth)
+- `[generator-name].ts` - The generator implementation (identify hardcoded config)
+- `../../../../ai/component-registry.json` - Check what data is available
+- `[generator-name].test.ts` - Understand existing test coverage
 
-### 2. Add Testable Exports to Generator
-
-The generator MUST export pure functions (no Figma API calls) for testing:
+Look for these hardcoded patterns to replace:
 
 ```typescript
-// 1. Get variant configuration from registry
+// ANTI-PATTERNS to remove:
+const SIZE_CONFIG = { xs: { height: 20 }, ... };  // Hardcoded
+const VARIANT_VALUES = ["default", "error"];       // Hardcoded
+const STATE_STYLES = { default: {...}, ... };      // Hardcoded
+const SIZES = ["xs", "sm", "base", "lg"];          // Hardcoded
+```
+
+### 2. Add Registry Import
+
+```typescript
+// Add at top of file
+import registry from "../../../../ai/component-registry.json";
+import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
+
+// Extract component data
+const componentData = registry.components.ComponentName;
+const componentProps = componentData.props;
+
+// Extract variant prop (if exists)
+const variantProp = componentProps.variant as {
+  values: string[];
+  classes: Record<string, string>;
+  descriptions: Record<string, string>;
+  default: string;
+};
+
+// Extract size prop (if exists)
+const sizeProp = componentProps.size as {
+  values: string[];
+  classes: Record<string, string>;
+  descriptions: Record<string, string>;
+  default: string;
+};
+
+// Extract styling section (if available)
+const componentStyling = componentData.styling;
+```
+
+### 3. Replace Hardcoded Arrays
+
+```typescript
+// BEFORE (hardcoded):
+const VARIANT_VALUES = ["default", "error"];
+const SIZE_VALUES = ["xs", "sm", "base", "lg"];
+
+// AFTER (from registry):
+const VARIANT_VALUES = variantProp.values;
+const SIZE_VALUES = sizeProp.values;
+```
+
+### 4. Replace Hardcoded Config Objects
+
+```typescript
+// BEFORE (hardcoded):
+const SIZE_CONFIG = {
+  xs: { height: 20, paddingX: 6, fontSize: 12, borderRadius: 2, width: 160 },
+  sm: { height: 26, paddingX: 8, fontSize: 12, borderRadius: 6, width: 200 },
+  // ...
+};
+
+// AFTER (from registry + parser):
+function getSizeConfig(size: string) {
+  const sizeClasses = sizeProp.classes[size];
+  const parsed = parseTailwindClasses(sizeClasses);
+
+  // Use parsed values with sensible fallbacks
+  return {
+    height: parsed.height ?? getDefaultHeight(size),
+    paddingX: parsed.paddingX ?? getDefaultPaddingX(size),
+    fontSize: parsed.fontSize ?? 16,
+    borderRadius: parsed.borderRadius ?? 8,
+    width: 280, // Layout-specific, may need to remain hardcoded
+  };
+}
+```
+
+### 5. Use Styling Section When Available
+
+```typescript
+// If component has styling section in registry
+if (componentStyling) {
+  // Use dimensions
+  const dimensions = componentStyling.dimensions;
+
+  // Use state tokens
+  const baseTokens = componentStyling.baseTokens;
+  const states = componentStyling.states;
+
+  // Use size variants
+  const sizeVariants = componentStyling.sizeVariants;
+}
+```
+
+### 6. Update Testable Exports
+
+Ensure testable exports reflect registry-based configuration:
+
+```typescript
+/**
+ * Get variant configuration from registry
+ */
 export function get[Component]VariantConfig() {
   return {
     values: variantProp.values,
@@ -43,399 +141,183 @@ export function get[Component]VariantConfig() {
   };
 }
 
-// 2. Get parsed base styles (if baseStyles exist in registry)
-export function get[Component]ParsedBaseStyles() {
-  return parseTailwindClasses(BASE_STYLES);
+/**
+ * Get size configuration from registry
+ */
+export function get[Component]SizeConfig() {
+  return {
+    values: sizeProp.values,
+    classes: sizeProp.classes,
+    descriptions: sizeProp.descriptions,
+    default: sizeProp.default,
+  };
 }
 
-// 3. Get parsed styles for a specific variant
-export function get[Component]ParsedVariantStyles(variant: string) {
-  const classes = variantProp.classes[variant] || "";
+/**
+ * Get parsed size styles for a specific size
+ */
+export function get[Component]ParsedSizeStyles(size: string) {
+  const classes = sizeProp.classes[size] || "";
   return {
-    variant,
+    size,
     classes,
-    description: variantProp.descriptions[variant] || "",
+    description: sizeProp.descriptions[size] || "",
     parsed: parseTailwindClasses(classes),
   };
 }
-
-// 4. Get all variant data (for snapshot testing)
-export function getAll[Component]VariantData() {
-  const baseStyles = get[Component]ParsedBaseStyles();
-  const config = get[Component]VariantConfig();
-
-  return {
-    baseStyles: {
-      raw: BASE_STYLES,
-      parsed: baseStyles,
-    },
-    variants: config.values.map((variant) => {
-      const variantData = get[Component]ParsedVariantStyles(variant);
-      return {
-        ...variantData,
-        // Add computed layout/styling data
-        layout: { ... },
-        text: { ... },
-      };
-    }),
-  };
-}
 ```
 
-### 3. Create Test File Structure
+### 7. Handle Missing Registry Data
 
-Follow this exact structure:
+If registry doesn't have required data:
 
 ```typescript
-/**
- * Tests for [component].ts generator
- *
- * These tests ensure the [Component] Figma component generation stays in sync
- * with the source of truth (component-registry.json).
- *
- * CRITICAL: These tests act as a regression guard. If you change the [component]
- * generator or parser, these tests will catch any unintended style changes.
- *
- * Source of truth chain:
- * [component].tsx → component-registry.json → [component].ts (generator) → Figma
- */
+// Option 1: Use fallback with warning
+const variantClasses = variantProp?.classes?.[variant];
+if (!variantClasses) {
+  logWarn(`Missing variant classes for ${variant}, using fallback`);
+  // Use sensible fallback
+}
 
-import { describe, it, expect } from "vitest";
-import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
-import {
-  get[Component]VariantConfig,
-  get[Component]ParsedBaseStyles,
-  get[Component]ParsedVariantStyles,
-  getAll[Component]VariantData,
-} from "./[component]";
+// Option 2: Document gap for follow-up
+// TODO: Add KUMO_COMPONENT_STYLING export to component.tsx
+// Currently using hardcoded values as fallback
+```
 
-// Import registry as source of truth
+## Example Migration
+
+### Before (input.ts - hardcoded):
+
+```typescript
+const SIZE_CONFIG: Record<string, {...}> = {
+  xs: { height: 20, paddingX: 6, fontSize: 12, borderRadius: 2, width: 160 },
+  sm: { height: 26, paddingX: 8, fontSize: 12, borderRadius: 6, width: 200 },
+  base: { height: 36, paddingX: 12, fontSize: 16, borderRadius: 8, width: 280 },
+  lg: { height: 40, paddingX: 16, fontSize: 16, borderRadius: 8, width: 320 },
+};
+```
+
+### After (input.ts - from registry):
+
+```typescript
 import registry from "../../../../ai/component-registry.json";
 
-const componentData = registry.components.[Component];
-const props = componentData.props;
-const variantProp = props.variant as {
-  values: string[];
-  classes: Record<string, string>;
-  descriptions: Record<string, string>;
-  default: string;
-};
+const inputComponent = registry.components.Input;
+const inputProps = inputComponent.props;
+const sizeProp = inputProps.size as { values: string[]; classes: Record<string, string>; ... };
+const inputStyling = inputComponent.styling;
 
-describe("[Component] Generator - Registry Validation", () => {
-  it("should have all expected variants in registry", () => {
-    // Don't hardcode expected variants - verify structure
-    expect(Array.isArray(variantProp.values)).toBe(true);
-    expect(variantProp.values.length).toBeGreaterThan(0);
-  });
-
-  it("should have classes defined for all variants", () => {
-    for (const variant of variantProp.values) {
-      expect(variantProp.classes[variant]).toBeDefined();
-      expect(typeof variantProp.classes[variant]).toBe("string");
-      expect(variantProp.classes[variant].length).toBeGreaterThan(0);
-    }
-  });
-
-  it("should have descriptions defined for all variants", () => {
-    for (const variant of variantProp.values) {
-      expect(variantProp.descriptions[variant]).toBeDefined();
-      expect(typeof variantProp.descriptions[variant]).toBe("string");
-      expect(variantProp.descriptions[variant].length).toBeGreaterThan(0);
-    }
-  });
-
-  it("should have a default variant", () => {
-    expect(variantProp.default).toBeDefined();
-    expect(typeof variantProp.default).toBe("string");
-    expect(variantProp.values).toContain(variantProp.default);
-  });
-});
-
-describe("[Component] Generator - Base Styles Parsing", () => {
-  // Only if component has baseStyles in registry
-  it("should parse border-radius from base styles", () => {
-    const parsed = parseTailwindClasses(BASE_STYLES);
-    expect(parsed.borderRadius).toBeDefined();
-    expect(typeof parsed.borderRadius).toBe("number");
-  });
-
-  it("should parse padding from base styles", () => {
-    const parsed = parseTailwindClasses(BASE_STYLES);
-    expect(parsed.paddingX).toBeDefined();
-    expect(typeof parsed.paddingX).toBe("number");
-  });
-
-  // Add more as needed for typography, spacing, etc.
-});
-
-describe("[Component] Generator - Variant Styles Parsing", () => {
-  // Test each variant's parsing - structural assertions only
-  for (const variant of variantProp.values) {
-    describe(`${variant} variant`, () => {
-      const classes = variantProp.classes[variant];
-
-      it("should have classes defined", () => {
-        expect(classes).toBeDefined();
-        expect(typeof classes).toBe("string");
-        expect(classes.length).toBeGreaterThan(0);
-      });
-
-      it("should parse fill or stroke variable", () => {
-        const parsed = parseTailwindClasses(classes);
-        // At least one should be defined
-        expect(
-          parsed.fillVariable !== undefined || parsed.strokeVariable !== undefined
-        ).toBe(true);
-      });
-
-      it("should parse text variable or detect white text", () => {
-        const parsed = parseTailwindClasses(classes);
-        expect(
-          parsed.textVariable !== undefined || parsed.isWhiteText === true
-        ).toBe(true);
-      });
-    });
-  }
-});
-
-describe("[Component] Generator - Snapshot Tests (Intermediate Data)", () => {
-  /**
-   * SNAPSHOT TESTS - Regression guards for intermediate data
-   *
-   * These tests capture the intermediate data (parsed styles, variant configs,
-   * layout calculations) BEFORE it hits Figma APIs. This enables:
-   *
-   * 1. Testing without Figma plugin runtime
-   * 2. Detecting unintended changes in parsing or layout logic
-   * 3. Validating the full source of truth chain:
-   *    [component].tsx → component-registry.json → [component].ts parser → Figma
-   *
-   * If these snapshots change unexpectedly, it means:
-   * - [Component] component styles changed in [component].tsx (intended)
-   * - Parser logic changed (review carefully)
-   * - Registry generation changed (review carefully)
-   */
-
-  it("should produce consistent variant config from registry", () => {
-    const config = get[Component]VariantConfig();
-    expect(config).toMatchSnapshot();
-  });
-
-  it("should produce consistent parsed base styles", () => {
-    const baseStyles = get[Component]ParsedBaseStyles();
-    expect(baseStyles).toMatchSnapshot();
-  });
-
-  // Snapshot each variant
-  for (const variant of variantProp.values) {
-    it(`should produce consistent parsed styles for ${variant} variant`, () => {
-      const variantData = get[Component]ParsedVariantStyles(variant);
-      expect(variantData).toMatchSnapshot();
-    });
+// Use styling.sizeVariants if available
+function getSizeDimensions(size: string) {
+  // Check for styling metadata first
+  if (inputStyling?.sizeVariants?.[size]) {
+    return inputStyling.sizeVariants[size];
   }
 
-  /**
-   * GOLDEN PATH TEST - Full intermediate data chain
-   *
-   * This test captures the complete intermediate data structure that
-   * [component].ts computes before making any Figma API calls. It's the
-   * most comprehensive regression guard.
-   */
-  it("should produce consistent intermediate data for all variants (golden path)", () => {
-    const allData = getAll[Component]VariantData();
+  // Fall back to parsing Tailwind classes
+  const sizeClasses = sizeProp.classes[size] || "";
+  const parsed = parseTailwindClasses(sizeClasses);
 
-    // Verify structure exists
-    expect(allData.baseStyles).toBeDefined();
-    expect(allData.variants).toBeDefined();
-    expect(Array.isArray(allData.variants)).toBe(true);
-
-    // Each variant should have complete data
-    for (const variant of allData.variants) {
-      expect(variant.variant).toBeDefined();
-      expect(variant.classes).toBeDefined();
-      expect(variant.description).toBeDefined();
-      expect(variant.parsed).toBeDefined();
-    }
-
-    // Full snapshot
-    expect(allData).toMatchSnapshot();
-  });
-});
-```
-
-### 4. Key Principles
-
-**DO:**
-
-- ✅ Test that properties exist and have correct types
-- ✅ Use `typeof` checks for type validation
-- ✅ Use `toBeDefined()` for existence checks
-- ✅ Use snapshots for regression protection
-- ✅ Test structural contract, not implementation
-
-**DON'T:**
-
-- ❌ Use exact string matches for Tailwind classes
-- ❌ Hardcode expected pixel values
-- ❌ Test specific color values
-- ❌ Assert exact class strings with `.toBe()`
-- ❌ Test design details that change during iteration
-
-### 5. Handle Special Cases
-
-**If component has `styling` metadata:**
-
-```typescript
-describe("[Component] Generator - Styling Metadata", () => {
-  it("should parse dimensions from styling", () => {
-    const styling = componentData.styling;
-    expect(styling.dimensions).toBeDefined();
-    const parsed = parseTailwindClasses(styling.dimensions);
-    expect(typeof parsed.height).toBe("number");
-    expect(typeof parsed.width).toBe("number");
-  });
-
-  it("should parse state styles from styling", () => {
-    const styling = componentData.styling;
-    expect(styling.states).toBeDefined();
-    expect(typeof styling.states).toBe("object");
-  });
-});
-```
-
-**If component has size variants:**
-
-```typescript
-const sizeProp = props.size as {
-  values: string[];
-  classes: Record<string, string>;
-  default: string;
-};
-
-export function get[Component]SizeConfig() { ... }
-export function get[Component]ParsedSizeStyles(size: string) { ... }
-
-// Add size tests following same pattern
-```
-
-**If component has sub-components:**
-
-```typescript
-describe("[Component] Generator - Sub-Components", () => {
-  it("should have sub-components defined in registry", () => {
-    expect(componentData.subComponents).toBeDefined();
-    expect(typeof componentData.subComponents).toBe("object");
-  });
-
-  it("should have props defined for each sub-component", () => {
-    const subComponents = componentData.subComponents;
-    for (const [name, subComp] of Object.entries(subComponents)) {
-      expect(subComp.name).toBe(name);
-      expect(subComp.description).toBeDefined();
-    }
-  });
-});
-```
-
-### 6. Run Tests and Update Snapshots
-
-After creating the test file:
-
-```bash
-# Run tests
-pnpm --filter @cloudflare/kumo test [generator-name].test.ts
-
-# Update snapshots (first run)
-pnpm --filter @cloudflare/kumo test [generator-name].test.ts -u
-
-# Verify tests pass
-pnpm --filter @cloudflare/kumo test [generator-name].test.ts --run
+  return {
+    height: parsed.height ?? 36,
+    paddingX: parsed.paddingX ?? 12,
+    fontSize: parsed.fontSize ?? 16,
+    borderRadius: parsed.borderRadius ?? 8,
+    width: 280, // Layout-specific
+  };
+}
 ```
 
 ## Validation Checklist
 
 Before marking complete, verify:
 
-- [ ] Generator exports all required testable functions
-- [ ] Test file follows 3-section structure (Registry, Structural, Snapshots)
-- [ ] No exact-value assertions for Tailwind classes
-- [ ] All type checks use `typeof`
-- [ ] All existence checks use `toBeDefined()`
-- [ ] Snapshots captured for variant config, base styles, each variant, and full data
-- [ ] All tests pass
-- [ ] Test file has comprehensive JSDoc comments
-- [ ] Follows pattern from badge.test.ts
+- [ ] Generator imports component-registry.json
+- [ ] Hardcoded arrays replaced with registry.props.\*.values
+- [ ] Hardcoded config objects replaced with registry data or parsed classes
+- [ ] Testable exports use registry data
+- [ ] All existing tests still pass
+- [ ] Snapshots unchanged (or intentionally updated)
+- [ ] Missing registry data documented (if any)
 
-## Example Usage
+## Run Tests
+
+After migration:
 
 ```bash
-# In the generators directory
-cd packages/kumo/scripts/figma/plugin/generators
+# Run tests
+pnpm --filter @cloudflare/kumo test [generator-name].test.ts --run
 
-# Start OpenCode
-opencode
+# If snapshots need updating (review changes first!)
+pnpm --filter @cloudflare/kumo test [generator-name].test.ts -u
 
-# Paste this prompt, replacing [GENERATOR_NAME] with actual generator name
-# Example: "Refactor the test file for the **dropdown** component..."
-
-# Reference these files in the chat:
-# @../plans/SPEC.md
-# @../plans/PRD.json
-# @badge.test.ts
-# @button.test.ts
+# Verify all pass
+pnpm --filter @cloudflare/kumo test [generator-name].test.ts --run
 ```
-
-## Success Criteria
-
-When complete, the test file should:
-
-1. Import and use all testable exports from generator
-2. Validate registry structure (not exact values)
-3. Validate parsed output structure (types and existence)
-4. Capture snapshots for regression protection
-5. Pass all tests
-6. Be flexible to design changes
-7. Follow the exact pattern from badge.test.ts
-
-## Common Pitfalls
-
-1. **Don't hardcode expected variants** - Read from registry and validate structure
-2. **Don't test exact class strings** - Test parsed structure instead
-3. **Don't skip snapshots** - They're your regression protection
-4. **Don't test implementation details** - Test the functional contract
-5. **Don't forget to export testable functions** - Generator must export pure functions
 
 ## Your Task (Single Generator Per Iteration)
 
-1. Find the NEXT incomplete generator from PRD.json (first generator where passes: false)
-2. Implement the test refactoring for ONLY that generator following this guide
+1. Find the NEXT incomplete generator from PRD.json (first generator with status: "hardcoded" or "partial")
+2. Migrate ONLY that generator following this guide
 3. Run feedback loops before committing:
-   - Tests: `pnpm --filter @cloudflare/kumo test [generator].test.ts`
-   - Update snapshots: `pnpm --filter @cloudflare/kumo test [generator].test.ts -u`
-   - Verify tests pass: `pnpm --filter @cloudflare/kumo test [generator].test.ts --run`
+   - Tests: `pnpm --filter @cloudflare/kumo test [generator].test.ts --run`
+   - If tests fail, investigate and fix
+   - If snapshots changed, review and update: `pnpm --filter @cloudflare/kumo test [generator].test.ts -u`
 4. Do NOT commit if tests fail. Fix issues first.
-5. Update PRD.json to mark the generator as passes: true
+5. Update PRD.json to mark the generator status as "complete"
 6. Append your progress to progress.txt with:
    - Generator name
-   - What was done
+   - What was changed
    - Test results
-   - Any issues encountered
+   - Registry gaps found (if any)
 7. **CRITICAL GIT INSTRUCTIONS:**
    - DO NOT create new branches or switch branches
-   - Stay on the current branch (swarm/figma-plugin)
-   - Make a git commit with clear message: "test([generator]): refactor to structural + snapshot pattern"
+   - Stay on the current branch
+   - Make a git commit with clear message: "refactor([generator]): migrate to component-registry.json"
    - DO NOT push to remote (commits will be pushed in batch later)
 
 ONLY WORK ON A SINGLE GENERATOR PER ITERATION.
 
-If ALL generators in PRD.json are complete (passes: true), output <promise>COMPLETE</promise>.
+If ALL generators in PRD.json are complete (status: "complete"), output <promise>COMPLETE</promise>.
 
-## Questions?
+## Common Issues
 
-Refer to:
+### Parser Doesn't Support Certain Classes
 
-- SPEC.md - Architecture decisions and technical details
-- PRD.json - Requirements and acceptance criteria
-- badge.test.ts - Complete example of pattern
-- button.test.ts - Complex example with multiple variants
-- input.test.ts - Example with state validation
+Some Tailwind classes may not be parsed. Document and use fallback:
+
+```typescript
+const parsed = parseTailwindClasses(classes);
+// Parser doesn't support pl-* (left-only padding)
+const paddingLeft = parsed.paddingX ?? 16; // Fallback
+```
+
+### Registry Missing Styling Section
+
+If component doesn't have `styling` section:
+
+```typescript
+// Document gap
+// TODO: Add KUMO_INPUT_STYLING export to input.tsx
+// Using parsed Tailwind classes as fallback
+
+const sizeClasses = sizeProp.classes[size];
+const parsed = parseTailwindClasses(sizeClasses);
+```
+
+### Values Differ Between Hardcoded and Registry
+
+If registry values differ from hardcoded:
+
+1. Check if registry is correct (authoritative source)
+2. If registry is correct, update generator to use registry
+3. Review snapshot changes carefully
+4. Update snapshots intentionally
+
+## References
+
+- badge.ts - Full registry integration example
+- button.ts - Complex multi-variant example
+- checkbox.ts - Uses props and styling sections
+- component-registry.json - Source of truth
+- parsers/tailwind-to-figma.ts - Parser implementation

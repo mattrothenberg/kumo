@@ -14,12 +14,12 @@
 | Secondary/default button background  | `bg-secondary` | 8 components  |
 | Error state background               | `bg-error`     | 4 components  |
 | Border/divider color                 | `bg-color-3`   | 4 components  |
-| Primary text on surfaces             | `text-surface` | 17 components |
-| Placeholder text and disabled states | `text-muted`   | 11 components |
+| Primary text on surfaces             | `text-surface` | 18 components |
+| Placeholder text and disabled states | `text-muted`   | 12 components |
 | Form labels and secondary headings   | `text-label`   | 9 components  |
 | Error messages and validation        | `text-error`   | 8 components  |
 | Default border color                 | `ring-border`  | 9 components  |
-| Border/divider color                 | `border-color` | 8 components  |
+| Border/divider color                 | `border-color` | 9 components  |
 
 ### Dark Mode & Theming
 
@@ -3872,7 +3872,6 @@ Tabs component
 
 **Styling:**
 
-
 **Examples:**
 
 ```tsx
@@ -3958,7 +3957,6 @@ Toasty component
 `bg-toast`, `bg-toast-button-hover`, `border-color`, `text-label`, `text-muted`, `text-surface`
 
 **Styling:**
-
 
 ---
 

@@ -149,8 +149,8 @@
       "name": "pagination",
       "tier": 2,
       "priority": "medium",
-      "status": "hardcoded",
-      "notes": "Layout constants hardcoded. Check registry.components.Pagination"
+      "status": "complete",
+      "notes": "Migrated. Added getPaginationRegistryData() to read component metadata from registry. Layout constants remain Figma-specific (React component uses Button/Input primitives, generator creates custom layout for demonstration). All 51 tests pass."
     },
     {
       "name": "switch",
