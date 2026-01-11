@@ -8,6 +8,10 @@ import { logComplete } from "../logger";
  * - open: false, true
  * - variant: default, withIcons, withDanger, withGroups, withCheckbox, withShortcuts
  *
+ * NOTE: The React component has simple variants (default, danger), but the
+ * generator creates Figma-specific display variants (withIcons, withDanger, etc.)
+ * to showcase different dropdown configurations in Figma.
+ *
  * The Dropdown has a Trigger (Button) and when open,
  * displays a dropdown panel with menu items.
  *
@@ -29,6 +33,12 @@ import {
   BORDER_RADIUS,
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
+import registry from "../../../../ai/component-registry.json";
+
+/**
+ * Extract DropdownMenu component data from registry (for metadata)
+ */
+var dropdownComponent = registry.components.DropdownMenu;
 
 /**
  * Section padding for component display
@@ -789,6 +799,25 @@ export function getMenuItemLayout(hasShortcut: boolean) {
 }
 
 /**
+ * Get dropdown registry metadata
+ *
+ * Returns component metadata from component-registry.json.
+ * Note: React component has simple variants (default, danger),
+ * but generator creates Figma-specific display variants.
+ */
+export function getDropdownRegistryData() {
+  return {
+    component: dropdownComponent.name,
+    description: dropdownComponent.description,
+    reactVariants: (
+      dropdownComponent.props.variant as { values: string[]; default: string }
+    ).values,
+    colors: dropdownComponent.colors,
+    note: "Generator uses Figma-specific display variants (withIcons, withDanger, etc.) for demonstration purposes",
+  };
+}
+
+/**
  * Get all dropdown variant data
  * Returns complete intermediate data structure for snapshot testing
  */
@@ -811,5 +840,6 @@ export function getAllDropdownVariantData() {
         openStates: config.openValues,
       };
     }),
+    registryData: getDropdownRegistryData(),
   };
 }

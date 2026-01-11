@@ -53,6 +53,25 @@ exports[`Dropdown Generator - Snapshot Tests (Intermediate Data) > should produc
     "padding": 6,
     "width": 200,
   },
+  "registryData": {
+    "colors": [
+      "bg-accent",
+      "bg-color-3",
+      "bg-error-selection",
+      "bg-muted",
+      "bg-secondary",
+      "ring-border",
+      "text-error",
+      "text-surface",
+    ],
+    "component": "DropdownMenu",
+    "description": "DropdownMenu component",
+    "note": "Generator uses Figma-specific display variants (withIcons, withDanger, etc.) for demonstration purposes",
+    "reactVariants": [
+      "default",
+      "danger",
+    ],
+  },
   "variants": [
     {
       "description": "Basic dropdown with simple menu items",

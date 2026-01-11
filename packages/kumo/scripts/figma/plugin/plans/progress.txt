@@ -1494,3 +1494,56 @@ No additional registry extraction needed - SensitiveInput is a specialized Input
 
 **Status:** COMPLETE - Ready for commit
 
+
+
+---
+
+## Iteration 29: dropdown (Tier 3 - PHASE 2: Registry Integration)
+
+**Generator:** dropdown
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Added registry import and metadata extraction:
+   - Added registry import at top of file
+   - Extracted dropdownComponent from registry.components.DropdownMenu
+   - Added documentation clarifying Figma-specific display variants vs React variants
+   
+2. Added getDropdownRegistryData() testable export:
+   - Returns component metadata from registry
+   - Includes component name, description, React variants (default, danger), colors
+   - Documents note: "Generator uses Figma-specific display variants for demonstration purposes"
+   - Added to getAllDropdownVariantData() output as registryData field
+   
+3. What remains generator-specific (by design):
+   - OPEN_VALUES: [false, true] - Display states
+   - VARIANT_VALUES: ["default", "withIcons", "withDanger", "withGroups", "withCheckbox", "withShortcuts"] - Figma-specific display variants
+   - DROPDOWN_WIDTH: 200px - Layout-specific
+   - Menu item layout (dimensions, padding, spacing) - Generator-specific for demonstration
+   
+### Test Results:
+- ✅ All 36 tests pass
+- ✅ 1 snapshot updated (intentionally added registryData)
+- ✅ Verified tests pass consistently with --run flag
+
+### Registry Gaps Found:
+None - DropdownMenu has comprehensive registry data:
+- props.variant.values ✅ (default, danger - React variants)
+- props.variant.classes ✅
+- colors ✅ (bg-accent, bg-color-3, bg-error-selection, etc.)
+- subComponents ✅ (Root, Trigger, Portal, Content, Group, Item, etc.)
+
+Generator intentionally uses different variants than React component for Figma demonstration purposes.
+
+### Notes:
+- Dropdown was marked "partial" in PRD because tests validated registry but generator didn't use it
+- Now fully registry-aware with metadata exports
+- Generator creates Figma-specific variants (withIcons, withDanger, withGroups, withCheckbox, withShortcuts) to showcase different dropdown configurations in Figma UI kit
+- React component has simple variants (default, danger), but Figma generator demonstrates richer examples
+- This is intentional and documented in comments and tests
+- Pre-existing TypeScript errors for layoutAlign, opacity, textAutoResize properties (documented in earlier iterations)
+- Dropdown is second Tier 3 generator fully migrated in Phase 2 (after sensitive-input)
+
+**Status:** COMPLETE - Ready for commit
+
