@@ -354,7 +354,7 @@
       "name": "document-divergences",
       "title": "Document Dropdown/Combobox Intentional Divergences",
       "priority": "low",
-      "status": "pending",
+      "status": "complete",
       "description": "Add JSDoc comments explaining Figma-specific variants",
       "files": [
         "scripts/figma/plugin/generators/dropdown.ts",

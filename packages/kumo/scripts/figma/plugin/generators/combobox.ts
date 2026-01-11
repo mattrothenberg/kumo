@@ -8,9 +8,20 @@
  * - open: false, true
  * - state: default, focus, disabled
  *
- * NOTE: The React component has no variants prop, but the generator creates
- * Figma-specific display variants (default, withLabel, withError) to showcase
- * different Field wrapper configurations in Figma.
+ * INTENTIONAL DIVERGENCE: Figma variants differ from React variants
+ *
+ * React Component Variants:
+ * - No variants prop (Combobox uses Input's variants internally)
+ *
+ * Figma Display Variants (for demonstration):
+ * - default: Bare combobox without Field wrapper
+ * - withLabel: Combobox with Field wrapper (label + description)
+ * - withError: Combobox with Field wrapper showing error state
+ *
+ * The Figma variants show different Field wrapper configurations
+ * for design exploration, not React component variants. The React
+ * component achieves these states through Field composition, not
+ * through a variants prop.
  *
  * The Combobox has a TriggerInput (input-like field) and when open,
  * displays a dropdown panel with sample items.

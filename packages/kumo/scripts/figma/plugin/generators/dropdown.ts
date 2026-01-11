@@ -8,9 +8,21 @@ import { logComplete } from "../logger";
  * - open: false, true
  * - variant: default, withIcons, withDanger, withGroups, withCheckbox, withShortcuts
  *
- * NOTE: The React component has simple variants (default, danger), but the
- * generator creates Figma-specific display variants (withIcons, withDanger, etc.)
- * to showcase different dropdown configurations in Figma.
+ * INTENTIONAL DIVERGENCE: Figma variants differ from React variants
+ *
+ * React Component Variants:
+ * - variant: "default" | "danger"
+ *
+ * Figma Display Variants (for demonstration):
+ * - default: Basic dropdown menu
+ * - withIcons: Menu items with leading icons
+ * - withDanger: Menu with destructive option
+ * - withGroups: Menu with grouped sections
+ * - withCheckbox: Menu with checkable items
+ * - withShortcuts: Menu items with keyboard shortcuts
+ *
+ * The Figma variants show different visual configurations
+ * for design exploration, not React component variants.
  *
  * The Dropdown has a Trigger (Button) and when open,
  * displays a dropdown panel with menu items.

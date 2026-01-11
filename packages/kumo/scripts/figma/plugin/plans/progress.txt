@@ -4422,3 +4422,49 @@ Remaining tasks:
 - T12: Document Dropdown/Combobox intentional divergences
 - T13: Final verification and completion summary
 
+
+## Iteration 26: T12 - Document Dropdown/Combobox Intentional Divergences (PHASE 7)
+
+**Task:** T12 - Document Dropdown/Combobox Intentional Divergences
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Enhanced dropdown.ts JSDoc**:
+   - Added "INTENTIONAL DIVERGENCE" section at top of file
+   - Documented React component variants: "default" | "danger"
+   - Documented Figma display variants: default, withIcons, withDanger, withGroups, withCheckbox, withShortcuts
+   - Explained that Figma variants are for design exploration, not React component API
+
+2. **Enhanced combobox.ts JSDoc**:
+   - Added "INTENTIONAL DIVERGENCE" section at top of file
+   - Documented React component: No variants prop (uses Input's variants internally)
+   - Documented Figma display variants: default, withLabel, withError
+   - Explained that Figma variants show Field wrapper configurations through composition
+
+### Rationale:
+- Dropdown and Combobox generators create Figma-specific display variants for design exploration
+- These variants differ from the actual React component API
+- Documentation prevents confusion when comparing Figma to React implementation
+- Helps designers understand these are example configurations, not actual component variants
+
+### Test Results:
+- ✅ All 36 dropdown tests pass
+- ✅ All 42 combobox tests pass
+- ✅ No behavioral changes (documentation only)
+
+### Files Modified:
+- `scripts/figma/plugin/generators/dropdown.ts` - Enhanced JSDoc with divergence explanation
+- `scripts/figma/plugin/generators/combobox.ts` - Enhanced JSDoc with divergence explanation
+- `plans/PRD.json` - T12 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- This is documentation-only change (no code behavior changes)
+- Pre-existing TypeScript errors remain (layoutAlign, opacity, textAutoResize) - not related to this change
+- Both generators already had some divergence notes, but now they're comprehensive and standardized
+- Next task (T13) is final verification - all tests should pass with 0 violations
+
+**Status:** COMPLETE - Intentional divergences documented
+
+---
