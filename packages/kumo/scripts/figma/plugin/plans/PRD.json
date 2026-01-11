@@ -242,7 +242,7 @@
       "name": "add-css-theme-drift-test",
       "title": "[Phase 9] Add Drift Detection Test for CSS Theme Values",
       "priority": "high",
-      "status": "pending",
+      "status": "complete",
       "description": "Create test that parses theme-kumo.css and validates parser values match",
       "files": ["scripts/figma/plugin/generators/drift-detection.test.ts"],
       "acceptance": [

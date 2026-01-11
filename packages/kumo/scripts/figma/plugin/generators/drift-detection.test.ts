@@ -1044,3 +1044,99 @@ describe("Figma Plugin - Registry Styling Integration", () => {
     expect(violations).toEqual([]);
   });
 });
+
+/**
+ * Phase 9: CSS Theme Sync Validation
+ *
+ * These tests ensure parser values match theme-kumo.css @theme definitions.
+ * Kumo uses Tailwind v4 which defines theme values in CSS, not config.
+ */
+describe("Figma Plugin - CSS Theme Sync Validation", () => {
+  it("should have FONT_SIZE_SCALE matching theme-kumo.css @theme values", () => {
+    // Read theme-kumo.css
+    const themeCssPath = join(__dirname, "../../../../src/styles/theme-kumo.css");
+    const themeCss = readFileSync(themeCssPath, "utf-8");
+
+    // Parse @theme block for typography
+    const extractFontSize = (name: string): number | null => {
+      const match = themeCss.match(new RegExp(`--text-${name}:\\s*(\\d+)px`));
+      return match ? parseInt(match[1], 10) : null;
+    };
+
+    const themeValues = {
+      xs: extractFontSize("xs"),
+      sm: extractFontSize("sm"),
+      base: extractFontSize("base"),
+      lg: extractFontSize("lg"),
+    };
+
+    // Validate we could parse the theme
+    expect(themeValues.xs).toBe(12);
+    expect(themeValues.sm).toBe(13);
+    expect(themeValues.base).toBe(14);
+    expect(themeValues.lg).toBe(16);
+
+    // Read parser FONT_SIZE_SCALE
+    const parserPath = join(__dirname, "../parsers/tailwind-to-figma.ts");
+    const parserContent = readFileSync(parserPath, "utf-8");
+
+    // Extract FONT_SIZE_SCALE values
+    const extractParserValue = (name: string): number | null => {
+      const match = parserContent.match(new RegExp(`${name}:\\s*(\\d+)`));
+      return match ? parseInt(match[1], 10) : null;
+    };
+
+    const parserValues = {
+      xs: extractParserValue("xs"),
+      sm: extractParserValue("sm"),
+      base: extractParserValue("base"),
+      lg: extractParserValue("lg"),
+    };
+
+    // Validate parser matches theme
+    expect(parserValues.xs).toBe(themeValues.xs);
+    expect(parserValues.sm).toBe(themeValues.sm);
+    expect(parserValues.base).toBe(themeValues.base);
+    expect(parserValues.lg).toBe(themeValues.lg);
+  });
+
+  it("should have FONT_SIZE constant in shared.ts matching theme-kumo.css", () => {
+    // Read theme-kumo.css
+    const themeCssPath = join(__dirname, "../../../../src/styles/theme-kumo.css");
+    const themeCss = readFileSync(themeCssPath, "utf-8");
+
+    const extractFontSize = (name: string): number | null => {
+      const match = themeCss.match(new RegExp(`--text-${name}:\\s*(\\d+)px`));
+      return match ? parseInt(match[1], 10) : null;
+    };
+
+    // Read shared.ts FONT_SIZE
+    const sharedPath = join(__dirname, "shared.ts");
+    const sharedContent = readFileSync(sharedPath, "utf-8");
+
+    // Validate FONT_SIZE.sm exists (was missing)
+    expect(/sm:\s*\d+/.test(sharedContent)).toBe(true);
+
+    // Extract FONT_SIZE values
+    const extractSharedValue = (name: string): number | null => {
+      // Match pattern: name: NUMBER (within FONT_SIZE block)
+      const fontSizeBlock = sharedContent.match(/export const FONT_SIZE = \{[\s\S]*?\} as const/);
+      if (!fontSizeBlock) return null;
+      const match = fontSizeBlock[0].match(new RegExp(`${name}:\\s*(\\d+)`));
+      return match ? parseInt(match[1], 10) : null;
+    };
+
+    const sharedValues = {
+      xs: extractSharedValue("xs"),
+      sm: extractSharedValue("sm"),
+      base: extractSharedValue("base"),
+      lg: extractSharedValue("lg"),
+    };
+
+    // Validate shared matches theme
+    expect(sharedValues.xs).toBe(extractFontSize("xs"));
+    expect(sharedValues.sm).toBe(extractFontSize("sm"));
+    expect(sharedValues.base).toBe(extractFontSize("base"));
+    expect(sharedValues.lg).toBe(extractFontSize("lg"));
+  });
+});

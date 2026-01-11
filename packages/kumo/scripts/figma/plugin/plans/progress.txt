@@ -30,15 +30,15 @@ Tailwind v4 moved theme values from `tailwind.config.js` to CSS `@theme` directi
 ### Task Order
 - ✅ T4: Fix FONT_SIZE_SCALE in Parser (COMPLETE)
 - ✅ T5: Fix FONT_SIZE in shared.ts (COMPLETE)
-- T6: Add CSS Theme Drift Detection Test (HIGH)
+- ✅ T6: Add CSS Theme Drift Detection Test (COMPLETE)
 - T7: Update Snapshots with Correct Font Sizes (HIGH)
 - T8-T10: Remaining Phase 8 tasks
 
 ### Status Summary
 - **Tasks:** 7 (T4-T10)
-- **Completed:** 2 (T4-T5)
+- **Completed:** 3 (T4-T6)
 - **In Progress:** 0
-- **Pending:** 5
+- **Pending:** 4
 
 ---
 
@@ -135,6 +135,60 @@ Tailwind v4 moved theme values from `tailwind.config.js` to CSS `@theme` directi
 - T7 will update all snapshots with correct Kumo font sizes
 
 **Status:** COMPLETE - FONT_SIZE constant now matches theme-kumo.css
+
+---
+
+## Iteration 28: T6 - Add CSS Theme Drift Detection Test (PHASE 9)
+
+**Task:** T6 - Add CSS Theme Drift Detection Test
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Added new describe block to drift-detection.test.ts**:
+   - "Figma Plugin - CSS Theme Sync Validation"
+   - Contains 2 tests that programmatically validate font sizes match theme-kumo.css
+
+2. **Test 1: should have FONT_SIZE_SCALE matching theme-kumo.css @theme values**:
+   - Parses theme-kumo.css to extract --text-xs, --text-sm, --text-base, --text-lg values
+   - Extracts FONT_SIZE_SCALE values from parsers/tailwind-to-figma.ts
+   - Compares extracted values and fails test if they drift
+   - Validates: xs=12, sm=13, base=14, lg=16
+
+3. **Test 2: should have FONT_SIZE constant in shared.ts matching theme-kumo.css**:
+   - Parses theme-kumo.css to extract font size values
+   - Extracts FONT_SIZE constant values from shared.ts
+   - Validates FONT_SIZE.sm exists (was missing before T5)
+   - Compares extracted values and fails test if they drift
+   - Validates: xs=12, sm=13, base=14, lg=16
+
+4. **Implementation details**:
+   - Uses regex parsing: `/--text-${name}:\s*(\d+)px/` to extract CSS values
+   - Uses regex to extract TypeScript constant values from both parser and shared.ts
+   - Fixed path to theme-kumo.css: `../../../../src/styles/theme-kumo.css` (from generators/ folder)
+   - Test fails immediately if values drift in future
+
+### Test Results:
+- ✅ All 24 drift detection tests pass (22 existing + 2 new)
+- ✅ CSS theme sync test validates parser FONT_SIZE_SCALE matches theme
+- ✅ CSS theme sync test validates shared.ts FONT_SIZE matches theme
+- ✅ Test correctly parses theme-kumo.css and extracts values: xs=12, sm=13, base=14, lg=16
+- ✅ Test correctly extracts parser values and validates match
+- ✅ Test correctly extracts shared.ts values and validates match
+
+### Files Modified:
+- `scripts/figma/plugin/generators/drift-detection.test.ts` - Added CSS theme sync validation tests
+- `plans/PRD.json` - T6 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- **Drift prevention**: If Kumo updates font sizes in theme-kumo.css in the future, these tests will immediately fail
+- **Enforcement**: Tests enforce that parser and shared.ts constants stay in sync with CSS theme
+- **Automated validation**: No manual verification needed - CI will catch drift
+- **Phase 9 progress**: 3 of 7 tasks complete (T4, T5, T6)
+- **Next task (T7)**: Update snapshots to reflect corrected font sizes from T4 and T5
+
+**Status:** COMPLETE - CSS theme drift detection test added and passing
 
 ---
 
