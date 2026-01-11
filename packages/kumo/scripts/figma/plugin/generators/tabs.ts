@@ -24,6 +24,7 @@ import {
   bindTextColorToVariable,
   SECTION_PADDING,
   SECTION_GAP,
+  SHADOWS,
 } from "./shared";
 import { logComplete, logStart, logProgress } from "../logger";
 
@@ -236,14 +237,14 @@ function createTabIndicator(
     bindStrokeToVariable(indicator, ringVar.id, 1);
   }
 
-  // Shadow: shadow-sm
+  // Shadow: shadow-sm using centralized shadow preset
   indicator.effects = [
     {
       type: "DROP_SHADOW",
-      color: { r: 0, g: 0, b: 0, a: 0.05 },
-      offset: { x: 0, y: 1 },
-      radius: 2,
-      spread: 0,
+      color: { r: 0, g: 0, b: 0, a: SHADOWS.subtle.opacity },
+      offset: { x: SHADOWS.subtle.offsetX, y: SHADOWS.subtle.offsetY },
+      radius: SHADOWS.subtle.blur,
+      spread: SHADOWS.subtle.spread,
       visible: true,
       blendMode: "NORMAL",
     },

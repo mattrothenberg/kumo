@@ -47,6 +47,29 @@ export const SECTION_PADDING = 48;
 export const SECTION_GAP = 160;
 
 /**
+ * Shadow presets for components
+ * Values match Figma shadow designs for elevated UI elements
+ */
+export const SHADOWS = {
+  /** Dialog shadow - elevated appearance (0px 8px 32px rgba(0,0,0,0.16)) */
+  dialog: {
+    offsetX: 0,
+    offsetY: 8,
+    blur: 32,
+    spread: 0,
+    opacity: 0.16,
+  },
+  /** Subtle shadow for tabs indicator (0px 1px 2px rgba(0,0,0,0.05)) */
+  subtle: {
+    offsetX: 0,
+    offsetY: 1,
+    blur: 2,
+    spread: 0,
+    opacity: 0.05,
+  },
+} as const;
+
+/**
  * Auto-layout configuration
  */
 export type AutoLayoutConfig = {

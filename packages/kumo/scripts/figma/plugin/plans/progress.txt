@@ -11,9 +11,9 @@ Remove hardcoded magic numbers from Figma generators to ensure they stay in sync
 
 ### Status Summary
 - **Tasks:** 8
-- **Completed:** 0
+- **Completed:** 2
 - **In Progress:** 0
-- **Pending:** 8
+- **Pending:** 6
 
 ### Key Issues to Address
 1. **Duplicate Constants:** SECTION_PADDING (48) and SECTION_GAP (160) declared in 5+ files
@@ -23,8 +23,8 @@ Remove hardcoded magic numbers from Figma generators to ensure they stay in sync
 5. **Scattered Fallbacks:** Inline `|| 8`, `|| 12` fallbacks throughout
 
 ### Task Order
-- T1: Centralize Section Constants (high priority)
-- T2: Add Shadow Scale (high priority)
+- ✅ T1: Centralize Section Constants (COMPLETE)
+- ✅ T2: Add Shadow Scale (COMPLETE)
 - T3: Add Layout Grid Constants (medium priority)
 - T4: Parse Dialog Sizes from Registry (medium priority)
 - T5: Derive Button COMPACT_SIZE_MAP (medium priority)
@@ -2479,6 +2479,51 @@ pnpm --filter @cloudflare/kumo test generators/ --run
 - These errors are in the original generator code, not related to this refactor
 - All generators successfully import and use SECTION_PADDING/SECTION_GAP from shared.ts
 - The centralization makes it trivial to change section layout values in the future
+
+**Status:** COMPLETE - Ready for commit
+
+
+
+---
+
+## Iteration 1 (Phase 5): T2 - Add Shadow Scale
+
+**Task:** add-shadow-scale
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Added SHADOWS constant to shared.ts with two presets:
+   - dialog: { offsetX: 0, offsetY: 8, blur: 32, spread: 0, opacity: 0.16 }
+   - subtle: { offsetX: 0, offsetY: 1, blur: 2, spread: 0, opacity: 0.05 }
+
+2. Updated dialog.ts to use SHADOWS.dialog:
+   - Replaced hardcoded shadow values with SHADOWS.dialog properties
+   - Maintained exact same visual output (0px 8px 32px rgba(0,0,0,0.16))
+
+3. Updated tabs.ts to use SHADOWS.subtle:
+   - Replaced hardcoded shadow values with SHADOWS.subtle properties
+   - Maintained exact same visual output (0px 1px 2px rgba(0,0,0,0.05))
+
+4. Added JSDoc comments to SHADOWS constant explaining usage
+
+### Files Modified:
+- generators/shared.ts (added SHADOWS constant)
+- generators/dialog.ts (imported and used SHADOWS.dialog)
+- generators/tabs.ts (imported and used SHADOWS.subtle)
+
+### Test Results:
+- ✅ All 32 generator test files pass (1477 tests total)
+- ✅ dialog.test.ts: 45 tests pass
+- ✅ tabs.test.ts: 60 tests pass
+- ✅ No snapshot updates required (values unchanged)
+
+### Notes:
+- Shadow values now centralized in shared.ts as source of truth
+- Dialog shadow: Elevated appearance for modal dialogs
+- Subtle shadow: Light shadow for tabs indicator
+- Pre-existing TypeScript errors in dialog.ts and tabs.ts remain (documented)
+- All acceptance criteria met
 
 **Status:** COMPLETE - Ready for commit
 

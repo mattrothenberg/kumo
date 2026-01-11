@@ -137,7 +137,7 @@
       "name": "add-shadow-scale",
       "title": "Add Shadow Scale to Shared",
       "priority": "high",
-      "status": "pending",
+      "status": "complete",
       "description": "Create centralized SHADOWS constant for dialog and tabs shadow effects",
       "files": [
         "generators/shared.ts",

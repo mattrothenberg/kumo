@@ -28,6 +28,7 @@ import {
   BORDER_RADIUS,
   SECTION_PADDING,
   SECTION_GAP,
+  SHADOWS,
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import registry from "../../../../ai/component-registry.json";
@@ -214,14 +215,14 @@ async function createDialogComponent(size: string): Promise<ComponentNode> {
     bindFillToVariable(component, bgVar.id);
   }
 
-  // Apply shadow effect (matches Figma design: 0px 8px 32px rgba(0,0,0,0.16))
+  // Apply shadow effect using centralized shadow preset
   component.effects = [
     {
       type: "DROP_SHADOW",
-      color: { r: 0, g: 0, b: 0, a: 0.16 },
-      offset: { x: 0, y: 8 },
-      radius: 32,
-      spread: 0,
+      color: { r: 0, g: 0, b: 0, a: SHADOWS.dialog.opacity },
+      offset: { x: SHADOWS.dialog.offsetX, y: SHADOWS.dialog.offsetY },
+      radius: SHADOWS.dialog.blur,
+      spread: SHADOWS.dialog.spread,
       visible: true,
       blendMode: "NORMAL",
     },
