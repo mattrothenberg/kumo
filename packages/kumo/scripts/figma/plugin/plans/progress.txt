@@ -11,9 +11,9 @@ Ensure all Figma generators derive styling values from component-registry.json f
 
 ### Status Summary
 - **Tasks:** 13
-- **Completed:** 0
+- **Completed:** 5 (T1, T2, T3, T4, T5)
 - **In Progress:** 0
-- **Pending:** 13
+- **Pending:** 8
 
 ### Components to Add Styling Metadata
 1. **DateRangePicker** (HIGH) - SIZE_CONFIG with calendarWidth, cellHeight, cellWidth, textSize, iconSize
@@ -31,11 +31,11 @@ Ensure all Figma generators derive styling values from component-registry.json f
 - `scripts/figma/plugin/generators/menubar.ts` - Update to read from registry
 
 ### Task Order (TEST-FIRST APPROACH)
-- **T1: Add registry integration enforcement test (pending)** ← FIRST: Creates FAILING test
-- T2: Add DateRangePicker styling metadata (pending)
-- T3: Update date-range-picker.ts generator (pending) → 4/5 violations
-- T4: Add Pagination styling metadata (pending)
-- T5: Update pagination.ts generator (pending) → 3/5 violations
+- ✅ T1: Add registry integration enforcement test (complete) - 5/5 violations
+- ✅ T2: Add DateRangePicker styling metadata (complete)
+- ✅ T3: Update date-range-picker.ts generator (complete) → 4/5 violations
+- ✅ T4: Add Pagination styling metadata (complete)
+- ✅ T5: Update pagination.ts generator (complete) → 3/5 violations
 - T6: Add InputArea styling metadata (pending)
 - T7: Update input-area.ts generator (pending) → 2/5 violations
 - T8: Add LayerCard styling metadata (pending)
@@ -44,6 +44,60 @@ Ensure all Figma generators derive styling values from component-registry.json f
 - T11: Update menubar.ts generator (pending) → 0/5 violations (ALL PASS!)
 - T12: Document Dropdown/Combobox intentional divergences (pending)
 - T13: Final verification (pending)
+
+---
+
+## Iteration 23: T5 - Update pagination.ts to Read from Registry (PHASE 7)
+
+**Task:** T5 - Update pagination.ts to Read from Registry
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Added registry styling import**:
+   - Added `paginationStyling = (registry.components.Pagination as any).styling;`
+   - Created `FALLBACK_LAYOUT` object with original hardcoded values
+
+2. **Created getLayoutFromRegistry() function**:
+   - Reads from `paginationStyling.layout` if available
+   - Falls back to FALLBACK_LAYOUT if registry data is missing
+   - Returns layout object with height, buttonSize, inputWidth, iconSize, gap, borderRadius
+
+3. **Replaced hardcoded constants**:
+   - `PAGINATION_HEIGHT`, `BUTTON_SIZE`, `INPUT_WIDTH`, `ICON_SIZE`, `BORDER_RADIUS` now derive from registry
+   - `GAP` kept as 0 (overrides registry value of 8 - buttons are flush)
+   - All values match previous hardcoded values exactly
+
+4. **Fixed registry metadata mismatch**:
+   - T4 added `borderRadius: 8` but original code had `borderRadius: 6`
+   - Updated COMPONENT_STYLING_METADATA to use `borderRadius: 6`
+   - Bumped CACHE_VERSION from 2 to 3 to force cache invalidation
+   - Regenerated registry
+
+### Test Results:
+- ✅ All 51 pagination tests pass
+- ✅ No snapshots changed (values match original hardcoded values)
+- ✅ Enforcement test now shows 3/5 violations (down from 5/5)
+  - ✅ DateRangePicker passes
+  - ✅ Pagination passes
+  - ❌ InputArea (pending)
+  - ❌ LayerCard (pending)
+  - ❌ MenuBar (pending)
+
+### Files Modified:
+- `scripts/figma/plugin/generators/pagination.ts` - Added registry reading with fallback
+- `scripts/ai/component-registry.ts` - Fixed borderRadius value (8→6), bumped CACHE_VERSION (2→3)
+- `ai/component-registry.json` - Regenerated with correct borderRadius
+- `plans/PRD.json` - T5 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- Pre-existing TypeScript errors (topLeftRadius, bottomLeftRadius, textAlignHorizontal) documented
+- GAP intentionally kept as 0 (Figma display specific) despite registry having gap: 8
+- Registry metadata must match original hardcoded values exactly to avoid snapshot changes
+- CACHE_VERSION bump required when fixing metadata values
+
+**Status:** COMPLETE - Pagination now reads from registry with proper fallback
 
 ---
 

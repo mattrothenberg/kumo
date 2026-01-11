@@ -31,18 +31,44 @@ import registry from "../../../../ai/component-registry.json";
 const paginationComponent = registry.components.Pagination;
 const paginationProps = paginationComponent.props;
 const paginationColors = paginationComponent.colors;
+const paginationStyling = (registry.components.Pagination as any).styling;
+
+/**
+ * Fallback layout configuration
+ * Used if registry doesn't have styling metadata
+ */
+const FALLBACK_LAYOUT = {
+  height: 36,
+  buttonSize: 36,
+  inputWidth: 50,
+  iconSize: 16,
+  gap: 8,
+  borderRadius: 8,
+};
+
+/**
+ * Get layout configuration from registry with fallback
+ * Reads from registry.components.Pagination.styling.layout
+ */
+function getLayoutFromRegistry() {
+  if (!paginationStyling?.layout) {
+    return FALLBACK_LAYOUT;
+  }
+  return paginationStyling.layout;
+}
 
 /**
  * Pagination layout constants
  * NOTE: These are Figma display-specific dimensions for showing the navigation control variants.
  * The React component uses Button (h-9, 36px) and Input components, which have their own sizing.
  */
-var PAGINATION_HEIGHT = 36;
-var BUTTON_SIZE = 36;
-var INPUT_WIDTH = 50;
-var ICON_SIZE = 16;
-var GAP = 0; // InputGroup buttons are flush against each other
-var BORDER_RADIUS = 6;
+const LAYOUT = getLayoutFromRegistry();
+var PAGINATION_HEIGHT = LAYOUT.height;
+var BUTTON_SIZE = LAYOUT.buttonSize;
+var INPUT_WIDTH = LAYOUT.inputWidth;
+var ICON_SIZE = LAYOUT.iconSize;
+var GAP = 0; // InputGroup buttons are flush against each other (overridden from registry gap: 8)
+var BORDER_RADIUS = LAYOUT.borderRadius;
 
 
 

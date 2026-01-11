@@ -51,7 +51,7 @@ const cachePath = join(cacheDir, "component-registry-cache.json");
 // Changes to shared code in THIS file won't invalidate cache without a version bump.
 // Or use: pnpm codegen:registry --no-cache
 // =============================================================================
-const CACHE_VERSION = 2;
+const CACHE_VERSION = 3;
 
 // =============================================================================
 // CLI flags
@@ -2398,7 +2398,7 @@ const COMPONENT_STYLING_METADATA: Record<string, ComponentSchema["styling"]> = {
       inputWidth: 50,
       iconSize: 16,
       gap: 8,
-      borderRadius: 8,
+      borderRadius: 6,
     },
   } as any,
 };

@@ -234,7 +234,7 @@
       "name": "update-pagination-generator",
       "title": "Update pagination.ts to Read from Registry",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Refactor generator to derive layout constants from registry",
       "files": ["scripts/figma/plugin/generators/pagination.ts"],
       "acceptance": [

@@ -3542,7 +3542,7 @@
           "inputWidth": 50,
           "iconSize": 16,
           "gap": 8,
-          "borderRadius": 8
+          "borderRadius": 6
         }
       }
     },
