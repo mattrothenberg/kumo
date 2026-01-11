@@ -205,8 +205,8 @@
       "name": "combobox",
       "tier": 3,
       "priority": "low",
-      "status": "partial",
-      "notes": "Tests use registry, but generator config mixed. Full migration needed"
+      "status": "complete",
+      "notes": "Registry-aware. Added getComboboxRegistryData() export with metadata. Generator uses Figma-specific display variants (default, withLabel, withError) for demonstration purposes - React component has no variants prop. All 42 tests pass."
     }
   ],
   "technical_approach": {

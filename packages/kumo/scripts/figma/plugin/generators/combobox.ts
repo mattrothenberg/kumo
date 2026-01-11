@@ -8,6 +8,10 @@
  * - open: false, true
  * - state: default, focus, disabled
  *
+ * NOTE: The React component has no variants prop, but the generator creates
+ * Figma-specific display variants (default, withLabel, withError) to showcase
+ * different Field wrapper configurations in Figma.
+ *
  * The Combobox has a TriggerInput (input-like field) and when open,
  * displays a dropdown panel with sample items.
  *
@@ -31,6 +35,12 @@ import {
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 import { logComplete } from "../logger";
+import registry from "../../../../ai/component-registry.json";
+
+/**
+ * Extract Combobox component data from registry (for metadata)
+ */
+var comboboxComponent = registry.components.Combobox;
 
 /**
  * Base styles for TriggerInput container
@@ -208,6 +218,22 @@ export function getComboboxLayoutData(
  * Get all combobox variant data (complete intermediate data structure)
  * @returns Complete data structure for all variants
  */
+/**
+ * Get combobox registry metadata
+ *
+ * Returns component metadata from component-registry.json.
+ * Note: React component has no variants prop, but generator creates
+ * Figma-specific display variants (default, withLabel, withError).
+ */
+export function getComboboxRegistryData() {
+  return {
+    component: comboboxComponent.name,
+    description: comboboxComponent.description,
+    colors: comboboxComponent.colors,
+    note: "Generator uses Figma-specific display variants (default, withLabel, withError) to showcase different Field wrapper configurations",
+  };
+}
+
 export function getAllComboboxVariantData() {
   var triggerStyles = getComboboxParsedTriggerStyles();
   var dropdownStyles = getComboboxParsedDropdownStyles();
@@ -231,6 +257,7 @@ export function getAllComboboxVariantData() {
     dropdownStyles,
     config,
     variants,
+    registryData: getComboboxRegistryData(),
   };
 }
 

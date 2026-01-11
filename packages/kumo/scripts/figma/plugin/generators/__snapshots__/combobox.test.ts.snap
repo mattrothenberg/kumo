@@ -51,6 +51,19 @@ exports[`Combobox Generator - Snapshot Tests (Intermediate Data) > should produc
     },
     "raw": "bg-surface border border-border",
   },
+  "registryData": {
+    "colors": [
+      "bg-color-2",
+      "bg-color-3",
+      "bg-secondary",
+      "fill-active",
+      "ring-border",
+      "text-surface",
+    ],
+    "component": "Combobox",
+    "description": "Combobox component",
+    "note": "Generator uses Figma-specific display variants (default, withLabel, withError) to showcase different Field wrapper configurations",
+  },
   "triggerStyles": {
     "parsed": {
       "borderRadius": 8,
