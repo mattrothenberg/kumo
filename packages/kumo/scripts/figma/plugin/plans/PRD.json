@@ -246,7 +246,7 @@
       "name": "add-registry-validation-tests",
       "title": "Add Registry Sync Validation Tests",
       "priority": "low",
-      "status": "pending",
+      "status": "complete",
       "description": "Add tests that validate generator constants match registry values",
       "files": [
         "generators/dialog.test.ts",

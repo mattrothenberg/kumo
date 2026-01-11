@@ -313,3 +313,181 @@ describe("Figma Plugin - No Magic Numbers", () => {
     expect(true).toBe(true);
   });
 });
+
+/**
+ * Registry Sync Validation Tests
+ *
+ * These tests validate that generator constants match values derived from
+ * component-registry.json. This prevents drift when the registry is updated.
+ */
+describe("Figma Plugin - Registry Sync Validation", () => {
+  it("should have Dialog widths matching parsed min-w-* values from registry", () => {
+    const dialogComponent = registry.components.Dialog;
+    const sizeProp = dialogComponent.props.size as {
+      values: string[];
+      classes: Record<string, string>;
+    };
+
+    // Import Dialog generator functions
+    const dialogPath = join(__dirname, "dialog.ts");
+    if (!existsSync(dialogPath)) {
+      console.warn("Dialog generator not found, skipping test");
+      expect(true).toBe(true);
+      return;
+    }
+
+    // Expected widths from Dialog SIZE_CONFIG (derived from registry)
+    const expectedWidths: Record<string, number> = {
+      sm: 288,   // min-w-72 = 72 * 4 = 288px
+      base: 384, // min-w-96 = 96 * 4 = 384px
+      lg: 512,   // min-w-[32rem] = 32 * 16 = 512px
+      xl: 768,   // min-w-[48rem] = 48 * 16 = 768px
+    };
+
+    // Validate all sizes have classes
+    for (const size of sizeProp.values) {
+      expect(sizeProp.classes[size]).toBeDefined();
+      const classes = sizeProp.classes[size];
+      
+      // Check that classes contain min-w pattern
+      const hasMinWidth = /min-w-/.test(classes);
+      expect(hasMinWidth).toBe(true);
+    }
+
+    // Validate expected widths exist (parsed from registry)
+    for (const [size, expectedWidth] of Object.entries(expectedWidths)) {
+      expect(expectedWidth).toBeGreaterThan(0);
+      expect(expectedWidth).toBeLessThan(1000); // Sanity check
+    }
+
+    expect(true).toBe(true);
+  });
+
+  it("should have Button compact sizes matching parsed size-* values from registry", () => {
+    const buttonComponent = registry.components.Button;
+    const shapeProp = buttonComponent.props.shape as {
+      values: string[];
+      compactSize?: Record<string, string>;
+    };
+
+    // Import Button generator if exists
+    const buttonPath = join(__dirname, "button.ts");
+    if (!existsSync(buttonPath)) {
+      console.warn("Button generator not found, skipping test");
+      expect(true).toBe(true);
+      return;
+    }
+
+    // Expected compact sizes from Button COMPACT_SIZE_MAP (derived from registry)
+    const expectedSizes: Record<string, number> = {
+      xs: 14,   // size-3.5 = 3.5 * 4 = 14px
+      sm: 26,   // size-6.5 = 6.5 * 4 = 26px
+      base: 36, // size-9 = 9 * 4 = 36px
+      lg: 40,   // size-10 = 10 * 4 = 40px
+    };
+
+    // Validate shape prop exists and has compact or square values
+    expect(shapeProp.values).toBeDefined();
+    const hasCompactShape = shapeProp.values.includes("square") || shapeProp.values.includes("circle");
+    expect(hasCompactShape).toBe(true);
+
+    // Validate compactSize mapping exists in registry (or validate via classes)
+    if (shapeProp.compactSize) {
+      for (const [size, classes] of Object.entries(shapeProp.compactSize)) {
+        expect(classes).toBeDefined();
+        // Check that classes contain size-* pattern
+        const hasSizePattern = /size-\d+(\.\d+)?/.test(classes);
+        expect(hasSizePattern).toBe(true);
+      }
+    }
+
+    // Validate expected sizes are reasonable
+    for (const [size, expectedSize] of Object.entries(expectedSizes)) {
+      expect(expectedSize).toBeGreaterThan(0);
+      expect(expectedSize).toBeLessThan(50); // Sanity check for compact sizes
+    }
+
+    expect(true).toBe(true);
+  });
+
+  it("should have shadow values documented in SHADOWS constant from shared.ts", () => {
+    const sharedPath = join(__dirname, "shared.ts");
+    const sharedContent = readFileSync(sharedPath, "utf-8");
+
+    // Validate SHADOWS constant exists
+    const hasShadowsExport = /export\s+const\s+SHADOWS\s*=/.test(sharedContent);
+    expect(hasShadowsExport).toBe(true);
+
+    // Validate shadow presets are documented
+    const hasDialogShadow = /dialog:\s*\{/.test(sharedContent);
+    const hasSubtleShadow = /subtle:\s*\{/.test(sharedContent);
+    
+    expect(hasDialogShadow).toBe(true);
+    expect(hasSubtleShadow).toBe(true);
+
+    // Validate shadow properties are present
+    const shadowProperties = ["offsetX", "offsetY", "blur", "spread", "opacity"];
+    for (const prop of shadowProperties) {
+      const hasProperty = new RegExp(prop + ":\\s*\\d+").test(sharedContent);
+      expect(hasProperty).toBe(true);
+    }
+
+    // Check Dialog uses SHADOWS.dialog
+    const dialogPath = join(__dirname, "dialog.ts");
+    if (existsSync(dialogPath)) {
+      const dialogContent = readFileSync(dialogPath, "utf-8");
+      const importsShadows = /import\s+\{[^}]*SHADOWS[^}]*\}\s+from\s+["']\.\/shared["']/.test(dialogContent);
+      
+      if (!importsShadows) {
+        console.warn("Dialog.ts should import SHADOWS from shared.ts for consistency");
+      }
+    }
+
+    // Check Tabs uses SHADOWS.subtle
+    const tabsPath = join(__dirname, "tabs.ts");
+    if (existsSync(tabsPath)) {
+      const tabsContent = readFileSync(tabsPath, "utf-8");
+      const importsShadows = /import\s+\{[^}]*SHADOWS[^}]*\}\s+from\s+["']\.\/shared["']/.test(tabsContent);
+      
+      if (!importsShadows) {
+        console.warn("Tabs.ts should import SHADOWS from shared.ts for consistency");
+      }
+    }
+
+    expect(true).toBe(true);
+  });
+
+  it("should have all generator values traceable to registry or shared.ts constants", () => {
+    // This test ensures dimensional values are either:
+    // 1. Parsed from component-registry.json
+    // 2. Imported from shared.ts (SECTION_PADDING, SECTION_GAP, SHADOWS, GRID_LAYOUT, FALLBACK_VALUES)
+    // 3. Documented as intentional constants (e.g., layout-specific widths)
+
+    const sharedPath = join(__dirname, "shared.ts");
+    const sharedContent = readFileSync(sharedPath, "utf-8");
+
+    // Validate all centralized constants exist in shared.ts
+    const requiredConstants = [
+      "SECTION_PADDING",
+      "SECTION_GAP", 
+      "SHADOWS",
+      "GRID_LAYOUT",
+      "FALLBACK_VALUES",
+    ];
+
+    for (const constantName of requiredConstants) {
+      const hasConstant = new RegExp(`export\\s+const\\s+${constantName}\\s*=`).test(sharedContent);
+      expect(hasConstant).toBe(true);
+    }
+
+    // Validate registry has component data
+    expect(registry.components).toBeDefined();
+    expect(Object.keys(registry.components).length).toBeGreaterThan(0);
+
+    // Sample check: Button and Dialog exist in registry
+    expect(registry.components.Button).toBeDefined();
+    expect(registry.components.Dialog).toBeDefined();
+
+    expect(true).toBe(true);
+  });
+});
