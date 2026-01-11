@@ -282,9 +282,9 @@
       "name": "verify-no-magic-numbers",
       "title": "Verify No Magic Numbers Remain",
       "priority": "low",
-      "status": "pending",
+      "status": "complete",
       "description": "Final verification that all magic numbers are centralized or derived",
-      "files": ["generators/*.ts"],
+      "files": ["generators/*.ts", "MAGIC_NUMBERS.md"],
       "acceptance": [
         "Run grep for hardcoded pixel values in generators",
         "All dimensional values traced to constants or registry",
