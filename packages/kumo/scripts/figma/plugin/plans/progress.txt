@@ -3581,3 +3581,80 @@ Address remaining magic numbers identified in comprehensive audit. Tasks T1-T8 a
 
 **Status:** COMPLETE - Ready for commit
 
+
+---
+
+## Iteration 22: T12 - Add Enforcement Tests for Phase 6 Patterns
+
+**Task:** T12 - add-enforcement-tests
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Extended drift-detection.test.ts with Phase 6 magic number enforcement tests:
+   - Added new test suite "Phase 6 Magic Number Enforcement" with 6 tests
+   - Tests enforce use of new constants: SECTION_LAYOUT, OPACITY, COLORS, DASH_PATTERN
+   
+2. New enforcement tests:
+   - **should not have hardcoded section positioning (x = 100, y = 100, + 50)**
+     - FAILS if generator has hardcoded .x = 100, .y = 100, or + 50 without SECTION_LAYOUT import
+     - Provides fix instructions: import SECTION_LAYOUT, use startX/startY/modeGap
+   
+   - **should not have hardcoded opacity = 0.5 without OPACITY import**
+     - FAILS if generator has opacity = 0.5 or opacity: 0.5 without OPACITY import
+     - Caught 4 generators: collapsible, dropdown, input-area, sensitive-input (not part of T6)
+   
+   - **should not have hardcoded RGB color objects without COLORS import**
+     - WARNS about hardcoded RGB objects like { r: 0.5, g: 0.5, b: 0.5 }
+     - Warning-only (not failure) - guides best practices
+     - Found 5 files with hardcoded RGB: clipboard-text, icon-library, loader, meter, select
+   
+   - **should use GRID_LAYOUT.labelVerticalOffset for label positioning**
+     - WARNS about hardcoded label.y = rowY + 4/8/12 patterns
+     - Suggests using GRID_LAYOUT.labelVerticalOffset.sm/md/lg
+   
+   - **should have DASH_PATTERN constant in shared.ts**
+     - Validates DASH_PATTERN constant exists with standard: [4, 4]
+   
+   - **should have all Phase 6 constants properly documented in shared.ts**
+     - Validates SECTION_LAYOUT (startX, startY, modeGap)
+     - Validates OPACITY (disabled, backdrop)
+     - Validates COLORS (placeholder, fallbackWhite, spinnerStroke)
+     - Validates GRID_LAYOUT.labelVerticalOffset (sm, md, lg)
+
+3. Updated existing test to include Phase 6 constants:
+   - Added SECTION_LAYOUT, OPACITY, COLORS to requiredConstants list
+   - Validates all constants exist in shared.ts
+
+### Test Results:
+- ✅ 15 of 16 tests pass
+- ❌ 1 test correctly fails (opacity enforcement)
+  - Caught 4 generators with hardcoded opacity = 0.5: collapsible, dropdown, input-area, sensitive-input
+  - These files were not part of T6 refactoring (which covered button, input, checkbox, switch, select, combobox)
+  - This is EXPECTED and CORRECT behavior - test is working as designed
+- ⚠️ 2 tests produce warnings (RGB colors, label offsets) - guidance for best practices
+
+### Enforcement Test Behavior:
+- **Failing tests** (FAIL): Block PR/commit for critical violations
+  - Hardcoded section positioning (x = 100, y = 100, + 50)
+  - Hardcoded opacity = 0.5 without OPACITY import
+  
+- **Warning tests** (WARN): Provide guidance, don't block
+  - Hardcoded RGB color objects (allows intentional usage)
+  - Label vertical offsets (pattern detection is heuristic)
+
+### Files Modified:
+- generators/drift-detection.test.ts
+  - Added 6 new enforcement tests
+  - Updated 1 existing test to validate Phase 6 constants
+
+### Notes:
+- Enforcement tests successfully catch regressions in magic number patterns
+- Tests work correctly - catching 4 generators not refactored in T6
+- Warning-only tests provide guidance without blocking workflow
+- All Phase 6 constants (SECTION_LAYOUT, OPACITY, COLORS, DASH_PATTERN, labelVerticalOffset) are validated
+- Tests provide clear fix instructions with examples
+- Future refactoring of collapsible, dropdown, input-area, sensitive-input will make opacity test pass
+
+**Status:** COMPLETE - Ready for commit
+

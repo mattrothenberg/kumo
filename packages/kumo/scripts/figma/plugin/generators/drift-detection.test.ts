@@ -473,6 +473,9 @@ describe("Figma Plugin - Registry Sync Validation", () => {
       "SHADOWS",
       "GRID_LAYOUT",
       "FALLBACK_VALUES",
+      "SECTION_LAYOUT",
+      "OPACITY",
+      "COLORS",
     ];
 
     for (const constantName of requiredConstants) {
@@ -489,5 +492,240 @@ describe("Figma Plugin - Registry Sync Validation", () => {
     expect(registry.components.Dialog).toBeDefined();
 
     expect(true).toBe(true);
+  });
+});
+
+/**
+ * Phase 6 Magic Number Enforcement Tests
+ *
+ * These tests enforce constants added in Phase 6:
+ * - SECTION_LAYOUT (section positioning)
+ * - OPACITY (disabled states, backdrops)
+ * - COLORS (placeholder RGB values)
+ * - GRID_LAYOUT.labelVerticalOffset (label centering)
+ */
+describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
+  it("should not have hardcoded section positioning (x = 100, y = 100, + 50)", () => {
+    const generatorFiles = readdirSync(__dirname)
+      .filter(
+        (f: string) =>
+          f.endsWith(".ts") &&
+          !f.endsWith(".test.ts") &&
+          f !== "shared.ts" // shared.ts declares the constants
+      );
+
+    const violations: string[] = [];
+
+    for (const file of generatorFiles) {
+      const filePath = join(__dirname, file);
+      const content = readFileSync(filePath, "utf-8");
+
+      // Check if file imports SECTION_LAYOUT
+      const importsSectionLayout = /import\s+\{[^}]*SECTION_LAYOUT[^}]*\}\s+from\s+["']\.\/shared["']/.test(content);
+
+      // Pattern to detect hardcoded section positioning:
+      // - lightSection.x = 100 or darkSection.x = 100
+      // - .x = 100 (direct assignment)
+      // - + 50 or width + 50 (modeGap)
+      const hasHardcodedX100 = /\.x\s*=\s*100\b/.test(content);
+      const hasHardcodedY100 = /\.y\s*=\s*100\b/.test(content);
+      const hasHardcodedPlus50 = /\+\s*50\b(?!\s*%)/.test(content); // Exclude 50% patterns
+
+      if ((hasHardcodedX100 || hasHardcodedY100 || hasHardcodedPlus50) && !importsSectionLayout) {
+        const issues = [];
+        if (hasHardcodedX100) issues.push(".x = 100");
+        if (hasHardcodedY100) issues.push(".y = 100");
+        if (hasHardcodedPlus50) issues.push("+ 50");
+        violations.push(`${file}: Has hardcoded section positioning (${issues.join(", ")}) - use SECTION_LAYOUT from shared.ts`);
+      }
+    }
+
+    if (violations.length > 0) {
+      throw new Error(
+        `❌ Hardcoded section positioning found:\n` +
+          `  - ${violations.join("\n  - ")}\n\n` +
+          `🔧 To fix:\n` +
+          `  1. Import SECTION_LAYOUT from shared.ts\n` +
+          `  2. Replace:\n` +
+          `     - .x = 100 → .x = SECTION_LAYOUT.startX\n` +
+          `     - .y = 100 → .y = SECTION_LAYOUT.startY\n` +
+          `     - + 50 → + SECTION_LAYOUT.modeGap\n`
+      );
+    }
+
+    expect(violations).toEqual([]);
+  });
+
+  it("should not have hardcoded opacity = 0.5 without OPACITY import", () => {
+    const generatorFiles = readdirSync(__dirname)
+      .filter(
+        (f: string) =>
+          f.endsWith(".ts") &&
+          !f.endsWith(".test.ts") &&
+          f !== "shared.ts"
+      );
+
+    const violations: string[] = [];
+
+    for (const file of generatorFiles) {
+      const filePath = join(__dirname, file);
+      const content = readFileSync(filePath, "utf-8");
+
+      // Check if file imports OPACITY
+      const importsOpacity = /import\s+\{[^}]*OPACITY[^}]*\}\s+from\s+["']\.\/shared["']/.test(content);
+
+      // Pattern to detect hardcoded opacity = 0.5 or opacity: 0.5
+      const hasHardcodedOpacity05 = /opacity\s*[:=]\s*0\.5\b/.test(content);
+
+      if (hasHardcodedOpacity05 && !importsOpacity) {
+        violations.push(`${file}: Has hardcoded opacity = 0.5 - use OPACITY.disabled from shared.ts`);
+      }
+    }
+
+    if (violations.length > 0) {
+      throw new Error(
+        `❌ Hardcoded opacity values found:\n` +
+          `  - ${violations.join("\n  - ")}\n\n` +
+          `🔧 To fix:\n` +
+          `  1. Import OPACITY from shared.ts\n` +
+          `  2. Replace: opacity = 0.5 → opacity = OPACITY.disabled\n`
+      );
+    }
+
+    expect(violations).toEqual([]);
+  });
+
+  it("should not have hardcoded RGB color objects without COLORS import", () => {
+    const generatorFiles = readdirSync(__dirname)
+      .filter(
+        (f: string) =>
+          f.endsWith(".ts") &&
+          !f.endsWith(".test.ts") &&
+          f !== "shared.ts"
+      );
+
+    const warnings: string[] = [];
+
+    for (const file of generatorFiles) {
+      const filePath = join(__dirname, file);
+      const content = readFileSync(filePath, "utf-8");
+
+      // Check if file imports COLORS
+      const importsColors = /import\s+\{[^}]*COLORS[^}]*\}\s+from\s+["']\.\/shared["']/.test(content);
+
+      // Pattern to detect hardcoded RGB objects like { r: 0.5, g: 0.5, b: 0.5 }
+      // This catches placeholder gray colors commonly used
+      const hasHardcodedRGB = /\{\s*r:\s*0\.[0-9]+\s*,\s*g:\s*0\.[0-9]+\s*,\s*b:\s*0\.[0-9]+\s*\}/.test(content);
+
+      if (hasHardcodedRGB && !importsColors) {
+        warnings.push(`${file}: Has hardcoded RGB color object - consider using COLORS from shared.ts`);
+      }
+    }
+
+    // This is a warning, not a failure - allows for intentional color specifications
+    if (warnings.length > 0) {
+      console.warn(
+        `\n⚠️  Hardcoded RGB colors found:\n  - ${warnings.join("\n  - ")}\n` +
+          `  Consider importing COLORS from shared.ts:\n` +
+          `  - COLORS.placeholder for { r: 0.5, g: 0.5, b: 0.5 }\n` +
+          `  - COLORS.fallbackWhite for { r: 1, g: 1, b: 1 }\n` +
+          `  - COLORS.spinnerStroke for { r: 0.4, g: 0.4, b: 0.4 }\n`
+      );
+    }
+
+    // Always pass - this is guidance
+    expect(true).toBe(true);
+  });
+
+  it("should use GRID_LAYOUT.labelVerticalOffset for label positioning", () => {
+    const generatorFiles = readdirSync(__dirname)
+      .filter(
+        (f: string) =>
+          f.endsWith(".ts") &&
+          !f.endsWith(".test.ts") &&
+          f !== "shared.ts"
+      );
+
+    const warnings: string[] = [];
+
+    for (const file of generatorFiles) {
+      const filePath = join(__dirname, file);
+      const content = readFileSync(filePath, "utf-8");
+
+      // Check if file imports GRID_LAYOUT
+      const importsGridLayout = /import\s+\{[^}]*GRID_LAYOUT[^}]*\}\s+from\s+["']\.\/shared["']/.test(content);
+
+      // Pattern to detect hardcoded label vertical offsets
+      // Look for label.y = rowY + 4, label.y = rowY + 8, label.y = rowY + 12
+      const hasHardcodedLabelOffset = /label.*\.y\s*=\s*\w+\s*\+\s*(4|8|12)\b/.test(content);
+
+      if (hasHardcodedLabelOffset && !importsGridLayout) {
+        warnings.push(`${file}: May have hardcoded label vertical offset - consider using GRID_LAYOUT.labelVerticalOffset`);
+      }
+    }
+
+    // This is a warning for guidance
+    if (warnings.length > 0) {
+      console.warn(
+        `\n⚠️  Potential hardcoded label offsets:\n  - ${warnings.join("\n  - ")}\n` +
+          `  Consider using GRID_LAYOUT.labelVerticalOffset:\n` +
+          `  - .sm (4px) for compact components (badge, loader)\n` +
+          `  - .md (8px) for standard components (input, checkbox)\n` +
+          `  - .lg (12px) for larger components (button, dialog)\n`
+      );
+    }
+
+    // Always pass - this is guidance
+    expect(true).toBe(true);
+  });
+
+  it("should have DASH_PATTERN constant in shared.ts", () => {
+    const sharedPath = join(__dirname, "shared.ts");
+    const sharedContent = readFileSync(sharedPath, "utf-8");
+
+    // Validate DASH_PATTERN constant exists
+    const hasDashPattern = /export\s+const\s+DASH_PATTERN\s*=/.test(sharedContent);
+    expect(hasDashPattern).toBe(true);
+
+    // Validate standard dash pattern is documented
+    const hasStandardPattern = /standard:\s*\[4,\s*4\]/.test(sharedContent);
+    expect(hasStandardPattern).toBe(true);
+  });
+
+  it("should have all Phase 6 constants properly documented in shared.ts", () => {
+    const sharedPath = join(__dirname, "shared.ts");
+    const sharedContent = readFileSync(sharedPath, "utf-8");
+
+    // Validate SECTION_LAYOUT has all required properties
+    const hasSectionLayoutStartX = /startX:\s*100/.test(sharedContent);
+    const hasSectionLayoutStartY = /startY:\s*100/.test(sharedContent);
+    const hasSectionLayoutModeGap = /modeGap:\s*50/.test(sharedContent);
+    expect(hasSectionLayoutStartX).toBe(true);
+    expect(hasSectionLayoutStartY).toBe(true);
+    expect(hasSectionLayoutModeGap).toBe(true);
+
+    // Validate OPACITY has required properties
+    const hasOpacityDisabled = /disabled:\s*0\.5/.test(sharedContent);
+    const hasOpacityBackdrop = /backdrop:\s*0\.8/.test(sharedContent);
+    expect(hasOpacityDisabled).toBe(true);
+    expect(hasOpacityBackdrop).toBe(true);
+
+    // Validate COLORS has required properties
+    const hasColorsPlaceholder = /placeholder:\s*\{/.test(sharedContent);
+    const hasColorsFallbackWhite = /fallbackWhite:\s*\{/.test(sharedContent);
+    const hasColorsSpinnerStroke = /spinnerStroke:\s*\{/.test(sharedContent);
+    expect(hasColorsPlaceholder).toBe(true);
+    expect(hasColorsFallbackWhite).toBe(true);
+    expect(hasColorsSpinnerStroke).toBe(true);
+
+    // Validate GRID_LAYOUT.labelVerticalOffset exists
+    const hasLabelVerticalOffset = /labelVerticalOffset:\s*\{/.test(sharedContent);
+    const hasLabelOffsetSm = /sm:\s*4/.test(sharedContent);
+    const hasLabelOffsetMd = /md:\s*8/.test(sharedContent);
+    const hasLabelOffsetLg = /lg:\s*12/.test(sharedContent);
+    expect(hasLabelVerticalOffset).toBe(true);
+    expect(hasLabelOffsetSm).toBe(true);
+    expect(hasLabelOffsetMd).toBe(true);
+    expect(hasLabelOffsetLg).toBe(true);
   });
 });

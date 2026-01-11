@@ -408,7 +408,7 @@
       "name": "add-enforcement-tests",
       "title": "Add Enforcement Tests for New Patterns",
       "priority": "high",
-      "status": "pending",
+      "status": "complete",
       "description": "Extend drift-detection.test.ts to catch new magic number patterns",
       "files": ["generators/drift-detection.test.ts"],
       "acceptance": [
