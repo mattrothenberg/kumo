@@ -75,6 +75,14 @@ export const COLORS = {
 } as const;
 
 /**
+ * Dash pattern arrays for strokes
+ */
+export const DASH_PATTERN = {
+  /** Standard dash pattern for dashed borders (4px dash, 4px gap) */
+  standard: [4, 4],
+} as const;
+
+/**
  * Layout constants for component display sections
  */
 export const SECTION_PADDING = 48;

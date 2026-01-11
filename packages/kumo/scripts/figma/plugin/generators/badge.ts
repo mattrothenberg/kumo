@@ -18,6 +18,7 @@ import {
   SECTION_GAP,
   GRID_LAYOUT,
   SECTION_LAYOUT,
+  DASH_PATTERN,
 } from "./shared";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 import { logInfo, logWarn } from "../logger";
@@ -202,9 +203,9 @@ async function createBadgeComponent(variant: string): Promise<ComponentNode> {
           component.dashPattern = variantStyles.dashPattern;
         } else {
           logWarn(
-            "Badge: dashPattern not found in variantStyles, using fallback [4, 4]",
+            "Badge: dashPattern not found in variantStyles, using centralized DASH_PATTERN.standard",
           );
-          component.dashPattern = [4, 4];
+          component.dashPattern = [...DASH_PATTERN.standard];
         }
       }
     }

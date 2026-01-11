@@ -3526,3 +3526,58 @@ Address remaining magic numbers identified in comprehensive audit. Tasks T1-T8 a
 
 **Status:** COMPLETE
 
+
+
+---
+
+## PHASE 6: Magic Numbers Audit Remediation (Current)
+
+### Iteration 1: T11 - Add DASH_PATTERN Constant
+
+**Task ID:** T11
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+
+1. **Added DASH_PATTERN constant to shared.ts:**
+   - Location: After COLORS constant (line 77-83)
+   - Value: `{ standard: [4, 4] }` with JSDoc documentation
+   - Type: `as const` for type safety
+
+2. **Updated icon-utils.ts to use DASH_PATTERN:**
+   - Added DASH_PATTERN to imports from shared.ts
+   - Line 187: Changed `spinner.dashPattern = [4, 4]` to `spinner.dashPattern = [...DASH_PATTERN.standard]`
+   - Used spread operator to convert readonly array to mutable array (Figma API requirement)
+
+3. **Updated badge.ts to use DASH_PATTERN:**
+   - Added DASH_PATTERN to imports from shared.ts
+   - Line 208: Changed fallback `[4, 4]` to `[...DASH_PATTERN.standard]`
+   - Updated warning message to reference centralized constant
+
+### Test Results:
+- ✅ All 1489 generator tests pass
+- ✅ badge.test.ts: 59 tests pass
+- ✅ loader.test.ts: 34 tests pass (uses icon-utils.ts)
+- ✅ No visual changes (spread operator preserves values)
+
+### Files Modified:
+1. `generators/shared.ts` - Added DASH_PATTERN constant
+2. `generators/icon-utils.ts` - Imports and uses DASH_PATTERN.standard
+3. `generators/badge.ts` - Imports and uses DASH_PATTERN.standard for dashed variant fallback
+4. `plans/PRD.json` - Updated T11 status to "complete"
+
+### Technical Notes:
+- **Readonly Issue:** DASH_PATTERN is readonly due to `as const`, but Figma's `dashPattern` property requires mutable `number[]`
+- **Solution:** Used spread operator `[...DASH_PATTERN.standard]` to create mutable copy
+- **Usage:** icon-utils.ts uses for spinner animation, badge.ts uses as fallback for dashed border variant
+- Pre-existing TypeScript errors in icon-utils.ts (MinimalFillsMixin) are unrelated to this change
+
+### Acceptance Criteria Met:
+- ✅ Add DASH_PATTERN to shared.ts with standard: [4, 4]
+- ✅ icon-utils.ts uses DASH_PATTERN.standard (line 187)
+- ✅ badge.ts uses DASH_PATTERN.standard for dashed variant (line 208)
+- ✅ All tests pass
+
+**Status:** COMPLETE - Ready for commit
+

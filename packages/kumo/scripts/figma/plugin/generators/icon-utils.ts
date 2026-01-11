@@ -10,6 +10,7 @@ import {
   bindFillToVariable,
   COLORS,
   FALLBACK_VALUES,
+  DASH_PATTERN,
 } from "./shared";
 
 /**
@@ -183,7 +184,7 @@ export function createLoader(size: number): FrameNode {
   spinner.strokeAlign = "CENTER";
 
   // Dashed stroke to create spinner appearance
-  spinner.dashPattern = [4, 4]; // Standard dash pattern for animated spinner
+  spinner.dashPattern = [...DASH_PATTERN.standard]; // Standard dash pattern for animated spinner
 
   frame.appendChild(spinner);
   return frame;

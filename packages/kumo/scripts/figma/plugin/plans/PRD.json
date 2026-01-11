@@ -388,7 +388,7 @@
       "name": "add-dash-pattern-constant",
       "title": "Add DASH_PATTERN Constant",
       "priority": "low",
-      "status": "pending",
+      "status": "complete",
       "description": "Centralize dash pattern arrays used for dashed borders/strokes",
       "files": [
         "generators/shared.ts",
