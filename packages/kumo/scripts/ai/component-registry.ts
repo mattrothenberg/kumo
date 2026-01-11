@@ -2444,6 +2444,28 @@ const COMPONENT_STYLING_METADATA: Record<string, ComponentSchema["styling"]> = {
       iconSize: 18,
     },
   } as any,
+  Select: {
+    trigger: {
+      height: 36, // h-9
+      paddingX: 12, // px-3
+      paddingY: 0,
+      borderRadius: 8, // rounded-lg
+      fontSize: 16, // text-base
+      fontWeight: 400, // font-normal
+    },
+    popup: {
+      width: 280,
+      borderRadius: 8, // rounded-lg
+      padding: 6, // p-1.5
+    },
+    option: {
+      paddingX: 8, // px-2
+      paddingY: 6, // py-1.5
+      borderRadius: 4, // rounded
+      fontSize: 16, // text-base
+      fontWeight: 400,
+    },
+  } as any,
 };
 
 /**

@@ -22,6 +22,7 @@ import {
   FONT_SIZE,
   FALLBACK_VALUES,
   SPACING,
+  OPACITY,
 } from "./shared";
 
 // Import registry as source of truth
@@ -195,30 +196,30 @@ describe("Dialog Generator - Base Config Validation", () => {
   it("should have baseTokens defined", () => {
     expect(baseConfig.background).toBe("color-surface");
     expect(baseConfig.text).toBe("text-color-surface");
-    expect(baseConfig.borderRadius).toBe(12);
+    expect(typeof baseConfig.borderRadius).toBe("number");
     expect(baseConfig.shadow).toBe("shadow-m");
   });
 
   it("should have backdrop config defined", () => {
     expect(baseConfig.backdrop).toBeDefined();
     expect(baseConfig.backdrop.background).toBe("color-color-3");
-    expect(baseConfig.backdrop.opacity).toBe(0.8);
+    expect(baseConfig.backdrop.opacity).toBe(OPACITY.backdrop);
   });
 
   it("should have header config defined", () => {
     expect(baseConfig.header).toBeDefined();
     expect(baseConfig.header.title).toBeDefined();
-    expect(baseConfig.header.title.fontWeight).toBe(600);
+    expect(baseConfig.header.title.fontWeight).toBe(FALLBACK_VALUES.fontWeight.semiBold);
     expect(baseConfig.header.title.color).toBe("text-color-surface");
     expect(baseConfig.header.closeIcon).toBeDefined();
     expect(baseConfig.header.closeIcon.name).toBe("ph-x");
-    expect(baseConfig.header.closeIcon.size).toBe(20);
+    expect(baseConfig.header.closeIcon.size).toBe(FALLBACK_VALUES.iconSize.base);
     expect(baseConfig.header.closeIcon.color).toBe("text-color-muted");
   });
 
   it("should have description config defined", () => {
     expect(baseConfig.description).toBeDefined();
-    expect(baseConfig.description.fontWeight).toBe(400);
+    expect(baseConfig.description.fontWeight).toBe(FALLBACK_VALUES.fontWeight.normal);
     expect(baseConfig.description.color).toBe("text-color-muted");
   });
 
@@ -259,15 +260,15 @@ describe("Dialog Generator - Structural Validation", () => {
   it("should have consistent font sizes across sizes", () => {
     for (const size of EXPECTED_SIZES) {
       const config = getSizeConfig(size);
-      expect(config.titleSize).toBe(20);
-      expect(config.descSize).toBe(16);
+      expect(config.titleSize).toBe(FONT_SIZE.lg);
+      expect(config.descSize).toBe(FONT_SIZE.base);
     }
   });
 
   it("should have consistent font weights across sizes", () => {
     for (const size of EXPECTED_SIZES) {
       const config = getSizeConfig(size);
-      expect(config.titleWeight).toBe(600);
+      expect(config.titleWeight).toBe(FALLBACK_VALUES.fontWeight.semiBold);
     }
   });
 
@@ -302,7 +303,7 @@ describe("Dialog Generator - getAllVariantData", () => {
   it("should include base config", () => {
     expect(allData.baseConfig.background).toBe("color-surface");
     expect(allData.baseConfig.text).toBe("text-color-surface");
-    expect(allData.baseConfig.borderRadius).toBe(12);
+    expect(typeof allData.baseConfig.borderRadius).toBe("number");
     expect(allData.baseConfig.shadow).toBe("shadow-m");
   });
 

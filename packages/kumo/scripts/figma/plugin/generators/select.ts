@@ -37,24 +37,21 @@ import { getButtonIcon, bindIconColor } from "./icon-utils";
 import { logComplete } from "../logger";
 import registry from "../../../../ai/component-registry.json";
 
-// Note: KUMO_SELECT_STYLING exists in select.tsx but isn't extracted to registry yet.
-// TODO: Regenerate component-registry.json to include styling section.
-// For now, we'll define it here based on the source component.
-
 // Extract Select component data from registry
 var selectRegistry = registry.components.Select;
+var selectRegistryStyling = (registry.components.Select as any).styling;
 
-// Styling data from KUMO_SELECT_STYLING in select.tsx (source of truth)
+// Styling configuration - reads from registry with semantic token additions
 var selectStyling = {
   trigger: {
-    height: 36, // h-9
-    paddingX: 12, // px-3
-    borderRadius: 8, // rounded-lg
+    height: selectRegistryStyling?.trigger?.height ?? 36, // h-9
+    paddingX: selectRegistryStyling?.trigger?.paddingX ?? 12, // px-3
+    borderRadius: selectRegistryStyling?.trigger?.borderRadius ?? 8, // rounded-lg
     background: "color-secondary",
     text: "text-color-surface",
     ring: "color-border",
-    fontSize: 16, // text-base
-    fontWeight: 400, // font-normal
+    fontSize: selectRegistryStyling?.trigger?.fontSize ?? 16, // text-base
+    fontWeight: selectRegistryStyling?.trigger?.fontWeight ?? 400, // font-normal
   },
   stateTokens: {
     focus: { ring: "color-active" },
@@ -63,14 +60,15 @@ var selectStyling = {
   popup: {
     background: "color-secondary",
     ring: "color-border",
-    borderRadius: 8, // rounded-lg
-    padding: 6, // p-1.5
+    borderRadius: selectRegistryStyling?.popup?.borderRadius ?? 8, // rounded-lg
+    padding: selectRegistryStyling?.popup?.padding ?? 6, // p-1.5
+    width: selectRegistryStyling?.popup?.width ?? 280,
   },
   option: {
-    paddingX: 8, // px-2
-    paddingY: 6, // py-1.5
-    borderRadius: 4, // rounded
-    fontSize: 16, // text-base
+    paddingX: selectRegistryStyling?.option?.paddingX ?? 8, // px-2
+    paddingY: selectRegistryStyling?.option?.paddingY ?? 6, // py-1.5
+    borderRadius: selectRegistryStyling?.option?.borderRadius ?? 4, // rounded
+    fontSize: selectRegistryStyling?.option?.fontSize ?? 16, // text-base
     highlightBackground: "color-color-3",
   },
 };

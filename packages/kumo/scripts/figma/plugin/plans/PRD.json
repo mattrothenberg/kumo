@@ -195,7 +195,7 @@
       "name": "fix-text-test-assertions",
       "title": "Fix text.test.ts Hardcoded Assertions",
       "priority": "high",
-      "status": "pending",
+      "status": "complete",
       "description": "Replace 5+ hardcoded numeric assertions with shared constants",
       "files": ["scripts/figma/plugin/generators/text.test.ts"],
       "acceptance": [

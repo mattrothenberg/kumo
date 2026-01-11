@@ -3682,6 +3682,28 @@
           "description": "Option sub-component",
           "props": {}
         }
+      },
+      "styling": {
+        "trigger": {
+          "height": 36,
+          "paddingX": 12,
+          "paddingY": 0,
+          "borderRadius": 8,
+          "fontSize": 16,
+          "fontWeight": 400
+        },
+        "popup": {
+          "width": 280,
+          "borderRadius": 8,
+          "padding": 6
+        },
+        "option": {
+          "paddingX": 8,
+          "paddingY": 6,
+          "borderRadius": 4,
+          "fontSize": 16,
+          "fontWeight": 400
+        }
       }
     },
     "SensitiveInput": {

@@ -14,6 +14,7 @@
 import { describe, it, expect } from "vitest";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 import { getBaseStyles, getVariantConfig, getAllVariantData } from "./text";
+import { FONT_SIZE, FALLBACK_VALUES } from "./shared";
 
 // Import registry as source of truth
 import registry from "../../../../ai/component-registry.json";
@@ -141,7 +142,7 @@ describe("Text Generator - Variant Styles Parsing", () => {
       const parsed = parseTailwindClasses(classes);
       expect(parsed.fontWeight).toBeDefined();
       expect(typeof parsed.fontWeight).toBe("number");
-      expect(parsed.fontWeight).toBe(600); // font-semibold = 600
+      expect(parsed.fontWeight).toBe(FALLBACK_VALUES.fontWeight.semiBold); // font-semibold = 600
     });
   });
 
@@ -152,13 +153,13 @@ describe("Text Generator - Variant Styles Parsing", () => {
       const parsed = parseTailwindClasses(classes);
       expect(parsed.fontSize).toBeDefined();
       expect(typeof parsed.fontSize).toBe("number");
-      expect(parsed.fontSize).toBe(24); // text-2xl = 24px
+      expect(parsed.fontSize).toBe(24); // text-2xl = 24px (no constant for heading sizes)
     });
 
     it("should parse font weight (font-semibold)", () => {
       const parsed = parseTailwindClasses(classes);
       expect(parsed.fontWeight).toBeDefined();
-      expect(parsed.fontWeight).toBe(600);
+      expect(parsed.fontWeight).toBe(FALLBACK_VALUES.fontWeight.semiBold);
     });
   });
 
@@ -169,13 +170,13 @@ describe("Text Generator - Variant Styles Parsing", () => {
       const parsed = parseTailwindClasses(classes);
       expect(parsed.fontSize).toBeDefined();
       expect(typeof parsed.fontSize).toBe("number");
-      expect(parsed.fontSize).toBe(18); // text-lg = 18px
+      expect(parsed.fontSize).toBe(18); // text-lg = 18px (no constant for heading sizes)
     });
 
     it("should parse font weight (font-semibold)", () => {
       const parsed = parseTailwindClasses(classes);
       expect(parsed.fontWeight).toBeDefined();
-      expect(parsed.fontWeight).toBe(600);
+      expect(parsed.fontWeight).toBe(FALLBACK_VALUES.fontWeight.semiBold);
     });
   });
 
@@ -257,28 +258,28 @@ describe("Text Generator - Size Styles Parsing", () => {
     const parsed = parseTailwindClasses(classes);
     expect(parsed.fontSize).toBeDefined();
     expect(typeof parsed.fontSize).toBe("number");
-    expect(parsed.fontSize).toBe(12); // text-xs = 12px
+    expect(parsed.fontSize).toBe(FONT_SIZE.xs); // text-xs = 12px
   });
 
   it("should parse sm size (text-sm)", () => {
     const classes = sizeProp.classes.sm;
     const parsed = parseTailwindClasses(classes);
     expect(parsed.fontSize).toBeDefined();
-    expect(parsed.fontSize).toBe(14); // text-sm = 14px
+    expect(parsed.fontSize).toBe(14); // text-sm = 14px (no constant for text-sm)
   });
 
   it("should parse base size (text-base)", () => {
     const classes = sizeProp.classes.base;
     const parsed = parseTailwindClasses(classes);
     expect(parsed.fontSize).toBeDefined();
-    expect(parsed.fontSize).toBe(16); // text-base = 16px
+    expect(parsed.fontSize).toBe(FONT_SIZE.base); // text-base = 16px
   });
 
   it("should parse lg size (text-lg)", () => {
     const classes = sizeProp.classes.lg;
     const parsed = parseTailwindClasses(classes);
     expect(parsed.fontSize).toBeDefined();
-    expect(parsed.fontSize).toBe(18); // text-lg = 18px
+    expect(parsed.fontSize).toBe(18); // text-lg = 18px (no constant for text-lg)
   });
 });
 
@@ -476,8 +477,8 @@ describe("Text Generator - Expected Figma Output", () => {
     const parsed = parseTailwindClasses(combinedClasses);
 
     // Expected Figma text properties
-    expect(parsed.fontSize).toBe(30); // text-3xl
-    expect(parsed.fontWeight).toBe(600); // font-semibold
+    expect(parsed.fontSize).toBe(30); // text-3xl (no constant for heading sizes)
+    expect(parsed.fontWeight).toBe(FALLBACK_VALUES.fontWeight.semiBold); // font-semibold
     expect(parsed.textVariable).toBeDefined();
     expect(typeof parsed.textVariable).toBe("string");
   });
@@ -488,7 +489,7 @@ describe("Text Generator - Expected Figma Output", () => {
     const combinedClasses = `${TEXT_BASE_CLASS} ${variantClasses} ${sizeClasses}`;
     const parsed = parseTailwindClasses(combinedClasses);
 
-    expect(parsed.fontSize).toBe(16); // text-base
+    expect(parsed.fontSize).toBe(FONT_SIZE.base); // text-base
     expect(parsed.textVariable).toBeDefined();
     expect(typeof parsed.textVariable).toBe("string");
   });
@@ -500,7 +501,7 @@ describe("Text Generator - Expected Figma Output", () => {
     const combinedClasses = `${TEXT_BASE_CLASS} ${variantClasses} ${sizeClasses}`;
     const parsed = parseTailwindClasses(combinedClasses);
 
-    expect(parsed.fontSize).toBe(14); // text-sm (optically adjusted)
+    expect(parsed.fontSize).toBe(14); // text-sm (optically adjusted) (no constant for text-sm)
     expect(variantClasses).toContain("font-mono");
   });
 
@@ -511,7 +512,7 @@ describe("Text Generator - Expected Figma Output", () => {
     const combinedClasses = `${TEXT_BASE_CLASS} ${variantClasses} ${sizeClasses}`;
     const parsed = parseTailwindClasses(combinedClasses);
 
-    expect(parsed.fontSize).toBe(16); // text-base (optically adjusted)
+    expect(parsed.fontSize).toBe(FONT_SIZE.base); // text-base (optically adjusted)
     expect(variantClasses).toContain("font-mono");
   });
 });

@@ -2,16 +2,13 @@
  * Tests for select.ts component generator
  *
  * These tests ensure the Select Figma component generation stays in sync
- * with the source of truth (select.tsx implementation).
+ * with the source of truth (component-registry.json).
  *
  * CRITICAL: These tests act as a regression guard. If you change the select
  * generator, these tests will catch any unintended style changes.
  *
  * Source of truth chain:
- * select.tsx → KUMO_SELECT_STYLING → select.ts (generator) → Figma
- *
- * Note: Select doesn't use component-registry.json yet, so tests validate
- * against hardcoded values that match select.tsx implementation.
+ * select.tsx → component-registry.json → select.ts (generator) → Figma
  */
 
 import { describe, it, expect } from "vitest";
@@ -24,6 +21,11 @@ import {
   SELECT_OPEN_VALUES,
   SELECT_STATE_VALUES,
 } from "./select";
+
+// Import registry as source of truth
+import registry from "../../../../ai/component-registry.json";
+
+const selectStyling = (registry.components.Select as any).styling;
 
 describe("Select Generator - Variant Configuration", () => {
   it("should have all expected variant values", () => {
@@ -54,30 +56,30 @@ describe("Select Generator - Trigger Configuration", () => {
     expect(config).toBeDefined();
   });
 
-  it("should have correct trigger height", () => {
+  it("should have trigger height matching registry", () => {
     const config = getTriggerConfig();
-    expect(config.height).toBe(36); // h-9
+    expect(config.height).toBe(selectStyling.trigger.height);
     expect(typeof config.height).toBe("number");
   });
 
-  it("should have correct trigger padding", () => {
+  it("should have trigger padding matching registry", () => {
     const config = getTriggerConfig();
-    expect(config.paddingX).toBe(12); // px-3
-    expect(config.paddingY).toBe(0);
+    expect(config.paddingX).toBe(selectStyling.trigger.paddingX);
+    expect(config.paddingY).toBe(selectStyling.trigger.paddingY);
     expect(typeof config.paddingX).toBe("number");
     expect(typeof config.paddingY).toBe("number");
   });
 
-  it("should have correct trigger border radius", () => {
+  it("should have trigger border radius matching registry", () => {
     const config = getTriggerConfig();
-    expect(config.borderRadius).toBe(8); // rounded-lg
+    expect(config.borderRadius).toBe(selectStyling.trigger.borderRadius);
     expect(typeof config.borderRadius).toBe("number");
   });
 
-  it("should have correct trigger typography", () => {
+  it("should have trigger typography matching registry", () => {
     const config = getTriggerConfig();
-    expect(config.fontSize).toBe(16); // text-base
-    expect(config.fontWeight).toBe(400); // font-normal
+    expect(config.fontSize).toBe(selectStyling.trigger.fontSize);
+    expect(config.fontWeight).toBe(selectStyling.trigger.fontWeight);
     expect(typeof config.fontSize).toBe("number");
     expect(typeof config.fontWeight).toBe("number");
   });
@@ -118,21 +120,21 @@ describe("Select Generator - Popup Configuration", () => {
     expect(config).toBeDefined();
   });
 
-  it("should have correct popup dimensions", () => {
+  it("should have popup dimensions matching registry", () => {
     const config = getPopupConfig();
-    expect(config.width).toBe(280); // matches trigger width
+    expect(config.width).toBe(selectStyling.popup.width);
     expect(typeof config.width).toBe("number");
   });
 
-  it("should have correct popup padding", () => {
+  it("should have popup padding matching registry", () => {
     const config = getPopupConfig();
-    expect(config.padding).toBe(6); // p-1.5
+    expect(config.padding).toBe(selectStyling.popup.padding);
     expect(typeof config.padding).toBe("number");
   });
 
-  it("should have correct popup border radius", () => {
+  it("should have popup border radius matching registry", () => {
     const config = getPopupConfig();
-    expect(config.borderRadius).toBe(8); // rounded-lg
+    expect(config.borderRadius).toBe(selectStyling.popup.borderRadius);
     expect(typeof config.borderRadius).toBe("number");
   });
 
@@ -166,24 +168,24 @@ describe("Select Generator - Option Configuration", () => {
     expect(config).toBeDefined();
   });
 
-  it("should have correct option padding", () => {
+  it("should have option padding matching registry", () => {
     const config = getOptionConfig();
-    expect(config.paddingX).toBe(8); // px-2
-    expect(config.paddingY).toBe(6); // py-1.5
+    expect(config.paddingX).toBe(selectStyling.option.paddingX);
+    expect(config.paddingY).toBe(selectStyling.option.paddingY);
     expect(typeof config.paddingX).toBe("number");
     expect(typeof config.paddingY).toBe("number");
   });
 
-  it("should have correct option border radius", () => {
+  it("should have option border radius matching registry", () => {
     const config = getOptionConfig();
-    expect(config.borderRadius).toBe(4); // rounded
+    expect(config.borderRadius).toBe(selectStyling.option.borderRadius);
     expect(typeof config.borderRadius).toBe("number");
   });
 
-  it("should have correct option typography", () => {
+  it("should have option typography matching registry", () => {
     const config = getOptionConfig();
-    expect(config.fontSize).toBe(16); // text-base
-    expect(config.fontWeight).toBe(400);
+    expect(config.fontSize).toBe(selectStyling.option.fontSize);
+    expect(config.fontWeight).toBe(selectStyling.option.fontWeight);
     expect(typeof config.fontSize).toBe("number");
     expect(typeof config.fontWeight).toBe("number");
   });
@@ -232,30 +234,30 @@ describe("Select Generator - All Variant Data", () => {
     expect(allData.variantCount).toBe(24);
   });
 
-  it("should include trigger config", () => {
+  it("should include trigger config matching registry", () => {
     const allData = getAllVariantData();
     const trigger = allData.triggerConfig;
-    expect(trigger.height).toBe(36);
-    expect(trigger.paddingX).toBe(12);
-    expect(trigger.borderRadius).toBe(8);
+    expect(trigger.height).toBe(selectStyling.trigger.height);
+    expect(trigger.paddingX).toBe(selectStyling.trigger.paddingX);
+    expect(trigger.borderRadius).toBe(selectStyling.trigger.borderRadius);
     expect(trigger.background).toBe("color-secondary");
   });
 
-  it("should include popup config", () => {
+  it("should include popup config matching registry", () => {
     const allData = getAllVariantData();
     const popup = allData.popupConfig;
-    expect(popup.width).toBe(280);
-    expect(popup.padding).toBe(6);
-    expect(popup.borderRadius).toBe(8);
+    expect(popup.width).toBe(selectStyling.popup.width);
+    expect(popup.padding).toBe(selectStyling.popup.padding);
+    expect(popup.borderRadius).toBe(selectStyling.popup.borderRadius);
     expect(popup.background).toBe("color-secondary");
   });
 
-  it("should include option config", () => {
+  it("should include option config matching registry", () => {
     const allData = getAllVariantData();
     const option = allData.optionConfig;
-    expect(option.paddingX).toBe(8);
-    expect(option.paddingY).toBe(6);
-    expect(option.borderRadius).toBe(4);
+    expect(option.paddingX).toBe(selectStyling.option.paddingX);
+    expect(option.paddingY).toBe(selectStyling.option.paddingY);
+    expect(option.borderRadius).toBe(selectStyling.option.borderRadius);
     expect(option.fontSize).toBe(16);
   });
 

@@ -1,10 +1,10 @@
-# Ralph Prompt - Phase 7: Full Registry Integration
+# Ralph Prompt - Phase 8: Test File Assertion Hardening
 
-You are completing the full registry integration for Figma generators. This is Phase 7 of the Figma plugin robustness project.
+You are eliminating fragile hardcoded assertions in test files. This is Phase 8 of the Figma plugin robustness project.
 
 ## Context
 
-Phases 1-6 are COMPLETE:
+Phases 1-7 are COMPLETE:
 
 - Phase 1: Test refactoring (all 29 generators have rigorous tests)
 - Phase 2: Registry integration (generators read from component-registry.json)
@@ -12,234 +12,128 @@ Phases 1-6 are COMPLETE:
 - Phase 4: Generator coverage (Breadcrumbs, Empty, PageHeader added)
 - Phase 5: Initial magic number elimination (SHADOWS, GRID_LAYOUT, FALLBACK_VALUES)
 - Phase 6: Magic numbers audit (SECTION_LAYOUT, OPACITY, COLORS, enforcement tests)
+- Phase 7: Full registry integration (all 5 generators read from registry.styling)
 
-**Phase 7 uses a TEST-FIRST approach:**
+**Phase 8 Goal:** Replace 37 fragile hardcoded assertions with shared constants.
 
-1. **T1:** Create enforcement test that checks 5 generators for registry.styling usage
-2. **T2-T11:** Add metadata and update generators (test will progressively pass)
-3. **T13:** Final verification - all tests pass
+### Current Warnings (37 total)
 
-### Generators Requiring Migration
+The drift detection test warns about these patterns:
 
-| Generator            | Component       | Hardcoded Object  | Test Status         |
-| -------------------- | --------------- | ----------------- | ------------------- |
-| date-range-picker.ts | DateRangePicker | SIZE_CONFIG       | Will fail initially |
-| pagination.ts        | Pagination      | Layout constants  | Will fail initially |
-| input-area.ts        | InputArea       | SIZE_CONFIG       | Will fail initially |
-| layer-card.ts        | LayerCard       | LAYER_CARD_CONFIG | Will fail initially |
-| menubar.ts           | MenuBar         | MENUBAR_CONFIG    | Will fail initially |
+| File           | Count | Examples                                                |
+| -------------- | ----- | ------------------------------------------------------- |
+| banner.test.ts | 8     | `.toBe(16)` for font size, `.toBe(400)` for font weight |
+| text.test.ts   | 5+    | `.toBe(600)` for semiBold, `.toBe(12)` for xs font      |
+| select.test.ts | 2     | `.toBe(16)`, `.toBe(12)` for font sizes                 |
+| Other files    | 22+   | Various font sizes, weights                             |
 
 **Reference files:**
 
 - @PRD.json - Task definitions and acceptance criteria
 - @progress.txt - Progress log (append your work here)
-- @PHASE7_REGISTRY_INTEGRATION.md - Detailed plan
-- @scripts/ai/component-registry.ts - Where COMPONENT_STYLING_METADATA lives (~line 2091)
+- @shared.ts - Constants to import (FONT_SIZE, FALLBACK_VALUES, etc.)
 
-## Task 1: Create Enforcement Test (MUST DO FIRST)
-
-Add this test to `drift-detection.test.ts`:
+## Available Constants in shared.ts
 
 ```typescript
-/**
- * Phase 7: Registry Styling Integration Tests
- *
- * These tests enforce that generators with hardcoded CONFIG objects
- * read their styling data from registry.components.X.styling instead.
- */
-describe("Figma Plugin - Registry Styling Integration", () => {
-  // Generators that MUST read from registry.styling
-  const GENERATORS_REQUIRING_STYLING = [
-    { file: "date-range-picker.ts", component: "DateRangePicker" },
-    { file: "pagination.ts", component: "Pagination" },
-    { file: "input-area.ts", component: "InputArea" },
-    { file: "layer-card.ts", component: "LayerCard" },
-    { file: "menubar.ts", component: "MenuBar" },
-  ];
+// Font sizes
+export const FONT_SIZE = {
+  xs: 12,    // text-xs
+  base: 16,  // text-base
+  lg: 20,    // text-lg
+} as const;
 
-  it("should read styling from registry for components with hardcoded configs", () => {
-    const violations: string[] = [];
+// Font weights and other fallbacks
+export const FALLBACK_VALUES = {
+  fontWeight: {
+    normal: 400,
+    medium: 500,
+    semiBold: 600,
+  },
+  // ... other properties
+} as const;
 
-    for (const { file, component } of GENERATORS_REQUIRING_STYLING) {
-      const filePath = join(__dirname, file);
-      if (!existsSync(filePath)) continue;
+// Spacing
+export const SPACING = {
+  xs: 4,
+  sm: 6,
+  base: 8,
+  lg: 12,
+} as const;
 
-      const content = readFileSync(filePath, "utf-8");
-
-      // Check if generator reads from registry.styling
-      // Pattern: registry.components.ComponentName... .styling
-      // or: (registry.components.ComponentName as any).styling
-      const readsFromStyling = new RegExp(
-        `registry\\.components\\.${component}[^;]*\\.styling`,
-        "s"
-      ).test(content);
-
-      if (!readsFromStyling) {
-        violations.push(
-          `${file}: Does not read from registry.components.${component}.styling`
-        );
-      }
-    }
-
-    if (violations.length > 0) {
-      throw new Error(
-        `❌ Registry styling integration violations (${violations.length}/${GENERATORS_REQUIRING_STYLING.length}):\n` +
-          `  - ${violations.join("\n  - ")}\n\n` +
-          `🔧 To fix each generator:\n` +
-          `  1. Add COMPONENT_STYLING_METADATA entry in scripts/ai/component-registry.ts\n` +
-          `  2. Run: pnpm --filter @cloudflare/kumo codegen:registry\n` +
-          `  3. Update generator to read: (registry.components.X as any).styling\n` +
-          `  4. Use styling data instead of hardcoded CONFIG objects\n`
-      );
-    }
-
-    expect(violations).toEqual([]);
-  });
-});
+// Opacity
+export const OPACITY = {
+  disabled: 0.5,
+  backdrop: 0.8,
+} as const;
 ```
 
-## Pattern: Add Styling Metadata
+## Pattern: Fix Test File Assertions
 
-In `scripts/ai/component-registry.ts`, find `COMPONENT_STYLING_METADATA` (~line 2091) and add entries:
+### Step 1: Add Import
 
 ```typescript
-const COMPONENT_STYLING_METADATA: Record<string, ComponentSchema["styling"]> = {
-  // ... existing entries (Checkbox, ClipboardText, Code, Input, Tabs, Dialog, Toasty)
-
-  // ADD after Toasty:
-  DateRangePicker: {
-    sizeVariants: {
-      sm: {
-        height: 0,
-        classes: "p-3 gap-2",
-        dimensions: {
-          calendarWidth: 168,
-          cellHeight: 22,
-          cellWidth: 24,
-          textSize: 12,
-          iconSize: 14,
-          padding: 12,
-          gap: 8,
-        },
-      },
-      base: {
-        height: 0,
-        classes: "p-4 gap-2.5",
-        dimensions: {
-          calendarWidth: 196,
-          cellHeight: 26,
-          cellWidth: 28,
-          textSize: 14,
-          iconSize: 16,
-          padding: 16,
-          gap: 10,
-        },
-      },
-      lg: {
-        height: 0,
-        classes: "p-5 gap-3",
-        dimensions: {
-          calendarWidth: 252,
-          cellHeight: 32,
-          cellWidth: 36,
-          textSize: 16,
-          iconSize: 18,
-          padding: 20,
-          gap: 12,
-        },
-      },
-    },
-  } as any,
-  Pagination: {
-    layout: {
-      height: 36,
-      buttonSize: 36,
-      inputWidth: 50,
-      iconSize: 16,
-      gap: 8,
-      borderRadius: 8,
-    },
-  } as any,
-  InputArea: {
-    sizeVariants: {
-      xs: { minHeight: 60, width: 160 },
-      sm: { minHeight: 70, width: 200 },
-      base: { minHeight: 80, width: 280 },
-      lg: { minHeight: 100, width: 320 },
-    },
-  } as any,
-  LayerCard: {
-    container: {
-      width: 320,
-      borderRadius: 8,
-    },
-    secondary: {
-      paddingX: 16,
-      paddingY: 12,
-      fontSize: 14,
-      fontWeight: 500,
-    },
-    primary: {
-      paddingX: 16,
-      paddingY: 16,
-      fontSize: 14,
-      fontWeight: 400,
-    },
-  } as any,
-  MenuBar: {
-    container: {
-      height: 32,
-      borderRadius: 8,
-      padding: 2,
-      gap: 2,
-    },
-    button: {
-      width: 36,
-      borderRadius: 6,
-      iconSize: 18,
-    },
-  } as any,
-};
+// At top of test file, after existing imports
+import { FONT_SIZE, FALLBACK_VALUES } from "./shared";
 ```
 
-**IMPORTANT:** Bump `CACHE_VERSION` at ~line 54 when you first add metadata (T2).
-
-## Pattern: Update Generator to Read from Registry
+### Step 2: Replace Hardcoded Values
 
 ```typescript
-// At top of generator, after registry import:
-var componentStyling = (registry.components.ComponentName as any).styling;
+// BEFORE - fragile
+expect(parsed.fontSize).toBe(16);
+expect(parsed.fontWeight).toBe(600);
+expect(variant.text.fontWeight).toBe(400);
 
-// Define fallback with current hardcoded values
-const FALLBACK_CONFIG = {
-  // ... current hardcoded values
-};
+// AFTER - resilient
+expect(parsed.fontSize).toBe(FONT_SIZE.base);
+expect(parsed.fontWeight).toBe(FALLBACK_VALUES.fontWeight.semiBold);
+expect(variant.text.fontWeight).toBe(FALLBACK_VALUES.fontWeight.normal);
+```
 
-// Create function to get config from registry
-function getConfigFromRegistry() {
-  if (!componentStyling) return FALLBACK_CONFIG;
-  // Return appropriate structure from styling
-  return componentStyling.layout || componentStyling.sizeVariants || FALLBACK_CONFIG;
-}
+### Replacement Reference
 
-// Replace hardcoded CONFIG
-var CONFIG = getConfigFromRegistry();
+| Hardcoded    | Constant                                     | Context              |
+| ------------ | -------------------------------------------- | -------------------- |
+| `.toBe(12)`  | `.toBe(FONT_SIZE.xs)`                        | text-xs font size    |
+| `.toBe(16)`  | `.toBe(FONT_SIZE.base)`                      | text-base font size  |
+| `.toBe(20)`  | `.toBe(FONT_SIZE.lg)`                        | text-lg font size    |
+| `.toBe(400)` | `.toBe(FALLBACK_VALUES.fontWeight.normal)`   | normal font weight   |
+| `.toBe(500)` | `.toBe(FALLBACK_VALUES.fontWeight.medium)`   | medium font weight   |
+| `.toBe(600)` | `.toBe(FALLBACK_VALUES.fontWeight.semiBold)` | semibold font weight |
+
+### Values to Keep As-Is
+
+Some values don't have shared constants and should remain hardcoded with a comment:
+
+- `.toBe(30)` - text-3xl (30px) - specific heading size
+- `.toBe(24)` - text-2xl (24px) - specific heading size
+- `.toBe(18)` - text-lg (18px) - could add FONT_SIZE.lg_sm or keep
+- `.toBe(14)` - text-sm (14px) - could add FONT_SIZE.sm or keep
+
+If needed, you can add missing constants to shared.ts:
+
+```typescript
+export const FONT_SIZE = {
+  xs: 12,
+  sm: 14,    // ADD if needed
+  base: 16,
+  lg: 20,
+  // Optional heading sizes:
+  // lg_text: 18,  // text-lg
+  // xl2: 24,      // text-2xl
+  // xl3: 30,      // text-3xl
+} as const;
 ```
 
 ## Validation Commands
 
 ```bash
-# Run enforcement test (will fail initially after T1, then progressively pass)
+# Run specific test file
+pnpm --filter @cloudflare/kumo test generators/banner.test.ts --run
+
+# Run drift detection to see warnings
 pnpm --filter @cloudflare/kumo test generators/drift-detection.test.ts --run
-
-# Regenerate registry after adding metadata
-pnpm --filter @cloudflare/kumo codegen:registry
-
-# Verify styling section exists
-cat packages/kumo/ai/component-registry.json | jq '.components.DateRangePicker.styling'
-
-# Run specific generator test
-pnpm --filter @cloudflare/kumo test generators/date-range-picker.test.ts --run
 
 # Run all generator tests
 pnpm --filter @cloudflare/kumo test generators/ --run
@@ -248,21 +142,23 @@ pnpm --filter @cloudflare/kumo test generators/ --run
 ## Your Task (Single Task Per Iteration)
 
 1. Find the NEXT incomplete task from PRD.json (first task with status: "pending")
-2. Implement the changes following the patterns above
+2. Implement the changes:
+   - Add import for shared constants
+   - Replace hardcoded values with constants
+   - Keep values that don't have constants (with optional comment)
 3. Run tests to verify:
-   - For T1: Test should FAIL (5 violations expected)
-   - For T2-T11: Component tests pass, enforcement test shows fewer violations
-   - For T13: ALL tests pass (0 violations)
+   - All tests in modified file pass
+   - Drift detection warnings reduced
 4. Update PRD.json task status to "complete"
 5. Append progress to progress.txt with:
    - Task ID and name
    - Files modified
-   - Test results (violations count for enforcement test)
-   - Any notes or issues encountered
+   - Number of replacements made
+   - Test results
 6. **CRITICAL GIT INSTRUCTIONS:**
    - DO NOT create new branches or switch branches
    - Stay on the current branch
-   - Make a git commit with clear message like: "feat(figma): T1 - add registry styling enforcement test"
+   - Make a git commit with clear message like: "fix(figma): T1 - replace hardcoded assertions in banner.test.ts"
    - DO NOT push to remote
 
 ONLY WORK ON A SINGLE TASK PER ITERATION.
@@ -271,28 +167,51 @@ If ALL tasks in PRD.json are complete (status: "complete"), output <promise>COMP
 
 ## Important Notes
 
-1. **T1 creates a FAILING test** - this is intentional and expected
-2. **Bump CACHE_VERSION** when you first add metadata (T2 only)
-3. **Run codegen:registry** after adding metadata
-4. **Keep fallbacks** - generators should work even if registry doesn't have styling
-5. **Don't change visual output** - values should match existing hardcoded values exactly
-6. **Pre-existing TypeScript errors** in generators are known issues - ignore them
+1. **Only replace values that have constants** - don't invent new constants
+2. **Keep test logic identical** - only change the values being compared
+3. **Check drift detection after each file** - warnings should decrease
+4. **T5 converts warning to enforcement** - only do after T1-T4 are complete
+5. **Pre-existing TypeScript errors** in test files are known issues - ignore them
 
 ## Progress Tracking
 
-After T1, track violations count:
+Track warnings count after each task:
 
-- T1 complete: 5/5 violations (test fails as expected)
-- T3 complete: 4/5 violations (DateRangePicker passes)
-- T5 complete: 3/5 violations (Pagination passes)
-- T7 complete: 2/5 violations (InputArea passes)
-- T9 complete: 1/5 violations (LayerCard passes)
-- T11 complete: 0/5 violations (MenuBar passes - ALL PASS!)
+- Start: 37 warnings
+- T1 complete: ~29 warnings (banner.test.ts fixed)
+- T2 complete: ~24 warnings (text.test.ts fixed)
+- T3 complete: ~22 warnings (select.test.ts fixed)
+- T4 complete: ~0 warnings (remaining files fixed)
+- T5 complete: Enforcement active (test fails on new fragile assertions)
 
 ## Success Criteria
 
-- T1: Enforcement test exists and fails with 5 violations
-- T13: Enforcement test passes with 0 violations
+- All 37 fragile assertions replaced or documented
+- Drift detection enforcement test passes
 - All 1500+ generator tests pass
 - No snapshot changes
-- Intentional divergences documented (T12)
+
+## Example: Fixing banner.test.ts
+
+```typescript
+// Before
+import { describe, it, expect } from "vitest";
+import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
+// ...
+
+it("should parse font size from base styles", () => {
+  const parsed = parseTailwindClasses(BANNER_BASE_STYLES);
+  expect(parsed.fontSize).toBe(16); // text-base = 16px
+});
+
+// After
+import { describe, it, expect } from "vitest";
+import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
+import { FONT_SIZE, FALLBACK_VALUES } from "./shared";
+// ...
+
+it("should parse font size from base styles", () => {
+  const parsed = parseTailwindClasses(BANNER_BASE_STYLES);
+  expect(parsed.fontSize).toBe(FONT_SIZE.base); // text-base
+});
+```

@@ -3093,6 +3093,9 @@ Select component
 
 `bg-color-3`, `bg-secondary`, `ring-active`, `ring-border`, `text-surface`
 
+**Styling:**
+
+
 **Sub-Components:**
 
 This is a compound component. Use these sub-components:

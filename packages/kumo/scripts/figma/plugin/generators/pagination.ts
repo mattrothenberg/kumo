@@ -22,6 +22,9 @@ import {
   SECTION_GAP,
   SECTION_LAYOUT,
   GRID_LAYOUT,
+  FONT_SIZE,
+  FALLBACK_VALUES,
+  SPACING,
 } from "./shared";
 import { createIconInstance, bindIconColor } from "./icon-utils";
 
@@ -313,8 +316,8 @@ async function createPageInput(pageNumber: string): Promise<FrameNode> {
     bindStrokeToVariable(input, borderVar.id, 1);
   }
 
-  // Page number text
-  var text = await createTextNode(pageNumber, 14, 400);
+  // Page number text - use centralized constants
+  var text = await createTextNode(pageNumber, FONT_SIZE.xs + 2, FALLBACK_VALUES.fontWeight.normal);
   text.name = "Page Number";
   text.textAlignHorizontal = "CENTER";
 
@@ -338,8 +341,8 @@ async function createShowingText(
 ): Promise<TextNode> {
   var text = await createTextNode(
     "Showing " + lower + "-" + upper + " of " + total,
-    14,
-    400,
+    FONT_SIZE.xs + 2, // 14px
+    FALLBACK_VALUES.fontWeight.normal,
   );
   text.name = "Showing Text";
 
@@ -433,7 +436,7 @@ async function createPaginationComponent(
   component.counterAxisAlignItems = "CENTER";
   component.primaryAxisSizingMode = "FIXED";
   component.counterAxisSizingMode = "AUTO";
-  component.itemSpacing = 8;
+  component.itemSpacing = SPACING.base;
   component.resize(400, PAGINATION_HEIGHT);
   component.fills = [];
 

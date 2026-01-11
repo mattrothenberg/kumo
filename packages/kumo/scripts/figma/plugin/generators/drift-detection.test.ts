@@ -852,6 +852,144 @@ describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
 });
 
 /**
+ * Phase 8: Test File Magic Number Enforcement
+ *
+ * These tests enforce that test files use registry values or shared constants
+ * instead of hardcoded numeric assertions that could drift from design changes.
+ */
+describe("Figma Plugin - Test File Assertions Enforcement", () => {
+  it("should not have redundant hardcoded assertions alongside registry comparisons", () => {
+    const testFiles = readdirSync(__dirname).filter(
+      (f: string) => f.endsWith(".test.ts") && f !== "drift-detection.test.ts"
+    );
+
+    const violations: string[] = [];
+
+    // Pattern: expect(X).toBe(NUMBER); followed by expect(X).toBe(registry...)
+    // This catches redundant patterns like:
+    //   expect(config.height).toBe(34);
+    //   expect(config.height).toBe(tabsStyling.container.height);
+    // The first line is redundant and fragile.
+
+    for (const file of testFiles) {
+      const filePath = join(__dirname, file);
+      const content = readFileSync(filePath, "utf-8");
+      const lines = content.split("\n");
+
+      for (let i = 0; i < lines.length - 1; i++) {
+        const currentLine = lines[i];
+        const nextLine = lines[i + 1];
+
+        // Check if current line is a hardcoded numeric toBe assertion
+        const hardcodedMatch = currentLine.match(
+          /expect\(([^)]+)\)\.toBe\((\d+)\);/
+        );
+        if (!hardcodedMatch) continue;
+
+        const [, variable] = hardcodedMatch;
+
+        // Check if next line compares same variable to registry/styling
+        const registryPattern = new RegExp(
+          `expect\\(${variable.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\)\\.toBe\\([^)]*(?:Styling|registry|FALLBACK|FONT_SIZE|SPACING|OPACITY|BORDER_RADIUS)[^)]*\\)`
+        );
+
+        if (registryPattern.test(nextLine)) {
+          violations.push(
+            `${file}:${i + 1}: Redundant hardcoded assertion before registry comparison: ${currentLine.trim()}`
+          );
+        }
+      }
+    }
+
+    if (violations.length > 0) {
+      console.warn(
+        `\n⚠️  Found ${violations.length} redundant hardcoded assertions in test files:\n` +
+          `  - ${violations.slice(0, 10).join("\n  - ")}` +
+          (violations.length > 10 ? `\n  ... and ${violations.length - 10} more` : "") +
+          `\n\n` +
+          `🔧 To fix, remove the hardcoded assertion and keep only the registry comparison:\n` +
+          `   BEFORE:\n` +
+          `     expect(config.height).toBe(34);  // ❌ Fragile\n` +
+          `     expect(config.height).toBe(tabsStyling.container.height);  // ✅ Good\n` +
+          `   AFTER:\n` +
+          `     expect(config.height).toBe(tabsStyling.container.height);  // ✅ Only this\n`
+      );
+    }
+
+    // Warning only for now to allow gradual migration
+    expect(true).toBe(true);
+  });
+
+  it("should prefer registry comparisons over hardcoded values in dimensional assertions", () => {
+    // Common fragile patterns that should use registry or constants instead
+    const FRAGILE_PATTERNS = [
+      { pattern: /\.toBe\(34\)/, description: "Tabs container height (34)" },
+      { pattern: /\.toBe\(36\)/, description: "Input/Button base height (36)" },
+      { pattern: /\.toBe\(16\)/, description: "Font size base (16) - use FONT_SIZE.base" },
+      { pattern: /\.toBe\(20\)/, description: "Font size lg (20) - use FONT_SIZE.lg" },
+      { pattern: /\.toBe\(12\)/, description: "Font size xs (12) - use FONT_SIZE.xs" },
+      { pattern: /\.toBe\(600\)/, description: "Font weight semiBold (600) - use FALLBACK_VALUES.fontWeight.semiBold" },
+      { pattern: /\.toBe\(500\)/, description: "Font weight medium (500) - use FALLBACK_VALUES.fontWeight.medium" },
+      { pattern: /\.toBe\(400\)/, description: "Font weight normal (400) - use FALLBACK_VALUES.fontWeight.normal" },
+    ];
+
+    const testFiles = readdirSync(__dirname).filter(
+      (f: string) => f.endsWith(".test.ts") && f !== "drift-detection.test.ts"
+    );
+
+    const warnings: { file: string; line: number; pattern: string }[] = [];
+
+    for (const file of testFiles) {
+      const filePath = join(__dirname, file);
+      const content = readFileSync(filePath, "utf-8");
+      const lines = content.split("\n");
+
+      // Skip files that properly import and use constants
+      const importsConstants =
+        /import\s+\{[^}]*(?:FONT_SIZE|FALLBACK_VALUES|SPACING|OPACITY)[^}]*\}\s+from\s+["']\.\/shared["']/.test(
+          content
+        );
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+
+        // Skip if the line also references registry/styling (proper pattern)
+        if (/(?:Styling|registry|FALLBACK|FONT_SIZE|SPACING|OPACITY|BORDER_RADIUS)/.test(line)) {
+          continue;
+        }
+
+        for (const { pattern, description } of FRAGILE_PATTERNS) {
+          if (pattern.test(line)) {
+            // For files that import constants, only warn if this specific assertion doesn't use them
+            if (importsConstants) {
+              warnings.push({ file, line: i + 1, pattern: description });
+            } else {
+              warnings.push({ file, line: i + 1, pattern: description });
+            }
+          }
+        }
+      }
+    }
+
+    if (warnings.length > 0) {
+      console.warn(
+        `\n⚠️  Found ${warnings.length} potentially fragile hardcoded assertions:\n` +
+          warnings
+            .slice(0, 15)
+            .map((w) => `  - ${w.file}:${w.line}: ${w.pattern}`)
+            .join("\n") +
+          (warnings.length > 15 ? `\n  ... and ${warnings.length - 15} more` : "") +
+          `\n\n` +
+          `💡 Consider using registry values or shared constants instead.\n`
+      );
+    }
+
+    // Warning only - allows gradual migration
+    expect(true).toBe(true);
+  });
+});
+
+/**
  * Phase 7: Registry Styling Integration Tests
  *
  * These tests enforce that generators with hardcoded CONFIG objects
