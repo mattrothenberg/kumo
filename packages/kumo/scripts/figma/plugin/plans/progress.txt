@@ -4,6 +4,101 @@ This file tracks Ralph's progress through the PRD tasks.
 
 ---
 
+## PHASE 9: CSS-to-Constants Sync (IN PROGRESS)
+
+### Goal
+Fix **critical font size drift** between Kumo's CSS theme (`theme-kumo.css`) and the hardcoded Tailwind scales in the Figma plugin parser. Kumo uses Tailwind v4 which defines theme values in CSS via `@theme` directive.
+
+### The Problem
+**3 of 4 font sizes are WRONG in Figma-generated components:**
+
+| Token | theme-kumo.css | Parser Value | Status |
+|-------|---------------|--------------|--------|
+| text-xs | 12px | 12px | ✅ MATCH |
+| text-sm | 13px | 14px | ❌ **DRIFTED** |
+| text-base | 14px | 16px | ❌ **DRIFTED** |
+| text-lg | 16px | 18px | ❌ **DRIFTED** |
+
+### Root Cause
+Tailwind v4 moved theme values from `tailwind.config.js` to CSS `@theme` directive. The Figma plugin still uses default Tailwind values, not Kumo's custom values.
+
+### Files to Fix
+1. `parsers/tailwind-to-figma.ts` - FONT_SIZE_SCALE (lines 70-78)
+2. `generators/shared.ts` - FONT_SIZE constant (lines 34-41)
+3. `generators/drift-detection.test.ts` - Add CSS theme sync test
+
+### Task Order
+- ✅ T4: Fix FONT_SIZE_SCALE in Parser (COMPLETE)
+- T5: Fix FONT_SIZE in shared.ts (CRITICAL)
+- T6: Add CSS Theme Drift Detection Test (HIGH)
+- T7: Update Snapshots with Correct Font Sizes (HIGH)
+- T8-T10: Remaining Phase 8 tasks
+
+### Status Summary
+- **Tasks:** 7 (T4-T10)
+- **Completed:** 1 (T4)
+- **In Progress:** 0
+- **Pending:** 6
+
+---
+
+## Iteration 26: T4 - Fix FONT_SIZE_SCALE in Parser to Match theme-kumo.css (PHASE 9)
+
+**Task:** T4 - Fix FONT_SIZE_SCALE in Parser
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Updated FONT_SIZE_SCALE in tailwind-to-figma.ts**:
+   - Changed sm: 14 → sm: 13 (matches --text-sm: 13px from theme-kumo.css)
+   - Changed base: 16 → base: 14 (matches --text-base: 14px from theme-kumo.css)
+   - Changed lg: 18 → lg: 16 (matches --text-lg: 16px from theme-kumo.css)
+   - Added comments documenting Kumo overrides from Tailwind defaults
+
+2. **Updated parser test assertions**:
+   - Fixed 4 test failures that were asserting old Tailwind default values
+   - Updated "should parse font sizes" test assertions (lines 91-93)
+   - Updated "should parse multiple classes together" test assertion (line 289)
+   - Updated "should not parse text color classes that are actually font sizes" test assertion (line 471)
+   - Updated "should parse complex base styles string" test assertion (line 875)
+   - Added comments documenting Kumo theme values
+
+### Test Results:
+- ✅ All 92 parser tests pass
+- ✅ Parser now returns correct Kumo font sizes: xs=12, sm=13, base=14, lg=16
+- ✅ No snapshots changed (parser tests use direct assertions, not snapshots)
+
+### Files Modified:
+- `scripts/figma/plugin/parsers/tailwind-to-figma.ts` - Fixed FONT_SIZE_SCALE values
+- `scripts/figma/plugin/parsers/tailwind-to-figma.test.ts` - Updated 4 test assertions
+- `plans/PRD.json` - T4 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- Parser now correctly parses Tailwind classes using Kumo's custom typography scale
+- All Figma generators that use the parser will now receive correct font sizes
+- Next task (T5) will fix FONT_SIZE constant in shared.ts to match
+- Snapshot changes will occur in T7 after both parser and shared constants are fixed
+
+**Status:** COMPLETE - Parser font sizes now match theme-kumo.css
+
+---
+
+## PHASE 8: Test File Assertion Hardening (IN PROGRESS)
+
+### Goal
+Eliminate fragile hardcoded numeric assertions in test files by replacing them with shared constants.
+
+### Status Summary
+- **Tasks:** 6 (T1-T3 complete, T4-T6 renumbered to T8-T10)
+- **Completed:** 3 (T1-T3)
+- **In Progress:** 0
+- **Pending:** 3 (T8-T10, blocked on Phase 9)
+
+**Note:** Phase 8 remaining tasks (T8-T10) depend on Phase 9 being complete first, because the FONT_SIZE values being asserted are currently WRONG.
+
+---
+
 ## PHASE 7: Full Registry Integration (COMPLETE ✅)
 
 ### Goal

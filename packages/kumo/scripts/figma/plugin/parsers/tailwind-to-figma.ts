@@ -65,13 +65,14 @@ const SPACING_SCALE: Record<string, number> = {
 };
 
 /**
- * Tailwind font size scale (in pixels)
+ * Kumo font size scale (in pixels)
+ * Values from theme-kumo.css @theme definitions
  */
 const FONT_SIZE_SCALE: Record<string, number> = {
-  xs: 12,
-  sm: 14,
-  base: 16,
-  lg: 18,
+  xs: 12,   // --text-xs: 12px
+  sm: 13,   // --text-sm: 13px (Kumo override from Tailwind's 14px)
+  base: 14, // --text-base: 14px (Kumo override from Tailwind's 16px)
+  lg: 16,   // --text-lg: 16px (Kumo override from Tailwind's 18px)
   xl: 20,
   "2xl": 24,
   "3xl": 30,

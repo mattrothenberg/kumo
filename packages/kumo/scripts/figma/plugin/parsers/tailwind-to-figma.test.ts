@@ -88,9 +88,9 @@ describe("parseTailwindClasses", () => {
   describe("Typography", () => {
     it("should parse font sizes", () => {
       expect(parseTailwindClasses("text-xs")).toEqual({ fontSize: 12 });
-      expect(parseTailwindClasses("text-sm")).toEqual({ fontSize: 14 });
-      expect(parseTailwindClasses("text-base")).toEqual({ fontSize: 16 });
-      expect(parseTailwindClasses("text-lg")).toEqual({ fontSize: 18 });
+      expect(parseTailwindClasses("text-sm")).toEqual({ fontSize: 13 }); // Kumo theme: --text-sm: 13px
+      expect(parseTailwindClasses("text-base")).toEqual({ fontSize: 14 }); // Kumo theme: --text-base: 14px
+      expect(parseTailwindClasses("text-lg")).toEqual({ fontSize: 16 }); // Kumo theme: --text-lg: 16px
       expect(parseTailwindClasses("text-xl")).toEqual({ fontSize: 20 });
       expect(parseTailwindClasses("text-2xl")).toEqual({ fontSize: 24 });
       expect(parseTailwindClasses("text-3xl")).toEqual({ fontSize: 30 });
@@ -286,7 +286,7 @@ describe("parseTailwindClasses", () => {
         paddingY: 4,
         gap: 8,
         borderRadius: 8,
-        fontSize: 16,
+        fontSize: 14, // Kumo theme: --text-base: 14px
         fillVariable: "color-primary",
         textVariable: null,
         isWhiteText: true,
@@ -468,7 +468,7 @@ describe("parseTailwindClasses", () => {
     it("should not parse text color classes that are actually font sizes", () => {
       const result = parseTailwindClasses("text-lg text-surface");
       expect(result).toEqual({
-        fontSize: 18,
+        fontSize: 16, // Kumo theme: --text-lg: 16px
         textVariable: "text-color-surface",
       });
     });
@@ -872,7 +872,7 @@ describe("parseBaseStyles", () => {
       paddingX: 12,
       gap: 8,
       borderRadius: 8,
-      fontSize: 16,
+      fontSize: 14, // Kumo theme: --text-base: 14px
       fontWeight: 500, // font-medium
       fillVariable: "color-secondary",
       textVariable: "text-color-surface",
