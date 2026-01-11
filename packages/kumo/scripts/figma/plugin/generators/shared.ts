@@ -32,12 +32,14 @@ export const BORDER_RADIUS = {
 } as const;
 
 export const FONT_SIZE = {
-  /** Extra small (12px) */
+  /** Extra small (12px) - matches --text-xs in theme-kumo.css */
   xs: 12,
-  /** Base (16px) */
-  base: 16,
-  /** Large (20px) */
-  lg: 20,
+  /** Small (13px) - matches --text-sm in theme-kumo.css (Kumo override from 14px) */
+  sm: 13,
+  /** Base (14px) - matches --text-base in theme-kumo.css (Kumo override from 16px) */
+  base: 14,
+  /** Large (16px) - matches --text-lg in theme-kumo.css (Kumo override from 18px) */
+  lg: 16,
 } as const;
 
 /**

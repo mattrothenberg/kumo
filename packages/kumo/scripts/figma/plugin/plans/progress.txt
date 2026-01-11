@@ -29,16 +29,16 @@ Tailwind v4 moved theme values from `tailwind.config.js` to CSS `@theme` directi
 
 ### Task Order
 - ✅ T4: Fix FONT_SIZE_SCALE in Parser (COMPLETE)
-- T5: Fix FONT_SIZE in shared.ts (CRITICAL)
+- ✅ T5: Fix FONT_SIZE in shared.ts (COMPLETE)
 - T6: Add CSS Theme Drift Detection Test (HIGH)
 - T7: Update Snapshots with Correct Font Sizes (HIGH)
 - T8-T10: Remaining Phase 8 tasks
 
 ### Status Summary
 - **Tasks:** 7 (T4-T10)
-- **Completed:** 1 (T4)
+- **Completed:** 2 (T4-T5)
 - **In Progress:** 0
-- **Pending:** 6
+- **Pending:** 5
 
 ---
 
@@ -81,6 +81,60 @@ Tailwind v4 moved theme values from `tailwind.config.js` to CSS `@theme` directi
 - Snapshot changes will occur in T7 after both parser and shared constants are fixed
 
 **Status:** COMPLETE - Parser font sizes now match theme-kumo.css
+
+---
+
+## Iteration 27: T5 - Fix FONT_SIZE in shared.ts to Match theme-kumo.css (PHASE 9)
+
+**Task:** T5 - Fix FONT_SIZE in shared.ts
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Updated FONT_SIZE constant in shared.ts (lines 34-43)**:
+   - Added sm: 13 (was missing - now matches --text-sm: 13px from theme-kumo.css)
+   - Changed base: 16 → base: 14 (matches --text-base: 14px from theme-kumo.css)
+   - Changed lg: 20 → lg: 16 (matches --text-lg: 16px from theme-kumo.css)
+   - Added detailed comments documenting source as theme-kumo.css
+   - Documented Kumo overrides from Tailwind defaults
+
+2. **Identified affected snapshots**:
+   - Ran generator tests to identify snapshot changes
+   - 56 snapshot failures detected (as expected)
+   - 15 test files affected
+   - 1429 structural tests still passing (only snapshots need updating)
+
+### Test Results:
+- ✅ FONT_SIZE constant now matches theme-kumo.css: xs=12, sm=13, base=14, lg=16
+- ⚠️ 56 snapshot mismatches (EXPECTED - font sizes corrected):
+  - fontSize: 14 → 13 (text-sm correction)
+  - fontSize: 16 → 14 (text-base correction)
+  - fontSize: 18 → 16 (text-lg correction, where applicable)
+- ✅ 1429/1503 tests passing (structural tests all pass)
+- ✅ Drift detection shows 2 remaining fragile assertions (select.test.ts, text.test.ts)
+
+### Files Modified:
+- `scripts/figma/plugin/generators/shared.ts` - Fixed FONT_SIZE constant
+- `plans/PRD.json` - T5 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Affected Test Files (Snapshot Updates Needed in T7):
+15 generator test files with snapshot mismatches:
+- clipboard-text.test.ts (3 snapshots)
+- select.test.ts (1 snapshot)
+- text.test.ts (multiple snapshots)
+- tooltip.test.ts (1 snapshot)
+- banner.test.ts (multiple snapshots)
+- And 10 more files...
+
+### Notes:
+- Snapshot failures are CORRECT BEHAVIOR - they reflect fixing incorrect font size values
+- All structural tests pass - only snapshot comparisons fail due to value corrections
+- T4 + T5 together have now aligned both parser AND fallback constants with theme-kumo.css
+- Next task (T6) will add drift detection test to prevent future misalignment
+- T7 will update all snapshots with correct Kumo font sizes
+
+**Status:** COMPLETE - FONT_SIZE constant now matches theme-kumo.css
 
 ---
 

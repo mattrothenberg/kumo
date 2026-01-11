@@ -220,7 +220,7 @@
       "name": "fix-font-size-shared-constants",
       "title": "[Phase 9] Fix FONT_SIZE in shared.ts to Match theme-kumo.css",
       "priority": "critical",
-      "status": "pending",
+      "status": "complete",
       "description": "Update shared.ts FONT_SIZE constant to match Kumo's CSS theme values",
       "files": ["scripts/figma/plugin/generators/shared.ts"],
       "acceptance": [
