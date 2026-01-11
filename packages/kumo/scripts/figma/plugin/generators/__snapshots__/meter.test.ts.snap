@@ -5,6 +5,11 @@ exports[`Meter Generator - Snapshot Tests (Intermediate Data) > should produce c
   "description": "Semantic color tokens bound to meter elements",
   "indicator": "color-primary",
   "label": "text-color-label",
+  "registryColors": [
+    "bg-color",
+    "text-label",
+    "text-surface",
+  ],
   "track": "color-color-4",
   "value": "text-color-surface",
 }
@@ -63,6 +68,11 @@ exports[`Meter Generator - Snapshot Tests (Intermediate Data) > should produce c
     "description": "Semantic color tokens bound to meter elements",
     "indicator": "color-primary",
     "label": "text-color-label",
+    "registryColors": [
+      "bg-color",
+      "text-label",
+      "text-surface",
+    ],
     "track": "color-color-4",
     "value": "text-color-surface",
   },
@@ -123,6 +133,38 @@ exports[`Meter Generator - Snapshot Tests (Intermediate Data) > should produce c
     ],
     "description": "Meter component",
     "name": "Meter",
+    "props": {
+      "label": {
+        "required": true,
+        "type": "string",
+      },
+      "max": {
+        "description": "Maximum value of the meter (default: 100)",
+        "type": "number",
+      },
+      "min": {
+        "description": "Minimum value of the meter (default: 0)",
+        "type": "number",
+      },
+      "value": {
+        "description": "Current value of the meter",
+        "type": "number",
+      },
+    },
+  },
+  "typography": {
+    "label": {
+      "colorToken": "text-color-label",
+      "fontSize": 12,
+      "fontWeight": 400,
+      "source": "text-xs text-label",
+    },
+    "value": {
+      "colorToken": "text-color-surface",
+      "fontSize": 14,
+      "fontWeight": 500,
+      "source": "text-sm font-medium text-surface tabular-nums",
+    },
   },
 }
 `;

@@ -142,8 +142,8 @@
       "name": "meter",
       "tier": 2,
       "priority": "medium",
-      "status": "hardcoded",
-      "notes": "Fixed fill levels, dimensions not from registry. Check registry.components.Meter"
+      "status": "complete",
+      "notes": "Migrated. Now reads registry metadata (props, colors, category). Added getMeterTypographyConfig() extracting font sizes/weights from React component classes (text-xs text-label, text-sm font-medium text-surface). Dimensions (h-2, gap-2) documented from meter.tsx Tailwind classes. Fill levels remain generator-specific (demonstration purposes). All 33 tests pass."
     },
     {
       "name": "pagination",

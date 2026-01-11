@@ -4,6 +4,13 @@ import { logComplete } from "../logger";
  *
  * Generates a Meter ComponentSet in Figma showing progress bar at various fill levels.
  * Reads component definitions from component-registry.json.
+ *
+ * Meter has no variants (KUMO_METER_VARIANTS is empty). The React component uses:
+ * - Root: "flex w-full flex-col gap-2"
+ * - Label: "text-xs text-label" (12px, text-label token)
+ * - Value: "text-sm font-medium text-surface tabular-nums" (14px, 500 weight, text-surface token)
+ * - Track: "h-2 w-full rounded-full bg-color" (height 8px, bg-color token)
+ * - Indicator: "rounded-full bg-linear-to-r from-primary" (primary gradient)
  */
 
 import {
@@ -19,13 +26,19 @@ import {
 import registry from "../../../../ai/component-registry.json";
 
 const meterComponent = registry.components.Meter;
+const meterProps = meterComponent.props;
+const meterColors = meterComponent.colors;
 
 /**
  * Meter base layout constants
+ * These are derived from the React component's Tailwind classes:
+ * - METER_TRACK_HEIGHT: h-2 = 8px (from Track className)
+ * - METER_GAP: gap-2 = 8px (from Root className)
+ * - METER_WIDTH: Layout-specific for Figma display
  */
 const METER_WIDTH = 240;
-const METER_TRACK_HEIGHT = 8;
-const METER_GAP = 8;
+const METER_TRACK_HEIGHT = 8; // h-2 from meter.tsx
+const METER_GAP = 8; // gap-2 from meter.tsx
 
 /**
  * Section padding for component display
@@ -75,14 +88,21 @@ export function getMeterDimensionsConfig() {
 /**
  * Get color bindings configuration
  * Returns the semantic tokens used for meter colors
+ * 
+ * Sources from meter.tsx:
+ * - Label: text-label (text-xs text-label)
+ * - Value: text-surface (text-sm font-medium text-surface)
+ * - Track: bg-color (from Track className)
+ * - Indicator: bg-primary (from bg-linear-to-r from-primary)
  */
 export function getMeterColorBindings() {
   return {
     label: "text-color-label",
     value: "text-color-surface",
-    track: "color-color-4",
+    track: "color-color-4", // Note: React uses bg-color, generator uses color-color-4
     indicator: "color-primary",
     description: "Semantic color tokens bound to meter elements",
+    registryColors: meterColors,
   };
 }
 
@@ -96,6 +116,27 @@ export function getMeterIndicatorWidth(fillPercentage: number) {
 }
 
 /**
+ * Get typography configuration from React component classes
+ * Returns font sizing and weights used in meter.tsx
+ */
+export function getMeterTypographyConfig() {
+  return {
+    label: {
+      fontSize: 12, // text-xs from meter.tsx
+      fontWeight: 400, // default weight
+      colorToken: "text-color-label",
+      source: "text-xs text-label",
+    },
+    value: {
+      fontSize: 14, // text-sm from meter.tsx
+      fontWeight: 500, // font-medium from meter.tsx
+      colorToken: "text-color-surface",
+      source: "text-sm font-medium text-surface tabular-nums",
+    },
+  };
+}
+
+/**
  * Get all meter variant data (for snapshot testing)
  * Returns intermediate data before Figma API calls
  */
@@ -103,6 +144,7 @@ export function getAllMeterVariantData() {
   const fillLevelConfig = getMeterFillLevelConfig();
   const dimensionsConfig = getMeterDimensionsConfig();
   const colorBindings = getMeterColorBindings();
+  const typography = getMeterTypographyConfig();
 
   return {
     registry: {
@@ -110,6 +152,12 @@ export function getAllMeterVariantData() {
       description: meterComponent.description,
       category: meterComponent.category,
       colors: meterComponent.colors,
+      props: {
+        value: meterProps.value,
+        max: meterProps.max,
+        min: meterProps.min,
+        label: meterProps.label,
+      },
     },
     fillLevels: fillLevelConfig.fillLevels.map((fillLevel) => {
       return {
@@ -121,15 +169,16 @@ export function getAllMeterVariantData() {
     }),
     dimensions: dimensionsConfig,
     colorBindings: colorBindings,
+    typography: typography,
     layout: {
       headerRowMode: "HORIZONTAL",
       headerRowAlign: "SPACE_BETWEEN",
-      trackCornerRadius: 9999,
-      indicatorCornerRadius: 9999,
-      labelFontSize: 12,
-      labelFontWeight: 400,
-      valueFontSize: 14,
-      valueFontWeight: 500,
+      trackCornerRadius: 9999, // rounded-full from meter.tsx
+      indicatorCornerRadius: 9999, // rounded-full from meter.tsx
+      labelFontSize: typography.label.fontSize,
+      labelFontWeight: typography.label.fontWeight,
+      valueFontSize: typography.value.fontSize,
+      valueFontWeight: typography.value.fontWeight,
     },
   };
 }
@@ -147,12 +196,16 @@ async function createMeterComponent(
   label: string,
   fillPercentage: number,
 ): Promise<ComponentNode> {
+  // Get typography configuration from React component
+  const typography = getMeterTypographyConfig();
+
   // Create component
   const component = figma.createComponent();
   component.name = "fill=" + fillPercentage;
   component.description = "Meter at " + fillPercentage + "% fill";
 
   // Set up auto-layout (vertical: label+value row, then track)
+  // Matches "flex w-full flex-col gap-2" from meter.tsx
   component.layoutMode = "VERTICAL";
   component.primaryAxisAlignItems = "MIN";
   component.counterAxisAlignItems = "MIN";
@@ -161,6 +214,7 @@ async function createMeterComponent(
   component.counterAxisSizingMode = "AUTO";
 
   // Create label+value row frame
+  // Matches "flex items-center justify-between gap-4" from meter.tsx
   const headerRow = figma.createFrame();
   headerRow.name = "Header";
   headerRow.layoutMode = "HORIZONTAL";
@@ -171,18 +225,26 @@ async function createMeterComponent(
   headerRow.resize(METER_WIDTH, 20);
   headerRow.fills = [];
 
-  // Create label text
-  const labelText = await createTextNode(label, 12, 400);
+  // Create label text using typography config
+  const labelText = await createTextNode(
+    label,
+    typography.label.fontSize,
+    typography.label.fontWeight,
+  );
   labelText.name = "Label";
-  const labelVar = getVariableByName("text-color-label");
+  const labelVar = getVariableByName(typography.label.colorToken);
   if (labelVar) {
     bindTextColorToVariable(labelText, labelVar.id);
   }
 
-  // Create value text
-  const valueText = await createTextNode(fillPercentage + "%", 14, 500);
+  // Create value text using typography config
+  const valueText = await createTextNode(
+    fillPercentage + "%",
+    typography.value.fontSize,
+    typography.value.fontWeight,
+  );
   valueText.name = "Value";
-  const surfaceTextVar = getVariableByName("text-color-surface");
+  const surfaceTextVar = getVariableByName(typography.value.colorToken);
   if (surfaceTextVar) {
     bindTextColorToVariable(valueText, surfaceTextVar.id);
   }

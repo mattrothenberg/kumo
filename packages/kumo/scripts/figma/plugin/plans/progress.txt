@@ -1241,3 +1241,70 @@ Action needed: Run `pnpm --filter @cloudflare/kumo codegen:registry` after updat
 
 **Status:** COMPLETE - Ready for commit
 
+
+---
+
+## Iteration 23: meter (Tier 2 - PHASE 2: Registry Integration)
+
+**Generator:** meter
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Migrated to registry-aware configuration:
+   - Added meterProps and meterColors extraction from registry
+   - Updated comments to document class sources from meter.tsx
+   - Documented dimensions derivation: METER_TRACK_HEIGHT (h-2 = 8px), METER_GAP (gap-2 = 8px)
+   - METER_WIDTH remains layout-specific for Figma display (240px)
+   
+2. Added new testable export getMeterTypographyConfig():
+   - Extracts label typography: 12px (text-xs), 400 weight, text-color-label
+   - Extracts value typography: 14px (text-sm), 500 weight (font-medium), text-color-surface
+   - Documents source classes from meter.tsx
+   
+3. Updated getMeterColorBindings() to include:
+   - registryColors field with colors from registry
+   - Comments documenting color token sources from meter.tsx classes
+   - Note: React uses bg-color for track, generator uses color-color-4 (documented)
+   
+4. Updated getAllMeterVariantData() to include:
+   - registry.props section with value, max, min, label props
+   - typography configuration for label and value
+   - Updated layout section to use typography.label/value fontSize/fontWeight
+   
+5. Updated createMeterComponent() to use typography config:
+   - Label text uses typography.label (fontSize, fontWeight, colorToken)
+   - Value text uses typography.value (fontSize, fontWeight, colorToken)
+   - Added comments matching classes to meter.tsx structure
+
+### Test Results:
+- ✅ All 33 tests pass
+- ✅ 2 snapshots updated (intentionally added registry and typography data)
+- ✅ Verified tests pass consistently with --run flag
+
+### Registry Gaps Found:
+None - Meter has sufficient registry data (props, colors, category). The React component has no variants (KUMO_METER_VARIANTS is empty), so no variant-specific styling section needed.
+
+Registry has:
+- Component metadata (name, description, category)
+- props (value, max, min, label with types and descriptions)
+- colors: ["bg-color", "text-label", "text-surface"]
+
+No KUMO_METER_STYLING needed - component has no size/variant dimensions. Typography extracted directly from className strings in meter.tsx.
+
+### Notes:
+- Meter was marked "hardcoded" in PRD because dimensions weren't documented from registry
+- Now migrated - reads registry metadata, dimensions documented from Tailwind classes
+- Meter has no variants - React component uses fixed classes, not variant-based styling
+- Fill levels (0%, 25%, 50%, 75%, 100%) are generator-specific for demonstration, not from registry
+- This is correct - they're example states, not component variants
+- Typography config now extracted from React component classes:
+  - Label: "text-xs text-label" → 12px, 400 weight, text-color-label
+  - Value: "text-sm font-medium text-surface tabular-nums" → 14px, 500 weight, text-color-surface
+- Track uses rounded-full (9999) matching meter.tsx
+- Indicator uses bg-primary matching meter.tsx gradient (from-primary via-primary to-primary)
+- Pre-existing TypeScript errors for textAutoResize property (same as other generators)
+- Meter is second Tier 2 generator migrated in Phase 2 (after tooltip, collapsible, date-range-picker)
+
+**Status:** COMPLETE - Ready for commit
+
