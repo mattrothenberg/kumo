@@ -27,6 +27,7 @@ import {
   BORDER_RADIUS,
   SECTION_PADDING,
   SECTION_GAP,
+  GRID_LAYOUT,
 } from "./shared";
 import { logComplete } from "../logger";
 import registry from "../../../../ai/component-registry.json";
@@ -351,9 +352,9 @@ export async function generateInputComponents(
 
   // Layout spacing
   var componentGapX = 24;
-  var componentGapY = 40;
-  var headerRowHeight = 24;
-  var labelColumnWidth = 200; // Wider for size + withLabel labels
+  var componentGapY = GRID_LAYOUT.rowGap.medium;
+  var headerRowHeight = GRID_LAYOUT.headerRowHeight;
+  var labelColumnWidth = GRID_LAYOUT.labelColumnWidth.wide;
 
   // Track layout by row (size × withLabel)
   var rowComponents: Map<number, ComponentNode[]> = new Map();

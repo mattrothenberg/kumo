@@ -31,6 +31,7 @@ import {
   bindTextColorToVariable,
   SECTION_PADDING,
   SECTION_GAP,
+  GRID_LAYOUT,
 } from "./shared";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 
@@ -231,8 +232,8 @@ export async function generateTextComponents(
   // Layout configuration
   const componentGap = 20;
   const rowHeight = 50;
-  const headerRowHeight = 24; // Space for column headers at top
-  const labelColumnWidth = 160; // Space for labels on the left
+  const headerRowHeight = GRID_LAYOUT.headerRowHeight;
+  const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.standard;
   let currentRow = 0;
 
   // Generate variants based on their category

@@ -16,6 +16,7 @@ import {
   bindTextColorToVariable,
   SECTION_PADDING,
   SECTION_GAP,
+  GRID_LAYOUT,
 } from "./shared";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 import { logInfo, logWarn } from "../logger";
@@ -275,8 +276,8 @@ export async function generateBadgeComponents(startY: number): Promise<number> {
   const rowLabels: { y: number; text: string }[] = [];
 
   // Layout spacing - vertical layout with labels
-  const rowGap = 40;
-  const labelColumnWidth = 180; // Space for labels on the left
+  const rowGap = GRID_LAYOUT.rowGap.medium;
+  const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.medium;
 
   // Track position for laying out components vertically
   let currentY = 0;

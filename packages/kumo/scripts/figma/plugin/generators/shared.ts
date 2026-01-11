@@ -70,6 +70,47 @@ export const SHADOWS = {
 } as const;
 
 /**
+ * Grid layout constants for component display sections
+ * Used to arrange component variants in consistent grids with labels
+ */
+export const GRID_LAYOUT = {
+  /** Vertical gap between component rows (common: 24-80px depending on component density) */
+  rowGap: {
+    /** Compact spacing for dense components (e.g., tabs, menubar, clipboard-text) */
+    compact: 24,
+    /** Medium spacing for standard components (e.g., badge, breadcrumbs, empty, meter) */
+    medium: 40,
+    /** Standard spacing for most components (e.g., banner, checkbox, switch, pagination) */
+    standard: 48,
+    /** Spacious layout for large components (e.g., refresh-button, code-block) */
+    spacious: 60,
+    /** Extra spacious for complex components (e.g., button, link-button) */
+    extraSpacious: 80,
+  },
+  /** Width of label column for variant labels (common: 100-280px depending on label length) */
+  labelColumnWidth: {
+    /** Minimal width for short labels (e.g., surface, loader) */
+    minimal: 100,
+    /** Compact width for standard labels (e.g., collapsible, dialog) */
+    compact: 120,
+    /** Small width for slightly longer labels (e.g., clipboard-text, refresh-button) */
+    small: 140,
+    /** Standard width for typical labels (e.g., code, banner, menubar, tabs, text, layer-card) */
+    standard: 160,
+    /** Medium width for longer labels (e.g., badge, breadcrumbs, empty, meter, pagination, checkbox, dropdown, date-range-picker, select, combobox) */
+    medium: 180,
+    /** Wide for complex labels (e.g., input, input-area) */
+    wide: 200,
+    /** Wider for very long labels (e.g., button, link-button, sensitive-input) */
+    wider: 220,
+    /** Widest for exceptionally long labels (e.g., switch with multiple properties) */
+    widest: 280,
+  },
+  /** Height of header row for column headers (typically 24px) */
+  headerRowHeight: 24,
+} as const;
+
+/**
  * Auto-layout configuration
  */
 export type AutoLayoutConfig = {

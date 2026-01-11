@@ -158,7 +158,7 @@
       "name": "add-layout-grid-constants",
       "title": "Add Layout Grid Constants",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Centralize component grid layout values (row gaps, label widths, header heights)",
       "files": [
         "generators/shared.ts",

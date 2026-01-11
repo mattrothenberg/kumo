@@ -30,6 +30,7 @@ import {
   BORDER_RADIUS,
   SECTION_PADDING,
   SECTION_GAP,
+  GRID_LAYOUT,
 } from "./shared";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 import {
@@ -557,9 +558,9 @@ export async function generateButtonComponents(
 
   // Layout grid spacing
   var componentGap = 16;
-  var rowGap = 80;
-  var headerRowHeight = 24; // Space for column headers at top
-  var labelColumnWidth = 220; // Space for labels on the left
+  var rowGap = GRID_LAYOUT.rowGap.extraSpacious;
+  var headerRowHeight = GRID_LAYOUT.headerRowHeight;
+  var labelColumnWidth = GRID_LAYOUT.labelColumnWidth.wider;
 
   // Track layout position by row type
   // - Rows 0-5: text buttons by variant (base shape)

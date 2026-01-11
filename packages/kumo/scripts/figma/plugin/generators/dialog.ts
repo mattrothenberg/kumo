@@ -29,6 +29,7 @@ import {
   SECTION_PADDING,
   SECTION_GAP,
   SHADOWS,
+  GRID_LAYOUT,
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import registry from "../../../../ai/component-registry.json";
@@ -345,8 +346,8 @@ export async function generateDialogComponents(
   var rowLabels: { y: number; text: string }[] = [];
 
   // Layout spacing
-  var componentGapY = 40;
-  var labelColumnWidth = 120;
+  var componentGapY = GRID_LAYOUT.rowGap.medium;
+  var labelColumnWidth = GRID_LAYOUT.labelColumnWidth.compact;
 
   // Track layout
   var yOffset = 0;

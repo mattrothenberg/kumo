@@ -15,6 +15,7 @@ import {
   bindTextColorToVariable,
   SECTION_PADDING,
   SECTION_GAP,
+  GRID_LAYOUT,
 } from "./shared";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 import { createIconInstance, bindIconColor } from "./icon-utils";
@@ -274,8 +275,8 @@ export async function generateBannerComponents(
   const rowLabels: { y: number; text: string }[] = [];
 
   // Layout spacing - vertical layout with labels
-  const rowGap = 48;
-  const labelColumnWidth = 160; // Space for labels on the left
+  const rowGap = GRID_LAYOUT.rowGap.standard;
+  const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.standard;
 
   // Track position for laying out components vertically
   let currentY = 0;

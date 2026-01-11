@@ -40,6 +40,7 @@ import {
   FONT_SIZE,
   SECTION_PADDING,
   SECTION_GAP,
+  GRID_LAYOUT,
 } from "./shared";
 import { logInfo } from "../logger";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
@@ -501,10 +502,10 @@ export async function generateSwitchComponents(
 
   // Layout grid spacing
   var componentGap = 24;
-  var rowGap = 48;
-  var headerRowHeight = 24; // Space for column headers at top
+  var rowGap = GRID_LAYOUT.rowGap.standard;
+  var headerRowHeight = GRID_LAYOUT.headerRowHeight;
 
-  var labelColumnWidth = 280; // Space for labels on the left
+  var labelColumnWidth = GRID_LAYOUT.labelColumnWidth.widest;
 
   // Column headers for sizes
   var columnHeaderTexts = ["size=sm", "size=base", "size=lg"];

@@ -32,6 +32,7 @@ import {
   FONT_SIZE,
   SECTION_PADDING,
   SECTION_GAP,
+  GRID_LAYOUT,
 } from "./shared";
 import { createIconInstance, bindIconColor } from "./icon-utils";
 import { logInfo } from "../logger";
@@ -415,10 +416,10 @@ export async function generateCheckboxComponents(
 
   // Layout grid spacing
   var componentGap = 24;
-  var rowGap = 48;
-  var headerRowHeight = 24; // Space for column headers at top
+  var rowGap = GRID_LAYOUT.rowGap.standard;
+  var headerRowHeight = GRID_LAYOUT.headerRowHeight;
 
-  var labelColumnWidth = 180; // Space for labels on the left
+  var labelColumnWidth = GRID_LAYOUT.labelColumnWidth.medium;
 
   // Column headers for states
   var columnHeaderTexts = ["Unchecked", "Checked", "Indeterminate"];

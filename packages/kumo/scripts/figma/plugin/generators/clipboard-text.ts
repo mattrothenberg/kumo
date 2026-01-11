@@ -25,6 +25,7 @@ import {
   bindTextColorToVariable,
   SECTION_PADDING,
   SECTION_GAP,
+  GRID_LAYOUT,
 } from "./shared";
 import { createIconInstance, bindIconColor } from "./icon-utils";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
@@ -363,8 +364,8 @@ export async function generateClipboardTextComponents(
   const rowLabels: { y: number; text: string }[] = [];
 
   // Layout spacing - vertical layout with labels
-  const rowGap = 24;
-  const labelColumnWidth = 140; // Space for labels on the left
+  const rowGap = GRID_LAYOUT.rowGap.compact;
+  const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.small;
 
   // Track position for laying out components vertically
   let currentY = 0;

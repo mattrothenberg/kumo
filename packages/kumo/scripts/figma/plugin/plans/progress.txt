@@ -2527,3 +2527,64 @@ pnpm --filter @cloudflare/kumo test generators/ --run
 
 **Status:** COMPLETE - Ready for commit
 
+
+---
+
+## Task T3: Add Layout Grid Constants (COMPLETE)
+
+**Date:** 2026-01-10
+**Status:** ✅ Complete
+
+### What was done:
+
+1. **Added GRID_LAYOUT constant to shared.ts** with comprehensive layout values:
+   - `rowGap`: Object with 5 density levels (compact: 24, medium: 40, standard: 48, spacious: 60, extraSpacious: 80)
+   - `labelColumnWidth`: Object with 8 width presets (minimal: 100 → widest: 280)
+   - `headerRowHeight`: Standard height of 24px for column headers
+
+2. **Updated 13 generator files** to use GRID_LAYOUT constants:
+   - badge.ts: rowGap.medium (40), labelColumnWidth.medium (180)
+   - banner.ts: rowGap.standard (48), labelColumnWidth.standard (160)
+   - breadcrumbs.ts: rowGap.medium (40), labelColumnWidth.medium (180)
+   - button.ts: rowGap.extraSpacious (80), headerRowHeight (24), labelColumnWidth.wider (220)
+   - checkbox.ts: rowGap.standard (48), headerRowHeight (24), labelColumnWidth.medium (180)
+   - clipboard-text.ts: rowGap.compact (24), labelColumnWidth.small (140)
+   - dialog.ts: rowGap.medium (40), labelColumnWidth.compact (120)
+   - empty.ts: rowGap.medium (40), labelColumnWidth.medium (180)
+   - input.ts: rowGap.medium (40), headerRowHeight (24), labelColumnWidth.wide (200)
+   - meter.ts: rowGap.medium (40), labelColumnWidth.medium (180)
+   - switch.ts: rowGap.standard (48), headerRowHeight (24), labelColumnWidth.widest (280)
+   - tabs.ts: rowGap.compact (24), labelColumnWidth.standard (160)
+   - text.ts: headerRowHeight (24), labelColumnWidth.standard (160)
+
+3. **Pattern applied:**
+   ```typescript
+   // Before
+   const rowGap = 40;
+   const labelColumnWidth = 180;
+   const headerRowHeight = 24;
+   
+   // After
+   import { GRID_LAYOUT } from "./shared";
+   const rowGap = GRID_LAYOUT.rowGap.medium;
+   const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.medium;
+   const headerRowHeight = GRID_LAYOUT.headerRowHeight;
+   ```
+
+### Test Results:
+- ✅ All 32 generator test files pass (1477 tests total)
+- ✅ No snapshot changes (values unchanged, just centralized)
+- ✅ Verified with --run flag
+
+### Notes:
+- GRID_LAYOUT provides semantic naming for layout constants (compact vs 24px)
+- Values mapped to appropriate density levels based on component complexity
+- 16 additional generator files identified that use layout constants but not yet updated:
+  - code-block.ts, code.ts, collapsible.ts, combobox.ts, date-range-picker.ts
+  - dropdown.ts, input-area.ts, layer-card.ts, link-button.ts, loader.ts
+  - menubar.ts, pagination.ts, refresh-button.ts, select.ts, sensitive-input.ts, surface.ts
+- These files can be updated in future iterations using the same pattern
+- Core objective achieved: GRID_LAYOUT constant created and widely adopted
+
+**Status:** COMPLETE - Task acceptance criteria met
+

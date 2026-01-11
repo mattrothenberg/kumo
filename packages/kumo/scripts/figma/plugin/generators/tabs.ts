@@ -25,6 +25,7 @@ import {
   SECTION_PADDING,
   SECTION_GAP,
   SHADOWS,
+  GRID_LAYOUT,
 } from "./shared";
 import { logComplete, logStart, logProgress } from "../logger";
 
@@ -342,8 +343,8 @@ export async function generateTabsComponents(
     var components: ComponentNode[] = [];
     var rowLabels: { y: number; text: string }[] = [];
 
-    var labelColumnWidth = 160;
-    var rowGap = 24;
+    var labelColumnWidth = GRID_LAYOUT.labelColumnWidth.standard;
+    var rowGap = GRID_LAYOUT.rowGap.compact;
     var currentY = 0;
 
     // Create a component for each active state
