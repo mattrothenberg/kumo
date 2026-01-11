@@ -19,6 +19,7 @@ import {
   getBannerParsedVariantStyles,
   getAllBannerVariantData,
 } from "./banner";
+import { FONT_SIZE, FALLBACK_VALUES } from "./shared";
 
 // Import registry as source of truth
 import registry from "../../../../ai/component-registry.json";
@@ -83,7 +84,7 @@ describe("Banner Generator - Base Styles Parsing", () => {
 
   it("should parse horizontal padding from base styles", () => {
     const parsed = parseTailwindClasses(BANNER_BASE_STYLES);
-    expect(parsed.paddingX).toBe(16); // px-4 = 16px
+    expect(parsed.paddingX).toBe(FALLBACK_VALUES.padding.standard); // px-4 = 16px
   });
 
   it("should parse vertical padding from base styles", () => {
@@ -93,7 +94,7 @@ describe("Banner Generator - Base Styles Parsing", () => {
 
   it("should parse font size from base styles", () => {
     const parsed = parseTailwindClasses(BANNER_BASE_STYLES);
-    expect(parsed.fontSize).toBe(16); // text-base = 16px
+    expect(parsed.fontSize).toBe(FONT_SIZE.base); // text-base
   });
 
   it("should parse gap from base styles", () => {
@@ -290,7 +291,7 @@ describe("Banner Generator - Icon Mapping", () => {
     );
 
     expect(defaultVariant?.icon.iconId).toBe("ph-info");
-    expect(defaultVariant?.icon.iconSize).toBe(16);
+    expect(defaultVariant?.icon.iconSize).toBe(FONT_SIZE.base);
   });
 
   it("should map alert variant to ph-warning icon", () => {
@@ -298,7 +299,7 @@ describe("Banner Generator - Icon Mapping", () => {
     const alertVariant = allData.variants.find((v) => v.variant === "alert");
 
     expect(alertVariant?.icon.iconId).toBe("ph-warning");
-    expect(alertVariant?.icon.iconSize).toBe(16);
+    expect(alertVariant?.icon.iconSize).toBe(FONT_SIZE.base);
   });
 
   it("should map error variant to ph-warning icon", () => {
@@ -306,7 +307,7 @@ describe("Banner Generator - Icon Mapping", () => {
     const errorVariant = allData.variants.find((v) => v.variant === "error");
 
     expect(errorVariant?.icon.iconId).toBe("ph-warning");
-    expect(errorVariant?.icon.iconSize).toBe(16);
+    expect(errorVariant?.icon.iconSize).toBe(FONT_SIZE.base);
   });
 });
 
@@ -422,10 +423,10 @@ describe("Banner Generator - Snapshot Tests (Intermediate Data)", () => {
       expect(variant.layout).toBeDefined();
       expect(variant.icon).toBeDefined();
       expect(variant.icon.iconId).toBeDefined();
-      expect(variant.icon.iconSize).toBe(16);
+      expect(variant.icon.iconSize).toBe(FONT_SIZE.base);
       expect(variant.text).toBeDefined();
-      expect(variant.text.fontSize).toBe(16);
-      expect(variant.text.fontWeight).toBe(400);
+      expect(variant.text.fontSize).toBe(FONT_SIZE.base);
+      expect(variant.text.fontWeight).toBe(FALLBACK_VALUES.fontWeight.normal);
     }
 
     // Full snapshot

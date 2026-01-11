@@ -1,461 +1,424 @@
 {
-  "title": "Figma Plugin Phase 7 - Full Registry Integration",
-  "overview": "Ensure all Figma generators derive styling values from component-registry.json for automatic sync with code changes. Add COMPONENT_STYLING_METADATA for components with hardcoded dimensions.",
+  "title": "Figma Plugin Phase 8 - Test File Assertion Hardening",
+  "overview": "Eliminate fragile hardcoded numeric assertions in test files by replacing them with shared constants (FONT_SIZE, FALLBACK_VALUES, etc.) to prevent drift when design values change.",
   "context": {
-    "problem": "5 generators have hardcoded SIZE_CONFIG/dimension objects that duplicate values from React components. When React components change, Figma generators drift out of sync.",
-    "current_state": "Phase 6 eliminated ~95% of magic numbers via shared.ts constants. However, 5 generators still have hardcoded config objects (DateRangePicker, Pagination, InputArea, LayerCard, MenuBar) that should derive from the registry.",
-    "why_now": "Phase 6 (magic numbers audit) is COMPLETE. This phase addresses the remaining architectural gap for full Figma-code sync capability.",
-    "components_with_styling_metadata": [
-      "Checkbox",
-      "ClipboardText",
-      "Code",
-      "Input",
-      "Tabs",
-      "Dialog",
-      "Toasty"
-    ],
-    "components_missing_styling_metadata": [
-      "DateRangePicker",
-      "Pagination",
-      "InputArea",
-      "LayerCard",
-      "MenuBar"
+    "problem": "37 test assertions use hardcoded numeric values like .toBe(16), .toBe(600), .toBe(12) instead of shared constants. When design values change, these tests could pass incorrectly or require manual updates.",
+    "current_state": "Phase 7 is COMPLETE - all generators read from registry.styling. Drift detection tests warn about 37 fragile assertions but don't enforce. Tests technically pass but are drift-prone.",
+    "why_now": "Phase 7 (registry integration) is COMPLETE. This phase addresses test quality to ensure the full code-to-Figma sync pipeline is robust.",
+    "files_with_fragile_assertions": [
+      "banner.test.ts (8 warnings)",
+      "text.test.ts (5+ warnings)",
+      "select.test.ts (2 warnings)",
+      "Other files with similar patterns (22+ warnings)"
     ]
   },
   "goals": {
     "primary": [
-      "Create enforcement test that validates registry integration (will fail initially)",
-      "Add COMPONENT_STYLING_METADATA for all 5 components",
-      "Update generators to read from registry.components.X.styling",
-      "Document intentional Dropdown/Combobox divergences",
-      "All enforcement tests pass at completion"
+      "Replace hardcoded numeric assertions with shared constants",
+      "Ensure all test files import and use FONT_SIZE, FALLBACK_VALUES from shared.ts",
+      "Convert drift detection warning to enforcing test",
+      "All 37 fragile assertions eliminated"
     ],
     "metrics": [
-      "Registry integration enforcement test: PASSING",
-      "Components with full styling metadata: 12/12 (currently 7/12)",
-      "Generators reading from registry.styling: 5/5",
-      "All drift detection tests passing",
+      "Fragile assertion warnings: 0 (currently 37)",
+      "All drift detection tests passing and enforcing",
       "All generator tests passing (1500+ tests)",
-      "No snapshot changes (values match existing)"
+      "No snapshot changes"
     ]
   },
   "requirements": {
     "functional": [
       {
-        "id": "FR-0",
-        "title": "Registry Integration Enforcement Test",
-        "description": "Create test that validates generators read from registry.styling - will fail initially, guiding subsequent tasks",
-        "acceptance": [
-          "Add test to drift-detection.test.ts that checks for registry.styling usage",
-          "Test identifies 5 generators that need migration",
-          "Test will FAIL initially (expected - provides target for remaining tasks)",
-          "Test passes once all generators are migrated"
-        ]
-      },
-      {
         "id": "FR-1",
-        "title": "DateRangePicker Styling Metadata",
-        "description": "Add full sizeVariants to COMPONENT_STYLING_METADATA with dimensions for sm, base, lg",
+        "title": "Fix banner.test.ts Assertions",
+        "description": "Replace 8 hardcoded assertions with shared constants",
         "acceptance": [
-          "Add DateRangePicker entry to COMPONENT_STYLING_METADATA",
-          "Update date-range-picker.ts to read from registry.styling",
-          "Enforcement test passes for DateRangePicker",
-          "All 40 date-range-picker tests pass"
+          "Import FONT_SIZE, FALLBACK_VALUES from shared.ts",
+          "Replace .toBe(16) with .toBe(FONT_SIZE.base)",
+          "Replace .toBe(400) with .toBe(FALLBACK_VALUES.fontWeight.normal)",
+          "All banner tests pass"
         ]
       },
       {
         "id": "FR-2",
-        "title": "Pagination Styling Metadata",
-        "description": "Add layout dimensions to COMPONENT_STYLING_METADATA",
+        "title": "Fix text.test.ts Assertions",
+        "description": "Replace 5+ hardcoded assertions with shared constants",
         "acceptance": [
-          "Add Pagination entry to COMPONENT_STYLING_METADATA",
-          "Update pagination.ts to read from registry.styling",
-          "Enforcement test passes for Pagination",
-          "All 51 pagination tests pass"
+          "Import FONT_SIZE, FALLBACK_VALUES from shared.ts",
+          "Replace .toBe(600) with .toBe(FALLBACK_VALUES.fontWeight.semiBold)",
+          "Replace .toBe(12) with .toBe(FONT_SIZE.xs)",
+          "Replace .toBe(16) with .toBe(FONT_SIZE.base)",
+          "All text tests pass"
         ]
       },
       {
         "id": "FR-3",
-        "title": "InputArea Styling Metadata",
-        "description": "Add minHeight/width per size to COMPONENT_STYLING_METADATA",
+        "title": "Fix select.test.ts Assertions",
+        "description": "Replace 2 hardcoded assertions with shared constants",
         "acceptance": [
-          "Add InputArea entry to COMPONENT_STYLING_METADATA",
-          "Update input-area.ts to read from registry.styling",
-          "Enforcement test passes for InputArea",
-          "All 40 input-area tests pass"
+          "Import FONT_SIZE from shared.ts",
+          "Replace .toBe(16) with .toBe(FONT_SIZE.base)",
+          "Replace .toBe(12) with .toBe(FONT_SIZE.xs)",
+          "All select tests pass"
         ]
       },
       {
         "id": "FR-4",
-        "title": "LayerCard Styling Metadata",
-        "description": "Add container and section styling to COMPONENT_STYLING_METADATA",
+        "title": "Fix Remaining Test Files",
+        "description": "Address remaining 22+ warnings in other test files",
         "acceptance": [
-          "Add LayerCard entry to COMPONENT_STYLING_METADATA",
-          "Update layer-card.ts to read from registry.styling",
-          "Enforcement test passes for LayerCard",
-          "All 34 layer-card tests pass"
+          "Identify all remaining files with fragile assertions",
+          "Import appropriate constants from shared.ts",
+          "Replace hardcoded values with constants",
+          "All affected tests pass"
         ]
       },
       {
         "id": "FR-5",
-        "title": "MenuBar Styling Metadata",
-        "description": "Add container and button styling to COMPONENT_STYLING_METADATA",
+        "title": "Convert Warning to Enforcement",
+        "description": "Change drift detection test from warning-only to enforcing",
         "acceptance": [
-          "Add MenuBar entry to COMPONENT_STYLING_METADATA",
-          "Update menubar.ts to read from registry.styling",
-          "Enforcement test passes for MenuBar",
-          "All 35 menubar tests pass"
+          "Update 'should prefer registry comparisons...' test in drift-detection.test.ts",
+          "Change from expect(true).toBe(true) to expect(warnings).toEqual([])",
+          "Test now fails if fragile assertions are reintroduced",
+          "All drift detection tests pass"
         ]
       },
       {
         "id": "FR-6",
-        "title": "Document Intentional Divergences",
-        "description": "Add JSDoc comments to Dropdown and Combobox explaining Figma-specific variants",
-        "acceptance": [
-          "Add JSDoc block to dropdown.ts explaining Figma variants differ from React",
-          "Add JSDoc block to combobox.ts explaining Figma variants differ from React",
-          "All tests pass"
-        ]
-      },
-      {
-        "id": "FR-7",
         "title": "Final Verification",
-        "description": "Verify all enforcement tests pass and document completion",
+        "description": "Verify all warnings eliminated and enforcement active",
         "acceptance": [
-          "All registry integration enforcement tests pass",
-          "All 1500+ generator tests pass",
-          "Update PHASE7_REGISTRY_INTEGRATION.md with completion status"
+          "Run drift detection tests - 0 warnings",
+          "Run all generator tests - all pass",
+          "Document completion in progress.txt"
         ]
       }
     ],
     "non_functional": [
       {
         "id": "NFR-1",
-        "title": "Backward Compatibility",
-        "description": "All existing tests must pass without visual changes",
+        "title": "No Behavioral Changes",
+        "description": "Tests should validate the same values, just using constants",
         "acceptance": [
-          "No visual changes to generated Figma components",
-          "All existing snapshot tests pass",
-          "Generators have fallbacks if registry data is missing"
+          "No test logic changes",
+          "Only import additions and value replacements",
+          "All snapshot tests unchanged"
         ]
       }
     ]
   },
   "scope": {
     "in_scope": [
-      "Creating enforcement test first (test-driven approach)",
-      "Adding COMPONENT_STYLING_METADATA entries for 5 components",
-      "Updating generators to read from registry.components.X.styling",
-      "Documenting intentional divergences"
+      "Replacing hardcoded numeric assertions with shared constants",
+      "Adding imports for FONT_SIZE, FALLBACK_VALUES, SPACING, OPACITY",
+      "Converting drift detection warning to enforcement",
+      "Updating progress.txt with completion status"
     ],
     "out_of_scope": [
-      "Modifying React component source code",
-      "Auto-extracting dimensions from KUMO_*_VARIANTS (future enhancement)",
-      "Adding new generators",
-      "Changing visual output of generators"
+      "Modifying generator implementation code",
+      "Adding new test cases",
+      "Changing test assertion logic",
+      "Modifying shared.ts constants"
     ]
   },
   "tasks": [
     {
       "id": "T1",
-      "name": "add-enforcement-test",
-      "title": "Add Registry Integration Enforcement Test",
+      "name": "fix-banner-test-assertions",
+      "title": "Fix banner.test.ts Hardcoded Assertions",
       "priority": "high",
       "status": "complete",
-      "description": "Create test that validates generators read from registry.styling. This test will FAIL initially, providing a clear target for subsequent tasks.",
-      "files": ["scripts/figma/plugin/generators/drift-detection.test.ts"],
+      "description": "Replace 8 hardcoded numeric assertions with shared constants",
+      "files": ["scripts/figma/plugin/generators/banner.test.ts"],
       "acceptance": [
-        "Add new describe block 'Figma Plugin - Registry Styling Integration'",
-        "Add test that checks 5 specific generators for registry.styling usage",
-        "Test checks for pattern: registry.components.X.styling or (registry.components.X as any).styling",
-        "Test FAILS initially with clear message showing which generators need migration",
-        "Run: pnpm --filter @cloudflare/kumo test generators/drift-detection.test.ts --run",
-        "Verify test fails for: date-range-picker, pagination, input-area, layer-card, menubar"
+        "Add import: import { FONT_SIZE, FALLBACK_VALUES } from \"./shared\";",
+        "Replace .toBe(16) with .toBe(FONT_SIZE.base) for font size assertions",
+        "Replace .toBe(400) with .toBe(FALLBACK_VALUES.fontWeight.normal) for font weight",
+        "Run: pnpm --filter @cloudflare/kumo test generators/banner.test.ts --run",
+        "All tests pass"
       ],
-      "code_example": "describe(\"Figma Plugin - Registry Styling Integration\", () => {\n  const GENERATORS_REQUIRING_STYLING = [\n    { file: \"date-range-picker.ts\", component: \"DateRangePicker\" },\n    { file: \"pagination.ts\", component: \"Pagination\" },\n    { file: \"input-area.ts\", component: \"InputArea\" },\n    { file: \"layer-card.ts\", component: \"LayerCard\" },\n    { file: \"menubar.ts\", component: \"MenuBar\" },\n  ];\n\n  it(\"should read styling from registry for components with hardcoded configs\", () => {\n    const violations: string[] = [];\n\n    for (const { file, component } of GENERATORS_REQUIRING_STYLING) {\n      const filePath = join(__dirname, file);\n      const content = readFileSync(filePath, \"utf-8\");\n\n      // Check if generator reads from registry.styling\n      const readsFromStyling = new RegExp(\n        `registry\\\\.components\\\\.${component}.*\\\\.styling`\n      ).test(content);\n\n      if (!readsFromStyling) {\n        violations.push(`${file}: Does not read from registry.components.${component}.styling`);\n      }\n    }\n\n    if (violations.length > 0) {\n      throw new Error(\n        `❌ Registry styling integration violations (${violations.length}/5):\\n` +\n        `  - ${violations.join(\"\\n  - \")}\\n\\n` +\n        `🔧 To fix each generator:\\n` +\n        `  1. Add COMPONENT_STYLING_METADATA entry in scripts/ai/component-registry.ts\\n` +\n        `  2. Update generator to read: (registry.components.X as any).styling\\n` +\n        `  3. Use styling data instead of hardcoded CONFIG objects\\n`\n      );\n    }\n\n    expect(violations).toEqual([]);\n  });\n});",
-      "estimated_minutes": 20
+      "replacements": [
+        {
+          "line": 86,
+          "from": ".toBe(16)",
+          "to": ".toBe(FONT_SIZE.base)",
+          "context": "font size"
+        },
+        {
+          "line": 96,
+          "from": ".toBe(16)",
+          "to": ".toBe(FONT_SIZE.base)",
+          "context": "font size"
+        },
+        {
+          "line": 293,
+          "from": ".toBe(16)",
+          "to": ".toBe(FONT_SIZE.base)",
+          "context": "icon size"
+        },
+        {
+          "line": 301,
+          "from": ".toBe(16)",
+          "to": ".toBe(FONT_SIZE.base)",
+          "context": "icon size"
+        },
+        {
+          "line": 309,
+          "from": ".toBe(16)",
+          "to": ".toBe(FONT_SIZE.base)",
+          "context": "icon size"
+        },
+        {
+          "line": 425,
+          "from": ".toBe(16)",
+          "to": ".toBe(FONT_SIZE.base)",
+          "context": "icon size"
+        },
+        {
+          "line": 427,
+          "from": ".toBe(16)",
+          "to": ".toBe(FONT_SIZE.base)",
+          "context": "font size"
+        },
+        {
+          "line": 428,
+          "from": ".toBe(400)",
+          "to": ".toBe(FALLBACK_VALUES.fontWeight.normal)",
+          "context": "font weight"
+        }
+      ],
+      "estimated_minutes": 15
     },
     {
       "id": "T2",
-      "name": "add-daterangepicker-styling",
-      "title": "Add DateRangePicker COMPONENT_STYLING_METADATA",
+      "name": "fix-text-test-assertions",
+      "title": "Fix text.test.ts Hardcoded Assertions",
       "priority": "high",
-      "status": "complete",
-      "description": "Add full sizeVariants with dimensions to COMPONENT_STYLING_METADATA",
-      "files": ["scripts/ai/component-registry.ts"],
+      "status": "pending",
+      "description": "Replace 5+ hardcoded numeric assertions with shared constants",
+      "files": ["scripts/figma/plugin/generators/text.test.ts"],
       "acceptance": [
-        "Add DateRangePicker entry with sizeVariants for sm, base, lg",
-        "Each size includes: calendarWidth, cellHeight, cellWidth, textSize, iconSize, padding, gap",
-        "Bump CACHE_VERSION at top of file (line ~54)",
-        "Run: pnpm --filter @cloudflare/kumo codegen:registry",
-        "Verify: cat packages/kumo/ai/component-registry.json | jq '.components.DateRangePicker.styling'"
+        "Add import: import { FONT_SIZE, FALLBACK_VALUES } from \"./shared\";",
+        "Replace .toBe(600) with .toBe(FALLBACK_VALUES.fontWeight.semiBold)",
+        "Replace .toBe(12) with .toBe(FONT_SIZE.xs)",
+        "Replace .toBe(16) with .toBe(FONT_SIZE.base)",
+        "Run: pnpm --filter @cloudflare/kumo test generators/text.test.ts --run",
+        "All tests pass"
       ],
-      "code_example": "DateRangePicker: {\n  sizeVariants: {\n    sm: {\n      height: 0,\n      classes: \"p-3 gap-2\",\n      dimensions: {\n        calendarWidth: 168,\n        cellHeight: 22,\n        cellWidth: 24,\n        textSize: 12,\n        iconSize: 14,\n        padding: 12,\n        gap: 8,\n      },\n    },\n    base: {\n      height: 0,\n      classes: \"p-4 gap-2.5\",\n      dimensions: {\n        calendarWidth: 196,\n        cellHeight: 26,\n        cellWidth: 28,\n        textSize: 14,\n        iconSize: 16,\n        padding: 16,\n        gap: 10,\n      },\n    },\n    lg: {\n      height: 0,\n      classes: \"p-5 gap-3\",\n      dimensions: {\n        calendarWidth: 252,\n        cellHeight: 32,\n        cellWidth: 36,\n        textSize: 16,\n        iconSize: 18,\n        padding: 20,\n        gap: 12,\n      },\n    },\n  },\n} as any,",
-      "estimated_minutes": 15
+      "replacements": [
+        {
+          "line": 137,
+          "from": ".toBe(30)",
+          "to": "comment: text-3xl is 30px - keep as is or add to FONT_SIZE",
+          "context": "heading1 font size"
+        },
+        {
+          "line": 144,
+          "from": ".toBe(600)",
+          "to": ".toBe(FALLBACK_VALUES.fontWeight.semiBold)",
+          "context": "font weight"
+        },
+        {
+          "line": 155,
+          "from": ".toBe(24)",
+          "to": "comment: text-2xl is 24px - keep as is or add to FONT_SIZE",
+          "context": "heading2 font size"
+        },
+        {
+          "line": 161,
+          "from": ".toBe(600)",
+          "to": ".toBe(FALLBACK_VALUES.fontWeight.semiBold)",
+          "context": "font weight"
+        },
+        {
+          "line": 172,
+          "from": ".toBe(18)",
+          "to": "comment: text-lg is 18px - keep as is or add to FONT_SIZE",
+          "context": "heading3 font size"
+        },
+        {
+          "line": 178,
+          "from": ".toBe(600)",
+          "to": ".toBe(FALLBACK_VALUES.fontWeight.semiBold)",
+          "context": "font weight"
+        },
+        {
+          "line": 260,
+          "from": ".toBe(12)",
+          "to": ".toBe(FONT_SIZE.xs)",
+          "context": "text-xs font size"
+        },
+        {
+          "line": 267,
+          "from": ".toBe(14)",
+          "to": "comment: text-sm is 14px - add FONT_SIZE.sm or keep",
+          "context": "text-sm font size"
+        },
+        {
+          "line": 274,
+          "from": ".toBe(16)",
+          "to": ".toBe(FONT_SIZE.base)",
+          "context": "text-base font size"
+        },
+        {
+          "line": 281,
+          "from": ".toBe(18)",
+          "to": "comment: text-lg is 18px - keep as is",
+          "context": "text-lg font size"
+        }
+      ],
+      "estimated_minutes": 20
     },
     {
       "id": "T3",
-      "name": "update-daterangepicker-generator",
-      "title": "Update date-range-picker.ts to Read from Registry",
-      "priority": "high",
-      "status": "complete",
-      "description": "Refactor generator to derive SIZE_CONFIG from registry.components.DateRangePicker.styling",
-      "files": ["scripts/figma/plugin/generators/date-range-picker.ts"],
+      "name": "fix-select-test-assertions",
+      "title": "Fix select.test.ts Hardcoded Assertions",
+      "priority": "medium",
+      "status": "pending",
+      "description": "Replace 2 hardcoded numeric assertions with shared constants",
+      "files": ["scripts/figma/plugin/generators/select.test.ts"],
       "acceptance": [
-        "Add: var dateRangePickerStyling = (registry.components.DateRangePicker as any).styling;",
-        "Add getSizeConfigFromRegistry() function with fallback",
-        "Replace hardcoded SIZE_CONFIG with registry-derived version",
-        "Run: pnpm --filter @cloudflare/kumo test generators/date-range-picker.test.ts --run",
-        "All 40 tests pass, snapshots unchanged",
-        "Enforcement test now passes for DateRangePicker"
+        "Add import: import { FONT_SIZE } from \"./shared\";",
+        "Replace .toBe(16) with .toBe(FONT_SIZE.base)",
+        "Replace .toBe(12) with .toBe(FONT_SIZE.xs)",
+        "Run: pnpm --filter @cloudflare/kumo test generators/select.test.ts --run",
+        "All tests pass"
       ],
-      "code_example": "var dateRangePickerStyling = (registry.components.DateRangePicker as any).styling;\n\nconst FALLBACK_SIZE_CONFIG = {\n  sm: { calendarWidth: 168, cellHeight: 22, cellWidth: 24, textSize: 12, iconSize: 14, padding: 12, gap: 8 },\n  base: { calendarWidth: 196, cellHeight: 26, cellWidth: 28, textSize: 14, iconSize: 16, padding: 16, gap: 10 },\n  lg: { calendarWidth: 252, cellHeight: 32, cellWidth: 36, textSize: 16, iconSize: 18, padding: 20, gap: 12 },\n};\n\nfunction getSizeConfigFromRegistry() {\n  if (!dateRangePickerStyling?.sizeVariants) return FALLBACK_SIZE_CONFIG;\n  const config: Record<string, any> = {};\n  for (const [size, data] of Object.entries(dateRangePickerStyling.sizeVariants)) {\n    config[size] = (data as any).dimensions || FALLBACK_SIZE_CONFIG[size as keyof typeof FALLBACK_SIZE_CONFIG];\n  }\n  return config;\n}\n\nvar SIZE_CONFIG = getSizeConfigFromRegistry();",
-      "estimated_minutes": 25
+      "replacements": [
+        {
+          "line": 261,
+          "from": ".toBe(16)",
+          "to": ".toBe(FONT_SIZE.base)",
+          "context": "font size"
+        },
+        {
+          "line": 385,
+          "from": ".toBe(12)",
+          "to": ".toBe(FONT_SIZE.xs)",
+          "context": "font size"
+        }
+      ],
+      "estimated_minutes": 10
     },
     {
       "id": "T4",
-      "name": "add-pagination-styling",
-      "title": "Add Pagination COMPONENT_STYLING_METADATA",
+      "name": "fix-remaining-test-assertions",
+      "title": "Fix Remaining Test File Assertions",
       "priority": "medium",
-      "status": "complete",
-      "description": "Add layout dimensions to COMPONENT_STYLING_METADATA",
-      "files": ["scripts/ai/component-registry.ts"],
+      "status": "pending",
+      "description": "Address remaining 22+ fragile assertions in other test files",
+      "files": ["scripts/figma/plugin/generators/*.test.ts"],
       "acceptance": [
-        "Add Pagination entry with layout object",
-        "Include: height, buttonSize, inputWidth, iconSize, gap, borderRadius",
-        "Run: pnpm --filter @cloudflare/kumo codegen:registry",
-        "Verify styling section exists in registry"
+        "Run drift detection to identify all remaining warnings",
+        "For each file: add imports and replace hardcoded values",
+        "Run: pnpm --filter @cloudflare/kumo test generators/drift-detection.test.ts --run",
+        "Warnings reduced to near 0"
       ],
-      "code_example": "Pagination: {\n  layout: {\n    height: 36,\n    buttonSize: 36,\n    inputWidth: 50,\n    iconSize: 16,\n    gap: 8,\n    borderRadius: 8,\n  },\n} as any,",
-      "estimated_minutes": 10
+      "notes": "May need to add FONT_SIZE.sm (14), FONT_SIZE.lg (18/20) to shared.ts if not present",
+      "estimated_minutes": 30
     },
     {
       "id": "T5",
-      "name": "update-pagination-generator",
-      "title": "Update pagination.ts to Read from Registry",
-      "priority": "medium",
-      "status": "complete",
-      "description": "Refactor generator to derive layout constants from registry",
-      "files": ["scripts/figma/plugin/generators/pagination.ts"],
+      "name": "convert-warning-to-enforcement",
+      "title": "Convert Drift Detection Warning to Enforcement",
+      "priority": "high",
+      "status": "pending",
+      "description": "Change the 'should prefer registry comparisons...' test from warning-only to enforcing",
+      "files": ["scripts/figma/plugin/generators/drift-detection.test.ts"],
       "acceptance": [
-        "Add: var paginationStyling = (registry.components.Pagination as any).styling;",
-        "Add getLayoutFromRegistry() function with fallback",
-        "Replace hardcoded constants with registry-derived version",
-        "Run: pnpm --filter @cloudflare/kumo test generators/pagination.test.ts --run",
-        "All 51 tests pass, snapshots unchanged",
-        "Enforcement test now passes for Pagination"
+        "Find the test 'should prefer registry comparisons over hardcoded values'",
+        "Change: expect(true).toBe(true) to expect(warnings).toEqual([])",
+        "Run: pnpm --filter @cloudflare/kumo test generators/drift-detection.test.ts --run",
+        "Test passes with 0 warnings"
       ],
-      "estimated_minutes": 20
+      "code_change": {
+        "before": "// Warning only - allows gradual migration\nexpect(true).toBe(true);",
+        "after": "// Now enforcing - no fragile assertions allowed\nexpect(warnings).toEqual([]);"
+      },
+      "estimated_minutes": 10
     },
     {
       "id": "T6",
-      "name": "add-inputarea-styling",
-      "title": "Add InputArea COMPONENT_STYLING_METADATA",
-      "priority": "medium",
-      "status": "complete",
-      "description": "Add minHeight/width per size to COMPONENT_STYLING_METADATA",
-      "files": ["scripts/ai/component-registry.ts"],
-      "acceptance": [
-        "Add InputArea entry with sizeVariants",
-        "Each size includes: minHeight, width",
-        "Run: pnpm --filter @cloudflare/kumo codegen:registry",
-        "Verify styling section exists in registry"
-      ],
-      "code_example": "InputArea: {\n  sizeVariants: {\n    xs: { minHeight: 60, width: 160 },\n    sm: { minHeight: 70, width: 200 },\n    base: { minHeight: 80, width: 280 },\n    lg: { minHeight: 100, width: 320 },\n  },\n} as any,",
-      "estimated_minutes": 10
-    },
-    {
-      "id": "T7",
-      "name": "update-inputarea-generator",
-      "title": "Update input-area.ts to Read from Registry",
-      "priority": "medium",
-      "status": "complete",
-      "description": "Refactor generator to derive SIZE_CONFIG from registry",
-      "files": ["scripts/figma/plugin/generators/input-area.ts"],
-      "acceptance": [
-        "Add: var inputAreaStyling = (registry.components.InputArea as any).styling;",
-        "Merge InputArea styling with Input styling for full config",
-        "Run: pnpm --filter @cloudflare/kumo test generators/input-area.test.ts --run",
-        "All 40 tests pass, snapshots unchanged",
-        "Enforcement test now passes for InputArea"
-      ],
-      "estimated_minutes": 20
-    },
-    {
-      "id": "T8",
-      "name": "add-layercard-styling",
-      "title": "Add LayerCard COMPONENT_STYLING_METADATA",
-      "priority": "medium",
-      "status": "complete",
-      "description": "Add container and section styling to COMPONENT_STYLING_METADATA",
-      "files": ["scripts/ai/component-registry.ts"],
-      "acceptance": [
-        "Add LayerCard entry with container, secondary, primary sections",
-        "Include dimensions and color tokens",
-        "Run: pnpm --filter @cloudflare/kumo codegen:registry",
-        "Verify styling section exists in registry"
-      ],
-      "code_example": "LayerCard: {\n  container: {\n    width: 320,\n    borderRadius: 8,\n  },\n  secondary: {\n    paddingX: 16,\n    paddingY: 12,\n    fontSize: 14,\n    fontWeight: 500,\n  },\n  primary: {\n    paddingX: 16,\n    paddingY: 16,\n    fontSize: 14,\n    fontWeight: 400,\n  },\n} as any,",
-      "estimated_minutes": 10
-    },
-    {
-      "id": "T9",
-      "name": "update-layercard-generator",
-      "title": "Update layer-card.ts to Read from Registry",
-      "priority": "medium",
-      "status": "complete",
-      "description": "Refactor generator to derive LAYER_CARD_CONFIG from registry",
-      "files": ["scripts/figma/plugin/generators/layer-card.ts"],
-      "acceptance": [
-        "Add: var layerCardStyling = (registry.components.LayerCard as any).styling;",
-        "Add getConfigFromRegistry() function with fallback",
-        "Run: pnpm --filter @cloudflare/kumo test generators/layer-card.test.ts --run",
-        "All 34 tests pass, snapshots unchanged",
-        "Enforcement test now passes for LayerCard"
-      ],
-      "estimated_minutes": 20
-    },
-    {
-      "id": "T10",
-      "name": "add-menubar-styling",
-      "title": "Add MenuBar COMPONENT_STYLING_METADATA",
-      "priority": "medium",
-      "status": "complete",
-      "description": "Add container and button styling to COMPONENT_STYLING_METADATA",
-      "files": ["scripts/ai/component-registry.ts"],
-      "acceptance": [
-        "Add MenuBar entry with container and button sections",
-        "Include dimensions",
-        "Run: pnpm --filter @cloudflare/kumo codegen:registry",
-        "Verify styling section exists in registry"
-      ],
-      "code_example": "MenuBar: {\n  container: {\n    height: 32,\n    borderRadius: 8,\n    padding: 2,\n    gap: 2,\n  },\n  button: {\n    width: 36,\n    borderRadius: 6,\n    iconSize: 18,\n  },\n} as any,",
-      "estimated_minutes": 10
-    },
-    {
-      "id": "T11",
-      "name": "update-menubar-generator",
-      "title": "Update menubar.ts to Read from Registry",
-      "priority": "medium",
-      "status": "complete",
-      "description": "Refactor generator to derive MENUBAR_CONFIG from registry",
-      "files": ["scripts/figma/plugin/generators/menubar.ts"],
-      "acceptance": [
-        "Add: var menuBarStyling = (registry.components.MenuBar as any).styling;",
-        "Add getConfigFromRegistry() function with fallback",
-        "Run: pnpm --filter @cloudflare/kumo test generators/menubar.test.ts --run",
-        "All 35 tests pass, snapshots unchanged",
-        "Enforcement test now passes for MenuBar"
-      ],
-      "estimated_minutes": 20
-    },
-    {
-      "id": "T12",
-      "name": "document-divergences",
-      "title": "Document Dropdown/Combobox Intentional Divergences",
-      "priority": "low",
-      "status": "complete",
-      "description": "Add JSDoc comments explaining Figma-specific variants",
-      "files": [
-        "scripts/figma/plugin/generators/dropdown.ts",
-        "scripts/figma/plugin/generators/combobox.ts"
-      ],
-      "acceptance": [
-        "Add JSDoc block at top of dropdown.ts explaining variant mapping",
-        "Add JSDoc block at top of combobox.ts explaining variant mapping",
-        "Document React variants vs Figma variants",
-        "All tests pass"
-      ],
-      "jsdoc_example": "/**\n * Dropdown Component Generator\n *\n * INTENTIONAL DIVERGENCE: Figma variants differ from React variants\n *\n * React Component Variants:\n * - variant: \"default\" | \"danger\"\n *\n * Figma Display Variants (for demonstration):\n * - default: Basic dropdown menu\n * - withIcons: Menu items with leading icons\n * - withDanger: Menu with destructive option\n * - withGroups: Menu with grouped sections\n * - withCheckbox: Menu with checkable items\n * - withShortcuts: Menu items with keyboard shortcuts\n *\n * The Figma variants show different visual configurations\n * for design exploration, not React component variants.\n */",
-      "estimated_minutes": 15
-    },
-    {
-      "id": "T13",
       "name": "final-verification",
       "title": "Final Verification and Documentation",
       "priority": "low",
-      "status": "complete",
-      "description": "Verify ALL enforcement tests pass and document completion",
-      "files": ["scripts/figma/plugin/plans/PHASE7_REGISTRY_INTEGRATION.md"],
+      "status": "pending",
+      "description": "Verify all warnings eliminated and document completion",
+      "files": ["scripts/figma/plugin/plans/progress.txt"],
       "acceptance": [
         "Run: pnpm --filter @cloudflare/kumo test generators/drift-detection.test.ts --run",
-        "ALL registry styling integration tests pass (0 violations)",
+        "All tests pass with 0 fragile assertion warnings",
         "Run: pnpm --filter @cloudflare/kumo test generators/ --run",
         "All 1500+ tests pass",
-        "Update PHASE7_REGISTRY_INTEGRATION.md Status from PLANNING to COMPLETE",
-        "Add completion summary with metrics"
+        "Append Phase 8 completion summary to progress.txt"
       ],
       "estimated_minutes": 15
     }
   ],
   "technical_approach": {
-    "test_driven": {
-      "description": "Create enforcement test FIRST that will fail, then fix each generator to make it pass",
-      "benefit": "Clear progress tracking - each task reduces violation count until 0"
+    "import_pattern": {
+      "description": "Add imports from shared.ts at top of test file",
+      "example": "import { FONT_SIZE, FALLBACK_VALUES, SPACING, OPACITY } from \"./shared\";"
     },
-    "registry_metadata_pattern": {
-      "description": "Add entries to COMPONENT_STYLING_METADATA in scripts/ai/component-registry.ts",
-      "location": "Around line 2091 in the COMPONENT_STYLING_METADATA object"
+    "replacement_patterns": {
+      "font_sizes": {
+        ".toBe(12)": ".toBe(FONT_SIZE.xs)",
+        ".toBe(16)": ".toBe(FONT_SIZE.base)",
+        ".toBe(20)": ".toBe(FONT_SIZE.lg)"
+      },
+      "font_weights": {
+        ".toBe(400)": ".toBe(FALLBACK_VALUES.fontWeight.normal)",
+        ".toBe(500)": ".toBe(FALLBACK_VALUES.fontWeight.medium)",
+        ".toBe(600)": ".toBe(FALLBACK_VALUES.fontWeight.semiBold)"
+      },
+      "spacing": {
+        ".toBe(34)": "compare against tabsStyling or similar registry value",
+        ".toBe(36)": "compare against registry value for input/button height"
+      }
     },
-    "generator_refactor_pattern": {
-      "description": "Read from registry with fallback to hardcoded values",
-      "example": "var styling = (registry.components.X as any).styling;\nvar CONFIG = styling?.layout || FALLBACK_CONFIG;"
-    },
-    "cache_invalidation": {
-      "description": "Bump CACHE_VERSION when adding metadata",
-      "location": "Line ~54 in scripts/ai/component-registry.ts"
+    "decision_tree": {
+      "description": "When to replace vs keep hardcoded values",
+      "rules": [
+        "If value exists in FONT_SIZE, FALLBACK_VALUES, SPACING, OPACITY -> replace",
+        "If value is component-specific (e.g., 30 for text-3xl) -> keep or add comment",
+        "If value comes from registry.styling -> use registry comparison instead"
+      ]
     }
   },
   "deliverables": [
     {
-      "name": "Enforcement Test",
-      "description": "Test that validates registry.styling usage in 5 generators",
+      "name": "Updated Test Files",
+      "description": "Test files using shared constants instead of hardcoded values",
+      "files": [
+        "scripts/figma/plugin/generators/banner.test.ts",
+        "scripts/figma/plugin/generators/text.test.ts",
+        "scripts/figma/plugin/generators/select.test.ts"
+      ]
+    },
+    {
+      "name": "Enforcing Drift Detection",
+      "description": "Drift detection test that fails on fragile assertions",
       "files": ["scripts/figma/plugin/generators/drift-detection.test.ts"]
-    },
-    {
-      "name": "Extended COMPONENT_STYLING_METADATA",
-      "description": "5 new entries for DateRangePicker, Pagination, InputArea, LayerCard, MenuBar",
-      "files": ["scripts/ai/component-registry.ts"]
-    },
-    {
-      "name": "Refactored Generators",
-      "description": "5 generators reading from registry.components.X.styling",
-      "files": [
-        "scripts/figma/plugin/generators/date-range-picker.ts",
-        "scripts/figma/plugin/generators/pagination.ts",
-        "scripts/figma/plugin/generators/input-area.ts",
-        "scripts/figma/plugin/generators/layer-card.ts",
-        "scripts/figma/plugin/generators/menubar.ts"
-      ]
-    },
-    {
-      "name": "Documentation",
-      "description": "JSDoc comments for intentional divergences",
-      "files": [
-        "scripts/figma/plugin/generators/dropdown.ts",
-        "scripts/figma/plugin/generators/combobox.ts"
-      ]
     }
   ],
   "constraints": [
-    "Must not change visual output of generators",
-    "Must not break existing snapshot tests",
-    "Must maintain backward compatibility with fallbacks",
-    "Must not modify React component source code",
-    "Must bump CACHE_VERSION when adding metadata"
+    "Must not change test logic or assertions",
+    "Must only replace values with equivalent constants",
+    "Must not break any existing tests",
+    "Must not modify generator implementation code",
+    "May need to add missing constants to shared.ts (e.g., FONT_SIZE.sm)"
   ],
   "success_criteria": [
-    "Registry integration enforcement test: 0 violations (all 5 generators passing)",
+    "Fragile assertion warnings: 0",
+    "Drift detection enforcement test passes",
     "All 1500+ generator tests pass",
-    "All drift detection tests pass",
-    "No snapshot changes",
-    "Intentional divergences documented"
+    "No snapshot changes"
   ],
   "references": {
-    "phase6_completion": "plans/PHASE6_FINAL_AUDIT.md",
-    "phase7_plan": "plans/PHASE7_REGISTRY_INTEGRATION.md",
-    "registry_generator": "scripts/ai/component-registry.ts",
-    "example_well_integrated": "generators/input.ts - reads from registry.components.Input.styling"
+    "shared_constants": "scripts/figma/plugin/generators/shared.ts",
+    "drift_detection": "scripts/figma/plugin/generators/drift-detection.test.ts",
+    "phase7_completion": "plans/progress.txt (Phase 7 section)"
   },
   "completed_phases": {
     "phase_1_test_refactoring": "COMPLETE",
@@ -463,6 +426,7 @@
     "phase_3_parser_enhancement": "COMPLETE",
     "phase_4_generator_coverage": "COMPLETE",
     "phase_5_magic_numbers": "COMPLETE",
-    "phase_6_magic_numbers_audit": "COMPLETE"
+    "phase_6_magic_numbers_audit": "COMPLETE",
+    "phase_7_full_registry_integration": "COMPLETE"
   }
 }

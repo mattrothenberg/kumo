@@ -4579,3 +4579,67 @@ Phase 7 is the final phase of the Figma plugin robustness project. All phases co
 
 **PROJECT COMPLETE!** 🎉
 
+
+---
+
+## PHASE 8: Test File Assertion Hardening (IN PROGRESS)
+
+### Goal
+Eliminate fragile hardcoded numeric assertions in test files by replacing them with shared constants (FONT_SIZE, FALLBACK_VALUES, etc.) to prevent drift when design values change.
+
+### Status Summary
+- **Tasks:** 6
+- **Completed:** 1
+- **In Progress:** 0
+- **Pending:** 5
+
+### Completed Tasks
+- ✅ T1: Fix banner.test.ts assertions (8 replacements)
+
+### Pending Tasks
+- T2: Fix text.test.ts assertions (5+ replacements)
+- T3: Fix select.test.ts assertions (2 replacements)
+- T4: Fix remaining test files (22+ replacements)
+- T5: Convert drift detection warning to enforcement
+- T6: Final verification and documentation
+
+---
+
+## Iteration 1: T1 - Fix banner.test.ts Hardcoded Assertions (PHASE 8)
+
+**Task:** T1 - Fix banner.test.ts Hardcoded Assertions
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Added import for shared constants**:
+   - Added `import { FONT_SIZE, FALLBACK_VALUES } from "./shared";` after existing imports
+
+2. **Replaced 8 hardcoded numeric assertions**:
+   - Line 86: `.toBe(16)` → `.toBe(FALLBACK_VALUES.padding.standard)` (paddingX)
+   - Line 96: `.toBe(16)` → `.toBe(FONT_SIZE.base)` (fontSize)
+   - Line 293: `.toBe(16)` → `.toBe(FONT_SIZE.base)` (iconSize for default variant)
+   - Line 301: `.toBe(16)` → `.toBe(FONT_SIZE.base)` (iconSize for alert variant)
+   - Line 309: `.toBe(16)` → `.toBe(FONT_SIZE.base)` (iconSize for error variant)
+   - Line 425: `.toBe(16)` → `.toBe(FONT_SIZE.base)` (iconSize in complete data)
+   - Line 427: `.toBe(16)` → `.toBe(FONT_SIZE.base)` (fontSize in complete data)
+   - Line 428: `.toBe(400)` → `.toBe(FALLBACK_VALUES.fontWeight.normal)` (fontWeight)
+
+### Test Results:
+- ✅ All 37 banner tests pass
+- ✅ No snapshot changes (values remain identical)
+- ✅ Drift detection warnings reduced: 37 → 29 (8 warnings eliminated)
+
+### Files Modified:
+- `scripts/figma/plugin/generators/banner.test.ts` - Added import + 8 replacements
+- `plans/PRD.json` - T1 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- All replacements maintain exact same test behavior (16 = FONT_SIZE.base, 400 = normal)
+- Tests now reference single source of truth (shared.ts) instead of hardcoded values
+- When design values change in shared.ts, tests will automatically stay in sync
+- Padding replacement used FALLBACK_VALUES.padding.standard (16px) correctly
+
+**Status:** COMPLETE - Banner test assertions hardened, 29 warnings remain
+
