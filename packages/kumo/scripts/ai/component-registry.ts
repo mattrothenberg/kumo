@@ -2391,6 +2391,16 @@ const COMPONENT_STYLING_METADATA: Record<string, ComponentSchema["styling"]> = {
       },
     },
   } as any,
+  Pagination: {
+    layout: {
+      height: 36,
+      buttonSize: 36,
+      inputWidth: 50,
+      iconSize: 16,
+      gap: 8,
+      borderRadius: 8,
+    },
+  } as any,
 };
 
 /**

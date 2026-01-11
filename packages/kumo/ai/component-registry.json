@@ -3534,7 +3534,17 @@
         "<Pagination page={5} perPage={10} totalCount={100} setPage=\"() => {}\" />",
         "<Pagination page={5} perPage={10} totalCount={100} setPage=\"() => {}\" controls=\"simple\" />"
       ],
-      "colors": ["text-label"]
+      "colors": ["text-label"],
+      "styling": {
+        "layout": {
+          "height": 36,
+          "buttonSize": 36,
+          "inputWidth": 50,
+          "iconSize": 16,
+          "gap": 8,
+          "borderRadius": 8
+        }
+      }
     },
     "Select": {
       "name": "Select",

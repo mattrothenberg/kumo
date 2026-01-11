@@ -3022,6 +3022,9 @@ Pagination component
 
 `text-label`
 
+**Styling:**
+
+
 **Examples:**
 
 ```tsx
