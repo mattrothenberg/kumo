@@ -31,6 +31,9 @@ import {
   SHADOWS,
   GRID_LAYOUT,
   SECTION_LAYOUT,
+  FONT_SIZE,
+  FALLBACK_VALUES,
+  SPACING,
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import registry from "../../../../ai/component-registry.json";
@@ -72,6 +75,7 @@ function parseDialogWidth(size: string, fallbackWidth: number): number {
  * Size-specific configuration
  * Maps size to width, title font size, description font size, padding
  * Widths are derived from registry classes where possible
+ * Typography and spacing use centralized constants from shared.ts
  */
 var SIZE_CONFIG: Record<
   string,
@@ -87,38 +91,38 @@ var SIZE_CONFIG: Record<
 > = {
   sm: {
     width: parseDialogWidth("sm", 288), // min-w-72 = 288px (fallback)
-    titleSize: 20,
-    titleWeight: 600,
-    descSize: 16,
-    padding: 16,
-    gap: 8,
+    titleSize: FONT_SIZE.lg, // 20px
+    titleWeight: FALLBACK_VALUES.fontWeight.semiBold, // 600
+    descSize: FONT_SIZE.base, // 16px
+    padding: FALLBACK_VALUES.padding.standard, // 16px
+    gap: SPACING.base, // 8px
     buttonSize: "sm",
   },
   base: {
     width: parseDialogWidth("base", 384), // min-w-96 = 384px (fallback)
-    titleSize: 20,
-    titleWeight: 600,
-    descSize: 16,
-    padding: 24,
-    gap: 16,
+    titleSize: FONT_SIZE.lg, // 20px
+    titleWeight: FALLBACK_VALUES.fontWeight.semiBold, // 600
+    descSize: FONT_SIZE.base, // 16px
+    padding: FALLBACK_VALUES.padding.large, // 24px
+    gap: FALLBACK_VALUES.gap.large, // 16px
     buttonSize: "base",
   },
   lg: {
     width: parseDialogWidth("lg", 512), // min-w-[32rem] = 512px (fallback)
-    titleSize: 20,
-    titleWeight: 600,
-    descSize: 16,
-    padding: 24,
-    gap: 16,
+    titleSize: FONT_SIZE.lg, // 20px
+    titleWeight: FALLBACK_VALUES.fontWeight.semiBold, // 600
+    descSize: FONT_SIZE.base, // 16px
+    padding: FALLBACK_VALUES.padding.large, // 24px
+    gap: FALLBACK_VALUES.gap.large, // 16px
     buttonSize: "base",
   },
   xl: {
     width: parseDialogWidth("xl", 768), // min-w-[48rem] = 768px (fallback)
-    titleSize: 20,
-    titleWeight: 600,
-    descSize: 16,
-    padding: 24,
-    gap: 16,
+    titleSize: FONT_SIZE.lg, // 20px
+    titleWeight: FALLBACK_VALUES.fontWeight.semiBold, // 600
+    descSize: FONT_SIZE.base, // 16px
+    padding: FALLBACK_VALUES.padding.large, // 24px
+    gap: FALLBACK_VALUES.gap.large, // 16px
     buttonSize: "base",
   },
 };
@@ -144,22 +148,22 @@ async function createButton(
   button.primaryAxisSizingMode = "AUTO";
   button.counterAxisSizingMode = "AUTO";
 
-  // Size-specific dimensions
+  // Size-specific dimensions (derived from Button component styling)
   if (size === "sm") {
-    button.paddingLeft = 12;
-    button.paddingRight = 12;
-    button.paddingTop = 8;
-    button.paddingBottom = 8;
-    button.minWidth = 70;
+    button.paddingLeft = FALLBACK_VALUES.padding.horizontal; // px-3 = 12px
+    button.paddingRight = FALLBACK_VALUES.padding.horizontal;
+    button.paddingTop = SPACING.base; // py-2 = 8px
+    button.paddingBottom = SPACING.base;
+    button.minWidth = 70; // Layout-specific for dialog actions
   } else {
-    button.paddingLeft = 16;
-    button.paddingRight = 16;
-    button.paddingTop = 8;
-    button.paddingBottom = 8;
-    button.minWidth = 100;
+    button.paddingLeft = FALLBACK_VALUES.padding.large; // px-4 = 16px (base size)
+    button.paddingRight = FALLBACK_VALUES.padding.large;
+    button.paddingTop = SPACING.base; // py-2 = 8px
+    button.paddingBottom = SPACING.base;
+    button.minWidth = 100; // Layout-specific for dialog actions
   }
 
-  button.itemSpacing = size === "sm" ? 4 : 8;
+  button.itemSpacing = size === "sm" ? SPACING.xs : SPACING.base; // gap-1 : gap-2
   button.cornerRadius = BORDER_RADIUS.md;
 
   if (isPrimary) {
@@ -178,8 +182,8 @@ async function createButton(
   }
 
   // Create button label
-  var fontSize = size === "sm" ? 14 : 16;
-  var buttonLabel = await createTextNode(label, fontSize, 600);
+  var fontSize = size === "sm" ? FONT_SIZE.xs + 2 : FONT_SIZE.base; // 14px (sm) or 16px (base)
+  var buttonLabel = await createTextNode(label, fontSize, FALLBACK_VALUES.fontWeight.semiBold);
   buttonLabel.name = "Label";
   buttonLabel.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -254,11 +258,11 @@ async function createDialogComponent(size: string): Promise<ComponentNode> {
   header.counterAxisAlignItems = "CENTER";
   header.primaryAxisSizingMode = "FIXED";
   header.counterAxisSizingMode = "AUTO";
-  header.resize(config.width - config.padding * 2, 24); // Full width minus padding
+  header.resize(config.width - config.padding * 2, GRID_LAYOUT.headerRowHeight); // Full width minus padding
   header.layoutAlign = "STRETCH";
   header.layoutGrow = 0;
   header.fills = [];
-  header.itemSpacing = 8;
+  header.itemSpacing = SPACING.base; // gap-2 = 8px
 
   // Create title text
   var title = await createTextNode(
@@ -294,7 +298,7 @@ async function createDialogComponent(size: string): Promise<ComponentNode> {
   var description = await createTextNode(
     "This is a dialog description with some content explaining the purpose of this dialog.",
     config.descSize,
-    400,
+    FALLBACK_VALUES.fontWeight.normal, // 400
   );
   description.name = "Description";
   description.textAutoResize = "HEIGHT";
@@ -320,7 +324,7 @@ async function createDialogComponent(size: string): Promise<ComponentNode> {
   actions.layoutAlign = "STRETCH";
   actions.layoutGrow = 0;
   actions.fills = [];
-  actions.itemSpacing = 12;
+  actions.itemSpacing = SPACING.lg; // gap-3 = 12px
 
   // Create Cancel button (secondary)
   var cancelButton = await createButton("Cancel", false, config.buttonSize);
@@ -433,7 +437,7 @@ export async function generateDialogComponents(
     var labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 8,
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.lg, // Center label for dialog
     );
     lightSection.frame.appendChild(labelNode);
   }
@@ -453,7 +457,7 @@ export async function generateDialogComponents(
     var darkLabelNode = await createRowLabel(
       darkLabel.text,
       SECTION_PADDING,
-      SECTION_PADDING + darkLabel.y + 8,
+      SECTION_PADDING + darkLabel.y + GRID_LAYOUT.labelVerticalOffset.lg, // Center label for dialog
     );
     darkSection.frame.appendChild(darkLabelNode);
   }

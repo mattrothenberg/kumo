@@ -160,12 +160,14 @@ export const GRID_LAYOUT = {
 export const FALLBACK_VALUES = {
   /** Default font size (text-base = 16px) */
   fontSize: 16,
-  /** Default font weight (normal = 400, medium = 500) */
+  /** Default font weight (normal = 400, medium = 500, semiBold = 600) */
   fontWeight: {
     /** Normal weight (CSS default) */
     normal: 400,
     /** Medium weight (commonly used in UI) */
     medium: 500,
+    /** Semi-bold weight (used in headings and emphasis) */
+    semiBold: 600,
   },
   /** Default padding values (px-3 = 12px, py-1.5 = 6px) */
   padding: {
@@ -175,6 +177,8 @@ export const FALLBACK_VALUES = {
     vertical: 6,
     /** Standard padding for content areas (p-4 = 16px) */
     standard: 16,
+    /** Large padding for dialogs and cards (p-6 = 24px) */
+    large: 24,
   },
   /** Default border radius (rounded-lg = 8px, rounded-md = 6px) */
   borderRadius: {
@@ -191,6 +195,8 @@ export const FALLBACK_VALUES = {
     standard: 6,
     /** Medium gap (gap-2 = 8px) */
     medium: 8,
+    /** Large gap for dialogs and cards (gap-4 = 16px) */
+    large: 16,
   },
   /** Default height for inputs/buttons (h-9 = 36px) */
   height: {

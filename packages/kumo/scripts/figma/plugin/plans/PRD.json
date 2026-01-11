@@ -329,7 +329,7 @@
       "name": "refactor-dialog-typography",
       "title": "Refactor dialog.ts Typography and Layout Values",
       "priority": "high",
-      "status": "pending",
+      "status": "complete",
       "description": "Replace hardcoded typography and layout values in dialog.ts",
       "files": ["generators/dialog.ts", "generators/dialog.test.ts"],
       "acceptance": [

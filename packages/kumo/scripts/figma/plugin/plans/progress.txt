@@ -3343,3 +3343,67 @@ grep -n "\.x = 100\|\.y = 100\|+ 50" generators/*.ts | grep -v "shared.ts"
 
 **Status:** COMPLETE - Ready for commit
 
+
+---
+
+## PHASE 6: Magic Numbers Audit Remediation
+
+### Task T8: Refactor dialog.ts Typography and Layout Values
+
+**Date:** 2026-01-10
+**Status:** ✅ Complete
+
+#### Changes Made:
+
+1. **Extended shared.ts constants:**
+   - Added `FALLBACK_VALUES.fontWeight.semiBold: 600` for semi-bold headings
+   - Added `FALLBACK_VALUES.padding.large: 24` for dialog/card padding (p-6)
+   - Added `FALLBACK_VALUES.gap.large: 16` for dialog/card gaps (gap-4)
+
+2. **Refactored SIZE_CONFIG in dialog.ts:**
+   - `titleSize`: Changed from `20` to `FONT_SIZE.lg` (20px)
+   - `titleWeight`: Changed from `600` to `FALLBACK_VALUES.fontWeight.semiBold` (600)
+   - `descSize`: Changed from `16` to `FONT_SIZE.base` (16px)
+   - `padding`: Changed from `16`/`24` to `FALLBACK_VALUES.padding.standard`/`large`
+   - `gap`: Changed from `8`/`16` to `SPACING.base`/`FALLBACK_VALUES.gap.large`
+
+3. **Refactored createButton() function:**
+   - Button padding: Changed from `12`/`16`/`8` to `FALLBACK_VALUES.padding.horizontal`/`large` and `SPACING.base`
+   - Button itemSpacing: Changed from `4`/`8` to `SPACING.xs`/`SPACING.base`
+   - Button label fontSize: Changed from `14`/`16` to `FONT_SIZE.xs + 2`/`FONT_SIZE.base`
+   - Button label fontWeight: Changed from `600` to `FALLBACK_VALUES.fontWeight.semiBold`
+   - minWidth values (`70`, `100`) documented as layout-specific for dialog actions
+
+4. **Refactored createDialogComponent() function:**
+   - Header height: Changed from `24` to `GRID_LAYOUT.headerRowHeight` (24px)
+   - Header itemSpacing: Changed from `8` to `SPACING.base` (8px)
+   - Description fontWeight: Changed from `400` to `FALLBACK_VALUES.fontWeight.normal` (400)
+   - Actions itemSpacing: Changed from `12` to `SPACING.lg` (12px)
+
+5. **Refactored generateDialogComponents() function:**
+   - Label vertical offset: Changed from `8` to `GRID_LAYOUT.labelVerticalOffset.lg` (12px)
+   - Applied to both light and dark section label positioning
+
+#### Test Results:
+- ✅ All 50 dialog tests pass
+- ✅ All 10 drift detection tests pass
+- ✅ All 1489 generator tests pass
+- ✅ No snapshots changed (values are identical)
+
+#### Magic Numbers Eliminated:
+- Font sizes: `14`, `16`, `20` → `FONT_SIZE` constants
+- Font weights: `400`, `600` → `FALLBACK_VALUES.fontWeight`
+- Padding values: `8`, `12`, `16`, `24` → `SPACING` and `FALLBACK_VALUES.padding`
+- Gap values: `4`, `8`, `12`, `16` → `SPACING` and `FALLBACK_VALUES.gap`
+- Label offsets: `8` → `GRID_LAYOUT.labelVerticalOffset.lg`
+- Header height: `24` → `GRID_LAYOUT.headerRowHeight`
+
+#### Documented Exceptions:
+- Button `minWidth` values (`70`, `100`) are layout-specific for dialog actions (not component-derived)
+- These are intentionally kept as they define the minimum action button widths for good UX
+
+#### Notes:
+- White color `{ r: 1, g: 1, b: 1 }` already exists inline but is not a magic number concern (explicit color value for primary button text)
+- Pre-existing TypeScript errors remain (minWidth, textAutoResize, layoutAlign properties) but do not affect runtime
+- dialog.ts now fully compliant with centralized constants pattern
+
