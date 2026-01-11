@@ -1331,6 +1331,40 @@ DateRangePicker component
 
 `bg-calendar`, `bg-calendar-day-range-selected`, `bg-calendar-day-range-selected-endpoints`, `bg-calendar-day-range-selected-out-of-range`, `bg-hover`, `bg-surface`, `text-label`, `text-muted`, `text-surface`, `text-surface-inverse`
 
+**Styling:**
+
+- **Size Variants:**
+  - `sm`:
+    - Classes: `p-3 gap-2`
+    - Dimensions:
+      - calendarWidth: 168
+      - cellHeight: 22
+      - cellWidth: 24
+      - textSize: 12
+      - iconSize: 14
+      - padding: 12
+      - gap: 8
+  - `base`:
+    - Classes: `p-4 gap-2.5`
+    - Dimensions:
+      - calendarWidth: 196
+      - cellHeight: 26
+      - cellWidth: 28
+      - textSize: 14
+      - iconSize: 16
+      - padding: 16
+      - gap: 10
+  - `lg`:
+    - Classes: `p-5 gap-3`
+    - Dimensions:
+      - calendarWidth: 252
+      - cellHeight: 32
+      - cellWidth: 36
+      - textSize: 16
+      - iconSize: 18
+      - padding: 20
+      - gap: 12
+
 **Examples:**
 
 ```tsx

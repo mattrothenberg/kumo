@@ -3868,3 +3868,49 @@ Address remaining magic numbers identified in comprehensive audit. Tasks T1-T8 a
 
 **Status:** COMPLETE - Phase 7 baseline established with failing test (expected)
 
+
+---
+
+## Iteration 23: T2 - Add DateRangePicker COMPONENT_STYLING_METADATA (PHASE 7)
+
+**Task:** T2 - add-daterangepicker-styling
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Bumped CACHE_VERSION** from 1 to 2 in component-registry.ts (line 54)
+   - Required when adding new metadata to invalidate cache
+
+2. **Added DateRangePicker entry to COMPONENT_STYLING_METADATA** (~line 2351):
+   - Added sizeVariants for sm, base, lg
+   - Each size includes dimensions:
+     - calendarWidth: 168 (sm), 196 (base), 252 (lg)
+     - cellHeight: 22 (sm), 26 (base), 32 (lg)
+     - cellWidth: 24 (sm), 28 (base), 36 (lg)
+     - textSize: 12 (sm), 14 (base), 16 (lg)
+     - iconSize: 14 (sm), 16 (base), 18 (lg)
+     - padding: 12 (sm), 16 (base), 20 (lg)
+     - gap: 8 (sm), 10 (base), 12 (lg)
+   - Also includes classes: "p-3 gap-2" (sm), "p-4 gap-2.5" (base), "p-5 gap-3" (lg)
+
+3. **Regenerated component registry**:
+   - Ran: pnpm --filter @cloudflare/kumo codegen:registry
+   - Completed in 18.57s (30 components regenerated due to cache invalidation)
+   - Verified styling section exists: jq '.components.DateRangePicker.styling'
+
+### Test Results:
+- ✅ DateRangePicker.styling section exists in component-registry.json
+- ✅ All 3 size variants (sm, base, lg) present with complete dimensions
+- ✅ Registry regeneration successful
+
+### Files Modified:
+- `scripts/ai/component-registry.ts` (bumped CACHE_VERSION, added DateRangePicker metadata)
+- `packages/kumo/ai/component-registry.json` (generated - DateRangePicker.styling added)
+- `packages/kumo/ai/component-registry.md` (generated)
+- `plans/PRD.json` (T2 status: pending → complete)
+- `plans/progress.txt` (this entry)
+
+### Next Task:
+T3 - Update date-range-picker.ts generator to read from registry.components.DateRangePicker.styling
+
+**Status:** COMPLETE - DateRangePicker styling metadata added to registry

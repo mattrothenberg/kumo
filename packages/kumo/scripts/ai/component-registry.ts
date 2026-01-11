@@ -51,7 +51,7 @@ const cachePath = join(cacheDir, "component-registry-cache.json");
 // Changes to shared code in THIS file won't invalidate cache without a version bump.
 // Or use: pnpm codegen:registry --no-cache
 // =============================================================================
-const CACHE_VERSION = 1;
+const CACHE_VERSION = 2;
 
 // =============================================================================
 // CLI flags
@@ -2346,6 +2346,49 @@ const COMPONENT_STYLING_METADATA: Record<string, ComponentSchema["styling"]> = {
       hoverBackground: "color-toast-button-hover",
       hoverColor: "text-color-label",
       borderRadius: 4,
+    },
+  } as any,
+  DateRangePicker: {
+    sizeVariants: {
+      sm: {
+        height: 0,
+        classes: "p-3 gap-2",
+        dimensions: {
+          calendarWidth: 168,
+          cellHeight: 22,
+          cellWidth: 24,
+          textSize: 12,
+          iconSize: 14,
+          padding: 12,
+          gap: 8,
+        },
+      },
+      base: {
+        height: 0,
+        classes: "p-4 gap-2.5",
+        dimensions: {
+          calendarWidth: 196,
+          cellHeight: 26,
+          cellWidth: 28,
+          textSize: 14,
+          iconSize: 16,
+          padding: 16,
+          gap: 10,
+        },
+      },
+      lg: {
+        height: 0,
+        classes: "p-5 gap-3",
+        dimensions: {
+          calendarWidth: 252,
+          cellHeight: 32,
+          cellWidth: 36,
+          textSize: 16,
+          iconSize: 18,
+          padding: 20,
+          gap: 12,
+        },
+      },
     },
   } as any,
 };

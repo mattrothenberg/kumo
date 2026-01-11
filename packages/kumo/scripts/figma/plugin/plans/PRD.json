@@ -180,7 +180,7 @@
       "name": "add-daterangepicker-styling",
       "title": "Add DateRangePicker COMPONENT_STYLING_METADATA",
       "priority": "high",
-      "status": "pending",
+      "status": "complete",
       "description": "Add full sizeVariants with dimensions to COMPONENT_STYLING_METADATA",
       "files": ["scripts/ai/component-registry.ts"],
       "acceptance": [
