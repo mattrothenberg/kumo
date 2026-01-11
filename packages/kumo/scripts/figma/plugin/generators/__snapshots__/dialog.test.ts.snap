@@ -101,7 +101,7 @@ exports[`Dialog Generator - Snapshot Tests (Intermediate Data) > should produce 
       "padding": 16,
       "titleSize": 20,
       "titleWeight": 600,
-      "width": 350,
+      "width": 288,
     },
     "xl": {
       "buttonSize": "base",
@@ -143,7 +143,7 @@ exports[`Dialog Generator - Snapshot Tests (Intermediate Data) > should produce 
         "padding": 16,
         "titleSize": 20,
         "titleWeight": 600,
-        "width": 350,
+        "width": 288,
       },
       "description": "Small dialog for simple confirmations",
       "size": "sm",
@@ -212,7 +212,7 @@ exports[`Dialog Generator - Snapshot Tests (Intermediate Data) > should produce 
   "padding": 16,
   "titleSize": 20,
   "titleWeight": 600,
-  "width": 350,
+  "width": 288,
 }
 `;
 

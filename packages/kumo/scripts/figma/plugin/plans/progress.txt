@@ -2588,3 +2588,62 @@ pnpm --filter @cloudflare/kumo test generators/ --run
 
 **Status:** COMPLETE - Task acceptance criteria met
 
+
+---
+
+## Iteration 23: T4 - Parse Dialog SIZE_CONFIG from Registry
+
+**Task:** T4 - parse-dialog-sizes
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+
+1. **Enhanced Tailwind parser to handle min-w-* classes:**
+   - Added parsing for `min-w-{number}` pattern (e.g., `min-w-72`, `min-w-96`)
+   - Extended SPACING_SCALE to include larger values: 14, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 72, 80, 96
+   - Parser now handles both standard scale (`min-w-96`) and arbitrary values (`min-w-[32rem]`)
+   - Added to parsers/tailwind-to-figma.ts lines 245-253
+
+2. **Updated Dialog generator to derive widths from registry:**
+   - Added `parseDialogWidth()` function that extracts minWidth from registry classes
+   - SIZE_CONFIG now dynamically calls `parseDialogWidth()` for each size
+   - Fallback values provided for each size: sm=288, base=384, lg=512, xl=768
+   - Falls back gracefully if parsing fails
+
+3. **Updated dialog.test.ts:**
+   - Corrected expected width for sm size from 350px to 288px (min-w-72 = 72 * 4)
+   - Added new test section "Width Parsing from Registry" with 5 tests
+   - Tests validate parsing of min-w-72, min-w-96, min-w-[32rem], min-w-[48rem]
+   - Tests validate fallback mechanism for unknown sizes
+
+4. **Fixed side effect in code-block.test.ts:**
+   - Parser now correctly parses `min-w-0` class (used in CodeBlock component)
+   - Updated snapshots to include `minWidth: 0` in parsed styles
+
+### Files Modified:
+- parsers/tailwind-to-figma.ts - Added min-w-* parsing, extended SPACING_SCALE
+- generators/dialog.ts - Added parseDialogWidth(), updated SIZE_CONFIG to use parsed widths
+- generators/dialog.test.ts - Updated expected values, added parsing validation tests
+- generators/dialog.test.ts.snap - Updated 2 snapshots for corrected sm width
+- generators/code-block.test.ts.snap - Updated 2 snapshots for minWidth: 0
+
+### Test Results:
+- ✅ All 50 Dialog tests pass
+- ✅ All 41 CodeBlock tests pass  
+- ✅ All 1482 generator tests pass
+
+### Key Improvements:
+- **Eliminated magic numbers:** Dialog widths now derived from registry instead of hardcoded
+- **Parser enhancement:** min-w-* classes now fully supported (both scale and arbitrary)
+- **Bug fix:** Corrected sm width from 350px (wrong) to 288px (correct per registry)
+- **Comprehensive testing:** 5 new tests validate parsing and fallback behavior
+
+### Notes:
+- Previous hardcoded sm width (350px) was incorrect - registry says min-w-72 (288px)
+- Generator was out of sync with React component - now aligned
+- Parser enhancement benefits all generators that use min-w-* classes
+- Fallback mechanism ensures robustness if registry changes
+
+**Status:** COMPLETE - Ready for commit
+

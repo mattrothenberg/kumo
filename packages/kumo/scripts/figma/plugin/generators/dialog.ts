@@ -34,6 +34,7 @@ import {
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import registry from "../../../../ai/component-registry.json";
 import { logComplete } from "../logger";
+import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 
 /**
  * Extract props from registry
@@ -54,8 +55,22 @@ var sizeProp = dialogProps.size as {
 var SIZE_VALUES = sizeProp.values;
 
 /**
+ * Parse width from registry size classes
+ * Extracts minWidth from Tailwind classes like "min-w-96" or "min-w-[32rem]"
+ * Falls back to hardcoded value if parsing fails
+ */
+function parseDialogWidth(size: string, fallbackWidth: number): number {
+  var classes = sizeProp.classes[size];
+  if (!classes) return fallbackWidth;
+  
+  var parsed = parseTailwindClasses(classes);
+  return parsed.minWidth !== undefined ? parsed.minWidth : fallbackWidth;
+}
+
+/**
  * Size-specific configuration
  * Maps size to width, title font size, description font size, padding
+ * Widths are derived from registry classes where possible
  */
 var SIZE_CONFIG: Record<
   string,
@@ -70,7 +85,7 @@ var SIZE_CONFIG: Record<
   }
 > = {
   sm: {
-    width: 350,
+    width: parseDialogWidth("sm", 288), // min-w-72 = 288px (fallback)
     titleSize: 20,
     titleWeight: 600,
     descSize: 16,
@@ -79,7 +94,7 @@ var SIZE_CONFIG: Record<
     buttonSize: "sm",
   },
   base: {
-    width: 384, // min-w-96 = 24rem = 384px
+    width: parseDialogWidth("base", 384), // min-w-96 = 384px (fallback)
     titleSize: 20,
     titleWeight: 600,
     descSize: 16,
@@ -88,7 +103,7 @@ var SIZE_CONFIG: Record<
     buttonSize: "base",
   },
   lg: {
-    width: 512, // min-w-[32rem] = 512px
+    width: parseDialogWidth("lg", 512), // min-w-[32rem] = 512px (fallback)
     titleSize: 20,
     titleWeight: 600,
     descSize: 16,
@@ -97,7 +112,7 @@ var SIZE_CONFIG: Record<
     buttonSize: "base",
   },
   xl: {
-    width: 768, // min-w-[48rem] = 768px
+    width: parseDialogWidth("xl", 768), // min-w-[48rem] = 768px (fallback)
     titleSize: 20,
     titleWeight: 600,
     descSize: 16,

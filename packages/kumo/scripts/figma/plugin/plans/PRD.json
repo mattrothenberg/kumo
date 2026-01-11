@@ -182,7 +182,7 @@
       "name": "parse-dialog-sizes",
       "title": "Parse Dialog SIZE_CONFIG from Registry",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Derive dialog width, padding, gap from registry Tailwind classes",
       "files": [
         "generators/dialog.ts",

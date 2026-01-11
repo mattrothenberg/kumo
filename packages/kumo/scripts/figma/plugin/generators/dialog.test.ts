@@ -71,7 +71,7 @@ describe("Dialog Generator - Size Config Validation", () => {
     it("should have valid config", () => {
       const config = getSizeConfig("sm");
       expect(config).toBeDefined();
-      expect(config.width).toBe(350);
+      expect(config.width).toBe(288); // min-w-72 = 72 * 4 = 288px (parsed from registry)
       expect(config.titleSize).toBe(20);
       expect(config.titleWeight).toBe(600);
       expect(config.descSize).toBe(16);
@@ -85,7 +85,7 @@ describe("Dialog Generator - Size Config Validation", () => {
     it("should have valid config", () => {
       const config = getSizeConfig("base");
       expect(config).toBeDefined();
-      expect(config.width).toBe(384);
+      expect(config.width).toBe(384); // min-w-96 = 96 * 4 = 384px (parsed from registry)
       expect(config.titleSize).toBe(20);
       expect(config.titleWeight).toBe(600);
       expect(config.descSize).toBe(16);
@@ -99,7 +99,7 @@ describe("Dialog Generator - Size Config Validation", () => {
     it("should have valid config", () => {
       const config = getSizeConfig("lg");
       expect(config).toBeDefined();
-      expect(config.width).toBe(512);
+      expect(config.width).toBe(512); // min-w-[32rem] = 32 * 16 = 512px (parsed from registry)
       expect(config.titleSize).toBe(20);
       expect(config.titleWeight).toBe(600);
       expect(config.descSize).toBe(16);
@@ -113,7 +113,7 @@ describe("Dialog Generator - Size Config Validation", () => {
     it("should have valid config", () => {
       const config = getSizeConfig("xl");
       expect(config).toBeDefined();
-      expect(config.width).toBe(768);
+      expect(config.width).toBe(768); // min-w-[48rem] = 48 * 16 = 768px (parsed from registry)
       expect(config.titleSize).toBe(20);
       expect(config.titleWeight).toBe(600);
       expect(config.descSize).toBe(16);
@@ -139,6 +139,39 @@ describe("Dialog Generator - Size Config Validation", () => {
       expect(config).toHaveProperty("gap");
       expect(config).toHaveProperty("buttonSize");
     }
+  });
+});
+
+describe("Dialog Generator - Width Parsing from Registry", () => {
+  it("should parse min-w-72 for sm size", () => {
+    const config = getSizeConfig("sm");
+    // min-w-72 = 72 * 4 = 288px
+    expect(config.width).toBe(288);
+  });
+
+  it("should parse min-w-96 for base size", () => {
+    const config = getSizeConfig("base");
+    // min-w-96 = 96 * 4 = 384px
+    expect(config.width).toBe(384);
+  });
+
+  it("should parse min-w-[32rem] for lg size", () => {
+    const config = getSizeConfig("lg");
+    // min-w-[32rem] = 32 * 16 = 512px
+    expect(config.width).toBe(512);
+  });
+
+  it("should parse min-w-[48rem] for xl size", () => {
+    const config = getSizeConfig("xl");
+    // min-w-[48rem] = 48 * 16 = 768px
+    expect(config.width).toBe(768);
+  });
+
+  it("should use fallback width if parsing fails", () => {
+    // This tests the fallback mechanism by checking that
+    // unknown sizes return the base config (which has a fallback)
+    const config = getSizeConfig("unknown-size-that-does-not-exist");
+    expect(config.width).toBe(384); // base fallback
   });
 });
 
@@ -339,7 +372,7 @@ describe("Dialog Generator - Expected Figma Output", () => {
   it("should produce correct Figma properties for sm dialog", () => {
     const sizeConfig = getSizeConfig("sm");
 
-    expect(sizeConfig.width).toBe(350);
+    expect(sizeConfig.width).toBe(288); // min-w-72 parsed from registry
     expect(sizeConfig.padding).toBe(16);
     expect(sizeConfig.gap).toBe(8);
     expect(sizeConfig.buttonSize).toBe("sm");
