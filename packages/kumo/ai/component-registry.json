@@ -3323,6 +3323,28 @@
           "description": "Secondary sub-component",
           "props": {}
         }
+      },
+      "styling": {
+        "container": {
+          "width": 280,
+          "borderRadius": 8
+        },
+        "secondary": {
+          "paddingX": 8,
+          "paddingY": 8,
+          "gap": 8,
+          "fontSize": 16,
+          "fontWeight": 500
+        },
+        "primary": {
+          "paddingX": 16,
+          "paddingY": 16,
+          "paddingRight": 12,
+          "gap": 8,
+          "fontSize": 16,
+          "fontWeight": 400,
+          "borderRadius": 8
+        }
       }
     },
     "Loader": {

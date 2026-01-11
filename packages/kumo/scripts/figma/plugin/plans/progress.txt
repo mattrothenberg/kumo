@@ -4201,3 +4201,53 @@ var SIZE_CONFIG = getSizeConfigFromRegistry();
 
 **Status:** COMPLETE - InputArea now reads from registry with proper fallback
 
+
+---
+
+## Iteration 25: T8 - Add LayerCard COMPONENT_STYLING_METADATA (PHASE 7)
+
+**Task:** T8 - Add LayerCard COMPONENT_STYLING_METADATA
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Added LayerCard to COMPONENT_STYLING_METADATA**:
+   - Added LayerCard entry with container, secondary, primary sections
+   - Used ACTUAL hardcoded values from layer-card.ts generator (not PRD spec values):
+     - container: width: 280 (not 320 from PRD), borderRadius: 8
+     - secondary: paddingX: 8 (not 16 from PRD), paddingY: 8 (not 12), gap: 8, fontSize: 16 (not 14), fontWeight: 500
+     - primary: paddingX: 16, paddingY: 16, paddingRight: 12, gap: 8, fontSize: 16 (not 14), fontWeight: 400, borderRadius: 8
+   
+2. **Bumped CACHE_VERSION**:
+   - Updated from 3 to 4 to force cache invalidation
+   - Ensures all components regenerate with new styling metadata
+
+3. **Regenerated registry**:
+   - All 30 components regenerated successfully
+   - LayerCard now has styling section in registry
+   - Verified styling section structure matches COMPONENT_STYLING_METADATA
+
+### Test Results:
+- ✅ Registry regenerated successfully (30 components, 0 cached)
+- ✅ LayerCard component exists in registry
+- ✅ Styling section has correct structure with container, secondary, primary
+- ✅ Values match original hardcoded values in generator exactly
+
+### Files Modified:
+- `scripts/ai/component-registry.ts` - Added LayerCard to COMPONENT_STYLING_METADATA, bumped CACHE_VERSION (3→4)
+- `ai/component-registry.json` - Regenerated with LayerCard styling metadata
+- `plans/PRD.json` - T8 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- **PRD spec values were INCORRECT** - used actual hardcoded values from generator instead:
+  - Width: 280 (not 320 from PRD)
+  - Secondary paddingX: 8 (not 16), paddingY: 8 (not 12), fontSize: 16 (not 14)
+  - Primary fontSize: 16 (not 14)
+  - Added paddingRight: 12 for primary (missing from PRD)
+- LayerCard has no variants - single compound component with Secondary and Primary sub-components
+- Next task (T9) will update layer-card.ts generator to read from registry.components.LayerCard.styling
+- Current enforcement test status: Still 2/5 violations (LayerCard and MenuBar pending)
+
+**Status:** COMPLETE - LayerCard styling metadata added to registry
+

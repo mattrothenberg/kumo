@@ -2675,6 +2675,9 @@ LayerCard component
 
 `bg-layer-card-primary`, `bg-surface-2`, `ring-border`, `ring-color`, `text-label`
 
+**Styling:**
+
+
 **Sub-Components:**
 
 This is a compound component. Use these sub-components:
