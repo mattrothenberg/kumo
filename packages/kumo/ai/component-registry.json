@@ -3403,7 +3403,20 @@
         }
       },
       "examples": [],
-      "colors": ["bg-color", "bg-surface", "border-color"]
+      "colors": ["bg-color", "bg-surface", "border-color"],
+      "styling": {
+        "container": {
+          "height": 32,
+          "borderRadius": 8,
+          "padding": 2,
+          "gap": 2
+        },
+        "button": {
+          "width": 36,
+          "borderRadius": 6,
+          "iconSize": 18
+        }
+      }
     },
     "Meter": {
       "name": "Meter",

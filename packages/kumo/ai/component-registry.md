@@ -2781,6 +2781,9 @@ MenuBar component
 
 `bg-color`, `bg-surface`, `border-color`
 
+**Styling:**
+
+
 ---
 
 ### Meter

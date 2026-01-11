@@ -2431,6 +2431,19 @@ const COMPONENT_STYLING_METADATA: Record<string, ComponentSchema["styling"]> = {
       borderRadius: 8,
     },
   } as any,
+  MenuBar: {
+    container: {
+      height: 32,
+      borderRadius: 8,
+      padding: 2,
+      gap: 2,
+    },
+    button: {
+      width: 36,
+      borderRadius: 6,
+      iconSize: 18,
+    },
+  } as any,
 };
 
 /**

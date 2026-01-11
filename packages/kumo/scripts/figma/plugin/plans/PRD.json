@@ -320,7 +320,7 @@
       "name": "add-menubar-styling",
       "title": "Add MenuBar COMPONENT_STYLING_METADATA",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Add container and button styling to COMPONENT_STYLING_METADATA",
       "files": ["scripts/ai/component-registry.ts"],
       "acceptance": [

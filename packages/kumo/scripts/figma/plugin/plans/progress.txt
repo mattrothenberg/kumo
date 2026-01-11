@@ -150,6 +150,53 @@ Ensure all Figma generators derive styling values from component-registry.json f
 
 ---
 
+## Iteration 25: T10 - Add MenuBar COMPONENT_STYLING_METADATA (PHASE 7)
+
+**Task:** T10 - Add MenuBar COMPONENT_STYLING_METADATA
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Added MenuBar to COMPONENT_STYLING_METADATA**:
+   - Added MenuBar entry after LayerCard (~line 2434)
+   - Includes container section: height (32), borderRadius (8), padding (2), gap (2)
+   - Includes button section: width (36), borderRadius (6), iconSize (18)
+   - Values match original hardcoded MENUBAR_CONFIG from menubar.ts
+
+2. **Force regenerated registry**:
+   - Ran: `pnpm --filter @cloudflare/kumo codegen:registry --no-cache`
+   - MenuBar component now has styling section in registry
+   - All 30 components regenerated (18.60s)
+
+### Test Results:
+- ✅ Registry regenerated successfully
+- ✅ MenuBar styling section exists in component-registry.json
+- ✅ Values match original hardcoded values from generator:
+  - container.height: 32
+  - container.borderRadius: 8 (rounded-lg)
+  - container.padding: 2
+  - container.gap: 2
+  - button.width: 36
+  - button.borderRadius: 6 (rounded-md)
+  - button.iconSize: 18
+
+### Files Modified:
+- `scripts/ai/component-registry.ts` - Added MenuBar to COMPONENT_STYLING_METADATA
+- `ai/component-registry.json` - Regenerated with MenuBar styling
+- `plans/PRD.json` - T10 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- CACHE_VERSION already at 4 from previous iterations (no bump needed)
+- Used `--no-cache` flag to force regeneration after metadata change
+- MenuBar is the last component needing styling metadata
+- Next task (T11) will update menubar.ts generator to read from registry
+- After T11, enforcement test should show 0/5 violations (all generators pass)
+
+**Status:** COMPLETE - MenuBar styling metadata added to registry
+
+---
+
 ## PHASE 6: Magic Numbers Audit Remediation (COMPLETE)
 
 ### Summary
