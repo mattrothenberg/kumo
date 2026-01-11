@@ -330,7 +330,7 @@ export async function generateBadgeComponents(startY: number): Promise<number> {
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 4, // +4 to vertically center with badge
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.sm, // Small offset to vertically center with badge
     );
     lightSection.frame.appendChild(labelNode);
   }
@@ -350,7 +350,7 @@ export async function generateBadgeComponents(startY: number): Promise<number> {
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 4,
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.sm,
     );
     darkSection.frame.appendChild(labelNode);
   }

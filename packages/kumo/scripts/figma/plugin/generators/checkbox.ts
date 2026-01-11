@@ -531,7 +531,7 @@ export async function generateCheckboxComponents(
     var labelNode = await createRowLabel(
       labelData.text,
       SECTION_PADDING,
-      SECTION_PADDING + labelData.y + 4, // +4 to vertically center with checkbox
+      SECTION_PADDING + labelData.y + GRID_LAYOUT.labelVerticalOffset.sm, // Small offset to vertically center with checkbox
     );
     lightSection.frame.appendChild(labelNode);
   }
@@ -556,7 +556,7 @@ export async function generateCheckboxComponents(
     var darkLabelNode = await createRowLabel(
       darkLabelData.text,
       SECTION_PADDING,
-      SECTION_PADDING + darkLabelData.y + 4,
+      SECTION_PADDING + darkLabelData.y + GRID_LAYOUT.labelVerticalOffset.sm,
     );
     darkSection.frame.appendChild(darkLabelNode);
   }

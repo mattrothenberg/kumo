@@ -872,7 +872,7 @@ export async function generateButtonComponents(
     var labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 12, // +12 to vertically center with button
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.lg, // Large offset to vertically center with button
     );
     lightSection.frame.appendChild(labelNode);
   }
@@ -914,7 +914,7 @@ export async function generateButtonComponents(
     var darkLabelNode = await createRowLabel(
       darkLabel.text,
       SECTION_PADDING,
-      SECTION_PADDING + darkLabel.y + 12,
+      SECTION_PADDING + darkLabel.y + GRID_LAYOUT.labelVerticalOffset.lg,
     );
     darkSection.frame.appendChild(darkLabelNode);
   }

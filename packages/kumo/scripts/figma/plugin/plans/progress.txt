@@ -3475,3 +3475,54 @@ Address remaining magic numbers identified in comprehensive audit. Tasks T1-T8 a
 
 **Status:** COMPLETE - Ready for commit
 
+
+---
+
+## Phase 6 - Iteration 1: T10 - Refactor Label Vertical Offsets
+
+**Task:** T10 - refactor-generators-label-offset
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Replaced hardcoded label vertical offset values with GRID_LAYOUT.labelVerticalOffset constants:
+   - button.ts: Changed `+ 12` to `GRID_LAYOUT.labelVerticalOffset.lg` (2 occurrences)
+   - badge.ts: Changed `+ 4` to `GRID_LAYOUT.labelVerticalOffset.sm` (2 occurrences)
+   - tabs.ts: Changed `+ 12` to `GRID_LAYOUT.labelVerticalOffset.lg` (2 occurrences)
+   - checkbox.ts: Changed `+ 4` to `GRID_LAYOUT.labelVerticalOffset.sm` (2 occurrences)
+   - loader.ts: Changed `+ 4` to `GRID_LAYOUT.labelVerticalOffset.sm` (2 occurrences)
+   - Added GRID_LAYOUT import to loader.ts
+
+2. Updated comments to be more semantic:
+   - Changed "// +12 to vertically center with button" to "// Large offset to vertically center with button"
+   - Changed "// +4 to vertically center with badge" to "// Small offset to vertically center with badge"
+
+3. Offset selection rationale:
+   - **sm (4px)**: Used for compact components (badge, checkbox, loader) - small visual elements
+   - **lg (12px)**: Used for larger components (button, tabs) - taller elements needing more centering
+
+### Files Modified:
+- generators/button.ts
+- generators/badge.ts
+- generators/tabs.ts
+- generators/checkbox.ts
+- generators/loader.ts
+
+### Test Results:
+- ✅ All 117 button tests pass
+- ✅ All 59 badge tests pass
+- ✅ All 60 tabs tests pass
+- ✅ All 70 checkbox tests pass
+- ✅ All 34 loader tests pass
+- ✅ All 1489 generator tests pass
+- ✅ No snapshots changed (values are identical)
+
+### Notes:
+- input.ts and dialog.ts did not have hardcoded label offset patterns (not in search results)
+- GRID_LAYOUT.labelVerticalOffset was already added in T4
+- All modified files already imported GRID_LAYOUT except loader.ts
+- Pre-existing TypeScript errors in tabs.ts and loader.ts (documented in earlier iterations)
+- Zero hardcoded label offset values remain in target generators
+
+**Status:** COMPLETE
+

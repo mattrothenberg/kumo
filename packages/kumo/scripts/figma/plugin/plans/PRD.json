@@ -365,7 +365,7 @@
       "name": "refactor-generators-label-offset",
       "title": "Refactor Generators to Use labelVerticalOffset",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Replace hardcoded label vertical offsets (4, 8, 12) with GRID_LAYOUT.labelVerticalOffset",
       "files": [
         "generators/button.ts",

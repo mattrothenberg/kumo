@@ -25,6 +25,7 @@ import {
   SECTION_PADDING,
   SECTION_GAP,
   SECTION_LAYOUT,
+  GRID_LAYOUT,
 } from "./shared";
 import { logComplete, logStart, logProgress } from "../logger";
 
@@ -308,7 +309,7 @@ export async function generateLoaderComponents(
       var labelNode = await createRowLabel(
         label.text,
         SECTION_PADDING,
-        SECTION_PADDING + label.y + 4,
+        SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.sm,
       );
       lightSection.frame.appendChild(labelNode);
     }
@@ -329,7 +330,7 @@ export async function generateLoaderComponents(
       var darkLabelNode = await createRowLabel(
         darkLabel.text,
         SECTION_PADDING,
-        SECTION_PADDING + darkLabel.y + 4,
+        SECTION_PADDING + darkLabel.y + GRID_LAYOUT.labelVerticalOffset.sm,
       );
       darkSection.frame.appendChild(darkLabelNode);
     }
