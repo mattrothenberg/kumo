@@ -34,6 +34,7 @@ const COMPONENT_NAME_MAPPING: Record<string, string> = {
   ClipboardText: "clipboard-text",
   DateRangePicker: "date-range-picker",
   DropdownMenu: "dropdown", // Registry name differs from file name
+  InputArea: "input-area", // Synthetic component - uses Input's props but has own styling
   LayerCard: "layer-card",
   SensitiveInput: "sensitive-input",
   Toasty: "toast", // Registry name differs from file name

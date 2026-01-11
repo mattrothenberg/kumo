@@ -43,6 +43,11 @@ var inputProps = inputRegistry.props;
 var inputStyling = inputRegistry.styling;
 
 /**
+ * Extract InputArea styling from registry (minHeight and width per size)
+ */
+var inputAreaStyling = (registry.components.InputArea as any).styling;
+
+/**
  * Size values from Input registry
  */
 var SIZE_VALUES = inputProps.size.values;
@@ -53,42 +58,52 @@ var SIZE_VALUES = inputProps.size.values;
 var VARIANT_VALUES = inputProps.variant.values;
 
 /**
- * Get size configuration from Input registry
+ * Get size configuration from registry (merging InputArea and Input styling)
  * InputArea uses the same paddingX, fontSize, borderRadius as Input,
- * but with larger minHeight for multi-line content and py-2 instead of Input's height
+ * but with larger minHeight for multi-line content and py-2 instead of Input's height.
+ * minHeight and width come from InputArea registry, other dimensions from Input registry.
  * @param size - Size variant (xs, sm, base, lg)
  * @returns Size dimensions including layout-specific width
  */
 function getSizeConfigFromRegistry(size: string) {
-  var sizeVariant = inputStyling.sizeVariants[size];
-  if (!sizeVariant) {
-    // Fallback to base if size not found
-    sizeVariant = inputStyling.sizeVariants.base;
-  }
-
-  // InputArea-specific minHeight (taller than Input for multi-line)
-  var minHeightMap: Record<string, number> = {
-    xs: 60, // Taller than input (20) for multi-line
-    sm: 72, // Taller than input (26) for multi-line
-    base: 88, // Taller than input (36) for multi-line
-    lg: 100, // Taller than input (40) for multi-line
+  // Fallback values if registry data is missing
+  var FALLBACK_INPUT_AREA_CONFIG: Record<
+    string,
+    { minHeight: number; width: number }
+  > = {
+    xs: { minHeight: 60, width: 200 },
+    sm: { minHeight: 72, width: 240 },
+    base: { minHeight: 88, width: 320 },
+    lg: { minHeight: 100, width: 360 },
   };
 
-  // Layout-specific widths (not in registry - generator specific)
-  var widthMap: Record<string, number> = {
-    xs: 200,
-    sm: 240,
-    base: 320,
-    lg: 360,
+  var FALLBACK_INPUT_CONFIG = {
+    paddingX: 12,
+    fontSize: 16,
+    borderRadius: 8,
   };
+
+  // Get InputArea-specific dimensions (minHeight, width) from registry
+  var inputAreaSizeData =
+    inputAreaStyling?.sizeVariants?.[size] ||
+    FALLBACK_INPUT_AREA_CONFIG[size] ||
+    FALLBACK_INPUT_AREA_CONFIG.base;
+
+  // Get Input dimensions (paddingX, fontSize, borderRadius) from registry
+  var inputSizeVariant =
+    inputStyling?.sizeVariants?.[size] || inputStyling?.sizeVariants?.base;
 
   return {
-    minHeight: minHeightMap[size] || minHeightMap.base,
-    paddingX: sizeVariant.dimensions.paddingX,
+    minHeight: inputAreaSizeData.minHeight,
+    paddingX:
+      inputSizeVariant?.dimensions?.paddingX || FALLBACK_INPUT_CONFIG.paddingX,
     paddingY: 8, // py-2 for all sizes (InputArea-specific, not in registry)
-    fontSize: sizeVariant.dimensions.fontSize,
-    borderRadius: sizeVariant.dimensions.borderRadius,
-    width: widthMap[size] || widthMap.base,
+    fontSize:
+      inputSizeVariant?.dimensions?.fontSize || FALLBACK_INPUT_CONFIG.fontSize,
+    borderRadius:
+      inputSizeVariant?.dimensions?.borderRadius ||
+      FALLBACK_INPUT_CONFIG.borderRadius,
+    width: inputAreaSizeData.width,
   };
 }
 

@@ -36,8 +36,8 @@ Ensure all Figma generators derive styling values from component-registry.json f
 - ✅ T3: Update date-range-picker.ts generator (complete) → 4/5 violations
 - ✅ T4: Add Pagination styling metadata (complete)
 - ✅ T5: Update pagination.ts generator (complete) → 3/5 violations
-- T6: Add InputArea styling metadata (complete) → enforcement test will show 3/5 violations
-- T7: Update input-area.ts generator (pending) → 2/5 violations
+- ✅ T6: Add InputArea styling metadata (complete)
+- ✅ T7: Update input-area.ts generator (complete) → 2/5 violations
 - T8: Add LayerCard styling metadata (pending)
 - T9: Update layer-card.ts generator (pending) → 1/5 violations
 - T10: Add MenuBar styling metadata (pending)
@@ -4146,4 +4146,58 @@ var SIZE_CONFIG = getSizeConfigFromRegistry();
 - Next task (T5) will update pagination.ts generator to read from registry.styling
 
 **Status:** COMPLETE - Pagination styling metadata added to registry
+
+
+---
+
+## Iteration 25: T7 - Update input-area.ts to Read from Registry (PHASE 7)
+
+**Task:** T7 - Update input-area.ts to Read from Registry
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Added registry styling import**:
+   - Added `inputAreaStyling = (registry.components.InputArea as any).styling;`
+   - Added after existing inputRegistry/inputProps/inputStyling declarations
+
+2. **Refactored getSizeConfigFromRegistry() function**:
+   - Now merges InputArea styling (minHeight, width) with Input styling (paddingX, fontSize, borderRadius)
+   - Created FALLBACK_INPUT_AREA_CONFIG with original hardcoded minHeight/width values
+   - Created FALLBACK_INPUT_CONFIG with Input dimension fallbacks
+   - Reads inputAreaStyling.sizeVariants for minHeight and width
+   - Reads inputStyling.sizeVariants for paddingX, fontSize, borderRadius
+   - Maintains paddingY: 8 as InputArea-specific constant (py-2, not in registry)
+
+3. **Added InputArea to COMPONENT_NAME_MAPPING**:
+   - Fixed drift detection test failure for missing generator
+   - InputArea is a synthetic component in registry (not physical file)
+   - Maps to input-area.ts generator file
+
+### Test Results:
+- ✅ All 40 input-area tests pass
+- ✅ No snapshots changed (values match original hardcoded values)
+- ✅ Enforcement test now shows 2/5 violations (down from 3/5)
+  - ✅ DateRangePicker passes
+  - ✅ Pagination passes
+  - ✅ InputArea passes
+  - ❌ LayerCard (pending - T8/T9)
+  - ❌ MenuBar (pending - T10/T11)
+- ✅ Drift detection: 19/20 tests passing (InputArea mapping fixed)
+
+### Files Modified:
+- `scripts/figma/plugin/generators/input-area.ts` - Added registry reading with fallback
+- `scripts/figma/plugin/generators/drift-detection.test.ts` - Added InputArea to COMPONENT_NAME_MAPPING
+- `plans/PRD.json` - T7 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- InputArea is a "synthetic" component added to registry in T6
+- Generator merges two registry sources: InputArea (minHeight/width) + Input (paddingX/fontSize/borderRadius)
+- paddingY: 8 remains hardcoded as InputArea-specific (py-2 class, not size-dependent)
+- Pre-existing TypeScript errors (textAutoResize property) documented
+- Values from registry match original hardcoded values exactly (no snapshot changes)
+- Fallback values ensure generator works even if registry data missing
+
+**Status:** COMPLETE - InputArea now reads from registry with proper fallback
 
