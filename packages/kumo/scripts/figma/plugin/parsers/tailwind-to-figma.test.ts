@@ -563,6 +563,217 @@ describe("parseTailwindClasses", () => {
       });
     });
   });
+
+  describe("Arbitrary Value Parsing", () => {
+    describe("Width", () => {
+      it("should parse width with px unit", () => {
+        expect(parseTailwindClasses("w-[350px]")).toEqual({
+          width: 350,
+        });
+        expect(parseTailwindClasses("w-[100px]")).toEqual({
+          width: 100,
+        });
+      });
+
+      it("should parse width with rem unit", () => {
+        expect(parseTailwindClasses("w-[32rem]")).toEqual({
+          width: 512, // 32 * 16
+        });
+        expect(parseTailwindClasses("w-[20rem]")).toEqual({
+          width: 320, // 20 * 16
+        });
+      });
+
+      it("should parse width with em unit", () => {
+        expect(parseTailwindClasses("w-[16em]")).toEqual({
+          width: 256, // 16 * 16
+        });
+      });
+
+      it("should parse width with decimal values", () => {
+        expect(parseTailwindClasses("w-[21.875rem]")).toEqual({
+          width: 350, // 21.875 * 16
+        });
+        expect(parseTailwindClasses("w-[12.5px]")).toEqual({
+          width: 12.5,
+        });
+      });
+
+      it("should parse width without unit (defaults to px)", () => {
+        expect(parseTailwindClasses("w-[250]")).toEqual({
+          width: 250,
+        });
+      });
+    });
+
+    describe("Height", () => {
+      it("should parse height with px unit", () => {
+        expect(parseTailwindClasses("h-[100px]")).toEqual({
+          height: 100,
+        });
+      });
+
+      it("should parse height with rem unit", () => {
+        expect(parseTailwindClasses("h-[2.5rem]")).toEqual({
+          height: 40, // 2.5 * 16
+        });
+        expect(parseTailwindClasses("h-[10rem]")).toEqual({
+          height: 160, // 10 * 16
+        });
+      });
+
+      it("should parse height with em unit", () => {
+        expect(parseTailwindClasses("h-[3em]")).toEqual({
+          height: 48, // 3 * 16
+        });
+      });
+
+      it("should parse height without unit (defaults to px)", () => {
+        expect(parseTailwindClasses("h-[50]")).toEqual({
+          height: 50,
+        });
+      });
+    });
+
+    describe("Min Width", () => {
+      it("should parse min-width with px unit", () => {
+        expect(parseTailwindClasses("min-w-[200px]")).toEqual({
+          minWidth: 200,
+        });
+      });
+
+      it("should parse min-width with rem unit", () => {
+        expect(parseTailwindClasses("min-w-[32rem]")).toEqual({
+          minWidth: 512, // 32 * 16
+        });
+      });
+
+      it("should parse min-width with em unit", () => {
+        expect(parseTailwindClasses("min-w-[10em]")).toEqual({
+          minWidth: 160, // 10 * 16
+        });
+      });
+    });
+
+    describe("Min Height", () => {
+      it("should parse min-height with px unit", () => {
+        expect(parseTailwindClasses("min-h-[100px]")).toEqual({
+          minHeight: 100,
+        });
+      });
+
+      it("should parse min-height with rem unit", () => {
+        expect(parseTailwindClasses("min-h-[5rem]")).toEqual({
+          minHeight: 80, // 5 * 16
+        });
+      });
+    });
+
+    describe("Max Width", () => {
+      it("should parse max-width with px unit", () => {
+        expect(parseTailwindClasses("max-w-[800px]")).toEqual({
+          maxWidth: 800,
+        });
+      });
+
+      it("should parse max-width with rem unit", () => {
+        expect(parseTailwindClasses("max-w-[64rem]")).toEqual({
+          maxWidth: 1024, // 64 * 16
+        });
+      });
+    });
+
+    describe("Max Height", () => {
+      it("should parse max-height with px unit", () => {
+        expect(parseTailwindClasses("max-h-[500px]")).toEqual({
+          maxHeight: 500,
+        });
+      });
+
+      it("should parse max-height with rem unit", () => {
+        expect(parseTailwindClasses("max-h-[30rem]")).toEqual({
+          maxHeight: 480, // 30 * 16
+        });
+      });
+    });
+
+    describe("Combined with other classes", () => {
+      it("should parse arbitrary values with standard classes", () => {
+        const result = parseTailwindClasses(
+          "w-[350px] h-[2.5rem] px-4 rounded-lg bg-primary",
+        );
+        expect(result).toEqual({
+          width: 350,
+          height: 40, // 2.5 * 16
+          paddingX: 16,
+          borderRadius: 8,
+          fillVariable: "color-primary",
+        });
+      });
+
+      it("should handle multiple arbitrary values", () => {
+        const result = parseTailwindClasses("min-w-[200px] max-w-[800px] min-h-[100px] max-h-[600px]");
+        expect(result).toEqual({
+          minWidth: 200,
+          maxWidth: 800,
+          minHeight: 100,
+          maxHeight: 600,
+        });
+      });
+
+      it("should prioritize arbitrary height over standard height", () => {
+        // If both h-9 and h-[100px] are present, the last one wins
+        const result1 = parseTailwindClasses("h-9 h-[100px]");
+        expect(result1).toEqual({
+          height: 100,
+        });
+
+        const result2 = parseTailwindClasses("h-[100px] h-9");
+        expect(result2).toEqual({
+          height: 36, // h-9 wins
+        });
+      });
+    });
+
+    describe("Edge cases", () => {
+      it("should handle invalid arbitrary value syntax gracefully", () => {
+        expect(parseTailwindClasses("w-[invalid]")).toEqual({});
+        expect(parseTailwindClasses("w-[]")).toEqual({});
+        expect(parseTailwindClasses("w-[px]")).toEqual({});
+      });
+
+      it("should handle unsupported properties gracefully", () => {
+        // These should not match the pattern
+        expect(parseTailwindClasses("p-[16px]")).toEqual({});
+        expect(parseTailwindClasses("m-[20px]")).toEqual({});
+        expect(parseTailwindClasses("gap-[8px]")).toEqual({});
+      });
+
+      it("should handle malformed brackets", () => {
+        expect(parseTailwindClasses("w-[350px")).toEqual({});
+        expect(parseTailwindClasses("w-350px]")).toEqual({});
+        expect(parseTailwindClasses("w-350px")).toEqual({});
+      });
+
+      it("should handle zero values", () => {
+        expect(parseTailwindClasses("w-[0px]")).toEqual({
+          width: 0,
+        });
+        expect(parseTailwindClasses("h-[0]")).toEqual({
+          height: 0,
+        });
+      });
+
+      it("should handle large values", () => {
+        expect(parseTailwindClasses("w-[9999px]")).toEqual({
+          width: 9999,
+        });
+        expect(parseTailwindClasses("max-w-[100rem]")).toEqual({
+          maxWidth: 1600, // 100 * 16
+        });
+      });
+    });
+  });
 });
 
 describe("parseBaseStyles", () => {

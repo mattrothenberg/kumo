@@ -141,6 +141,11 @@ const COLOR_TO_VARIABLE: Record<string, string> = {
 export type ParsedStyles = {
   // Layout
   height?: number;
+  width?: number;
+  minWidth?: number;
+  minHeight?: number;
+  maxWidth?: number;
+  maxHeight?: number;
   paddingX?: number;
   paddingY?: number;
   gap?: number;
@@ -178,6 +183,33 @@ export function parseTailwindClasses(classes: string): ParsedStyles {
   for (const cls of classList) {
     // Skip state variants (hover:, disabled:, etc.)
     if (cls.includes(":") && !cls.startsWith("!")) {
+      continue;
+    }
+
+    // Arbitrary value patterns: w-[350px], h-[2.5rem], min-w-[32rem], max-h-[100px]
+    const arbitraryMatch = cls.match(/^(w|h|min-w|min-h|max-w|max-h)-\[(\d+(?:\.\d+)?)(px|rem|em)?\]$/);
+    if (arbitraryMatch) {
+      const property = arbitraryMatch[1];
+      const value = parseFloat(arbitraryMatch[2]);
+      const unit = arbitraryMatch[3] || "px";
+
+      // Convert rem and em to px (rem/em * 16 = px)
+      const pxValue = unit === "px" ? value : value * 16;
+
+      // Map property to result key
+      if (property === "w") {
+        result.width = pxValue;
+      } else if (property === "h") {
+        result.height = pxValue;
+      } else if (property === "min-w") {
+        result.minWidth = pxValue;
+      } else if (property === "min-h") {
+        result.minHeight = pxValue;
+      } else if (property === "max-w") {
+        result.maxWidth = pxValue;
+      } else if (property === "max-h") {
+        result.maxHeight = pxValue;
+      }
       continue;
     }
 

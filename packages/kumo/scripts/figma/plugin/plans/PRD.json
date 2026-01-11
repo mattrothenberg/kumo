@@ -246,7 +246,7 @@
       "name": "parser-arbitrary-values",
       "title": "Add Arbitrary Value Parsing to Parser",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Extend tailwind-to-figma.ts to handle w-[350px], h-[2.5rem] patterns",
       "files": [
         "parsers/tailwind-to-figma.ts",

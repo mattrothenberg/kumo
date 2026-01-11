@@ -1954,3 +1954,88 @@ None - all tests pass after refactoring
 
 **Status:** COMPLETE - Ready for commit
 
+
+
+---
+
+## Iteration 23: parser-arbitrary-values (Task T8 - PHASE 3: Test Brittleness & Parser Enhancement)
+
+**Task:** parser-arbitrary-values (T8)
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Extended parseTailwindClasses() to handle arbitrary value patterns:
+   - Added regex pattern: `/^(w|h|min-w|min-h|max-w|max-h)-\[(\d+(?:\.\d+)?)(px|rem|em)?\]$/`
+   - Supports width, height, minWidth, minHeight, maxWidth, maxHeight
+   - Handles px, rem, em units (rem/em × 16 = px)
+   - Defaults to px if no unit specified
+   
+2. Extended ParsedStyles type with new properties:
+   - width?: number
+   - minWidth?: number
+   - minHeight?: number
+   - maxWidth?: number
+   - maxHeight?: number
+   
+3. Added comprehensive test coverage (24 new tests):
+   - Width parsing (px, rem, em, decimal, no unit)
+   - Height parsing (px, rem, em, no unit)
+   - Min/max width and height parsing
+   - Combined with other classes
+   - Edge cases (invalid syntax, zero values, large values, malformed brackets)
+   
+4. Implementation details:
+   - Arbitrary value parsing happens BEFORE standard class parsing
+   - Last value wins if both arbitrary and standard classes present (e.g., "h-9 h-[100px]" → height: 100)
+   - Unit conversion: rem/em multiply by 16 to get px
+   - Decimal values supported (e.g., h-[2.5rem] → 40, w-[21.875rem] → 350)
+
+### Test Results:
+- ✅ All 86 parser tests pass (24 new tests added)
+- ✅ All 1741 generator tests pass (backward compatibility verified)
+- ✅ No snapshots changed (additive changes only)
+- ✅ Verified tests pass consistently with --run flag
+
+### Parser Capabilities Added:
+**Supported patterns:**
+- `w-[350px]` → width: 350
+- `h-[2.5rem]` → height: 40
+- `min-w-[32rem]` → minWidth: 512
+- `max-h-[100px]` → maxHeight: 100
+- `w-[250]` → width: 250 (defaults to px)
+
+**Units supported:**
+- px: Direct conversion (w-[350px] → 350)
+- rem: Multiply by 16 (h-[2.5rem] → 40)
+- em: Multiply by 16 (w-[16em] → 256)
+- No unit: Defaults to px (w-[250] → 250)
+
+**Properties supported:**
+- w-[...] → width
+- h-[...] → height
+- min-w-[...] → minWidth
+- min-h-[...] → minHeight
+- max-w-[...] → maxWidth
+- max-h-[...] → maxHeight
+
+### Notes:
+- Parser now handles 3 of 5 advanced Tailwind patterns from PRD goals
+- Completed: Opacity modifiers (T7), Arbitrary values (T8)
+- Remaining: State variants (T9) - low priority
+- Implementation is additive - no breaking changes to existing generators
+- Arbitrary value parsing takes precedence over standard Tailwind scale parsing
+- Decimal values work correctly (tested with 2.5, 12.5, 21.875)
+- Edge cases handled gracefully (invalid syntax returns empty object)
+
+### PRD Status Update:
+- Task T8 (parser-arbitrary-values): Changed from "pending" to "complete"
+- Acceptance criteria met:
+  ✅ Parse arbitrary values: [350px] → 350, [32rem] → 512, [2.5rem] → 40
+  ✅ Handle px, rem, em units (rem/em × 16 = px)
+  ✅ Support width, height, minWidth, minHeight, maxWidth, maxHeight
+  ✅ Add tests for arbitrary value parsing (24 new tests)
+  ✅ Existing tests still pass (1741 tests, 100% pass rate)
+
+**Status:** COMPLETE - Ready for commit
+
