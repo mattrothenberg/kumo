@@ -1,147 +1,130 @@
 {
-  "title": "Figma Plugin Phase 6 - Magic Numbers Audit Remediation",
-  "overview": "Address remaining magic numbers identified in comprehensive audit. Phase 5 centralized major constants, but ~40% of generators still have hardcoded values that need remediation for full Figma-code sync capability.",
+  "title": "Figma Plugin Phase 7 - Full Registry Integration",
+  "overview": "Ensure all Figma generators derive styling values from component-registry.json for automatic sync with code changes. Add COMPONENT_STYLING_METADATA for components with hardcoded dimensions.",
   "context": {
-    "problem": "Audit revealed scattered magic numbers across generators: section positioning (100, 50), disabled opacity (0.5), label vertical offsets (4, 8, 12), hardcoded RGB colors, and font sizes/weights not using centralized constants.",
-    "current_state": "Phase 5 added SHADOWS, GRID_LAYOUT, FALLBACK_VALUES to shared.ts. However, generators still contain: (1) hardcoded section positioning, (2) scattered opacity values, (3) inconsistent label offsets, (4) hardcoded RGB placeholder colors, (5) typography values not using FALLBACK_VALUES.",
-    "why_now": "Phase 5 (initial magic number elimination) is COMPLETE. This phase addresses remaining issues from comprehensive audit to achieve full sync capability.",
-    "audit_summary": {
-      "overall_grade": "B-",
-      "architecture": "Good - shared.ts pattern is solid",
-      "implementation": "Inconsistent - ~40% of values still hardcoded",
-      "highest_risk_files": ["dialog.ts", "icon-utils.ts", "input.ts"]
-    }
+    "problem": "5 generators have hardcoded SIZE_CONFIG/dimension objects that duplicate values from React components. When React components change, Figma generators drift out of sync.",
+    "current_state": "Phase 6 eliminated ~95% of magic numbers via shared.ts constants. However, 5 generators still have hardcoded config objects (DateRangePicker, Pagination, InputArea, LayerCard, MenuBar) that should derive from the registry.",
+    "why_now": "Phase 6 (magic numbers audit) is COMPLETE. This phase addresses the remaining architectural gap for full Figma-code sync capability.",
+    "components_with_styling_metadata": [
+      "Checkbox",
+      "ClipboardText",
+      "Code",
+      "Input",
+      "Tabs",
+      "Dialog",
+      "Toasty"
+    ],
+    "components_missing_styling_metadata": [
+      "DateRangePicker",
+      "Pagination",
+      "InputArea",
+      "LayerCard",
+      "MenuBar"
+    ]
   },
   "goals": {
     "primary": [
-      "Add SECTION_LAYOUT constants for section positioning (startX, startY, modeGap)",
-      "Add OPACITY constants for disabled states and backdrops",
-      "Add COLORS constants for placeholder RGB values",
-      "Extend GRID_LAYOUT with labelVerticalOffset variants",
-      "Refactor high-risk files: dialog.ts, icon-utils.ts, input.ts",
-      "Ensure icon-utils.ts ICON_SIZE_MAP derives from registry or shared constants"
+      "Create enforcement test that validates registry integration (will fail initially)",
+      "Add COMPONENT_STYLING_METADATA for all 5 components",
+      "Update generators to read from registry.components.X.styling",
+      "Document intentional Dropdown/Combobox divergences",
+      "All enforcement tests pass at completion"
     ],
     "metrics": [
-      "Zero hardcoded 100/50 section positioning values",
-      "Zero hardcoded 0.5 opacity values",
-      "All placeholder colors use COLORS constants",
-      "All label offsets use GRID_LAYOUT.labelVerticalOffset",
-      "All typography fallbacks use FALLBACK_VALUES"
+      "Registry integration enforcement test: PASSING",
+      "Components with full styling metadata: 12/12 (currently 7/12)",
+      "Generators reading from registry.styling: 5/5",
+      "All drift detection tests passing",
+      "All generator tests passing (1500+ tests)",
+      "No snapshot changes (values match existing)"
     ]
   },
   "requirements": {
     "functional": [
       {
-        "id": "FR-1",
-        "title": "Add SECTION_LAYOUT Constants",
-        "description": "Centralize section positioning values used across all generators",
+        "id": "FR-0",
+        "title": "Registry Integration Enforcement Test",
+        "description": "Create test that validates generators read from registry.styling - will fail initially, guiding subsequent tasks",
         "acceptance": [
-          "Add SECTION_LAYOUT to shared.ts with startX: 100, startY: 100, modeGap: 50",
-          "All generators use SECTION_LAYOUT instead of hardcoded 100/50",
-          "Tests validate section positioning uses constants",
-          "All tests pass"
+          "Add test to drift-detection.test.ts that checks for registry.styling usage",
+          "Test identifies 5 generators that need migration",
+          "Test will FAIL initially (expected - provides target for remaining tasks)",
+          "Test passes once all generators are migrated"
+        ]
+      },
+      {
+        "id": "FR-1",
+        "title": "DateRangePicker Styling Metadata",
+        "description": "Add full sizeVariants to COMPONENT_STYLING_METADATA with dimensions for sm, base, lg",
+        "acceptance": [
+          "Add DateRangePicker entry to COMPONENT_STYLING_METADATA",
+          "Update date-range-picker.ts to read from registry.styling",
+          "Enforcement test passes for DateRangePicker",
+          "All 40 date-range-picker tests pass"
         ]
       },
       {
         "id": "FR-2",
-        "title": "Add OPACITY Constants",
-        "description": "Centralize opacity values for disabled states and backdrops",
+        "title": "Pagination Styling Metadata",
+        "description": "Add layout dimensions to COMPONENT_STYLING_METADATA",
         "acceptance": [
-          "Add OPACITY to shared.ts with disabled: 0.5, backdrop: 0.8",
-          "All generators use OPACITY.disabled instead of hardcoded 0.5",
-          "Tests validate opacity uses constants",
-          "All tests pass"
+          "Add Pagination entry to COMPONENT_STYLING_METADATA",
+          "Update pagination.ts to read from registry.styling",
+          "Enforcement test passes for Pagination",
+          "All 51 pagination tests pass"
         ]
       },
       {
         "id": "FR-3",
-        "title": "Add COLORS Constants",
-        "description": "Centralize placeholder RGB color values",
+        "title": "InputArea Styling Metadata",
+        "description": "Add minHeight/width per size to COMPONENT_STYLING_METADATA",
         "acceptance": [
-          "Add COLORS to shared.ts with placeholder gray and fallback white",
-          "icon-utils.ts uses COLORS instead of hardcoded RGB objects",
-          "dialog.ts uses COLORS instead of hardcoded RGB objects",
-          "All tests pass"
+          "Add InputArea entry to COMPONENT_STYLING_METADATA",
+          "Update input-area.ts to read from registry.styling",
+          "Enforcement test passes for InputArea",
+          "All 40 input-area tests pass"
         ]
       },
       {
         "id": "FR-4",
-        "title": "Extend GRID_LAYOUT with labelVerticalOffset",
-        "description": "Add label vertical centering offsets to GRID_LAYOUT",
+        "title": "LayerCard Styling Metadata",
+        "description": "Add container and section styling to COMPONENT_STYLING_METADATA",
         "acceptance": [
-          "Add labelVerticalOffset to GRID_LAYOUT with sm: 4, md: 8, lg: 12",
-          "Generators use GRID_LAYOUT.labelVerticalOffset instead of hardcoded values",
-          "Consistent offset selection based on component size",
-          "All tests pass"
+          "Add LayerCard entry to COMPONENT_STYLING_METADATA",
+          "Update layer-card.ts to read from registry.styling",
+          "Enforcement test passes for LayerCard",
+          "All 34 layer-card tests pass"
         ]
       },
       {
         "id": "FR-5",
-        "title": "Refactor dialog.ts Magic Numbers",
-        "description": "Replace remaining hardcoded values in dialog.ts with shared constants",
+        "title": "MenuBar Styling Metadata",
+        "description": "Add container and button styling to COMPONENT_STYLING_METADATA",
         "acceptance": [
-          "All font sizes use FALLBACK_VALUES or derive from registry",
-          "All font weights use FALLBACK_VALUES",
-          "All padding/gap values use FALLBACK_VALUES or parse from registry",
-          "Button dimensions in dialog use Button registry values where possible",
-          "All tests pass"
+          "Add MenuBar entry to COMPONENT_STYLING_METADATA",
+          "Update menubar.ts to read from registry.styling",
+          "Enforcement test passes for MenuBar",
+          "All 35 menubar tests pass"
         ]
       },
       {
         "id": "FR-6",
-        "title": "Refactor icon-utils.ts Magic Numbers",
-        "description": "Replace hardcoded values in icon-utils.ts with shared constants",
+        "title": "Document Intentional Divergences",
+        "description": "Add JSDoc comments to Dropdown and Combobox explaining Figma-specific variants",
         "acceptance": [
-          "ICON_SIZE_MAP derived from registry or uses FALLBACK_VALUES.iconSize",
-          "Placeholder colors use COLORS constants",
-          "Spinner stroke weight uses FALLBACK_VALUES.strokeWeight",
-          "Dash patterns centralized",
+          "Add JSDoc block to dropdown.ts explaining Figma variants differ from React",
+          "Add JSDoc block to combobox.ts explaining Figma variants differ from React",
           "All tests pass"
         ]
       },
       {
         "id": "FR-7",
-        "title": "Refactor input.ts Magic Numbers",
-        "description": "Replace hardcoded values in input.ts with shared constants",
-        "acceptance": [
-          "Width map documented as generator-specific layout helper",
-          "Font sizes/weights use FALLBACK_VALUES",
-          "itemSpacing values use SPACING or FALLBACK_VALUES.gap",
-          "All tests pass"
-        ]
-      },
-      {
-        "id": "FR-8",
-        "title": "Update Remaining Generators",
-        "description": "Apply constants to all remaining generators with hardcoded values",
-        "acceptance": [
-          "button.ts uses OPACITY.disabled, GRID_LAYOUT.labelVerticalOffset",
-          "checkbox.ts uses centralized constants",
-          "tabs.ts uses SECTION_LAYOUT, GRID_LAYOUT.labelVerticalOffset",
-          "loader.ts uses centralized constants",
-          "All tests pass"
-        ]
-      },
-      {
-        "id": "FR-9",
-        "title": "Add Enforcement Tests",
-        "description": "Extend drift-detection.test.ts to catch new magic number patterns",
-        "acceptance": [
-          "Test fails if generator has hardcoded section positioning (100, 50)",
-          "Test fails if generator has hardcoded opacity (0.5)",
-          "Test warns if generator has hardcoded RGB color objects",
-          "All enforcement tests pass"
-        ]
-      },
-      {
-        "id": "FR-10",
         "title": "Final Verification",
-        "description": "Comprehensive verification that all magic numbers are addressed",
+        "description": "Verify all enforcement tests pass and document completion",
         "acceptance": [
-          "Run audit script to verify no remaining magic numbers",
-          "All generators pass drift detection",
-          "Document any intentional exceptions",
-          "All tests pass: pnpm validate:figma"
+          "All registry integration enforcement tests pass",
+          "All 1500+ generator tests pass",
+          "Update PHASE7_REGISTRY_INTEGRATION.md with completion status"
         ]
       }
     ],
@@ -149,384 +132,337 @@
       {
         "id": "NFR-1",
         "title": "Backward Compatibility",
-        "description": "All existing tests must pass without breaking changes",
+        "description": "All existing tests must pass without visual changes",
         "acceptance": [
           "No visual changes to generated Figma components",
           "All existing snapshot tests pass",
-          "Drift detection continues to pass"
+          "Generators have fallbacks if registry data is missing"
         ]
       }
     ]
   },
   "scope": {
     "in_scope": [
-      "Adding new constants to shared.ts (SECTION_LAYOUT, OPACITY, COLORS)",
-      "Extending GRID_LAYOUT with labelVerticalOffset",
-      "Refactoring generators to use centralized constants",
-      "Adding enforcement tests for new patterns",
-      "Documenting generator-specific layout helpers"
+      "Creating enforcement test first (test-driven approach)",
+      "Adding COMPONENT_STYLING_METADATA entries for 5 components",
+      "Updating generators to read from registry.components.X.styling",
+      "Documenting intentional divergences"
     ],
     "out_of_scope": [
+      "Modifying React component source code",
+      "Auto-extracting dimensions from KUMO_*_VARIANTS (future enhancement)",
       "Adding new generators",
-      "Changing component-registry.json format",
-      "Modifying React components",
       "Changing visual output of generators"
     ]
   },
   "tasks": [
     {
       "id": "T1",
-      "name": "add-section-layout-constants",
-      "title": "Add SECTION_LAYOUT Constants to shared.ts",
+      "name": "add-enforcement-test",
+      "title": "Add Registry Integration Enforcement Test",
       "priority": "high",
-      "status": "complete",
-      "description": "Add centralized section positioning constants",
-      "files": ["generators/shared.ts"],
+      "status": "pending",
+      "description": "Create test that validates generators read from registry.styling. This test will FAIL initially, providing a clear target for subsequent tasks.",
+      "files": ["scripts/figma/plugin/generators/drift-detection.test.ts"],
       "acceptance": [
-        "Add SECTION_LAYOUT with startX: 100, startY: 100, modeGap: 50",
-        "Add JSDoc documentation explaining each value",
-        "Export from shared.ts"
+        "Add new describe block 'Figma Plugin - Registry Styling Integration'",
+        "Add test that checks 5 specific generators for registry.styling usage",
+        "Test checks for pattern: registry.components.X.styling or (registry.components.X as any).styling",
+        "Test FAILS initially with clear message showing which generators need migration",
+        "Run: pnpm --filter @cloudflare/kumo test generators/drift-detection.test.ts --run",
+        "Verify test fails for: date-range-picker, pagination, input-area, layer-card, menubar"
       ],
-      "estimated_minutes": 10
+      "code_example": "describe(\"Figma Plugin - Registry Styling Integration\", () => {\n  const GENERATORS_REQUIRING_STYLING = [\n    { file: \"date-range-picker.ts\", component: \"DateRangePicker\" },\n    { file: \"pagination.ts\", component: \"Pagination\" },\n    { file: \"input-area.ts\", component: \"InputArea\" },\n    { file: \"layer-card.ts\", component: \"LayerCard\" },\n    { file: \"menubar.ts\", component: \"MenuBar\" },\n  ];\n\n  it(\"should read styling from registry for components with hardcoded configs\", () => {\n    const violations: string[] = [];\n\n    for (const { file, component } of GENERATORS_REQUIRING_STYLING) {\n      const filePath = join(__dirname, file);\n      const content = readFileSync(filePath, \"utf-8\");\n\n      // Check if generator reads from registry.styling\n      const readsFromStyling = new RegExp(\n        `registry\\\\.components\\\\.${component}.*\\\\.styling`\n      ).test(content);\n\n      if (!readsFromStyling) {\n        violations.push(`${file}: Does not read from registry.components.${component}.styling`);\n      }\n    }\n\n    if (violations.length > 0) {\n      throw new Error(\n        `❌ Registry styling integration violations (${violations.length}/5):\\n` +\n        `  - ${violations.join(\"\\n  - \")}\\n\\n` +\n        `🔧 To fix each generator:\\n` +\n        `  1. Add COMPONENT_STYLING_METADATA entry in scripts/ai/component-registry.ts\\n` +\n        `  2. Update generator to read: (registry.components.X as any).styling\\n` +\n        `  3. Use styling data instead of hardcoded CONFIG objects\\n`\n      );\n    }\n\n    expect(violations).toEqual([]);\n  });\n});",
+      "estimated_minutes": 20
     },
     {
       "id": "T2",
-      "name": "add-opacity-constants",
-      "title": "Add OPACITY Constants to shared.ts",
+      "name": "add-daterangepicker-styling",
+      "title": "Add DateRangePicker COMPONENT_STYLING_METADATA",
       "priority": "high",
-      "status": "complete",
-      "description": "Add centralized opacity constants for disabled states",
-      "files": ["generators/shared.ts"],
+      "status": "pending",
+      "description": "Add full sizeVariants with dimensions to COMPONENT_STYLING_METADATA",
+      "files": ["scripts/ai/component-registry.ts"],
       "acceptance": [
-        "Add OPACITY with disabled: 0.5, backdrop: 0.8",
-        "Add JSDoc documentation",
-        "Export from shared.ts"
+        "Add DateRangePicker entry with sizeVariants for sm, base, lg",
+        "Each size includes: calendarWidth, cellHeight, cellWidth, textSize, iconSize, padding, gap",
+        "Bump CACHE_VERSION at top of file (line ~54)",
+        "Run: pnpm --filter @cloudflare/kumo codegen:registry",
+        "Verify: cat packages/kumo/ai/component-registry.json | jq '.components.DateRangePicker.styling'"
       ],
-      "estimated_minutes": 10
+      "code_example": "DateRangePicker: {\n  sizeVariants: {\n    sm: {\n      height: 0,\n      classes: \"p-3 gap-2\",\n      dimensions: {\n        calendarWidth: 168,\n        cellHeight: 22,\n        cellWidth: 24,\n        textSize: 12,\n        iconSize: 14,\n        padding: 12,\n        gap: 8,\n      },\n    },\n    base: {\n      height: 0,\n      classes: \"p-4 gap-2.5\",\n      dimensions: {\n        calendarWidth: 196,\n        cellHeight: 26,\n        cellWidth: 28,\n        textSize: 14,\n        iconSize: 16,\n        padding: 16,\n        gap: 10,\n      },\n    },\n    lg: {\n      height: 0,\n      classes: \"p-5 gap-3\",\n      dimensions: {\n        calendarWidth: 252,\n        cellHeight: 32,\n        cellWidth: 36,\n        textSize: 16,\n        iconSize: 18,\n        padding: 20,\n        gap: 12,\n      },\n    },\n  },\n} as any,",
+      "estimated_minutes": 15
     },
     {
       "id": "T3",
-      "name": "add-colors-constants",
-      "title": "Add COLORS Constants to shared.ts",
+      "name": "update-daterangepicker-generator",
+      "title": "Update date-range-picker.ts to Read from Registry",
       "priority": "high",
-      "status": "complete",
-      "description": "Add centralized placeholder color constants",
-      "files": ["generators/shared.ts"],
+      "status": "pending",
+      "description": "Refactor generator to derive SIZE_CONFIG from registry.components.DateRangePicker.styling",
+      "files": ["scripts/figma/plugin/generators/date-range-picker.ts"],
       "acceptance": [
-        "Add COLORS with placeholder: { r: 0.5, g: 0.5, b: 0.5 }",
-        "Add fallbackWhite: { r: 1, g: 1, b: 1 }",
-        "Add spinnerStroke: { r: 0.4, g: 0.4, b: 0.4 }",
-        "Export from shared.ts"
+        "Add: var dateRangePickerStyling = (registry.components.DateRangePicker as any).styling;",
+        "Add getSizeConfigFromRegistry() function with fallback",
+        "Replace hardcoded SIZE_CONFIG with registry-derived version",
+        "Run: pnpm --filter @cloudflare/kumo test generators/date-range-picker.test.ts --run",
+        "All 40 tests pass, snapshots unchanged",
+        "Enforcement test now passes for DateRangePicker"
       ],
-      "estimated_minutes": 10
+      "code_example": "var dateRangePickerStyling = (registry.components.DateRangePicker as any).styling;\n\nconst FALLBACK_SIZE_CONFIG = {\n  sm: { calendarWidth: 168, cellHeight: 22, cellWidth: 24, textSize: 12, iconSize: 14, padding: 12, gap: 8 },\n  base: { calendarWidth: 196, cellHeight: 26, cellWidth: 28, textSize: 14, iconSize: 16, padding: 16, gap: 10 },\n  lg: { calendarWidth: 252, cellHeight: 32, cellWidth: 36, textSize: 16, iconSize: 18, padding: 20, gap: 12 },\n};\n\nfunction getSizeConfigFromRegistry() {\n  if (!dateRangePickerStyling?.sizeVariants) return FALLBACK_SIZE_CONFIG;\n  const config: Record<string, any> = {};\n  for (const [size, data] of Object.entries(dateRangePickerStyling.sizeVariants)) {\n    config[size] = (data as any).dimensions || FALLBACK_SIZE_CONFIG[size as keyof typeof FALLBACK_SIZE_CONFIG];\n  }\n  return config;\n}\n\nvar SIZE_CONFIG = getSizeConfigFromRegistry();",
+      "estimated_minutes": 25
     },
     {
       "id": "T4",
-      "name": "extend-grid-layout",
-      "title": "Extend GRID_LAYOUT with labelVerticalOffset",
-      "priority": "high",
-      "status": "complete",
-      "description": "Add label vertical centering offsets to GRID_LAYOUT",
-      "files": ["generators/shared.ts"],
+      "name": "add-pagination-styling",
+      "title": "Add Pagination COMPONENT_STYLING_METADATA",
+      "priority": "medium",
+      "status": "pending",
+      "description": "Add layout dimensions to COMPONENT_STYLING_METADATA",
+      "files": ["scripts/ai/component-registry.ts"],
       "acceptance": [
-        "Add labelVerticalOffset: { sm: 4, md: 8, lg: 12 } to GRID_LAYOUT",
-        "Add JSDoc documentation explaining when to use each size",
-        "All tests pass"
+        "Add Pagination entry with layout object",
+        "Include: height, buttonSize, inputWidth, iconSize, gap, borderRadius",
+        "Run: pnpm --filter @cloudflare/kumo codegen:registry",
+        "Verify styling section exists in registry"
       ],
+      "code_example": "Pagination: {\n  layout: {\n    height: 36,\n    buttonSize: 36,\n    inputWidth: 50,\n    iconSize: 16,\n    gap: 8,\n    borderRadius: 8,\n  },\n} as any,",
       "estimated_minutes": 10
     },
     {
       "id": "T5",
-      "name": "refactor-generators-section-layout",
-      "title": "Refactor Generators to Use SECTION_LAYOUT",
-      "priority": "high",
-      "status": "complete",
-      "description": "Replace hardcoded 100/50 section positioning across all generators",
-      "files": [
-        "generators/button.ts",
-        "generators/input.ts",
-        "generators/dialog.ts",
-        "generators/badge.ts",
-        "generators/tabs.ts",
-        "generators/checkbox.ts",
-        "generators/loader.ts",
-        "generators/text.ts",
-        "generators/banner.ts",
-        "generators/toast.ts",
-        "generators/tooltip.ts",
-        "generators/dropdown.ts",
-        "generators/select.ts",
-        "generators/combobox.ts",
-        "generators/switch.ts",
-        "generators/meter.ts",
-        "generators/pagination.ts",
-        "generators/collapsible.ts",
-        "generators/code.ts",
-        "generators/code-block.ts",
-        "generators/clipboard-text.ts",
-        "generators/surface.ts",
-        "generators/link-button.ts",
-        "generators/refresh-button.ts",
-        "generators/input-area.ts",
-        "generators/sensitive-input.ts",
-        "generators/layer-card.ts",
-        "generators/menubar.ts",
-        "generators/date-range-picker.ts",
-        "generators/breadcrumbs.ts",
-        "generators/empty.ts",
-        "generators/page-header.ts"
-      ],
+      "name": "update-pagination-generator",
+      "title": "Update pagination.ts to Read from Registry",
+      "priority": "medium",
+      "status": "pending",
+      "description": "Refactor generator to derive layout constants from registry",
+      "files": ["scripts/figma/plugin/generators/pagination.ts"],
       "acceptance": [
-        "All generators import SECTION_LAYOUT from shared.ts",
-        "Replace hardcoded 100 with SECTION_LAYOUT.startX",
-        "Replace hardcoded 50 (modeGap) with SECTION_LAYOUT.modeGap",
-        "All tests pass"
+        "Add: var paginationStyling = (registry.components.Pagination as any).styling;",
+        "Add getLayoutFromRegistry() function with fallback",
+        "Replace hardcoded constants with registry-derived version",
+        "Run: pnpm --filter @cloudflare/kumo test generators/pagination.test.ts --run",
+        "All 51 tests pass, snapshots unchanged",
+        "Enforcement test now passes for Pagination"
       ],
-      "estimated_minutes": 60
+      "estimated_minutes": 20
     },
     {
       "id": "T6",
-      "name": "refactor-generators-opacity",
-      "title": "Refactor Generators to Use OPACITY Constants",
+      "name": "add-inputarea-styling",
+      "title": "Add InputArea COMPONENT_STYLING_METADATA",
       "priority": "medium",
-      "status": "complete",
-      "description": "Replace hardcoded 0.5 opacity values with OPACITY.disabled",
-      "files": [
-        "generators/button.ts",
-        "generators/input.ts",
-        "generators/checkbox.ts",
-        "generators/switch.ts",
-        "generators/select.ts",
-        "generators/combobox.ts"
-      ],
+      "status": "pending",
+      "description": "Add minHeight/width per size to COMPONENT_STYLING_METADATA",
+      "files": ["scripts/ai/component-registry.ts"],
       "acceptance": [
-        "All generators with disabled states import OPACITY from shared.ts",
-        "Replace hardcoded 0.5 with OPACITY.disabled",
-        "All tests pass"
+        "Add InputArea entry with sizeVariants",
+        "Each size includes: minHeight, width",
+        "Run: pnpm --filter @cloudflare/kumo codegen:registry",
+        "Verify styling section exists in registry"
       ],
-      "estimated_minutes": 30
+      "code_example": "InputArea: {\n  sizeVariants: {\n    xs: { minHeight: 60, width: 160 },\n    sm: { minHeight: 70, width: 200 },\n    base: { minHeight: 80, width: 280 },\n    lg: { minHeight: 100, width: 320 },\n  },\n} as any,",
+      "estimated_minutes": 10
     },
     {
       "id": "T7",
-      "name": "refactor-icon-utils",
-      "title": "Refactor icon-utils.ts Magic Numbers",
-      "priority": "high",
-      "status": "complete",
-      "description": "Replace hardcoded values in icon-utils.ts with shared constants",
-      "files": ["generators/icon-utils.ts"],
+      "name": "update-inputarea-generator",
+      "title": "Update input-area.ts to Read from Registry",
+      "priority": "medium",
+      "status": "pending",
+      "description": "Refactor generator to derive SIZE_CONFIG from registry",
+      "files": ["scripts/figma/plugin/generators/input-area.ts"],
       "acceptance": [
-        "ICON_SIZE_MAP uses FALLBACK_VALUES.iconSize or centralized constant",
-        "Placeholder colors use COLORS.placeholder",
-        "Spinner stroke color uses COLORS.spinnerStroke",
-        "Spinner stroke weight uses centralized constant",
-        "Corner radius multiplier (0.2) documented or centralized",
-        "All tests pass"
+        "Add: var inputAreaStyling = (registry.components.InputArea as any).styling;",
+        "Merge InputArea styling with Input styling for full config",
+        "Run: pnpm --filter @cloudflare/kumo test generators/input-area.test.ts --run",
+        "All 40 tests pass, snapshots unchanged",
+        "Enforcement test now passes for InputArea"
       ],
-      "estimated_minutes": 25
+      "estimated_minutes": 20
     },
     {
       "id": "T8",
-      "name": "refactor-dialog-typography",
-      "title": "Refactor dialog.ts Typography and Layout Values",
-      "priority": "high",
-      "status": "complete",
-      "description": "Replace hardcoded typography and layout values in dialog.ts",
-      "files": ["generators/dialog.ts", "generators/dialog.test.ts"],
+      "name": "add-layercard-styling",
+      "title": "Add LayerCard COMPONENT_STYLING_METADATA",
+      "priority": "medium",
+      "status": "pending",
+      "description": "Add container and section styling to COMPONENT_STYLING_METADATA",
+      "files": ["scripts/ai/component-registry.ts"],
       "acceptance": [
-        "Font sizes (14, 16, 20) use FALLBACK_VALUES or FONT_SIZE constants",
-        "Font weights (500, 600) use FALLBACK_VALUES",
-        "Padding values use FALLBACK_VALUES.padding or SPACING",
-        "Gap values use FALLBACK_VALUES.gap or SPACING",
-        "Button dimensions documented as derived from Button component",
-        "White color uses COLORS.fallbackWhite",
-        "All tests pass"
+        "Add LayerCard entry with container, secondary, primary sections",
+        "Include dimensions and color tokens",
+        "Run: pnpm --filter @cloudflare/kumo codegen:registry",
+        "Verify styling section exists in registry"
       ],
-      "estimated_minutes": 40
+      "code_example": "LayerCard: {\n  container: {\n    width: 320,\n    borderRadius: 8,\n  },\n  secondary: {\n    paddingX: 16,\n    paddingY: 12,\n    fontSize: 14,\n    fontWeight: 500,\n  },\n  primary: {\n    paddingX: 16,\n    paddingY: 16,\n    fontSize: 14,\n    fontWeight: 400,\n  },\n} as any,",
+      "estimated_minutes": 10
     },
     {
       "id": "T9",
-      "name": "refactor-input-typography",
-      "title": "Refactor input.ts Typography Values",
+      "name": "update-layercard-generator",
+      "title": "Update layer-card.ts to Read from Registry",
       "priority": "medium",
-      "status": "complete",
-      "description": "Replace hardcoded typography values in input.ts with shared constants",
-      "files": ["generators/input.ts"],
+      "status": "pending",
+      "description": "Refactor generator to derive LAYER_CARD_CONFIG from registry",
+      "files": ["scripts/figma/plugin/generators/layer-card.ts"],
       "acceptance": [
-        "Width map documented as generator-specific layout helper (OK to keep)",
-        "Font sizes (12, 14) use FONT_SIZE constants",
-        "Font weights (400, 500) use FALLBACK_VALUES.fontWeight",
-        "itemSpacing values use SPACING or FALLBACK_VALUES.gap",
-        "All tests pass"
+        "Add: var layerCardStyling = (registry.components.LayerCard as any).styling;",
+        "Add getConfigFromRegistry() function with fallback",
+        "Run: pnpm --filter @cloudflare/kumo test generators/layer-card.test.ts --run",
+        "All 34 tests pass, snapshots unchanged",
+        "Enforcement test now passes for LayerCard"
       ],
-      "estimated_minutes": 25
+      "estimated_minutes": 20
     },
     {
       "id": "T10",
-      "name": "refactor-generators-label-offset",
-      "title": "Refactor Generators to Use labelVerticalOffset",
+      "name": "add-menubar-styling",
+      "title": "Add MenuBar COMPONENT_STYLING_METADATA",
       "priority": "medium",
-      "status": "complete",
-      "description": "Replace hardcoded label vertical offsets (4, 8, 12) with GRID_LAYOUT.labelVerticalOffset",
-      "files": [
-        "generators/button.ts",
-        "generators/input.ts",
-        "generators/dialog.ts",
-        "generators/badge.ts",
-        "generators/tabs.ts",
-        "generators/checkbox.ts",
-        "generators/loader.ts"
-      ],
+      "status": "pending",
+      "description": "Add container and button styling to COMPONENT_STYLING_METADATA",
+      "files": ["scripts/ai/component-registry.ts"],
       "acceptance": [
-        "All generators with label centering use GRID_LAYOUT.labelVerticalOffset",
-        "Consistent offset selection (sm: 4, md: 8, lg: 12) based on component",
-        "All tests pass"
+        "Add MenuBar entry with container and button sections",
+        "Include dimensions",
+        "Run: pnpm --filter @cloudflare/kumo codegen:registry",
+        "Verify styling section exists in registry"
       ],
-      "estimated_minutes": 35
+      "code_example": "MenuBar: {\n  container: {\n    height: 32,\n    borderRadius: 8,\n    padding: 2,\n    gap: 2,\n  },\n  button: {\n    width: 36,\n    borderRadius: 6,\n    iconSize: 18,\n  },\n} as any,",
+      "estimated_minutes": 10
     },
     {
       "id": "T11",
-      "name": "add-dash-pattern-constant",
-      "title": "Add DASH_PATTERN Constant",
-      "priority": "low",
-      "status": "complete",
-      "description": "Centralize dash pattern arrays used for dashed borders/strokes",
-      "files": [
-        "generators/shared.ts",
-        "generators/icon-utils.ts",
-        "generators/badge.ts"
-      ],
+      "name": "update-menubar-generator",
+      "title": "Update menubar.ts to Read from Registry",
+      "priority": "medium",
+      "status": "pending",
+      "description": "Refactor generator to derive MENUBAR_CONFIG from registry",
+      "files": ["scripts/figma/plugin/generators/menubar.ts"],
       "acceptance": [
-        "Add DASH_PATTERN to shared.ts with standard: [4, 4]",
-        "icon-utils.ts uses DASH_PATTERN.standard",
-        "badge.ts uses DASH_PATTERN.standard for dashed variant",
-        "All tests pass"
+        "Add: var menuBarStyling = (registry.components.MenuBar as any).styling;",
+        "Add getConfigFromRegistry() function with fallback",
+        "Run: pnpm --filter @cloudflare/kumo test generators/menubar.test.ts --run",
+        "All 35 tests pass, snapshots unchanged",
+        "Enforcement test now passes for MenuBar"
       ],
-      "estimated_minutes": 15
+      "estimated_minutes": 20
     },
     {
       "id": "T12",
-      "name": "add-enforcement-tests",
-      "title": "Add Enforcement Tests for New Patterns",
-      "priority": "high",
-      "status": "complete",
-      "description": "Extend drift-detection.test.ts to catch new magic number patterns",
-      "files": ["generators/drift-detection.test.ts"],
-      "acceptance": [
-        "Test fails if generator has hardcoded section positioning (x = 100, y = 100, + 50)",
-        "Test fails if generator has hardcoded opacity = 0.5 without import",
-        "Test warns if generator has hardcoded RGB objects like { r: 0.5, g: 0.5, b: 0.5 }",
-        "All enforcement tests pass"
+      "name": "document-divergences",
+      "title": "Document Dropdown/Combobox Intentional Divergences",
+      "priority": "low",
+      "status": "pending",
+      "description": "Add JSDoc comments explaining Figma-specific variants",
+      "files": [
+        "scripts/figma/plugin/generators/dropdown.ts",
+        "scripts/figma/plugin/generators/combobox.ts"
       ],
-      "estimated_minutes": 30
+      "acceptance": [
+        "Add JSDoc block at top of dropdown.ts explaining variant mapping",
+        "Add JSDoc block at top of combobox.ts explaining variant mapping",
+        "Document React variants vs Figma variants",
+        "All tests pass"
+      ],
+      "jsdoc_example": "/**\n * Dropdown Component Generator\n *\n * INTENTIONAL DIVERGENCE: Figma variants differ from React variants\n *\n * React Component Variants:\n * - variant: \"default\" | \"danger\"\n *\n * Figma Display Variants (for demonstration):\n * - default: Basic dropdown menu\n * - withIcons: Menu items with leading icons\n * - withDanger: Menu with destructive option\n * - withGroups: Menu with grouped sections\n * - withCheckbox: Menu with checkable items\n * - withShortcuts: Menu items with keyboard shortcuts\n *\n * The Figma variants show different visual configurations\n * for design exploration, not React component variants.\n */",
+      "estimated_minutes": 15
     },
     {
       "id": "T13",
       "name": "final-verification",
-      "title": "Final Verification and Cleanup",
+      "title": "Final Verification and Documentation",
       "priority": "low",
-      "status": "complete",
-      "description": "Comprehensive verification that all magic numbers are addressed",
-      "files": ["generators/*.ts", "plans/PHASE6_FINAL_AUDIT.md"],
+      "status": "pending",
+      "description": "Verify ALL enforcement tests pass and document completion",
+      "files": ["scripts/figma/plugin/plans/PHASE7_REGISTRY_INTEGRATION.md"],
       "acceptance": [
-        "Run grep/search for remaining magic number patterns",
-        "Document any intentional exceptions with comments",
-        "All tests pass: pnpm validate:figma",
-        "Update MAGIC_NUMBERS.md if it exists with final status"
+        "Run: pnpm --filter @cloudflare/kumo test generators/drift-detection.test.ts --run",
+        "ALL registry styling integration tests pass (0 violations)",
+        "Run: pnpm --filter @cloudflare/kumo test generators/ --run",
+        "All 1500+ tests pass",
+        "Update PHASE7_REGISTRY_INTEGRATION.md Status from PLANNING to COMPLETE",
+        "Add completion summary with metrics"
       ],
-      "estimated_minutes": 20
+      "estimated_minutes": 15
     }
   ],
   "technical_approach": {
-    "new_constants_pattern": {
-      "description": "Add new constants to shared.ts following existing patterns",
-      "example": "export const SECTION_LAYOUT = {\n  /** X position for section start */\n  startX: 100,\n  /** Y position for section start */\n  startY: 100,\n  /** Gap between light/dark mode sections */\n  modeGap: 50,\n} as const;"
+    "test_driven": {
+      "description": "Create enforcement test FIRST that will fail, then fix each generator to make it pass",
+      "benefit": "Clear progress tracking - each task reduces violation count until 0"
     },
-    "refactoring_pattern": {
-      "description": "Import constants and replace hardcoded values",
-      "example": "// Before\nlightSection.x = 100;\ndarkSection.x = lightSection.x + lightSection.width + 50;\n\n// After\nimport { SECTION_LAYOUT } from './shared';\nlightSection.x = SECTION_LAYOUT.startX;\ndarkSection.x = lightSection.x + lightSection.width + SECTION_LAYOUT.modeGap;"
+    "registry_metadata_pattern": {
+      "description": "Add entries to COMPONENT_STYLING_METADATA in scripts/ai/component-registry.ts",
+      "location": "Around line 2091 in the COMPONENT_STYLING_METADATA object"
+    },
+    "generator_refactor_pattern": {
+      "description": "Read from registry with fallback to hardcoded values",
+      "example": "var styling = (registry.components.X as any).styling;\nvar CONFIG = styling?.layout || FALLBACK_CONFIG;"
+    },
+    "cache_invalidation": {
+      "description": "Bump CACHE_VERSION when adding metadata",
+      "location": "Line ~54 in scripts/ai/component-registry.ts"
     }
   },
   "deliverables": [
     {
-      "name": "Extended shared.ts",
-      "description": "New constants: SECTION_LAYOUT, OPACITY, COLORS, extended GRID_LAYOUT",
-      "files": ["generators/shared.ts"]
+      "name": "Enforcement Test",
+      "description": "Test that validates registry.styling usage in 5 generators",
+      "files": ["scripts/figma/plugin/generators/drift-detection.test.ts"]
+    },
+    {
+      "name": "Extended COMPONENT_STYLING_METADATA",
+      "description": "5 new entries for DateRangePicker, Pagination, InputArea, LayerCard, MenuBar",
+      "files": ["scripts/ai/component-registry.ts"]
     },
     {
       "name": "Refactored Generators",
-      "description": "All 30+ generators using centralized constants",
-      "files": ["generators/*.ts"]
+      "description": "5 generators reading from registry.components.X.styling",
+      "files": [
+        "scripts/figma/plugin/generators/date-range-picker.ts",
+        "scripts/figma/plugin/generators/pagination.ts",
+        "scripts/figma/plugin/generators/input-area.ts",
+        "scripts/figma/plugin/generators/layer-card.ts",
+        "scripts/figma/plugin/generators/menubar.ts"
+      ]
     },
     {
-      "name": "Enhanced Enforcement Tests",
-      "description": "Tests catching new magic number patterns",
-      "files": ["generators/drift-detection.test.ts"]
+      "name": "Documentation",
+      "description": "JSDoc comments for intentional divergences",
+      "files": [
+        "scripts/figma/plugin/generators/dropdown.ts",
+        "scripts/figma/plugin/generators/combobox.ts"
+      ]
     }
   ],
   "constraints": [
     "Must not change visual output of generators",
     "Must not break existing snapshot tests",
-    "Must maintain backward compatibility",
-    "Document any intentional hardcoded values"
+    "Must maintain backward compatibility with fallbacks",
+    "Must not modify React component source code",
+    "Must bump CACHE_VERSION when adding metadata"
   ],
-  "magic_numbers_audit": {
-    "high_risk": {
-      "section_positioning": {
-        "pattern": "100, 50",
-        "locations": "Every generator (~30+ files)",
-        "fix": "SECTION_LAYOUT.startX, SECTION_LAYOUT.modeGap"
-      },
-      "disabled_opacity": {
-        "pattern": "0.5",
-        "locations": "button.ts, input.ts, checkbox.ts, switch.ts, select.ts, combobox.ts",
-        "fix": "OPACITY.disabled"
-      }
-    },
-    "medium_risk": {
-      "label_vertical_offsets": {
-        "pattern": "4, 8, 12",
-        "locations": "Most generators with labels",
-        "fix": "GRID_LAYOUT.labelVerticalOffset.sm/md/lg"
-      },
-      "rgb_colors": {
-        "pattern": "{ r: 0.4-0.6, g: 0.4-0.6, b: 0.4-0.6 }",
-        "locations": "icon-utils.ts, dialog.ts",
-        "fix": "COLORS.placeholder, COLORS.spinnerStroke"
-      },
-      "font_sizes_weights": {
-        "pattern": "14, 16, 500, 600",
-        "locations": "dialog.ts, input.ts",
-        "fix": "FONT_SIZE.xs/base, FALLBACK_VALUES.fontWeight"
-      }
-    },
-    "low_risk": {
-      "dash_patterns": {
-        "pattern": "[4, 4]",
-        "locations": "icon-utils.ts, badge.ts",
-        "fix": "DASH_PATTERN.standard"
-      }
-    }
-  },
   "success_criteria": [
-    "Zero hardcoded section positioning (100, 50) values",
-    "Zero hardcoded opacity (0.5) values without OPACITY constant",
-    "All placeholder colors use COLORS constants",
-    "All label offsets use GRID_LAYOUT.labelVerticalOffset",
-    "All typography fallbacks use FALLBACK_VALUES",
-    "Enforcement tests catch regressions",
-    "All tests pass including drift detection",
-    "No visual changes to generated components"
+    "Registry integration enforcement test: 0 violations (all 5 generators passing)",
+    "All 1500+ generator tests pass",
+    "All drift detection tests pass",
+    "No snapshot changes",
+    "Intentional divergences documented"
   ],
   "references": {
-    "audit_source": "Comprehensive magic numbers audit conducted before Phase 6",
-    "shared_ts": "generators/shared.ts - existing constants from Phase 5",
-    "phase_5_learnings": "SHADOWS, GRID_LAYOUT, FALLBACK_VALUES patterns work well"
+    "phase6_completion": "plans/PHASE6_FINAL_AUDIT.md",
+    "phase7_plan": "plans/PHASE7_REGISTRY_INTEGRATION.md",
+    "registry_generator": "scripts/ai/component-registry.ts",
+    "example_well_integrated": "generators/input.ts - reads from registry.components.Input.styling"
   },
   "completed_phases": {
     "phase_1_test_refactoring": "COMPLETE",
     "phase_2_registry_integration": "COMPLETE",
     "phase_3_parser_enhancement": "COMPLETE",
     "phase_4_generator_coverage": "COMPLETE",
-    "phase_5_magic_numbers": "COMPLETE"
+    "phase_5_magic_numbers": "COMPLETE",
+    "phase_6_magic_numbers_audit": "COMPLETE"
   }
 }
