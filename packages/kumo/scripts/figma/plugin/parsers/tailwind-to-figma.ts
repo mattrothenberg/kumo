@@ -171,6 +171,15 @@ export type ParsedStyles = {
   // Border properties
   strokeWeight?: number;
   dashPattern?: number[];
+
+  // State variants (hover, focus, active, disabled, pressed)
+  states?: {
+    hover?: ParsedStyles;
+    focus?: ParsedStyles;
+    active?: ParsedStyles;
+    disabled?: ParsedStyles;
+    pressed?: ParsedStyles;
+  };
 };
 
 /**
@@ -181,7 +190,27 @@ export function parseTailwindClasses(classes: string): ParsedStyles {
   const classList = classes.split(/\s+/).filter(Boolean);
 
   for (const cls of classList) {
-    // Skip state variants (hover:, disabled:, etc.)
+    // Parse state variants (hover:, focus:, active:, disabled:, pressed:)
+    // Pattern: state:class-name
+    const stateMatch = cls.match(/^(hover|focus|active|disabled|pressed):(.+)$/);
+    if (stateMatch) {
+      const state = stateMatch[1] as "hover" | "focus" | "active" | "disabled" | "pressed";
+      const stateClass = stateMatch[2];
+      
+      // Parse the state class recursively
+      const stateParsed = parseTailwindClasses(stateClass);
+      
+      // Add to states object if anything was parsed
+      if (Object.keys(stateParsed).length > 0) {
+        if (!result.states) {
+          result.states = {};
+        }
+        result.states[state] = stateParsed;
+      }
+      continue;
+    }
+
+    // Skip other colon-prefixed classes (except ! important)
     if (cls.includes(":") && !cls.startsWith("!")) {
       continue;
     }

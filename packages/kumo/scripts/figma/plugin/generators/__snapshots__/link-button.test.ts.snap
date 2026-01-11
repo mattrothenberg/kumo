@@ -191,6 +191,16 @@ exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should prod
       "parsed": {
         "fillVariable": "color-primary",
         "isWhiteText": true,
+        "states": {
+          "disabled": {
+            "fillOpacity": 0.5,
+            "fillVariable": "color-primary/50",
+          },
+          "hover": {
+            "fillOpacity": 0.7,
+            "fillVariable": "color-primary/70",
+          },
+        },
         "textVariable": null,
       },
       "variant": "primary",
@@ -201,6 +211,12 @@ exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should prod
       "parsed": {
         "fillVariable": "color-secondary",
         "hasBorder": true,
+        "states": {
+          "disabled": {
+            "textOpacity": 0.7,
+            "textVariable": "text-color-surface/70",
+          },
+        },
         "strokeVariable": "color-border",
         "textVariable": "text-color-surface",
       },
@@ -211,6 +227,11 @@ exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should prod
       "description": "Minimal button with no background",
       "parsed": {
         "fillVariable": null,
+        "states": {
+          "hover": {
+            "fillVariable": "color-accent",
+          },
+        },
         "textVariable": "text-color-surface",
       },
       "variant": "ghost",
@@ -221,6 +242,12 @@ exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should prod
       "parsed": {
         "fillVariable": "color-error",
         "isWhiteText": true,
+        "states": {
+          "hover": {
+            "fillOpacity": 0.7,
+            "fillVariable": "color-error/70",
+          },
+        },
         "textVariable": null,
       },
       "variant": "destructive",
@@ -231,6 +258,12 @@ exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should prod
       "parsed": {
         "fillVariable": "color-secondary",
         "hasBorder": true,
+        "states": {
+          "disabled": {
+            "textOpacity": 0.7,
+            "textVariable": "text-color-error/70",
+          },
+        },
         "strokeVariable": "color-border",
         "textVariable": "text-color-error",
       },
@@ -273,6 +306,12 @@ exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should prod
   "parsed": {
     "fillVariable": "color-error",
     "isWhiteText": true,
+    "states": {
+      "hover": {
+        "fillOpacity": 0.7,
+        "fillVariable": "color-error/70",
+      },
+    },
     "textVariable": null,
   },
   "variant": "destructive",
@@ -285,6 +324,11 @@ exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should prod
   "description": "Minimal button with no background",
   "parsed": {
     "fillVariable": null,
+    "states": {
+      "hover": {
+        "fillVariable": "color-accent",
+      },
+    },
     "textVariable": "text-color-surface",
   },
   "variant": "ghost",
@@ -327,6 +371,16 @@ exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should prod
   "parsed": {
     "fillVariable": "color-primary",
     "isWhiteText": true,
+    "states": {
+      "disabled": {
+        "fillOpacity": 0.5,
+        "fillVariable": "color-primary/50",
+      },
+      "hover": {
+        "fillOpacity": 0.7,
+        "fillVariable": "color-primary/70",
+      },
+    },
     "textVariable": null,
   },
   "variant": "primary",
@@ -340,6 +394,12 @@ exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should prod
   "parsed": {
     "fillVariable": "color-secondary",
     "hasBorder": true,
+    "states": {
+      "disabled": {
+        "textOpacity": 0.7,
+        "textVariable": "text-color-surface/70",
+      },
+    },
     "strokeVariable": "color-border",
     "textVariable": "text-color-surface",
   },
@@ -354,6 +414,12 @@ exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should prod
   "parsed": {
     "fillVariable": "color-secondary",
     "hasBorder": true,
+    "states": {
+      "disabled": {
+        "textOpacity": 0.7,
+        "textVariable": "text-color-error/70",
+      },
+    },
     "strokeVariable": "color-border",
     "textVariable": "text-color-error",
   },

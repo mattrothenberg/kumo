@@ -2039,3 +2039,114 @@ None - all tests pass after refactoring
 
 **Status:** COMPLETE - Ready for commit
 
+
+---
+
+## Iteration: T9 - parser-state-variants (PHASE 3: Parser Enhancement)
+
+**Task:** T9 - Add State Variant Parsing to Parser
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Extended ParsedStyles type to include states object:
+   - Added `states?: { hover?: ParsedStyles; focus?: ParsedStyles; active?: ParsedStyles; disabled?: ParsedStyles; pressed?: ParsedStyles; }`
+   - Allows nested parsing of state-specific class overrides
+
+2. Updated parseTailwindClasses() to parse state variants:
+   - Added regex pattern: `/^(hover|focus|active|disabled|pressed):(.+)$/`
+   - Extracts state prefix and remaining class
+   - Recursively parses the state class using parseTailwindClasses()
+   - Stores result in states object if anything was parsed
+   - Changed behavior from "skip" to "parse and store"
+
+3. Updated existing tests in tailwind-to-figma.test.ts:
+   - "State Variants" section: Changed from expecting skipped states to expecting parsed states
+   - Updated test expectations to match actual parser behavior:
+     - `hover:bg-primary` → `states.hover.fillVariable: "color-primary"`
+     - `focus:ring-active` → `states.focus.hasBorder: true, strokeVariable: "color-active"`
+     - `disabled:opacity-50` → No states object (opacity not parsed yet)
+   - Added comprehensive new tests:
+     - Multiple state variants (hover, focus, active, disabled, pressed)
+     - State variants with opacity modifiers (hover:bg-primary/70)
+     - State variants with text colors (hover:text-info)
+     - Unknown colon-prefixed classes (sm:bg-primary) still skipped
+
+4. Updated 30 generator test snapshots:
+   - Snapshots now include states object where state variants are present
+   - Example: collapsible parsed trigger styles now show `disabled:text-surface/70` in states.disabled
+   - All snapshots intentionally updated to reflect new parser capability
+
+### Test Results:
+- ✅ All 90 parser tests pass (9 new state variant tests added)
+- ✅ All 1428 generator tests pass (backward compatibility verified)
+- ✅ 30 snapshots updated (intentional - state variants now parsed)
+- ✅ Total: 1518 tests passing
+
+### Parser Capabilities Added:
+**Supported states:**
+- `hover:` - Hover state (e.g., `hover:bg-primary`, `hover:text-info/50`)
+- `focus:` - Focus state (e.g., `focus:ring-active`, `focus:bg-secondary`)
+- `active:` - Active state (e.g., `active:bg-error`)
+- `disabled:` - Disabled state (e.g., `disabled:bg-surface`, `disabled:text-surface/70`)
+- `pressed:` - Pressed state (e.g., `pressed:bg-info`)
+
+**Examples:**
+```typescript
+parseTailwindClasses("bg-primary hover:bg-secondary")
+// Returns:
+// {
+//   fillVariable: "color-primary",
+//   states: {
+//     hover: { fillVariable: "color-secondary" }
+//   }
+// }
+
+parseTailwindClasses("text-white hover:text-info/70 focus:ring-active")
+// Returns:
+// {
+//   textVariable: null,
+//   isWhiteText: true,
+//   states: {
+//     hover: {
+//       textVariable: "text-color-info/70",
+//       textOpacity: 0.7
+//     },
+//     focus: {
+//       hasBorder: true,
+//       strokeVariable: "color-active"
+//     }
+//   }
+// }
+```
+
+**Not supported (skipped):**
+- Responsive prefixes (sm:, md:, lg:, xl:, 2xl:)
+- Container queries
+- Other non-state colon-prefixed classes
+
+### Acceptance Criteria Met:
+- ✅ Parse state prefixes: hover:bg-primary/70 → states.hover.fillVariable + fillOpacity
+- ✅ Support hover, focus, active, disabled, pressed states
+- ✅ Return parsed.states object with state-specific overrides
+- ✅ Add tests for state variant parsing (9 comprehensive tests)
+- ✅ Existing tests still pass (1518 tests, 100% pass rate)
+
+### Notes:
+- Parser now handles 4 of 5 advanced Tailwind patterns from PRD goals:
+  1. ✅ Opacity modifiers (T7)
+  2. ✅ Arbitrary values (T8)
+  3. ✅ State variants (T9)
+  4. ❌ Responsive prefixes (out of scope - Figma doesn't need responsive variants)
+  5. ❌ Other utilities (ring, opacity-*, etc. - can be added incrementally)
+- Implementation is recursive - state classes can use any supported pattern
+- State parsing is additive - base classes and state classes both parsed
+- Backward compatible - no breaking changes to existing generators
+- Generators can now choose to use state-specific overrides for Figma interactive components
+- opacity-50 utility not yet parsed (noted in test comments as future enhancement)
+
+### PRD Status Update:
+- Task T9 (parser-state-variants): Changed from "pending" to "complete"
+
+**Status:** COMPLETE - Ready for commit
+

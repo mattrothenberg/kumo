@@ -85,6 +85,12 @@ exports[`RefreshButton Generator - Snapshot Tests (Intermediate Data) > should p
     "parsed": {
       "fillVariable": "color-secondary",
       "hasBorder": true,
+      "states": {
+        "disabled": {
+          "textOpacity": 0.7,
+          "textVariable": "text-color-surface/70",
+        },
+      },
       "strokeVariable": "color-border",
       "textVariable": "text-color-surface",
     },
@@ -96,6 +102,12 @@ exports[`RefreshButton Generator - Snapshot Tests (Intermediate Data) > should p
 {
   "fillVariable": "color-secondary",
   "hasBorder": true,
+  "states": {
+    "disabled": {
+      "textOpacity": 0.7,
+      "textVariable": "text-color-surface/70",
+    },
+  },
   "strokeVariable": "color-border",
   "textVariable": "text-color-surface",
 }

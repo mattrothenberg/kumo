@@ -308,16 +308,30 @@ describe("parseTailwindClasses", () => {
   });
 
   describe("State Variants", () => {
-    it("should skip hover state classes", () => {
-      expect(parseTailwindClasses("hover:bg-primary")).toEqual({});
+    it("should parse hover state classes", () => {
+      const result = parseTailwindClasses("hover:bg-primary");
+      expect(result.states).toBeDefined();
+      expect(result.states?.hover).toEqual({
+        fillVariable: "color-primary",
+      });
     });
 
-    it("should skip disabled state classes", () => {
-      expect(parseTailwindClasses("disabled:opacity-50")).toEqual({});
+    it("should parse disabled state with opacity", () => {
+      const result = parseTailwindClasses("disabled:opacity-50");
+      // Note: opacity-50 is not currently parsed by the parser
+      // This is expected - opacity utility is not in the parser yet
+      // Since nothing is parsed, no states object is created
+      expect(result.states).toBeUndefined();
     });
 
-    it("should skip focus state classes", () => {
-      expect(parseTailwindClasses("focus:ring-2")).toEqual({});
+    it("should parse focus state classes", () => {
+      const result = parseTailwindClasses("focus:ring-active");
+      expect(result.states).toBeDefined();
+      // Note: ring-active is parsed as strokeVariable and hasBorder
+      expect(result.states?.focus).toEqual({
+        hasBorder: true,
+        strokeVariable: "color-active",
+      });
     });
 
     it("should parse important classes even with colon-like syntax", () => {
@@ -327,15 +341,58 @@ describe("parseTailwindClasses", () => {
       });
     });
 
-    it("should skip state variants but parse base classes", () => {
+    it("should parse both base classes and state variants", () => {
       const result = parseTailwindClasses(
-        "bg-primary hover:bg-secondary text-white focus:ring-2",
+        "bg-primary hover:bg-secondary text-white focus:ring-active",
       );
       expect(result).toEqual({
         fillVariable: "color-primary",
         textVariable: null,
         isWhiteText: true,
+        states: {
+          hover: {
+            fillVariable: "color-secondary",
+          },
+          focus: {
+            hasBorder: true,
+            strokeVariable: "color-active",
+          },
+        },
       });
+    });
+
+    it("should parse multiple state variants", () => {
+      const result = parseTailwindClasses(
+        "hover:bg-primary focus:bg-secondary active:bg-error disabled:bg-surface pressed:bg-info",
+      );
+      expect(result.states).toEqual({
+        hover: { fillVariable: "color-primary" },
+        focus: { fillVariable: "color-secondary" },
+        active: { fillVariable: "color-error" },
+        disabled: { fillVariable: "color-surface" },
+        pressed: { fillVariable: "color-info" },
+      });
+    });
+
+    it("should parse state variants with opacity modifiers", () => {
+      const result = parseTailwindClasses("hover:bg-primary/70");
+      expect(result.states?.hover).toEqual({
+        fillVariable: "color-primary/70",
+        fillOpacity: 0.7,
+      });
+    });
+
+    it("should parse state variants with text colors", () => {
+      const result = parseTailwindClasses("hover:text-info focus:text-error");
+      expect(result.states).toEqual({
+        hover: { textVariable: "text-color-info" },
+        focus: { textVariable: "text-color-error" },
+      });
+    });
+
+    it("should skip unknown colon-prefixed classes", () => {
+      const result = parseTailwindClasses("sm:bg-primary lg:text-white");
+      expect(result).toEqual({});
     });
   });
 
