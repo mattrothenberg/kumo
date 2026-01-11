@@ -25,7 +25,6 @@ const EXCLUDED_COMPONENTS = new Set([
   // Permanently excluded - no visual representation needed in Figma
   "Field", // Form wrapper utility - provides label/description/error layout, no standalone visual
   "Icon", // Utility component - handled by icon-library.ts
-  "Toasty", // Alias for Toast - uses toast.ts generator
 
   // Components not yet implemented in Figma (Phase 4 targets)
   "Breadcrumbs", // Block component with navigation path
@@ -41,6 +40,7 @@ const COMPONENT_NAME_MAPPING: Record<string, string> = {
   DropdownMenu: "dropdown", // Registry name differs from file name
   LayerCard: "layer-card",
   SensitiveInput: "sensitive-input",
+  Toasty: "toast", // Registry name differs from file name
 };
 
 // Utility files that aren't component generators

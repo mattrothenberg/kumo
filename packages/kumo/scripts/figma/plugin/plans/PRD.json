@@ -65,7 +65,7 @@
           "Remove Breadcrumbs from EXCLUDED_COMPONENTS after generator complete",
           "Remove Empty from EXCLUDED_COMPONENTS after generator complete",
           "Remove PageHeader from EXCLUDED_COMPONENTS after generator complete",
-          "Drift detection test passes with only permanent exclusions (Field, Icon, Toasty)"
+          "Drift detection test passes with only permanent exclusions (Field, Icon)"
         ]
       }
     ],
@@ -225,11 +225,11 @@
   ],
   "permanently_excluded": {
     "Field": "Form wrapper utility - provides label/description/error layout, no standalone visual representation in Figma",
-    "Icon": "Utility component - handled by icon-library.ts which generates all icons",
-    "Toasty": "Alias for Toast - uses toast.ts generator"
+    "Icon": "Utility component - handled by icon-library.ts which generates all icons"
   },
   "name_mappings": {
-    "DropdownMenu": "dropdown.ts - Registry name differs from generator file name"
+    "DropdownMenu": "dropdown.ts - Registry name differs from generator file name",
+    "Toasty": "toast.ts - Registry name differs from generator file name"
   },
   "success_criteria": [
     "All 3 new generators created and registered",

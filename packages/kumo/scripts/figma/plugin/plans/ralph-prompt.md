@@ -20,11 +20,11 @@ Phases 1-3 are COMPLETE:
 
 - Field - Form wrapper utility with no standalone visual representation
 - Icon - Utility component (handled by icon-library.ts)
-- Toasty - Alias for Toast (uses toast.ts)
 
 **Name mappings (generator exists, name differs):**
 
 - DropdownMenu → dropdown.ts
+- Toasty → toast.ts
 
 **Reference files:**
 
@@ -122,7 +122,6 @@ const EXCLUDED_COMPONENTS = new Set([
   // Permanently excluded...
   "Field",
   "Icon",
-  "Toasty",
 
   // Components not yet implemented (remove as you complete them)
   "Breadcrumbs",
