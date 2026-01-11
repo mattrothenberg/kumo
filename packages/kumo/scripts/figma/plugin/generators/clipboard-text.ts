@@ -23,6 +23,8 @@ import {
   createModeSection,
   createRowLabel,
   bindTextColorToVariable,
+  SECTION_PADDING,
+  SECTION_GAP,
 } from "./shared";
 import { createIconInstance, bindIconColor } from "./icon-utils";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
@@ -151,15 +153,7 @@ export function getClipboardTextSizeConfig() {
   };
 }
 
-/**
- * Section padding for component display
- */
-const SECTION_PADDING = 48;
 
-/**
- * Gap between sections on the page
- */
-const SECTION_GAP = 160;
 
 /**
  * Create a single ClipboardText component with the specified size

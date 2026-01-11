@@ -31,6 +31,8 @@ import {
   bindStrokeToVariable,
   bindTextColorToVariable,
   BORDER_RADIUS,
+  SECTION_PADDING,
+  SECTION_GAP,
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
@@ -54,15 +56,7 @@ var TRIGGER_BASE_STYLES = "bg-secondary ring ring-border rounded-lg";
  */
 var DROPDOWN_PANEL_STYLES = "bg-surface border border-border";
 
-/**
- * Section padding for component display
- */
-var SECTION_PADDING = 48;
 
-/**
- * Gap between sections on the page
- */
-var SECTION_GAP = 160;
 
 /**
  * Variant types

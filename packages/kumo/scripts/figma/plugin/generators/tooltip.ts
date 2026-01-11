@@ -30,20 +30,14 @@ import {
   bindFillToVariable,
   setWhiteTextColor,
   BORDER_RADIUS,
+  SECTION_PADDING,
+  SECTION_GAP,
 } from "./shared";
 
 // Import registry as source of truth
 import registry from "../../../../ai/component-registry.json";
 
-/**
- * Section padding for component display
- */
-var SECTION_PADDING = 48;
 
-/**
- * Gap between sections on the page
- */
-var SECTION_GAP = 160;
 
 /**
  * Tooltip dimensions

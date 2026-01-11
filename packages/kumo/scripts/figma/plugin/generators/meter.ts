@@ -20,6 +20,8 @@ import {
   createModeSection,
   createRowLabel,
   bindTextColorToVariable,
+  SECTION_PADDING,
+  SECTION_GAP,
 } from "./shared";
 
 // Import registry as source of truth
@@ -40,15 +42,7 @@ const METER_WIDTH = 240;
 const METER_TRACK_HEIGHT = 8; // h-2 from meter.tsx
 const METER_GAP = 8; // gap-2 from meter.tsx
 
-/**
- * Section padding for component display
- */
-const SECTION_PADDING = 48;
 
-/**
- * Gap between sections on the page
- */
-const SECTION_GAP = 160;
 
 /**
  * Fill levels to demonstrate: 0%, 25%, 50%, 75%, 100%

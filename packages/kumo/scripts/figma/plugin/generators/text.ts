@@ -29,6 +29,8 @@ import {
   createRowLabel,
   createColumnHeaders,
   bindTextColorToVariable,
+  SECTION_PADDING,
+  SECTION_GAP,
 } from "./shared";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 
@@ -49,15 +51,7 @@ const sizeProp = textProps.size as {
   default: string;
 };
 
-/**
- * Section padding for component display
- */
-const SECTION_PADDING = 48;
 
-/**
- * Gap between sections on the page
- */
-const SECTION_GAP = 160;
 
 /**
  * Base text class applied to all Text components (from text.tsx line 178)

@@ -18,6 +18,8 @@ import {
   createRowLabel,
   bindTextColorToVariable,
   bindStrokeToVariable,
+  SECTION_PADDING,
+  SECTION_GAP,
 } from "./shared";
 import { createIconInstance, bindIconColor } from "./icon-utils";
 
@@ -40,15 +42,7 @@ var ICON_SIZE = 16;
 var GAP = 0; // InputGroup buttons are flush against each other
 var BORDER_RADIUS = 6;
 
-/**
- * Section padding for component display
- */
-var SECTION_PADDING = 48;
 
-/**
- * Gap between sections on the page
- */
-var SECTION_GAP = 160;
 
 /**
  * ============================================================================

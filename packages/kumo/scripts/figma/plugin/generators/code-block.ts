@@ -18,6 +18,8 @@ import {
   createModeSection,
   createRowLabel,
   bindTextColorToVariable,
+  SECTION_PADDING,
+  SECTION_GAP,
 } from "./shared";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 import { logComplete } from "../logger";
@@ -41,15 +43,7 @@ var CODE_BLOCK_WRAPPER_STYLES =
   "min-w-0 rounded-md border border-color bg-surface";
 var CODE_INNER_PADDING = 10; // p-2.5 = 10px
 
-/**
- * Section padding for component display
- */
-var SECTION_PADDING = 48;
 
-/**
- * Gap between sections on the page
- */
-var SECTION_GAP = 160;
 
 /**
  * TESTABLE EXPORTS - Pure functions that return intermediate data

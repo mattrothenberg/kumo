@@ -216,43 +216,52 @@ async function createBreadcrumbsComponent(size: string): Promise<ComponentNode> 
 }
 
 /**
- * Create separator icon (caret-right)
+ * Create separator icon (caret-right chevron)
  */
 async function createSeparatorIcon(textVariableId?: string): Promise<FrameNode> {
   const separatorFrame = figma.createFrame();
   separatorFrame.name = "Separator";
-  separatorFrame.resize(20, 20);
+  separatorFrame.resize(24, 24);
   separatorFrame.fills = [];
+  separatorFrame.layoutMode = "HORIZONTAL";
+  separatorFrame.primaryAxisAlignItems = "CENTER";
+  separatorFrame.counterAxisAlignItems = "CENTER";
 
-  // Create SVG from breadcrumbs.tsx separator icon
-  // SVG path: "M10.75 8.75L14.25 12L10.75 15.25" in 24x24 viewBox
-  const svgString = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M10.75 8.75L14.25 12L10.75 15.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  // Create SVG with explicit stroke color (not currentColor) so Figma can parse it
+  // This matches the SVG path from breadcrumbs.tsx: "M10.75 8.75L14.25 12L10.75 15.25"
+  const disabledGray = "#999999"; // text-disabled equivalent
+  const svgString = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10.75 8.75L14.25 12L10.75 15.25" stroke="${disabledGray}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>`;
 
   try {
     const svgNode = figma.createNodeFromSvg(svgString);
-    svgNode.name = "ph-caret-right";
-    svgNode.resize(20, 20);
-
-    // Bind stroke color to variable
+    svgNode.name = "chevron";
+    
+    // Try to bind stroke color to variable on the path children
     if (textVariableId && "children" in svgNode) {
-      const bindStrokeRecursive = (node: SceneNode) => {
-        if ("strokes" in node && node.strokes && node.strokes.length > 0) {
-          node.setBoundVariable("strokes", { type: "VARIABLE_ALIAS", id: textVariableId });
-        }
-        if ("children" in node && node.children) {
-          for (const child of node.children) {
-            bindStrokeRecursive(child);
+      for (const child of svgNode.children) {
+        if ("strokes" in child && child.strokes && child.strokes.length > 0) {
+          try {
+            const variable = figma.variables.getVariableById(textVariableId);
+            if (variable) {
+              // Use setBoundVariable with field name only (Figma plugin API)
+              (child as SceneNode & { setBoundVariable: (field: string, variable: Variable) => void })
+                .setBoundVariable("strokes", variable);
+            }
+          } catch {
+            // Keep the solid color fallback
           }
         }
-      };
-      bindStrokeRecursive(svgNode);
+      }
     }
 
     separatorFrame.appendChild(svgNode);
   } catch (error) {
     logWarn(`Failed to create separator icon: ${error}`);
+    // Fallback: create a simple text chevron
+    const fallbackText = await createTextNode(">", 16, 400);
+    separatorFrame.appendChild(fallbackText);
   }
 
   return separatorFrame;

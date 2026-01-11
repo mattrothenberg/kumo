@@ -33,6 +33,8 @@ import {
   bindFillToVariable,
   bindTextColorToVariable,
   BORDER_RADIUS,
+  SECTION_PADDING,
+  SECTION_GAP,
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 
@@ -54,11 +56,7 @@ var variantProp = dateRangePickerProps.variant as {
   default: string;
 };
 
-/**
- * Section padding and spacing
- */
-var SECTION_PADDING = 48;
-var SECTION_GAP = 160;
+
 
 /**
  * Size values (from registry)

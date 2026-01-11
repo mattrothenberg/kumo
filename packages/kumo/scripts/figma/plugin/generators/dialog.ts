@@ -26,6 +26,8 @@ import {
   bindTextColorToVariable,
   bindStrokeToVariable,
   BORDER_RADIUS,
+  SECTION_PADDING,
+  SECTION_GAP,
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import registry from "../../../../ai/component-registry.json";
@@ -42,15 +44,7 @@ var sizeProp = dialogProps.size as {
   default: string;
 };
 
-/**
- * Section padding for component display
- */
-var SECTION_PADDING = 48;
 
-/**
- * Gap between sections on the page
- */
-var SECTION_GAP = 160;
 
 /**
  * Size values from registry

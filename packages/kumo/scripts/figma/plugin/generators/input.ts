@@ -25,20 +25,14 @@ import {
   bindStrokeToVariable,
   bindTextColorToVariable,
   BORDER_RADIUS,
+  SECTION_PADDING,
+  SECTION_GAP,
 } from "./shared";
 import { logComplete } from "../logger";
 import registry from "../../../../ai/component-registry.json";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 
-/**
- * Section padding for component display
- */
-var SECTION_PADDING = 48;
 
-/**
- * Gap between sections on the page
- */
-var SECTION_GAP = 160;
 
 /**
  * Extract Input component from registry

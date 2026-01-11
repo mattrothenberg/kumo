@@ -28,6 +28,8 @@ import {
   bindTextColorToVariable,
   bindStrokeToVariable,
   BORDER_RADIUS,
+  SECTION_PADDING,
+  SECTION_GAP,
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import { logComplete } from "../logger";
@@ -35,15 +37,7 @@ import { logComplete } from "../logger";
 // Import registry as source of truth
 import registry from "../../../../ai/component-registry.json";
 
-/**
- * Section padding for component display
- */
-var SECTION_PADDING = 48;
 
-/**
- * Gap between sections on the page
- */
-var SECTION_GAP = 160;
 
 /**
  * Toast dimensions (matches sm:w-[300px] from viewport)

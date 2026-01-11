@@ -22,18 +22,12 @@ import {
   bindStrokeToVariable,
   createTextNode,
   bindTextColorToVariable,
+  SECTION_PADDING,
+  SECTION_GAP,
 } from "./shared";
 import { logComplete, logStart, logProgress } from "../logger";
 
-/**
- * Section padding for component display
- */
-var SECTION_PADDING = 48;
 
-/**
- * Gap between sections on the page
- */
-var SECTION_GAP = 160;
 
 /**
  * Tabs dimensions and styling

@@ -1,152 +1,151 @@
-# Ralph Prompt - Figma Generator Coverage Completion
+# Ralph Prompt - Eliminate Magic Numbers from Figma Generators
 
-You are completing Figma generator coverage for components that are currently excluded from drift detection. This is Phase 4 of the Figma plugin robustness project.
+You are eliminating magic numbers from Figma generators to ensure they stay in sync with component source code. This is Phase 5 of the Figma plugin robustness project.
 
 ## Context
 
-Phases 1-3 are COMPLETE:
+Phases 1-4 are COMPLETE:
 
 - Phase 1: Test refactoring (all 29 generators have rigorous tests)
 - Phase 2: Registry integration (all generators read from component-registry.json)
 - Phase 3: Parser enhancements (opacity, arbitrary values, state variants)
+- Phase 4: Generator coverage (Breadcrumbs, Empty, PageHeader added)
 
-**Current gap:** 3 components need generators (temporarily excluded):
+**Current gap:** Generators contain hardcoded magic numbers that could drift from component implementations:
 
-- Empty (display component for empty states)
-- Breadcrumbs (block component with navigation path)
-- PageHeader (block component with title, description, actions)
-
-**Permanently excluded (no generator needed):**
-
-- Field - Form wrapper utility with no standalone visual representation
-- Icon - Utility component (handled by icon-library.ts)
-
-**Name mappings (generator exists, name differs):**
-
-- DropdownMenu → dropdown.ts
-- Toasty → toast.ts
+- `SECTION_PADDING = 48` and `SECTION_GAP = 160` duplicated in 5+ files
+- Dialog `SIZE_CONFIG` with hardcoded widths (350, 384, 512, 768)
+- Button `COMPACT_SIZE_MAP` with hardcoded sizes (14, 26, 36, 40)
+- Shadow values hardcoded in Dialog and Tabs
+- Scattered inline fallbacks (`|| 8`, `|| 12`, etc.)
 
 **Reference files:**
 
 - @PRD.json - Task definitions and acceptance criteria
 - @progress.txt - Progress log (append your work here)
-- @badge.ts - Example of well-structured generator
-- @drift-detection.test.ts - Where EXCLUDED_COMPONENTS is defined
+- @shared.ts - Where centralized constants should live
+- @parsers/tailwind-to-figma.ts - Parser for Tailwind classes
 
 ## Your Task
 
-Create generators for the 3 temporarily excluded components.
+Eliminate magic numbers by centralizing constants and deriving values from the registry.
 
 ## Requirements
 
-### 1. Analyze Component in Registry
+### 1. Centralize Constants in shared.ts
 
-First, check the component structure in registry:
+Add new constants to shared.ts:
 
 ```typescript
-import registry from "../../../../ai/component-registry.json";
+/**
+ * Shadow presets for components
+ */
+export const SHADOWS = {
+  /** Dialog shadow - elevated appearance */
+  dialog: { offsetX: 0, offsetY: 8, blur: 32, spread: 0, opacity: 0.16 },
+  /** Subtle shadow for tabs */
+  subtle: { offsetX: 0, offsetY: 1, blur: 2, spread: 0, opacity: 0.05 },
+} as const;
 
-// Check component structure
-const componentData = registry.components.ComponentName;
-console.log(componentData.props);
-console.log(componentData.colors);
-console.log(componentData.subComponents);
+/**
+ * Grid layout constants for component display
+ */
+export const GRID_LAYOUT = {
+  /** Gap between rows in component grid */
+  rowGap: 24,
+  /** Width of label column */
+  labelWidth: 160,
+  /** Height of header row */
+  headerHeight: 24,
+} as const;
+
+/**
+ * Fallback values when parsing fails
+ */
+export const FALLBACK_VALUES = {
+  fontSize: 16,
+  fontWeight: 400,
+  padding: 8,
+  borderRadius: 8,
+  gap: 6,
+} as const;
 ```
 
-### 2. Generator Pattern
+### 2. Remove Duplicate Declarations
+
+Find and remove duplicate `SECTION_PADDING` and `SECTION_GAP` declarations:
 
 ```typescript
-import registry from "../../../../ai/component-registry.json";
-import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
-import { createTextNode, bindFillToVariable, ... } from "./shared";
+// WRONG - duplicated in each file
+var SECTION_PADDING = 48;
+var SECTION_GAP = 160;
 
-const componentData = registry.components.ComponentName;
+// CORRECT - import from shared.ts
+import { SECTION_PADDING, SECTION_GAP } from "./shared";
+```
 
-// Testable exports (pure functions)
-export function getComponentConfig() { ... }
-export function getComponentParsedStyles() { ... }
-export function getAllComponentData() { ... }
+### 3. Enhance Parser for Missing Classes
 
-// Generator function
-export async function generateComponentComponents(startY: number): Promise<number> {
-  // Create Figma components
-  // Return nextY for next section
+Add parsing for `min-w-*` and `size-*` classes in tailwind-to-figma.ts:
+
+```typescript
+// min-w-96, min-w-[32rem], min-w-[48rem]
+const minWidthMatch = cls.match(/^min-w-(\d+)$/);
+if (minWidthMatch) {
+  result.minWidth = getOrDefault(SPACING_SCALE, minWidthMatch[1], parseFloat(minWidthMatch[1]) * 4);
+  continue;
+}
+
+// size-3.5, size-6.5, size-9, size-10 (square sizing)
+const sizeMatch = cls.match(/^size-(\d+\.?\d*)$/);
+if (sizeMatch) {
+  const size = getOrDefault(SPACING_SCALE, sizeMatch[1], parseFloat(sizeMatch[1]) * 4);
+  result.width = size;
+  result.height = size;
+  continue;
 }
 ```
 
-### 3. Test Pattern
+### 4. Derive Values from Registry
+
+Replace hardcoded values with parsed registry values:
 
 ```typescript
-import { getComponentConfig, getAllComponentData } from "./component";
-import registry from "../../../../ai/component-registry.json";
+// WRONG - hardcoded
+const COMPACT_SIZE_MAP = { xs: 14, sm: 26, base: 36, lg: 40 };
 
-describe("Component Generator - Registry Validation", () => {
-  it("should exist in registry", () => { ... });
-});
+// CORRECT - derived from registry
+function getCompactSizeMap(): Record<string, number> {
+  const shapeProp = registry.components.Button.props.shape;
+  const compactSizeClasses = shapeProp.compactSize || {};
+  const result: Record<string, number> = {};
 
-describe("Component Generator - Configuration", () => {
-  it("should have config defined", () => { ... });
-});
+  for (const [size, classes] of Object.entries(compactSizeClasses)) {
+    const parsed = parseTailwindClasses(classes);
+    result[size] = parsed.width ?? FALLBACK_VALUES.compactSize[size];
+  }
 
-describe("Component Generator - Snapshots", () => {
-  it("should produce consistent data", () => {
-    expect(getAllComponentData()).toMatchSnapshot();
-  });
-});
-```
-
-### 4. Register in code.ts
-
-Add import and register in GENERATORS array:
-
-```typescript
-import { generateComponentComponents } from "./generators/component";
-
-// In GENERATORS array:
-{
-  name: "Component",
-  execute: async (page, y) => {
-    const result = await generateComponentComponents(y);
-    return { nextY: result };
-  },
-},
-```
-
-### 5. Update Drift Detection
-
-Remove from EXCLUDED_COMPONENTS after generator is complete:
-
-```typescript
-// In drift-detection.test.ts, remove the component from the "Phase 4 targets" section
-const EXCLUDED_COMPONENTS = new Set([
-  // Permanently excluded...
-  "Field",
-  "Icon",
-
-  // Components not yet implemented (remove as you complete them)
-  "Breadcrumbs",
-  "Empty",
-  "PageHeader",
-]);
+  return result;
+}
 ```
 
 ## Validation Checklist
 
 Before marking a task complete:
 
-- [ ] Generator imports from component-registry.json
-- [ ] Generator has testable exports (get*Config, get*Data functions)
-- [ ] Test file exists with structural + snapshot tests
-- [ ] Generator registered in code.ts GENERATORS array
-- [ ] Removed from EXCLUDED_COMPONENTS in drift-detection.test.ts
+- [ ] No duplicate constant declarations across files
+- [ ] New constants added to shared.ts with JSDoc comments
+- [ ] Generators import from shared.ts instead of local declarations
+- [ ] Parser handles new class patterns (min-w-_, size-_)
 - [ ] All tests pass: `pnpm --filter @cloudflare/kumo test generators/ --run`
 - [ ] Drift detection passes: `pnpm --filter @cloudflare/kumo validate:figma`
+- [ ] No visual changes (snapshot tests unchanged)
 
 ## Run Tests
 
 ```bash
 # Run specific generator test
-pnpm --filter @cloudflare/kumo test generators/[name].test.ts --run
+pnpm --filter @cloudflare/kumo test generators/shared.test.ts --run
 
 # Run all generator tests
 pnpm --filter @cloudflare/kumo test generators/ --run
@@ -155,49 +154,97 @@ pnpm --filter @cloudflare/kumo test generators/ --run
 pnpm --filter @cloudflare/kumo validate:figma
 ```
 
-## Your Task (Single Component Per Iteration)
+## Your Task (Single Task Per Iteration)
 
 1. Find the NEXT incomplete task from PRD.json (first task with status: "pending")
-2. Analyze the component in registry
-3. Create generator following the established pattern
-4. Create test file with structural + snapshot tests
-5. Register in code.ts
-6. Remove from EXCLUDED_COMPONENTS in drift-detection.test.ts
-7. Run tests to verify all pass
-8. Update PRD.json task status to "complete"
-9. Append progress to progress.txt with:
-   - Component name
-   - What was created
+2. Implement the changes following the patterns above
+3. Run tests to verify all pass
+4. Update PRD.json task status to "complete"
+5. Append progress to progress.txt with:
+   - Task name
+   - Files modified
    - Test results
-10. **CRITICAL GIT INSTRUCTIONS:**
-    - DO NOT create new branches or switch branches
-    - Stay on the current branch
-    - Make a git commit with clear message
-    - DO NOT push to remote
+6. **CRITICAL GIT INSTRUCTIONS:**
+   - DO NOT create new branches or switch branches
+   - Stay on the current branch
+   - Make a git commit with clear message
+   - DO NOT push to remote
 
-ONLY WORK ON A SINGLE COMPONENT PER ITERATION.
+ONLY WORK ON A SINGLE TASK PER ITERATION.
 
 If ALL tasks in PRD.json are complete (status: "complete"), output <promise>COMPLETE</promise>.
 
-## Component-Specific Notes
+## Task-Specific Notes
 
-### Empty (T1 - First Priority)
+### T1: Centralize Section Constants
 
-- Display component for empty states (no data, no results, etc.)
-- Should show: icon (centered), title text, description text
-- Layout: vertical stack, centered
-- Check registry for props like `icon`, `title`, `description`
+Files with duplicate declarations to fix:
 
-### Breadcrumbs (T2)
+- generators/dialog.ts (lines 48-53)
+- generators/input.ts (lines 36-41)
+- generators/tabs.ts (lines 31-32)
+- generators/text.ts (lines 55-60)
+- generators/banner.ts (check for duplicates)
 
-- Navigation path component with multiple items
-- Items separated by icons (typically ph-caret-right)
-- Last item is current page (different styling)
-- Check registry for separator icon and item structure
+### T2: Add Shadow Scale
 
-### PageHeader (T3)
+Dialog shadow (dialog.ts ~line 224):
 
-- Page title block with optional breadcrumbs, description, actions
-- May include Breadcrumbs component reference
-- Action buttons area on the right
-- Check registry for subComponents
+```typescript
+effects = [{
+  type: "DROP_SHADOW",
+  offset: { x: 0, y: 8 },
+  radius: 32,
+  spread: 0,
+  color: { r: 0, g: 0, b: 0, a: 0.16 },
+}];
+```
+
+Tabs shadow (tabs.ts ~line 246):
+
+```typescript
+effects = [{
+  type: "DROP_SHADOW",
+  offset: { x: 0, y: 1 },
+  radius: 2,
+  spread: 0,
+  color: { r: 0, g: 0, b: 0, a: 0.05 },
+}];
+```
+
+### T3: Add Layout Grid Constants
+
+Common values across generators:
+
+- `rowGap`: 24 (input.ts), 40 (button.ts)
+- `labelColumnWidth`: 160 (tabs.ts), 180 (badge.ts), 200 (input.ts)
+- `headerRowHeight`: 24 (input.ts, dialog.ts)
+
+### T4: Parse Dialog Sizes
+
+Dialog size classes in registry:
+
+- sm: likely has specific classes
+- base: `min-w-96` = 384px
+- lg: `min-w-[32rem]` = 512px
+- xl: `min-w-[48rem]` = 768px
+
+### T5: Derive Compact Size Map
+
+Button compactSize classes:
+
+- xs: `size-3.5` = 14px
+- sm: `size-6.5` = 26px
+- base: `size-9` = 36px
+- lg: `size-10` = 40px
+
+### T6: Centralize Fallback Values
+
+Common fallbacks found:
+
+- `|| 8` (gap, padding)
+- `|| 12` (padding)
+- `|| 16` (fontSize)
+- `|| 36` (button height)
+- `|| 500` (fontWeight)
+- `|| 9999` (borderRadius full)

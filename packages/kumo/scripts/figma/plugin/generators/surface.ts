@@ -22,6 +22,8 @@ import {
   bindStrokeToVariable,
   bindTextColorToVariable,
   BORDER_RADIUS,
+  SECTION_PADDING,
+  SECTION_GAP,
 } from "./shared";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 import registry from "../../../../ai/component-registry.json";
@@ -31,15 +33,7 @@ import registry from "../../../../ai/component-registry.json";
  */
 var BASE_STYLES = "shadow-xs ring ring-border";
 
-/**
- * Section padding for component display
- */
-var SECTION_PADDING = 48;
 
-/**
- * Gap between sections on the page
- */
-var SECTION_GAP = 160;
 
 /**
  * Create a single Surface component

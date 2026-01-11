@@ -22,18 +22,12 @@ import {
   createModeSection,
   createRowLabel,
   bindStrokeToVariable,
+  SECTION_PADDING,
+  SECTION_GAP,
 } from "./shared";
 import { logComplete, logStart, logProgress } from "../logger";
 
-/**
- * Section padding for component display
- */
-var SECTION_PADDING = 48;
 
-/**
- * Gap between sections on the page
- */
-var SECTION_GAP = 160;
 
 /**
  * Create a single Loader component using figma.createNodeFromSvg()

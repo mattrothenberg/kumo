@@ -22,9 +22,12 @@ import {
   createModeSection,
   createRowLabel,
   createColumnHeaders,
-  bindTextColorToVariable,
+  bindFillToVariable,
   bindStrokeToVariable,
+  bindTextColorToVariable,
   BORDER_RADIUS,
+  SECTION_PADDING,
+  SECTION_GAP,
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
@@ -55,15 +58,7 @@ var TRIGGER_BASE_STYLES = "flex items-center gap-1 text-sm text-info";
  */
 var CONTENT_PANEL_STYLES = "my-2 border-l-2 border-color pl-4";
 
-/**
- * Section padding for component display
- */
-var SECTION_PADDING = 48;
 
-/**
- * Gap between sections on the page
- */
-var SECTION_GAP = 160;
 
 /**
  * Open state values

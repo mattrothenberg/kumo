@@ -25,6 +25,7 @@ const EXCLUDED_COMPONENTS = new Set([
   // Permanently excluded - no visual representation needed in Figma
   "Field", // Form wrapper utility - provides label/description/error layout, no standalone visual
   "Icon", // Utility component - handled by icon-library.ts
+  "PageHeader", // Complex composite component - too layout-specific for Figma generation
 ]);
 
 // Map registry component names to generator file names (if they differ)
@@ -34,7 +35,6 @@ const COMPONENT_NAME_MAPPING: Record<string, string> = {
   DateRangePicker: "date-range-picker",
   DropdownMenu: "dropdown", // Registry name differs from file name
   LayerCard: "layer-card",
-  PageHeader: "page-header", // Registry name differs from file name
   SensitiveInput: "sensitive-input",
   Toasty: "toast", // Registry name differs from file name
 };

@@ -24,6 +24,8 @@ import {
   createModeSection,
   createRowLabel,
   bindTextColorToVariable,
+  SECTION_PADDING,
+  SECTION_GAP,
 } from "./shared";
 import { logComplete } from "../logger";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
@@ -38,15 +40,7 @@ var langProp = codeProps.lang as unknown as {
   default: string;
 };
 
-/**
- * Section padding for component display
- */
-var SECTION_PADDING = 48;
 
-/**
- * Gap between sections on the page
- */
-var SECTION_GAP = 160;
 
 /**
  * Get placeholder text based on lang variant
