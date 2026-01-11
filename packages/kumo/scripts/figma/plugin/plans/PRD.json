@@ -121,7 +121,7 @@
       "name": "create-breadcrumbs-generator",
       "title": "Create Breadcrumbs Generator",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Breadcrumbs is a block component with multiple items and separators",
       "files": ["generators/breadcrumbs.ts", "generators/breadcrumbs.test.ts"],
       "acceptance": [

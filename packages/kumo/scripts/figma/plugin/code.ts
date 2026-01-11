@@ -9,6 +9,7 @@
 
 import { generateBadgeComponents } from "./generators/badge";
 import { generateBannerComponents } from "./generators/banner";
+import { generateBreadcrumbsComponents } from "./generators/breadcrumbs";
 import { generateButtonComponents } from "./generators/button";
 import { generateCheckboxComponents } from "./generators/checkbox";
 import { generateClipboardTextComponents } from "./generators/clipboard-text";
@@ -147,6 +148,13 @@ figma.ui.onmessage = async (msg: { type: string }) => {
           name: "Banner",
           execute: async (_page, y) => {
             const result = await generateBannerComponents(y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "Breadcrumbs",
+          execute: async (_page, y) => {
+            const result = await generateBreadcrumbsComponents(y);
             return { nextY: result };
           },
         },

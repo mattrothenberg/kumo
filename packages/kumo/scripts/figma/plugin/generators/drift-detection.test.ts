@@ -27,7 +27,6 @@ const EXCLUDED_COMPONENTS = new Set([
   "Icon", // Utility component - handled by icon-library.ts
 
   // Components not yet implemented in Figma (Phase 4 targets)
-  "Breadcrumbs", // Block component with navigation path
   "PageHeader", // Block component with title, description, actions
 ]);
 

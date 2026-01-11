@@ -2248,3 +2248,80 @@ Create generators for 4 excluded components to achieve 100% coverage:
 
 **Status:** PENDING - PRD.json updated for Phase 4
 
+
+---
+
+## PHASE 4: Missing Generator Coverage (Current)
+
+### Goal
+Add Figma generators for the 3 components currently excluded from drift detection: Breadcrumbs, Empty, PageHeader.
+
+---
+
+## Iteration 1: Breadcrumbs Generator (T2)
+
+**Generator:** breadcrumbs
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Created generators/breadcrumbs.ts with full registry integration:
+   - Imports from component-registry.json for size configuration
+   - getBreadcrumbsSizeConfig() - Returns size values, classes, descriptions
+   - getBreadcrumbsParsedSizeStyles(size) - Returns parsed size styles
+   - getBreadcrumbsColorBindings() - Returns semantic color tokens (link, current, separator)
+   - getBreadcrumbsSeparatorConfig() - Returns separator icon configuration
+   - getAllBreadcrumbsData() - Returns complete intermediate data
+
+2. Created generators/breadcrumbs.test.ts with 29 tests:
+   - Registry Validation (5 tests)
+   - Size Configuration (3 tests)
+   - Parsed Size Styles (5 tests)
+   - Color Bindings (2 tests)
+   - Separator Configuration (3 tests)
+   - Complete Data Structure (5 tests)
+   - Snapshot Tests (6 tests)
+
+3. Generator creates 2 size variants (sm, base):
+   - sm: h-10 (40px), gap-0.5 (2px), text-sm (14px)
+   - base: h-12 (48px), gap-1 (4px), text-base (16px)
+
+4. Breadcrumb structure:
+   - Link items: text-muted color, regular weight
+   - Separators: ph-caret-right icon using figma.createNodeFromSvg(), text-disabled color
+   - Current item: text-surface color, medium weight (500)
+
+5. Registered in code.ts GENERATORS array (alphabetically after Banner, before Button)
+
+6. Removed from EXCLUDED_COMPONENTS in drift-detection.test.ts
+
+### Test Results:
+- ✅ All 29 tests pass
+- ✅ 6 snapshots created
+- ✅ Verified tests pass with --run flag
+- ✅ Drift detection test passes (Breadcrumbs no longer excluded)
+- ✅ All generator tests pass (1477 tests across 32 files)
+
+### Implementation Details:
+- Breadcrumbs uses SVG separator icon created with figma.createNodeFromSvg()
+- SVG path matches breadcrumbs.tsx: "M10.75 8.75L14.25 12L10.75 15.25" in 24x24 viewBox
+- Stroke color bound to text-color-disabled semantic token via recursive binding
+- Layout: Link > Separator > Link > Separator > Current
+- Example content: "Home > Projects > Current Project"
+
+### Registry Data Used:
+- props.size.values: ["sm", "base"]
+- props.size.classes: Size-specific classes (height, gap, fontSize)
+- props.size.descriptions: Size descriptions
+- colors: ["text-disabled", "text-green", "text-muted"]
+- subComponents: Link, Current, Separator, Clipboard
+
+### Notes:
+- Breadcrumbs is a block component (category: "Block")
+- Generator creates both light and dark mode sections
+- All color bindings use semantic tokens (text-color-muted, text-color-surface, text-color-disabled)
+- Tests follow structural + snapshot pattern from badge.test.ts
+- No pre-existing TypeScript errors
+
+**Status:** COMPLETE - Ready for commit
+
