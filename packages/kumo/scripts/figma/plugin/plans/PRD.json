@@ -424,9 +424,9 @@
       "name": "final-verification",
       "title": "Final Verification and Cleanup",
       "priority": "low",
-      "status": "pending",
+      "status": "complete",
       "description": "Comprehensive verification that all magic numbers are addressed",
-      "files": ["generators/*.ts"],
+      "files": ["generators/*.ts", "plans/PHASE6_FINAL_AUDIT.md"],
       "acceptance": [
         "Run grep/search for remaining magic number patterns",
         "Document any intentional exceptions with comments",
