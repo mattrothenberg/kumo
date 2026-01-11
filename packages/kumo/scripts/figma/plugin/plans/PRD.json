@@ -172,7 +172,7 @@
       "name": "add-link-button-tests",
       "title": "Add Rigorous Tests for link-button",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Ensure link-button.test.ts has comprehensive structural + snapshot tests",
       "files": ["generators/link-button.ts", "generators/link-button.test.ts"],
       "acceptance": [
@@ -189,7 +189,7 @@
       "name": "add-refresh-button-tests",
       "title": "Add Rigorous Tests for refresh-button",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Ensure refresh-button.test.ts has comprehensive structural + snapshot tests",
       "files": [
         "generators/refresh-button.ts",
@@ -209,7 +209,7 @@
       "name": "add-switch-tests",
       "title": "Add Rigorous Tests for switch",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Ensure switch.test.ts has comprehensive structural + snapshot tests",
       "files": ["generators/switch.ts", "generators/switch.test.ts"],
       "acceptance": [
@@ -226,7 +226,7 @@
       "name": "parser-opacity-modifiers",
       "title": "Add Opacity Modifier Parsing to Parser",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Extend tailwind-to-figma.ts to handle bg-primary/70, text-surface/50 patterns",
       "files": [
         "parsers/tailwind-to-figma.ts",

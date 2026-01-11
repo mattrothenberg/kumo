@@ -1897,3 +1897,60 @@ None - all tests pass after refactoring
 - Tests are now resilient to design system evolution
 
 **Status:** COMPLETE - Ready for commit
+
+---
+
+## Iteration 23: T7 - parser-opacity-modifiers (PHASE 3: Parser Enhancement)
+
+**Task:** T7 - Add Opacity Modifier Parsing to Parser
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Extended tailwind-to-figma.ts parser to extract numeric opacity values:
+   - Added `textOpacity` and `strokeOpacity` to `ParsedStyles` type (alongside existing `fillOpacity`)
+   - Enhanced background color parsing to extract fillOpacity from bg-primary/70 patterns
+   - Enhanced text color parsing to extract textOpacity from text-surface/50, text-white/90 patterns
+   - Enhanced border color parsing to extract strokeOpacity from border-error/50 patterns
+   - Enhanced ring parsing to extract strokeOpacity from ring-active/50 patterns
+
+2. Parser now returns BOTH variable name AND numeric opacity:
+   - `bg-primary/70` → `fillVariable: "color-primary/70"` + `fillOpacity: 0.7`
+   - `text-surface/50` → `textVariable: "text-color-surface/50"` + `textOpacity: 0.5`
+   - `border-error/30` → `strokeVariable: "color-error/30"` + `strokeOpacity: 0.3`
+   - `ring-active/80` → `strokeVariable: "color-active/80"` + `strokeOpacity: 0.8`
+
+3. Backward compatible approach:
+   - Existing variable names (e.g., "color-primary/70") maintained for compatibility
+   - New opacity properties are ADDITIVE, not replacing existing behavior
+   - Generators can choose to use either the variable or the numeric opacity
+
+4. Updated tests:
+   - Added comprehensive opacity tests for bg-, text-, border-, ring- patterns
+   - Added tests for combined opacity classes
+   - Updated existing tests that expected opacity NOT to be extracted
+   - Updated banner.test.ts snapshots (5 snapshots changed intentionally)
+
+### Test Results:
+- ✅ All 60 parser tests pass
+- ✅ All 1428 generator tests pass (29 test files)
+- ✅ 5 snapshots updated in banner.test.ts (intentional - fillOpacity added)
+- ✅ Verified backward compatibility - no regressions
+
+### Acceptance Criteria Met:
+- ✅ Parse opacity modifiers: /70 -> 0.7, /50 -> 0.5, /20 -> 0.2
+- ✅ Return fillOpacity, textOpacity, strokeOpacity properties
+- ✅ Work with all semantic tokens
+- ✅ Add tests for opacity parsing
+- ✅ Existing tests still pass
+
+### Notes:
+- Parser already had opacity handling for bg- colors, but used variable-only approach
+- Now ALSO extracts numeric opacity for generator flexibility
+- Button generator types already had fillOpacity/textOpacity defined (unused until now)
+- Generators can now use opacity values directly for Figma fill/text opacity properties
+- Special handling for text-white/90 - sets textOpacity but textVariable remains null
+- All opacity values converted from percentage (70) to decimal (0.7)
+
+**Status:** COMPLETE - Ready for commit
+

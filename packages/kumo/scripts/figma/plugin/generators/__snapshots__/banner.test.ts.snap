@@ -36,6 +36,7 @@ exports[`Banner Generator - Snapshot Tests (Intermediate Data) > should produce 
         "primaryAxisSizingMode": "AUTO",
       },
       "parsed": {
+        "fillOpacity": 0.2,
         "fillVariable": "color-info/20",
         "hasBorder": true,
         "strokeVariable": "color-info",
@@ -68,6 +69,7 @@ exports[`Banner Generator - Snapshot Tests (Intermediate Data) > should produce 
         "primaryAxisSizingMode": "AUTO",
       },
       "parsed": {
+        "fillOpacity": 0.2,
         "fillVariable": "color-alert/20",
         "hasBorder": true,
         "strokeVariable": "color-alert",
@@ -100,6 +102,7 @@ exports[`Banner Generator - Snapshot Tests (Intermediate Data) > should produce 
         "primaryAxisSizingMode": "AUTO",
       },
       "parsed": {
+        "fillOpacity": 0.2,
         "fillVariable": "color-error/20",
         "hasBorder": true,
         "strokeVariable": "color-error",
@@ -151,6 +154,7 @@ exports[`Banner Generator - Snapshot Tests (Intermediate Data) > should produce 
         "primaryAxisSizingMode": "AUTO",
       },
       "parsed": {
+        "fillOpacity": 0.2,
         "fillVariable": "color-info/20",
         "hasBorder": true,
         "strokeVariable": "color-info",
@@ -183,6 +187,7 @@ exports[`Banner Generator - Snapshot Tests (Intermediate Data) > should produce 
         "primaryAxisSizingMode": "AUTO",
       },
       "parsed": {
+        "fillOpacity": 0.2,
         "fillVariable": "color-alert/20",
         "hasBorder": true,
         "strokeVariable": "color-alert",
@@ -215,6 +220,7 @@ exports[`Banner Generator - Snapshot Tests (Intermediate Data) > should produce 
         "primaryAxisSizingMode": "AUTO",
       },
       "parsed": {
+        "fillOpacity": 0.2,
         "fillVariable": "color-error/20",
         "hasBorder": true,
         "strokeVariable": "color-error",
@@ -247,6 +253,7 @@ exports[`Banner Generator - Snapshot Tests (Intermediate Data) > should produce 
   "classes": "bg-alert/20 border-alert text-alert selection:bg-alert-selection",
   "description": "Warning banner for cautionary messages",
   "parsed": {
+    "fillOpacity": 0.2,
     "fillVariable": "color-alert/20",
     "hasBorder": true,
     "strokeVariable": "color-alert",
@@ -261,6 +268,7 @@ exports[`Banner Generator - Snapshot Tests (Intermediate Data) > should produce 
   "classes": "bg-info/20 border-info text-info selection:bg-info-selection",
   "description": "Informational banner for general messages",
   "parsed": {
+    "fillOpacity": 0.2,
     "fillVariable": "color-info/20",
     "hasBorder": true,
     "strokeVariable": "color-info",
@@ -275,6 +283,7 @@ exports[`Banner Generator - Snapshot Tests (Intermediate Data) > should produce 
   "classes": "bg-error/20 border-error text-error selection:bg-error-selection",
   "description": "Error banner for critical issues",
   "parsed": {
+    "fillOpacity": 0.2,
     "fillVariable": "color-error/20",
     "hasBorder": true,
     "strokeVariable": "color-error",

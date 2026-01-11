@@ -107,12 +107,15 @@ describe("parseTailwindClasses", () => {
     it("should parse background colors with opacity modifiers", () => {
       expect(parseTailwindClasses("bg-info/20")).toEqual({
         fillVariable: "color-info/20",
+        fillOpacity: 0.2,
       });
       expect(parseTailwindClasses("bg-error/50")).toEqual({
         fillVariable: "color-error/50",
+        fillOpacity: 0.5,
       });
       expect(parseTailwindClasses("bg-primary/80")).toEqual({
         fillVariable: "color-primary/80",
+        fillOpacity: 0.8,
       });
     });
 
@@ -295,6 +298,7 @@ describe("parseTailwindClasses", () => {
         borderRadius: 4,
         fontSize: 12,
         fillVariable: "color-info/20",
+        fillOpacity: 0.2,
         textVariable: "text-color-info",
         hasBorder: true,
         borderStyle: "dashed",
@@ -390,33 +394,129 @@ describe("parseTailwindClasses", () => {
   });
 
   describe("Opacity Handling", () => {
-    it("should parse opacity for various color classes", () => {
+    it("should parse opacity for various background color classes", () => {
       expect(parseTailwindClasses("bg-error/10")).toEqual({
         fillVariable: "color-error/10",
+        fillOpacity: 0.1,
       });
       expect(parseTailwindClasses("bg-alert/30")).toEqual({
         fillVariable: "color-alert/30",
+        fillOpacity: 0.3,
       });
       expect(parseTailwindClasses("bg-surface/90")).toEqual({
         fillVariable: "color-surface/90",
+        fillOpacity: 0.9,
       });
     });
 
     it("should parse opacity with zero", () => {
       expect(parseTailwindClasses("bg-primary/0")).toEqual({
         fillVariable: "color-primary/0",
+        fillOpacity: 0,
       });
     });
 
     it("should parse full opacity", () => {
       expect(parseTailwindClasses("bg-primary/100")).toEqual({
         fillVariable: "color-primary/100",
+        fillOpacity: 1,
       });
     });
 
     it("should handle multi-digit opacity values", () => {
       expect(parseTailwindClasses("bg-secondary/75")).toEqual({
         fillVariable: "color-secondary/75",
+        fillOpacity: 0.75,
+      });
+    });
+
+    it("should parse common opacity values correctly", () => {
+      expect(parseTailwindClasses("bg-primary/20")).toEqual({
+        fillVariable: "color-primary/20",
+        fillOpacity: 0.2,
+      });
+      expect(parseTailwindClasses("bg-primary/50")).toEqual({
+        fillVariable: "color-primary/50",
+        fillOpacity: 0.5,
+      });
+      expect(parseTailwindClasses("bg-primary/70")).toEqual({
+        fillVariable: "color-primary/70",
+        fillOpacity: 0.7,
+      });
+      expect(parseTailwindClasses("bg-primary/80")).toEqual({
+        fillVariable: "color-primary/80",
+        fillOpacity: 0.8,
+      });
+    });
+
+    it("should parse text color opacity modifiers", () => {
+      expect(parseTailwindClasses("text-surface/50")).toEqual({
+        textVariable: "text-color-surface/50",
+        textOpacity: 0.5,
+      });
+      expect(parseTailwindClasses("text-error/80")).toEqual({
+        textVariable: "text-color-error/80",
+        textOpacity: 0.8,
+      });
+      expect(parseTailwindClasses("text-info/30")).toEqual({
+        textVariable: "text-color-info/30",
+        textOpacity: 0.3,
+      });
+    });
+
+    it("should parse important text color opacity modifiers", () => {
+      expect(parseTailwindClasses("!text-surface/50")).toEqual({
+        textVariable: "text-color-surface/50",
+        textOpacity: 0.5,
+      });
+      expect(parseTailwindClasses("!text-error/70")).toEqual({
+        textVariable: "text-color-error/70",
+        textOpacity: 0.7,
+      });
+    });
+
+    it("should parse border color opacity modifiers", () => {
+      expect(parseTailwindClasses("border border-error/50")).toEqual({
+        hasBorder: true,
+        strokeWeight: 1,
+        strokeVariable: "color-error/50",
+        strokeOpacity: 0.5,
+      });
+      expect(parseTailwindClasses("border border-primary/30")).toEqual({
+        hasBorder: true,
+        strokeWeight: 1,
+        strokeVariable: "color-primary/30",
+        strokeOpacity: 0.3,
+      });
+    });
+
+    it("should parse ring color opacity modifiers", () => {
+      expect(parseTailwindClasses("ring-active/50")).toEqual({
+        hasBorder: true,
+        strokeVariable: "color-active/50",
+        strokeOpacity: 0.5,
+      });
+      expect(parseTailwindClasses("ring-error/70")).toEqual({
+        hasBorder: true,
+        strokeVariable: "color-error/70",
+        strokeOpacity: 0.7,
+      });
+    });
+
+    it("should handle opacity in combined classes", () => {
+      const result = parseTailwindClasses(
+        "bg-primary/70 text-white/90 border border-error/50",
+      );
+      expect(result).toEqual({
+        fillVariable: "color-primary/70",
+        fillOpacity: 0.7,
+        textVariable: null,
+        textOpacity: 0.9,
+        isWhiteText: true,
+        hasBorder: true,
+        strokeWeight: 1,
+        strokeVariable: "color-error/50",
+        strokeOpacity: 0.5,
       });
     });
   });
