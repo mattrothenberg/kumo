@@ -5,7 +5,7 @@ exports[`Code Generator - Snapshot Tests (Intermediate Data) > should produce co
   "parsed": {
     "borderRadius": 0,
     "fillVariable": null,
-    "fontSize": 14,
+    "fontSize": 13,
     "hasBorder": true,
     "textVariable": "text-color-label",
   },
@@ -19,7 +19,7 @@ exports[`Code Generator - Snapshot Tests (Intermediate Data) > should produce co
     "parsed": {
       "borderRadius": 0,
       "fillVariable": null,
-      "fontSize": 14,
+      "fontSize": 13,
       "hasBorder": true,
       "textVariable": "text-color-label",
     },

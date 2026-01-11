@@ -109,7 +109,7 @@ exports[`Text Generator - Snapshot Tests (Intermediate Data) > should produce co
       "isCopyVariant": false,
       "isMonoVariant": false,
       "parsed": {
-        "fontSize": 18,
+        "fontSize": 16,
         "fontWeight": 600,
         "textVariable": "text-color-surface",
       },
@@ -138,7 +138,7 @@ exports[`Text Generator - Snapshot Tests (Intermediate Data) > should produce co
       "isCopyVariant": true,
       "isMonoVariant": false,
       "parsed": {
-        "fontSize": 14,
+        "fontSize": 13,
         "textVariable": "text-color-surface",
       },
       "size": "sm",
@@ -152,7 +152,7 @@ exports[`Text Generator - Snapshot Tests (Intermediate Data) > should produce co
       "isCopyVariant": true,
       "isMonoVariant": false,
       "parsed": {
-        "fontSize": 16,
+        "fontSize": 14,
         "textVariable": "text-color-surface",
       },
       "size": "base",
@@ -166,7 +166,7 @@ exports[`Text Generator - Snapshot Tests (Intermediate Data) > should produce co
       "isCopyVariant": true,
       "isMonoVariant": false,
       "parsed": {
-        "fontSize": 18,
+        "fontSize": 16,
         "textVariable": "text-color-surface",
       },
       "size": "lg",
@@ -194,7 +194,7 @@ exports[`Text Generator - Snapshot Tests (Intermediate Data) > should produce co
       "isCopyVariant": true,
       "isMonoVariant": false,
       "parsed": {
-        "fontSize": 14,
+        "fontSize": 13,
         "textVariable": "text-color-muted",
       },
       "size": "sm",
@@ -208,7 +208,7 @@ exports[`Text Generator - Snapshot Tests (Intermediate Data) > should produce co
       "isCopyVariant": true,
       "isMonoVariant": false,
       "parsed": {
-        "fontSize": 16,
+        "fontSize": 14,
         "textVariable": "text-color-muted",
       },
       "size": "base",
@@ -222,7 +222,7 @@ exports[`Text Generator - Snapshot Tests (Intermediate Data) > should produce co
       "isCopyVariant": true,
       "isMonoVariant": false,
       "parsed": {
-        "fontSize": 18,
+        "fontSize": 16,
         "textVariable": "text-color-muted",
       },
       "size": "lg",
@@ -250,7 +250,7 @@ exports[`Text Generator - Snapshot Tests (Intermediate Data) > should produce co
       "isCopyVariant": true,
       "isMonoVariant": false,
       "parsed": {
-        "fontSize": 14,
+        "fontSize": 13,
         "textVariable": "text-color-info",
       },
       "size": "sm",
@@ -264,7 +264,7 @@ exports[`Text Generator - Snapshot Tests (Intermediate Data) > should produce co
       "isCopyVariant": true,
       "isMonoVariant": false,
       "parsed": {
-        "fontSize": 16,
+        "fontSize": 14,
         "textVariable": "text-color-info",
       },
       "size": "base",
@@ -278,7 +278,7 @@ exports[`Text Generator - Snapshot Tests (Intermediate Data) > should produce co
       "isCopyVariant": true,
       "isMonoVariant": false,
       "parsed": {
-        "fontSize": 18,
+        "fontSize": 16,
         "textVariable": "text-color-info",
       },
       "size": "lg",
@@ -306,7 +306,7 @@ exports[`Text Generator - Snapshot Tests (Intermediate Data) > should produce co
       "isCopyVariant": true,
       "isMonoVariant": false,
       "parsed": {
-        "fontSize": 14,
+        "fontSize": 13,
         "textVariable": "text-color-error",
       },
       "size": "sm",
@@ -320,7 +320,7 @@ exports[`Text Generator - Snapshot Tests (Intermediate Data) > should produce co
       "isCopyVariant": true,
       "isMonoVariant": false,
       "parsed": {
-        "fontSize": 16,
+        "fontSize": 14,
         "textVariable": "text-color-error",
       },
       "size": "base",
@@ -334,7 +334,7 @@ exports[`Text Generator - Snapshot Tests (Intermediate Data) > should produce co
       "isCopyVariant": true,
       "isMonoVariant": false,
       "parsed": {
-        "fontSize": 18,
+        "fontSize": 16,
         "textVariable": "text-color-error",
       },
       "size": "lg",
@@ -348,7 +348,7 @@ exports[`Text Generator - Snapshot Tests (Intermediate Data) > should produce co
       "isCopyVariant": false,
       "isMonoVariant": true,
       "parsed": {
-        "fontSize": 14,
+        "fontSize": 13,
         "textVariable": "text-color-surface",
       },
       "size": null,
@@ -362,7 +362,7 @@ exports[`Text Generator - Snapshot Tests (Intermediate Data) > should produce co
       "isCopyVariant": false,
       "isMonoVariant": true,
       "parsed": {
-        "fontSize": 16,
+        "fontSize": 14,
         "textVariable": "text-color-surface",
       },
       "size": "lg",
@@ -376,7 +376,7 @@ exports[`Text Generator - Snapshot Tests (Intermediate Data) > should produce co
       "isCopyVariant": false,
       "isMonoVariant": true,
       "parsed": {
-        "fontSize": 14,
+        "fontSize": 13,
         "textVariable": "text-color-muted",
       },
       "size": null,
@@ -390,7 +390,7 @@ exports[`Text Generator - Snapshot Tests (Intermediate Data) > should produce co
       "isCopyVariant": false,
       "isMonoVariant": true,
       "parsed": {
-        "fontSize": 16,
+        "fontSize": 14,
         "textVariable": "text-color-muted",
       },
       "size": "lg",
@@ -404,7 +404,7 @@ exports[`Text Generator - Snapshot Tests (Intermediate Data) > should produce co
 
 exports[`Text Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for body variant with base size 1`] = `
 {
-  "fontSize": 16,
+  "fontSize": 14,
   "textVariable": "text-color-surface",
 }
 `;
@@ -419,7 +419,7 @@ exports[`Text Generator - Snapshot Tests (Intermediate Data) > should produce co
 
 exports[`Text Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for mono variant 1`] = `
 {
-  "fontSize": 14,
+  "fontSize": 13,
   "textVariable": "text-color-surface",
 }
 `;

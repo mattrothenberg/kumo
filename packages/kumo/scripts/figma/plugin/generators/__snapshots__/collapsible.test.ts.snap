@@ -75,7 +75,7 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
       "text-info",
     ],
     "parsed": {
-      "fontSize": 14,
+      "fontSize": 13,
       "gap": 4,
       "textVariable": "text-color-info",
     },
@@ -95,7 +95,7 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
       "trigger": {
         "addRing": false,
         "borderRadius": 2,
-        "fontSize": 14,
+        "fontSize": 13,
         "fontWeight": 400,
         "gap": 4,
         "textVariable": "text-color-info",
@@ -114,7 +114,7 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
       "trigger": {
         "addRing": false,
         "borderRadius": 2,
-        "fontSize": 14,
+        "fontSize": 13,
         "fontWeight": 400,
         "gap": 4,
         "textVariable": "text-color-info",
@@ -133,7 +133,7 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
       "trigger": {
         "addRing": true,
         "borderRadius": 2,
-        "fontSize": 14,
+        "fontSize": 13,
         "fontWeight": 400,
         "gap": 4,
         "textVariable": "text-color-info",
@@ -152,7 +152,7 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
       "trigger": {
         "addRing": false,
         "borderRadius": 2,
-        "fontSize": 14,
+        "fontSize": 13,
         "fontWeight": 400,
         "gap": 4,
         "textVariable": "text-color-disabled",
@@ -178,7 +178,7 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
       "trigger": {
         "addRing": false,
         "borderRadius": 2,
-        "fontSize": 14,
+        "fontSize": 13,
         "fontWeight": 400,
         "gap": 4,
         "textVariable": "text-color-info",
@@ -204,7 +204,7 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
       "trigger": {
         "addRing": false,
         "borderRadius": 2,
-        "fontSize": 14,
+        "fontSize": 13,
         "fontWeight": 400,
         "gap": 4,
         "textVariable": "text-color-info",
@@ -230,7 +230,7 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
       "trigger": {
         "addRing": true,
         "borderRadius": 2,
-        "fontSize": 14,
+        "fontSize": 13,
         "fontWeight": 400,
         "gap": 4,
         "textVariable": "text-color-info",
@@ -256,7 +256,7 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
       "trigger": {
         "addRing": false,
         "borderRadius": 2,
-        "fontSize": 14,
+        "fontSize": 13,
         "fontWeight": 400,
         "gap": 4,
         "textVariable": "text-color-disabled",
@@ -280,7 +280,7 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
   "trigger": {
     "addRing": false,
     "borderRadius": 2,
-    "fontSize": 14,
+    "fontSize": 13,
     "fontWeight": 400,
     "gap": 4,
     "textVariable": "text-color-info",
@@ -302,7 +302,7 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
   "trigger": {
     "addRing": false,
     "borderRadius": 2,
-    "fontSize": 14,
+    "fontSize": 13,
     "fontWeight": 400,
     "gap": 4,
     "textVariable": "text-color-disabled",
@@ -324,7 +324,7 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
   "trigger": {
     "addRing": true,
     "borderRadius": 2,
-    "fontSize": 14,
+    "fontSize": 13,
     "fontWeight": 400,
     "gap": 4,
     "textVariable": "text-color-info",
@@ -353,7 +353,7 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
   "trigger": {
     "addRing": false,
     "borderRadius": 2,
-    "fontSize": 14,
+    "fontSize": 13,
     "fontWeight": 400,
     "gap": 4,
     "textVariable": "text-color-info",
@@ -379,7 +379,7 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
 
 exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed trigger styles 1`] = `
 {
-  "fontSize": 14,
+  "fontSize": 13,
   "gap": 4,
   "textVariable": "text-color-info",
 }

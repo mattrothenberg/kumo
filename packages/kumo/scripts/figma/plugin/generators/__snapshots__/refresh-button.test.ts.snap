@@ -57,7 +57,7 @@ exports[`RefreshButton Generator - Snapshot Tests (Intermediate Data) > should p
       "iconSize": 18,
       "parsed": {
         "borderRadius": 8,
-        "fontSize": 16,
+        "fontSize": 14,
         "gap": 6,
         "height": 36,
         "paddingX": 12,
@@ -70,7 +70,7 @@ exports[`RefreshButton Generator - Snapshot Tests (Intermediate Data) > should p
       "iconSize": 20,
       "parsed": {
         "borderRadius": 8,
-        "fontSize": 16,
+        "fontSize": 14,
         "gap": 8,
         "height": 40,
         "paddingX": 16,
@@ -141,7 +141,7 @@ exports[`RefreshButton Generator - Snapshot Tests (Intermediate Data) > should p
     "classes": "h-9 gap-1.5 rounded-lg px-3 text-base",
     "parsed": {
       "borderRadius": 8,
-      "fontSize": 16,
+      "fontSize": 14,
       "gap": 6,
       "height": 36,
       "paddingX": 12,
@@ -152,7 +152,7 @@ exports[`RefreshButton Generator - Snapshot Tests (Intermediate Data) > should p
     "classes": "h-10 gap-2 rounded-lg px-4 text-base",
     "parsed": {
       "borderRadius": 8,
-      "fontSize": 16,
+      "fontSize": 14,
       "gap": 8,
       "height": 40,
       "paddingX": 16,

@@ -261,7 +261,7 @@
       "name": "update-snapshots-font-sizes",
       "title": "[Phase 9] Update Snapshots with Correct Font Sizes",
       "priority": "high",
-      "status": "pending",
+      "status": "complete",
       "description": "Run tests and update snapshots to reflect correct Kumo font sizes",
       "files": ["scripts/figma/plugin/generators/*.test.ts"],
       "acceptance": [

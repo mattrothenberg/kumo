@@ -219,7 +219,7 @@ exports[`Input Generator - Snapshot Tests (Intermediate Data) > should produce c
       },
       "parsed": {
         "borderRadius": 8,
-        "fontSize": 16,
+        "fontSize": 14,
         "gap": 6,
         "height": 36,
         "paddingX": 12,
@@ -241,7 +241,7 @@ exports[`Input Generator - Snapshot Tests (Intermediate Data) > should produce c
       },
       "parsed": {
         "borderRadius": 8,
-        "fontSize": 16,
+        "fontSize": 14,
         "gap": 8,
         "height": 40,
         "paddingX": 16,

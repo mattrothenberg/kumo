@@ -18,6 +18,7 @@ import {
   GRID_LAYOUT,
   FALLBACK_VALUES,
   SECTION_LAYOUT,
+  FONT_SIZE,
 } from "./shared";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 import { createIconInstance, bindIconColor } from "./icon-utils";
@@ -126,7 +127,7 @@ export function getAllBannerVariantData() {
         // Icon properties
         icon: {
           iconId: BANNER_ICONS[variant] || "ph-info",
-          iconSize: 16,
+          iconSize: FONT_SIZE.lg, // 16px (Kumo's text-lg, slightly larger than text-base)
         },
         // Text properties
         text: {
@@ -193,7 +194,7 @@ async function createBannerComponent(variant: string): Promise<ComponentNode> {
   // - alert: ph-warning
   // - error: ph-warning (same icon, different color via variant)
   const iconId = BANNER_ICONS[variant] || "ph-info";
-  const iconSize = 16;
+  const iconSize = FONT_SIZE.lg; // 16px (Kumo's text-lg, slightly larger than text-base)
   const iconInstance = createIconInstance(iconId, iconSize);
 
   if (iconInstance) {

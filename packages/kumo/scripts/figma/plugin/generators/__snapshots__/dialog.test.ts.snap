@@ -78,37 +78,37 @@ exports[`Dialog Generator - Snapshot Tests (Intermediate Data) > should produce 
   "sizeConfig": {
     "base": {
       "buttonSize": "base",
-      "descSize": 16,
+      "descSize": 14,
       "gap": 16,
       "padding": 24,
-      "titleSize": 20,
+      "titleSize": 16,
       "titleWeight": 600,
       "width": 384,
     },
     "lg": {
       "buttonSize": "base",
-      "descSize": 16,
+      "descSize": 14,
       "gap": 16,
       "padding": 24,
-      "titleSize": 20,
+      "titleSize": 16,
       "titleWeight": 600,
       "width": 512,
     },
     "sm": {
       "buttonSize": "sm",
-      "descSize": 16,
+      "descSize": 14,
       "gap": 8,
       "padding": 16,
-      "titleSize": 20,
+      "titleSize": 16,
       "titleWeight": 600,
       "width": 288,
     },
     "xl": {
       "buttonSize": "base",
-      "descSize": 16,
+      "descSize": 14,
       "gap": 16,
       "padding": 24,
-      "titleSize": 20,
+      "titleSize": 16,
       "titleWeight": 600,
       "width": 768,
     },
@@ -124,10 +124,10 @@ exports[`Dialog Generator - Snapshot Tests (Intermediate Data) > should produce 
       "classes": "min-w-96",
       "config": {
         "buttonSize": "base",
-        "descSize": 16,
+        "descSize": 14,
         "gap": 16,
         "padding": 24,
-        "titleSize": 20,
+        "titleSize": 16,
         "titleWeight": 600,
         "width": 384,
       },
@@ -138,10 +138,10 @@ exports[`Dialog Generator - Snapshot Tests (Intermediate Data) > should produce 
       "classes": "min-w-72",
       "config": {
         "buttonSize": "sm",
-        "descSize": 16,
+        "descSize": 14,
         "gap": 8,
         "padding": 16,
-        "titleSize": 20,
+        "titleSize": 16,
         "titleWeight": 600,
         "width": 288,
       },
@@ -152,10 +152,10 @@ exports[`Dialog Generator - Snapshot Tests (Intermediate Data) > should produce 
       "classes": "min-w-[32rem]",
       "config": {
         "buttonSize": "base",
-        "descSize": 16,
+        "descSize": 14,
         "gap": 16,
         "padding": 24,
-        "titleSize": 20,
+        "titleSize": 16,
         "titleWeight": 600,
         "width": 512,
       },
@@ -166,10 +166,10 @@ exports[`Dialog Generator - Snapshot Tests (Intermediate Data) > should produce 
       "classes": "min-w-[48rem]",
       "config": {
         "buttonSize": "base",
-        "descSize": 16,
+        "descSize": 14,
         "gap": 16,
         "padding": 24,
-        "titleSize": 20,
+        "titleSize": 16,
         "titleWeight": 600,
         "width": 768,
       },
@@ -183,10 +183,10 @@ exports[`Dialog Generator - Snapshot Tests (Intermediate Data) > should produce 
 exports[`Dialog Generator - Snapshot Tests (Intermediate Data) > should produce consistent size config for base 1`] = `
 {
   "buttonSize": "base",
-  "descSize": 16,
+  "descSize": 14,
   "gap": 16,
   "padding": 24,
-  "titleSize": 20,
+  "titleSize": 16,
   "titleWeight": 600,
   "width": 384,
 }
@@ -195,10 +195,10 @@ exports[`Dialog Generator - Snapshot Tests (Intermediate Data) > should produce 
 exports[`Dialog Generator - Snapshot Tests (Intermediate Data) > should produce consistent size config for lg 1`] = `
 {
   "buttonSize": "base",
-  "descSize": 16,
+  "descSize": 14,
   "gap": 16,
   "padding": 24,
-  "titleSize": 20,
+  "titleSize": 16,
   "titleWeight": 600,
   "width": 512,
 }
@@ -207,10 +207,10 @@ exports[`Dialog Generator - Snapshot Tests (Intermediate Data) > should produce 
 exports[`Dialog Generator - Snapshot Tests (Intermediate Data) > should produce consistent size config for sm 1`] = `
 {
   "buttonSize": "sm",
-  "descSize": 16,
+  "descSize": 14,
   "gap": 8,
   "padding": 16,
-  "titleSize": 20,
+  "titleSize": 16,
   "titleWeight": 600,
   "width": 288,
 }
@@ -219,10 +219,10 @@ exports[`Dialog Generator - Snapshot Tests (Intermediate Data) > should produce 
 exports[`Dialog Generator - Snapshot Tests (Intermediate Data) > should produce consistent size config for xl 1`] = `
 {
   "buttonSize": "base",
-  "descSize": 16,
+  "descSize": 14,
   "gap": 16,
   "padding": 24,
-  "titleSize": 20,
+  "titleSize": 16,
   "titleWeight": 600,
   "width": 768,
 }

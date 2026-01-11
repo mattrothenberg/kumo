@@ -262,7 +262,7 @@ exports[`Checkbox Generator - Snapshot Tests (Intermediate Data) > should produc
     },
   },
   "textConfig": {
-    "fontSize": 16,
+    "fontSize": 14,
     "fontWeight": 500,
     "textVariable": "text-color-surface",
   },
@@ -340,7 +340,7 @@ exports[`Checkbox Generator - Snapshot Tests (Intermediate Data) > should produc
     },
   },
   "textConfig": {
-    "fontSize": 16,
+    "fontSize": 14,
     "fontWeight": 500,
     "textVariable": "text-color-surface",
   },
@@ -418,7 +418,7 @@ exports[`Checkbox Generator - Snapshot Tests (Intermediate Data) > should produc
     },
   },
   "textConfig": {
-    "fontSize": 16,
+    "fontSize": 14,
     "fontWeight": 500,
     "textVariable": "text-color-surface",
   },
@@ -496,7 +496,7 @@ exports[`Checkbox Generator - Snapshot Tests (Intermediate Data) > should produc
     },
   },
   "textConfig": {
-    "fontSize": 16,
+    "fontSize": 14,
     "fontWeight": 500,
     "textVariable": "text-color-surface",
   },
@@ -574,7 +574,7 @@ exports[`Checkbox Generator - Snapshot Tests (Intermediate Data) > should produc
     },
   },
   "textConfig": {
-    "fontSize": 16,
+    "fontSize": 14,
     "fontWeight": 500,
     "textVariable": "text-color-surface",
   },
@@ -805,7 +805,7 @@ exports[`Checkbox Generator - Snapshot Tests (Intermediate Data) > should produc
     },
   },
   "textConfig": {
-    "fontSize": 16,
+    "fontSize": 14,
     "fontWeight": 500,
     "textVariable": "text-color-surface",
   },

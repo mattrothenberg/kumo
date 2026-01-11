@@ -39,7 +39,7 @@ exports[`Tooltip Generator - Snapshot Tests (Intermediate Data) > should produce
   "boxStyles": {
     "parsed": {
       "borderRadius": 6,
-      "fontSize": 14,
+      "fontSize": 13,
       "isWhiteText": true,
       "paddingX": 10,
       "paddingY": 6,
@@ -89,7 +89,7 @@ exports[`Tooltip Generator - Snapshot Tests (Intermediate Data) > should produce
 exports[`Tooltip Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed box styles 1`] = `
 {
   "borderRadius": 6,
-  "fontSize": 14,
+  "fontSize": 13,
   "isWhiteText": true,
   "paddingX": 10,
   "paddingY": 6,

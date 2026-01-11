@@ -291,7 +291,7 @@ describe("Banner Generator - Icon Mapping", () => {
     );
 
     expect(defaultVariant?.icon.iconId).toBe("ph-info");
-    expect(defaultVariant?.icon.iconSize).toBe(FONT_SIZE.base);
+    expect(defaultVariant?.icon.iconSize).toBe(FONT_SIZE.lg); // 16px (slightly larger than text-base)
   });
 
   it("should map alert variant to ph-warning icon", () => {
@@ -299,7 +299,7 @@ describe("Banner Generator - Icon Mapping", () => {
     const alertVariant = allData.variants.find((v) => v.variant === "alert");
 
     expect(alertVariant?.icon.iconId).toBe("ph-warning");
-    expect(alertVariant?.icon.iconSize).toBe(FONT_SIZE.base);
+    expect(alertVariant?.icon.iconSize).toBe(FONT_SIZE.lg); // 16px (slightly larger than text-base)
   });
 
   it("should map error variant to ph-warning icon", () => {
@@ -307,7 +307,7 @@ describe("Banner Generator - Icon Mapping", () => {
     const errorVariant = allData.variants.find((v) => v.variant === "error");
 
     expect(errorVariant?.icon.iconId).toBe("ph-warning");
-    expect(errorVariant?.icon.iconSize).toBe(FONT_SIZE.base);
+    expect(errorVariant?.icon.iconSize).toBe(FONT_SIZE.lg); // 16px (slightly larger than text-base)
   });
 });
 
@@ -423,9 +423,9 @@ describe("Banner Generator - Snapshot Tests (Intermediate Data)", () => {
       expect(variant.layout).toBeDefined();
       expect(variant.icon).toBeDefined();
       expect(variant.icon.iconId).toBeDefined();
-      expect(variant.icon.iconSize).toBe(FONT_SIZE.base);
+      expect(variant.icon.iconSize).toBe(FONT_SIZE.lg); // 16px (slightly larger than text-base)
       expect(variant.text).toBeDefined();
-      expect(variant.text.fontSize).toBe(FONT_SIZE.base);
+      expect(variant.text.fontSize).toBe(FONT_SIZE.base); // 14px (text-base from theme)
       expect(variant.text.fontWeight).toBe(FALLBACK_VALUES.fontWeight.normal);
     }
 

@@ -11,7 +11,7 @@ exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should prod
       "hasIcon": false,
       "layout": {
         "cornerRadius": 8,
-        "fontSize": 16,
+        "fontSize": 14,
         "gap": 6,
         "height": 36,
         "paddingX": 12,
@@ -37,7 +37,7 @@ exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should prod
       "hasIcon": true,
       "layout": {
         "cornerRadius": 8,
-        "fontSize": 16,
+        "fontSize": 14,
         "gap": 6,
         "height": 36,
         "paddingX": 12,
@@ -63,7 +63,7 @@ exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should prod
       "hasIcon": true,
       "layout": {
         "cornerRadius": 8,
-        "fontSize": 16,
+        "fontSize": 14,
         "gap": 8,
         "height": 40,
         "paddingX": 16,
@@ -137,7 +137,7 @@ exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should prod
       "description": "Default button size",
       "parsed": {
         "borderRadius": 8,
-        "fontSize": 16,
+        "fontSize": 14,
         "gap": 6,
         "height": 36,
         "paddingX": 12,
@@ -149,7 +149,7 @@ exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should prod
       "description": "Large button for primary CTAs",
       "parsed": {
         "borderRadius": 8,
-        "fontSize": 16,
+        "fontSize": 14,
         "gap": 8,
         "height": 40,
         "paddingX": 16,
@@ -290,7 +290,7 @@ exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should prod
   "description": "Default button size",
   "parsed": {
     "borderRadius": 8,
-    "fontSize": 16,
+    "fontSize": 14,
     "gap": 6,
     "height": 36,
     "paddingX": 12,
@@ -341,7 +341,7 @@ exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should prod
   "description": "Large button for primary CTAs",
   "parsed": {
     "borderRadius": 8,
-    "fontSize": 16,
+    "fontSize": 14,
     "gap": 8,
     "height": 40,
     "paddingX": 16,

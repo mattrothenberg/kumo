@@ -5,7 +5,7 @@ exports[`Breadcrumbs Generator - Snapshots > should match base size snapshot 1`]
   "classes": "text-base h-12 gap-1",
   "description": "Default breadcrumbs size",
   "parsed": {
-    "fontSize": 16,
+    "fontSize": 14,
     "gap": 4,
     "height": 48,
   },
@@ -52,13 +52,13 @@ exports[`Breadcrumbs Generator - Snapshots > should match complete data snapshot
       "classes": "text-sm h-10 gap-0.5",
       "description": "Compact breadcrumbs for dense UIs",
       "layout": {
-        "fontSize": 14,
+        "fontSize": 13,
         "gap": 2,
         "height": 40,
         "itemGap": 4,
       },
       "parsed": {
-        "fontSize": 14,
+        "fontSize": 13,
         "gap": 2,
         "height": 40,
       },
@@ -68,13 +68,13 @@ exports[`Breadcrumbs Generator - Snapshots > should match complete data snapshot
       "classes": "text-base h-12 gap-1",
       "description": "Default breadcrumbs size",
       "layout": {
-        "fontSize": 16,
+        "fontSize": 14,
         "gap": 4,
         "height": 48,
         "itemGap": 4,
       },
       "parsed": {
-        "fontSize": 16,
+        "fontSize": 14,
         "gap": 4,
         "height": 48,
       },
@@ -114,7 +114,7 @@ exports[`Breadcrumbs Generator - Snapshots > should match sm size snapshot 1`] =
   "classes": "text-sm h-10 gap-0.5",
   "description": "Compact breadcrumbs for dense UIs",
   "parsed": {
-    "fontSize": 14,
+    "fontSize": 13,
     "gap": 2,
     "height": 40,
   },

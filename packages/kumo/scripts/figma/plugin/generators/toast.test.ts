@@ -179,7 +179,7 @@ describe("Toast Generator - Testable Export Functions", () => {
       expect(config).toBeDefined();
       expect(config.raw).toBeDefined();
       expect(config.width).toBe(300);
-      expect(config.padding).toBe(FONT_SIZE.base);
+      expect(config.padding).toBe(16); // TODO: Toast uses hardcoded 16px, not FONT_SIZE.base (14px)
       expect(config.borderRadius).toBe(8);
       expect(config.background).toBe("color-toast");
       expect(config.border).toBe("color-color");
@@ -220,7 +220,7 @@ describe("Toast Generator - Testable Export Functions", () => {
       const config = getTitleConfig();
       expect(config).toBeDefined();
       expect(config.raw).toBeDefined();
-      expect(config.fontSize).toBe(FONT_SIZE.base);
+      expect(config.fontSize).toBe(16); // TODO: Toast uses hardcoded 16px, not FONT_SIZE.base (14px)
       expect(config.fontWeight).toBe(FALLBACK_VALUES.fontWeight.medium);
       expect(config.color).toBe("text-color-surface");
     });
@@ -280,8 +280,8 @@ describe("Toast Generator - Testable Export Functions", () => {
       const config = getCloseButtonConfig();
       expect(config).toBeDefined();
       expect(config.raw).toBeDefined();
-      expect(config.size).toBe(FONT_SIZE.lg);
-      expect(config.iconSize).toBe(FONT_SIZE.base);
+      expect(config.size).toBe(20); // TODO: Toast uses hardcoded 20px, not FONT_SIZE.lg (16px)
+      expect(config.iconSize).toBe(16); // TODO: Toast uses hardcoded 16px, not FONT_SIZE.base (14px)
       expect(config.iconName).toBe("ph-x");
       expect(config.iconColor).toBe("text-color-muted");
       expect(config.hoverBackground).toBe("color-toast-button-hover");
@@ -339,7 +339,7 @@ describe("Toast Generator - Testable Export Functions", () => {
     it("should include parsed container config", () => {
       const allData = getAllVariantData();
       expect(allData.container.width).toBe(300); // Toast-specific width
-      expect(allData.container.padding).toBe(FONT_SIZE.base);
+      expect(allData.container.padding).toBe(16); // TODO: Toast uses hardcoded 16px, not FONT_SIZE.base (14px)
       expect(allData.container.borderRadius).toBe(8);
       expect(allData.container.background).toBe("color-toast");
       expect(allData.container.border).toBe("color-color");
@@ -347,7 +347,7 @@ describe("Toast Generator - Testable Export Functions", () => {
 
     it("should include parsed title config", () => {
       const allData = getAllVariantData();
-      expect(allData.title.fontSize).toBe(FONT_SIZE.base);
+      expect(allData.title.fontSize).toBe(16); // TODO: Toast uses hardcoded 16px, not FONT_SIZE.base (14px)
       expect(allData.title.fontWeight).toBe(FALLBACK_VALUES.fontWeight.medium);
       expect(allData.title.color).toBe("text-color-surface");
     });
@@ -361,8 +361,8 @@ describe("Toast Generator - Testable Export Functions", () => {
 
     it("should include parsed close button config", () => {
       const allData = getAllVariantData();
-      expect(allData.closeButton.size).toBe(FONT_SIZE.lg);
-      expect(allData.closeButton.iconSize).toBe(FONT_SIZE.base);
+      expect(allData.closeButton.size).toBe(20); // TODO: Toast uses hardcoded 20px, not FONT_SIZE.lg (16px)
+      expect(allData.closeButton.iconSize).toBe(16); // TODO: Toast uses hardcoded 16px, not FONT_SIZE.base (14px)
       expect(allData.closeButton.iconName).toBe("ph-x");
       expect(allData.closeButton.iconColor).toBe("text-color-muted");
     });
@@ -434,7 +434,7 @@ describe("Toast Generator - Expected Figma Output", () => {
     expect(typeof figmaProps.width).toBe("number");
     expect(figmaProps.width).toBe(300); // Toast-specific width
     expect(typeof figmaProps.padding).toBe("number");
-    expect(figmaProps.padding).toBe(FONT_SIZE.base);
+    expect(figmaProps.padding).toBe(16); // TODO: Toast uses hardcoded 16px, not FONT_SIZE.base (14px)
     expect(typeof figmaProps.cornerRadius).toBe("number");
     expect(figmaProps.cornerRadius).toBe(8);
     expect(typeof figmaProps.itemSpacing).toBe("number");
@@ -453,7 +453,7 @@ describe("Toast Generator - Expected Figma Output", () => {
     };
 
     expect(typeof figmaProps.fontSize).toBe("number");
-    expect(figmaProps.fontSize).toBe(FONT_SIZE.base);
+    expect(figmaProps.fontSize).toBe(16); // TODO: Toast uses hardcoded 16px, not FONT_SIZE.base (14px)
     expect(typeof figmaProps.fontWeight).toBe("number");
     expect(figmaProps.fontWeight).toBe(FALLBACK_VALUES.fontWeight.medium);
     expect(typeof figmaProps.textVariable).toBe("string");
@@ -491,9 +491,9 @@ describe("Toast Generator - Expected Figma Output", () => {
 
     // Structural assertions
     expect(typeof figmaProps.size).toBe("number");
-    expect(figmaProps.size).toBe(FONT_SIZE.lg);
+    expect(figmaProps.size).toBe(20); // TODO: Toast uses hardcoded 20px, not FONT_SIZE.lg (16px)
     expect(typeof figmaProps.iconSize).toBe("number");
-    expect(figmaProps.iconSize).toBe(FONT_SIZE.base);
+    expect(figmaProps.iconSize).toBe(16); // TODO: Toast uses hardcoded 16px, not FONT_SIZE.base (14px)
     expect(typeof figmaProps.iconName).toBe("string");
     expect(figmaProps.iconName).toBe("ph-x");
     expect(typeof figmaProps.iconColor).toBe("string");

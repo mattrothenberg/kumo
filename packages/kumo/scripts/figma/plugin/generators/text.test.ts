@@ -170,7 +170,7 @@ describe("Text Generator - Variant Styles Parsing", () => {
       const parsed = parseTailwindClasses(classes);
       expect(parsed.fontSize).toBeDefined();
       expect(typeof parsed.fontSize).toBe("number");
-      expect(parsed.fontSize).toBe(18); // text-lg = 18px (no constant for heading sizes)
+      expect(parsed.fontSize).toBe(16); // text-lg = 16px (Kumo override from Tailwind's 18px)
     });
 
     it("should parse font weight (font-semibold)", () => {
@@ -265,7 +265,7 @@ describe("Text Generator - Size Styles Parsing", () => {
     const classes = sizeProp.classes.sm;
     const parsed = parseTailwindClasses(classes);
     expect(parsed.fontSize).toBeDefined();
-    expect(parsed.fontSize).toBe(14); // text-sm = 14px (no constant for text-sm)
+    expect(parsed.fontSize).toBe(FONT_SIZE.sm); // text-sm = 13px (Kumo override from Tailwind's 14px)
   });
 
   it("should parse base size (text-base)", () => {
@@ -279,7 +279,7 @@ describe("Text Generator - Size Styles Parsing", () => {
     const classes = sizeProp.classes.lg;
     const parsed = parseTailwindClasses(classes);
     expect(parsed.fontSize).toBeDefined();
-    expect(parsed.fontSize).toBe(18); // text-lg = 18px (no constant for text-lg)
+    expect(parsed.fontSize).toBe(FONT_SIZE.lg); // text-lg = 16px (Kumo override from Tailwind's 18px)
   });
 });
 
@@ -501,7 +501,7 @@ describe("Text Generator - Expected Figma Output", () => {
     const combinedClasses = `${TEXT_BASE_CLASS} ${variantClasses} ${sizeClasses}`;
     const parsed = parseTailwindClasses(combinedClasses);
 
-    expect(parsed.fontSize).toBe(14); // text-sm (optically adjusted) (no constant for text-sm)
+    expect(parsed.fontSize).toBe(FONT_SIZE.sm); // text-sm = 13px (Kumo override)
     expect(variantClasses).toContain("font-mono");
   });
 
