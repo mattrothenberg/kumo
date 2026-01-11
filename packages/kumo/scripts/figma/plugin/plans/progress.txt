@@ -3090,3 +3090,39 @@ Address remaining magic numbers identified in comprehensive audit to achieve ful
 
 **Status:** COMPLETE - Ready for commit
 
+
+---
+
+## PHASE 6: Magic Numbers Audit Remediation (Current)
+
+### Task T3: Add COLORS Constants (COMPLETE)
+
+**Date:** 2026-01-10
+**Status:** ✅ Complete
+
+#### What was done:
+1. Added COLORS constant to shared.ts (line 65-75):
+   - placeholder: { r: 0.5, g: 0.5, b: 0.5 } - Placeholder/fallback gray
+   - fallbackWhite: { r: 1, g: 1, b: 1 } - Fallback white color
+   - spinnerStroke: { r: 0.4, g: 0.4, b: 0.4 } - Spinner stroke color
+
+2. Added JSDoc documentation explaining each color constant
+3. Exported from shared.ts using `as const` for type safety
+
+#### Test Results:
+- ✅ All 1489 tests pass across 32 generator test files
+- ✅ No snapshots changed (only added constants, not used yet)
+- ✅ Verified tests pass with --run flag
+
+#### Files Modified:
+- generators/shared.ts (added COLORS constant)
+
+#### Notes:
+- These colors will be used by icon-utils.ts and dialog.ts in subsequent tasks
+- Pre-existing TypeScript errors for TextNode x/y properties are unrelated
+- Constants follow the same pattern as OPACITY, SECTION_LAYOUT from T1/T2
+- Ready for use in refactoring tasks (T7: icon-utils, T8: dialog)
+
+**Next Task:** T4 - Extend GRID_LAYOUT with labelVerticalOffset
+
+---

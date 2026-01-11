@@ -209,7 +209,7 @@
       "name": "add-colors-constants",
       "title": "Add COLORS Constants to shared.ts",
       "priority": "high",
-      "status": "pending",
+      "status": "complete",
       "description": "Add centralized placeholder color constants",
       "files": ["generators/shared.ts"],
       "acceptance": [

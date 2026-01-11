@@ -63,6 +63,18 @@ export const OPACITY = {
 } as const;
 
 /**
+ * RGB color constants for Figma
+ */
+export const COLORS = {
+  /** Placeholder/fallback gray */
+  placeholder: { r: 0.5, g: 0.5, b: 0.5 },
+  /** Fallback white */
+  fallbackWhite: { r: 1, g: 1, b: 1 },
+  /** Spinner stroke color */
+  spinnerStroke: { r: 0.4, g: 0.4, b: 0.4 },
+} as const;
+
+/**
  * Layout constants for component display sections
  */
 export const SECTION_PADDING = 48;
