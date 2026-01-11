@@ -3808,3 +3808,63 @@ Address remaining magic numbers identified in comprehensive audit. Tasks T1-T8 a
 
 **Status:** COMPLETE - Ready for commit
 
+
+## Iteration 23: T1 - Add Registry Integration Enforcement Test (PHASE 7)
+
+**Task:** T1 - Add Registry Integration Enforcement Test
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Created new describe block** "Figma Plugin - Registry Styling Integration" in drift-detection.test.ts
+   - Added after Phase 6 enforcement tests
+   - Test validates that 5 specific generators read from registry.components.X.styling
+   
+2. **Test checks for registry.styling usage pattern**:
+   - Searches for: `registry.components.ComponentName...styling`
+   - Or: `(registry.components.ComponentName as any).styling`
+   - Targets 5 generators: DateRangePicker, Pagination, InputArea, LayerCard, MenuBar
+   
+3. **Test fails as expected** with clear error message:
+   - Reports violations count: 5/5 violations
+   - Lists all 5 generators that need migration
+   - Provides fix instructions:
+     1. Add COMPONENT_STYLING_METADATA entry
+     2. Run codegen:registry
+     3. Update generator to read from registry.styling
+     4. Use styling data instead of hardcoded CONFIG objects
+   
+4. **Validation commands documented** in test output
+
+### Test Results:
+- ❌ Enforcement test FAILS (expected behavior for T1)
+- ✅ All other drift detection tests pass (19/20 tests passing)
+- 📊 Violations: 5/5 (all 5 generators need migration)
+- 🎯 Baseline established for Phase 7 progress tracking
+
+### Violations Breakdown:
+1. ❌ date-range-picker.ts: Does not read from registry.components.DateRangePicker.styling
+2. ❌ pagination.ts: Does not read from registry.components.Pagination.styling
+3. ❌ input-area.ts: Does not read from registry.components.InputArea.styling
+4. ❌ layer-card.ts: Does not read from registry.components.LayerCard.styling
+5. ❌ menubar.ts: Does not read from registry.components.MenuBar.styling
+
+### Files Modified:
+- `generators/drift-detection.test.ts` (added Phase 7 enforcement test)
+- `plans/PRD.json` (T1 status: pending → complete)
+- `plans/progress.txt` (this entry)
+
+### Progress Tracking:
+- **T1 complete: 5/5 violations** (test fails as expected - baseline established)
+- Next: T2 - Add DateRangePicker COMPONENT_STYLING_METADATA
+- Then: T3 - Update date-range-picker.ts generator → 4/5 violations
+
+### Notes:
+- Test-first approach successfully implemented
+- Failing test provides clear target for remaining tasks
+- Error message guides developers through fix process
+- As each generator is migrated, violations count will decrease: 5→4→3→2→1→0
+- When T13 is complete, enforcement test will pass with 0 violations
+
+**Status:** COMPLETE - Phase 7 baseline established with failing test (expected)
+

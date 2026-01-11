@@ -161,7 +161,7 @@
       "name": "add-enforcement-test",
       "title": "Add Registry Integration Enforcement Test",
       "priority": "high",
-      "status": "pending",
+      "status": "complete",
       "description": "Create test that validates generators read from registry.styling. This test will FAIL initially, providing a clear target for subsequent tasks.",
       "files": ["scripts/figma/plugin/generators/drift-detection.test.ts"],
       "acceptance": [

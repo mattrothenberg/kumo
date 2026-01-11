@@ -849,3 +849,59 @@ describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
     expect(warnings).toEqual([]);
   });
 });
+
+/**
+ * Phase 7: Registry Styling Integration Tests
+ *
+ * These tests enforce that generators with hardcoded CONFIG objects
+ * read their styling data from registry.components.X.styling instead.
+ */
+describe("Figma Plugin - Registry Styling Integration", () => {
+  // Generators that MUST read from registry.styling
+  const GENERATORS_REQUIRING_STYLING = [
+    { file: "date-range-picker.ts", component: "DateRangePicker" },
+    { file: "pagination.ts", component: "Pagination" },
+    { file: "input-area.ts", component: "InputArea" },
+    { file: "layer-card.ts", component: "LayerCard" },
+    { file: "menubar.ts", component: "MenuBar" },
+  ];
+
+  it("should read styling from registry for components with hardcoded configs", () => {
+    const violations: string[] = [];
+
+    for (const { file, component } of GENERATORS_REQUIRING_STYLING) {
+      const filePath = join(__dirname, file);
+      if (!existsSync(filePath)) continue;
+
+      const content = readFileSync(filePath, "utf-8");
+
+      // Check if generator reads from registry.styling
+      // Pattern: registry.components.ComponentName... .styling
+      // or: (registry.components.ComponentName as any).styling
+      const readsFromStyling = new RegExp(
+        `registry\\.components\\.${component}[^;]*\\.styling`,
+        "s"
+      ).test(content);
+
+      if (!readsFromStyling) {
+        violations.push(
+          `${file}: Does not read from registry.components.${component}.styling`
+        );
+      }
+    }
+
+    if (violations.length > 0) {
+      throw new Error(
+        `❌ Registry styling integration violations (${violations.length}/${GENERATORS_REQUIRING_STYLING.length}):\n` +
+          `  - ${violations.join("\n  - ")}\n\n` +
+          `🔧 To fix each generator:\n` +
+          `  1. Add COMPONENT_STYLING_METADATA entry in scripts/ai/component-registry.ts\n` +
+          `  2. Run: pnpm --filter @cloudflare/kumo codegen:registry\n` +
+          `  3. Update generator to read: (registry.components.X as any).styling\n` +
+          `  4. Use styling data instead of hardcoded CONFIG objects\n`
+      );
+    }
+
+    expect(violations).toEqual([]);
+  });
+});
