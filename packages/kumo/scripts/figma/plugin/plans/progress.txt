@@ -1748,3 +1748,53 @@ Fix brittle tests that break when variants are added/removed from components.
 
 **Status:** COMPLETE - Ready for commit
 
+
+---
+
+## Iteration 2: button.test.ts (T2)
+
+**Task:** T2 - fix-brittle-button-tests
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Fixed brittle variant list comparison in "Registry Validation" section:
+   - Changed from: `expect(variantProp.values).toEqual(expectedVariants)` with hardcoded 6-item array
+   - Changed to: Dynamic count check `expect(variantProp.values.length).toBeGreaterThan(0)`
+   - Changed to: Required variants only with `toContain()` for primary, secondary, ghost, destructive
+
+2. Fixed brittle size list comparison:
+   - Changed from: `expect(sizeProp.values).toEqual(expectedSizes)` with hardcoded 4-item array
+   - Changed to: Dynamic count check `expect(sizeProp.values.length).toBeGreaterThan(0)`
+   - Changed to: Required size check `expect(sizeProp.values).toContain("base")`
+
+3. Fixed brittle shape list comparison:
+   - Changed from: `expect(shapeProp.values).toEqual(expectedShapes)` with hardcoded 3-item array
+   - Changed to: Dynamic count check `expect(shapeProp.values.length).toBeGreaterThan(0)`
+   - Changed to: Required shape check `expect(shapeProp.values).toContain("base")`
+
+4. Fixed "Variant Count" section tests:
+   - Changed "should have exactly 6 variants" to "should have variants defined"
+   - Changed "should have exactly 4 sizes" to "should have sizes defined"
+   - Changed "should have exactly 3 shapes" to "should have shapes defined"
+   - All now use `toBeGreaterThan(0)` instead of `toHaveLength(N)`
+
+### Test Results:
+- ✅ All 117 tests pass
+- ✅ No snapshots changed
+- ✅ Verified tests pass consistently with --run flag
+
+### Issues Encountered:
+- Ralph iteration got stuck due to API communication failure (JSON parsing error from Cloudflare AI Gateway)
+- Changes were partially complete but not committed
+- Manually verified and committed changes
+
+### Notes:
+- Button test file is referenced as "complex multi-variant example" in PRD
+- Fixed 6 brittle assertions across two test sections
+- Tests now resilient to adding new variants, sizes, or shapes
+- Required elements validated: primary, secondary, ghost, destructive (variants), base (size/shape)
+- Pattern follows badge.test.ts improvements from T1
+
+**Status:** COMPLETE - Committed as 2311ca1
+
