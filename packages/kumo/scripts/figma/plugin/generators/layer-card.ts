@@ -29,12 +29,16 @@ import {
 import { createIconInstance, bindIconColor, DEFAULT_ICONS } from "./icon-utils";
 import registry from "../../../../ai/component-registry.json";
 
-
+// Read LayerCard styling from registry
+var layerCardStyling = (registry.components.LayerCard as any).styling;
 
 /**
  * LayerCard dimensions
+ * 
+ * Now reads from registry.components.LayerCard.styling
+ * with fallback to hardcoded values for backward compatibility.
  */
-var LAYER_CARD_CONFIG = {
+var FALLBACK_LAYER_CARD_CONFIG = {
   width: 280,
   borderRadius: BORDER_RADIUS.lg,
   secondary: {
@@ -54,6 +58,36 @@ var LAYER_CARD_CONFIG = {
     borderRadius: BORDER_RADIUS.lg,
   },
 };
+
+/**
+ * Get LayerCard configuration from registry with fallback
+ */
+function getConfigFromRegistry() {
+  if (!layerCardStyling) return FALLBACK_LAYER_CARD_CONFIG;
+  
+  return {
+    width: layerCardStyling.container?.width || FALLBACK_LAYER_CARD_CONFIG.width,
+    borderRadius: layerCardStyling.container?.borderRadius || FALLBACK_LAYER_CARD_CONFIG.borderRadius,
+    secondary: {
+      paddingX: layerCardStyling.secondary?.paddingX || FALLBACK_LAYER_CARD_CONFIG.secondary.paddingX,
+      paddingY: layerCardStyling.secondary?.paddingY || FALLBACK_LAYER_CARD_CONFIG.secondary.paddingY,
+      gap: layerCardStyling.secondary?.gap || FALLBACK_LAYER_CARD_CONFIG.secondary.gap,
+      fontSize: layerCardStyling.secondary?.fontSize || FALLBACK_LAYER_CARD_CONFIG.secondary.fontSize,
+      fontWeight: layerCardStyling.secondary?.fontWeight || FALLBACK_LAYER_CARD_CONFIG.secondary.fontWeight,
+    },
+    primary: {
+      paddingX: layerCardStyling.primary?.paddingX || FALLBACK_LAYER_CARD_CONFIG.primary.paddingX,
+      paddingY: layerCardStyling.primary?.paddingY || FALLBACK_LAYER_CARD_CONFIG.primary.paddingY,
+      paddingRight: layerCardStyling.primary?.paddingRight || FALLBACK_LAYER_CARD_CONFIG.primary.paddingRight,
+      gap: layerCardStyling.primary?.gap || FALLBACK_LAYER_CARD_CONFIG.primary.gap,
+      fontSize: layerCardStyling.primary?.fontSize || FALLBACK_LAYER_CARD_CONFIG.primary.fontSize,
+      fontWeight: layerCardStyling.primary?.fontWeight || FALLBACK_LAYER_CARD_CONFIG.primary.fontWeight,
+      borderRadius: layerCardStyling.primary?.borderRadius || FALLBACK_LAYER_CARD_CONFIG.primary.borderRadius,
+    },
+  };
+}
+
+var LAYER_CARD_CONFIG = getConfigFromRegistry();
 
 /**
  * Create a single LayerCard component

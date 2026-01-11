@@ -303,7 +303,7 @@
       "name": "update-layercard-generator",
       "title": "Update layer-card.ts to Read from Registry",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Refactor generator to derive LAYER_CARD_CONFIG from registry",
       "files": ["scripts/figma/plugin/generators/layer-card.ts"],
       "acceptance": [

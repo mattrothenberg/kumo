@@ -4251,3 +4251,54 @@ var SIZE_CONFIG = getSizeConfigFromRegistry();
 
 **Status:** COMPLETE - LayerCard styling metadata added to registry
 
+
+---
+
+## Iteration 25: T9 - Update layer-card.ts to Read from Registry (PHASE 7)
+
+**Task:** T9 - Update layer-card.ts to Read from Registry
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Added registry styling import**:
+   - Added `layerCardStyling = (registry.components.LayerCard as any).styling;`
+   - Created `FALLBACK_LAYER_CARD_CONFIG` object with original hardcoded values
+   - Added JSDoc comment explaining registry-based approach
+
+2. **Created getConfigFromRegistry() function**:
+   - Reads from `layerCardStyling.container`, `layerCardStyling.secondary`, `layerCardStyling.primary`
+   - Falls back to FALLBACK_LAYER_CARD_CONFIG if registry data is missing
+   - Returns full config object with:
+     - Container: width, borderRadius
+     - Secondary: paddingX, paddingY, gap, fontSize, fontWeight
+     - Primary: paddingX, paddingY, paddingRight, gap, fontSize, fontWeight, borderRadius
+
+3. **Replaced hardcoded LAYER_CARD_CONFIG**:
+   - `LAYER_CARD_CONFIG` now derives from `getConfigFromRegistry()`
+   - All values match previous hardcoded values exactly
+
+### Test Results:
+- ✅ All 34 layer-card tests pass
+- ✅ No snapshots changed (values match original hardcoded values)
+- ✅ Enforcement test now shows 1/5 violations (down from 2/5)
+  - ✅ DateRangePicker passes
+  - ✅ Pagination passes
+  - ✅ InputArea passes
+  - ✅ LayerCard passes
+  - ❌ MenuBar (pending - T10 + T11)
+
+### Files Modified:
+- `scripts/figma/plugin/generators/layer-card.ts` - Added registry reading with fallback
+- `plans/PRD.json` - T9 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- Pre-existing TypeScript errors (resizeWithoutConstraints, textAutoResize, layoutSizingHorizontal) documented
+- Registry metadata was added in T8 with correct values matching hardcoded config
+- LayerCard has a unique structure with container + secondary + primary sections
+- All sections read from their respective styling objects in the registry
+- Next task: T10 (add MenuBar styling metadata) + T11 (update menubar.ts generator)
+
+**Status:** COMPLETE - LayerCard now reads from registry with proper fallback
+
