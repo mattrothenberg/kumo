@@ -1641,3 +1641,110 @@ All 15 generators have been successfully migrated to use component-registry.json
 - Consider adding missing KUMO_*_STYLING exports identified during migration
 - Update documentation if needed
 
+---
+
+## PHASE 3: Test Brittleness & Parser Enhancement (Current)
+
+### Goal
+1. Fix brittle tests that break when variants are added to components
+2. Add rigorous tests for generators missing coverage
+3. Enhance Tailwind parser to handle advanced patterns
+
+### Status Summary
+- **Brittle tests to fix:** badge.test.ts, button.test.ts, others (audit needed)
+- **Generators needing tests:** link-button, refresh-button, switch (verify coverage)
+- **Parser enhancements:** opacity modifiers, arbitrary values, state variants
+
+### Tasks (from PRD.json)
+
+| Task | Priority | Status | Description |
+|------|----------|--------|-------------|
+| T1 | High | Pending | Fix brittle tests in badge.test.ts |
+| T2 | High | Pending | Fix brittle tests in button.test.ts |
+| T3 | High | Pending | Fix brittle tests in remaining files |
+| T4 | Medium | Pending | Add rigorous tests for link-button |
+| T5 | Medium | Pending | Add rigorous tests for refresh-button |
+| T6 | Medium | Pending | Add rigorous tests for switch |
+| T7 | Medium | Pending | Parser: Add opacity modifier parsing |
+| T8 | Medium | Pending | Parser: Add arbitrary value parsing |
+| T9 | Low | Pending | Parser: Add state variant parsing |
+| T10 | Low | Pending | Document parser capabilities |
+
+### Brittleness Examples Found
+
+**badge.test.ts:**
+```typescript
+// Line 47-55: Hardcoded variant list
+const expectedVariants = ["primary", "secondary", "destructive", "outline", "beta"];
+expect(variantProp.values).toEqual(expectedVariants);
+
+// Line 407-408: Hardcoded variant count
+expect(variantProp.values).toHaveLength(5);
+
+// Line 618: Hardcoded count in golden path
+expect(allData.variants).toHaveLength(5);
+```
+
+These tests FAIL when adding a new variant like "success" to badge.tsx.
+
+---
+
+
+
+---
+
+## PHASE 3: Test Brittleness Fixes (Current)
+
+### Goal
+Fix brittle tests that break when variants are added/removed from components.
+
+---
+
+## Iteration 1: badge.test.ts (T1)
+
+**Task:** T1 - fix-brittle-badge-tests
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Fixed brittle variant list comparison (line 48-56):
+   - Changed from: `expect(variantProp.values).toEqual(expectedVariants)` with hardcoded array
+   - Changed to: Dynamic count check `expect(variantProp.values.length).toBeGreaterThan(0)`
+   - Changed to: Required variants only `expect(variantProp.values).toContain("primary")` and `"secondary"`
+   
+2. Fixed brittle variant count test (line 408):
+   - Changed from: `expect(variantProp.values).toHaveLength(5)`
+   - Changed to: `expect(variantProp.values.length).toBeGreaterThan(0)`
+   - Changed test title from "should have exactly 5 variants" to "should have variants defined"
+   - Changed test description from "should include all expected variants" to "should include all required variants"
+   - Removed checks for destructive, outline, and beta variants (not required)
+
+3. Fixed brittle variant count in golden path test (line 618):
+   - Changed from: `expect(allData.variants).toHaveLength(5)`
+   - Changed to: `expect(allData.variants.length).toBe(variantProp.values.length)`
+   - Now dynamically aligns with registry count
+
+### Test Results:
+- ✅ All 59 tests pass
+- ✅ No snapshots changed
+- ✅ Verified tests pass consistently with --run flag
+
+### Issues Encountered:
+- None - straightforward refactoring
+
+### Notes:
+- Badge test file is the "gold standard" pattern referenced in PRD
+- Fixed 3 brittle assertions:
+  1. Exact variant array comparison (`toEqual`)
+  2. Hardcoded length check (`toHaveLength(5)`)
+  3. Another hardcoded length check in golden path test
+- Tests now resilient to adding new variants (e.g., warning, success, info)
+- Only validates required variants (primary, secondary) - others are optional
+- Dynamic alignment ensures intermediate data matches registry
+- Pattern follows Ralph's instructions in PRD:
+  - Structure validation (types, existence)
+  - Required elements only (not all elements)
+  - Dynamic counts that adapt to changes
+
+**Status:** COMPLETE - Ready for commit
+
