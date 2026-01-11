@@ -44,6 +44,7 @@ import { getButtonIcon, bindIconColor } from "./icon-utils";
  */
 var dateRangePickerComponent = registry.components.DateRangePicker;
 var dateRangePickerProps = dateRangePickerComponent.props;
+var dateRangePickerStyling = (registry.components.DateRangePicker as any).styling;
 var sizeProp = dateRangePickerProps.size as {
   values: string[];
   classes: Record<string, string>;
@@ -75,13 +76,10 @@ var VARIANT_VALUES = variantProp.values;
 var SELECTED_VALUES = [false, true];
 
 /**
- * Size-specific configurations (from date-range-picker.tsx)
- * 
- * TODO: These values should ideally come from registry when KUMO_DATE_RANGE_PICKER_VARIANTS
- * is extracted with full size metadata (cellHeight, cellWidth, calendarWidth, textSize, iconSize).
- * For now, these values match the React component's KUMO_DATE_RANGE_PICKER_VARIANTS exactly.
+ * Fallback size-specific configurations (from date-range-picker.tsx)
+ * Used if registry.styling is not available.
  */
-var SIZE_CONFIG: Record<
+var FALLBACK_SIZE_CONFIG: Record<
   string,
   {
     calendarWidth: number;
@@ -121,6 +119,30 @@ var SIZE_CONFIG: Record<
     gap: 12,
   },
 };
+
+/**
+ * Get size configuration from registry with fallback
+ */
+function getSizeConfigFromRegistry() {
+  if (!dateRangePickerStyling?.sizeVariants) return FALLBACK_SIZE_CONFIG;
+  
+  var config: Record<string, any> = {};
+  for (var i = 0; i < SIZE_VALUES.length; i++) {
+    var size = SIZE_VALUES[i];
+    var sizeData = dateRangePickerStyling.sizeVariants[size];
+    if (sizeData && (sizeData as any).dimensions) {
+      config[size] = (sizeData as any).dimensions;
+    } else {
+      config[size] = FALLBACK_SIZE_CONFIG[size];
+    }
+  }
+  return config;
+}
+
+/**
+ * Size-specific configurations (from registry or fallback)
+ */
+var SIZE_CONFIG = getSizeConfigFromRegistry();
 
 /**
  * Variant-specific background colors (from registry)

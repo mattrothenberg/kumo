@@ -3914,3 +3914,80 @@ Address remaining magic numbers identified in comprehensive audit. Tasks T1-T8 a
 T3 - Update date-range-picker.ts generator to read from registry.components.DateRangePicker.styling
 
 **Status:** COMPLETE - DateRangePicker styling metadata added to registry
+
+---
+
+## Iteration 23: T3 - Update DateRangePicker Generator (PHASE 7)
+
+**Task:** T3 - Update date-range-picker.ts to Read from Registry
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Added registry styling access**:
+   - Added `var dateRangePickerStyling = (registry.components.DateRangePicker as any).styling;` after props extraction
+   - Generator now reads from registry.components.DateRangePicker.styling
+
+2. **Created getSizeConfigFromRegistry() function**:
+   - Reads from dateRangePickerStyling.sizeVariants
+   - Extracts dimensions from each size variant (sm, base, lg)
+   - Falls back to FALLBACK_SIZE_CONFIG if registry data unavailable
+   - Handles missing size data gracefully
+
+3. **Renamed and refactored SIZE_CONFIG**:
+   - Renamed hardcoded SIZE_CONFIG to FALLBACK_SIZE_CONFIG
+   - Created new SIZE_CONFIG by calling getSizeConfigFromRegistry()
+   - Values from registry match previous hardcoded values exactly
+
+### Test Results:
+- ✅ All 40 date-range-picker tests pass
+- ✅ No snapshots changed (values identical)
+- ✅ Enforcement test now shows 4/5 violations (DateRangePicker passes!)
+- ✅ Pre-existing TypeScript errors remain (documented, not related to this change)
+
+### Enforcement Test Progress:
+**Before T3:** 5/5 violations (all generators failing)
+**After T3:** 4/5 violations (DateRangePicker now passing ✅)
+- ✅ date-range-picker.ts - PASSING (reads from registry.styling)
+- ❌ pagination.ts - Does not read from registry.styling
+- ❌ input-area.ts - Does not read from registry.styling
+- ❌ layer-card.ts - Does not read from registry.styling
+- ❌ menubar.ts - Does not read from registry.styling
+
+### Files Modified:
+- `scripts/figma/plugin/generators/date-range-picker.ts` (added registry styling read + fallback function)
+- `plans/PRD.json` (T3 status: pending → complete)
+- `plans/progress.txt` (this entry)
+
+### Implementation Details:
+The generator now reads dimension data from registry:
+```typescript
+var dateRangePickerStyling = (registry.components.DateRangePicker as any).styling;
+
+function getSizeConfigFromRegistry() {
+  if (!dateRangePickerStyling?.sizeVariants) return FALLBACK_SIZE_CONFIG;
+  
+  var config: Record<string, any> = {};
+  for (var i = 0; i < SIZE_VALUES.length; i++) {
+    var size = SIZE_VALUES[i];
+    var sizeData = dateRangePickerStyling.sizeVariants[size];
+    if (sizeData && (sizeData as any).dimensions) {
+      config[size] = (sizeData as any).dimensions;
+    } else {
+      config[size] = FALLBACK_SIZE_CONFIG[size];
+    }
+  }
+  return config;
+}
+
+var SIZE_CONFIG = getSizeConfigFromRegistry();
+```
+
+### Notes:
+- Generator maintains backward compatibility with fallback values
+- No visual changes - registry values match hardcoded values exactly
+- VARIANT_CONFIG still reads from registry classes (unchanged)
+- 1 of 5 generators now fully integrated with registry.styling
+- Next task: T4 - Add Pagination styling metadata
+
+**Status:** COMPLETE - Ready for commit
