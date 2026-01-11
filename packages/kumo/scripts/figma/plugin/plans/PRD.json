@@ -140,7 +140,7 @@
       "name": "fix-brittle-button-tests",
       "title": "Fix Brittle Tests in button.test.ts",
       "priority": "high",
-      "status": "pending",
+      "status": "complete",
       "description": "Replace hardcoded variant/size counts with dynamic checks",
       "files": ["generators/button.test.ts"],
       "acceptance": [
