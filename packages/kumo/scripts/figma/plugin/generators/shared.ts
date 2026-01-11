@@ -53,6 +53,16 @@ export const SECTION_LAYOUT = {
 } as const;
 
 /**
+ * Opacity values for component states
+ */
+export const OPACITY = {
+  /** Opacity for disabled state */
+  disabled: 0.5,
+  /** Opacity for backdrop/overlay */
+  backdrop: 0.8,
+} as const;
+
+/**
  * Layout constants for component display sections
  */
 export const SECTION_PADDING = 48;

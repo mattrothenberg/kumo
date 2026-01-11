@@ -1,142 +1,223 @@
-# Ralph Prompt - Eliminate Magic Numbers from Figma Generators
+# Ralph Prompt - Phase 6: Magic Numbers Audit Remediation
 
-You are eliminating magic numbers from Figma generators to ensure they stay in sync with component source code. This is Phase 5 of the Figma plugin robustness project.
+You are completing the magic numbers audit remediation for Figma generators. This is Phase 6 of the Figma plugin robustness project.
 
 ## Context
 
-Phases 1-4 are COMPLETE:
+Phases 1-5 are COMPLETE:
 
 - Phase 1: Test refactoring (all 29 generators have rigorous tests)
 - Phase 2: Registry integration (all generators read from component-registry.json)
 - Phase 3: Parser enhancements (opacity, arbitrary values, state variants)
 - Phase 4: Generator coverage (Breadcrumbs, Empty, PageHeader added)
+- Phase 5: Initial magic number elimination (SHADOWS, GRID_LAYOUT, FALLBACK_VALUES added)
 
-**Current gap:** Generators contain hardcoded magic numbers that could drift from component implementations:
+**Phase 6 addresses remaining issues from comprehensive audit:**
 
-- `SECTION_PADDING = 48` and `SECTION_GAP = 160` duplicated in 5+ files
-- Dialog `SIZE_CONFIG` with hardcoded widths (350, 384, 512, 768)
-- Button `COMPACT_SIZE_MAP` with hardcoded sizes (14, 26, 36, 40)
-- Shadow values hardcoded in Dialog and Tabs
-- Scattered inline fallbacks (`|| 8`, `|| 12`, etc.)
+A thorough audit revealed ~40% of generators still have hardcoded values:
+
+| Pattern                       | Locations                     | Risk   | Fix                             |
+| ----------------------------- | ----------------------------- | ------ | ------------------------------- |
+| `100, 50` section positioning | Every generator (~30+ files)  | High   | SECTION_LAYOUT constants        |
+| `0.5` disabled opacity        | button, input, checkbox, etc. | Medium | OPACITY.disabled                |
+| Label offsets `4, 8, 12`      | Most generators               | Medium | GRID_LAYOUT.labelVerticalOffset |
+| RGB colors `{ r: 0.5, ... }`  | icon-utils.ts, dialog.ts      | Medium | COLORS constants                |
+| Font sizes/weights            | dialog.ts, input.ts           | Medium | FALLBACK_VALUES                 |
 
 **Reference files:**
 
 - @PRD.json - Task definitions and acceptance criteria
 - @progress.txt - Progress log (append your work here)
-- @shared.ts - Where centralized constants should live
-- @parsers/tailwind-to-figma.ts - Parser for Tailwind classes
+- @shared.ts - Where centralized constants live
+- @icon-utils.ts - High-risk file needing refactor
+- @dialog.ts - High-risk file needing refactor
+- @input.ts - High-risk file needing refactor
 
 ## Your Task
 
-Eliminate magic numbers by centralizing constants and deriving values from the registry.
+Address remaining magic numbers by adding new constants and refactoring generators.
 
-## Requirements
+## New Constants to Add (Tasks T1-T4)
 
-### 1. Centralize Constants in shared.ts
-
-Add new constants to shared.ts:
+### T1: SECTION_LAYOUT
 
 ```typescript
 /**
- * Shadow presets for components
+ * Section positioning constants for Figma canvas layout
  */
-export const SHADOWS = {
-  /** Dialog shadow - elevated appearance */
-  dialog: { offsetX: 0, offsetY: 8, blur: 32, spread: 0, opacity: 0.16 },
-  /** Subtle shadow for tabs */
-  subtle: { offsetX: 0, offsetY: 1, blur: 2, spread: 0, opacity: 0.05 },
+export const SECTION_LAYOUT = {
+  /** X position for section start */
+  startX: 100,
+  /** Y position for section start */
+  startY: 100,
+  /** Gap between light/dark mode sections */
+  modeGap: 50,
 } as const;
+```
 
+### T2: OPACITY
+
+```typescript
 /**
- * Grid layout constants for component display
+ * Opacity values for component states
  */
+export const OPACITY = {
+  /** Opacity for disabled state */
+  disabled: 0.5,
+  /** Opacity for backdrop/overlay */
+  backdrop: 0.8,
+} as const;
+```
+
+### T3: COLORS
+
+```typescript
+/**
+ * RGB color constants for Figma
+ */
+export const COLORS = {
+  /** Placeholder/fallback gray */
+  placeholder: { r: 0.5, g: 0.5, b: 0.5 },
+  /** Fallback white */
+  fallbackWhite: { r: 1, g: 1, b: 1 },
+  /** Spinner stroke color */
+  spinnerStroke: { r: 0.4, g: 0.4, b: 0.4 },
+} as const;
+```
+
+### T4: Extend GRID_LAYOUT
+
+```typescript
 export const GRID_LAYOUT = {
-  /** Gap between rows in component grid */
-  rowGap: 24,
-  /** Width of label column */
-  labelWidth: 160,
-  /** Height of header row */
-  headerHeight: 24,
+  // ... existing values
+  /** Label vertical centering offsets by size */
+  labelVerticalOffset: {
+    /** Small offset for compact components (badge, loader) */
+    sm: 4,
+    /** Medium offset for standard components (input, checkbox) */
+    md: 8,
+    /** Large offset for larger components (button, dialog) */
+    lg: 12,
+  },
 } as const;
+```
 
+## Refactoring Patterns
+
+### Section Positioning (T5)
+
+```typescript
+// BEFORE - hardcoded everywhere
+lightSection.x = 100;
+darkSection.x = lightSection.x + lightSection.width + 50;
+
+// AFTER - use constants
+import { SECTION_LAYOUT } from './shared';
+lightSection.x = SECTION_LAYOUT.startX;
+darkSection.x = lightSection.x + lightSection.width + SECTION_LAYOUT.modeGap;
+```
+
+### Disabled Opacity (T6)
+
+```typescript
+// BEFORE - scattered 0.5 values
+component.opacity = 0.5;
+
+// AFTER - use constant
+import { OPACITY } from './shared';
+component.opacity = OPACITY.disabled;
+```
+
+### Placeholder Colors (T7 - icon-utils.ts)
+
+```typescript
+// BEFORE - hardcoded RGB
+fills: [{ type: 'SOLID', color: { r: 0.6, g: 0.6, b: 0.6 } }]
+
+// AFTER - use constant
+import { COLORS } from './shared';
+fills: [{ type: 'SOLID', color: COLORS.placeholder }]
+```
+
+### Label Vertical Offsets (T10)
+
+```typescript
+// BEFORE - magic numbers
+labelText.y = rowY + 4;  // or 8, or 12
+
+// AFTER - semantic selection
+import { GRID_LAYOUT } from './shared';
+labelText.y = rowY + GRID_LAYOUT.labelVerticalOffset.sm; // for badge, loader
+labelText.y = rowY + GRID_LAYOUT.labelVerticalOffset.md; // for input, checkbox
+labelText.y = rowY + GRID_LAYOUT.labelVerticalOffset.lg; // for button, dialog
+```
+
+## Task-Specific Notes
+
+### T5: Refactor Section Positioning (HIGH PRIORITY)
+
+This is the biggest task - every generator has hardcoded 100/50 values.
+
+Search patterns to find:
+
+- `x = 100` or `.x = 100`
+- `+ 50` for mode gaps
+- `y = 100` or `.y = 100`
+
+Files to update (all generators):
+
+- button.ts, input.ts, dialog.ts, badge.ts, tabs.ts, checkbox.ts
+- loader.ts, text.ts, banner.ts, toast.ts, tooltip.ts, dropdown.ts
+- select.ts, combobox.ts, switch.ts, meter.ts, pagination.ts
+- collapsible.ts, code.ts, code-block.ts, clipboard-text.ts
+- surface.ts, link-button.ts, refresh-button.ts, input-area.ts
+- sensitive-input.ts, layer-card.ts, menubar.ts, date-range-picker.ts
+- breadcrumbs.ts, empty.ts, page-header.ts
+
+### T7: Refactor icon-utils.ts (HIGH RISK)
+
+Current magic numbers:
+
+- Line 13-18: `ICON_SIZE_MAP = { xs: 12, sm: 16, base: 20, lg: 20 }`
+- Line 115: Corner radius multiplier `0.2`
+- Line 116: Placeholder color `{ r: 0.6, g: 0.6, b: 0.6 }`
+- Line 133: Default icon size `20`
+- Line 154: Default loader size `16`
+- Line 169: Spinner stroke `{ r: 0.4, g: 0.4, b: 0.4 }`
+- Line 170: Spinner stroke weight `2`
+- Line 174: Dash pattern `[4, 4]`
+
+### T8: Refactor dialog.ts (HIGH RISK)
+
+Current magic numbers:
+
+- Lines 88-123: SIZE_CONFIG typography (titleSize: 20, descSize: 16, etc.)
+- Lines 147-158: Button padding (12, 8, 16, etc.)
+- Line 181, 296: Font sizes (14, 16)
+- Line 187: White color `{ r: 1, g: 1, b: 1 }`
+- Line 256: Header height (24)
+- Line 322: Actions frame itemSpacing (12)
+- Lines 435, 455: Label vertical offset (8)
+
+### T11: Add DASH_PATTERN Constant
+
+```typescript
 /**
- * Fallback values when parsing fails
+ * Dash pattern arrays for strokes
  */
-export const FALLBACK_VALUES = {
-  fontSize: 16,
-  fontWeight: 400,
-  padding: 8,
-  borderRadius: 8,
-  gap: 6,
+export const DASH_PATTERN = {
+  /** Standard dash pattern for dashed borders */
+  standard: [4, 4],
 } as const;
-```
-
-### 2. Remove Duplicate Declarations
-
-Find and remove duplicate `SECTION_PADDING` and `SECTION_GAP` declarations:
-
-```typescript
-// WRONG - duplicated in each file
-var SECTION_PADDING = 48;
-var SECTION_GAP = 160;
-
-// CORRECT - import from shared.ts
-import { SECTION_PADDING, SECTION_GAP } from "./shared";
-```
-
-### 3. Enhance Parser for Missing Classes
-
-Add parsing for `min-w-*` and `size-*` classes in tailwind-to-figma.ts:
-
-```typescript
-// min-w-96, min-w-[32rem], min-w-[48rem]
-const minWidthMatch = cls.match(/^min-w-(\d+)$/);
-if (minWidthMatch) {
-  result.minWidth = getOrDefault(SPACING_SCALE, minWidthMatch[1], parseFloat(minWidthMatch[1]) * 4);
-  continue;
-}
-
-// size-3.5, size-6.5, size-9, size-10 (square sizing)
-const sizeMatch = cls.match(/^size-(\d+\.?\d*)$/);
-if (sizeMatch) {
-  const size = getOrDefault(SPACING_SCALE, sizeMatch[1], parseFloat(sizeMatch[1]) * 4);
-  result.width = size;
-  result.height = size;
-  continue;
-}
-```
-
-### 4. Derive Values from Registry
-
-Replace hardcoded values with parsed registry values:
-
-```typescript
-// WRONG - hardcoded
-const COMPACT_SIZE_MAP = { xs: 14, sm: 26, base: 36, lg: 40 };
-
-// CORRECT - derived from registry
-function getCompactSizeMap(): Record<string, number> {
-  const shapeProp = registry.components.Button.props.shape;
-  const compactSizeClasses = shapeProp.compactSize || {};
-  const result: Record<string, number> = {};
-
-  for (const [size, classes] of Object.entries(compactSizeClasses)) {
-    const parsed = parseTailwindClasses(classes);
-    result[size] = parsed.width ?? FALLBACK_VALUES.compactSize[size];
-  }
-
-  return result;
-}
 ```
 
 ## Validation Checklist
 
 Before marking a task complete:
 
-- [ ] No duplicate constant declarations across files
-- [ ] New constants added to shared.ts with JSDoc comments
-- [ ] Generators import from shared.ts instead of local declarations
-- [ ] Parser handles new class patterns (min-w-_, size-_)
+- [ ] New constants added with JSDoc documentation
+- [ ] Generators import from shared.ts
+- [ ] No hardcoded values remain for the pattern being fixed
 - [ ] All tests pass: `pnpm --filter @cloudflare/kumo test generators/ --run`
 - [ ] Drift detection passes: `pnpm --filter @cloudflare/kumo validate:figma`
 - [ ] No visual changes (snapshot tests unchanged)
@@ -156,16 +237,6 @@ pnpm --filter @cloudflare/kumo validate:figma
 # Run drift detection tests specifically
 pnpm --filter @cloudflare/kumo test generators/drift-detection.test.ts --run
 ```
-
-## Enforcement Tests (Already Active)
-
-The drift-detection.test.ts file now includes enforcement tests that will **fail** if you:
-
-1. **Redeclare SECTION_PADDING or SECTION_GAP** in any generator (must import from shared.ts)
-2. **Use SECTION_PADDING/SECTION_GAP without importing** from shared.ts
-3. **Add hardcoded shadow effects** without importing SHADOWS from shared.ts (warning)
-
-These tests run automatically with `pnpm validate:figma` and will catch regressions.
 
 ## Your Task (Single Task Per Iteration)
 
@@ -187,77 +258,21 @@ ONLY WORK ON A SINGLE TASK PER ITERATION.
 
 If ALL tasks in PRD.json are complete (status: "complete"), output <promise>COMPLETE</promise>.
 
-## Task-Specific Notes
+## Files with Most Magic Numbers (Priority Order)
 
-### T1: Centralize Section Constants
+1. **dialog.ts** - 15+ magic numbers (typography, layout, colors)
+2. **icon-utils.ts** - 10+ magic numbers (sizes, colors, stroke)
+3. **input.ts** - 10+ magic numbers (typography, spacing)
+4. **button.ts** - 12+ magic numbers (sizes, opacity, offsets)
+5. **tabs.ts** - 8+ magic numbers (config values, positioning)
 
-Files with duplicate declarations to fix:
+## Success Criteria
 
-- generators/dialog.ts (lines 48-53)
-- generators/input.ts (lines 36-41)
-- generators/tabs.ts (lines 31-32)
-- generators/text.ts (lines 55-60)
-- generators/banner.ts (check for duplicates)
-
-### T2: Add Shadow Scale
-
-Dialog shadow (dialog.ts ~line 224):
-
-```typescript
-effects = [{
-  type: "DROP_SHADOW",
-  offset: { x: 0, y: 8 },
-  radius: 32,
-  spread: 0,
-  color: { r: 0, g: 0, b: 0, a: 0.16 },
-}];
-```
-
-Tabs shadow (tabs.ts ~line 246):
-
-```typescript
-effects = [{
-  type: "DROP_SHADOW",
-  offset: { x: 0, y: 1 },
-  radius: 2,
-  spread: 0,
-  color: { r: 0, g: 0, b: 0, a: 0.05 },
-}];
-```
-
-### T3: Add Layout Grid Constants
-
-Common values across generators:
-
-- `rowGap`: 24 (input.ts), 40 (button.ts)
-- `labelColumnWidth`: 160 (tabs.ts), 180 (badge.ts), 200 (input.ts)
-- `headerRowHeight`: 24 (input.ts, dialog.ts)
-
-### T4: Parse Dialog Sizes
-
-Dialog size classes in registry:
-
-- sm: likely has specific classes
-- base: `min-w-96` = 384px
-- lg: `min-w-[32rem]` = 512px
-- xl: `min-w-[48rem]` = 768px
-
-### T5: Derive Compact Size Map
-
-Button compactSize classes:
-
-- xs: `size-3.5` = 14px
-- sm: `size-6.5` = 26px
-- base: `size-9` = 36px
-- lg: `size-10` = 40px
-
-### T6: Centralize Fallback Values
-
-Common fallbacks found:
-
-- `|| 8` (gap, padding)
-- `|| 12` (padding)
-- `|| 16` (fontSize)
-- `|| 36` (button height)
-- `|| 500` (fontWeight)
-- `|| 9999` (borderRadius full)
+- Zero hardcoded section positioning (100, 50)
+- Zero hardcoded opacity (0.5) without OPACITY constant
+- All placeholder colors use COLORS constants
+- All label offsets use GRID_LAYOUT.labelVerticalOffset
+- All typography fallbacks use FALLBACK_VALUES
+- Enforcement tests catch regressions
+- All tests pass
+- No visual changes to generated components

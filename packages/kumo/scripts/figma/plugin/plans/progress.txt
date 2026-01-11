@@ -3055,3 +3055,38 @@ Address remaining magic numbers identified in comprehensive audit to achieve ful
 
 **Status:** COMPLETE - Ready for commit
 
+
+---
+
+## PHASE 6: Magic Numbers Audit Remediation (Current)
+
+### Iteration 1: Add OPACITY Constants (T2)
+
+**Task:** T2 - Add OPACITY Constants to shared.ts
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+#### What was done:
+1. Added OPACITY constants to shared.ts with JSDoc documentation:
+   - disabled: 0.5 - Opacity for disabled state
+   - backdrop: 0.8 - Opacity for backdrop/overlay
+
+2. Placed after SECTION_LAYOUT constants for logical grouping
+
+3. Export follows the `as const` pattern for type safety
+
+#### Test Results:
+- ✅ All 1489 tests pass (32 test files)
+- ✅ No snapshots changed
+- ✅ Verified tests pass with --run flag
+
+#### Files Modified:
+- generators/shared.ts - Added OPACITY constant
+
+#### Notes:
+- These constants will be used in T6 to replace hardcoded 0.5 opacity values across generators
+- Generators with disabled states: button.ts, input.ts, checkbox.ts, switch.ts, select.ts, combobox.ts
+- Pre-existing TypeScript errors in shared.ts (x/y properties on TextNode) are unrelated to this change
+
+**Status:** COMPLETE - Ready for commit
+

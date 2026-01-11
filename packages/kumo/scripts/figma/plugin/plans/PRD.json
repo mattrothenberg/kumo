@@ -194,7 +194,7 @@
       "name": "add-opacity-constants",
       "title": "Add OPACITY Constants to shared.ts",
       "priority": "high",
-      "status": "pending",
+      "status": "complete",
       "description": "Add centralized opacity constants for disabled states",
       "files": ["generators/shared.ts"],
       "acceptance": [
