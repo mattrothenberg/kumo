@@ -296,7 +296,7 @@
       "name": "convert-warning-to-enforcement",
       "title": "[Phase 8] Convert Drift Detection Warning to Enforcement",
       "priority": "high",
-      "status": "pending",
+      "status": "complete",
       "description": "Change the 'should prefer registry comparisons...' test from warning-only to enforcing",
       "files": ["scripts/figma/plugin/generators/drift-detection.test.ts"],
       "acceptance": [

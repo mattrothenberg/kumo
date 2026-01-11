@@ -5122,3 +5122,62 @@ Eliminate fragile hardcoded numeric assertions in test files by replacing them w
 
 **Status:** COMPLETE - All fragile assertions fixed, drift detector enhanced
 
+
+---
+
+## Iteration 30: T9 - Convert Drift Detection Warning to Enforcement (PHASE 8)
+
+**Task:** T9 - Convert Drift Detection Warning to Enforcement
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Located the warning-only test**:
+   - Test: "should prefer registry comparisons over hardcoded values"
+   - File: generators/drift-detection.test.ts
+   - Line 993 had: `expect(true).toBe(true)` (warning-only mode)
+
+2. **Converted to enforcement mode**:
+   - Changed: `expect(true).toBe(true)` (always passes)
+   - To: `expect(warnings).toEqual([])` (fails if warnings exist)
+   - Updated comment from "Warning only - allows gradual migration"
+   - To: "Enforce no fragile assertions - test fails if any are found"
+
+3. **Why this is safe now**:
+   - T1-T3 fixed fragile assertions in banner, text, select tests
+   - T8 fixed remaining text.test.ts:173 assertion
+   - T8 enhanced drift detector to filter false positives (.length counts)
+   - Current warning count: **0**
+
+### Test Results:
+- ✅ All drift detection tests pass (24/24)
+- ✅ Test now ENFORCES zero fragile assertions (will fail if any are reintroduced)
+- ✅ No warnings output (clean pass)
+- ✅ CI will catch any future regressions
+
+### Files Modified:
+- `scripts/figma/plugin/generators/drift-detection.test.ts` - Line 993: enforcement mode enabled
+- `plans/PRD.json` - T9 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Impact:
+**Before (T1-T8):**
+- Warning-only mode allowed gradual migration
+- Tests would pass even with fragile assertions
+- 30+ warnings initially → gradually fixed
+
+**After (T9):**
+- Enforcement mode prevents regressions
+- Tests FAIL if hardcoded values are reintroduced
+- CI acts as quality gate for dimensional assertions
+- Future developers MUST use FONT_SIZE, FALLBACK_VALUES, etc.
+
+### Notes:
+- This completes the enforcement side of Phase 8
+- Phase 8 combined fixing (T1-T8) + enforcement (T9)
+- All test assertions now use shared constants
+- Drift detector enhanced to avoid false positives
+- T10 (Final Verification) remains for Phase 9 completion summary
+
+**Status:** COMPLETE - Drift detection now enforces zero fragile assertions
+

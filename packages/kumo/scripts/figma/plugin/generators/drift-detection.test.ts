@@ -989,8 +989,8 @@ describe("Figma Plugin - Test File Assertions Enforcement", () => {
       );
     }
 
-    // Warning only - allows gradual migration
-    expect(true).toBe(true);
+    // Enforce no fragile assertions - test fails if any are found
+    expect(warnings).toEqual([]);
   });
 });
 
