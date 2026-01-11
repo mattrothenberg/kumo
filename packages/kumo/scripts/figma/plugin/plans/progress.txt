@@ -4349,3 +4349,76 @@ var SIZE_CONFIG = getSizeConfigFromRegistry();
 
 **Status:** COMPLETE - LayerCard now reads from registry with proper fallback
 
+
+---
+
+## Iteration 26: T11 - Update menubar.ts to Read from Registry (PHASE 7)
+
+**Task:** T11 - Update menubar.ts to Read from Registry
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Added registry styling import**:
+   - Added `var menuBarStyling = (registry.components.MenuBar as any).styling;`
+   - Created `FALLBACK_MENUBAR_CONFIG` object with original hardcoded values
+
+2. **Created getConfigFromRegistry() function**:
+   - Reads from `menuBarStyling.container` and `menuBarStyling.button` if available
+   - Falls back to FALLBACK_MENUBAR_CONFIG if registry data is missing
+   - Returns config object with height, buttonWidth, iconSize, borderRadius, buttonBorderRadius
+
+3. **Replaced hardcoded MENUBAR_CONFIG**:
+   - `MENUBAR_CONFIG` now derives from registry via `getConfigFromRegistry()`
+   - All values match previous hardcoded values exactly:
+     - height: 32
+     - buttonWidth: 36
+     - iconSize: 18
+     - borderRadius: 8 (container)
+     - buttonBorderRadius: 6 (button)
+
+4. **Updated JSDoc comments**:
+   - Added documentation for `getConfigFromRegistry()` function
+   - Explains registry.components.MenuBar.styling structure and fallback behavior
+
+### Test Results:
+- ✅ All 35 menubar tests pass
+- ✅ No snapshots changed (values match original hardcoded values)
+- ✅ **Enforcement test now shows 0/5 violations (ALL PASS!)**
+  - ✅ DateRangePicker passes
+  - ✅ Pagination passes
+  - ✅ InputArea passes
+  - ✅ LayerCard passes
+  - ✅ MenuBar passes
+
+### Files Modified:
+- `scripts/figma/plugin/generators/menubar.ts` - Added registry reading with fallback
+- `plans/PRD.json` - T11 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- Pre-existing TypeScript error (effects property) documented but unrelated to changes
+- MenuBar is the LAST generator requiring registry styling migration
+- ALL 5 generators now read from registry.components.X.styling
+- Enforcement test passes completely: 0/5 violations (100% success)
+- Next tasks: T12 (document divergences), T13 (final verification)
+
+**Status:** COMPLETE - MenuBar now reads from registry with proper fallback
+
+---
+
+## PHASE 7 MILESTONE: All Registry Styling Integration Complete! 🎉
+
+All 5 generators now read styling from registry:
+- ✅ DateRangePicker (T3)
+- ✅ Pagination (T5)
+- ✅ InputArea (T7)
+- ✅ LayerCard (T9)
+- ✅ MenuBar (T11)
+
+**Enforcement Test:** 0/5 violations (100% passing)
+
+Remaining tasks:
+- T12: Document Dropdown/Combobox intentional divergences
+- T13: Final verification and completion summary
+

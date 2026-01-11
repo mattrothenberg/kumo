@@ -337,7 +337,7 @@
       "name": "update-menubar-generator",
       "title": "Update menubar.ts to Read from Registry",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Refactor generator to derive MENUBAR_CONFIG from registry",
       "files": ["scripts/figma/plugin/generators/menubar.ts"],
       "acceptance": [

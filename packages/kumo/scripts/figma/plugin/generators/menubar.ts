@@ -34,7 +34,8 @@ import {
 import { createIconInstance, bindIconColor } from "./icon-utils";
 import registry from "../../../../ai/component-registry.json";
 
-
+// Read styling metadata from registry (added in Phase 7)
+var menuBarStyling = (registry.components.MenuBar as any).styling;
 
 /**
  * MenuBar dimensions and styling
@@ -48,7 +49,7 @@ import registry from "../../../../ai/component-registry.json";
  * The height is determined by the icon + minimal padding.
  * Looking at Storybook, the component is quite compact.
  */
-var MENUBAR_CONFIG = {
+var FALLBACK_MENUBAR_CONFIG = {
   /** Height of the menubar - compact, just enough for icon + small padding */
   height: 32,
   /** Width of each menu option button (w-11 = 44px, but visually looks ~36px) */
@@ -60,6 +61,28 @@ var MENUBAR_CONFIG = {
   /** Border radius for individual buttons (rounded-md = 6px) */
   buttonBorderRadius: 6,
 };
+
+/**
+ * Get MenuBar configuration from registry with fallback
+ *
+ * Reads container and button dimensions from registry.components.MenuBar.styling
+ * Falls back to hardcoded values if registry data is missing.
+ */
+function getConfigFromRegistry() {
+  if (!menuBarStyling?.container || !menuBarStyling?.button) {
+    return FALLBACK_MENUBAR_CONFIG;
+  }
+
+  return {
+    height: menuBarStyling.container.height || FALLBACK_MENUBAR_CONFIG.height,
+    buttonWidth: menuBarStyling.button.width || FALLBACK_MENUBAR_CONFIG.buttonWidth,
+    iconSize: menuBarStyling.button.iconSize || FALLBACK_MENUBAR_CONFIG.iconSize,
+    borderRadius: menuBarStyling.container.borderRadius || FALLBACK_MENUBAR_CONFIG.borderRadius,
+    buttonBorderRadius: menuBarStyling.button.borderRadius || FALLBACK_MENUBAR_CONFIG.buttonBorderRadius,
+  };
+}
+
+var MENUBAR_CONFIG = getConfigFromRegistry();
 
 /**
  * Default menu options to display (matches Storybook Default story)
