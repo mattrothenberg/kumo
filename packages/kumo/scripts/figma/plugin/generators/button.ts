@@ -33,6 +33,7 @@ import {
   GRID_LAYOUT,
   FALLBACK_VALUES,
   SECTION_LAYOUT,
+  OPACITY,
 } from "./shared";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 import {
@@ -486,7 +487,7 @@ async function createButtonComponent(
 
   // Apply disabled state: opacity-50
   if (disabled) {
-    component.opacity = 0.5;
+    component.opacity = OPACITY.disabled;
   }
 
   // Add loader for loading state

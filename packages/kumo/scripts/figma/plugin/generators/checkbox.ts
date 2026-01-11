@@ -35,6 +35,7 @@ import {
   GRID_LAYOUT,
   FALLBACK_VALUES,
   SECTION_LAYOUT,
+  OPACITY,
 } from "./shared";
 import { createIconInstance, bindIconColor } from "./icon-utils";
 import { logInfo } from "../logger";
@@ -184,7 +185,7 @@ export function getCheckboxBoxConfig(
     icon: iconName,
     iconSize: iconName ? getCheckboxIconSize() : null,
     iconColor: iconName ? "text-white" : null,
-    opacity: disabled ? 0.5 : 1.0,
+    opacity: disabled ? OPACITY.disabled : 1.0,
   };
 }
 
@@ -229,7 +230,7 @@ export function getCheckboxCompleteConfig(
     layoutConfig: getCheckboxLayoutConfig(),
     textConfig: getCheckboxTextConfig(),
     stylingConfig: getCheckboxStylingConfig(),
-    opacity: disabled ? 0.5 : 1.0,
+    opacity: disabled ? OPACITY.disabled : 1.0,
   };
 }
 

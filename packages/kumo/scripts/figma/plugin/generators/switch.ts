@@ -42,6 +42,7 @@ import {
   SECTION_GAP,
   GRID_LAYOUT,
   SECTION_LAYOUT,
+  OPACITY,
 } from "./shared";
 import { logInfo } from "../logger";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
@@ -289,7 +290,7 @@ async function createSwitchWithLayout(
 
   // Apply disabled state: opacity-50
   if (disabled) {
-    component.opacity = 0.5;
+    component.opacity = OPACITY.disabled;
   }
 
   return component;
@@ -335,7 +336,7 @@ async function createSwitchItem(
 
   // Apply disabled state
   if (disabled) {
-    item.opacity = 0.5;
+    item.opacity = OPACITY.disabled;
   }
 
   return item;

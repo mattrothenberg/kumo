@@ -29,6 +29,7 @@ import {
   SECTION_GAP,
   GRID_LAYOUT,
   SECTION_LAYOUT,
+  OPACITY,
 } from "./shared";
 import { logComplete } from "../logger";
 import registry from "../../../../ai/component-registry.json";
@@ -132,7 +133,7 @@ var STATE_STYLES: Record<
   },
   disabled: {
     ringVariable: "color-border",
-    opacity: 0.5,
+    opacity: OPACITY.disabled,
     textColorVariable: "text-color-muted",
   },
 };

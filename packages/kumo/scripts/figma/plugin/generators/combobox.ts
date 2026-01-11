@@ -34,6 +34,7 @@ import {
   SECTION_PADDING,
   SECTION_GAP,
   SECTION_LAYOUT,
+  OPACITY,
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
@@ -92,7 +93,7 @@ var STATE_STYLES: Record<
   },
   disabled: {
     ringVariable: "color-border",
-    opacity: 0.5,
+    opacity: OPACITY.disabled,
   },
 };
 

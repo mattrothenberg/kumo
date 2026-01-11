@@ -30,6 +30,7 @@ import {
   SECTION_PADDING,
   SECTION_GAP,
   SECTION_LAYOUT,
+  OPACITY,
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import { logComplete } from "../logger";
@@ -56,7 +57,7 @@ var selectStyling = {
   },
   stateTokens: {
     focus: { ring: "color-active" },
-    disabled: { opacity: 0.5 },
+    disabled: { opacity: OPACITY.disabled },
   },
   popup: {
     background: "color-secondary",

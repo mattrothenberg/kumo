@@ -289,7 +289,7 @@
       "name": "refactor-generators-opacity",
       "title": "Refactor Generators to Use OPACITY Constants",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Replace hardcoded 0.5 opacity values with OPACITY.disabled",
       "files": [
         "generators/button.ts",

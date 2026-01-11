@@ -3227,3 +3227,57 @@ grep -n "\.x = 100\|\.y = 100\|+ 50" generators/*.ts | grep -v "shared.ts"
 
 **Status:** COMPLETE ✅
 
+
+---
+
+## PHASE 6: Magic Numbers Audit Remediation
+
+### T6: Refactor Generators to Use OPACITY Constants
+
+**Status:** ✅ Complete
+**Date:** 2026-01-10
+
+### What was done:
+1. Added OPACITY import to 6 generators:
+   - button.ts (1 instance)
+   - input.ts (1 instance in STATE_STYLES)
+   - checkbox.ts (2 instances in getCheckboxBoxConfig and getCheckboxLayoutData)
+   - switch.ts (2 instances - component and item opacity)
+   - select.ts (1 instance in selectStyling.stateTokens)
+   - combobox.ts (1 instance in STATE_STYLES)
+
+2. Replaced all hardcoded 0.5 opacity values with OPACITY.disabled:
+   - button.ts:489: component.opacity = OPACITY.disabled
+   - input.ts:135: opacity: OPACITY.disabled (in disabled state)
+   - checkbox.ts:187: opacity: disabled ? OPACITY.disabled : 1.0
+   - checkbox.ts:232: opacity: disabled ? OPACITY.disabled : 1.0
+   - switch.ts:292: component.opacity = OPACITY.disabled
+   - switch.ts:338: item.opacity = OPACITY.disabled
+   - select.ts:59: disabled: { opacity: OPACITY.disabled }
+   - combobox.ts:95: opacity: OPACITY.disabled
+
+### Test Results:
+- ✅ All 393 tests pass across 6 generators
+- ✅ button.test.ts: 117 tests pass
+- ✅ input.test.ts: 68 tests pass
+- ✅ checkbox.test.ts: 70 tests pass
+- ✅ switch.test.ts: 50 tests pass
+- ✅ select.test.ts: 46 tests pass
+- ✅ combobox.test.ts: 42 tests pass
+
+### Files Modified:
+- generators/button.ts
+- generators/input.ts
+- generators/checkbox.ts
+- generators/switch.ts
+- generators/select.ts
+- generators/combobox.ts
+
+### Notes:
+- All generators already had other imports from shared.ts, so adding OPACITY was straightforward
+- Pre-existing TypeScript errors (textAutoResize, opacity, rotation properties) are documented and not related to this refactoring
+- All hardcoded 0.5 opacity values for disabled states now use OPACITY.disabled
+- Zero hardcoded opacity values remain (acceptance criteria met)
+
+**Status:** COMPLETE - Ready for commit
+
