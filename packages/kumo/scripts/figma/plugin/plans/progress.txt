@@ -5724,3 +5724,85 @@ Eliminate ALL remaining hardcoded CSS-derived values in Figma generators by usin
 - Values unchanged (8, 12, 13, 400, 500) - only source changed from hardcoded to derived
 
 **Status:** COMPLETE - Meter generator now uses themeData and shared constants
+
+---
+
+## Iteration 29: T3 - Fix combobox.ts Hardcoded Values (PHASE 11)
+
+**Task:** T3 - Fix combobox.ts Hardcoded Values
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Added themeData import**:
+   - Added `import themeData from "../generated/theme-data.json"`
+   - Added FONT_SIZE and FALLBACK_VALUES to imports from "./shared"
+
+2. **Created FALLBACK_COMBOBOX_CONFIG**:
+   - Added comprehensive configuration object after DROPDOWN_PANEL_STYLES
+   - Includes trigger section (width, height, borderRadius, paddingX, itemSpacing)
+   - Includes dropdown section (width, height, borderRadius, paddingY, itemHeight, itemPaddingX, itemPaddingY)
+   - Includes typography sections (label, placeholder, description, item)
+   - All values reference themeData, FONT_SIZE, FALLBACK_VALUES, or BORDER_RADIUS
+
+3. **Updated getComboboxLayoutData() function**:
+   - Replaced hardcoded trigger values with FALLBACK_COMBOBOX_CONFIG.trigger references
+   - Replaced hardcoded dropdown values with FALLBACK_COMBOBOX_CONFIG.dropdown references
+   - Values match original hardcoded values exactly
+
+4. **Updated createComboboxComponent() function**:
+   - Label text: fontSize 14 → FALLBACK_COMBOBOX_CONFIG.label.fontSize, fontWeight 500 → config
+   - Trigger dimensions: width 280, height 36 → config references
+   - Trigger padding: paddingX 12 → config reference, itemSpacing 8 → config reference
+   - Placeholder text: fontSize 16 → FALLBACK_COMBOBOX_CONFIG.placeholder.fontSize, fontWeight 400 → config
+   - Description text: fontSize 12 → FALLBACK_COMBOBOX_CONFIG.description.fontSize, fontWeight 400 → config
+   - Error text: fontSize 12 → config references
+   - Dropdown panel: width 280, height 120, paddingY 4, cornerRadius 8 → config references
+   - Dropdown items: width 280, height 32, paddingX 12, paddingY 8, itemSpacing 8 → config references
+   - Item text: fontSize 14 → FALLBACK_COMBOBOX_CONFIG.item.fontSize, fontWeight 400 → config
+
+### Values Replaced:
+**Dimensions:**
+- width: 280 → FALLBACK_COMBOBOX_CONFIG.trigger.width (documented as FIGMA-SPECIFIC)
+- height: 36 → FALLBACK_COMBOBOX_CONFIG.trigger.height (FALLBACK_VALUES.height.base = themeData.tailwind.spacing.scale["9"])
+- height: 120 → FALLBACK_COMBOBOX_CONFIG.dropdown.height (documented as FIGMA-SPECIFIC)
+- height: 32 → FALLBACK_COMBOBOX_CONFIG.dropdown.itemHeight (themeData.tailwind.spacing.scale["8"])
+
+**Spacing:**
+- paddingX: 12 → FALLBACK_COMBOBOX_CONFIG.trigger.paddingX (themeData.tailwind.spacing.scale["3"])
+- paddingY: 4 → FALLBACK_COMBOBOX_CONFIG.dropdown.paddingY (themeData.tailwind.spacing.scale["1"])
+- itemPaddingX: 12 → FALLBACK_COMBOBOX_CONFIG.dropdown.itemPaddingX (themeData.tailwind.spacing.scale["3"])
+- itemPaddingY: 8 → FALLBACK_COMBOBOX_CONFIG.dropdown.itemPaddingY (themeData.tailwind.spacing.scale["2"])
+- itemSpacing: 8 → FALLBACK_COMBOBOX_CONFIG.trigger.itemSpacing (themeData.tailwind.spacing.scale["2"])
+- itemSpacing: 8 → themeData.tailwind.spacing.scale["2"] (in item frame)
+
+**Border Radius:**
+- borderRadius: 8 → FALLBACK_COMBOBOX_CONFIG.trigger.borderRadius (BORDER_RADIUS.lg)
+
+**Typography:**
+- fontSize: 14 (label) → FALLBACK_COMBOBOX_CONFIG.label.fontSize (FONT_SIZE.base = 14px)
+- fontSize: 16 (placeholder) → FALLBACK_COMBOBOX_CONFIG.placeholder.fontSize (FONT_SIZE.lg = 16px)
+- fontSize: 12 (description/error) → FALLBACK_COMBOBOX_CONFIG.description.fontSize (FONT_SIZE.xs = 12px)
+- fontSize: 14 (item) → FALLBACK_COMBOBOX_CONFIG.item.fontSize (FONT_SIZE.base = 14px)
+- fontWeight: 500 → FALLBACK_COMBOBOX_CONFIG.label.fontWeight (FALLBACK_VALUES.fontWeight.medium)
+- fontWeight: 400 → FALLBACK_COMBOBOX_CONFIG.*.fontWeight (FALLBACK_VALUES.fontWeight.normal)
+
+### Test Results:
+- ✅ All 42 combobox tests pass
+- ✅ No snapshots changed (values match original hardcoded values)
+- ✅ Pre-existing TypeScript errors documented (textAutoResize, rotation properties)
+
+### Files Modified:
+- `scripts/figma/plugin/generators/combobox.ts` - Added FALLBACK_COMBOBOX_CONFIG, replaced all hardcoded values
+- `plans/PRD.json` - T3 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- FIGMA-SPECIFIC values documented with comments (width: 280, height: 120 for layout display)
+- All CSS-derived values now reference themeData or shared.ts constants
+- Typography uses FONT_SIZE from theme-kumo.css (not Tailwind defaults)
+- Spacing uses themeData.tailwind.spacing.scale for standard values
+- Configuration object pattern makes it easy to maintain and understand all dimensions
+
+**Status:** COMPLETE - Combobox generator now uses themeData/shared constants
+

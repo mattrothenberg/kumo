@@ -46,11 +46,14 @@ import {
   SECTION_GAP,
   SECTION_LAYOUT,
   OPACITY,
+  FONT_SIZE,
+  FALLBACK_VALUES,
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 import { logComplete } from "../logger";
 import registry from "../../../../ai/component-registry.json";
+import themeData from "../generated/theme-data.json";
 
 /**
  * Extract Combobox component data from registry (for metadata)
@@ -69,7 +72,44 @@ var TRIGGER_BASE_STYLES = "bg-secondary ring ring-border rounded-lg";
  */
 var DROPDOWN_PANEL_STYLES = "bg-surface border border-border";
 
-
+/**
+ * Fallback configuration for Combobox dimensions
+ * These values define trigger, dropdown, and item layouts
+ */
+var FALLBACK_COMBOBOX_CONFIG = {
+  trigger: {
+    width: 280, // FIGMA-SPECIFIC: Layout width for Figma canvas display
+    height: FALLBACK_VALUES.height.base, // h-9 = 36px
+    borderRadius: BORDER_RADIUS.lg, // rounded-lg = 8px
+    paddingX: themeData.tailwind.spacing.scale["3"], // px-3 = 12px
+    itemSpacing: themeData.tailwind.spacing.scale["2"], // gap-2 = 8px
+  },
+  dropdown: {
+    width: 280, // FIGMA-SPECIFIC: Layout width for Figma canvas display
+    height: 120, // FIGMA-SPECIFIC: Fixed height for display (shows 3-4 items)
+    borderRadius: BORDER_RADIUS.lg, // rounded-lg = 8px
+    paddingY: themeData.tailwind.spacing.scale["1"], // py-1 = 4px
+    itemHeight: themeData.tailwind.spacing.scale["8"], // h-8 = 32px
+    itemPaddingX: themeData.tailwind.spacing.scale["3"], // px-3 = 12px
+    itemPaddingY: themeData.tailwind.spacing.scale["2"], // py-2 = 8px
+  },
+  label: {
+    fontSize: FONT_SIZE.base, // text-base = 14px from theme-kumo.css
+    fontWeight: FALLBACK_VALUES.fontWeight.medium, // font-medium = 500
+  },
+  placeholder: {
+    fontSize: FONT_SIZE.lg, // text-lg = 16px from theme-kumo.css
+    fontWeight: FALLBACK_VALUES.fontWeight.normal, // font-normal = 400
+  },
+  description: {
+    fontSize: FONT_SIZE.xs, // text-xs = 12px from theme-kumo.css
+    fontWeight: FALLBACK_VALUES.fontWeight.normal, // font-normal = 400
+  },
+  item: {
+    fontSize: FONT_SIZE.base, // text-base = 14px from theme-kumo.css
+    fontWeight: FALLBACK_VALUES.fontWeight.normal, // font-normal = 400
+  },
+} as const;
 
 /**
  * Variant types
@@ -201,21 +241,21 @@ export function getComboboxLayoutData(
       : stateStyle.ringVariable || "color-border",
     opacity: stateStyle.opacity,
     trigger: {
-      width: 280,
-      height: 36,
-      borderRadius: BORDER_RADIUS.lg,
-      paddingX: 12,
-      itemSpacing: 8,
+      width: FALLBACK_COMBOBOX_CONFIG.trigger.width,
+      height: FALLBACK_COMBOBOX_CONFIG.trigger.height,
+      borderRadius: FALLBACK_COMBOBOX_CONFIG.trigger.borderRadius,
+      paddingX: FALLBACK_COMBOBOX_CONFIG.trigger.paddingX,
+      itemSpacing: FALLBACK_COMBOBOX_CONFIG.trigger.itemSpacing,
     },
     dropdown: open
       ? {
-          width: 280,
-          height: 120,
-          borderRadius: BORDER_RADIUS.lg,
-          paddingY: 4,
-          itemHeight: 32,
-          itemPaddingX: 12,
-          itemPaddingY: 8,
+          width: FALLBACK_COMBOBOX_CONFIG.dropdown.width,
+          height: FALLBACK_COMBOBOX_CONFIG.dropdown.height,
+          borderRadius: FALLBACK_COMBOBOX_CONFIG.dropdown.borderRadius,
+          paddingY: FALLBACK_COMBOBOX_CONFIG.dropdown.paddingY,
+          itemHeight: FALLBACK_COMBOBOX_CONFIG.dropdown.itemHeight,
+          itemPaddingX: FALLBACK_COMBOBOX_CONFIG.dropdown.itemPaddingX,
+          itemPaddingY: FALLBACK_COMBOBOX_CONFIG.dropdown.itemPaddingY,
         }
       : null,
   };
@@ -324,7 +364,11 @@ async function createComboboxComponent(
 
   // Create label if needed
   if (variantConfig.label) {
-    var labelText = await createTextNode(variantConfig.label, 14, 500);
+    var labelText = await createTextNode(
+      variantConfig.label,
+      FALLBACK_COMBOBOX_CONFIG.label.fontSize,
+      FALLBACK_COMBOBOX_CONFIG.label.fontWeight,
+    );
     labelText.name = "Label";
     labelText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -345,13 +389,16 @@ async function createComboboxComponent(
   trigger.counterAxisAlignItems = "CENTER";
   trigger.primaryAxisSizingMode = "FIXED";
   trigger.counterAxisSizingMode = "FIXED";
-  trigger.resize(280, 36); // h-9 = 36px
-  trigger.itemSpacing = 8;
-  trigger.paddingLeft = 12;
-  trigger.paddingRight = 12;
+  trigger.resize(
+    FALLBACK_COMBOBOX_CONFIG.trigger.width,
+    FALLBACK_COMBOBOX_CONFIG.trigger.height,
+  );
+  trigger.itemSpacing = FALLBACK_COMBOBOX_CONFIG.trigger.itemSpacing;
+  trigger.paddingLeft = FALLBACK_COMBOBOX_CONFIG.trigger.paddingX;
+  trigger.paddingRight = FALLBACK_COMBOBOX_CONFIG.trigger.paddingX;
   trigger.paddingTop = 0;
   trigger.paddingBottom = 0;
-  trigger.cornerRadius = BORDER_RADIUS.lg;
+  trigger.cornerRadius = FALLBACK_COMBOBOX_CONFIG.trigger.borderRadius;
 
   // Apply background fill (bg-secondary)
   var bgVar = getVariableByName("color-secondary");
@@ -369,7 +416,11 @@ async function createComboboxComponent(
   }
 
   // Create placeholder text
-  var placeholderText = await createTextNode("Select item...", 16, 400);
+  var placeholderText = await createTextNode(
+    "Select item...",
+    FALLBACK_COMBOBOX_CONFIG.placeholder.fontSize,
+    FALLBACK_COMBOBOX_CONFIG.placeholder.fontWeight,
+  );
   placeholderText.name = "Placeholder";
   placeholderText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -400,7 +451,11 @@ async function createComboboxComponent(
 
   // Create description or error message if needed
   if (variantConfig.description) {
-    var descText = await createTextNode(variantConfig.description, 12, 400);
+    var descText = await createTextNode(
+      variantConfig.description,
+      FALLBACK_COMBOBOX_CONFIG.description.fontSize,
+      FALLBACK_COMBOBOX_CONFIG.description.fontWeight,
+    );
     descText.name = "Description";
     descText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -414,7 +469,11 @@ async function createComboboxComponent(
   }
 
   if (variantConfig.errorMessage) {
-    var errorText = await createTextNode(variantConfig.errorMessage, 12, 400);
+    var errorText = await createTextNode(
+      variantConfig.errorMessage,
+      FALLBACK_COMBOBOX_CONFIG.description.fontSize,
+      FALLBACK_COMBOBOX_CONFIG.description.fontWeight,
+    );
     errorText.name = "Error";
     errorText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -434,13 +493,16 @@ async function createComboboxComponent(
     dropdownPanel.layoutMode = "VERTICAL";
     dropdownPanel.primaryAxisSizingMode = "FIXED";
     dropdownPanel.counterAxisSizingMode = "AUTO";
-    dropdownPanel.resize(280, 120); // Match trigger width
+    dropdownPanel.resize(
+      FALLBACK_COMBOBOX_CONFIG.dropdown.width,
+      FALLBACK_COMBOBOX_CONFIG.dropdown.height,
+    );
     dropdownPanel.itemSpacing = 0;
     dropdownPanel.paddingLeft = 0;
     dropdownPanel.paddingRight = 0;
-    dropdownPanel.paddingTop = 4;
-    dropdownPanel.paddingBottom = 4;
-    dropdownPanel.cornerRadius = BORDER_RADIUS.lg;
+    dropdownPanel.paddingTop = FALLBACK_COMBOBOX_CONFIG.dropdown.paddingY;
+    dropdownPanel.paddingBottom = FALLBACK_COMBOBOX_CONFIG.dropdown.paddingY;
+    dropdownPanel.cornerRadius = FALLBACK_COMBOBOX_CONFIG.dropdown.borderRadius;
 
     // Apply background fill (bg-secondary) - matches Content/Popup in combobox.tsx
     var dropdownBgVar = getVariableByName("color-secondary");
@@ -464,12 +526,15 @@ async function createComboboxComponent(
       itemFrame.counterAxisAlignItems = "CENTER";
       itemFrame.primaryAxisSizingMode = "FIXED";
       itemFrame.counterAxisSizingMode = "AUTO";
-      itemFrame.resize(280, 32);
-      itemFrame.itemSpacing = 8;
-      itemFrame.paddingLeft = 12;
-      itemFrame.paddingRight = 12;
-      itemFrame.paddingTop = 8;
-      itemFrame.paddingBottom = 8;
+      itemFrame.resize(
+        FALLBACK_COMBOBOX_CONFIG.dropdown.width,
+        FALLBACK_COMBOBOX_CONFIG.dropdown.itemHeight,
+      );
+      itemFrame.itemSpacing = themeData.tailwind.spacing.scale["2"]; // gap-2 = 8px
+      itemFrame.paddingLeft = FALLBACK_COMBOBOX_CONFIG.dropdown.itemPaddingX;
+      itemFrame.paddingRight = FALLBACK_COMBOBOX_CONFIG.dropdown.itemPaddingX;
+      itemFrame.paddingTop = FALLBACK_COMBOBOX_CONFIG.dropdown.itemPaddingY;
+      itemFrame.paddingBottom = FALLBACK_COMBOBOX_CONFIG.dropdown.itemPaddingY;
       itemFrame.fills = [];
 
       // Highlight second item (selected/hover state) - matches data-highlighted:bg-color-3
@@ -481,7 +546,11 @@ async function createComboboxComponent(
       }
 
       // Create item text
-      var itemText = await createTextNode(itemLabels[i], 14, 400);
+      var itemText = await createTextNode(
+        itemLabels[i],
+        FALLBACK_COMBOBOX_CONFIG.item.fontSize,
+        FALLBACK_COMBOBOX_CONFIG.item.fontWeight,
+      );
       itemText.name = "Label";
       itemText.textAutoResize = "WIDTH_AND_HEIGHT";
 

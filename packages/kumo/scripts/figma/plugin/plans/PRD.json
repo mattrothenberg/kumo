@@ -110,7 +110,7 @@
       "name": "fix-combobox-generator",
       "title": "Fix combobox.ts Hardcoded Values",
       "priority": "high",
-      "status": "pending",
+      "status": "complete",
       "description": "Replace hardcoded width/height/padding in getComboboxLayoutData",
       "files": ["scripts/figma/plugin/generators/combobox.ts"],
       "changes": [
