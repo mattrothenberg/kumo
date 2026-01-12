@@ -6276,3 +6276,59 @@ Eliminate ALL remaining hardcoded CSS-derived values in Figma generators by usin
 - All other styling properties (background, ring, borderRadius, padding) read from registry
 
 **Status:** COMPLETE - Popup width documented with FIGMA-SPECIFIC comment
+
+---
+
+## Iteration 29: T15 - Fix date-range-picker.ts Hardcoded Values (PHASE 11)
+
+**Task:** T15 - Fix date-range-picker.ts Hardcoded Values
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Added imports for constants**:
+   - Added `FONT_SIZE` and `FALLBACK_VALUES` to imports from './shared'
+   - Added `import themeData from "../generated/theme-data.json"`
+
+2. **Replaced hardcoded textSize values**:
+   - sm: `textSize: 12` → `textSize: FONT_SIZE.xs` (12px from theme-kumo.css)
+   - base: `textSize: 14` → `textSize: FONT_SIZE.base` (14px from theme-kumo.css)
+   - lg: `textSize: 16` → `textSize: FONT_SIZE.lg` (16px from theme-kumo.css)
+
+3. **Replaced hardcoded iconSize values**:
+   - sm: `iconSize: 14` → `iconSize: 14` (documented as FIGMA-SPECIFIC)
+   - base: `iconSize: 16` → `iconSize: FALLBACK_VALUES.iconSize.sm` (size-4 = 16px)
+   - lg: `iconSize: 18` → `iconSize: FALLBACK_VALUES.iconSize.medium` (size-4.5 = 18px)
+
+4. **Replaced hardcoded padding values**:
+   - sm: `padding: 12` → `padding: themeData.tailwind.spacing.scale["3"]` (p-3 = 12px)
+   - base: `padding: 16` → `padding: themeData.tailwind.spacing.scale["4"]` (p-4 = 16px)
+   - lg: `padding: 20` → `padding: themeData.tailwind.spacing.scale["5"]` (p-5 = 20px)
+
+5. **Replaced hardcoded gap values**:
+   - sm: `gap: 8` → `gap: themeData.tailwind.spacing.scale["2"]` (gap-2 = 8px)
+   - base: `gap: 10` → `gap: themeData.tailwind.spacing.scale["2.5"]` (gap-2.5 = 10px)
+   - lg: `gap: 12` → `gap: themeData.tailwind.spacing.scale["3"]` (gap-3 = 12px)
+
+6. **Documented calendar-specific dimensions**:
+   - Added FIGMA-SPECIFIC comments for calendarWidth, cellHeight, cellWidth
+   - These are Figma display layout values, not CSS-derived
+
+### Test Results:
+- ✅ All 40 date-range-picker tests pass
+- ✅ No snapshot changes (values remain identical)
+- ✅ Pre-existing TypeScript errors remain (textAlignHorizontal, resize, radius properties)
+
+### Files Modified:
+- `scripts/figma/plugin/generators/date-range-picker.ts` - Replaced hardcoded values with constants
+- `plans/PRD.json` - T15 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- Pre-existing TypeScript errors are documented and unrelated to this task
+- All CSS-derived values now use shared constants or themeData
+- Calendar-specific layout dimensions (calendarWidth, cellHeight, cellWidth) are intentionally hardcoded for Figma display
+- sm variant iconSize (14px) is custom and documented as FIGMA-SPECIFIC (no matching Tailwind class)
+- All changes maintain exact numeric values - no visual changes expected
+
+**Status:** COMPLETE - DateRangePicker now uses themeData/shared constants

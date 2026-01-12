@@ -407,7 +407,7 @@
       "name": "fix-date-range-picker-generator",
       "title": "Fix date-range-picker.ts Hardcoded Values",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Replace hardcoded textSize, iconSize, padding, gap in FALLBACK_SIZE_CONFIG",
       "files": ["scripts/figma/plugin/generators/date-range-picker.ts"],
       "changes": [

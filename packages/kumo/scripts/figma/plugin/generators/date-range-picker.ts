@@ -36,7 +36,10 @@ import {
   SECTION_PADDING,
   SECTION_GAP,
   SECTION_LAYOUT,
+  FONT_SIZE,
+  FALLBACK_VALUES,
 } from "./shared";
+import themeData from "../generated/theme-data.json";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 
 /**
@@ -92,31 +95,34 @@ var FALLBACK_SIZE_CONFIG: Record<
   }
 > = {
   sm: {
+    // FIGMA-SPECIFIC: Calendar layout dimensions for Figma display, not from CSS
     calendarWidth: 168,
     cellHeight: 22,
     cellWidth: 24,
-    textSize: 12,
-    iconSize: 14,
-    padding: 12,
-    gap: 8,
+    textSize: FONT_SIZE.xs, // 12px from theme-kumo.css
+    iconSize: 14, // FIGMA-SPECIFIC: Custom icon size for sm variant
+    padding: themeData.tailwind.spacing.scale["3"], // p-3 = 12px
+    gap: themeData.tailwind.spacing.scale["2"], // gap-2 = 8px
   },
   base: {
+    // FIGMA-SPECIFIC: Calendar layout dimensions for Figma display, not from CSS
     calendarWidth: 196,
     cellHeight: 26,
     cellWidth: 28,
-    textSize: 14,
-    iconSize: 16,
-    padding: 16,
-    gap: 10,
+    textSize: FONT_SIZE.base, // 14px from theme-kumo.css
+    iconSize: FALLBACK_VALUES.iconSize.sm, // size-4 = 16px
+    padding: themeData.tailwind.spacing.scale["4"], // p-4 = 16px
+    gap: themeData.tailwind.spacing.scale["2.5"], // gap-2.5 = 10px
   },
   lg: {
+    // FIGMA-SPECIFIC: Calendar layout dimensions for Figma display, not from CSS
     calendarWidth: 252,
     cellHeight: 32,
     cellWidth: 36,
-    textSize: 16,
-    iconSize: 18,
-    padding: 20,
-    gap: 12,
+    textSize: FONT_SIZE.lg, // 16px from theme-kumo.css
+    iconSize: FALLBACK_VALUES.iconSize.medium, // size-4.5 = 18px
+    padding: themeData.tailwind.spacing.scale["5"], // p-5 = 20px
+    gap: themeData.tailwind.spacing.scale["3"], // gap-3 = 12px
   },
 };
 
