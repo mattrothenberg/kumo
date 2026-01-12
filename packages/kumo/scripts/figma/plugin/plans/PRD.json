@@ -194,7 +194,7 @@
       "name": "fix-layer-card-generator",
       "title": "Fix layer-card.ts Hardcoded Values",
       "priority": "high",
-      "status": "pending",
+      "status": "complete",
       "description": "Replace hardcoded width, padding, fontSize, fontWeight values",
       "files": ["scripts/figma/plugin/generators/layer-card.ts"],
       "changes": [

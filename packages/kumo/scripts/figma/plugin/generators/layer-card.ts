@@ -22,12 +22,15 @@ import {
   bindStrokeToVariable,
   bindTextColorToVariable,
   BORDER_RADIUS,
+  FONT_SIZE,
+  FALLBACK_VALUES,
   SECTION_PADDING,
   SECTION_GAP,
   SECTION_LAYOUT,
 } from "./shared";
 import { createIconInstance, bindIconColor, DEFAULT_ICONS } from "./icon-utils";
 import registry from "../../../../ai/component-registry.json";
+import themeData from "../generated/theme-data.json";
 
 // Read LayerCard styling from registry
 var layerCardStyling = (registry.components.LayerCard as any).styling;
@@ -39,23 +42,24 @@ var layerCardStyling = (registry.components.LayerCard as any).styling;
  * with fallback to hardcoded values for backward compatibility.
  */
 var FALLBACK_LAYER_CARD_CONFIG = {
+  // FIGMA-SPECIFIC: Layout width for Figma canvas display, not from CSS
   width: 280,
-  borderRadius: BORDER_RADIUS.lg,
+  borderRadius: BORDER_RADIUS.lg, // 8px
   secondary: {
-    paddingX: 8,
-    paddingY: 8,
-    gap: 8,
-    fontSize: 16,
-    fontWeight: 500,
+    paddingX: themeData.tailwind.spacing.scale["2"], // 8px
+    paddingY: themeData.tailwind.spacing.scale["2"], // 8px
+    gap: themeData.tailwind.spacing.scale["2"], // 8px
+    fontSize: FONT_SIZE.lg, // 16px from theme-kumo.css
+    fontWeight: FALLBACK_VALUES.fontWeight.medium, // 500
   },
   primary: {
-    paddingX: 16,
-    paddingY: 16,
-    paddingRight: 12,
-    gap: 8,
-    fontSize: 16,
-    fontWeight: 400,
-    borderRadius: BORDER_RADIUS.lg,
+    paddingX: themeData.tailwind.spacing.scale["4"], // 16px
+    paddingY: themeData.tailwind.spacing.scale["4"], // 16px
+    paddingRight: themeData.tailwind.spacing.scale["3"], // 12px
+    gap: themeData.tailwind.spacing.scale["2"], // 8px
+    fontSize: FONT_SIZE.lg, // 16px from theme-kumo.css
+    fontWeight: FALLBACK_VALUES.fontWeight.normal, // 400
+    borderRadius: BORDER_RADIUS.lg, // 8px
   },
 };
 

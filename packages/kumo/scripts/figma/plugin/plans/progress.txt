@@ -5902,3 +5902,55 @@ Eliminate ALL remaining hardcoded CSS-derived values in Figma generators by usin
 
 **Status:** COMPLETE - Dropdown test functions now use themeData/shared constants
 
+
+---
+
+## Iteration 29: T6 - Fix layer-card.ts Hardcoded Values (PHASE 11)
+
+**Task:** T6 - Fix layer-card.ts Hardcoded Values
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Added missing imports to layer-card.ts**:
+   - Added `FONT_SIZE` from './shared'
+   - Added `FALLBACK_VALUES` from './shared'
+   - Added `themeData` from '../generated/theme-data.json'
+
+2. **Replaced hardcoded values in FALLBACK_LAYER_CARD_CONFIG**:
+   - `paddingX: 8` → `themeData.tailwind.spacing.scale["2"]` (8px)
+   - `paddingY: 8` → `themeData.tailwind.spacing.scale["2"]` (8px)
+   - `gap: 8` → `themeData.tailwind.spacing.scale["2"]` (8px)
+   - `fontSize: 16` → `FONT_SIZE.lg` (16px from theme-kumo.css)
+   - `fontWeight: 500` → `FALLBACK_VALUES.fontWeight.medium` (500)
+   - `paddingX: 16` → `themeData.tailwind.spacing.scale["4"]` (16px)
+   - `paddingY: 16` → `themeData.tailwind.spacing.scale["4"]` (16px)
+   - `paddingRight: 12` → `themeData.tailwind.spacing.scale["3"]` (12px)
+   - `fontWeight: 400` → `FALLBACK_VALUES.fontWeight.normal` (400)
+
+3. **Documented FIGMA-SPECIFIC value**:
+   - Added comment for `width: 280`: "FIGMA-SPECIFIC: Layout width for Figma canvas display, not from CSS"
+
+4. **Added inline comments**:
+   - All replaced values have inline comments documenting their pixel values
+   - Example: `themeData.tailwind.spacing.scale["2"], // 8px`
+
+### Test Results:
+- ✅ All 34 layer-card tests pass
+- ✅ No snapshot changes (values match original hardcoded values exactly)
+- ✅ Pre-existing TypeScript errors documented (not related to this refactor)
+
+### Files Modified:
+- `scripts/figma/plugin/generators/layer-card.ts` - Replaced hardcoded values with themeData/shared constants
+- `plans/PRD.json` - T6 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- All CSS-derived values (padding, gap, fontSize, fontWeight) now use themeData or shared constants
+- Layout-specific value (width: 280) documented as FIGMA-SPECIFIC
+- BORDER_RADIUS.lg already in use (no change needed)
+- Values remain identical to original hardcoded values (no regression risk)
+- Pre-existing TypeScript errors (resizeWithoutConstraints, textAutoResize, layoutSizingHorizontal) are not related to this refactor
+
+**Status:** COMPLETE - layer-card.ts hardcoded values replaced with themeData references
+
