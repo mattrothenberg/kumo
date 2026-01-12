@@ -39,6 +39,7 @@ import { getButtonIcon, bindIconColor } from "./icon-utils";
 import registry from "../../../../ai/component-registry.json";
 import { logComplete } from "../logger";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
+import themeData from "../generated/theme-data.json";
 
 /**
  * Extract props from registry
@@ -182,7 +183,8 @@ async function createButton(
   }
 
   // Create button label
-  var fontSize = size === "sm" ? FONT_SIZE.xs + 2 : FONT_SIZE.base; // 14px (sm) or 16px (base)
+  // For sm buttons, use Tailwind's text-sm (14px) rather than Kumo's 13px override
+  var fontSize = size === "sm" ? themeData.tailwind.fontSize.sm : FONT_SIZE.base; // 14px (sm) or 14px (base)
   var buttonLabel = await createTextNode(label, fontSize, FALLBACK_VALUES.fontWeight.semiBold);
   buttonLabel.name = "Label";
   buttonLabel.textAutoResize = "WIDTH_AND_HEIGHT";
@@ -501,23 +503,28 @@ export function getSizeConfig(size: string) {
 /**
  * Get base configuration for dialog components
  * @returns Base configuration object with tokens, border radius, shadow
+ *
+ * Uses centralized constants from shared.ts:
+ * - BORDER_RADIUS.xl (12px) for dialog corners
+ * - FALLBACK_VALUES.fontWeight.semiBold/normal for text weights
+ * - FALLBACK_VALUES.iconSize.base (20px) for close icon
  */
 export function getBaseConfig() {
   return {
     background: "color-surface",
     text: "text-color-surface",
-    borderRadius: 12,
+    borderRadius: BORDER_RADIUS.xl,
     shadow: "shadow-m",
     backdrop: {
       background: "color-color-3",
       opacity: 0.8,
     },
     header: {
-      title: { fontWeight: 600, color: "text-color-surface" },
-      closeIcon: { name: "ph-x", size: 20, color: "text-color-muted" },
+      title: { fontWeight: FALLBACK_VALUES.fontWeight.semiBold, color: "text-color-surface" },
+      closeIcon: { name: "ph-x", size: FALLBACK_VALUES.iconSize.base, color: "text-color-muted" },
     },
     description: {
-      fontWeight: 400,
+      fontWeight: FALLBACK_VALUES.fontWeight.normal,
       color: "text-color-muted",
     },
     buttons: {

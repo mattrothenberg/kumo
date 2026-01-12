@@ -33,7 +33,10 @@ import {
   SECTION_PADDING,
   SECTION_GAP,
   SECTION_LAYOUT,
+  FONT_SIZE,
+  FALLBACK_VALUES,
 } from "./shared";
+import themeData from "../generated/theme-data.json";
 
 // Import registry as source of truth
 import registry from "../../../../ai/component-registry.json";
@@ -133,10 +136,10 @@ async function createTooltipComponent(): Promise<ComponentNode> {
   tooltipBox.layoutMode = "VERTICAL";
   tooltipBox.primaryAxisSizingMode = "AUTO";
   tooltipBox.counterAxisSizingMode = "AUTO";
-  tooltipBox.paddingLeft = 10; // p-2.5 = 10px
-  tooltipBox.paddingRight = 10;
-  tooltipBox.paddingTop = 6; // p-1.5 = 6px
-  tooltipBox.paddingBottom = 6;
+  tooltipBox.paddingLeft = themeData.tailwind.spacing.scale["2.5"]; // px-2.5 = 10px
+  tooltipBox.paddingRight = themeData.tailwind.spacing.scale["2.5"];
+  tooltipBox.paddingTop = themeData.tailwind.spacing.scale["1.5"]; // py-1.5 = 6px
+  tooltipBox.paddingBottom = themeData.tailwind.spacing.scale["1.5"];
   tooltipBox.cornerRadius = BORDER_RADIUS.md; // rounded-md = 6px
   tooltipBox.x = 0;
   tooltipBox.y = 0;
@@ -149,7 +152,7 @@ async function createTooltipComponent(): Promise<ComponentNode> {
 
   // Create tooltip text content
   // text-sm = 14px, normal weight = 400
-  var text = await createTextNode("Tooltip text", 14, 400);
+  var text = await createTextNode("Tooltip text", FONT_SIZE.sm, FALLBACK_VALUES.fontWeight.normal);
   text.name = "Text";
   text.textAutoResize = "WIDTH_AND_HEIGHT";
 

@@ -47,7 +47,11 @@ import {
   SECTION_GAP,
   SECTION_LAYOUT,
   OPACITY,
+  SPACING,
+  FONT_SIZE,
+  FALLBACK_VALUES,
 } from "./shared";
+import themeData from "../generated/theme-data.json";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import registry from "../../../../ai/component-registry.json";
 
@@ -103,13 +107,13 @@ async function createMenuItem(
   itemFrame.primaryAxisSizingMode = "FIXED";
   itemFrame.counterAxisSizingMode = "AUTO";
   itemFrame.layoutAlign = "STRETCH";
-  itemFrame.resize(DROPDOWN_WIDTH - 12, 32);
-  itemFrame.itemSpacing = 8;
-  itemFrame.paddingLeft = 8;
-  itemFrame.paddingRight = 8;
-  itemFrame.paddingTop = 6;
-  itemFrame.paddingBottom = 6;
-  itemFrame.cornerRadius = 6;
+  itemFrame.resize(DROPDOWN_WIDTH - themeData.tailwind.spacing.scale["3"], themeData.tailwind.spacing.scale["8"]); // width - 12px, height 32px
+  itemFrame.itemSpacing = SPACING.base; // gap-2 = 8px
+  itemFrame.paddingLeft = SPACING.base; // px-2 = 8px
+  itemFrame.paddingRight = SPACING.base;
+  itemFrame.paddingTop = themeData.tailwind.spacing.scale["1.5"]; // py-1.5 = 6px
+  itemFrame.paddingBottom = themeData.tailwind.spacing.scale["1.5"];
+  itemFrame.cornerRadius = BORDER_RADIUS.md; // rounded-md = 6px
   itemFrame.fills = [];
 
   // Apply highlight background if highlighted
@@ -132,7 +136,7 @@ async function createMenuItem(
   leftContainer.primaryAxisSizingMode = "AUTO";
   leftContainer.counterAxisSizingMode = "AUTO";
   leftContainer.counterAxisAlignItems = "CENTER";
-  leftContainer.itemSpacing = 8;
+  leftContainer.itemSpacing = SPACING.base; // gap-2 = 8px
   leftContainer.fills = [];
 
   // Add icon if provided
@@ -146,7 +150,7 @@ async function createMenuItem(
   }
 
   // Create label text
-  var labelText = await createTextNode(label, 14, 400);
+  var labelText = await createTextNode(label, FONT_SIZE.base, FALLBACK_VALUES.fontWeight.normal);
   labelText.name = "Label";
   labelText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -163,7 +167,7 @@ async function createMenuItem(
 
   // Add shortcut if provided
   if (opts.shortcut) {
-    var shortcutText = await createTextNode(opts.shortcut, 12, 400);
+    var shortcutText = await createTextNode(opts.shortcut, FONT_SIZE.xs, FALLBACK_VALUES.fontWeight.normal);
     shortcutText.name = "Shortcut";
     shortcutText.textAutoResize = "WIDTH_AND_HEIGHT";
     shortcutText.opacity = 0.6;
@@ -194,13 +198,13 @@ async function createCheckboxItem(
   itemFrame.primaryAxisSizingMode = "FIXED";
   itemFrame.counterAxisSizingMode = "AUTO";
   itemFrame.layoutAlign = "STRETCH";
-  itemFrame.resize(DROPDOWN_WIDTH - 12, 32);
-  itemFrame.itemSpacing = 8;
-  itemFrame.paddingLeft = 8;
-  itemFrame.paddingRight = 8;
-  itemFrame.paddingTop = 6;
-  itemFrame.paddingBottom = 6;
-  itemFrame.cornerRadius = 6;
+  itemFrame.resize(DROPDOWN_WIDTH - themeData.tailwind.spacing.scale["3"], themeData.tailwind.spacing.scale["8"]); // width - 12px, height 32px
+  itemFrame.itemSpacing = SPACING.base; // gap-2 = 8px
+  itemFrame.paddingLeft = SPACING.base; // px-2 = 8px
+  itemFrame.paddingRight = SPACING.base;
+  itemFrame.paddingTop = themeData.tailwind.spacing.scale["1.5"]; // py-1.5 = 6px
+  itemFrame.paddingBottom = themeData.tailwind.spacing.scale["1.5"];
+  itemFrame.cornerRadius = BORDER_RADIUS.md; // rounded-md = 6px
   itemFrame.fills = [];
 
   // Use the real Checkbox component from the ComponentSet
@@ -219,8 +223,8 @@ async function createCheckboxItem(
     // Fallback: create a simple checkbox indicator if component not found
     var checkboxFrame = figma.createFrame();
     checkboxFrame.name = "Checkbox";
-    checkboxFrame.resize(16, 16);
-    checkboxFrame.cornerRadius = 4;
+    checkboxFrame.resize(themeData.tailwind.spacing.scale["4"], themeData.tailwind.spacing.scale["4"]); // size-4 = 16px
+    checkboxFrame.cornerRadius = BORDER_RADIUS.sm; // rounded = 4px
 
     if (checked) {
       var primaryVar = getVariableByName("color-primary");
@@ -246,7 +250,7 @@ async function createCheckboxItem(
   }
 
   // Create label text
-  var labelText = await createTextNode(label, 14, 400);
+  var labelText = await createTextNode(label, FONT_SIZE.base, FALLBACK_VALUES.fontWeight.normal);
   labelText.name = "Label";
   labelText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -270,7 +274,7 @@ function createSeparator(): FrameNode {
   separator.primaryAxisSizingMode = "FIXED";
   separator.counterAxisSizingMode = "FIXED";
   separator.layoutAlign = "STRETCH";
-  separator.resize(DROPDOWN_WIDTH - 12, 9);
+  separator.resize(DROPDOWN_WIDTH - themeData.tailwind.spacing.scale["3"], 9); // width - 12px
   separator.fills = [];
 
   // Create the line
@@ -280,7 +284,7 @@ function createSeparator(): FrameNode {
   line.primaryAxisSizingMode = "FIXED";
   line.counterAxisSizingMode = "FIXED";
   line.layoutAlign = "STRETCH";
-  line.resize(DROPDOWN_WIDTH - 12, 1);
+  line.resize(DROPDOWN_WIDTH - themeData.tailwind.spacing.scale["3"], 1); // width - 12px
 
   var mutedVar = getVariableByName("color-muted");
   if (mutedVar) {
@@ -288,8 +292,8 @@ function createSeparator(): FrameNode {
   }
 
   separator.appendChild(line);
-  separator.paddingTop = 4;
-  separator.paddingBottom = 4;
+  separator.paddingTop = SPACING.xs; // py-1 = 4px
+  separator.paddingBottom = SPACING.xs;
 
   return separator;
 }
@@ -304,14 +308,14 @@ async function createGroupLabel(label: string): Promise<FrameNode> {
   labelFrame.primaryAxisSizingMode = "FIXED";
   labelFrame.counterAxisSizingMode = "AUTO";
   labelFrame.layoutAlign = "STRETCH";
-  labelFrame.resize(DROPDOWN_WIDTH - 12, 24);
-  labelFrame.paddingLeft = 8;
-  labelFrame.paddingRight = 8;
-  labelFrame.paddingTop = 6;
-  labelFrame.paddingBottom = 2;
+  labelFrame.resize(DROPDOWN_WIDTH - themeData.tailwind.spacing.scale["3"], themeData.tailwind.spacing.scale["6"]); // width - 12px, height 24px
+  labelFrame.paddingLeft = SPACING.base; // px-2 = 8px
+  labelFrame.paddingRight = SPACING.base;
+  labelFrame.paddingTop = themeData.tailwind.spacing.scale["1.5"]; // py-1.5 = 6px
+  labelFrame.paddingBottom = themeData.tailwind.spacing.scale["0.5"]; // py-0.5 = 2px
   labelFrame.fills = [];
 
-  var labelText = await createTextNode(label, 14, 600);
+  var labelText = await createTextNode(label, FONT_SIZE.base, FALLBACK_VALUES.fontWeight.semiBold);
   labelText.name = "Label";
   labelText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -336,11 +340,11 @@ async function createTriggerButton(label: string): Promise<FrameNode> {
   button.counterAxisAlignItems = "CENTER";
   button.primaryAxisSizingMode = "AUTO";
   button.counterAxisSizingMode = "AUTO";
-  button.itemSpacing = 8;
-  button.paddingLeft = 12;
-  button.paddingRight = 12;
-  button.paddingTop = 8;
-  button.paddingBottom = 8;
+  button.itemSpacing = SPACING.base; // gap-2 = 8px
+  button.paddingLeft = themeData.tailwind.spacing.scale["3"]; // px-3 = 12px
+  button.paddingRight = themeData.tailwind.spacing.scale["3"];
+  button.paddingTop = SPACING.base; // py-2 = 8px
+  button.paddingBottom = SPACING.base;
   button.cornerRadius = BORDER_RADIUS.lg;
 
   // Apply secondary button styles
@@ -355,7 +359,7 @@ async function createTriggerButton(label: string): Promise<FrameNode> {
   }
 
   // Create button text
-  var buttonText = await createTextNode(label, 14, 500);
+  var buttonText = await createTextNode(label, FONT_SIZE.base, FALLBACK_VALUES.fontWeight.medium);
   buttonText.name = "Label";
   buttonText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -380,11 +384,11 @@ async function createDropdownPanel(variant: string): Promise<FrameNode> {
   panel.counterAxisSizingMode = "FIXED";
   panel.counterAxisAlignItems = "MIN"; // Left-align children
   panel.resize(DROPDOWN_WIDTH, 100); // Height will auto-adjust
-  panel.itemSpacing = 2;
-  panel.paddingLeft = 6;
-  panel.paddingRight = 6;
-  panel.paddingTop = 6;
-  panel.paddingBottom = 6;
+  panel.itemSpacing = themeData.tailwind.spacing.scale["0.5"]; // gap-0.5 = 2px
+  panel.paddingLeft = themeData.tailwind.spacing.scale["1.5"]; // p-1.5 = 6px
+  panel.paddingRight = themeData.tailwind.spacing.scale["1.5"];
+  panel.paddingTop = themeData.tailwind.spacing.scale["1.5"];
+  panel.paddingBottom = themeData.tailwind.spacing.scale["1.5"];
   panel.cornerRadius = BORDER_RADIUS.lg;
 
   // Apply background (bg-secondary)
@@ -498,7 +502,7 @@ async function createDropdownComponent(
   component.primaryAxisSizingMode = "AUTO";
   component.counterAxisSizingMode = "AUTO";
   component.counterAxisAlignItems = "MIN";
-  component.itemSpacing = 4;
+  component.itemSpacing = SPACING.xs; // gap-1 = 4px
   component.fills = [];
 
   // Create trigger button

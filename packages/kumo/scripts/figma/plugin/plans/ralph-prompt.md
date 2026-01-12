@@ -1,6 +1,6 @@
-# Ralph Prompt - Phase 10: Hardcoded Values Elimination (Tabs, Toast, Shadow Validation)
+# Ralph Prompt - Phase 11: Comprehensive Hardcoded Values Elimination
 
-You are eliminating remaining hardcoded values in Figma generators and adding drift protection. This is Phase 10 of the Figma plugin robustness project.
+You are eliminating ALL remaining hardcoded CSS-derived values in Figma generators. This is Phase 11 of the Figma plugin robustness project.
 
 ## IMPORTANT: File Path Context
 
@@ -8,424 +8,290 @@ You are running from `packages/kumo/scripts/figma/plugin/`. All file paths in th
 
 **Key paths:**
 
-- `src/styles/theme-kumo.css` → `packages/kumo/src/styles/theme-kumo.css`
-- `scripts/figma/plugin/generators/*.ts` → where you're running from
-- `src/components/button/button.tsx` → `packages/kumo/src/components/button/button.tsx`
+- `scripts/figma/plugin/generators/*.ts` → Generator files to fix
+- `scripts/figma/plugin/generated/theme-data.json` → Source of truth for CSS values
+- `scripts/figma/plugin/generators/shared.ts` → FONT_SIZE, BORDER_RADIUS, FALLBACK_VALUES exports
 
 ## CRITICAL CONTEXT
 
-**Registry styling metadata already exists** for Tabs and Toast, but generators use hardcoded values instead of reading from registry.
+**Audit found ~100+ hardcoded values** across 15+ generator files that should use `themeData` or `shared.ts` constants.
 
-### Current State - Tabs Generator
+### The Problem
 
-**File:** `scripts/figma/plugin/generators/tabs.ts`
-
+Generators have hardcoded numeric values like:
 ```typescript
-// CURRENT (HARDCODED - lines 42-57)
-var TABS_CONFIG = {
-  containerHeight: 34,
-  borderRadius: 8,
-  containerPadding: 1,
-  tabVerticalMargin: 1,
-  tabHorizontalPadding: 10,
-  tabFontSize: 16,
-  tabFontWeight: 500,
-};
+// BAD - hardcoded values that will drift when CSS changes
+fontSize: 24,
+fontSize: 14,
+padding: 16,
+borderRadius: 8,
+gap: 8,
 ```
 
-**Registry has:** `registry.components.Tabs.styling` with identical values!
+### The Solution
+
+Replace with themeData or shared.ts references:
+```typescript
+// GOOD - derived from CSS sources
+fontSize: themeData.tailwind.fontSize['2xl'],  // 24px
+fontSize: FONT_SIZE.base,                       // 14px from theme-kumo.css
+padding: themeData.tailwind.spacing.scale['4'], // 16px
+borderRadius: BORDER_RADIUS.lg,                 // 8px
+gap: themeData.tailwind.spacing.scale['2'],     // 8px
+```
+
+### Reference: theme-data.json Structure
 
 ```json
 {
-  "container": { "height": 34, "borderRadius": 8, "padding": 1 },
-  "tab": {
-    "paddingX": 10,
-    "verticalMargin": 1,
-    "fontSize": 16,
-    "fontWeight": 500
+  "tailwind": {
+    "spacing": {
+      "scale": {
+        "1": 4, "2": 8, "3": 12, "4": 16, "5": 20, "6": 24,
+        "1.5": 6, "2.5": 10, "3.5": 14
+      }
+    },
+    "fontSize": {
+      "xs": 12, "sm": 14, "base": 16, "lg": 18, "2xl": 24
+    },
+    "borderRadius": {
+      "xs": 2, "sm": 4, "md": 6, "lg": 8, "xl": 12
+    }
+  },
+  "kumo": {
+    "fontSize": {
+      "xs": 12, "sm": 13, "base": 14, "lg": 16
+    }
+  },
+  "computed": {
+    "fontSize": {
+      "xs": 12, "sm": 13, "base": 14, "lg": 16
+    }
   }
 }
 ```
 
-### Current State - Toast Generator
-
-**File:** `scripts/figma/plugin/generators/toast.ts`
+### Reference: shared.ts Exports
 
 ```typescript
-// CURRENT (HARDCODED - line 47)
-var TOAST_WIDTH = 300;
+// Already available - just import and use
+import { FONT_SIZE, BORDER_RADIUS, FALLBACK_VALUES, SPACING } from './shared';
 
-// Also hardcoded inline:
-// title fontSize: 16 (line 126)
-// description fontSize: 15 (line 166)
+FONT_SIZE.xs    // 12px (from kumo theme)
+FONT_SIZE.sm    // 13px (from kumo theme)
+FONT_SIZE.base  // 14px (from kumo theme)
+FONT_SIZE.lg    // 16px (from kumo theme)
+
+BORDER_RADIUS.xs   // 2px
+BORDER_RADIUS.sm   // 4px
+BORDER_RADIUS.md   // 6px
+BORDER_RADIUS.lg   // 8px
+BORDER_RADIUS.xl   // 12px
+
+FALLBACK_VALUES.height.base           // 36px (h-9)
+FALLBACK_VALUES.iconSize.sm           // 16px (size-4)
+FALLBACK_VALUES.iconSize.base         // 20px (size-5)
+FALLBACK_VALUES.iconSize.lg           // 48px (size-12)
+FALLBACK_VALUES.fontWeight.normal     // 400
+FALLBACK_VALUES.fontWeight.medium     // 500
+FALLBACK_VALUES.fontWeight.semiBold   // 600
 ```
-
-**Registry has:** `registry.components.Toasty.styling` with all values!
-
-```json
-{
-  "container": { "width": 300, ... },
-  "title": { "fontSize": 16, "fontWeight": 500 },
-  "description": { "fontSize": 15, "fontWeight": 400 }
-}
-```
-
-### Current State - SHADOWS.dialog
-
-**File:** `scripts/figma/plugin/generators/shared.ts`
-
-```typescript
-// CURRENT (UNDOCUMENTED SOURCE - lines 144-151)
-dialog: {
-  offsetX: 0,
-  offsetY: 8,
-  blur: 32,
-  spread: 0,
-  opacity: 0.16,
-}
-```
-
-**No CSS backing!** Need to add `--shadow-dialog` to `theme-kumo.css`.
 
 ## Phases Status
 
-- Phase 1-9: COMPLETE
-- **Phase 10: NOT STARTED** (This is what you're working on)
+- Phase 1-10: COMPLETE
+- **Phase 11: IN PROGRESS** (This is what you're working on)
 
 ## Reference Files
 
 - @PRD.json - Task definitions and acceptance criteria
 - @progress.txt - Progress log (append your work here)
-- @tabs.ts - Generator with TABS_CONFIG to migrate
-- @toast.ts - Generator with TOAST_WIDTH to migrate
-- @shared.ts - Constants with SHADOWS.dialog to document
-- @theme-kumo.css - CSS theme to add --shadow-dialog token
-- @pagination.ts - Reference implementation of registry reading pattern
+- @theme-data.json - Source of truth for CSS values
+- @shared.ts - Constants to use (FONT_SIZE, BORDER_RADIUS, FALLBACK_VALUES)
 
 ## Task Order
 
-| Task | Title                                  | Priority | Status  |
-| ---- | -------------------------------------- | -------- | ------- | ----------------- |
-| T1   | Update tabs.ts to Read from Registry   | HIGH     | pending |
-| T2   | Update toast.ts to Read from Registry  | HIGH     | pending |
-| T3   | Add --shadow-dialog CSS Token          | HIGH     | pending |
-| T4   | Add Shadow Dialog Drift Detection Test | HIGH     | pending | **Depends on T3** |
-| T5   | Add buttonCompactSize Drift Detection  | MEDIUM   | pending |
-| T6   | Add Registry Enforcement Test          | MEDIUM   | pending |
-| T7   | Final Verification                     | MEDIUM   | pending |
-
-## Task Dependencies
-
-- **T4 depends on T3**: The drift test for shadow-dialog requires the CSS token to exist first
-- **T6 depends on T1 & T2**: Registry enforcement test requires tabs.ts and toast.ts to be updated first (ALREADY DONE)
-- **T7 depends on all previous tasks**: Final verification runs after everything else
+| Task | Title                                    | Priority | Status  |
+| ---- | ---------------------------------------- | -------- | ------- |
+| T1   | Fix empty.ts Hardcoded Values            | HIGH     | pending |
+| T2   | Fix meter.ts Hardcoded Values            | HIGH     | pending |
+| T3   | Fix combobox.ts Hardcoded Values         | HIGH     | pending |
+| T4   | Fix surface.ts Hardcoded Values          | HIGH     | pending |
+| T5   | Fix dropdown.ts Hardcoded Values         | HIGH     | pending |
+| T6   | Fix layer-card.ts Hardcoded Values       | HIGH     | pending |
+| T7   | Fix input-area.ts Hardcoded Values       | HIGH     | pending |
+| T8   | Fix switch.ts Hardcoded Values           | MEDIUM   | pending |
+| T9   | Fix pagination.ts Hardcoded Values       | MEDIUM   | pending |
+| T10  | Fix menubar.ts Hardcoded Values          | MEDIUM   | pending |
+| T11  | Fix collapsible.ts Hardcoded Values      | MEDIUM   | pending |
+| T12  | Fix dialog.ts Hardcoded Values           | MEDIUM   | pending |
+| T13  | Fix code-block.ts Hardcoded Values       | MEDIUM   | pending |
+| T14  | Fix select.ts Hardcoded Values           | MEDIUM   | pending |
+| T15  | Fix date-range-picker.ts Hardcoded Values| MEDIUM   | pending |
+| T16  | Add Drift Detection Tests                | MEDIUM   | pending |
+| T17  | Final Verification                       | MEDIUM   | pending |
 
 ## Your Task (Single Task Per Iteration)
 
 1. Find the NEXT incomplete task from PRD.json (first task with status: "pending")
-2. Implement the changes as specified in the task's acceptance criteria
-3. Run tests to verify:
-   - For T1: `pnpm --filter @cloudflare/kumo test generators/tabs.test.ts --run`
-   - For T2: `pnpm --filter @cloudflare/kumo test generators/toast.test.ts --run`
-   - For T3-T6: `pnpm --filter @cloudflare/kumo test generators/drift-detection.test.ts --run`
-4. Update PRD.json task status to "complete"
-5. Append progress to progress.txt with:
+2. Read the target file to understand current hardcoded values
+3. Implement the changes as specified in the task's acceptance criteria
+4. Run tests to verify:
+   - `pnpm --filter @cloudflare/kumo test generators/{filename}.test.ts --run`
+5. Update PRD.json task status to "complete"
+6. Append progress to progress.txt with:
    - Task ID and name
    - Files modified
    - What was changed
    - Test results
-6. **CRITICAL GIT INSTRUCTIONS:**
+7. **CRITICAL GIT INSTRUCTIONS:**
    - DO NOT create new branches or switch branches
    - Stay on the current branch
-   - Make a git commit with clear message like: "fix(figma): T1 - update tabs.ts to read from registry"
+   - Make a git commit with clear message like: "fix(figma): T1 - fix empty.ts hardcoded values"
    - DO NOT push to remote
 
 ONLY WORK ON A SINGLE TASK PER ITERATION.
 
 If ALL tasks in PRD.json are complete (status: "complete"), output `<promise>COMPLETE</promise>`.
 
-## Task Details
+## Detailed Task Examples
 
-### T1: Update tabs.ts to Read from Registry
+### T1: Fix empty.ts Hardcoded Values
 
-**File:** `scripts/figma/plugin/generators/tabs.ts`
+**File:** `scripts/figma/plugin/generators/empty.ts`
 
-**Pattern:** Same as pagination.ts (see reference implementation)
-
+**Current (HARDCODED):**
 ```typescript
-// ADD at top of file (after other imports)
-import registry from "../../../../ai/component-registry.json";
-
-// Type for registry styling
-const tabsStyling = (registry.components as any).Tabs?.styling;
-
-// RENAME existing TABS_CONFIG to FALLBACK_TABS_CONFIG
-const FALLBACK_TABS_CONFIG = {
-  containerHeight: 34,
-  borderRadius: 8,
-  containerPadding: 1,
-  tabVerticalMargin: 1,
-  tabHorizontalPadding: 10,
-  tabFontSize: 16,
-  tabFontWeight: 500,
-};
-
-// ADD new function to read from registry
-function getTabsConfigFromRegistry() {
-  if (!tabsStyling) {
-    return FALLBACK_TABS_CONFIG;
-  }
-
+export function getEmptyTextConfig() {
   return {
-    containerHeight: tabsStyling.container?.height ?? FALLBACK_TABS_CONFIG.containerHeight,
-    borderRadius: tabsStyling.container?.borderRadius ?? FALLBACK_TABS_CONFIG.borderRadius,
-    containerPadding: tabsStyling.container?.padding ?? FALLBACK_TABS_CONFIG.containerPadding,
-    tabVerticalMargin: tabsStyling.tab?.verticalMargin ?? FALLBACK_TABS_CONFIG.tabVerticalMargin,
-    tabHorizontalPadding: tabsStyling.tab?.paddingX ?? FALLBACK_TABS_CONFIG.tabHorizontalPadding,
-    tabFontSize: tabsStyling.tab?.fontSize ?? FALLBACK_TABS_CONFIG.tabFontSize,
-    tabFontWeight: tabsStyling.tab?.fontWeight ?? FALLBACK_TABS_CONFIG.tabFontWeight,
+    title: {
+      text: "No data available",
+      fontSize: 24, // text-2xl
+      fontWeight: 600, // font-semibold
+      colorToken: "text-color-surface",
+    },
+    description: {
+      text: "...",
+      fontSize: 14, // text-base (assuming 14px default)
+      fontWeight: 400, // normal
+      maxWidth: 560, // max-w-140 (140 * 4px = 560px)
+      ...
+    },
   };
 }
-
-// REPLACE var TABS_CONFIG = {...} with:
-var TABS_CONFIG = getTabsConfigFromRegistry();
 ```
 
-**Test command:**
-
-```bash
-pnpm --filter @cloudflare/kumo test generators/tabs.test.ts --run
-```
-
-**Expected:** All tests pass, no snapshot changes (values match).
-
-### T2: Update toast.ts to Read from Registry
-
-**File:** `scripts/figma/plugin/generators/toast.ts`
-
+**Fixed:**
 ```typescript
-// The registry import already exists (line 40)
-// import registry from "../../../../ai/component-registry.json";
+import themeData from "../generated/theme-data.json";
+import { FONT_SIZE, FALLBACK_VALUES } from "./shared";
 
-// ADD: Access styling
-const toastStyling = (registry.components as any).Toasty?.styling;
-
-// ADD: Fallback config
-const FALLBACK_TOAST_CONFIG = {
-  width: 300,
-  titleFontSize: 16,
-  titleFontWeight: 500,
-  descriptionFontSize: 15,
-  descriptionFontWeight: 400,
-  closeButtonSize: 20,
-  closeButtonIconSize: 16,
-};
-
-// ADD: Function to read from registry
-function getToastConfigFromRegistry() {
-  if (!toastStyling) {
-    return FALLBACK_TOAST_CONFIG;
-  }
-
+export function getEmptyTextConfig() {
   return {
-    width: toastStyling.container?.width ?? FALLBACK_TOAST_CONFIG.width,
-    titleFontSize: toastStyling.title?.fontSize ?? FALLBACK_TOAST_CONFIG.titleFontSize,
-    titleFontWeight: toastStyling.title?.fontWeight ?? FALLBACK_TOAST_CONFIG.titleFontWeight,
-    descriptionFontSize: toastStyling.description?.fontSize ?? FALLBACK_TOAST_CONFIG.descriptionFontSize,
-    descriptionFontWeight: toastStyling.description?.fontWeight ?? FALLBACK_TOAST_CONFIG.descriptionFontWeight,
-    closeButtonSize: toastStyling.closeButton?.size ?? FALLBACK_TOAST_CONFIG.closeButtonSize,
-    closeButtonIconSize: toastStyling.closeButton?.iconSize ?? FALLBACK_TOAST_CONFIG.closeButtonIconSize,
+    title: {
+      text: "No data available",
+      fontSize: themeData.tailwind.fontSize["2xl"], // 24px from Tailwind
+      fontWeight: FALLBACK_VALUES.fontWeight.semiBold,
+      colorToken: "text-color-surface",
+    },
+    description: {
+      text: "...",
+      fontSize: FONT_SIZE.base, // 14px from theme-kumo.css
+      fontWeight: FALLBACK_VALUES.fontWeight.normal,
+      maxWidth: 560, // FIGMA-SPECIFIC: max-w-140 layout width for Figma display
+      ...
+    },
   };
 }
-
-const TOAST_CONFIG = getToastConfigFromRegistry();
-
-// REPLACE hardcoded usages:
-// Line 47: var TOAST_WIDTH = 300; → var TOAST_WIDTH = TOAST_CONFIG.width;
-// Line 69: component.resize(TOAST_WIDTH, 100);
-// Line 126: createTextNode("Toast created", 16, 500) → createTextNode("Toast created", TOAST_CONFIG.titleFontSize, TOAST_CONFIG.titleFontWeight)
-// Line 166: createTextNode(..., 15, 400) → createTextNode(..., TOAST_CONFIG.descriptionFontSize, TOAST_CONFIG.descriptionFontWeight)
 ```
 
 **Test command:**
-
 ```bash
-pnpm --filter @cloudflare/kumo test generators/toast.test.ts --run
+pnpm --filter @cloudflare/kumo test generators/empty.test.ts --run
 ```
 
-### T3: Add --shadow-dialog CSS Token
+### T2: Fix meter.ts Hardcoded Values
 
-**File 1:** `src/styles/theme-kumo.css` (relative to packages/kumo/)
+**File:** `scripts/figma/plugin/generators/meter.ts`
 
-- Full path from repo root: `packages/kumo/src/styles/theme-kumo.css`
-- This is OUTSIDE the plugin directory - go up 3 levels from generators/
+**Current:**
+```typescript
+const METER_TRACK_HEIGHT = 8; // h-2 from meter.tsx
+const METER_GAP = 8; // gap-2 from meter.tsx
 
-Find the @theme block where other shadows are defined and add:
-
-```css
-@theme {
-  /* ... existing shadow tokens ... */
-
-  /* Dialog shadow - elevated appearance for dialogs, popovers */
-  --shadow-dialog: 0 8px 32px rgb(0 0 0 / 0.16);
+export function getMeterTypographyConfig() {
+  return {
+    label: {
+      fontSize: 12, // text-xs from meter.tsx
+      ...
+    },
+    value: {
+      fontSize: 14, // text-sm from meter.tsx  <-- WRONG! Kumo text-sm is 13px!
+      fontWeight: 500,
+      ...
+    },
+  };
 }
 ```
 
-**File:** `scripts/figma/plugin/generators/shared.ts`
-
-Update the comment on SHADOWS.dialog:
-
+**Fixed:**
 ```typescript
-/** Dialog shadow - elevated appearance. Matches --shadow-dialog in theme-kumo.css
- *  Format: 0 8px 32px rgb(0 0 0 / 0.16)
- *  - offsetY: 8px
- *  - blur: 32px
- *  - opacity: 0.16
- */
-dialog: {
-  offsetX: 0,
-  offsetY: 8,
-  blur: 32,
-  spread: 0,
-  opacity: 0.16,
-},
-```
+import themeData from "../generated/theme-data.json";
+import { FONT_SIZE, FALLBACK_VALUES } from "./shared";
 
-### T4: Add Shadow Dialog Drift Detection Test
+const METER_TRACK_HEIGHT = themeData.tailwind.spacing.scale["2"]; // h-2 = 8px
+const METER_GAP = themeData.tailwind.spacing.scale["2"]; // gap-2 = 8px
 
-**File:** `scripts/figma/plugin/generators/drift-detection.test.ts`
-
-Add new test at end of file (in CSS Theme Sync Validation describe block):
-
-```typescript
-it("should have SHADOWS.dialog matching --shadow-dialog in theme-kumo.css", () => {
-  // Read theme-kumo.css
-  const themeCssPath = join(__dirname, "../../../../src/styles/theme-kumo.css");
-  const themeCss = readFileSync(themeCssPath, "utf-8");
-
-  // Parse --shadow-dialog: 0 8px 32px rgb(0 0 0 / 0.16)
-  const shadowMatch = themeCss.match(/--shadow-dialog:\s*0\s+(\d+)px\s+(\d+)px\s+rgb\(0\s+0\s+0\s*\/\s*([\d.]+)\)/);
-  expect(shadowMatch).not.toBeNull();
-
-  if (shadowMatch) {
-    const cssOffsetY = parseInt(shadowMatch[1], 10);
-    const cssBlur = parseInt(shadowMatch[2], 10);
-    const cssOpacity = parseFloat(shadowMatch[3]);
-
-    // Compare against SHADOWS.dialog
-    expect(SHADOWS.dialog.offsetY).toBe(cssOffsetY);
-    expect(SHADOWS.dialog.blur).toBe(cssBlur);
-    expect(SHADOWS.dialog.opacity).toBe(cssOpacity);
-  }
-});
-```
-
-**Test command:**
-
-```bash
-pnpm --filter @cloudflare/kumo test generators/drift-detection.test.ts --run
-```
-
-### T5: Add buttonCompactSize Drift Detection Test
-
-**File:** `scripts/figma/plugin/generators/drift-detection.test.ts`
-
-```typescript
-it("should have buttonCompactSize matching button.tsx compactSize classes", () => {
-  // Read button.tsx
-  const buttonPath = join(__dirname, "../../../../src/components/button/button.tsx");
-  const buttonContent = readFileSync(buttonPath, "utf-8");
-
-  // Extract compactSize mapping from KUMO_BUTTON_VARIANTS
-  // Format in button.tsx: xs: { classes: "size-3.5" }, sm: { classes: "size-6.5" }, ...
-  const extractSizeClass = (size: string): number | null => {
-    // Match: xs: { classes: "size-3.5" }
-    const match = buttonContent.match(new RegExp(`${size}:\\s*\\{\\s*classes:\\s*["']size-([\\d.]+)["']`));
-    if (!match) return null;
-    // Convert Tailwind size to pixels: size-X = X * 4
-    return parseFloat(match[1]) * 4;
+export function getMeterTypographyConfig() {
+  return {
+    label: {
+      fontSize: FONT_SIZE.xs, // 12px from theme-kumo.css
+      ...
+    },
+    value: {
+      fontSize: FONT_SIZE.sm, // 13px from theme-kumo.css (NOT 14!)
+      fontWeight: FALLBACK_VALUES.fontWeight.medium,
+      ...
+    },
   };
-
-  const componentValues = {
-    xs: extractSizeClass("xs"),
-    sm: extractSizeClass("sm"),
-    base: extractSizeClass("base"),
-    lg: extractSizeClass("lg"),
-  };
-
-  // Validate we could parse the classes
-  expect(componentValues.xs).toBe(14);  // size-3.5 = 14px
-  expect(componentValues.sm).toBe(26);  // size-6.5 = 26px
-  expect(componentValues.base).toBe(36); // size-9 = 36px
-  expect(componentValues.lg).toBe(40);  // size-10 = 40px
-
-  // Compare against FALLBACK_VALUES.buttonCompactSize
-  expect(FALLBACK_VALUES.buttonCompactSize.xs).toBe(componentValues.xs);
-  expect(FALLBACK_VALUES.buttonCompactSize.sm).toBe(componentValues.sm);
-  expect(FALLBACK_VALUES.buttonCompactSize.base).toBe(componentValues.base);
-  expect(FALLBACK_VALUES.buttonCompactSize.lg).toBe(componentValues.lg);
-});
+}
 ```
 
-### T6: Add Registry Enforcement Test for Tabs/Toast
+### Pattern for FIGMA-SPECIFIC Values
 
-**File:** `scripts/figma/plugin/generators/drift-detection.test.ts`
+Some values are intentionally hardcoded for Figma layout purposes (not CSS-derived):
 
 ```typescript
-it("Tabs and Toast generators should read from component-registry.json", () => {
-  const violations: string[] = [];
+// FIGMA-SPECIFIC: Layout width for Figma canvas display, not from CSS
+const COMPONENT_WIDTH = 280;
 
-  // Check tabs.ts
-  const tabsPath = join(__dirname, "tabs.ts");
-  const tabsContent = readFileSync(tabsPath, "utf-8");
-
-  if (!tabsContent.includes("component-registry.json")) {
-    violations.push("tabs.ts: Does not import component-registry.json");
-  }
-  if (!tabsContent.includes("getTabsConfigFromRegistry") && !tabsContent.includes("tabsStyling")) {
-    violations.push("tabs.ts: Does not read from registry styling");
-  }
-
-  // Check toast.ts
-  const toastPath = join(__dirname, "toast.ts");
-  const toastContent = readFileSync(toastPath, "utf-8");
-
-  if (!toastContent.includes("component-registry.json")) {
-    violations.push("toast.ts: Does not import component-registry.json");
-  }
-  if (!toastContent.includes("getToastConfigFromRegistry") && !toastContent.includes("toastStyling")) {
-    violations.push("toast.ts: Does not read from registry styling");
-  }
-
-  expect(violations).toEqual([]);
-});
+// FIGMA-SPECIFIC: Minimum button width for visual balance in Figma
+const MIN_BUTTON_WIDTH = 70;
 ```
 
 ## Validation Commands
 
 ```bash
-# Run tabs tests
-pnpm --filter @cloudflare/kumo test generators/tabs.test.ts --run
-
-# Run toast tests
-pnpm --filter @cloudflare/kumo test generators/toast.test.ts --run
-
-# Run drift detection tests
-pnpm --filter @cloudflare/kumo test generators/drift-detection.test.ts --run
+# Run specific generator test
+pnpm --filter @cloudflare/kumo test generators/empty.test.ts --run
+pnpm --filter @cloudflare/kumo test generators/meter.test.ts --run
+# ... etc
 
 # Run all generator tests
 pnpm --filter @cloudflare/kumo test generators/ --run
+
+# Run drift detection tests
+pnpm --filter @cloudflare/kumo test generators/drift-detection.test.ts --run
 ```
 
 ## Success Criteria
 
-- [ ] tabs.ts reads from registry.components.Tabs.styling
-- [ ] toast.ts reads from registry.components.Toasty.styling
-- [ ] --shadow-dialog CSS token added to theme-kumo.css
-- [ ] SHADOWS.dialog drift test passes
-- [ ] buttonCompactSize drift test passes
-- [ ] Registry enforcement test passes
+- [ ] All 15 generator files updated to use themeData/shared constants
+- [ ] Zero undocumented hardcoded fontSize/borderRadius/spacing
+- [ ] All FIGMA-SPECIFIC values documented with comments
+- [ ] Drift detection test for generator imports
 - [ ] All 1500+ generator tests pass
+- [ ] No snapshot changes (values should match)
 
 ## Progress Tracking
 
@@ -434,7 +300,7 @@ After each task, append to progress.txt:
 ```
 ---
 
-## Iteration XX: TX - Task Title (PHASE 10)
+## Iteration XX: TX - Task Title (PHASE 11)
 
 **Task:** TX - Task Title
 **Status:** ✅ Complete

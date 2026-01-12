@@ -424,8 +424,9 @@ describe("Figma Plugin - Registry Sync Validation", () => {
     expect(hasShadowsExport).toBe(true);
 
     // Validate shadow presets are documented
+    // dialog uses hardcoded object, subtle/xs use getShadowLayer()
     const hasDialogShadow = /dialog:\s*\{/.test(sharedContent);
-    const hasSubtleShadow = /subtle:\s*\{/.test(sharedContent);
+    const hasSubtleShadow = /subtle:\s*getShadowLayer\(/.test(sharedContent);
     
     expect(hasDialogShadow).toBe(true);
     expect(hasSubtleShadow).toBe(true);
@@ -1057,12 +1058,19 @@ describe("Figma Plugin - Registry Styling Integration", () => {
 /**
  * Phase 9: CSS Theme Sync Validation
  *
- * These tests ensure parser values match theme-kumo.css @theme definitions.
- * Kumo uses Tailwind v4 which defines theme values in CSS, not config.
+ * These tests ensure generated theme-data.json matches CSS source files.
+ * Values are generated at build time by build-theme-data.ts from:
+ * - theme-kumo.css (Kumo overrides)
+ * - tailwindcss/theme.css (Tailwind defaults)
+ * - button.tsx (component-specific values)
  */
 describe("Figma Plugin - CSS Theme Sync Validation", () => {
-  it("should have FONT_SIZE_SCALE matching theme-kumo.css @theme values", () => {
-    // Read theme-kumo.css
+  // Import generated theme data
+  const themeDataPath = join(__dirname, "../generated/theme-data.json");
+  const themeData = JSON.parse(readFileSync(themeDataPath, "utf-8"));
+
+  it("should have generated theme-data.json with correct Kumo font sizes", () => {
+    // Read theme-kumo.css directly to verify generated values match
     const themeCssPath = join(__dirname, "../../../../src/styles/theme-kumo.css");
     const themeCss = readFileSync(themeCssPath, "utf-8");
 
@@ -1072,353 +1080,154 @@ describe("Figma Plugin - CSS Theme Sync Validation", () => {
       return match ? parseInt(match[1], 10) : null;
     };
 
-    const themeValues = {
-      xs: extractFontSize("xs"),
-      sm: extractFontSize("sm"),
-      base: extractFontSize("base"),
-      lg: extractFontSize("lg"),
-    };
+    // Verify theme-data.json matches CSS source
+    expect(themeData.kumo.fontSize.xs).toBe(extractFontSize("xs"));
+    expect(themeData.kumo.fontSize.sm).toBe(extractFontSize("sm"));
+    expect(themeData.kumo.fontSize.base).toBe(extractFontSize("base"));
+    expect(themeData.kumo.fontSize.lg).toBe(extractFontSize("lg"));
 
-    // Validate we could parse the theme
-    expect(themeValues.xs).toBe(12);
-    expect(themeValues.sm).toBe(13);
-    expect(themeValues.base).toBe(14);
-    expect(themeValues.lg).toBe(16);
-
-    // Read parser FONT_SIZE_SCALE
-    const parserPath = join(__dirname, "../parsers/tailwind-to-figma.ts");
-    const parserContent = readFileSync(parserPath, "utf-8");
-
-    // Extract FONT_SIZE_SCALE values
-    const extractParserValue = (name: string): number | null => {
-      const match = parserContent.match(new RegExp(`${name}:\\s*(\\d+)`));
-      return match ? parseInt(match[1], 10) : null;
-    };
-
-    const parserValues = {
-      xs: extractParserValue("xs"),
-      sm: extractParserValue("sm"),
-      base: extractParserValue("base"),
-      lg: extractParserValue("lg"),
-    };
-
-    // Validate parser matches theme
-    expect(parserValues.xs).toBe(themeValues.xs);
-    expect(parserValues.sm).toBe(themeValues.sm);
-    expect(parserValues.base).toBe(themeValues.base);
-    expect(parserValues.lg).toBe(themeValues.lg);
+    // Verify expected values
+    expect(themeData.kumo.fontSize.xs).toBe(12);
+    expect(themeData.kumo.fontSize.sm).toBe(13);
+    expect(themeData.kumo.fontSize.base).toBe(14);
+    expect(themeData.kumo.fontSize.lg).toBe(16);
   });
 
-  it("should have FONT_SIZE constant in shared.ts matching theme-kumo.css", () => {
-    // Read theme-kumo.css
-    const themeCssPath = join(__dirname, "../../../../src/styles/theme-kumo.css");
-    const themeCss = readFileSync(themeCssPath, "utf-8");
-
-    const extractFontSize = (name: string): number | null => {
-      const match = themeCss.match(new RegExp(`--text-${name}:\\s*(\\d+)px`));
-      return match ? parseInt(match[1], 10) : null;
-    };
-
-    // Read shared.ts FONT_SIZE
-    const sharedPath = join(__dirname, "shared.ts");
-    const sharedContent = readFileSync(sharedPath, "utf-8");
-
-    // Validate FONT_SIZE.sm exists (was missing)
-    expect(/sm:\s*\d+/.test(sharedContent)).toBe(true);
-
-    // Extract FONT_SIZE values
-    const extractSharedValue = (name: string): number | null => {
-      // Match pattern: name: NUMBER (within FONT_SIZE block)
-      const fontSizeBlock = sharedContent.match(/export const FONT_SIZE = \{[\s\S]*?\} as const/);
-      if (!fontSizeBlock) return null;
-      const match = fontSizeBlock[0].match(new RegExp(`${name}:\\s*(\\d+)`));
-      return match ? parseInt(match[1], 10) : null;
-    };
-
-    const sharedValues = {
-      xs: extractSharedValue("xs"),
-      sm: extractSharedValue("sm"),
-      base: extractSharedValue("base"),
-      lg: extractSharedValue("lg"),
-    };
-
-    // Validate shared matches theme
-    expect(sharedValues.xs).toBe(extractFontSize("xs"));
-    expect(sharedValues.sm).toBe(extractFontSize("sm"));
-    expect(sharedValues.base).toBe(extractFontSize("base"));
-    expect(sharedValues.lg).toBe(extractFontSize("lg"));
+  it("should have generated theme-data.json with correct computed font sizes", () => {
+    // Computed values should match Kumo overrides
+    expect(themeData.computed.fontSize.xs).toBe(themeData.kumo.fontSize.xs);
+    expect(themeData.computed.fontSize.sm).toBe(themeData.kumo.fontSize.sm);
+    expect(themeData.computed.fontSize.base).toBe(themeData.kumo.fontSize.base);
+    expect(themeData.computed.fontSize.lg).toBe(themeData.kumo.fontSize.lg);
   });
 
-  it("should have buttonCompactSize matching button.tsx compactSize classes", () => {
-    // Read button.tsx
+  it("should have generated theme-data.json with correct buttonCompactSize", () => {
+    // Read button.tsx directly to verify generated values match
     const buttonPath = join(__dirname, "../../../../src/components/button/button.tsx");
     const buttonContent = readFileSync(buttonPath, "utf-8");
 
     // Extract compactSize mapping from KUMO_BUTTON_VARIANTS
-    // Format in button.tsx: xs: { classes: "size-3.5" }, sm: { classes: "size-6.5" }, ...
     const extractSizeClass = (size: string): number | null => {
-      // Match: xs: { classes: "size-3.5" }
       const match = buttonContent.match(new RegExp(`${size}:\\s*\\{\\s*classes:\\s*["']size-([\\d.]+)["']`));
       if (!match) return null;
-      // Convert Tailwind size to pixels: size-X = X * 4
       return parseFloat(match[1]) * 4;
     };
 
-    const componentValues = {
-      xs: extractSizeClass("xs"),
-      sm: extractSizeClass("sm"),
-      base: extractSizeClass("base"),
-      lg: extractSizeClass("lg"),
-    };
+    // Verify theme-data.json matches button.tsx source
+    expect(themeData.kumo.buttonCompactSize.xs).toBe(extractSizeClass("xs"));
+    expect(themeData.kumo.buttonCompactSize.sm).toBe(extractSizeClass("sm"));
+    expect(themeData.kumo.buttonCompactSize.base).toBe(extractSizeClass("base"));
+    expect(themeData.kumo.buttonCompactSize.lg).toBe(extractSizeClass("lg"));
 
-    // Validate we could parse the classes
-    expect(componentValues.xs).toBe(14);  // size-3.5 = 14px
-    expect(componentValues.sm).toBe(26);  // size-6.5 = 26px
-    expect(componentValues.base).toBe(36); // size-9 = 36px
-    expect(componentValues.lg).toBe(40);  // size-10 = 40px
+    // Verify expected values
+    expect(themeData.kumo.buttonCompactSize.xs).toBe(14);  // size-3.5 = 14px
+    expect(themeData.kumo.buttonCompactSize.sm).toBe(26);  // size-6.5 = 26px
+    expect(themeData.kumo.buttonCompactSize.base).toBe(36); // size-9 = 36px
+    expect(themeData.kumo.buttonCompactSize.lg).toBe(40);  // size-10 = 40px
+  });
 
-    // Read shared.ts FALLBACK_VALUES.buttonCompactSize
+  it("should use generated values in shared.ts via import", () => {
+    // Verify shared.ts imports from theme-data.json
     const sharedPath = join(__dirname, "shared.ts");
     const sharedContent = readFileSync(sharedPath, "utf-8");
 
-    // Extract FALLBACK_VALUES.buttonCompactSize block
-    const extractFallbackValue = (size: string): number | null => {
-      // Match buttonCompactSize block, then extract size value
-      const fallbackBlock = sharedContent.match(/buttonCompactSize:\s*\{[\s\S]*?\}/);
-      if (!fallbackBlock) return null;
-      const match = fallbackBlock[0].match(new RegExp(`${size}:\\s*(\\d+)`));
-      return match ? parseInt(match[1], 10) : null;
-    };
+    expect(sharedContent).toContain('import themeData from "../generated/theme-data.json"');
+    expect(sharedContent).toContain('themeData.computed.fontSize');
+    expect(sharedContent).toContain('themeData.computed.spacing');
+    expect(sharedContent).toContain('themeData.computed.borderRadius');
+  });
 
-    const fallbackValues = {
-      xs: extractFallbackValue("xs"),
-      sm: extractFallbackValue("sm"),
-      base: extractFallbackValue("base"),
-      lg: extractFallbackValue("lg"),
-    };
+  it("should use generated values in tailwind-to-figma.ts via import", () => {
+    // Verify tailwind-to-figma.ts imports from theme-data.json
+    const parserPath = join(__dirname, "../parsers/tailwind-to-figma.ts");
+    const parserContent = readFileSync(parserPath, "utf-8");
 
-    // Compare against FALLBACK_VALUES.buttonCompactSize
-    expect(fallbackValues.xs).toBe(componentValues.xs);
-    expect(fallbackValues.sm).toBe(componentValues.sm);
-    expect(fallbackValues.base).toBe(componentValues.base);
-    expect(fallbackValues.lg).toBe(componentValues.lg);
+    expect(parserContent).toContain('import themeData from "../generated/theme-data.json"');
+    expect(parserContent).toContain('themeData.tailwind.spacing.scale');
+    expect(parserContent).toContain('themeData.kumo.fontSize');
+    expect(parserContent).toContain('themeData.tailwind.borderRadius');
   });
 });
 
 /**
  * Phase 10: Tailwind v4 theme.css Sync Validation
  *
- * These tests ensure hardcoded values in the Figma plugin match Tailwind v4's
+ * These tests ensure generated theme-data.json matches Tailwind v4's
  * actual default values from node_modules/tailwindcss/theme.css.
  *
- * This prevents drift when:
- * 1. Tailwind updates default values in a new version
- * 2. Values are manually edited in the plugin without verification
- *
+ * Values are now generated at build time by build-theme-data.ts.
  * The source of truth is: node_modules/tailwindcss/theme.css
  */
 describe("Figma Plugin - Tailwind v4 theme.css Sync Validation", () => {
-  // Parse theme once for all tests in this suite
+  // Parse theme from Tailwind source and load generated data
   const theme = parseTailwindTheme();
+  const themeDataPath = join(__dirname, "../generated/theme-data.json");
+  const themeData = JSON.parse(readFileSync(themeDataPath, "utf-8"));
 
   describe("SPACING_SCALE validation", () => {
     it("should have correct base spacing unit (4px)", () => {
       // Tailwind v4 uses --spacing: 0.25rem = 4px as base unit
       expect(theme.spacing.baseUnitPx).toBe(4);
+      expect(themeData.tailwind.spacing.baseUnitPx).toBe(4);
     });
 
-    it("should have SPACING_SCALE in tailwind-to-figma.ts matching Tailwind defaults", () => {
+    it("should have generated spacing scale matching Tailwind defaults", () => {
       const expectedScale = generateExpectedSpacingScale(theme.spacing.baseUnitPx);
 
-      // Read the parser file
-      const parserPath = join(__dirname, "../parsers/tailwind-to-figma.ts");
-      const parserContent = readFileSync(parserPath, "utf-8");
-
-      // Extract SPACING_SCALE block
-      const spacingScaleMatch = parserContent.match(
-        /const SPACING_SCALE[^=]*=\s*\{([^}]+)\}/
-      );
-      expect(spacingScaleMatch).not.toBeNull();
-
-      const spacingScaleBlock = spacingScaleMatch![1];
-
-      // Verify key values match
+      // Verify generated theme-data.json matches expected scale
       const keysToCheck = ["0", "1", "2", "3", "4", "5", "6", "8", "10", "12", "16", "20", "24"];
 
       for (const key of keysToCheck) {
-        // Use precise regex: match quoted key exactly (not as part of another key like "0.5")
-        // Pattern matches: "5": 20 or '5': 20 (must be at start of line or after whitespace/comma)
-        const pattern = new RegExp(`(?:^|[,\\s])["']${key}["']:\\s*(\\d+)`);
-        const match = spacingScaleBlock.match(pattern);
-
-        expect(match).not.toBeNull();
-        if (match) {
-          const actualValue = parseInt(match[1], 10);
-          const expectedValue = expectedScale[key];
-          expect(actualValue).toBe(expectedValue);
-        }
+        expect(themeData.tailwind.spacing.scale[key]).toBe(expectedScale[key]);
       }
     });
 
-    it("should have SPACING constant in shared.ts using correct values", () => {
-      // theme is defined at suite level
+    it("should have computed SPACING values correct", () => {
       const baseUnit = theme.spacing.baseUnitPx;
 
-      // Read shared.ts
-      const sharedPath = join(__dirname, "shared.ts");
-      const sharedContent = readFileSync(sharedPath, "utf-8");
-
-      // Extract SPACING block
-      const spacingMatch = sharedContent.match(
-        /export const SPACING = \{([^}]+)\} as const/
-      );
-      expect(spacingMatch).not.toBeNull();
-
-      const spacingBlock = spacingMatch![1];
-
-      // Verify values match Tailwind's spacing scale
-      // xs: 4 = 1 * 4px, sm: 6 = 1.5 * 4px, base: 8 = 2 * 4px, lg: 12 = 3 * 4px
-      const expectedValues: Record<string, number> = {
-        xs: 1 * baseUnit,    // gap-1 = 4px
-        sm: 1.5 * baseUnit,  // gap-1.5 = 6px
-        base: 2 * baseUnit,  // gap-2 = 8px
-        lg: 3 * baseUnit,    // gap-3 = 12px
-      };
-
-      for (const [key, expected] of Object.entries(expectedValues)) {
-        const pattern = new RegExp(`${key}:\\s*(\\d+)`);
-        const match = spacingBlock.match(pattern);
-        expect(match).not.toBeNull();
-        if (match) {
-          expect(parseInt(match[1], 10)).toBe(expected);
-        }
-      }
+      // Verify computed spacing values
+      expect(themeData.computed.spacing.xs).toBe(1 * baseUnit);    // gap-1 = 4px
+      expect(themeData.computed.spacing.sm).toBe(1.5 * baseUnit);  // gap-1.5 = 6px
+      expect(themeData.computed.spacing.base).toBe(2 * baseUnit);  // gap-2 = 8px
+      expect(themeData.computed.spacing.lg).toBe(3 * baseUnit);    // gap-3 = 12px
     });
   });
 
   describe("BORDER_RADIUS_SCALE validation", () => {
-    it("should have BORDER_RADIUS_SCALE in tailwind-to-figma.ts matching Tailwind theme.css", () => {
-      // theme is defined at suite level
-
-      // Read the parser file
-      const parserPath = join(__dirname, "../parsers/tailwind-to-figma.ts");
-      const parserContent = readFileSync(parserPath, "utf-8");
-
-      // Extract BORDER_RADIUS_SCALE block
-      const radiusScaleMatch = parserContent.match(
-        /const BORDER_RADIUS_SCALE[^=]*=\s*\{([^}]+)\}/
-      );
-      expect(radiusScaleMatch).not.toBeNull();
-
-      const radiusBlock = radiusScaleMatch![1];
-
-      // Extract values from parser
-      const extractParserValue = (name: string): number | null => {
-        const pattern = new RegExp(`${name}:\\s*(\\d+)`);
-        const match = radiusBlock.match(pattern);
-        return match ? parseInt(match[1], 10) : null;
-      };
-
-      // Verify against Tailwind theme.css values
-      // Note: Tailwind uses --radius-sm: 0.25rem = 4px, but historically
-      // the Figma plugin used 2px. This test documents the expected values.
-      expect(extractParserValue("sm")).toBe(theme.borderRadius.sm);
-      expect(extractParserValue("md")).toBe(theme.borderRadius.md);
-      expect(extractParserValue("lg")).toBe(theme.borderRadius.lg);
-      expect(extractParserValue("xl")).toBe(theme.borderRadius.xl);
+    it("should have generated border radius matching Tailwind theme.css", () => {
+      // Verify generated values match Tailwind source
+      expect(themeData.tailwind.borderRadius.xs).toBe(theme.borderRadius.xs);
+      expect(themeData.tailwind.borderRadius.sm).toBe(theme.borderRadius.sm);
+      expect(themeData.tailwind.borderRadius.md).toBe(theme.borderRadius.md);
+      expect(themeData.tailwind.borderRadius.lg).toBe(theme.borderRadius.lg);
+      expect(themeData.tailwind.borderRadius.xl).toBe(theme.borderRadius.xl);
     });
 
-    it("should have BORDER_RADIUS constant in shared.ts matching Tailwind theme.css", () => {
-      // theme is defined at suite level
-
-      // Read shared.ts
-      const sharedPath = join(__dirname, "shared.ts");
-      const sharedContent = readFileSync(sharedPath, "utf-8");
-
-      // Extract BORDER_RADIUS block
-      const radiusMatch = sharedContent.match(
-        /export const BORDER_RADIUS = \{([^}]+)\} as const/
-      );
-      expect(radiusMatch).not.toBeNull();
-
-      const radiusBlock = radiusMatch![1];
-
-      // Extract values
-      const extractValue = (name: string): number | null => {
-        const pattern = new RegExp(`${name}:\\s*(\\d+)`);
-        const match = radiusBlock.match(pattern);
-        return match ? parseInt(match[1], 10) : null;
-      };
-
-      // Verify against Tailwind theme.css values
-      expect(extractValue("sm")).toBe(theme.borderRadius.sm);
-      expect(extractValue("md")).toBe(theme.borderRadius.md);
-      expect(extractValue("lg")).toBe(theme.borderRadius.lg);
+    it("should have computed BORDER_RADIUS values correct", () => {
+      expect(themeData.computed.borderRadius.sm).toBe(theme.borderRadius.sm);
+      expect(themeData.computed.borderRadius.md).toBe(theme.borderRadius.md);
+      expect(themeData.computed.borderRadius.lg).toBe(theme.borderRadius.lg);
     });
   });
 
   describe("FONT_WEIGHT_SCALE validation", () => {
-    it("should have FONT_WEIGHT_SCALE in tailwind-to-figma.ts matching Tailwind theme.css", () => {
-      // theme is defined at suite level
-
-      // Read the parser file
-      const parserPath = join(__dirname, "../parsers/tailwind-to-figma.ts");
-      const parserContent = readFileSync(parserPath, "utf-8");
-
-      // Extract FONT_WEIGHT_SCALE block
-      const weightScaleMatch = parserContent.match(
-        /const FONT_WEIGHT_SCALE[^=]*=\s*\{([^}]+)\}/
-      );
-      expect(weightScaleMatch).not.toBeNull();
-
-      const weightBlock = weightScaleMatch![1];
-
-      // Extract values - use word boundary to avoid matching "extralight" when looking for "light"
-      const extractValue = (name: string): number | null => {
-        // Match: name: NUMBER where name is preceded by whitespace/comma (not another letter)
-        const pattern = new RegExp(`(?:^|[,\\s])${name}:\\s*(\\d+)`);
-        const match = weightBlock.match(pattern);
-        return match ? parseInt(match[1], 10) : null;
-      };
-
+    it("should have generated font weights matching Tailwind theme.css", () => {
       // Verify all font weights match Tailwind's defaults
-      expect(extractValue("thin")).toBe(theme.fontWeight.thin);
-      expect(extractValue("extralight")).toBe(theme.fontWeight.extralight);
-      expect(extractValue("light")).toBe(theme.fontWeight.light);
-      expect(extractValue("normal")).toBe(theme.fontWeight.normal);
-      expect(extractValue("medium")).toBe(theme.fontWeight.medium);
-      expect(extractValue("semibold")).toBe(theme.fontWeight.semibold);
-      expect(extractValue("bold")).toBe(theme.fontWeight.bold);
-      expect(extractValue("extrabold")).toBe(theme.fontWeight.extrabold);
-      expect(extractValue("black")).toBe(theme.fontWeight.black);
+      expect(themeData.tailwind.fontWeight.thin).toBe(theme.fontWeight.thin);
+      expect(themeData.tailwind.fontWeight.extralight).toBe(theme.fontWeight.extralight);
+      expect(themeData.tailwind.fontWeight.light).toBe(theme.fontWeight.light);
+      expect(themeData.tailwind.fontWeight.normal).toBe(theme.fontWeight.normal);
+      expect(themeData.tailwind.fontWeight.medium).toBe(theme.fontWeight.medium);
+      expect(themeData.tailwind.fontWeight.semibold).toBe(theme.fontWeight.semibold);
+      expect(themeData.tailwind.fontWeight.bold).toBe(theme.fontWeight.bold);
+      expect(themeData.tailwind.fontWeight.extrabold).toBe(theme.fontWeight.extrabold);
+      expect(themeData.tailwind.fontWeight.black).toBe(theme.fontWeight.black);
     });
 
-    it("should have FALLBACK_VALUES.fontWeight in shared.ts matching Tailwind theme.css", () => {
-      // theme is defined at suite level
-
-      // Read shared.ts
-      const sharedPath = join(__dirname, "shared.ts");
-      const sharedContent = readFileSync(sharedPath, "utf-8");
-
-      // Extract fontWeight block within FALLBACK_VALUES
-      const fallbackMatch = sharedContent.match(
-        /fontWeight:\s*\{([^}]+)\}/
-      );
-      expect(fallbackMatch).not.toBeNull();
-
-      const fontWeightBlock = fallbackMatch![1];
-
-      // Extract values
-      const extractValue = (name: string): number | null => {
-        const pattern = new RegExp(`${name}:\\s*(\\d+)`);
-        const match = fontWeightBlock.match(pattern);
-        return match ? parseInt(match[1], 10) : null;
-      };
-
-      // Verify key font weights match
-      expect(extractValue("normal")).toBe(theme.fontWeight.normal);
-      expect(extractValue("medium")).toBe(theme.fontWeight.medium);
-      expect(extractValue("semiBold")).toBe(theme.fontWeight.semibold);
+    it("should have computed fontWeight values correct", () => {
+      expect(themeData.computed.fontWeight.normal).toBe(theme.fontWeight.normal);
+      expect(themeData.computed.fontWeight.medium).toBe(theme.fontWeight.medium);
+      expect(themeData.computed.fontWeight.semiBold).toBe(theme.fontWeight.semibold);
     });
   });
 
@@ -1427,27 +1236,27 @@ describe("Figma Plugin - Tailwind v4 theme.css Sync Validation", () => {
       // theme is defined at suite level
       const tailwindXs = theme.shadows.xs;
 
-      // Read shared.ts
+      // Read shared.ts to verify it uses getShadowLayer with themeData
       const sharedPath = join(__dirname, "shared.ts");
       const sharedContent = readFileSync(sharedPath, "utf-8");
 
-      // Extract xs shadow block
-      // Pattern: xs: { offsetX: 0, offsetY: 1, blur: 2, spread: 0, opacity: 0.05 }
-      const xsShadowMatch = sharedContent.match(
-        /xs:\s*\{([^}]+)\}/
-      );
-      expect(xsShadowMatch).not.toBeNull();
+      // Verify SHADOWS.xs uses getShadowLayer() with themeData (dynamic approach)
+      // Pattern: xs: getShadowLayer(themeData.tailwind.shadows.xs, { ... fallback ... })
+      const usesDynamicShadows = /xs:\s*getShadowLayer\(themeData\.tailwind\.shadows\.xs/.test(sharedContent);
+      expect(usesDynamicShadows).toBe(true);
+
+      // Verify the generated theme-data.json has correct shadow values
+      // (themeData is already validated in CSS Theme Sync tests above)
+      expect(themeData.tailwind.shadows.xs.layers.length).toBeGreaterThanOrEqual(1);
 
       // For shadow-xs, Tailwind has: 0 1px 2px 0 rgb(0 0 0 / 0.05)
-      // We expect the first (and only) layer to match
-      expect(tailwindXs.layers.length).toBeGreaterThanOrEqual(1);
-
-      const expectedLayer = tailwindXs.layers[0];
-      expect(expectedLayer.offsetX).toBe(0);
-      expect(expectedLayer.offsetY).toBe(1);
-      expect(expectedLayer.blur).toBe(2);
-      expect(expectedLayer.spread).toBe(0);
-      expect(expectedLayer.opacity).toBe(0.05);
+      // Validate generated values match Tailwind source
+      const generatedLayer = themeData.tailwind.shadows.xs.layers[0];
+      expect(generatedLayer.offsetX).toBe(tailwindXs.layers[0].offsetX);
+      expect(generatedLayer.offsetY).toBe(tailwindXs.layers[0].offsetY);
+      expect(generatedLayer.blur).toBe(tailwindXs.layers[0].blur);
+      expect(generatedLayer.spread).toBe(tailwindXs.layers[0].spread);
+      expect(generatedLayer.opacity).toBe(tailwindXs.layers[0].opacity);
     });
 
     it("should have SHADOWS.lg in shared.ts matching Tailwind shadow-lg structure", () => {

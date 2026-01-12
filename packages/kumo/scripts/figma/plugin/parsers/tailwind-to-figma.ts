@@ -6,7 +6,12 @@
  *
  * This allows the Figma plugin to stay in sync with the component
  * source of truth (the KUMO_*_VARIANTS objects).
+ *
+ * IMPORTANT: Scale constants are generated from CSS sources.
+ * Run `npx tsx build-theme-data.ts` to regenerate theme-data.json.
  */
+
+import themeData from "../generated/theme-data.json";
 
 /**
  * Helper to get value from scale with fallback
@@ -23,95 +28,45 @@ function getOrDefault(
 
 /**
  * Tailwind spacing scale (in pixels)
- * https://tailwindcss.com/docs/customizing-spacing
+ * Generated from: Tailwind v4 theme.css --spacing base unit
  */
-const SPACING_SCALE: Record<string, number> = {
-  "0": 0,
-  px: 1,
-  "0.5": 2,
-  "1": 4,
-  "1.5": 6,
-  "2": 8,
-  "2.5": 10,
-  "3": 12,
-  "3.5": 14,
-  "4": 16,
-  "5": 20,
-  "6": 24,
-  "6.5": 26, // Custom Kumo size
-  "7": 28,
-  "8": 32,
-  "9": 36,
-  "10": 40,
-  "11": 44,
-  "12": 48,
-  "14": 56,
-  "16": 64,
-  "20": 80,
-  "24": 96,
-  "28": 112,
-  "32": 128,
-  "36": 144,
-  "40": 160,
-  "44": 176,
-  "48": 192,
-  "52": 208,
-  "56": 224,
-  "60": 240,
-  "64": 256,
-  "72": 288, // Used by Dialog sm size
-  "80": 320,
-  "96": 384, // Used by Dialog base size
-};
+const SPACING_SCALE: Record<string, number> = themeData.tailwind.spacing.scale;
 
 /**
  * Kumo font size scale (in pixels)
- * Values from theme-kumo.css @theme definitions
+ * Generated from: theme-kumo.css @theme definitions (Kumo overrides Tailwind defaults)
  */
 const FONT_SIZE_SCALE: Record<string, number> = {
-  xs: 12,   // --text-xs: 12px
-  sm: 13,   // --text-sm: 13px (Kumo override from Tailwind's 14px)
-  base: 14, // --text-base: 14px (Kumo override from Tailwind's 16px)
-  lg: 16,   // --text-lg: 16px (Kumo override from Tailwind's 18px)
-  xl: 20,
-  "2xl": 24,
-  "3xl": 30,
+  ...themeData.kumo.fontSize,
+  // Extended sizes from Tailwind defaults
+  xl: themeData.tailwind.fontSize.xl,
+  "2xl": themeData.tailwind.fontSize["2xl"],
+  "3xl": themeData.tailwind.fontSize["3xl"],
 };
 
 /**
  * Tailwind border radius scale (in pixels)
- * Values from Tailwind v4 theme.css --radius-* definitions
- * See: node_modules/tailwindcss/theme.css
+ * Generated from: Tailwind v4 theme.css --radius-* values
  */
 const BORDER_RADIUS_SCALE: Record<string, number> = {
-  none: 0,
-  xs: 2,    // --radius-xs: 0.125rem = 2px
-  sm: 4,    // --radius-sm: 0.25rem = 4px
-  DEFAULT: 4, // Same as sm
-  md: 6,    // --radius-md: 0.375rem = 6px
-  lg: 8,    // --radius-lg: 0.5rem = 8px
-  xl: 12,   // --radius-xl: 0.75rem = 12px
-  "2xl": 16, // --radius-2xl: 1rem = 16px
-  "3xl": 24, // --radius-3xl: 1.5rem = 24px
-  "4xl": 32, // --radius-4xl: 2rem = 32px
-  full: 9999,
+  none: themeData.tailwind.borderRadius.none,
+  xs: themeData.tailwind.borderRadius.xs,
+  sm: themeData.tailwind.borderRadius.sm,
+  DEFAULT: themeData.tailwind.borderRadius.sm, // Same as sm
+  md: themeData.tailwind.borderRadius.md,
+  lg: themeData.tailwind.borderRadius.lg,
+  xl: themeData.tailwind.borderRadius.xl,
+  "2xl": themeData.tailwind.borderRadius["2xl"],
+  "3xl": themeData.tailwind.borderRadius["3xl"],
+  "4xl": themeData.tailwind.borderRadius["4xl"],
+  full: themeData.tailwind.borderRadius.full,
 };
 
 /**
  * Tailwind font weight scale
- * https://tailwindcss.com/docs/font-weight
+ * Generated from: Tailwind v4 theme.css --font-weight-* values
  */
-const FONT_WEIGHT_SCALE: Record<string, number> = {
-  thin: 100,
-  extralight: 200,
-  light: 300,
-  normal: 400,
-  medium: 500,
-  semibold: 600,
-  bold: 700,
-  extrabold: 800,
-  black: 900,
-};
+const FONT_WEIGHT_SCALE: Record<string, number> = themeData.tailwind.fontWeight;
 
 /**
  * Map Kumo semantic color classes to Figma variable names

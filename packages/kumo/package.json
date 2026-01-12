@@ -353,7 +353,7 @@
     "storybook:deploy:ci": "CLOUDFLARE_ACCOUNT_ID=$CLOUDFLARE_ACCOUNT_ID CLOUDFLARE_API_TOKEN=$CLOUDFLARE_API_TOKEN pnpm run storybook:build && wrangler pages deploy",
     "storybook:deploy:prod": "pnpm run storybook:deploy:ci --branch main",
     "chromatic": "chromatic --exit-zero-on-changes",
-    "figma:plugin": "tsx scripts/figma/plugin/build-icon-data.ts && esbuild scripts/figma/plugin/code.ts --bundle --outfile=scripts/figma/plugin/code.js --format=iife --target=es6",
+    "figma:plugin": "tsx scripts/figma/plugin/build-theme-data.ts && tsx scripts/figma/plugin/build-icon-data.ts && esbuild scripts/figma/plugin/code.ts --bundle --outfile=scripts/figma/plugin/code.js --format=iife --target=es6",
     "figma:sync": "tsx scripts/figma/sync-tokens-to-figma.ts",
     "icons:build": "tsx scripts/icon/build-sprite.ts",
     "icons:add": "tsx scripts/icon/add-icon.ts",

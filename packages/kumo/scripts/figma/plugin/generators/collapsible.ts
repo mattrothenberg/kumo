@@ -22,7 +22,6 @@ import {
   createModeSection,
   createRowLabel,
   createColumnHeaders,
-  bindFillToVariable,
   bindStrokeToVariable,
   bindTextColorToVariable,
   BORDER_RADIUS,
@@ -31,6 +30,7 @@ import {
   FALLBACK_VALUES,
   SECTION_LAYOUT,
   OPACITY,
+  SPACING,
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
@@ -565,11 +565,14 @@ export function getCollapsibleLayoutData(open: boolean, state: string) {
     content: open
       ? {
           paddingX: contentStyles.paddingX || FALLBACK_VALUES.padding.standard,
-          paddingTop: 8,
-          paddingBottom: 8,
-          itemSpacing: 16,
+          // paddingTop/Bottom: SPACING.base (gap-2 = 8px)
+          paddingTop: SPACING.base,
+          paddingBottom: SPACING.base,
+          // itemSpacing: FALLBACK_VALUES.gap.large (gap-4 = 16px)
+          itemSpacing: FALLBACK_VALUES.gap.large,
           borderVariable: "color-border",
-          borderWeight: 2,
+          // borderWeight: FALLBACK_VALUES.strokeWeightThick (2px for emphasis)
+          borderWeight: FALLBACK_VALUES.strokeWeightThick,
         }
       : null,
     chevron: {

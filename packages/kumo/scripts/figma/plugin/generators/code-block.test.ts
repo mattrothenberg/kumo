@@ -23,6 +23,7 @@ import {
   getBaseStyles,
   getContainerConfig,
 } from "./code-block";
+import { FALLBACK_VALUES } from "./shared";
 
 // Import registry as source of truth
 import registry from "../../../../ai/component-registry.json";
@@ -332,16 +333,17 @@ describe("CodeBlock Generator - Expected Figma Output", () => {
 
   it("should use monospace font for text content", () => {
     // This tests the text styling expectations
+    // lineHeight uses FALLBACK_VALUES.lineHeight.code (20px from code.tsx leading-[20px])
     expect({
       fontFamily: "Roboto Mono",
       fontSize: 14,
       fontWeight: 400,
-      lineHeight: 20,
+      lineHeight: FALLBACK_VALUES.lineHeight.code,
     }).toEqual({
       fontFamily: "Roboto Mono",
       fontSize: 14,
       fontWeight: 400,
-      lineHeight: 20,
+      lineHeight: FALLBACK_VALUES.lineHeight.code,
     });
   });
 });

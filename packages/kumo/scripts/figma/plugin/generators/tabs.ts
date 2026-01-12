@@ -27,9 +27,12 @@ import {
   SHADOWS,
   GRID_LAYOUT,
   SECTION_LAYOUT,
+  BORDER_RADIUS,
+  FALLBACK_VALUES,
 } from "./shared";
 import { logComplete, logStart, logProgress } from "../logger";
 import registry from "../../../../ai/component-registry.json";
+import themeData from "../generated/theme-data.json";
 
 // Type for registry styling
 const tabsStyling = (registry.components as any).Tabs?.styling;
@@ -41,22 +44,24 @@ const tabsStyling = (registry.components as any).Tabs?.styling;
  * - Container: h-8.5 (34px), rounded-lg (8px), bg-accent, px-px (1px)
  * - Tab buttons: my-px (1px vertical margin), px-2.5 (10px horizontal), rounded-lg
  * - Indicator: rounded-lg, bg-surface-elevated, shadow-sm, ring ring-color-2
+ *
+ * Values derived from theme-data.json where possible to prevent drift.
  */
 const FALLBACK_TABS_CONFIG = {
-  /** Height of tabs container (h-8.5 = 34px) */
-  containerHeight: 34,
+  /** Height of tabs container (h-8.5 = 8.5 * 4 = 34px) */
+  containerHeight: themeData.tailwind.spacing.scale["8"] + 2, // 32 + 2 = 34px (closest to h-8.5)
   /** Border radius for container (rounded-lg = 8px) */
-  borderRadius: 8,
+  borderRadius: BORDER_RADIUS.lg,
   /** Horizontal padding inside container (px-px = 1px on each side) */
-  containerPadding: 1,
+  containerPadding: themeData.tailwind.spacing.scale["px"], // 1px
   /** Vertical margin on tabs (my-px = 1px) */
-  tabVerticalMargin: 1,
+  tabVerticalMargin: themeData.tailwind.spacing.scale["px"], // 1px
   /** Horizontal padding on tabs (px-2.5 = 10px) */
-  tabHorizontalPadding: 10,
-  /** Tab text size (text-base = 16px) */
-  tabFontSize: 16,
+  tabHorizontalPadding: themeData.tailwind.spacing.scale["2.5"], // 10px
+  /** Tab text size (text-base from Tailwind = 16px, or Kumo = 14px) */
+  tabFontSize: themeData.tailwind.fontSize.base, // 16px (Tailwind default for tabs)
   /** Tab font weight (font-medium = 500) */
-  tabFontWeight: 500,
+  tabFontWeight: FALLBACK_VALUES.fontWeight.medium, // 500
 };
 
 /**

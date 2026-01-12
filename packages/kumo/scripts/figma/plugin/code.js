@@ -1,6 +1,8 @@
 "use strict";
 (() => {
   var __defProp = Object.defineProperty;
+  var __defProps = Object.defineProperties;
+  var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
   var __getOwnPropSymbols = Object.getOwnPropertySymbols;
   var __hasOwnProp = Object.prototype.hasOwnProperty;
   var __propIsEnum = Object.prototype.propertyIsEnumerable;
@@ -16,28 +18,544 @@
       }
     return a;
   };
+  var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
+
+  // scripts/figma/plugin/generated/theme-data.json
+  var theme_data_default = {
+    _generated: "2026-01-12T04:18:49.929Z",
+    _sources: [
+      "packages/kumo/src/styles/theme-kumo.css",
+      "node_modules/tailwindcss/theme.css",
+      "packages/kumo/src/components/button/button.tsx"
+    ],
+    tailwind: {
+      spacing: {
+        baseUnitPx: 4,
+        scale: {
+          "0": 0,
+          "1": 4,
+          "2": 8,
+          "3": 12,
+          "4": 16,
+          "5": 20,
+          "6": 24,
+          "7": 28,
+          "8": 32,
+          "9": 36,
+          "10": 40,
+          "11": 44,
+          "12": 48,
+          "14": 56,
+          "16": 64,
+          "20": 80,
+          "24": 96,
+          "28": 112,
+          "32": 128,
+          "36": 144,
+          "40": 160,
+          "44": 176,
+          "48": 192,
+          "52": 208,
+          "56": 224,
+          "60": 240,
+          "64": 256,
+          "72": 288,
+          "80": 320,
+          "96": 384,
+          px: 1,
+          "0.5": 2,
+          "1.5": 6,
+          "2.5": 10,
+          "3.5": 14,
+          "6.5": 26
+        }
+      },
+      borderRadius: {
+        xs: 2,
+        sm: 4,
+        md: 6,
+        lg: 8,
+        xl: 12,
+        "2xl": 16,
+        "3xl": 24,
+        "4xl": 32,
+        full: 9999,
+        none: 0
+      },
+      fontSize: {
+        xs: 12,
+        sm: 14,
+        base: 16,
+        lg: 18,
+        xl: 20,
+        "2xl": 24,
+        "3xl": 30,
+        "4xl": 36,
+        "5xl": 48,
+        "6xl": 60,
+        "7xl": 72,
+        "8xl": 96,
+        "9xl": 128
+      },
+      fontWeight: {
+        thin: 100,
+        extralight: 200,
+        light: 300,
+        normal: 400,
+        medium: 500,
+        semibold: 600,
+        bold: 700,
+        extrabold: 800,
+        black: 900
+      },
+      shadows: {
+        "2xs": {
+          layers: []
+        },
+        xs: {
+          layers: [
+            {
+              offsetX: 0,
+              offsetY: 1,
+              blur: 2,
+              spread: 0,
+              opacity: 0.05
+            }
+          ]
+        },
+        sm: {
+          layers: [
+            {
+              offsetX: 0,
+              offsetY: 1,
+              blur: 3,
+              spread: 0,
+              opacity: 0.1
+            },
+            {
+              offsetX: 0,
+              offsetY: 1,
+              blur: 2,
+              spread: -1,
+              opacity: 0.1
+            }
+          ]
+        },
+        md: {
+          layers: [
+            {
+              offsetX: 0,
+              offsetY: 4,
+              blur: 6,
+              spread: -1,
+              opacity: 0.1
+            },
+            {
+              offsetX: 0,
+              offsetY: 2,
+              blur: 4,
+              spread: -2,
+              opacity: 0.1
+            }
+          ]
+        },
+        lg: {
+          layers: [
+            {
+              offsetX: 0,
+              offsetY: 10,
+              blur: 15,
+              spread: -3,
+              opacity: 0.1
+            },
+            {
+              offsetX: 0,
+              offsetY: 4,
+              blur: 6,
+              spread: -4,
+              opacity: 0.1
+            }
+          ]
+        },
+        xl: {
+          layers: [
+            {
+              offsetX: 0,
+              offsetY: 20,
+              blur: 25,
+              spread: -5,
+              opacity: 0.1
+            },
+            {
+              offsetX: 0,
+              offsetY: 8,
+              blur: 10,
+              spread: -6,
+              opacity: 0.1
+            }
+          ]
+        },
+        "2xl": {
+          layers: [
+            {
+              offsetX: 0,
+              offsetY: 25,
+              blur: 50,
+              spread: -12,
+              opacity: 0.25
+            }
+          ]
+        }
+      }
+    },
+    kumo: {
+      fontSize: {
+        xs: 12,
+        sm: 13,
+        base: 14,
+        lg: 16
+      },
+      buttonCompactSize: {
+        xs: 14,
+        sm: 26,
+        base: 36,
+        lg: 40
+      }
+    },
+    computed: {
+      spacing: {
+        xs: 4,
+        sm: 6,
+        base: 8,
+        lg: 12
+      },
+      borderRadius: {
+        xs: 2,
+        sm: 4,
+        md: 6,
+        lg: 8,
+        xl: 12,
+        full: 9999
+      },
+      fontSize: {
+        xs: 12,
+        sm: 13,
+        base: 14,
+        lg: 16
+      },
+      fontWeight: {
+        normal: 400,
+        medium: 500,
+        semiBold: 600
+      },
+      buttonCompactSize: {
+        xs: 14,
+        sm: 26,
+        base: 36,
+        lg: 40
+      },
+      shadows: {
+        xs: {
+          layers: [
+            {
+              offsetX: 0,
+              offsetY: 1,
+              blur: 2,
+              spread: 0,
+              opacity: 0.05
+            }
+          ]
+        },
+        lg: {
+          layers: [
+            {
+              offsetX: 0,
+              offsetY: 10,
+              blur: 15,
+              spread: -3,
+              opacity: 0.1
+            },
+            {
+              offsetX: 0,
+              offsetY: 4,
+              blur: 6,
+              spread: -4,
+              opacity: 0.1
+            }
+          ]
+        }
+      }
+    }
+  };
 
   // scripts/figma/plugin/generators/shared.ts
+  var SPACING = {
+    /** Extra small gap between elements */
+    xs: theme_data_default.computed.spacing.xs,
+    /** Small gap between elements */
+    sm: theme_data_default.computed.spacing.sm,
+    /** Base gap between elements */
+    base: theme_data_default.computed.spacing.base,
+    /** Large gap between elements */
+    lg: theme_data_default.computed.spacing.lg
+  };
   var BORDER_RADIUS = {
-    /** Small radius (2px) */
-    sm: 2,
-    /** Medium radius (6px) */
-    md: 6,
-    /** Large radius (8px) */
-    lg: 8,
+    /** Extra small radius - matches --radius-xs in Tailwind v4 theme.css */
+    xs: theme_data_default.computed.borderRadius.xs,
+    /** Small radius - matches --radius-sm in Tailwind v4 theme.css */
+    sm: theme_data_default.computed.borderRadius.sm,
+    /** Medium radius - matches --radius-md in Tailwind v4 theme.css */
+    md: theme_data_default.computed.borderRadius.md,
+    /** Large radius - matches --radius-lg in Tailwind v4 theme.css */
+    lg: theme_data_default.computed.borderRadius.lg,
+    /** Extra large radius - matches --radius-xl in Tailwind v4 theme.css */
+    xl: theme_data_default.computed.borderRadius.xl,
     /** Full rounded (9999px) */
-    full: 9999
+    full: theme_data_default.computed.borderRadius.full
   };
   var FONT_SIZE = {
-    /** Extra small (12px) */
-    xs: 12,
-    /** Base (16px) */
-    base: 16,
-    /** Large (20px) */
-    lg: 20
+    /** Extra small - matches --text-xs in theme-kumo.css */
+    xs: theme_data_default.computed.fontSize.xs,
+    /** Small - matches --text-sm in theme-kumo.css (Kumo override) */
+    sm: theme_data_default.computed.fontSize.sm,
+    /** Base - matches --text-base in theme-kumo.css (Kumo override) */
+    base: theme_data_default.computed.fontSize.base,
+    /** Large - matches --text-lg in theme-kumo.css (Kumo override) */
+    lg: theme_data_default.computed.fontSize.lg
+  };
+  var SECTION_LAYOUT = {
+    /** X position for section start */
+    startX: 100,
+    /** Y position for section start */
+    startY: 100,
+    /** Gap between light/dark mode sections */
+    modeGap: 50
+  };
+  var OPACITY = {
+    /** Opacity for disabled state */
+    disabled: 0.5,
+    /** Opacity for backdrop/overlay */
+    backdrop: 0.8
+  };
+  var COLORS = {
+    /** Placeholder/fallback gray (0.5) - used for icon placeholders, fallback strokes */
+    placeholder: { r: 0.5, g: 0.5, b: 0.5 },
+    /** Fallback white (1.0) - used for backgrounds, container fills */
+    fallbackWhite: { r: 1, g: 1, b: 1 },
+    /** Spinner stroke color (0.4) - used for loader animations, muted text */
+    spinnerStroke: { r: 0.4, g: 0.4, b: 0.4 },
+    /** Border/stroke gray (0.8) - used for borders when variable binding fails */
+    borderGray: { r: 0.8, g: 0.8, b: 0.8 },
+    /** Light gray background (0.95) - used for icon library example frames */
+    lightGrayBg: { r: 0.95, g: 0.95, b: 0.95 },
+    /** Skeleton/track gray (0.9) - used for skeleton loaders, meter tracks */
+    skeletonGray: { r: 0.9, g: 0.9, b: 0.9 },
+    /** Fallback primary blue - used for meter indicator when variable unavailable */
+    fallbackPrimary: { r: 0, g: 0.5, b: 1 }
+  };
+  var DASH_PATTERN = {
+    /** Standard dash pattern for dashed borders (4px dash, 4px gap) */
+    standard: [4, 4]
   };
   var SECTION_PADDING = 48;
   var SECTION_GAP = 160;
+  function getShadowLayer(shadowDef, fallback) {
+    if ((shadowDef == null ? void 0 : shadowDef.layers) && shadowDef.layers.length > 0) {
+      return shadowDef.layers[0];
+    }
+    return fallback;
+  }
+  var _a, _b, _c;
+  var SHADOWS = {
+    /** Extra small shadow - minimal elevation
+     *  Used for: Surface, MenuBar, subtle elevation
+     *  Matches Tailwind: shadow-xs
+     *  Generated from theme-data.json
+     */
+    xs: getShadowLayer(theme_data_default.tailwind.shadows.xs, {
+      offsetX: 0,
+      offsetY: 1,
+      blur: 2,
+      spread: 0,
+      opacity: 0.05
+    }),
+    /** Small shadow - two layers
+     *  Used for: Tabs indicator, subtle elevation
+     *  Matches Tailwind: shadow-sm
+     *  Generated from theme-data.json (first layer)
+     */
+    sm: getShadowLayer(theme_data_default.tailwind.shadows.sm, {
+      offsetX: 0,
+      offsetY: 1,
+      blur: 3,
+      spread: 0,
+      opacity: 0.1
+    }),
+    /** Large shadow - high elevation with two layers
+     *  Used for: Toast, popups, floating elements
+     *  Matches Tailwind: shadow-lg
+     *  Generated from theme-data.json
+     */
+    lg: {
+      primary: getShadowLayer(theme_data_default.tailwind.shadows.lg, {
+        offsetX: 0,
+        offsetY: 10,
+        blur: 15,
+        spread: -3,
+        opacity: 0.1
+      }),
+      secondary: (_c = (_b = (_a = theme_data_default.tailwind.shadows.lg) == null ? void 0 : _a.layers) == null ? void 0 : _b[1]) != null ? _c : {
+        offsetX: 0,
+        offsetY: 4,
+        blur: 6,
+        spread: -4,
+        opacity: 0.1
+      }
+    },
+    /** Dialog shadow - Figma-specific exception (no CSS token backing).
+     *  This is intentionally hardcoded for Figma rendering optimization.
+     *  The Dialog React component uses a different shadow approach.
+     *  Format: 0 8px 32px rgb(0 0 0 / 0.16)
+     *  NOTE: This is NOT derived from Tailwind - it's a Figma-specific design choice.
+     */
+    dialog: {
+      offsetX: 0,
+      offsetY: 8,
+      blur: 32,
+      spread: 0,
+      opacity: 0.16
+    },
+    /** @deprecated Use SHADOWS.xs instead - same values */
+    subtle: getShadowLayer(theme_data_default.tailwind.shadows.xs, {
+      offsetX: 0,
+      offsetY: 1,
+      blur: 2,
+      spread: 0,
+      opacity: 0.05
+    })
+  };
+  var GRID_LAYOUT = {
+    /** Vertical gap between component rows (common: 24-80px depending on component density) */
+    rowGap: {
+      /** Compact spacing for dense components (e.g., tabs, menubar, clipboard-text) */
+      compact: 24,
+      /** Medium spacing for standard components (e.g., badge, breadcrumbs, empty, meter) */
+      medium: 40,
+      /** Standard spacing for most components (e.g., banner, checkbox, switch, pagination) */
+      standard: 48,
+      /** Spacious layout for large components (e.g., refresh-button, code-block) */
+      spacious: 60,
+      /** Extra spacious for complex components (e.g., button, link-button) */
+      extraSpacious: 80
+    },
+    /** Width of label column for variant labels (common: 100-280px depending on label length) */
+    labelColumnWidth: {
+      /** Minimal width for short labels (e.g., surface, loader) */
+      minimal: 100,
+      /** Compact width for standard labels (e.g., collapsible, dialog) */
+      compact: 120,
+      /** Small width for slightly longer labels (e.g., clipboard-text, refresh-button) */
+      small: 140,
+      /** Standard width for typical labels (e.g., code, banner, menubar, tabs, text, layer-card) */
+      standard: 160,
+      /** Medium width for longer labels (e.g., badge, breadcrumbs, empty, meter, pagination, checkbox, dropdown, date-range-picker, select, combobox) */
+      medium: 180,
+      /** Wide for complex labels (e.g., input, input-area) */
+      wide: 200,
+      /** Wider for very long labels (e.g., button, link-button, sensitive-input) */
+      wider: 220,
+      /** Widest for exceptionally long labels (e.g., switch with multiple properties) */
+      widest: 280
+    },
+    /** Height of header row for column headers (typically 24px) */
+    headerRowHeight: 24,
+    /** Label vertical centering offsets by size */
+    labelVerticalOffset: {
+      /** Small offset for compact components (badge, loader) */
+      sm: 4,
+      /** Medium offset for standard components (input, checkbox) */
+      md: 8,
+      /** Large offset for larger components (button, dialog) */
+      lg: 12
+    }
+  };
+  var _a2;
+  var FALLBACK_VALUES = {
+    /** Default font size (text-base from theme-kumo.css) */
+    fontSize: theme_data_default.computed.fontSize.base,
+    /** Default font weight - generated from Tailwind v4 theme.css */
+    fontWeight: {
+      /** Normal weight (CSS default) */
+      normal: theme_data_default.computed.fontWeight.normal,
+      /** Medium weight (commonly used in UI) */
+      medium: theme_data_default.computed.fontWeight.medium,
+      /** Semi-bold weight (used in headings and emphasis) */
+      semiBold: theme_data_default.computed.fontWeight.semiBold
+    },
+    /** Default padding values - derived from Tailwind spacing scale */
+    padding: {
+      /** Horizontal padding for inputs/buttons (px-3 = 12px) */
+      horizontal: theme_data_default.tailwind.spacing.scale["3"],
+      /** Vertical padding for compact components (py-1.5 = 6px) */
+      vertical: theme_data_default.tailwind.spacing.scale["1.5"],
+      /** Standard padding for content areas (p-4 = 16px) */
+      standard: theme_data_default.tailwind.spacing.scale["4"],
+      /** Large padding for dialogs and cards (p-6 = 24px) */
+      large: theme_data_default.tailwind.spacing.scale["6"]
+    },
+    /** Default border radius - generated from Tailwind v4 theme.css */
+    borderRadius: {
+      /** Medium radius (rounded-md) */
+      medium: theme_data_default.computed.borderRadius.md,
+      /** Large radius (rounded-lg) */
+      large: theme_data_default.computed.borderRadius.lg
+    },
+    /** Default gap between elements - derived from Tailwind spacing scale */
+    gap: {
+      /** Tight gap (gap-1 = 4px) */
+      tight: theme_data_default.tailwind.spacing.scale["1"],
+      /** Standard gap (gap-1.5 = 6px) */
+      standard: theme_data_default.tailwind.spacing.scale["1.5"],
+      /** Medium gap (gap-2 = 8px) */
+      medium: theme_data_default.tailwind.spacing.scale["2"],
+      /** Large gap for dialogs and cards (gap-4 = 16px) */
+      large: theme_data_default.tailwind.spacing.scale["4"]
+    },
+    /** Default height for inputs/buttons (h-9 = 36px) */
+    height: {
+      /** Base input/button height (h-9 = 36px) */
+      base: theme_data_default.tailwind.spacing.scale["9"]
+    },
+    /**
+     * Button compact sizes (square/circle shapes)
+     * Generated from: button.tsx KUMO_BUTTON_VARIANTS.compactSize
+     */
+    buttonCompactSize: {
+      /** Extra small compact button (size-3.5) */
+      xs: theme_data_default.computed.buttonCompactSize.xs,
+      /** Small compact button (size-6.5) */
+      sm: theme_data_default.computed.buttonCompactSize.sm,
+      /** Base compact button (size-9) */
+      base: theme_data_default.computed.buttonCompactSize.base,
+      /** Large compact button (size-10) */
+      lg: theme_data_default.computed.buttonCompactSize.lg
+    },
+    /** Default stroke weight for borders */
+    strokeWeight: 1,
+    /** Default icon size - derived from Tailwind spacing scale */
+    iconSize: {
+      /** Extra small icon (size-3 = 12px) */
+      xs: theme_data_default.tailwind.spacing.scale["3"],
+      /** Small icon (size-4 = 16px) */
+      sm: theme_data_default.tailwind.spacing.scale["4"],
+      /** Medium icon (size-4.5 = 18px) */
+      medium: (_a2 = theme_data_default.tailwind.spacing.scale["4.5"]) != null ? _a2 : 18,
+      /** Base icon (size-5 = 20px) */
+      base: theme_data_default.tailwind.spacing.scale["5"],
+      /** @deprecated Use xs instead */
+      small: theme_data_default.tailwind.spacing.scale["3"]
+    }
+  };
   function bindFillToVariable(node, variableId, opacity) {
     if (!("fills" in node)) return;
     const variable = figma.variables.getVariableById(variableId);
@@ -279,59 +797,28 @@
     const value = scale[key];
     return value !== void 0 ? value : fallback;
   }
-  var SPACING_SCALE = {
-    "0": 0,
-    px: 1,
-    "0.5": 2,
-    "1": 4,
-    "1.5": 6,
-    "2": 8,
-    "2.5": 10,
-    "3": 12,
-    "3.5": 14,
-    "4": 16,
-    "5": 20,
-    "6": 24,
-    "6.5": 26,
-    // Custom Kumo size
-    "7": 28,
-    "8": 32,
-    "9": 36,
-    "10": 40,
-    "11": 44,
-    "12": 48
-  };
-  var FONT_SIZE_SCALE = {
-    xs: 12,
-    sm: 14,
-    base: 16,
-    lg: 18,
-    xl: 20,
-    "2xl": 24,
-    "3xl": 30
-  };
+  var SPACING_SCALE = theme_data_default.tailwind.spacing.scale;
+  var FONT_SIZE_SCALE = __spreadProps(__spreadValues({}, theme_data_default.kumo.fontSize), {
+    // Extended sizes from Tailwind defaults
+    xl: theme_data_default.tailwind.fontSize.xl,
+    "2xl": theme_data_default.tailwind.fontSize["2xl"],
+    "3xl": theme_data_default.tailwind.fontSize["3xl"]
+  });
   var BORDER_RADIUS_SCALE = {
-    none: 0,
-    sm: 2,
-    DEFAULT: 4,
-    md: 6,
-    lg: 8,
-    xl: 12,
-    "2xl": 16,
-    "3xl": 24,
-    full: 9999
+    none: theme_data_default.tailwind.borderRadius.none,
+    xs: theme_data_default.tailwind.borderRadius.xs,
+    sm: theme_data_default.tailwind.borderRadius.sm,
+    DEFAULT: theme_data_default.tailwind.borderRadius.sm,
+    // Same as sm
+    md: theme_data_default.tailwind.borderRadius.md,
+    lg: theme_data_default.tailwind.borderRadius.lg,
+    xl: theme_data_default.tailwind.borderRadius.xl,
+    "2xl": theme_data_default.tailwind.borderRadius["2xl"],
+    "3xl": theme_data_default.tailwind.borderRadius["3xl"],
+    "4xl": theme_data_default.tailwind.borderRadius["4xl"],
+    full: theme_data_default.tailwind.borderRadius.full
   };
-  var FONT_WEIGHT_SCALE = {
-    thin: 100,
-    extralight: 200,
-    light: 300,
-    normal: 400,
-    medium: 500,
-    semibold: 600,
-    bold: 700,
-    extrabold: 800,
-    black: 900
-  };
+  var FONT_WEIGHT_SCALE = theme_data_default.tailwind.fontWeight;
   var COLOR_TO_VARIABLE = {
     // Background colors
     "bg-primary": "color-primary",
@@ -414,6 +901,15 @@
         }
         continue;
       }
+      const minWidthMatch = cls.match(/^min-w-(\d+\.?\d*)$/);
+      if (minWidthMatch) {
+        result.minWidth = getOrDefault(
+          SPACING_SCALE,
+          minWidthMatch[1],
+          parseFloat(minWidthMatch[1]) * 4
+        );
+        continue;
+      }
       const heightMatch = cls.match(/^h-(\d+\.?\d*)$/);
       if (heightMatch) {
         result.height = getOrDefault(
@@ -421,6 +917,17 @@
           heightMatch[1],
           parseFloat(heightMatch[1]) * 4
         );
+        continue;
+      }
+      const sizeMatch = cls.match(/^size-(\d+\.?\d*)$/);
+      if (sizeMatch) {
+        const size = getOrDefault(
+          SPACING_SCALE,
+          sizeMatch[1],
+          parseFloat(sizeMatch[1]) * 4
+        );
+        result.width = size;
+        result.height = size;
         continue;
       }
       const pxMatch = cls.match(/^px-(\d+\.?\d*)$/);
@@ -2220,7 +2727,50 @@
           "text-muted",
           "text-surface",
           "text-surface-inverse"
-        ]
+        ],
+        styling: {
+          sizeVariants: {
+            sm: {
+              height: 0,
+              classes: "p-3 gap-2",
+              dimensions: {
+                calendarWidth: 168,
+                cellHeight: 22,
+                cellWidth: 24,
+                textSize: 12,
+                iconSize: 14,
+                padding: 12,
+                gap: 8
+              }
+            },
+            base: {
+              height: 0,
+              classes: "p-4 gap-2.5",
+              dimensions: {
+                calendarWidth: 196,
+                cellHeight: 26,
+                cellWidth: 28,
+                textSize: 14,
+                iconSize: 16,
+                padding: 16,
+                gap: 10
+              }
+            },
+            lg: {
+              height: 0,
+              classes: "p-5 gap-3",
+              dimensions: {
+                calendarWidth: 252,
+                cellHeight: 32,
+                cellWidth: 36,
+                textSize: 16,
+                iconSize: 18,
+                padding: 20,
+                gap: 12
+              }
+            }
+          }
+        }
       },
       Dialog: {
         name: "Dialog",
@@ -4028,6 +4578,28 @@
             description: "Secondary sub-component",
             props: {}
           }
+        },
+        styling: {
+          container: {
+            width: 280,
+            borderRadius: 8
+          },
+          secondary: {
+            paddingX: 8,
+            paddingY: 8,
+            gap: 8,
+            fontSize: 16,
+            fontWeight: 500
+          },
+          primary: {
+            paddingX: 16,
+            paddingY: 16,
+            paddingRight: 12,
+            gap: 8,
+            fontSize: 16,
+            fontWeight: 400,
+            borderRadius: 8
+          }
         }
       },
       Loader: {
@@ -4094,7 +4666,20 @@
           "bg-color",
           "bg-surface",
           "border-color"
-        ]
+        ],
+        styling: {
+          container: {
+            height: 32,
+            borderRadius: 8,
+            padding: 2,
+            gap: 2
+          },
+          button: {
+            width: 36,
+            borderRadius: 6,
+            iconSize: 18
+          }
+        }
       },
       Meter: {
         name: "Meter",
@@ -4264,7 +4849,17 @@
         ],
         colors: [
           "text-label"
-        ]
+        ],
+        styling: {
+          layout: {
+            height: 36,
+            buttonSize: 36,
+            inputWidth: 50,
+            iconSize: 16,
+            gap: 8,
+            borderRadius: 6
+          }
+        }
       },
       Select: {
         name: "Select",
@@ -4353,6 +4948,28 @@
             name: "Option",
             description: "Option sub-component",
             props: {}
+          }
+        },
+        styling: {
+          trigger: {
+            height: 36,
+            paddingX: 12,
+            paddingY: 0,
+            borderRadius: 8,
+            fontSize: 16,
+            fontWeight: 400
+          },
+          popup: {
+            width: 280,
+            borderRadius: 8,
+            padding: 6
+          },
+          option: {
+            paddingX: 8,
+            paddingY: 6,
+            borderRadius: 4,
+            fontSize: 16,
+            fontWeight: 400
           }
         }
       },
@@ -5412,6 +6029,36 @@
           "fill-black-icon",
           "fill-icon-path"
         ]
+      },
+      InputArea: {
+        name: "InputArea",
+        type: "component",
+        description: "Multi-line textarea input with Input variants and InputArea-specific dimensions",
+        importPath: "@cloudflare/kumo (synthetic - uses Input component)",
+        category: "Input",
+        props: {},
+        styling: {
+          sizeVariants: {
+            xs: {
+              minHeight: 60,
+              width: 200
+            },
+            sm: {
+              minHeight: 72,
+              width: 240
+            },
+            base: {
+              minHeight: 88,
+              width: 320
+            },
+            lg: {
+              minHeight: 100,
+              width: 360
+            }
+          }
+        },
+        examples: [],
+        colors: []
       }
     },
     search: {
@@ -5566,9 +6213,9 @@
             component.dashPattern = variantStyles.dashPattern;
           } else {
             logWarn(
-              "Badge: dashPattern not found in variantStyles, using fallback [4, 4]"
+              "Badge: dashPattern not found in variantStyles, using centralized DASH_PATTERN.standard"
             );
-            component.dashPattern = [4, 4];
+            component.dashPattern = [...DASH_PATTERN.standard];
           }
         }
       }
@@ -5613,8 +6260,8 @@
     const variants = variantProp.values;
     const components = [];
     const rowLabels = [];
-    const rowGap = 40;
-    const labelColumnWidth = 180;
+    const rowGap = GRID_LAYOUT.rowGap.medium;
+    const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.medium;
     let currentY = 0;
     for (let i = 0; i < variants.length; i++) {
       const variant = variants[i];
@@ -5647,8 +6294,8 @@
       const labelNode = await createRowLabel(
         label.text,
         SECTION_PADDING,
-        SECTION_PADDING + label.y + 4
-        // +4 to vertically center with badge
+        SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.sm
+        // Small offset to vertically center with badge
       );
       lightSection.frame.appendChild(labelNode);
     }
@@ -5662,7 +6309,7 @@
       const labelNode = await createRowLabel(
         label.text,
         SECTION_PADDING,
-        SECTION_PADDING + label.y + 4
+        SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.sm
       );
       darkSection.frame.appendChild(labelNode);
     }
@@ -5670,9 +6317,9 @@
     const totalHeight = contentHeight + SECTION_PADDING * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     logInfo(
       "\u2705 Generated Badge ComponentSet with " + variants.length + " variants (light + dark)"
@@ -5681,11 +6328,16 @@
   }
 
   // scripts/figma/plugin/generators/icon-utils.ts
+  var PLACEHOLDER_CORNER_RADIUS_MULTIPLIER = 0.2;
   var ICON_SIZE_MAP = {
-    xs: 12,
-    sm: 16,
-    base: 20,
-    lg: 20
+    xs: FALLBACK_VALUES.iconSize.xs,
+    // size-3 = 12px
+    sm: FALLBACK_VALUES.iconSize.sm,
+    // size-4 = 16px
+    base: FALLBACK_VALUES.iconSize.base,
+    // size-5 = 20px
+    lg: FALLBACK_VALUES.iconSize.base
+    // size-5 = 20px
   };
   var DEFAULT_ICONS = {
     /** Plus icon for add buttons */
@@ -5741,13 +6393,13 @@
     rect.resize(size, size);
     rect.x = 0;
     rect.y = 0;
-    rect.cornerRadius = size * 0.2;
-    rect.fills = [{ type: "SOLID", color: { r: 0.6, g: 0.6, b: 0.6 } }];
+    rect.cornerRadius = size * PLACEHOLDER_CORNER_RADIUS_MULTIPLIER;
+    rect.fills = [{ type: "SOLID", color: COLORS.placeholder }];
     frame.appendChild(rect);
     return frame;
   }
   function getButtonIcon(iconId, size) {
-    var iconSize = ICON_SIZE_MAP[size] || 20;
+    var iconSize = ICON_SIZE_MAP[size] || FALLBACK_VALUES.iconSize.base;
     var instance = createIconInstance(iconId, iconSize);
     if (instance) {
       return instance;
@@ -5768,10 +6420,10 @@
     spinner.x = 0;
     spinner.y = 0;
     spinner.fills = [];
-    spinner.strokes = [{ type: "SOLID", color: { r: 0.4, g: 0.4, b: 0.4 } }];
+    spinner.strokes = [{ type: "SOLID", color: COLORS.spinnerStroke }];
     spinner.strokeWeight = 2;
     spinner.strokeAlign = "CENTER";
-    spinner.dashPattern = [4, 4];
+    spinner.dashPattern = [...DASH_PATTERN.standard];
     frame.appendChild(spinner);
     return frame;
   }
@@ -5850,14 +6502,14 @@
     component.layoutMode = "HORIZONTAL";
     component.primaryAxisAlignItems = "CENTER";
     component.counterAxisAlignItems = "CENTER";
-    component.itemSpacing = baseStyles.gap || 8;
-    component.paddingLeft = baseStyles.paddingX || 16;
-    component.paddingRight = baseStyles.paddingX || 16;
-    component.paddingTop = baseStyles.paddingY || 6;
-    component.paddingBottom = baseStyles.paddingY || 6;
+    component.itemSpacing = baseStyles.gap || FALLBACK_VALUES.gap.medium;
+    component.paddingLeft = baseStyles.paddingX || FALLBACK_VALUES.padding.standard;
+    component.paddingRight = baseStyles.paddingX || FALLBACK_VALUES.padding.standard;
+    component.paddingTop = baseStyles.paddingY || FALLBACK_VALUES.padding.vertical;
+    component.paddingBottom = baseStyles.paddingY || FALLBACK_VALUES.padding.vertical;
     component.primaryAxisSizingMode = "AUTO";
     component.counterAxisSizingMode = "AUTO";
-    component.cornerRadius = baseStyles.borderRadius || 8;
+    component.cornerRadius = baseStyles.borderRadius || FALLBACK_VALUES.borderRadius.large;
     if (variantStyles.fillVariable) {
       const fillVar = getVariableByName(variantStyles.fillVariable);
       if (fillVar) {
@@ -5873,7 +6525,7 @@
       }
     }
     const iconId = BANNER_ICONS[variant] || "ph-info";
-    const iconSize = 16;
+    const iconSize = FONT_SIZE.lg;
     const iconInstance = createIconInstance(iconId, iconSize);
     if (iconInstance) {
       iconInstance.name = "Icon";
@@ -5896,9 +6548,9 @@
     }
     const textNode = await createTextNode(
       "This is a banner message",
-      baseStyles.fontSize || 16,
+      baseStyles.fontSize || FALLBACK_VALUES.fontSize,
       // text-base = 16px
-      baseStyles.fontWeight || 400
+      baseStyles.fontWeight || FALLBACK_VALUES.fontWeight.normal
       // normal weight (CSS default)
     );
     textNode.name = "Text";
@@ -5924,8 +6576,8 @@
     const variants = variantProp2.values;
     const components = [];
     const rowLabels = [];
-    const rowGap = 48;
-    const labelColumnWidth = 160;
+    const rowGap = GRID_LAYOUT.rowGap.standard;
+    const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.standard;
     let currentY = 0;
     for (let i = 0; i < variants.length; i++) {
       const variant = variants[i];
@@ -5981,9 +6633,9 @@
     const totalHeight = contentHeight + SECTION_PADDING * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     logComplete(
       "Generated Banner ComponentSet with " + variants.length + " variants (light + dark)"
@@ -5996,7 +6648,7 @@
   var breadcrumbsProps = breadcrumbsComponent.props;
   var sizeProp = breadcrumbsProps.size;
   async function createBreadcrumbsComponent(size) {
-    var _a, _b, _c;
+    var _a6, _b3, _c3;
     const classes = sizeProp.classes[size] || "";
     const description = sizeProp.descriptions[size] || "";
     const sizeStyles = parseTailwindClasses(classes);
@@ -6008,11 +6660,11 @@
     component.counterAxisAlignItems = "CENTER";
     component.primaryAxisSizingMode = "AUTO";
     component.counterAxisSizingMode = "FIXED";
-    const height = (_a = sizeStyles.height) != null ? _a : size === "sm" ? 40 : 48;
+    const height = (_a6 = sizeStyles.height) != null ? _a6 : size === "sm" ? 40 : 48;
     component.resize(component.width, height);
-    const gap = (_b = sizeStyles.gap) != null ? _b : size === "sm" ? 2 : 4;
+    const gap = (_b3 = sizeStyles.gap) != null ? _b3 : size === "sm" ? 2 : 4;
     component.itemSpacing = gap;
-    const fontSize = (_c = sizeStyles.fontSize) != null ? _c : size === "sm" ? 14 : 16;
+    const fontSize = (_c3 = sizeStyles.fontSize) != null ? _c3 : size === "sm" ? 14 : 16;
     const linkTextVar = getVariableByName("text-color-muted");
     const currentTextVar = getVariableByName("text-color-surface");
     const separatorTextVar = getVariableByName("text-color-disabled");
@@ -6116,8 +6768,8 @@
     const sizes = sizeProp.values;
     const components = [];
     const rowLabels = [];
-    const rowGap = 40;
-    const labelColumnWidth = 180;
+    const rowGap = GRID_LAYOUT.rowGap.medium;
+    const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.medium;
     let currentY = 0;
     for (let i = 0; i < sizes.length; i++) {
       const size = sizes[i];
@@ -6177,9 +6829,9 @@
     const totalHeight = contentHeight + SECTION_PADDING * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     logInfo(
       `\u2705 Generated Breadcrumbs ComponentSet with ${sizes.length} sizes (light + dark)`
@@ -6193,16 +6845,23 @@
   var sizeProp2 = buttonProps.size;
   var shapeProp = buttonProps.shape;
   function getCompactSizeMap() {
-    return {
-      xs: 14,
-      // size-3.5 = 14px
-      sm: 26,
-      // size-6.5 = 26px
-      base: 36,
-      // size-9 = 36px
-      lg: 40
-      // size-10 = 40px
+    var _a6, _b3;
+    const compactSizeClasses = {
+      xs: "size-3.5",
+      sm: "size-6.5",
+      base: "size-9",
+      lg: "size-10"
     };
+    const result = {};
+    for (const size of sizeProp2.values) {
+      const classes = compactSizeClasses[size];
+      if (classes) {
+        const parsed = parseTailwindClasses(classes);
+        const fallbackSize = FALLBACK_VALUES.buttonCompactSize[size];
+        result[size] = (_b3 = (_a6 = parsed.width) != null ? _a6 : fallbackSize) != null ? _b3 : FALLBACK_VALUES.height.base;
+      }
+    }
+    return result;
   }
   var COMPACT_SIZE_MAP_LOCAL = getCompactSizeMap();
   function getStateStylesMap() {
@@ -6258,7 +6917,7 @@
     component.primaryAxisAlignItems = "CENTER";
     component.counterAxisAlignItems = "CENTER";
     if (isCompactShape) {
-      var buttonSize = COMPACT_SIZE_MAP_LOCAL[size] || 36;
+      var buttonSize = COMPACT_SIZE_MAP_LOCAL[size] || FALLBACK_VALUES.height.base;
       component.primaryAxisSizingMode = "FIXED";
       component.counterAxisSizingMode = "FIXED";
       component.resize(buttonSize, buttonSize);
@@ -6267,13 +6926,13 @@
     } else {
       component.primaryAxisSizingMode = "AUTO";
       component.counterAxisSizingMode = "FIXED";
-      component.paddingLeft = sizeStyles.paddingX || 12;
-      component.paddingRight = sizeStyles.paddingX || 12;
-      component.resize(100, sizeStyles.height || 36);
+      component.paddingLeft = sizeStyles.paddingX || FALLBACK_VALUES.padding.horizontal;
+      component.paddingRight = sizeStyles.paddingX || FALLBACK_VALUES.padding.horizontal;
+      component.resize(100, sizeStyles.height || FALLBACK_VALUES.height.base);
     }
     component.paddingTop = 0;
     component.paddingBottom = 0;
-    component.itemSpacing = sizeStyles.gap || 6;
+    component.itemSpacing = sizeStyles.gap || FALLBACK_VALUES.gap.standard;
     if (shape === "circle") {
       component.cornerRadius = BORDER_RADIUS.full;
     } else {
@@ -6348,7 +7007,7 @@
       }
     }
     if (disabled) {
-      component.opacity = 0.5;
+      component.opacity = OPACITY.disabled;
     }
     if (loading) {
       var loaderSize = size === "lg" ? 16 : 14;
@@ -6367,11 +7026,11 @@
       component.appendChild(icon);
     }
     if (shape === "base") {
-      var fontWeight = 500;
+      var fontWeight = FALLBACK_VALUES.fontWeight.medium;
       var labelText = loading ? "Loading..." : "Button";
       var textNode = await createTextNode(
         labelText,
-        sizeStyles.fontSize || 16,
+        sizeStyles.fontSize || FALLBACK_VALUES.fontSize,
         fontWeight
       );
       textNode.name = "Label";
@@ -6395,9 +7054,9 @@
     var components = [];
     var rowLabels = [];
     var componentGap = 16;
-    var rowGap = 80;
-    var headerRowHeight = 24;
-    var labelColumnWidth = 220;
+    var rowGap = GRID_LAYOUT.rowGap.extraSpacious;
+    var headerRowHeight = GRID_LAYOUT.headerRowHeight;
+    var labelColumnWidth = GRID_LAYOUT.labelColumnWidth.wider;
     var rowComponents = /* @__PURE__ */ new Map();
     var rowLabelTexts = /* @__PURE__ */ new Map();
     var columnHeaders = [];
@@ -6603,8 +7262,8 @@
       var labelNode = await createRowLabel(
         label.text,
         SECTION_PADDING,
-        SECTION_PADDING + label.y + 12
-        // +12 to vertically center with button
+        SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.lg
+        // Large offset to vertically center with button
       );
       lightSection.frame.appendChild(labelNode);
     }
@@ -6636,7 +7295,7 @@
       var darkLabelNode = await createRowLabel(
         darkLabel.text,
         SECTION_PADDING,
-        SECTION_PADDING + darkLabel.y + 12
+        SECTION_PADDING + darkLabel.y + GRID_LAYOUT.labelVerticalOffset.lg
       );
       darkSection.frame.appendChild(darkLabelNode);
     }
@@ -6644,9 +7303,9 @@
     var totalHeight = contentHeight + SECTION_PADDING * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     logInfo(
       "\u2705 Generated Button ComponentSet with " + components.length + " variants (light + dark)"
@@ -6680,9 +7339,9 @@
     return 16;
   }
   function getCheckboxIconSize() {
-    var _a;
+    var _a6;
     var styling = getCheckboxStylingConfig();
-    return ((_a = styling.icons[0]) == null ? void 0 : _a.size) || 12;
+    return ((_a6 = styling.icons[0]) == null ? void 0 : _a6.size) || FALLBACK_VALUES.iconSize.small;
   }
   function getCheckboxLabelGap() {
     return 8;
@@ -6715,7 +7374,7 @@
       icon: iconName,
       iconSize: iconName ? getCheckboxIconSize() : null,
       iconColor: iconName ? "text-white" : null,
-      opacity: disabled ? 0.5 : 1
+      opacity: disabled ? OPACITY.disabled : 1
     };
   }
   function getCheckboxLayoutConfig() {
@@ -6746,7 +7405,7 @@
       layoutConfig: getCheckboxLayoutConfig(),
       textConfig: getCheckboxTextConfig(),
       stylingConfig: getCheckboxStylingConfig(),
-      opacity: disabled ? 0.5 : 1
+      opacity: disabled ? OPACITY.disabled : 1
     };
   }
   function createCheckboxBox(state, variant, _disabled) {
@@ -6819,9 +7478,9 @@
     var components = [];
     var rowLabels = [];
     var componentGap = 24;
-    var rowGap = 48;
-    var headerRowHeight = 24;
-    var labelColumnWidth = 180;
+    var rowGap = GRID_LAYOUT.rowGap.standard;
+    var headerRowHeight = GRID_LAYOUT.headerRowHeight;
+    var labelColumnWidth = GRID_LAYOUT.labelColumnWidth.medium;
     var columnHeaderTexts = ["Unchecked", "Checked", "Indeterminate"];
     var columnXPositions = [];
     var currentY = headerRowHeight;
@@ -6898,8 +7557,8 @@
       var labelNode = await createRowLabel(
         labelData.text,
         SECTION_PADDING,
-        SECTION_PADDING + labelData.y + 4
-        // +4 to vertically center with checkbox
+        SECTION_PADDING + labelData.y + GRID_LAYOUT.labelVerticalOffset.sm
+        // Small offset to vertically center with checkbox
       );
       lightSection.frame.appendChild(labelNode);
     }
@@ -6916,7 +7575,7 @@
       var darkLabelNode = await createRowLabel(
         darkLabelData.text,
         SECTION_PADDING,
-        SECTION_PADDING + darkLabelData.y + 4
+        SECTION_PADDING + darkLabelData.y + GRID_LAYOUT.labelVerticalOffset.sm
       );
       darkSection.frame.appendChild(darkLabelNode);
     }
@@ -6924,9 +7583,9 @@
     var totalHeight = contentHeight + SECTION_PADDING * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     logInfo(
       "\u2705 Generated Checkbox ComponentSet with " + components.length + " variants (light + dark)"
@@ -6970,8 +7629,6 @@
     }
     return parseTailwindClasses(inputSizeClasses);
   }
-  var SECTION_PADDING2 = 48;
-  var SECTION_GAP2 = 160;
   async function createClipboardTextComponent(size) {
     const sizeClasses = sizeProp3.classes[size] || "";
     const description = sizeProp3.descriptions[size] || "";
@@ -7024,7 +7681,7 @@
     textFrame.paddingLeft = sizeConfig.dimensions.paddingX;
     textFrame.paddingRight = sizeConfig.dimensions.paddingX;
     textFrame.resize(100, sizeConfig.height);
-    const fontSize = textSizeStyles.fontSize || inputSizeStyles.fontSize || 14;
+    const fontSize = textSizeStyles.fontSize || inputSizeStyles.fontSize || FALLBACK_VALUES.fontSize;
     const textNode = figma.createText();
     await figma.loadFontAsync({ family: "Roboto Mono", style: "Regular" });
     textNode.characters = "npm install @cloudflare/kumo";
@@ -7064,12 +7721,12 @@
       buttonFrame.strokes = [
         {
           type: "SOLID",
-          color: { r: 0.8, g: 0.8, b: 0.8 }
+          color: COLORS.borderGray
         }
       ];
       var stroke = {
         type: "SOLID",
-        color: { r: 0.8, g: 0.8, b: 0.8 }
+        color: COLORS.borderGray
       };
       stroke = figma.variables.setBoundVariableForPaint(
         stroke,
@@ -7090,7 +7747,7 @@
       iconPlaceholder.resize(iconSize, iconSize);
       iconPlaceholder.cornerRadius = 2;
       iconPlaceholder.fills = [
-        { type: "SOLID", color: { r: 0.5, g: 0.5, b: 0.5 } }
+        { type: "SOLID", color: COLORS.placeholder }
       ];
       buttonFrame.appendChild(iconPlaceholder);
     }
@@ -7110,8 +7767,8 @@
     const sizes = sizeProp3.values;
     const components = [];
     const rowLabels = [];
-    const rowGap = 24;
-    const labelColumnWidth = 140;
+    const rowGap = GRID_LAYOUT.rowGap.compact;
+    const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.small;
     let currentY = 0;
     for (let i = 0; i < sizes.length; i++) {
       const size = sizes[i];
@@ -7133,8 +7790,8 @@
       "light"
     );
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING2 * 2,
-      contentHeight + SECTION_PADDING2 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     const darkSection = createModeSection(
       componentsPage,
@@ -7142,54 +7799,52 @@
       "dark"
     );
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING2 * 2,
-      contentHeight + SECTION_PADDING2 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING2 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING2;
+    componentSet.x = SECTION_PADDING + labelColumnWidth;
+    componentSet.y = SECTION_PADDING;
     for (const label of rowLabels) {
       const labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING2,
-        SECTION_PADDING2 + label.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + label.y + 8
         // +8 to vertically center
       );
       lightSection.frame.appendChild(labelNode);
     }
     for (const component of components) {
       const instance = component.createInstance();
-      instance.x = component.x + SECTION_PADDING2 + labelColumnWidth;
-      instance.y = component.y + SECTION_PADDING2;
+      instance.x = component.x + SECTION_PADDING + labelColumnWidth;
+      instance.y = component.y + SECTION_PADDING;
       darkSection.frame.appendChild(instance);
     }
     for (const label of rowLabels) {
       const labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING2,
-        SECTION_PADDING2 + label.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + label.y + 8
       );
       darkSection.frame.appendChild(labelNode);
     }
-    const totalWidth = contentWidth + SECTION_PADDING2 * 2;
-    const totalHeight = contentHeight + SECTION_PADDING2 * 2;
+    const totalWidth = contentWidth + SECTION_PADDING * 2;
+    const totalHeight = contentHeight + SECTION_PADDING * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     logComplete(
       "Generated ClipboardText ComponentSet with " + sizes.length + " variants (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP2;
+    return startY + totalHeight + SECTION_GAP;
   }
 
   // scripts/figma/plugin/generators/code.ts
   var codeProps = component_registry_default.components.Code.props;
   var langProp = codeProps.lang;
-  var SECTION_PADDING3 = 48;
-  var SECTION_GAP3 = 160;
   function getPlaceholderText(lang) {
     if (lang === "bash") {
       return "npm install @cloudflare/kumo";
@@ -7265,23 +7920,23 @@
     var contentHeight = componentSet.height;
     var lightSection = createModeSection(page, "Code", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING3 * 2,
-      contentHeight + SECTION_PADDING3 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     var darkSection = createModeSection(page, "Code", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING3 * 2,
-      contentHeight + SECTION_PADDING3 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING3 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING3;
+    componentSet.x = SECTION_PADDING + labelColumnWidth;
+    componentSet.y = SECTION_PADDING;
     for (var li = 0; li < rowLabels.length; li++) {
       var label = rowLabels[li];
       var labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING3,
-        SECTION_PADDING3 + label.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + label.y + 8
         // +8 to vertically center with text
       );
       lightSection.frame.appendChild(labelNode);
@@ -7289,31 +7944,31 @@
     for (var ci = 0; ci < components.length; ci++) {
       var comp = components[ci];
       var instance = comp.createInstance();
-      instance.x = comp.x + SECTION_PADDING3 + labelColumnWidth;
-      instance.y = comp.y + SECTION_PADDING3;
+      instance.x = comp.x + SECTION_PADDING + labelColumnWidth;
+      instance.y = comp.y + SECTION_PADDING;
       darkSection.frame.appendChild(instance);
     }
     for (var di = 0; di < rowLabels.length; di++) {
       var darkLabel = rowLabels[di];
       var darkLabelNode = await createRowLabel(
         darkLabel.text,
-        SECTION_PADDING3,
-        SECTION_PADDING3 + darkLabel.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + darkLabel.y + 8
       );
       darkSection.frame.appendChild(darkLabelNode);
     }
-    var totalWidth = contentWidth + SECTION_PADDING3 * 2;
-    var totalHeight = contentHeight + SECTION_PADDING3 * 2;
+    var totalWidth = contentWidth + SECTION_PADDING * 2;
+    var totalHeight = contentHeight + SECTION_PADDING * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     logComplete(
       "Generated Code ComponentSet with " + components.length + " variants (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP3;
+    return startY + totalHeight + SECTION_GAP;
   }
   var CODE_LANGS_EXPORT = langProp.values;
   var codeComponent = component_registry_default.components.Code;
@@ -7324,8 +7979,6 @@
   var langProp2 = codeProps2.lang;
   var CODE_BLOCK_WRAPPER_STYLES = "min-w-0 rounded-md border border-color bg-surface";
   var CODE_INNER_PADDING = 10;
-  var SECTION_PADDING4 = 48;
-  var SECTION_GAP4 = 160;
   function getPlaceholderText2(lang) {
     if (lang === "bash") {
       return "npm install @cloudflare/kumo";
@@ -7356,7 +8009,7 @@
     component.paddingBottom = CODE_INNER_PADDING;
     component.primaryAxisSizingMode = "AUTO";
     component.counterAxisSizingMode = "AUTO";
-    component.cornerRadius = wrapperStyles.borderRadius || 6;
+    component.cornerRadius = wrapperStyles.borderRadius || FALLBACK_VALUES.borderRadius.medium;
     if (wrapperStyles.fillVariable) {
       var fillVar = getVariableByName(wrapperStyles.fillVariable);
       if (fillVar) {
@@ -7412,54 +8065,54 @@
     var contentHeight = componentSet.height;
     var lightSection = createModeSection(page, "CodeBlock", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING4 * 2,
-      contentHeight + SECTION_PADDING4 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     var darkSection = createModeSection(page, "CodeBlock", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING4 * 2,
-      contentHeight + SECTION_PADDING4 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING4 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING4;
+    componentSet.x = SECTION_PADDING + labelColumnWidth;
+    componentSet.y = SECTION_PADDING;
     for (var li = 0; li < rowLabels.length; li++) {
       var label = rowLabels[li];
       var labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING4,
-        SECTION_PADDING4 + label.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + label.y + 8
       );
       lightSection.frame.appendChild(labelNode);
     }
     for (var ci = 0; ci < components.length; ci++) {
       var comp = components[ci];
       var instance = comp.createInstance();
-      instance.x = comp.x + SECTION_PADDING4 + labelColumnWidth;
-      instance.y = comp.y + SECTION_PADDING4;
+      instance.x = comp.x + SECTION_PADDING + labelColumnWidth;
+      instance.y = comp.y + SECTION_PADDING;
       darkSection.frame.appendChild(instance);
     }
     for (var di = 0; di < rowLabels.length; di++) {
       var darkLabel = rowLabels[di];
       var darkLabelNode = await createRowLabel(
         darkLabel.text,
-        SECTION_PADDING4,
-        SECTION_PADDING4 + darkLabel.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + darkLabel.y + 8
       );
       darkSection.frame.appendChild(darkLabelNode);
     }
-    var totalWidth = contentWidth + SECTION_PADDING4 * 2;
-    var totalHeight = contentHeight + SECTION_PADDING4 * 2;
+    var totalWidth = contentWidth + SECTION_PADDING * 2;
+    var totalHeight = contentHeight + SECTION_PADDING * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     logComplete(
       "Generated CodeBlock ComponentSet with " + langs.length + " variants (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP4;
+    return startY + totalHeight + SECTION_GAP;
   }
 
   // scripts/figma/plugin/generators/collapsible.ts
@@ -7467,8 +8120,6 @@
   var collapsibleColors = collapsibleComponent.colors;
   var TRIGGER_BASE_STYLES = "flex items-center gap-1 text-sm text-info";
   var CONTENT_PANEL_STYLES = "my-2 border-l-2 border-color pl-4";
-  var SECTION_PADDING5 = 48;
-  var SECTION_GAP5 = 160;
   var OPEN_VALUES = [false, true];
   var STATE_VALUES = ["default", "hover", "focus", "disabled"];
   var STATE_STYLES2 = {
@@ -7485,7 +8136,7 @@
     },
     disabled: {
       textVariable: "text-color-disabled",
-      opacity: 0.5
+      opacity: OPACITY.disabled
     }
   };
   async function createCollapsibleComponent(open, state) {
@@ -7510,7 +8161,7 @@
     trigger.counterAxisAlignItems = "CENTER";
     trigger.primaryAxisSizingMode = "AUTO";
     trigger.counterAxisSizingMode = "AUTO";
-    trigger.itemSpacing = triggerStyles.gap || 4;
+    trigger.itemSpacing = triggerStyles.gap || FALLBACK_VALUES.gap.tight;
     trigger.fills = [];
     trigger.paddingTop = 4;
     trigger.paddingBottom = 4;
@@ -7525,7 +8176,7 @@
     }
     var labelText = await createTextNode(
       "Click to expand",
-      triggerStyles.fontSize || 14,
+      triggerStyles.fontSize || FALLBACK_VALUES.fontSize,
       400
     );
     labelText.name = "Label";
@@ -7551,7 +8202,7 @@
       contentPanel.primaryAxisSizingMode = "AUTO";
       contentPanel.counterAxisSizingMode = "AUTO";
       contentPanel.itemSpacing = 16;
-      contentPanel.paddingLeft = contentStyles.paddingX || 16;
+      contentPanel.paddingLeft = contentStyles.paddingX || FALLBACK_VALUES.padding.standard;
       contentPanel.paddingTop = 8;
       contentPanel.paddingBottom = 8;
       contentPanel.fills = [];
@@ -7664,76 +8315,74 @@
     var contentHeight = componentSet.height + headerRowHeight;
     var lightSection = createModeSection(componentsPage, "Collapsible", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING5 * 2,
-      contentHeight + SECTION_PADDING5 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     var darkSection = createModeSection(componentsPage, "Collapsible", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING5 * 2,
-      contentHeight + SECTION_PADDING5 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING5 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING5 + headerRowHeight;
+    componentSet.x = SECTION_PADDING + labelColumnWidth;
+    componentSet.y = SECTION_PADDING + headerRowHeight;
     await createColumnHeaders(
       columnHeaders.map(function(h) {
-        return { x: h.x + SECTION_PADDING5, text: h.text };
+        return { x: h.x + SECTION_PADDING, text: h.text };
       }),
-      SECTION_PADDING5,
+      SECTION_PADDING,
       lightSection.frame
     );
     for (var li = 0; li < rowLabels.length; li++) {
       var label = rowLabels[li];
       var labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING5,
-        SECTION_PADDING5 + label.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + label.y + 8
       );
       lightSection.frame.appendChild(labelNode);
     }
     for (var k = 0; k < components.length; k++) {
       var origComp = components[k];
       var instance = origComp.createInstance();
-      instance.x = origComp.x + SECTION_PADDING5 + labelColumnWidth;
-      instance.y = origComp.y + SECTION_PADDING5 + headerRowHeight;
+      instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
+      instance.y = origComp.y + SECTION_PADDING + headerRowHeight;
       darkSection.frame.appendChild(instance);
     }
     await createColumnHeaders(
       columnHeaders.map(function(h) {
-        return { x: h.x + SECTION_PADDING5, text: h.text };
+        return { x: h.x + SECTION_PADDING, text: h.text };
       }),
-      SECTION_PADDING5,
+      SECTION_PADDING,
       darkSection.frame
     );
     for (var di = 0; di < rowLabels.length; di++) {
       var darkLabel = rowLabels[di];
       var darkLabelNode = await createRowLabel(
         darkLabel.text,
-        SECTION_PADDING5,
-        SECTION_PADDING5 + darkLabel.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + darkLabel.y + 8
       );
       darkSection.frame.appendChild(darkLabelNode);
     }
-    var totalWidth = contentWidth + SECTION_PADDING5 * 2;
-    var totalHeight = contentHeight + SECTION_PADDING5 * 2;
+    var totalWidth = contentWidth + SECTION_PADDING * 2;
+    var totalHeight = contentHeight + SECTION_PADDING * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     logComplete(
       "Generated Collapsible ComponentSet with " + components.length + " variants (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP5;
+    return startY + totalHeight + SECTION_GAP;
   }
 
   // scripts/figma/plugin/generators/combobox.ts
   var comboboxComponent = component_registry_default.components.Combobox;
   var TRIGGER_BASE_STYLES2 = "bg-secondary ring ring-border rounded-lg";
   var DROPDOWN_PANEL_STYLES = "bg-surface border border-border";
-  var SECTION_PADDING6 = 48;
-  var SECTION_GAP6 = 160;
   var VARIANT_VALUES = ["default", "withLabel", "withError"];
   var OPEN_VALUES2 = [false, true];
   var STATE_VALUES2 = ["default", "focus", "disabled"];
@@ -7746,7 +8395,7 @@
     },
     disabled: {
       ringVariable: "color-border",
-      opacity: 0.5
+      opacity: OPACITY.disabled
     }
   };
   var VARIANT_CONFIG = {
@@ -7997,81 +8646,80 @@
     var contentHeight = componentSet.height + headerRowHeight;
     var lightSection = createModeSection(componentsPage, "Combobox", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING6 * 2,
-      contentHeight + SECTION_PADDING6 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     var darkSection = createModeSection(componentsPage, "Combobox", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING6 * 2,
-      contentHeight + SECTION_PADDING6 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING6 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING6 + headerRowHeight;
+    componentSet.x = SECTION_PADDING + labelColumnWidth;
+    componentSet.y = SECTION_PADDING + headerRowHeight;
     await createColumnHeaders(
       columnHeaders.map(function(h) {
-        return { x: h.x + SECTION_PADDING6, text: h.text };
+        return { x: h.x + SECTION_PADDING, text: h.text };
       }),
-      SECTION_PADDING6,
+      SECTION_PADDING,
       lightSection.frame
     );
     for (var li = 0; li < rowLabels.length; li++) {
       var label = rowLabels[li];
       var labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING6,
-        SECTION_PADDING6 + label.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + label.y + 8
       );
       lightSection.frame.appendChild(labelNode);
     }
     for (var k = 0; k < components.length; k++) {
       var origComp = components[k];
       var instance = origComp.createInstance();
-      instance.x = origComp.x + SECTION_PADDING6 + labelColumnWidth;
-      instance.y = origComp.y + SECTION_PADDING6 + headerRowHeight;
+      instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
+      instance.y = origComp.y + SECTION_PADDING + headerRowHeight;
       darkSection.frame.appendChild(instance);
     }
     await createColumnHeaders(
       columnHeaders.map(function(h) {
-        return { x: h.x + SECTION_PADDING6, text: h.text };
+        return { x: h.x + SECTION_PADDING, text: h.text };
       }),
-      SECTION_PADDING6,
+      SECTION_PADDING,
       darkSection.frame
     );
     for (var di = 0; di < rowLabels.length; di++) {
       var darkLabel = rowLabels[di];
       var darkLabelNode = await createRowLabel(
         darkLabel.text,
-        SECTION_PADDING6,
-        SECTION_PADDING6 + darkLabel.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + darkLabel.y + 8
       );
       darkSection.frame.appendChild(darkLabelNode);
     }
-    var totalWidth = contentWidth + SECTION_PADDING6 * 2;
-    var totalHeight = contentHeight + SECTION_PADDING6 * 2;
+    var totalWidth = contentWidth + SECTION_PADDING * 2;
+    var totalHeight = contentHeight + SECTION_PADDING * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     logComplete(
       "Generated Combobox ComponentSet with " + components.length + " variants (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP6;
+    return startY + totalHeight + SECTION_GAP;
   }
 
   // scripts/figma/plugin/generators/date-range-picker.ts
   var dateRangePickerComponent = component_registry_default.components.DateRangePicker;
   var dateRangePickerProps = dateRangePickerComponent.props;
+  var dateRangePickerStyling = component_registry_default.components.DateRangePicker.styling;
   var sizeProp4 = dateRangePickerProps.size;
   var variantProp5 = dateRangePickerProps.variant;
-  var SECTION_PADDING7 = 48;
-  var SECTION_GAP7 = 160;
   var SIZE_VALUES = sizeProp4.values;
   var VARIANT_VALUES2 = variantProp5.values;
   var SELECTED_VALUES = [false, true];
-  var SIZE_CONFIG = {
+  var FALLBACK_SIZE_CONFIG = {
     sm: {
       calendarWidth: 168,
       cellHeight: 22,
@@ -8100,6 +8748,21 @@
       gap: 12
     }
   };
+  function getSizeConfigFromRegistry() {
+    if (!(dateRangePickerStyling == null ? void 0 : dateRangePickerStyling.sizeVariants)) return FALLBACK_SIZE_CONFIG;
+    var config = {};
+    for (var i = 0; i < SIZE_VALUES.length; i++) {
+      var size = SIZE_VALUES[i];
+      var sizeData = dateRangePickerStyling.sizeVariants[size];
+      if (sizeData && sizeData.dimensions) {
+        config[size] = sizeData.dimensions;
+      } else {
+        config[size] = FALLBACK_SIZE_CONFIG[size];
+      }
+    }
+    return config;
+  }
+  var SIZE_CONFIG = getSizeConfigFromRegistry();
   function getVariantBackground(variant) {
     var classes = variantProp5.classes[variant] || variantProp5.classes.default;
     if (classes.indexOf("bg-calendar") >= 0) {
@@ -8554,30 +9217,30 @@
     var contentHeight = componentSet.height + headerRowHeight;
     var lightSection = createModeSection(page, "DateRangePicker", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING7 * 2,
-      contentHeight + SECTION_PADDING7 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     var darkSection = createModeSection(page, "DateRangePicker", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING7 * 2,
-      contentHeight + SECTION_PADDING7 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING7 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING7 + headerRowHeight;
+    componentSet.x = SECTION_PADDING + labelColumnWidth;
+    componentSet.y = SECTION_PADDING + headerRowHeight;
     await createColumnHeaders(
       columnHeaders.map(function(h) {
-        return { x: h.x + SECTION_PADDING7, text: h.text };
+        return { x: h.x + SECTION_PADDING, text: h.text };
       }),
-      SECTION_PADDING7,
+      SECTION_PADDING,
       lightSection.frame
     );
     for (var li = 0; li < rowLabels.length; li++) {
       var label = rowLabels[li];
       var labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING7,
-        SECTION_PADDING7 + label.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + label.y + 8
       );
       lightSection.frame.appendChild(labelNode);
     }
@@ -8591,29 +9254,29 @@
     if (mutedVar) {
       bindTextColorToVariable(noteText, mutedVar.id);
     }
-    noteText.x = SECTION_PADDING7;
-    noteText.y = SECTION_PADDING7 + yOffset + 16;
+    noteText.x = SECTION_PADDING;
+    noteText.y = SECTION_PADDING + yOffset + 16;
     lightSection.frame.appendChild(noteText);
     for (var k = 0; k < components.length; k++) {
       var origComp = components[k];
       var instance = origComp.createInstance();
-      instance.x = origComp.x + SECTION_PADDING7 + labelColumnWidth;
-      instance.y = origComp.y + SECTION_PADDING7 + headerRowHeight;
+      instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
+      instance.y = origComp.y + SECTION_PADDING + headerRowHeight;
       darkSection.frame.appendChild(instance);
     }
     await createColumnHeaders(
       columnHeaders.map(function(h) {
-        return { x: h.x + SECTION_PADDING7, text: h.text };
+        return { x: h.x + SECTION_PADDING, text: h.text };
       }),
-      SECTION_PADDING7,
+      SECTION_PADDING,
       darkSection.frame
     );
     for (var di = 0; di < rowLabels.length; di++) {
       var darkLabel = rowLabels[di];
       var darkLabelNode = await createRowLabel(
         darkLabel.text,
-        SECTION_PADDING7,
-        SECTION_PADDING7 + darkLabel.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + darkLabel.y + 8
       );
       darkSection.frame.appendChild(darkLabelNode);
     }
@@ -8626,67 +9289,92 @@
     if (mutedVar) {
       bindTextColorToVariable(darkNoteText, mutedVar.id);
     }
-    darkNoteText.x = SECTION_PADDING7;
-    darkNoteText.y = SECTION_PADDING7 + yOffset + 16;
+    darkNoteText.x = SECTION_PADDING;
+    darkNoteText.y = SECTION_PADDING + yOffset + 16;
     darkSection.frame.appendChild(darkNoteText);
-    var totalWidth = contentWidth + SECTION_PADDING7 * 2;
-    var totalHeight = contentHeight + SECTION_PADDING7 * 2 + 40;
+    var totalWidth = contentWidth + SECTION_PADDING * 2;
+    var totalHeight = contentHeight + SECTION_PADDING * 2 + 40;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     logComplete(
       "\u2705 Generated DateRangePicker ComponentSet with " + components.length + " variants (base size only, light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP7;
+    return startY + totalHeight + SECTION_GAP;
   }
 
   // scripts/figma/plugin/generators/dialog.ts
   var dialogProps = component_registry_default.components.Dialog.props;
   var sizeProp5 = dialogProps.size;
-  var SECTION_PADDING8 = 48;
-  var SECTION_GAP8 = 160;
   var SIZE_VALUES2 = sizeProp5.values;
+  function parseDialogWidth(size, fallbackWidth) {
+    var classes = sizeProp5.classes[size];
+    if (!classes) return fallbackWidth;
+    var parsed = parseTailwindClasses(classes);
+    return parsed.minWidth !== void 0 ? parsed.minWidth : fallbackWidth;
+  }
   var SIZE_CONFIG2 = {
     sm: {
-      width: 350,
-      titleSize: 20,
-      titleWeight: 600,
-      descSize: 16,
-      padding: 16,
-      gap: 8,
+      width: parseDialogWidth("sm", 288),
+      // min-w-72 = 288px (fallback)
+      titleSize: FONT_SIZE.lg,
+      // 20px
+      titleWeight: FALLBACK_VALUES.fontWeight.semiBold,
+      // 600
+      descSize: FONT_SIZE.base,
+      // 16px
+      padding: FALLBACK_VALUES.padding.standard,
+      // 16px
+      gap: SPACING.base,
+      // 8px
       buttonSize: "sm"
     },
     base: {
-      width: 384,
-      // min-w-96 = 24rem = 384px
-      titleSize: 20,
-      titleWeight: 600,
-      descSize: 16,
-      padding: 24,
-      gap: 16,
+      width: parseDialogWidth("base", 384),
+      // min-w-96 = 384px (fallback)
+      titleSize: FONT_SIZE.lg,
+      // 20px
+      titleWeight: FALLBACK_VALUES.fontWeight.semiBold,
+      // 600
+      descSize: FONT_SIZE.base,
+      // 16px
+      padding: FALLBACK_VALUES.padding.large,
+      // 24px
+      gap: FALLBACK_VALUES.gap.large,
+      // 16px
       buttonSize: "base"
     },
     lg: {
-      width: 512,
-      // min-w-[32rem] = 512px
-      titleSize: 20,
-      titleWeight: 600,
-      descSize: 16,
-      padding: 24,
-      gap: 16,
+      width: parseDialogWidth("lg", 512),
+      // min-w-[32rem] = 512px (fallback)
+      titleSize: FONT_SIZE.lg,
+      // 20px
+      titleWeight: FALLBACK_VALUES.fontWeight.semiBold,
+      // 600
+      descSize: FONT_SIZE.base,
+      // 16px
+      padding: FALLBACK_VALUES.padding.large,
+      // 24px
+      gap: FALLBACK_VALUES.gap.large,
+      // 16px
       buttonSize: "base"
     },
     xl: {
-      width: 768,
-      // min-w-[48rem] = 768px
-      titleSize: 20,
-      titleWeight: 600,
-      descSize: 16,
-      padding: 24,
-      gap: 16,
+      width: parseDialogWidth("xl", 768),
+      // min-w-[48rem] = 768px (fallback)
+      titleSize: FONT_SIZE.lg,
+      // 20px
+      titleWeight: FALLBACK_VALUES.fontWeight.semiBold,
+      // 600
+      descSize: FONT_SIZE.base,
+      // 16px
+      padding: FALLBACK_VALUES.padding.large,
+      // 24px
+      gap: FALLBACK_VALUES.gap.large,
+      // 16px
       buttonSize: "base"
     }
   };
@@ -8699,19 +9387,19 @@
     button.primaryAxisSizingMode = "AUTO";
     button.counterAxisSizingMode = "AUTO";
     if (size === "sm") {
-      button.paddingLeft = 12;
-      button.paddingRight = 12;
-      button.paddingTop = 8;
-      button.paddingBottom = 8;
+      button.paddingLeft = FALLBACK_VALUES.padding.horizontal;
+      button.paddingRight = FALLBACK_VALUES.padding.horizontal;
+      button.paddingTop = SPACING.base;
+      button.paddingBottom = SPACING.base;
       button.minWidth = 70;
     } else {
-      button.paddingLeft = 16;
-      button.paddingRight = 16;
-      button.paddingTop = 8;
-      button.paddingBottom = 8;
+      button.paddingLeft = FALLBACK_VALUES.padding.large;
+      button.paddingRight = FALLBACK_VALUES.padding.large;
+      button.paddingTop = SPACING.base;
+      button.paddingBottom = SPACING.base;
       button.minWidth = 100;
     }
-    button.itemSpacing = size === "sm" ? 4 : 8;
+    button.itemSpacing = size === "sm" ? SPACING.xs : SPACING.base;
     button.cornerRadius = BORDER_RADIUS.md;
     if (isPrimary) {
       var primaryBgVar = getVariableByName("color-primary");
@@ -8725,8 +9413,8 @@
         bindStrokeToVariable(button, borderVar.id, 1);
       }
     }
-    var fontSize = size === "sm" ? 14 : 16;
-    var buttonLabel = await createTextNode(label, fontSize, 600);
+    var fontSize = size === "sm" ? theme_data_default.tailwind.fontSize.sm : FONT_SIZE.base;
+    var buttonLabel = await createTextNode(label, fontSize, FALLBACK_VALUES.fontWeight.semiBold);
     buttonLabel.name = "Label";
     buttonLabel.textAutoResize = "WIDTH_AND_HEIGHT";
     if (isPrimary) {
@@ -8762,10 +9450,10 @@
     component.effects = [
       {
         type: "DROP_SHADOW",
-        color: { r: 0, g: 0, b: 0, a: 0.16 },
-        offset: { x: 0, y: 8 },
-        radius: 32,
-        spread: 0,
+        color: { r: 0, g: 0, b: 0, a: SHADOWS.dialog.opacity },
+        offset: { x: SHADOWS.dialog.offsetX, y: SHADOWS.dialog.offsetY },
+        radius: SHADOWS.dialog.blur,
+        spread: SHADOWS.dialog.spread,
         visible: true,
         blendMode: "NORMAL"
       }
@@ -8777,11 +9465,11 @@
     header.counterAxisAlignItems = "CENTER";
     header.primaryAxisSizingMode = "FIXED";
     header.counterAxisSizingMode = "AUTO";
-    header.resize(config.width - config.padding * 2, 24);
+    header.resize(config.width - config.padding * 2, GRID_LAYOUT.headerRowHeight);
     header.layoutAlign = "STRETCH";
     header.layoutGrow = 0;
     header.fills = [];
-    header.itemSpacing = 8;
+    header.itemSpacing = SPACING.base;
     var title = await createTextNode(
       "Dialog Title",
       config.titleSize,
@@ -8804,7 +9492,8 @@
     var description = await createTextNode(
       "This is a dialog description with some content explaining the purpose of this dialog.",
       config.descSize,
-      400
+      FALLBACK_VALUES.fontWeight.normal
+      // 400
     );
     description.name = "Description";
     description.textAutoResize = "HEIGHT";
@@ -8825,7 +9514,7 @@
     actions.layoutAlign = "STRETCH";
     actions.layoutGrow = 0;
     actions.fills = [];
-    actions.itemSpacing = 12;
+    actions.itemSpacing = SPACING.lg;
     var cancelButton = await createButton("Cancel", false, config.buttonSize);
     actions.appendChild(cancelButton);
     var primaryButton = await createButton("Confirm", true, config.buttonSize);
@@ -8838,8 +9527,8 @@
     figma.currentPage = page;
     var components = [];
     var rowLabels = [];
-    var componentGapY = 40;
-    var labelColumnWidth = 120;
+    var componentGapY = GRID_LAYOUT.rowGap.medium;
+    var labelColumnWidth = GRID_LAYOUT.labelColumnWidth.compact;
     var yOffset = 0;
     var maxWidth = 0;
     for (var i = 0; i < SIZE_VALUES2.length; i++) {
@@ -8865,60 +9554,60 @@
     var contentHeight = componentSet.height;
     var lightSection = createModeSection(page, "Dialog", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING8 * 2,
-      contentHeight + SECTION_PADDING8 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     var darkSection = createModeSection(page, "Dialog", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING8 * 2,
-      contentHeight + SECTION_PADDING8 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING8 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING8;
+    componentSet.x = SECTION_PADDING + labelColumnWidth;
+    componentSet.y = SECTION_PADDING;
     for (var li = 0; li < rowLabels.length; li++) {
       var label = rowLabels[li];
       var labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING8,
-        SECTION_PADDING8 + label.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.lg
+        // Center label for dialog
       );
       lightSection.frame.appendChild(labelNode);
     }
     for (var k = 0; k < components.length; k++) {
       var origComp = components[k];
       var instance = origComp.createInstance();
-      instance.x = origComp.x + SECTION_PADDING8 + labelColumnWidth;
-      instance.y = origComp.y + SECTION_PADDING8;
+      instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
+      instance.y = origComp.y + SECTION_PADDING;
       darkSection.frame.appendChild(instance);
     }
     for (var di = 0; di < rowLabels.length; di++) {
       var darkLabel = rowLabels[di];
       var darkLabelNode = await createRowLabel(
         darkLabel.text,
-        SECTION_PADDING8,
-        SECTION_PADDING8 + darkLabel.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + darkLabel.y + GRID_LAYOUT.labelVerticalOffset.lg
+        // Center label for dialog
       );
       darkSection.frame.appendChild(darkLabelNode);
     }
-    var totalWidth = contentWidth + SECTION_PADDING8 * 2;
-    var totalHeight = contentHeight + SECTION_PADDING8 * 2;
+    var totalWidth = contentWidth + SECTION_PADDING * 2;
+    var totalHeight = contentHeight + SECTION_PADDING * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     logComplete(
       "Generated Dialog ComponentSet with " + components.length + " variants (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP8;
+    return startY + totalHeight + SECTION_GAP;
   }
 
   // scripts/figma/plugin/generators/dropdown.ts
   var dropdownComponent = component_registry_default.components.DropdownMenu;
-  var SECTION_PADDING9 = 48;
-  var SECTION_GAP9 = 160;
   var OPEN_VALUES3 = [false, true];
   var VARIANT_VALUES3 = [
     "default",
@@ -8939,13 +9628,13 @@
     itemFrame.primaryAxisSizingMode = "FIXED";
     itemFrame.counterAxisSizingMode = "AUTO";
     itemFrame.layoutAlign = "STRETCH";
-    itemFrame.resize(DROPDOWN_WIDTH - 12, 32);
-    itemFrame.itemSpacing = 8;
-    itemFrame.paddingLeft = 8;
-    itemFrame.paddingRight = 8;
-    itemFrame.paddingTop = 6;
-    itemFrame.paddingBottom = 6;
-    itemFrame.cornerRadius = 6;
+    itemFrame.resize(DROPDOWN_WIDTH - theme_data_default.tailwind.spacing.scale["3"], theme_data_default.tailwind.spacing.scale["8"]);
+    itemFrame.itemSpacing = SPACING.base;
+    itemFrame.paddingLeft = SPACING.base;
+    itemFrame.paddingRight = SPACING.base;
+    itemFrame.paddingTop = theme_data_default.tailwind.spacing.scale["1.5"];
+    itemFrame.paddingBottom = theme_data_default.tailwind.spacing.scale["1.5"];
+    itemFrame.cornerRadius = BORDER_RADIUS.md;
     itemFrame.fills = [];
     if (opts.highlighted) {
       var highlightVar = getVariableByName("color-color-3");
@@ -8954,7 +9643,7 @@
       }
     }
     if (opts.disabled) {
-      itemFrame.opacity = 0.5;
+      itemFrame.opacity = OPACITY.disabled;
     }
     var leftContainer = figma.createFrame();
     leftContainer.name = "Left";
@@ -8962,7 +9651,7 @@
     leftContainer.primaryAxisSizingMode = "AUTO";
     leftContainer.counterAxisSizingMode = "AUTO";
     leftContainer.counterAxisAlignItems = "CENTER";
-    leftContainer.itemSpacing = 8;
+    leftContainer.itemSpacing = SPACING.base;
     leftContainer.fills = [];
     if (opts.icon) {
       var icon = getButtonIcon(opts.icon, "sm");
@@ -8971,7 +9660,7 @@
       bindIconColor(icon, iconColorToken);
       leftContainer.appendChild(icon);
     }
-    var labelText = await createTextNode(label, 14, 400);
+    var labelText = await createTextNode(label, FONT_SIZE.base, FALLBACK_VALUES.fontWeight.normal);
     labelText.name = "Label";
     labelText.textAutoResize = "WIDTH_AND_HEIGHT";
     var textColorToken = opts.variant === "danger" ? "text-color-error" : "text-color-surface";
@@ -8982,7 +9671,7 @@
     leftContainer.appendChild(labelText);
     itemFrame.appendChild(leftContainer);
     if (opts.shortcut) {
-      var shortcutText = await createTextNode(opts.shortcut, 12, 400);
+      var shortcutText = await createTextNode(opts.shortcut, FONT_SIZE.xs, FALLBACK_VALUES.fontWeight.normal);
       shortcutText.name = "Shortcut";
       shortcutText.textAutoResize = "WIDTH_AND_HEIGHT";
       shortcutText.opacity = 0.6;
@@ -9003,13 +9692,13 @@
     itemFrame.primaryAxisSizingMode = "FIXED";
     itemFrame.counterAxisSizingMode = "AUTO";
     itemFrame.layoutAlign = "STRETCH";
-    itemFrame.resize(DROPDOWN_WIDTH - 12, 32);
-    itemFrame.itemSpacing = 8;
-    itemFrame.paddingLeft = 8;
-    itemFrame.paddingRight = 8;
-    itemFrame.paddingTop = 6;
-    itemFrame.paddingBottom = 6;
-    itemFrame.cornerRadius = 6;
+    itemFrame.resize(DROPDOWN_WIDTH - theme_data_default.tailwind.spacing.scale["3"], theme_data_default.tailwind.spacing.scale["8"]);
+    itemFrame.itemSpacing = SPACING.base;
+    itemFrame.paddingLeft = SPACING.base;
+    itemFrame.paddingRight = SPACING.base;
+    itemFrame.paddingTop = theme_data_default.tailwind.spacing.scale["1.5"];
+    itemFrame.paddingBottom = theme_data_default.tailwind.spacing.scale["1.5"];
+    itemFrame.cornerRadius = BORDER_RADIUS.md;
     itemFrame.fills = [];
     var checkboxState = checked ? "checked" : "unchecked";
     var checkboxInstance = createComponentInstance("Checkbox", {
@@ -9023,8 +9712,8 @@
     } else {
       var checkboxFrame = figma.createFrame();
       checkboxFrame.name = "Checkbox";
-      checkboxFrame.resize(16, 16);
-      checkboxFrame.cornerRadius = 4;
+      checkboxFrame.resize(theme_data_default.tailwind.spacing.scale["4"], theme_data_default.tailwind.spacing.scale["4"]);
+      checkboxFrame.cornerRadius = BORDER_RADIUS.sm;
       if (checked) {
         var primaryVar = getVariableByName("color-primary");
         if (primaryVar) {
@@ -9046,7 +9735,7 @@
       }
       itemFrame.appendChild(checkboxFrame);
     }
-    var labelText = await createTextNode(label, 14, 400);
+    var labelText = await createTextNode(label, FONT_SIZE.base, FALLBACK_VALUES.fontWeight.normal);
     labelText.name = "Label";
     labelText.textAutoResize = "WIDTH_AND_HEIGHT";
     var textVar = getVariableByName("text-color-surface");
@@ -9063,7 +9752,7 @@
     separator.primaryAxisSizingMode = "FIXED";
     separator.counterAxisSizingMode = "FIXED";
     separator.layoutAlign = "STRETCH";
-    separator.resize(DROPDOWN_WIDTH - 12, 9);
+    separator.resize(DROPDOWN_WIDTH - theme_data_default.tailwind.spacing.scale["3"], 9);
     separator.fills = [];
     var line = figma.createFrame();
     line.name = "Line";
@@ -9071,14 +9760,14 @@
     line.primaryAxisSizingMode = "FIXED";
     line.counterAxisSizingMode = "FIXED";
     line.layoutAlign = "STRETCH";
-    line.resize(DROPDOWN_WIDTH - 12, 1);
+    line.resize(DROPDOWN_WIDTH - theme_data_default.tailwind.spacing.scale["3"], 1);
     var mutedVar = getVariableByName("color-muted");
     if (mutedVar) {
       bindFillToVariable(line, mutedVar.id);
     }
     separator.appendChild(line);
-    separator.paddingTop = 4;
-    separator.paddingBottom = 4;
+    separator.paddingTop = SPACING.xs;
+    separator.paddingBottom = SPACING.xs;
     return separator;
   }
   async function createGroupLabel(label) {
@@ -9088,13 +9777,13 @@
     labelFrame.primaryAxisSizingMode = "FIXED";
     labelFrame.counterAxisSizingMode = "AUTO";
     labelFrame.layoutAlign = "STRETCH";
-    labelFrame.resize(DROPDOWN_WIDTH - 12, 24);
-    labelFrame.paddingLeft = 8;
-    labelFrame.paddingRight = 8;
-    labelFrame.paddingTop = 6;
-    labelFrame.paddingBottom = 2;
+    labelFrame.resize(DROPDOWN_WIDTH - theme_data_default.tailwind.spacing.scale["3"], theme_data_default.tailwind.spacing.scale["6"]);
+    labelFrame.paddingLeft = SPACING.base;
+    labelFrame.paddingRight = SPACING.base;
+    labelFrame.paddingTop = theme_data_default.tailwind.spacing.scale["1.5"];
+    labelFrame.paddingBottom = theme_data_default.tailwind.spacing.scale["0.5"];
     labelFrame.fills = [];
-    var labelText = await createTextNode(label, 14, 600);
+    var labelText = await createTextNode(label, FONT_SIZE.base, FALLBACK_VALUES.fontWeight.semiBold);
     labelText.name = "Label";
     labelText.textAutoResize = "WIDTH_AND_HEIGHT";
     var textVar = getVariableByName("text-color-surface");
@@ -9112,11 +9801,11 @@
     button.counterAxisAlignItems = "CENTER";
     button.primaryAxisSizingMode = "AUTO";
     button.counterAxisSizingMode = "AUTO";
-    button.itemSpacing = 8;
-    button.paddingLeft = 12;
-    button.paddingRight = 12;
-    button.paddingTop = 8;
-    button.paddingBottom = 8;
+    button.itemSpacing = SPACING.base;
+    button.paddingLeft = theme_data_default.tailwind.spacing.scale["3"];
+    button.paddingRight = theme_data_default.tailwind.spacing.scale["3"];
+    button.paddingTop = SPACING.base;
+    button.paddingBottom = SPACING.base;
     button.cornerRadius = BORDER_RADIUS.lg;
     var bgVar = getVariableByName("color-secondary");
     if (bgVar) {
@@ -9126,7 +9815,7 @@
     if (borderVar) {
       bindStrokeToVariable(button, borderVar.id, 1);
     }
-    var buttonText = await createTextNode(label, 14, 500);
+    var buttonText = await createTextNode(label, FONT_SIZE.base, FALLBACK_VALUES.fontWeight.medium);
     buttonText.name = "Label";
     buttonText.textAutoResize = "WIDTH_AND_HEIGHT";
     var textVar = getVariableByName("text-color-surface");
@@ -9144,11 +9833,11 @@
     panel.counterAxisSizingMode = "FIXED";
     panel.counterAxisAlignItems = "MIN";
     panel.resize(DROPDOWN_WIDTH, 100);
-    panel.itemSpacing = 2;
-    panel.paddingLeft = 6;
-    panel.paddingRight = 6;
-    panel.paddingTop = 6;
-    panel.paddingBottom = 6;
+    panel.itemSpacing = theme_data_default.tailwind.spacing.scale["0.5"];
+    panel.paddingLeft = theme_data_default.tailwind.spacing.scale["1.5"];
+    panel.paddingRight = theme_data_default.tailwind.spacing.scale["1.5"];
+    panel.paddingTop = theme_data_default.tailwind.spacing.scale["1.5"];
+    panel.paddingBottom = theme_data_default.tailwind.spacing.scale["1.5"];
     panel.cornerRadius = BORDER_RADIUS.lg;
     var bgVar = getVariableByName("color-secondary");
     if (bgVar) {
@@ -9245,7 +9934,7 @@
     component.primaryAxisSizingMode = "AUTO";
     component.counterAxisSizingMode = "AUTO";
     component.counterAxisAlignItems = "MIN";
-    component.itemSpacing = 4;
+    component.itemSpacing = SPACING.xs;
     component.fills = [];
     var triggerLabel = variant === "withCheckbox" ? "View Options" : variant === "withGroups" ? "User Menu" : variant === "withShortcuts" ? "Edit" : "Open Menu";
     var trigger = await createTriggerButton(triggerLabel);
@@ -9334,68 +10023,68 @@
     var contentHeight = componentSet.height + headerRowHeight;
     var lightSection = createModeSection(page, "Dropdown", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING9 * 2,
-      contentHeight + SECTION_PADDING9 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     var darkSection = createModeSection(page, "Dropdown", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING9 * 2,
-      contentHeight + SECTION_PADDING9 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING9 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING9 + headerRowHeight;
+    componentSet.x = SECTION_PADDING + labelColumnWidth;
+    componentSet.y = SECTION_PADDING + headerRowHeight;
     await createColumnHeaders(
       columnHeaders.map(function(h) {
-        return { x: h.x + SECTION_PADDING9, text: h.text };
+        return { x: h.x + SECTION_PADDING, text: h.text };
       }),
-      SECTION_PADDING9,
+      SECTION_PADDING,
       lightSection.frame
     );
     for (var li = 0; li < rowLabels.length; li++) {
       var label = rowLabels[li];
       var labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING9,
-        SECTION_PADDING9 + label.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + label.y + 8
       );
       lightSection.frame.appendChild(labelNode);
     }
     for (var k = 0; k < components.length; k++) {
       var origComp = components[k];
       var instance = origComp.createInstance();
-      instance.x = origComp.x + SECTION_PADDING9 + labelColumnWidth;
-      instance.y = origComp.y + SECTION_PADDING9 + headerRowHeight;
+      instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
+      instance.y = origComp.y + SECTION_PADDING + headerRowHeight;
       darkSection.frame.appendChild(instance);
     }
     await createColumnHeaders(
       columnHeaders.map(function(h) {
-        return { x: h.x + SECTION_PADDING9, text: h.text };
+        return { x: h.x + SECTION_PADDING, text: h.text };
       }),
-      SECTION_PADDING9,
+      SECTION_PADDING,
       darkSection.frame
     );
     for (var di = 0; di < rowLabels.length; di++) {
       var darkLabel = rowLabels[di];
       var darkLabelNode = await createRowLabel(
         darkLabel.text,
-        SECTION_PADDING9,
-        SECTION_PADDING9 + darkLabel.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + darkLabel.y + 8
       );
       darkSection.frame.appendChild(darkLabelNode);
     }
-    var totalWidth = contentWidth + SECTION_PADDING9 * 2;
-    var totalHeight = contentHeight + SECTION_PADDING9 * 2;
+    var totalWidth = contentWidth + SECTION_PADDING * 2;
+    var totalHeight = contentHeight + SECTION_PADDING * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     logComplete(
       "Generated Dropdown ComponentSet with " + components.length + " variants (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP9;
+    return startY + totalHeight + SECTION_GAP;
   }
 
   // scripts/figma/plugin/generators/empty.ts
@@ -9404,7 +10093,7 @@
   var sizeProp6 = emptyProps.size;
   var EMPTY_BASE_STYLES = "flex w-full flex-col items-center rounded-xl border border-color bg-secondary text-surface";
   async function createEmptyComponent(size) {
-    var _a;
+    var _a6;
     const classes = sizeProp6.classes[size] || "";
     const description = sizeProp6.descriptions[size] || "";
     const baseStyles = parseTailwindClasses(EMPTY_BASE_STYLES);
@@ -9455,7 +10144,7 @@
     if (baseStyles.hasBorder && baseStyles.strokeVariable) {
       const strokeVar = getVariableByName(baseStyles.strokeVariable);
       if (strokeVar) {
-        const strokeWeight = (_a = baseStyles.strokeWeight) != null ? _a : 1;
+        const strokeWeight = (_a6 = baseStyles.strokeWeight) != null ? _a6 : 1;
         bindStrokeToVariable(component, strokeVar.id, strokeWeight);
       }
     }
@@ -9518,8 +10207,8 @@
     const sizes = sizeProp6.values;
     const components = [];
     const rowLabels = [];
-    const rowGap = 40;
-    const labelColumnWidth = 180;
+    const rowGap = GRID_LAYOUT.rowGap.medium;
+    const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.medium;
     let currentY = 0;
     for (let i = 0; i < sizes.length; i++) {
       const size = sizes[i];
@@ -9575,9 +10264,9 @@
     const totalHeight = contentHeight + SECTION_PADDING * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     logInfo(
       "\u2705 Generated Empty ComponentSet with " + sizes.length + " sizes (light + dark)"
@@ -9586,8 +10275,6 @@
   }
 
   // scripts/figma/plugin/generators/input.ts
-  var SECTION_PADDING10 = 48;
-  var SECTION_GAP10 = 160;
   var inputRegistry = component_registry_default.components.Input;
   var inputProps = inputRegistry.props;
   var inputStyling = inputRegistry.styling;
@@ -9595,7 +10282,7 @@
   var VARIANT_VALUES4 = inputProps.variant.values;
   var STATE_VALUES3 = ["default", "focus", "disabled"];
   var WITH_LABEL_VALUES = [false, true];
-  function getSizeConfigFromRegistry(size) {
+  function getSizeConfigFromRegistry2(size) {
     var sizeVariant = inputStyling.sizeVariants[size];
     if (!sizeVariant) {
       sizeVariant = inputStyling.sizeVariants.base;
@@ -9615,10 +10302,10 @@
     };
   }
   var SIZE_CONFIG3 = {
-    xs: getSizeConfigFromRegistry("xs"),
-    sm: getSizeConfigFromRegistry("sm"),
-    base: getSizeConfigFromRegistry("base"),
-    lg: getSizeConfigFromRegistry("lg")
+    xs: getSizeConfigFromRegistry2("xs"),
+    sm: getSizeConfigFromRegistry2("sm"),
+    base: getSizeConfigFromRegistry2("base"),
+    lg: getSizeConfigFromRegistry2("lg")
   };
   var STATE_STYLES4 = {
     default: {
@@ -9631,7 +10318,7 @@
     },
     disabled: {
       ringVariable: "color-border",
-      opacity: 0.5,
+      opacity: OPACITY.disabled,
       textColorVariable: "text-color-muted"
     }
   };
@@ -9658,13 +10345,13 @@
     component.primaryAxisSizingMode = "AUTO";
     component.counterAxisSizingMode = "AUTO";
     component.counterAxisAlignItems = "MIN";
-    component.itemSpacing = 4;
+    component.itemSpacing = SPACING.xs;
     component.fills = [];
     if (stateStyle.opacity !== void 0) {
       component.opacity = stateStyle.opacity;
     }
     if (withLabel && variantConfig.label) {
-      var labelText = await createTextNode(variantConfig.label, 14, 500);
+      var labelText = await createTextNode(variantConfig.label, FONT_SIZE.xs, FALLBACK_VALUES.fontWeight.medium);
       labelText.name = "Label";
       labelText.textAutoResize = "WIDTH_AND_HEIGHT";
       var labelVar = getVariableByName("text-color-label");
@@ -9681,7 +10368,7 @@
     inputFrame.primaryAxisSizingMode = "FIXED";
     inputFrame.counterAxisSizingMode = "FIXED";
     inputFrame.resize(sizeConfig.width, sizeConfig.height);
-    inputFrame.itemSpacing = 8;
+    inputFrame.itemSpacing = SPACING.base;
     inputFrame.paddingLeft = sizeConfig.paddingX;
     inputFrame.paddingRight = sizeConfig.paddingX;
     inputFrame.paddingTop = 0;
@@ -9705,7 +10392,7 @@
     var placeholderText = await createTextNode(
       placeholderValue,
       sizeConfig.fontSize,
-      400
+      FALLBACK_VALUES.fontWeight.normal
     );
     placeholderText.name = "Placeholder";
     placeholderText.textAutoResize = "WIDTH_AND_HEIGHT";
@@ -9716,7 +10403,7 @@
     inputFrame.appendChild(placeholderText);
     component.appendChild(inputFrame);
     if (withLabel && variantConfig.description && variant === "default") {
-      var descText = await createTextNode(variantConfig.description, 12, 400);
+      var descText = await createTextNode(variantConfig.description, FONT_SIZE.xs, FALLBACK_VALUES.fontWeight.normal);
       descText.name = "Description";
       descText.textAutoResize = "WIDTH_AND_HEIGHT";
       var descVar = getVariableByName("text-color-muted");
@@ -9726,7 +10413,7 @@
       component.appendChild(descText);
     }
     if (withLabel && variantConfig.errorMessage && variant === "error") {
-      var errorText = await createTextNode(variantConfig.errorMessage, 12, 400);
+      var errorText = await createTextNode(variantConfig.errorMessage, FONT_SIZE.xs, FALLBACK_VALUES.fontWeight.normal);
       errorText.name = "Error";
       errorText.textAutoResize = "WIDTH_AND_HEIGHT";
       var errorVar = getVariableByName("text-color-error");
@@ -9744,9 +10431,9 @@
     var rowLabels = [];
     var columnHeaders = [];
     var componentGapX = 24;
-    var componentGapY = 40;
-    var headerRowHeight = 24;
-    var labelColumnWidth = 200;
+    var componentGapY = GRID_LAYOUT.rowGap.medium;
+    var headerRowHeight = GRID_LAYOUT.headerRowHeight;
+    var labelColumnWidth = GRID_LAYOUT.labelColumnWidth.wide;
     var rowComponents = /* @__PURE__ */ new Map();
     var rowIndex = 0;
     for (var si = 0; si < SIZE_VALUES3.length; si++) {
@@ -9837,114 +10524,107 @@
     var contentHeight = componentSet.height + headerRowHeight;
     var lightSection = createModeSection(page, "Input", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING10 * 2,
-      contentHeight + SECTION_PADDING10 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     var darkSection = createModeSection(page, "Input", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING10 * 2,
-      contentHeight + SECTION_PADDING10 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING10 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING10 + headerRowHeight;
+    componentSet.x = SECTION_PADDING + labelColumnWidth;
+    componentSet.y = SECTION_PADDING + headerRowHeight;
     await createColumnHeaders(
       columnHeaders.map(function(h) {
-        return { x: h.x + SECTION_PADDING10, text: h.text };
+        return { x: h.x + SECTION_PADDING, text: h.text };
       }),
-      SECTION_PADDING10,
+      SECTION_PADDING,
       lightSection.frame
     );
     for (var li = 0; li < rowLabels.length; li++) {
       var label = rowLabels[li];
       var labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING10,
-        SECTION_PADDING10 + label.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md
       );
       lightSection.frame.appendChild(labelNode);
     }
     for (var k = 0; k < components.length; k++) {
       var origComp = components[k];
       var instance = origComp.createInstance();
-      instance.x = origComp.x + SECTION_PADDING10 + labelColumnWidth;
-      instance.y = origComp.y + SECTION_PADDING10 + headerRowHeight;
+      instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
+      instance.y = origComp.y + SECTION_PADDING + headerRowHeight;
       darkSection.frame.appendChild(instance);
     }
     await createColumnHeaders(
       columnHeaders.map(function(h) {
-        return { x: h.x + SECTION_PADDING10, text: h.text };
+        return { x: h.x + SECTION_PADDING, text: h.text };
       }),
-      SECTION_PADDING10,
+      SECTION_PADDING,
       darkSection.frame
     );
     for (var di = 0; di < rowLabels.length; di++) {
       var darkLabel = rowLabels[di];
       var darkLabelNode = await createRowLabel(
         darkLabel.text,
-        SECTION_PADDING10,
-        SECTION_PADDING10 + darkLabel.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + darkLabel.y + GRID_LAYOUT.labelVerticalOffset.md
       );
       darkSection.frame.appendChild(darkLabelNode);
     }
-    var totalWidth = contentWidth + SECTION_PADDING10 * 2;
-    var totalHeight = contentHeight + SECTION_PADDING10 * 2;
+    var totalWidth = contentWidth + SECTION_PADDING * 2;
+    var totalHeight = contentHeight + SECTION_PADDING * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     logComplete(
       "Generated Input ComponentSet with " + components.length + " variants (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP10;
+    return startY + totalHeight + SECTION_GAP;
   }
 
   // scripts/figma/plugin/generators/input-area.ts
-  var SECTION_PADDING11 = 48;
-  var SECTION_GAP11 = 160;
   var inputRegistry2 = component_registry_default.components.Input;
   var inputProps2 = inputRegistry2.props;
   var inputStyling2 = inputRegistry2.styling;
+  var inputAreaStyling = component_registry_default.components.InputArea.styling;
   var SIZE_VALUES4 = inputProps2.size.values;
   var VARIANT_VALUES5 = inputProps2.variant.values;
-  function getSizeConfigFromRegistry2(size) {
-    var sizeVariant = inputStyling2.sizeVariants[size];
-    if (!sizeVariant) {
-      sizeVariant = inputStyling2.sizeVariants.base;
-    }
-    var minHeightMap = {
-      xs: 60,
-      // Taller than input (20) for multi-line
-      sm: 72,
-      // Taller than input (26) for multi-line
-      base: 88,
-      // Taller than input (36) for multi-line
-      lg: 100
-      // Taller than input (40) for multi-line
+  function getSizeConfigFromRegistry3(size) {
+    var _a6, _b3, _c3, _d2, _e2, _f2;
+    var FALLBACK_INPUT_AREA_CONFIG = {
+      xs: { minHeight: 60, width: 200 },
+      sm: { minHeight: 72, width: 240 },
+      base: { minHeight: 88, width: 320 },
+      lg: { minHeight: 100, width: 360 }
     };
-    var widthMap = {
-      xs: 200,
-      sm: 240,
-      base: 320,
-      lg: 360
+    var FALLBACK_INPUT_CONFIG = {
+      paddingX: 12,
+      fontSize: 16,
+      borderRadius: 8
     };
+    var inputAreaSizeData = ((_a6 = inputAreaStyling == null ? void 0 : inputAreaStyling.sizeVariants) == null ? void 0 : _a6[size]) || FALLBACK_INPUT_AREA_CONFIG[size] || FALLBACK_INPUT_AREA_CONFIG.base;
+    var inputSizeVariant = ((_b3 = inputStyling2 == null ? void 0 : inputStyling2.sizeVariants) == null ? void 0 : _b3[size]) || ((_c3 = inputStyling2 == null ? void 0 : inputStyling2.sizeVariants) == null ? void 0 : _c3.base);
     return {
-      minHeight: minHeightMap[size] || minHeightMap.base,
-      paddingX: sizeVariant.dimensions.paddingX,
+      minHeight: inputAreaSizeData.minHeight,
+      paddingX: ((_d2 = inputSizeVariant == null ? void 0 : inputSizeVariant.dimensions) == null ? void 0 : _d2.paddingX) || FALLBACK_INPUT_CONFIG.paddingX,
       paddingY: 8,
       // py-2 for all sizes (InputArea-specific, not in registry)
-      fontSize: sizeVariant.dimensions.fontSize,
-      borderRadius: sizeVariant.dimensions.borderRadius,
-      width: widthMap[size] || widthMap.base
+      fontSize: ((_e2 = inputSizeVariant == null ? void 0 : inputSizeVariant.dimensions) == null ? void 0 : _e2.fontSize) || FALLBACK_INPUT_CONFIG.fontSize,
+      borderRadius: ((_f2 = inputSizeVariant == null ? void 0 : inputSizeVariant.dimensions) == null ? void 0 : _f2.borderRadius) || FALLBACK_INPUT_CONFIG.borderRadius,
+      width: inputAreaSizeData.width
     };
   }
   var SIZE_CONFIG4 = {
-    xs: getSizeConfigFromRegistry2("xs"),
-    sm: getSizeConfigFromRegistry2("sm"),
-    base: getSizeConfigFromRegistry2("base"),
-    lg: getSizeConfigFromRegistry2("lg")
+    xs: getSizeConfigFromRegistry3("xs"),
+    sm: getSizeConfigFromRegistry3("sm"),
+    base: getSizeConfigFromRegistry3("base"),
+    lg: getSizeConfigFromRegistry3("lg")
   };
   var STATE_VALUES4 = ["default", "focus", "disabled"];
   var WITH_LABEL_VALUES2 = [false, true];
@@ -9959,7 +10639,7 @@
     },
     disabled: {
       ringVariable: "color-border",
-      opacity: 0.5,
+      opacity: OPACITY.disabled,
       textColorVariable: "text-color-muted"
     }
   };
@@ -10165,74 +10845,73 @@
     var contentHeight = componentSet.height + headerRowHeight;
     var lightSection = createModeSection(page, "InputArea", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING11 * 2,
-      contentHeight + SECTION_PADDING11 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     var darkSection = createModeSection(page, "InputArea", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING11 * 2,
-      contentHeight + SECTION_PADDING11 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING11 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING11 + headerRowHeight;
+    componentSet.x = SECTION_PADDING + labelColumnWidth;
+    componentSet.y = SECTION_PADDING + headerRowHeight;
     await createColumnHeaders(
       columnHeaders.map(function(h) {
-        return { x: h.x + SECTION_PADDING11, text: h.text };
+        return { x: h.x + SECTION_PADDING, text: h.text };
       }),
-      SECTION_PADDING11,
+      SECTION_PADDING,
       lightSection.frame
     );
     for (var li = 0; li < rowLabels.length; li++) {
       var label = rowLabels[li];
       var labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING11,
-        SECTION_PADDING11 + label.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + label.y + 8
       );
       lightSection.frame.appendChild(labelNode);
     }
     for (var k = 0; k < components.length; k++) {
       var origComp = components[k];
       var instance = origComp.createInstance();
-      instance.x = origComp.x + SECTION_PADDING11 + labelColumnWidth;
-      instance.y = origComp.y + SECTION_PADDING11 + headerRowHeight;
+      instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
+      instance.y = origComp.y + SECTION_PADDING + headerRowHeight;
       darkSection.frame.appendChild(instance);
     }
     await createColumnHeaders(
       columnHeaders.map(function(h) {
-        return { x: h.x + SECTION_PADDING11, text: h.text };
+        return { x: h.x + SECTION_PADDING, text: h.text };
       }),
-      SECTION_PADDING11,
+      SECTION_PADDING,
       darkSection.frame
     );
     for (var di = 0; di < rowLabels.length; di++) {
       var darkLabel = rowLabels[di];
       var darkLabelNode = await createRowLabel(
         darkLabel.text,
-        SECTION_PADDING11,
-        SECTION_PADDING11 + darkLabel.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + darkLabel.y + 8
       );
       darkSection.frame.appendChild(darkLabelNode);
     }
-    var totalWidth = contentWidth + SECTION_PADDING11 * 2;
-    var totalHeight = contentHeight + SECTION_PADDING11 * 2;
+    var totalWidth = contentWidth + SECTION_PADDING * 2;
+    var totalHeight = contentHeight + SECTION_PADDING * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     logComplete(
       "Generated InputArea ComponentSet with " + components.length + " variants (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP11;
+    return startY + totalHeight + SECTION_GAP;
   }
 
   // scripts/figma/plugin/generators/layer-card.ts
-  var SECTION_PADDING12 = 48;
-  var SECTION_GAP12 = 160;
-  var LAYER_CARD_CONFIG = {
+  var layerCardStyling = component_registry_default.components.LayerCard.styling;
+  var FALLBACK_LAYER_CARD_CONFIG = {
     width: 280,
     borderRadius: BORDER_RADIUS.lg,
     secondary: {
@@ -10252,6 +10931,31 @@
       borderRadius: BORDER_RADIUS.lg
     }
   };
+  function getConfigFromRegistry() {
+    var _a6, _b3, _c3, _d2, _e2, _f2, _g2, _h2, _i2, _j2, _k2, _l2, _m2, _n2;
+    if (!layerCardStyling) return FALLBACK_LAYER_CARD_CONFIG;
+    return {
+      width: ((_a6 = layerCardStyling.container) == null ? void 0 : _a6.width) || FALLBACK_LAYER_CARD_CONFIG.width,
+      borderRadius: ((_b3 = layerCardStyling.container) == null ? void 0 : _b3.borderRadius) || FALLBACK_LAYER_CARD_CONFIG.borderRadius,
+      secondary: {
+        paddingX: ((_c3 = layerCardStyling.secondary) == null ? void 0 : _c3.paddingX) || FALLBACK_LAYER_CARD_CONFIG.secondary.paddingX,
+        paddingY: ((_d2 = layerCardStyling.secondary) == null ? void 0 : _d2.paddingY) || FALLBACK_LAYER_CARD_CONFIG.secondary.paddingY,
+        gap: ((_e2 = layerCardStyling.secondary) == null ? void 0 : _e2.gap) || FALLBACK_LAYER_CARD_CONFIG.secondary.gap,
+        fontSize: ((_f2 = layerCardStyling.secondary) == null ? void 0 : _f2.fontSize) || FALLBACK_LAYER_CARD_CONFIG.secondary.fontSize,
+        fontWeight: ((_g2 = layerCardStyling.secondary) == null ? void 0 : _g2.fontWeight) || FALLBACK_LAYER_CARD_CONFIG.secondary.fontWeight
+      },
+      primary: {
+        paddingX: ((_h2 = layerCardStyling.primary) == null ? void 0 : _h2.paddingX) || FALLBACK_LAYER_CARD_CONFIG.primary.paddingX,
+        paddingY: ((_i2 = layerCardStyling.primary) == null ? void 0 : _i2.paddingY) || FALLBACK_LAYER_CARD_CONFIG.primary.paddingY,
+        paddingRight: ((_j2 = layerCardStyling.primary) == null ? void 0 : _j2.paddingRight) || FALLBACK_LAYER_CARD_CONFIG.primary.paddingRight,
+        gap: ((_k2 = layerCardStyling.primary) == null ? void 0 : _k2.gap) || FALLBACK_LAYER_CARD_CONFIG.primary.gap,
+        fontSize: ((_l2 = layerCardStyling.primary) == null ? void 0 : _l2.fontSize) || FALLBACK_LAYER_CARD_CONFIG.primary.fontSize,
+        fontWeight: ((_m2 = layerCardStyling.primary) == null ? void 0 : _m2.fontWeight) || FALLBACK_LAYER_CARD_CONFIG.primary.fontWeight,
+        borderRadius: ((_n2 = layerCardStyling.primary) == null ? void 0 : _n2.borderRadius) || FALLBACK_LAYER_CARD_CONFIG.primary.borderRadius
+      }
+    };
+  }
+  var LAYER_CARD_CONFIG = getConfigFromRegistry();
   async function createLayerCardComponent() {
     console.log("LayerCard: Creating component...");
     var config = LAYER_CARD_CONFIG;
@@ -10410,55 +11114,55 @@
       var contentHeight = componentSet.height;
       var lightSection = createModeSection(page, "LayerCard", "light");
       lightSection.frame.resize(
-        contentWidth + SECTION_PADDING12 * 2,
-        contentHeight + SECTION_PADDING12 * 2
+        contentWidth + SECTION_PADDING * 2,
+        contentHeight + SECTION_PADDING * 2
       );
       var darkSection = createModeSection(page, "LayerCard", "dark");
       darkSection.frame.resize(
-        contentWidth + SECTION_PADDING12 * 2,
-        contentHeight + SECTION_PADDING12 * 2
+        contentWidth + SECTION_PADDING * 2,
+        contentHeight + SECTION_PADDING * 2
       );
       lightSection.frame.appendChild(componentSet);
-      componentSet.x = SECTION_PADDING12 + labelColumnWidth;
-      componentSet.y = SECTION_PADDING12;
+      componentSet.x = SECTION_PADDING + labelColumnWidth;
+      componentSet.y = SECTION_PADDING;
       for (var li = 0; li < rowLabels.length; li++) {
         var label = rowLabels[li];
         var labelNode = await createRowLabel(
           label.text,
-          SECTION_PADDING12,
-          SECTION_PADDING12 + label.y + 8
+          SECTION_PADDING,
+          SECTION_PADDING + label.y + 8
         );
         lightSection.frame.appendChild(labelNode);
       }
       for (var k = 0; k < components.length; k++) {
         var origComp = components[k];
         var instance = origComp.createInstance();
-        instance.x = origComp.x + SECTION_PADDING12 + labelColumnWidth;
-        instance.y = origComp.y + SECTION_PADDING12;
+        instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
+        instance.y = origComp.y + SECTION_PADDING;
         darkSection.frame.appendChild(instance);
       }
       for (var di = 0; di < rowLabels.length; di++) {
         var darkLabel = rowLabels[di];
         var darkLabelNode = await createRowLabel(
           darkLabel.text,
-          SECTION_PADDING12,
-          SECTION_PADDING12 + darkLabel.y + 8
+          SECTION_PADDING,
+          SECTION_PADDING + darkLabel.y + 8
         );
         darkSection.frame.appendChild(darkLabelNode);
       }
-      var totalWidth = contentWidth + SECTION_PADDING12 * 2;
-      var totalHeight = contentHeight + SECTION_PADDING12 * 2;
+      var totalWidth = contentWidth + SECTION_PADDING * 2;
+      var totalHeight = contentHeight + SECTION_PADDING * 2;
       lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
       darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-      lightSection.section.x = 100;
+      lightSection.section.x = SECTION_LAYOUT.startX;
       lightSection.section.y = startY;
-      darkSection.section.x = 100 + totalWidth + 50;
+      darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
       darkSection.section.y = startY;
       console.log("Generated LayerCard ComponentSet (light + dark)");
       console.log(
         "LayerCard dimensions: " + totalWidth + "x" + totalHeight + " at Y=" + startY
       );
-      return startY + totalHeight + SECTION_GAP12;
+      return startY + totalHeight + SECTION_GAP;
     } catch (error) {
       var errorMessage = error instanceof Error ? error.message : String(error);
       var errorStack = error instanceof Error ? error.stack : "";
@@ -10512,8 +11216,6 @@
   };
 
   // scripts/figma/plugin/generators/loader.ts
-  var SECTION_PADDING13 = 48;
-  var SECTION_GAP13 = 160;
   async function createLoaderComponent(size) {
     var sizeConfig = loader_data_default.sizes[size];
     var sizeValue = sizeConfig.value;
@@ -10548,7 +11250,7 @@
       fallbackCircle.y = 2;
       fallbackCircle.fills = [];
       fallbackCircle.strokes = [
-        { type: "SOLID", color: { r: 0.5, g: 0.5, b: 0.5 } }
+        { type: "SOLID", color: COLORS.placeholder }
       ];
       fallbackCircle.strokeWeight = 2;
       component.appendChild(fallbackCircle);
@@ -10601,54 +11303,54 @@
       var contentHeight = componentSet.height;
       var lightSection = createModeSection(page, "Loader", "light");
       lightSection.frame.resize(
-        contentWidth + SECTION_PADDING13 * 2,
-        contentHeight + SECTION_PADDING13 * 2
+        contentWidth + SECTION_PADDING * 2,
+        contentHeight + SECTION_PADDING * 2
       );
       var darkSection = createModeSection(page, "Loader", "dark");
       darkSection.frame.resize(
-        contentWidth + SECTION_PADDING13 * 2,
-        contentHeight + SECTION_PADDING13 * 2
+        contentWidth + SECTION_PADDING * 2,
+        contentHeight + SECTION_PADDING * 2
       );
       lightSection.frame.appendChild(componentSet);
-      componentSet.x = SECTION_PADDING13 + labelColumnWidth;
-      componentSet.y = SECTION_PADDING13;
+      componentSet.x = SECTION_PADDING + labelColumnWidth;
+      componentSet.y = SECTION_PADDING;
       for (var li = 0; li < rowLabels.length; li++) {
         var label = rowLabels[li];
         var labelNode = await createRowLabel(
           label.text,
-          SECTION_PADDING13,
-          SECTION_PADDING13 + label.y + 4
+          SECTION_PADDING,
+          SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.sm
         );
         lightSection.frame.appendChild(labelNode);
       }
       for (var k = 0; k < components.length; k++) {
         var origComp = components[k];
         var instance = origComp.createInstance();
-        instance.x = SECTION_PADDING13 + labelColumnWidth;
-        instance.y = origComp.y + SECTION_PADDING13;
+        instance.x = SECTION_PADDING + labelColumnWidth;
+        instance.y = origComp.y + SECTION_PADDING;
         darkSection.frame.appendChild(instance);
       }
       for (var di = 0; di < rowLabels.length; di++) {
         var darkLabel = rowLabels[di];
         var darkLabelNode = await createRowLabel(
           darkLabel.text,
-          SECTION_PADDING13,
-          SECTION_PADDING13 + darkLabel.y + 4
+          SECTION_PADDING,
+          SECTION_PADDING + darkLabel.y + GRID_LAYOUT.labelVerticalOffset.sm
         );
         darkSection.frame.appendChild(darkLabelNode);
       }
-      var totalWidth = contentWidth + SECTION_PADDING13 * 2;
-      var totalHeight = contentHeight + SECTION_PADDING13 * 2;
+      var totalWidth = contentWidth + SECTION_PADDING * 2;
+      var totalHeight = contentHeight + SECTION_PADDING * 2;
       lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
       darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-      lightSection.section.x = 100;
+      lightSection.section.x = SECTION_LAYOUT.startX;
       lightSection.section.y = startY;
-      darkSection.section.x = 100 + totalWidth + 50;
+      darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
       darkSection.section.y = startY;
       logComplete(
         "Generated Loader ComponentSet with " + sizes.length + " variants (light + dark)"
       );
-      return startY + totalHeight + SECTION_GAP13;
+      return startY + totalHeight + SECTION_GAP;
     } catch (error) {
       var errorMessage = error instanceof Error ? error.message : String(error);
       var errorStack = error instanceof Error ? error.stack : "";
@@ -10662,8 +11364,6 @@
   var buttonProps2 = component_registry_default.components.Button.props;
   var variantProp6 = buttonProps2.variant;
   var sizeProp7 = buttonProps2.size;
-  var SECTION_PADDING14 = 48;
-  var SECTION_GAP14 = 160;
   async function createLinkButtonComponent(variant, size, hasIcon) {
     var variantClasses = variantProp6.classes[variant] || "";
     var sizeClasses = sizeProp7.classes[size] || "";
@@ -10677,14 +11377,14 @@
     component.layoutMode = "HORIZONTAL";
     component.primaryAxisAlignItems = "CENTER";
     component.counterAxisAlignItems = "CENTER";
-    component.paddingLeft = sizeStyles.paddingX || 12;
-    component.paddingRight = sizeStyles.paddingX || 12;
+    component.paddingLeft = sizeStyles.paddingX || FALLBACK_VALUES.padding.horizontal;
+    component.paddingRight = sizeStyles.paddingX || FALLBACK_VALUES.padding.horizontal;
     component.paddingTop = 0;
     component.paddingBottom = 0;
-    component.itemSpacing = sizeStyles.gap || 6;
+    component.itemSpacing = sizeStyles.gap || FALLBACK_VALUES.gap.standard;
     component.primaryAxisSizingMode = "AUTO";
     component.counterAxisSizingMode = "FIXED";
-    component.resize(100, sizeStyles.height || 36);
+    component.resize(100, sizeStyles.height || FALLBACK_VALUES.height.base);
     var cornerRadius = sizeStyles.borderRadius !== void 0 ? sizeStyles.borderRadius : 8;
     component.cornerRadius = cornerRadius;
     if (variantStyles.fillVariable) {
@@ -10712,10 +11412,10 @@
       }
       component.appendChild(icon);
     }
-    var fontWeight = 500;
+    var fontWeight = FALLBACK_VALUES.fontWeight.medium;
     var textNode = await createTextNode(
       "Link Button",
-      sizeStyles.fontSize || 16,
+      sizeStyles.fontSize || FALLBACK_VALUES.fontSize,
       fontWeight
     );
     textNode.name = "Label";
@@ -10780,77 +11480,76 @@
     var contentHeight = componentSet.height + headerRowHeight;
     var lightSection = createModeSection(page, "LinkButton", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING14 * 2,
-      contentHeight + SECTION_PADDING14 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     var darkSection = createModeSection(page, "LinkButton", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING14 * 2,
-      contentHeight + SECTION_PADDING14 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING14 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING14 + headerRowHeight;
+    componentSet.x = SECTION_PADDING + labelColumnWidth;
+    componentSet.y = SECTION_PADDING + headerRowHeight;
     await createColumnHeaders(
       columnHeaders.map(function(h) {
-        return { x: h.x + SECTION_PADDING14, text: h.text };
+        return { x: h.x + SECTION_PADDING, text: h.text };
       }),
-      SECTION_PADDING14,
+      SECTION_PADDING,
       lightSection.frame
     );
     for (var li = 0; li < rowLabels.length; li++) {
       var label = rowLabels[li];
       var labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING14,
-        SECTION_PADDING14 + label.y + 12
+        SECTION_PADDING,
+        SECTION_PADDING + label.y + 12
       );
       lightSection.frame.appendChild(labelNode);
     }
     for (var i = 0; i < components.length; i++) {
       var comp = components[i];
       var instance = comp.createInstance();
-      instance.x = comp.x + SECTION_PADDING14 + labelColumnWidth;
-      instance.y = comp.y + SECTION_PADDING14 + headerRowHeight;
+      instance.x = comp.x + SECTION_PADDING + labelColumnWidth;
+      instance.y = comp.y + SECTION_PADDING + headerRowHeight;
       darkSection.frame.appendChild(instance);
     }
     await createColumnHeaders(
       columnHeaders.map(function(h) {
-        return { x: h.x + SECTION_PADDING14, text: h.text };
+        return { x: h.x + SECTION_PADDING, text: h.text };
       }),
-      SECTION_PADDING14,
+      SECTION_PADDING,
       darkSection.frame
     );
     for (var di = 0; di < rowLabels.length; di++) {
       var darkLabel = rowLabels[di];
       var darkLabelNode = await createRowLabel(
         darkLabel.text,
-        SECTION_PADDING14,
-        SECTION_PADDING14 + darkLabel.y + 12
+        SECTION_PADDING,
+        SECTION_PADDING + darkLabel.y + 12
       );
       darkSection.frame.appendChild(darkLabelNode);
     }
-    var totalWidth = contentWidth + SECTION_PADDING14 * 2;
-    var totalHeight = contentHeight + SECTION_PADDING14 * 2;
+    var totalWidth = contentWidth + SECTION_PADDING * 2;
+    var totalHeight = contentHeight + SECTION_PADDING * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     var totalComponents = variants.length * sizes.length * hasIconOptions.length;
     logComplete(
       "\u2705 Generated LinkButton ComponentSet with " + totalComponents + " variants (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP14;
+    return startY + totalHeight + SECTION_GAP;
   }
   var LINK_BUTTON_VARIANTS_EXPORT = variantProp6.values;
   var LINK_BUTTON_SIZES_EXPORT = sizeProp7.values;
 
   // scripts/figma/plugin/generators/menubar.ts
-  var SECTION_PADDING15 = 48;
-  var SECTION_GAP15 = 160;
-  var MENUBAR_CONFIG = {
+  var menuBarStyling = component_registry_default.components.MenuBar.styling;
+  var FALLBACK_MENUBAR_CONFIG = {
     /** Height of the menubar - compact, just enough for icon + small padding */
     height: 32,
     /** Width of each menu option button (w-11 = 44px, but visually looks ~36px) */
@@ -10862,6 +11561,19 @@
     /** Border radius for individual buttons (rounded-md = 6px) */
     buttonBorderRadius: 6
   };
+  function getConfigFromRegistry2() {
+    if (!(menuBarStyling == null ? void 0 : menuBarStyling.container) || !(menuBarStyling == null ? void 0 : menuBarStyling.button)) {
+      return FALLBACK_MENUBAR_CONFIG;
+    }
+    return {
+      height: menuBarStyling.container.height || FALLBACK_MENUBAR_CONFIG.height,
+      buttonWidth: menuBarStyling.button.width || FALLBACK_MENUBAR_CONFIG.buttonWidth,
+      iconSize: menuBarStyling.button.iconSize || FALLBACK_MENUBAR_CONFIG.iconSize,
+      borderRadius: menuBarStyling.container.borderRadius || FALLBACK_MENUBAR_CONFIG.borderRadius,
+      buttonBorderRadius: menuBarStyling.button.borderRadius || FALLBACK_MENUBAR_CONFIG.buttonBorderRadius
+    };
+  }
+  var MENUBAR_CONFIG = getConfigFromRegistry2();
   var DEFAULT_OPTIONS = [
     { icon: "ph-house", tooltip: "Home", id: "home" },
     { icon: "ph-magnifying-glass", tooltip: "Search", id: "search" },
@@ -10930,10 +11642,10 @@
     component.effects = [
       {
         type: "DROP_SHADOW",
-        color: { r: 0, g: 0, b: 0, a: 0.05 },
-        offset: { x: 0, y: 1 },
-        radius: 2,
-        spread: 0,
+        color: { r: 0, g: 0, b: 0, a: SHADOWS.xs.opacity },
+        offset: { x: SHADOWS.xs.offsetX, y: SHADOWS.xs.offsetY },
+        radius: SHADOWS.xs.blur,
+        spread: SHADOWS.xs.spread,
         visible: true,
         blendMode: "NORMAL"
       }
@@ -10954,8 +11666,8 @@
       figma.currentPage = page;
       var components = [];
       var rowLabels = [];
-      var labelColumnWidth = 160;
-      var rowGap = 24;
+      var labelColumnWidth = GRID_LAYOUT.labelColumnWidth.standard;
+      var rowGap = GRID_LAYOUT.rowGap.compact;
       var currentY = 0;
       for (var i = 0; i < DEFAULT_OPTIONS.length; i++) {
         var option = DEFAULT_OPTIONS[i];
@@ -10976,23 +11688,23 @@
       var contentHeight = componentSet.height;
       var lightSection = createModeSection(page, "MenuBar", "light");
       lightSection.frame.resize(
-        contentWidth + SECTION_PADDING15 * 2,
-        contentHeight + SECTION_PADDING15 * 2
+        contentWidth + SECTION_PADDING * 2,
+        contentHeight + SECTION_PADDING * 2
       );
       var darkSection = createModeSection(page, "MenuBar", "dark");
       darkSection.frame.resize(
-        contentWidth + SECTION_PADDING15 * 2,
-        contentHeight + SECTION_PADDING15 * 2
+        contentWidth + SECTION_PADDING * 2,
+        contentHeight + SECTION_PADDING * 2
       );
       lightSection.frame.appendChild(componentSet);
-      componentSet.x = SECTION_PADDING15 + labelColumnWidth;
-      componentSet.y = SECTION_PADDING15;
+      componentSet.x = SECTION_PADDING + labelColumnWidth;
+      componentSet.y = SECTION_PADDING;
       for (var li = 0; li < rowLabels.length; li++) {
         var label = rowLabels[li];
         var labelNode = await createRowLabel(
           label.text,
-          SECTION_PADDING15,
-          SECTION_PADDING15 + label.y + 12
+          SECTION_PADDING,
+          SECTION_PADDING + label.y + 12
           // Center vertically with menubar
         );
         lightSection.frame.appendChild(labelNode);
@@ -11000,31 +11712,31 @@
       for (var k = 0; k < components.length; k++) {
         var origComp = components[k];
         var instance = origComp.createInstance();
-        instance.x = SECTION_PADDING15 + labelColumnWidth;
-        instance.y = origComp.y + SECTION_PADDING15;
+        instance.x = SECTION_PADDING + labelColumnWidth;
+        instance.y = origComp.y + SECTION_PADDING;
         darkSection.frame.appendChild(instance);
       }
       for (var di = 0; di < rowLabels.length; di++) {
         var darkLabel = rowLabels[di];
         var darkLabelNode = await createRowLabel(
           darkLabel.text,
-          SECTION_PADDING15,
-          SECTION_PADDING15 + darkLabel.y + 12
+          SECTION_PADDING,
+          SECTION_PADDING + darkLabel.y + 12
         );
         darkSection.frame.appendChild(darkLabelNode);
       }
-      var totalWidth = contentWidth + SECTION_PADDING15 * 2;
-      var totalHeight = contentHeight + SECTION_PADDING15 * 2;
+      var totalWidth = contentWidth + SECTION_PADDING * 2;
+      var totalHeight = contentHeight + SECTION_PADDING * 2;
       lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
       darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-      lightSection.section.x = 100;
+      lightSection.section.x = SECTION_LAYOUT.startX;
       lightSection.section.y = startY;
-      darkSection.section.x = 100 + totalWidth + 50;
+      darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
       darkSection.section.y = startY;
       console.log(
         "Generated MenuBar ComponentSet with " + DEFAULT_OPTIONS.length + " variants (light + dark)"
       );
-      return startY + totalHeight + SECTION_GAP15;
+      return startY + totalHeight + SECTION_GAP;
     } catch (error) {
       var errorMessage = error instanceof Error ? error.message : String(error);
       var errorStack = error instanceof Error ? error.stack : "";
@@ -11041,8 +11753,6 @@
   var METER_WIDTH = 240;
   var METER_TRACK_HEIGHT = 8;
   var METER_GAP = 8;
-  var SECTION_PADDING16 = 48;
-  var SECTION_GAP16 = 160;
   var FILL_LEVELS = [0, 25, 50, 75, 100];
   function getMeterTypographyConfig() {
     return {
@@ -11118,7 +11828,7 @@
       track.fills = [
         {
           type: "SOLID",
-          color: { r: 0.9, g: 0.9, b: 0.9 }
+          color: COLORS.skeletonGray
         }
       ];
     }
@@ -11135,7 +11845,7 @@
       indicator.fills = [
         {
           type: "SOLID",
-          color: { r: 0, g: 0.5, b: 1 }
+          color: COLORS.fallbackPrimary
         }
       ];
     }
@@ -11159,8 +11869,8 @@
     const fillLevels = FILL_LEVELS;
     const components = [];
     const rowLabels = [];
-    const rowGap = 40;
-    const labelColumnWidth = 180;
+    const rowGap = GRID_LAYOUT.rowGap.medium;
+    const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.medium;
     var currentY = 0;
     for (var i = 0; i < fillLevels.length; i++) {
       const fillLevel = fillLevels[i];
@@ -11178,23 +11888,23 @@
     const contentHeight = componentSet.height;
     const lightSection = createModeSection(componentsPage, "Meter", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING16 * 2,
-      contentHeight + SECTION_PADDING16 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     const darkSection = createModeSection(componentsPage, "Meter", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING16 * 2,
-      contentHeight + SECTION_PADDING16 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING16 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING16;
+    componentSet.x = SECTION_PADDING + labelColumnWidth;
+    componentSet.y = SECTION_PADDING;
     for (var j = 0; j < rowLabels.length; j++) {
       const label = rowLabels[j];
       const labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING16,
-        SECTION_PADDING16 + label.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + label.y + 8
         // +8 to vertically center with meter
       );
       lightSection.frame.appendChild(labelNode);
@@ -11202,45 +11912,59 @@
     for (var k = 0; k < components.length; k++) {
       const component = components[k];
       const instance = component.createInstance();
-      instance.x = component.x + SECTION_PADDING16 + labelColumnWidth;
-      instance.y = component.y + SECTION_PADDING16;
+      instance.x = component.x + SECTION_PADDING + labelColumnWidth;
+      instance.y = component.y + SECTION_PADDING;
       darkSection.frame.appendChild(instance);
     }
     for (var m = 0; m < rowLabels.length; m++) {
       const label = rowLabels[m];
       const labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING16,
-        SECTION_PADDING16 + label.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + label.y + 8
       );
       darkSection.frame.appendChild(labelNode);
     }
-    const totalWidth = contentWidth + SECTION_PADDING16 * 2;
-    const totalHeight = contentHeight + SECTION_PADDING16 * 2;
+    const totalWidth = contentWidth + SECTION_PADDING * 2;
+    const totalHeight = contentHeight + SECTION_PADDING * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     logComplete(
       "\u2705 Generated Meter ComponentSet with " + fillLevels.length + " fill levels (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP16;
+    return startY + totalHeight + SECTION_GAP;
   }
 
   // scripts/figma/plugin/generators/pagination.ts
   var paginationComponent = component_registry_default.components.Pagination;
   var paginationProps = paginationComponent.props;
   var paginationColors = paginationComponent.colors;
-  var PAGINATION_HEIGHT = 36;
-  var BUTTON_SIZE = 36;
-  var INPUT_WIDTH = 50;
-  var ICON_SIZE = 16;
+  var paginationStyling = component_registry_default.components.Pagination.styling;
+  var FALLBACK_LAYOUT = {
+    height: 36,
+    buttonSize: 36,
+    inputWidth: 50,
+    iconSize: 16,
+    gap: 8,
+    borderRadius: 8
+  };
+  function getLayoutFromRegistry() {
+    if (!(paginationStyling == null ? void 0 : paginationStyling.layout)) {
+      return FALLBACK_LAYOUT;
+    }
+    return paginationStyling.layout;
+  }
+  var LAYOUT = getLayoutFromRegistry();
+  var PAGINATION_HEIGHT = LAYOUT.height;
+  var BUTTON_SIZE = LAYOUT.buttonSize;
+  var INPUT_WIDTH = LAYOUT.inputWidth;
+  var ICON_SIZE = LAYOUT.iconSize;
   var GAP = 0;
-  var BORDER_RADIUS4 = 6;
-  var SECTION_PADDING17 = 48;
-  var SECTION_GAP17 = 160;
+  var BORDER_RADIUS4 = LAYOUT.borderRadius;
   async function createNavButton(iconId, ariaLabel, position, disabled) {
     var button = figma.createFrame();
     button.name = ariaLabel;
@@ -11299,7 +12023,7 @@
     if (borderVar) {
       bindStrokeToVariable(input, borderVar.id, 1);
     }
-    var text = await createTextNode(pageNumber, 14, 400);
+    var text = await createTextNode(pageNumber, FONT_SIZE.xs + 2, FALLBACK_VALUES.fontWeight.normal);
     text.name = "Page Number";
     text.textAlignHorizontal = "CENTER";
     var textColorVar = getVariableByName("text-color-surface");
@@ -11312,8 +12036,9 @@
   async function createShowingText(lower, upper, total) {
     var text = await createTextNode(
       "Showing " + lower + "-" + upper + " of " + total,
-      14,
-      400
+      FONT_SIZE.xs + 2,
+      // 14px
+      FALLBACK_VALUES.fontWeight.normal
     );
     text.name = "Showing Text";
     var labelVar = getVariableByName("text-color-label");
@@ -11375,7 +12100,7 @@
     component.counterAxisAlignItems = "CENTER";
     component.primaryAxisSizingMode = "FIXED";
     component.counterAxisSizingMode = "AUTO";
-    component.itemSpacing = 8;
+    component.itemSpacing = SPACING.base;
     component.resize(400, PAGINATION_HEIGHT);
     component.fills = [];
     var lower = page * perPage - perPage + 1;
@@ -11409,8 +12134,8 @@
     var totalCount = 100;
     var components = [];
     var rowLabels = [];
-    var rowGap = 48;
-    var labelColumnWidth = 180;
+    var rowGap = GRID_LAYOUT.rowGap.standard;
+    var labelColumnWidth = GRID_LAYOUT.labelColumnWidth.medium;
     var currentY = 0;
     for (var i = 0; i < pageStates.length; i++) {
       var state = pageStates[i];
@@ -11433,54 +12158,54 @@
     var contentHeight = componentSet.height;
     var lightSection = createModeSection(componentsPage, "Pagination", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING17 * 2,
-      contentHeight + SECTION_PADDING17 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     var darkSection = createModeSection(componentsPage, "Pagination", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING17 * 2,
-      contentHeight + SECTION_PADDING17 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING17 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING17;
+    componentSet.x = SECTION_PADDING + labelColumnWidth;
+    componentSet.y = SECTION_PADDING;
     for (var j = 0; j < rowLabels.length; j++) {
       var label = rowLabels[j];
       var labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING17,
-        SECTION_PADDING17 + label.y + 10
+        SECTION_PADDING,
+        SECTION_PADDING + label.y + 10
       );
       lightSection.frame.appendChild(labelNode);
     }
     for (var k = 0; k < components.length; k++) {
       var comp = components[k];
       var instance = comp.createInstance();
-      instance.x = comp.x + SECTION_PADDING17 + labelColumnWidth;
-      instance.y = comp.y + SECTION_PADDING17;
+      instance.x = comp.x + SECTION_PADDING + labelColumnWidth;
+      instance.y = comp.y + SECTION_PADDING;
       darkSection.frame.appendChild(instance);
     }
     for (var m = 0; m < rowLabels.length; m++) {
       var darkLabel = rowLabels[m];
       var darkLabelNode = await createRowLabel(
         darkLabel.text,
-        SECTION_PADDING17,
-        SECTION_PADDING17 + darkLabel.y + 10
+        SECTION_PADDING,
+        SECTION_PADDING + darkLabel.y + 10
       );
       darkSection.frame.appendChild(darkLabelNode);
     }
-    var totalWidth = contentWidth + SECTION_PADDING17 * 2;
-    var totalHeight = contentHeight + SECTION_PADDING17 * 2;
+    var totalWidth = contentWidth + SECTION_PADDING * 2;
+    var totalHeight = contentHeight + SECTION_PADDING * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     logComplete(
       "\u2705 Generated Pagination ComponentSet with " + pageStates.length + " states (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP17;
+    return startY + totalHeight + SECTION_GAP;
   }
 
   // scripts/figma/plugin/generators/refresh-button.ts
@@ -11507,8 +12232,6 @@
     var parsed = parseTailwindClasses(sizeClasses);
     return parsed.borderRadius !== void 0 ? parsed.borderRadius : BORDER_RADIUS.lg;
   }
-  var SECTION_PADDING18 = 48;
-  var SECTION_GAP18 = 160;
   function createRefreshButtonComponent(size, loading) {
     var variant = variantProp7.default;
     var variantClasses = variantProp7.classes[variant] || "";
@@ -11516,7 +12239,7 @@
     var component = figma.createComponent();
     component.name = "size=" + size + ", loading=" + loading;
     component.description = "Refresh button for triggering data refresh";
-    var buttonSize = COMPACT_SIZE_MAP[size] || 36;
+    var buttonSize = COMPACT_SIZE_MAP[size] || FALLBACK_VALUES.height.base;
     component.layoutMode = "HORIZONTAL";
     component.primaryAxisAlignItems = "CENTER";
     component.counterAxisAlignItems = "CENTER";
@@ -11536,7 +12259,7 @@
         bindStrokeToVariable(component, strokeVar.id, 1);
       }
     }
-    var iconSize = REFRESH_ICON_SIZE[size] || 18;
+    var iconSize = REFRESH_ICON_SIZE[size] || FALLBACK_VALUES.iconSize.medium;
     if (loading) {
       var loader = createLoader(iconSize);
       component.appendChild(loader);
@@ -11588,102 +12311,103 @@
     var contentHeight = componentSet.height;
     var lightSection = createModeSection(page, "RefreshButton", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING18 * 2,
-      contentHeight + SECTION_PADDING18 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     var darkSection = createModeSection(page, "RefreshButton", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING18 * 2,
-      contentHeight + SECTION_PADDING18 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING18 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING18;
+    componentSet.x = SECTION_PADDING + labelColumnWidth;
+    componentSet.y = SECTION_PADDING;
     for (var li = 0; li < rowLabels.length; li++) {
       var label = rowLabels[li];
       var labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING18,
-        SECTION_PADDING18 + label.y + 10
+        SECTION_PADDING,
+        SECTION_PADDING + label.y + 10
       );
       lightSection.frame.appendChild(labelNode);
     }
     for (var i = 0; i < components.length; i++) {
       var comp = components[i];
       var instance = comp.createInstance();
-      instance.x = comp.x + SECTION_PADDING18 + labelColumnWidth;
-      instance.y = comp.y + SECTION_PADDING18;
+      instance.x = comp.x + SECTION_PADDING + labelColumnWidth;
+      instance.y = comp.y + SECTION_PADDING;
       darkSection.frame.appendChild(instance);
     }
     for (var di = 0; di < rowLabels.length; di++) {
       var darkLabel = rowLabels[di];
       var darkLabelNode = await createRowLabel(
         darkLabel.text,
-        SECTION_PADDING18,
-        SECTION_PADDING18 + darkLabel.y + 10
+        SECTION_PADDING,
+        SECTION_PADDING + darkLabel.y + 10
       );
       darkSection.frame.appendChild(darkLabelNode);
     }
-    var totalWidth = contentWidth + SECTION_PADDING18 * 2;
-    var totalHeight = contentHeight + SECTION_PADDING18 * 2;
+    var totalWidth = contentWidth + SECTION_PADDING * 2;
+    var totalHeight = contentHeight + SECTION_PADDING * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     var totalComponents = sizes.length * loadingOptions.length;
     logComplete(
       "\u2705 Generated RefreshButton ComponentSet with " + totalComponents + " variants (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP18;
+    return startY + totalHeight + SECTION_GAP;
   }
   var REFRESH_BUTTON_SIZES_EXPORT = sizeProp8.values;
 
   // scripts/figma/plugin/generators/select.ts
   var selectRegistry = component_registry_default.components.Select;
+  var selectRegistryStyling = component_registry_default.components.Select.styling;
+  var _a3, _b2, _c2, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x;
   var selectStyling = {
     trigger: {
-      height: 36,
+      height: (_b2 = (_a3 = selectRegistryStyling == null ? void 0 : selectRegistryStyling.trigger) == null ? void 0 : _a3.height) != null ? _b2 : 36,
       // h-9
-      paddingX: 12,
+      paddingX: (_d = (_c2 = selectRegistryStyling == null ? void 0 : selectRegistryStyling.trigger) == null ? void 0 : _c2.paddingX) != null ? _d : 12,
       // px-3
-      borderRadius: 8,
+      borderRadius: (_f = (_e = selectRegistryStyling == null ? void 0 : selectRegistryStyling.trigger) == null ? void 0 : _e.borderRadius) != null ? _f : 8,
       // rounded-lg
       background: "color-secondary",
       text: "text-color-surface",
       ring: "color-border",
-      fontSize: 16,
+      fontSize: (_h = (_g = selectRegistryStyling == null ? void 0 : selectRegistryStyling.trigger) == null ? void 0 : _g.fontSize) != null ? _h : 16,
       // text-base
-      fontWeight: 400
+      fontWeight: (_j = (_i = selectRegistryStyling == null ? void 0 : selectRegistryStyling.trigger) == null ? void 0 : _i.fontWeight) != null ? _j : 400
       // font-normal
     },
     stateTokens: {
       focus: { ring: "color-active" },
-      disabled: { opacity: 0.5 }
+      disabled: { opacity: OPACITY.disabled }
     },
     popup: {
       background: "color-secondary",
       ring: "color-border",
-      borderRadius: 8,
+      borderRadius: (_l = (_k = selectRegistryStyling == null ? void 0 : selectRegistryStyling.popup) == null ? void 0 : _k.borderRadius) != null ? _l : 8,
       // rounded-lg
-      padding: 6
+      padding: (_n = (_m = selectRegistryStyling == null ? void 0 : selectRegistryStyling.popup) == null ? void 0 : _m.padding) != null ? _n : 6,
       // p-1.5
+      width: (_p = (_o = selectRegistryStyling == null ? void 0 : selectRegistryStyling.popup) == null ? void 0 : _o.width) != null ? _p : 280
     },
     option: {
-      paddingX: 8,
+      paddingX: (_r = (_q = selectRegistryStyling == null ? void 0 : selectRegistryStyling.option) == null ? void 0 : _q.paddingX) != null ? _r : 8,
       // px-2
-      paddingY: 6,
+      paddingY: (_t = (_s = selectRegistryStyling == null ? void 0 : selectRegistryStyling.option) == null ? void 0 : _s.paddingY) != null ? _t : 6,
       // py-1.5
-      borderRadius: 4,
+      borderRadius: (_v = (_u = selectRegistryStyling == null ? void 0 : selectRegistryStyling.option) == null ? void 0 : _u.borderRadius) != null ? _v : 4,
       // rounded
-      fontSize: 16,
+      fontSize: (_x = (_w = selectRegistryStyling == null ? void 0 : selectRegistryStyling.option) == null ? void 0 : _w.fontSize) != null ? _x : 16,
       // text-base
       highlightBackground: "color-color-3"
     }
   };
-  var SECTION_PADDING19 = 48;
-  var SECTION_GAP19 = 160;
   var VARIANT_VALUES6 = ["default", "withLabel", "withError"];
   var OPEN_VALUES4 = [false, true];
   var STATE_VALUES5 = ["default", "focus", "disabled", "loading"];
@@ -11723,7 +12447,7 @@
     if (bgVar) {
       bindFillToVariable(skeleton, bgVar.id);
     } else {
-      skeleton.fills = [{ type: "SOLID", color: { r: 0.9, g: 0.9, b: 0.9 } }];
+      skeleton.fills = [{ type: "SOLID", color: COLORS.skeletonGray }];
     }
     return skeleton;
   }
@@ -11971,73 +12695,71 @@
     var contentHeight = componentSet.height + headerRowHeight;
     var lightSection = createModeSection(page, "Select", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING19 * 2,
-      contentHeight + SECTION_PADDING19 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     var darkSection = createModeSection(page, "Select", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING19 * 2,
-      contentHeight + SECTION_PADDING19 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING19 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING19 + headerRowHeight;
+    componentSet.x = SECTION_PADDING + labelColumnWidth;
+    componentSet.y = SECTION_PADDING + headerRowHeight;
     await createColumnHeaders(
       columnHeaders.map(function(h) {
-        return { x: h.x + SECTION_PADDING19, text: h.text };
+        return { x: h.x + SECTION_PADDING, text: h.text };
       }),
-      SECTION_PADDING19,
+      SECTION_PADDING,
       lightSection.frame
     );
     for (var li = 0; li < rowLabels.length; li++) {
       var label = rowLabels[li];
       var labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING19,
-        SECTION_PADDING19 + label.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + label.y + 8
       );
       lightSection.frame.appendChild(labelNode);
     }
     for (var k = 0; k < components.length; k++) {
       var origComp = components[k];
       var instance = origComp.createInstance();
-      instance.x = origComp.x + SECTION_PADDING19 + labelColumnWidth;
-      instance.y = origComp.y + SECTION_PADDING19 + headerRowHeight;
+      instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
+      instance.y = origComp.y + SECTION_PADDING + headerRowHeight;
       darkSection.frame.appendChild(instance);
     }
     await createColumnHeaders(
       columnHeaders.map(function(h) {
-        return { x: h.x + SECTION_PADDING19, text: h.text };
+        return { x: h.x + SECTION_PADDING, text: h.text };
       }),
-      SECTION_PADDING19,
+      SECTION_PADDING,
       darkSection.frame
     );
     for (var di = 0; di < rowLabels.length; di++) {
       var darkLabel = rowLabels[di];
       var darkLabelNode = await createRowLabel(
         darkLabel.text,
-        SECTION_PADDING19,
-        SECTION_PADDING19 + darkLabel.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + darkLabel.y + 8
       );
       darkSection.frame.appendChild(darkLabelNode);
     }
-    var totalWidth = contentWidth + SECTION_PADDING19 * 2;
-    var totalHeight = contentHeight + SECTION_PADDING19 * 2;
+    var totalWidth = contentWidth + SECTION_PADDING * 2;
+    var totalHeight = contentHeight + SECTION_PADDING * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     logComplete(
       "Generated Select ComponentSet with " + components.length + " variants (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP19;
+    return startY + totalHeight + SECTION_GAP;
   }
 
   // scripts/figma/plugin/generators/sensitive-input.ts
-  var SECTION_PADDING20 = 48;
-  var SECTION_GAP20 = 160;
   var inputComponent = component_registry_default.components.Input;
   var inputProps3 = inputComponent.props;
   var inputStyling3 = inputComponent.styling;
@@ -12057,7 +12779,7 @@
     base: "base",
     lg: "base"
   };
-  function getSizeConfigFromRegistry3(size) {
+  function getSizeConfigFromRegistry4(size) {
     var sizeVariants = inputStyling3.sizeVariants;
     var sizeVariant = sizeVariants[size] || sizeVariants["base"];
     return {
@@ -12072,7 +12794,7 @@
   var SIZE_CONFIG5 = {};
   for (i = 0; i < SIZE_VALUES5.length; i++) {
     sizeKey = SIZE_VALUES5[i];
-    SIZE_CONFIG5[sizeKey] = getSizeConfigFromRegistry3(sizeKey);
+    SIZE_CONFIG5[sizeKey] = getSizeConfigFromRegistry4(sizeKey);
   }
   var sizeKey;
   var i;
@@ -12088,7 +12810,7 @@
     },
     disabled: {
       ringVariable: "color-border",
-      opacity: 0.5
+      opacity: OPACITY.disabled
     }
   };
   var VARIANT_CONFIG6 = {
@@ -12319,73 +13041,71 @@
     var contentHeight = componentSet.height + headerRowHeight;
     var lightSection = createModeSection(page, "SensitiveInput", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING20 * 2,
-      contentHeight + SECTION_PADDING20 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     var darkSection = createModeSection(page, "SensitiveInput", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING20 * 2,
-      contentHeight + SECTION_PADDING20 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING20 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING20 + headerRowHeight;
+    componentSet.x = SECTION_PADDING + labelColumnWidth;
+    componentSet.y = SECTION_PADDING + headerRowHeight;
     await createColumnHeaders(
       columnHeaders.map(function(h) {
-        return { x: h.x + SECTION_PADDING20, text: h.text };
+        return { x: h.x + SECTION_PADDING, text: h.text };
       }),
-      SECTION_PADDING20,
+      SECTION_PADDING,
       lightSection.frame
     );
     for (var li = 0; li < rowLabels.length; li++) {
       var label = rowLabels[li];
       var labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING20,
-        SECTION_PADDING20 + label.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + label.y + 8
       );
       lightSection.frame.appendChild(labelNode);
     }
     for (var k = 0; k < components.length; k++) {
       var origComp = components[k];
       var instance = origComp.createInstance();
-      instance.x = origComp.x + SECTION_PADDING20 + labelColumnWidth;
-      instance.y = origComp.y + SECTION_PADDING20 + headerRowHeight;
+      instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
+      instance.y = origComp.y + SECTION_PADDING + headerRowHeight;
       darkSection.frame.appendChild(instance);
     }
     await createColumnHeaders(
       columnHeaders.map(function(h) {
-        return { x: h.x + SECTION_PADDING20, text: h.text };
+        return { x: h.x + SECTION_PADDING, text: h.text };
       }),
-      SECTION_PADDING20,
+      SECTION_PADDING,
       darkSection.frame
     );
     for (var di = 0; di < rowLabels.length; di++) {
       var darkLabel = rowLabels[di];
       var darkLabelNode = await createRowLabel(
         darkLabel.text,
-        SECTION_PADDING20,
-        SECTION_PADDING20 + darkLabel.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + darkLabel.y + 8
       );
       darkSection.frame.appendChild(darkLabelNode);
     }
-    var totalWidth = contentWidth + SECTION_PADDING20 * 2;
-    var totalHeight = contentHeight + SECTION_PADDING20 * 2;
+    var totalWidth = contentWidth + SECTION_PADDING * 2;
+    var totalHeight = contentHeight + SECTION_PADDING * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     logComplete(
       "Generated SensitiveInput ComponentSet with " + components.length + " variants (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP20;
+    return startY + totalHeight + SECTION_GAP;
   }
 
   // scripts/figma/plugin/generators/surface.ts
-  var SECTION_PADDING21 = 48;
-  var SECTION_GAP21 = 160;
   async function createSurfaceComponent() {
     var component = figma.createComponent();
     component.name = "Surface";
@@ -12412,10 +13132,10 @@
     component.effects = [
       {
         type: "DROP_SHADOW",
-        color: { r: 0, g: 0, b: 0, a: 0.05 },
-        offset: { x: 0, y: 1 },
-        radius: 2,
-        spread: 0,
+        color: { r: 0, g: 0, b: 0, a: SHADOWS.xs.opacity },
+        offset: { x: SHADOWS.xs.offsetX, y: SHADOWS.xs.offsetY },
+        radius: SHADOWS.xs.blur,
+        spread: SHADOWS.xs.spread,
         visible: true,
         blendMode: "NORMAL"
       }
@@ -12449,54 +13169,54 @@
     var contentHeight = componentSet.height;
     var lightSection = createModeSection(page, "Surface", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING21 * 2,
-      contentHeight + SECTION_PADDING21 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     var darkSection = createModeSection(page, "Surface", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING21 * 2,
-      contentHeight + SECTION_PADDING21 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING21 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING21;
+    componentSet.x = SECTION_PADDING + labelColumnWidth;
+    componentSet.y = SECTION_PADDING;
     for (var li = 0; li < rowLabels.length; li++) {
       var label = rowLabels[li];
       var labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING21,
-        SECTION_PADDING21 + label.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + label.y + 8
       );
       lightSection.frame.appendChild(labelNode);
     }
     for (var k = 0; k < components.length; k++) {
       var origComp = components[k];
       var instance = origComp.createInstance();
-      instance.x = origComp.x + SECTION_PADDING21 + labelColumnWidth;
-      instance.y = origComp.y + SECTION_PADDING21;
+      instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
+      instance.y = origComp.y + SECTION_PADDING;
       darkSection.frame.appendChild(instance);
     }
     for (var di = 0; di < rowLabels.length; di++) {
       var darkLabel = rowLabels[di];
       var darkLabelNode = await createRowLabel(
         darkLabel.text,
-        SECTION_PADDING21,
-        SECTION_PADDING21 + darkLabel.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + darkLabel.y + 8
       );
       darkSection.frame.appendChild(darkLabelNode);
     }
-    var totalWidth = contentWidth + SECTION_PADDING21 * 2;
-    var totalHeight = contentHeight + SECTION_PADDING21 * 2;
+    var totalWidth = contentWidth + SECTION_PADDING * 2;
+    var totalHeight = contentHeight + SECTION_PADDING * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     logComplete(
       "Generated Surface ComponentSet with " + components.length + " variants (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP21;
+    return startY + totalHeight + SECTION_GAP;
   }
 
   // scripts/figma/plugin/generators/switch.ts
@@ -12529,8 +13249,8 @@
   }
   var sizeValue;
   var i;
-  var SWITCH_PADDING = 4;
-  var SWITCH_LABEL_GAP = 8;
+  var SWITCH_PADDING = theme_data_default.tailwind.spacing.scale["1"];
+  var SWITCH_LABEL_GAP = SPACING.base;
   function createSwitchThumb(size, checked) {
     var dimensions = SWITCH_DIMENSIONS[size];
     var thumbSize = dimensions.height - SWITCH_PADDING * 2;
@@ -12615,7 +13335,7 @@
       component.appendChild(switchTrack);
     }
     if (disabled) {
-      component.opacity = 0.5;
+      component.opacity = OPACITY.disabled;
     }
     return component;
   }
@@ -12643,7 +13363,7 @@
       item.appendChild(switchTrack);
     }
     if (disabled) {
-      item.opacity = 0.5;
+      item.opacity = OPACITY.disabled;
     }
     return item;
   }
@@ -12654,12 +13374,12 @@
     component.layoutMode = "VERTICAL";
     component.primaryAxisSizingMode = "AUTO";
     component.counterAxisSizingMode = "AUTO";
-    component.itemSpacing = 16;
-    component.paddingLeft = 16;
-    component.paddingRight = 16;
-    component.paddingTop = 16;
-    component.paddingBottom = 16;
-    component.cornerRadius = 8;
+    component.itemSpacing = theme_data_default.tailwind.spacing.scale["4"];
+    component.paddingLeft = theme_data_default.tailwind.spacing.scale["4"];
+    component.paddingRight = theme_data_default.tailwind.spacing.scale["4"];
+    component.paddingTop = theme_data_default.tailwind.spacing.scale["4"];
+    component.paddingBottom = theme_data_default.tailwind.spacing.scale["4"];
+    component.cornerRadius = BORDER_RADIUS.lg;
     var borderVar = getVariableByName("color-border");
     if (borderVar) {
       component.strokes = [
@@ -12683,7 +13403,7 @@
     itemsContainer.layoutMode = "VERTICAL";
     itemsContainer.primaryAxisSizingMode = "AUTO";
     itemsContainer.counterAxisSizingMode = "AUTO";
-    itemsContainer.itemSpacing = 8;
+    itemsContainer.itemSpacing = SPACING.base;
     itemsContainer.fills = [];
     var item1 = await createSwitchItem(
       true,
@@ -12740,9 +13460,9 @@
     var components = [];
     var rowLabels = [];
     var componentGap = 24;
-    var rowGap = 48;
-    var headerRowHeight = 24;
-    var labelColumnWidth = 280;
+    var rowGap = GRID_LAYOUT.rowGap.standard;
+    var headerRowHeight = GRID_LAYOUT.headerRowHeight;
+    var labelColumnWidth = GRID_LAYOUT.labelColumnWidth.widest;
     var columnHeaderTexts = ["size=sm", "size=base", "size=lg"];
     var currentY = headerRowHeight;
     rowLabels.push({ y: currentY, text: "checked=false, variant=default" });
@@ -12916,8 +13636,8 @@
       var labelNode = await createRowLabel(
         label.text,
         SECTION_PADDING,
-        SECTION_PADDING + label.y + 4
-        // +4 to vertically center with switch
+        SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.sm
+        // vertically center with switch
       );
       lightSection.frame.appendChild(labelNode);
     }
@@ -12934,7 +13654,7 @@
       var labelNode = await createRowLabel(
         label.text,
         SECTION_PADDING,
-        SECTION_PADDING + label.y + 4
+        SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.sm
       );
       darkSection.frame.appendChild(labelNode);
     }
@@ -12942,9 +13662,9 @@
     var totalHeight = contentHeight + SECTION_PADDING * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     logInfo(
       "\u2705 Generated Switch ComponentSet with " + components.length + " variants (light + dark)"
@@ -12998,9 +13718,9 @@
     darkSection.frame.resize(contentWidth, contentHeight);
     lightSection.section.resizeWithoutConstraints(contentWidth, contentHeight);
     darkSection.section.resizeWithoutConstraints(contentWidth, contentHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + contentWidth + 50;
+    darkSection.section.x = lightSection.section.x + contentWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     logInfo(
       "\u2705 Generated Switch.Group ComponentSet with " + components.length + " variants (light + dark)"
@@ -13011,24 +13731,46 @@
   var SWITCH_SIZES_EXPORT = sizeProp10.values;
 
   // scripts/figma/plugin/generators/tabs.ts
-  var SECTION_PADDING22 = 48;
-  var SECTION_GAP22 = 160;
-  var TABS_CONFIG = {
-    /** Height of tabs container (h-8.5 = 34px) */
-    containerHeight: 34,
+  var _a4;
+  var tabsStyling = (_a4 = component_registry_default.components.Tabs) == null ? void 0 : _a4.styling;
+  var FALLBACK_TABS_CONFIG = {
+    /** Height of tabs container (h-8.5 = 8.5 * 4 = 34px) */
+    containerHeight: theme_data_default.tailwind.spacing.scale["8"] + 2,
+    // 32 + 2 = 34px (closest to h-8.5)
     /** Border radius for container (rounded-lg = 8px) */
-    borderRadius: 8,
+    borderRadius: BORDER_RADIUS.lg,
     /** Horizontal padding inside container (px-px = 1px on each side) */
-    containerPadding: 1,
+    containerPadding: theme_data_default.tailwind.spacing.scale["px"],
+    // 1px
     /** Vertical margin on tabs (my-px = 1px) */
-    tabVerticalMargin: 1,
+    tabVerticalMargin: theme_data_default.tailwind.spacing.scale["px"],
+    // 1px
     /** Horizontal padding on tabs (px-2.5 = 10px) */
-    tabHorizontalPadding: 10,
-    /** Tab text size (text-base = 16px) */
-    tabFontSize: 16,
+    tabHorizontalPadding: theme_data_default.tailwind.spacing.scale["2.5"],
+    // 10px
+    /** Tab text size (text-base from Tailwind = 16px, or Kumo = 14px) */
+    tabFontSize: theme_data_default.tailwind.fontSize.base,
+    // 16px (Tailwind default for tabs)
     /** Tab font weight (font-medium = 500) */
-    tabFontWeight: 500
+    tabFontWeight: FALLBACK_VALUES.fontWeight.medium
+    // 500
   };
+  function getTabsConfigFromRegistry() {
+    var _a6, _b3, _c3, _d2, _e2, _f2, _g2, _h2, _i2, _j2, _k2, _l2, _m2, _n2;
+    if (!tabsStyling) {
+      return FALLBACK_TABS_CONFIG;
+    }
+    return {
+      containerHeight: (_b3 = (_a6 = tabsStyling.container) == null ? void 0 : _a6.height) != null ? _b3 : FALLBACK_TABS_CONFIG.containerHeight,
+      borderRadius: (_d2 = (_c3 = tabsStyling.container) == null ? void 0 : _c3.borderRadius) != null ? _d2 : FALLBACK_TABS_CONFIG.borderRadius,
+      containerPadding: (_f2 = (_e2 = tabsStyling.container) == null ? void 0 : _e2.padding) != null ? _f2 : FALLBACK_TABS_CONFIG.containerPadding,
+      tabVerticalMargin: (_h2 = (_g2 = tabsStyling.tab) == null ? void 0 : _g2.verticalMargin) != null ? _h2 : FALLBACK_TABS_CONFIG.tabVerticalMargin,
+      tabHorizontalPadding: (_j2 = (_i2 = tabsStyling.tab) == null ? void 0 : _i2.paddingX) != null ? _j2 : FALLBACK_TABS_CONFIG.tabHorizontalPadding,
+      tabFontSize: (_l2 = (_k2 = tabsStyling.tab) == null ? void 0 : _k2.fontSize) != null ? _l2 : FALLBACK_TABS_CONFIG.tabFontSize,
+      tabFontWeight: (_n2 = (_m2 = tabsStyling.tab) == null ? void 0 : _m2.fontWeight) != null ? _n2 : FALLBACK_TABS_CONFIG.tabFontWeight
+    };
+  }
+  var TABS_CONFIG = getTabsConfigFromRegistry();
   var DEFAULT_TABS = ["Tab 1", "Tab 2", "Tab 3"];
   async function createTabButton(label, isActive) {
     var button = figma.createFrame();
@@ -13091,10 +13833,10 @@
     indicator.effects = [
       {
         type: "DROP_SHADOW",
-        color: { r: 0, g: 0, b: 0, a: 0.05 },
-        offset: { x: 0, y: 1 },
-        radius: 2,
-        spread: 0,
+        color: { r: 0, g: 0, b: 0, a: SHADOWS.subtle.opacity },
+        offset: { x: SHADOWS.subtle.offsetX, y: SHADOWS.subtle.offsetY },
+        radius: SHADOWS.subtle.blur,
+        spread: SHADOWS.subtle.spread,
         visible: true,
         blendMode: "NORMAL"
       }
@@ -13141,8 +13883,8 @@
       figma.currentPage = page;
       var components = [];
       var rowLabels = [];
-      var labelColumnWidth = 160;
-      var rowGap = 24;
+      var labelColumnWidth = GRID_LAYOUT.labelColumnWidth.standard;
+      var rowGap = GRID_LAYOUT.rowGap.compact;
       var currentY = 0;
       for (var i = 0; i < DEFAULT_TABS.length; i++) {
         var tab = DEFAULT_TABS[i];
@@ -13163,55 +13905,55 @@
       var contentHeight = componentSet.height;
       var lightSection = createModeSection(page, "Tabs", "light");
       lightSection.frame.resize(
-        contentWidth + SECTION_PADDING22 * 2,
-        contentHeight + SECTION_PADDING22 * 2
+        contentWidth + SECTION_PADDING * 2,
+        contentHeight + SECTION_PADDING * 2
       );
       var darkSection = createModeSection(page, "Tabs", "dark");
       darkSection.frame.resize(
-        contentWidth + SECTION_PADDING22 * 2,
-        contentHeight + SECTION_PADDING22 * 2
+        contentWidth + SECTION_PADDING * 2,
+        contentHeight + SECTION_PADDING * 2
       );
       lightSection.frame.appendChild(componentSet);
-      componentSet.x = SECTION_PADDING22 + labelColumnWidth;
-      componentSet.y = SECTION_PADDING22;
+      componentSet.x = SECTION_PADDING + labelColumnWidth;
+      componentSet.y = SECTION_PADDING;
       for (var li = 0; li < rowLabels.length; li++) {
         var label = rowLabels[li];
         var labelNode = await createRowLabel(
           label.text,
-          SECTION_PADDING22,
-          SECTION_PADDING22 + label.y + 12
-          // Center vertically with tabs
+          SECTION_PADDING,
+          SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.lg
+          // Large offset to center vertically with tabs
         );
         lightSection.frame.appendChild(labelNode);
       }
       for (var k = 0; k < components.length; k++) {
         var origComp = components[k];
         var instance = origComp.createInstance();
-        instance.x = SECTION_PADDING22 + labelColumnWidth;
-        instance.y = origComp.y + SECTION_PADDING22;
+        instance.x = SECTION_PADDING + labelColumnWidth;
+        instance.y = origComp.y + SECTION_PADDING;
         darkSection.frame.appendChild(instance);
       }
       for (var di = 0; di < rowLabels.length; di++) {
         var darkLabel = rowLabels[di];
         var darkLabelNode = await createRowLabel(
           darkLabel.text,
-          SECTION_PADDING22,
-          SECTION_PADDING22 + darkLabel.y + 12
+          SECTION_PADDING,
+          SECTION_PADDING + darkLabel.y + GRID_LAYOUT.labelVerticalOffset.lg
         );
         darkSection.frame.appendChild(darkLabelNode);
       }
-      var totalWidth = contentWidth + SECTION_PADDING22 * 2;
-      var totalHeight = contentHeight + SECTION_PADDING22 * 2;
+      var totalWidth = contentWidth + SECTION_PADDING * 2;
+      var totalHeight = contentHeight + SECTION_PADDING * 2;
       lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
       darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-      lightSection.section.x = 100;
+      lightSection.section.x = SECTION_LAYOUT.startX;
       lightSection.section.y = startY;
-      darkSection.section.x = 100 + totalWidth + 50;
+      darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
       darkSection.section.y = startY;
       logComplete(
         "Generated Tabs ComponentSet with " + DEFAULT_TABS.length + " variants (light + dark)"
       );
-      return startY + totalHeight + SECTION_GAP22;
+      return startY + totalHeight + SECTION_GAP;
     } catch (error) {
       var errorMessage = error instanceof Error ? error.message : String(error);
       var errorStack = error instanceof Error ? error.stack : "";
@@ -13225,8 +13967,6 @@
   var textProps = component_registry_default.components.Text.props;
   var variantProp10 = textProps.variant;
   var sizeProp11 = textProps.size;
-  var SECTION_PADDING23 = 48;
-  var SECTION_GAP23 = 160;
   var TEXT_BASE_CLASS = "text-surface";
   var COPY_VARIANTS = ["body", "secondary", "success", "error"];
   var MONO_VARIANTS = ["mono", "mono-secondary"];
@@ -13284,7 +14024,7 @@
     } else if (variantClasses.includes("font-medium")) {
       fontWeight = 500;
     }
-    const fontSize = styles.fontSize || 16;
+    const fontSize = styles.fontSize || FALLBACK_VALUES.fontSize;
     const textNode = await createTextNode(
       getPlaceholderText3(variant),
       fontSize,
@@ -13316,8 +14056,8 @@
     let columnHeadersRecorded = false;
     const componentGap = 20;
     const rowHeight = 50;
-    const headerRowHeight = 24;
-    const labelColumnWidth = 160;
+    const headerRowHeight = GRID_LAYOUT.headerRowHeight;
+    const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.standard;
     let currentRow = 0;
     for (let i = 0; i < variants.length; i++) {
       const variant = variants[i];
@@ -13369,70 +14109,102 @@
     const contentHeight = componentSet.height + headerRowHeight;
     const lightSection = createModeSection(page, "Text", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING23 * 2,
-      contentHeight + SECTION_PADDING23 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     const darkSection = createModeSection(page, "Text", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING23 * 2,
-      contentHeight + SECTION_PADDING23 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING23 + labelColumnWidth;
-    componentSet.y = SECTION_PADDING23 + headerRowHeight;
+    componentSet.x = SECTION_PADDING + labelColumnWidth;
+    componentSet.y = SECTION_PADDING + headerRowHeight;
     await createColumnHeaders(
-      columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING23, text: h.text })),
-      SECTION_PADDING23,
+      columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING, text: h.text })),
+      SECTION_PADDING,
       lightSection.frame
     );
     for (const label of rowLabels) {
       const labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING23,
-        SECTION_PADDING23 + label.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + label.y + 8
         // +8 to vertically center with text
       );
       lightSection.frame.appendChild(labelNode);
     }
     for (const component of components) {
       const instance = component.createInstance();
-      instance.x = component.x + SECTION_PADDING23 + labelColumnWidth;
-      instance.y = component.y + SECTION_PADDING23 + headerRowHeight;
+      instance.x = component.x + SECTION_PADDING + labelColumnWidth;
+      instance.y = component.y + SECTION_PADDING + headerRowHeight;
       darkSection.frame.appendChild(instance);
     }
     await createColumnHeaders(
-      columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING23, text: h.text })),
-      SECTION_PADDING23,
+      columnHeaders.map((h) => ({ x: h.x + SECTION_PADDING, text: h.text })),
+      SECTION_PADDING,
       darkSection.frame
     );
     for (const label of rowLabels) {
       const labelNode = await createRowLabel(
         label.text,
-        SECTION_PADDING23,
-        SECTION_PADDING23 + label.y + 8
+        SECTION_PADDING,
+        SECTION_PADDING + label.y + 8
       );
       darkSection.frame.appendChild(labelNode);
     }
-    const totalWidth = contentWidth + SECTION_PADDING23 * 2;
-    const totalHeight = contentHeight + SECTION_PADDING23 * 2;
+    const totalWidth = contentWidth + SECTION_PADDING * 2;
+    const totalHeight = contentHeight + SECTION_PADDING * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     logComplete(
       "\u2705 Generated Text ComponentSet with " + components.length + " variants (light + dark)"
     );
-    return startY + totalHeight + SECTION_GAP23;
+    return startY + totalHeight + SECTION_GAP;
   }
   var TEXT_VARIANTS_EXPORT = variantProp10.values;
   var TEXT_SIZES_EXPORT = sizeProp11.values;
 
   // scripts/figma/plugin/generators/toast.ts
-  var SECTION_PADDING24 = 48;
-  var SECTION_GAP24 = 160;
-  var TOAST_WIDTH = 300;
+  var _a5;
+  var toastStyling = (_a5 = component_registry_default.components.Toasty) == null ? void 0 : _a5.styling;
+  var FALLBACK_TOAST_CONFIG = {
+    width: 300,
+    // sm:w-[300px] - viewport-specific, not in theme
+    titleFontSize: theme_data_default.tailwind.fontSize.base,
+    // text-base = 16px
+    titleFontWeight: FALLBACK_VALUES.fontWeight.medium,
+    // font-medium = 500
+    descriptionFontSize: 15,
+    // text-[0.925rem] = ~14.8px, custom size not in Tailwind
+    descriptionFontWeight: FALLBACK_VALUES.fontWeight.normal,
+    // font-normal = 400
+    closeButtonSize: theme_data_default.tailwind.spacing.scale["5"],
+    // h-5 w-5 = 20px
+    closeButtonIconSize: theme_data_default.tailwind.spacing.scale["4"]
+    // size-4 = 16px
+  };
+  function getToastConfigFromRegistry() {
+    var _a6, _b3, _c3, _d2, _e2, _f2, _g2, _h2, _i2, _j2, _k2, _l2, _m2, _n2;
+    if (!toastStyling) {
+      return FALLBACK_TOAST_CONFIG;
+    }
+    return {
+      width: (_b3 = (_a6 = toastStyling.container) == null ? void 0 : _a6.width) != null ? _b3 : FALLBACK_TOAST_CONFIG.width,
+      titleFontSize: (_d2 = (_c3 = toastStyling.title) == null ? void 0 : _c3.fontSize) != null ? _d2 : FALLBACK_TOAST_CONFIG.titleFontSize,
+      titleFontWeight: (_f2 = (_e2 = toastStyling.title) == null ? void 0 : _e2.fontWeight) != null ? _f2 : FALLBACK_TOAST_CONFIG.titleFontWeight,
+      descriptionFontSize: (_h2 = (_g2 = toastStyling.description) == null ? void 0 : _g2.fontSize) != null ? _h2 : FALLBACK_TOAST_CONFIG.descriptionFontSize,
+      descriptionFontWeight: (_j2 = (_i2 = toastStyling.description) == null ? void 0 : _i2.fontWeight) != null ? _j2 : FALLBACK_TOAST_CONFIG.descriptionFontWeight,
+      closeButtonSize: (_l2 = (_k2 = toastStyling.closeButton) == null ? void 0 : _k2.size) != null ? _l2 : FALLBACK_TOAST_CONFIG.closeButtonSize,
+      closeButtonIconSize: (_n2 = (_m2 = toastStyling.closeButton) == null ? void 0 : _m2.iconSize) != null ? _n2 : FALLBACK_TOAST_CONFIG.closeButtonIconSize
+    };
+  }
+  var TOAST_CONFIG = getToastConfigFromRegistry();
+  var TOAST_WIDTH = TOAST_CONFIG.width;
   async function createToastComponent() {
     var component = figma.createComponent();
     component.name = "Toast";
@@ -13441,11 +14213,11 @@
     component.primaryAxisSizingMode = "AUTO";
     component.counterAxisSizingMode = "FIXED";
     component.resize(TOAST_WIDTH, 100);
-    component.itemSpacing = 4;
-    component.paddingLeft = 16;
-    component.paddingRight = 16;
-    component.paddingTop = 16;
-    component.paddingBottom = 16;
+    component.itemSpacing = SPACING.xs;
+    component.paddingLeft = theme_data_default.tailwind.spacing.scale["4"];
+    component.paddingRight = theme_data_default.tailwind.spacing.scale["4"];
+    component.paddingTop = theme_data_default.tailwind.spacing.scale["4"];
+    component.paddingBottom = theme_data_default.tailwind.spacing.scale["4"];
     component.cornerRadius = BORDER_RADIUS.lg;
     var bgVar = getVariableByName("color-toast");
     if (bgVar) {
@@ -13458,19 +14230,19 @@
     component.effects = [
       {
         type: "DROP_SHADOW",
-        color: { r: 0, g: 0, b: 0, a: 0.1 },
-        offset: { x: 0, y: 10 },
-        radius: 15,
-        spread: 0,
+        color: { r: 0, g: 0, b: 0, a: SHADOWS.lg.primary.opacity },
+        offset: { x: SHADOWS.lg.primary.offsetX, y: SHADOWS.lg.primary.offsetY },
+        radius: SHADOWS.lg.primary.blur,
+        spread: SHADOWS.lg.primary.spread,
         visible: true,
         blendMode: "NORMAL"
       },
       {
         type: "DROP_SHADOW",
-        color: { r: 0, g: 0, b: 0, a: 0.1 },
-        offset: { x: 0, y: 4 },
-        radius: 6,
-        spread: 0,
+        color: { r: 0, g: 0, b: 0, a: SHADOWS.lg.secondary.opacity },
+        offset: { x: SHADOWS.lg.secondary.offsetX, y: SHADOWS.lg.secondary.offsetY },
+        radius: SHADOWS.lg.secondary.blur,
+        spread: SHADOWS.lg.secondary.spread,
         visible: true,
         blendMode: "NORMAL"
       }
@@ -13485,8 +14257,8 @@
     header.resize(TOAST_WIDTH - 32, 20);
     header.layoutAlign = "STRETCH";
     header.fills = [];
-    header.itemSpacing = 8;
-    var title = await createTextNode("Toast created", 16, 500);
+    header.itemSpacing = SPACING.base;
+    var title = await createTextNode("Toast created", TOAST_CONFIG.titleFontSize, TOAST_CONFIG.titleFontWeight);
     title.name = "Title";
     title.textAutoResize = "WIDTH_AND_HEIGHT";
     title.layoutGrow = 1;
@@ -13500,8 +14272,8 @@
     closeButton.layoutMode = "HORIZONTAL";
     closeButton.primaryAxisAlignItems = "CENTER";
     closeButton.counterAxisAlignItems = "CENTER";
-    closeButton.resize(20, 20);
-    closeButton.cornerRadius = 4;
+    closeButton.resize(TOAST_CONFIG.closeButtonSize, TOAST_CONFIG.closeButtonSize);
+    closeButton.cornerRadius = BORDER_RADIUS.sm;
     closeButton.fills = [];
     var closeIconName = "ph-x";
     var closeIcon = getButtonIcon(closeIconName, "sm");
@@ -13512,8 +14284,8 @@
     component.appendChild(header);
     var description = await createTextNode(
       "This is a toast notification.",
-      15,
-      400
+      TOAST_CONFIG.descriptionFontSize,
+      TOAST_CONFIG.descriptionFontWeight
     );
     description.name = "Description";
     description.textAutoResize = "HEIGHT";
@@ -13542,39 +14314,37 @@
     var contentHeight = componentSet.height;
     var lightSection = createModeSection(page, "Toast", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING24 * 2,
-      contentHeight + SECTION_PADDING24 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     var darkSection = createModeSection(page, "Toast", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING24 * 2,
-      contentHeight + SECTION_PADDING24 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING24;
-    componentSet.y = SECTION_PADDING24;
+    componentSet.x = SECTION_PADDING;
+    componentSet.y = SECTION_PADDING;
     for (var k = 0; k < components.length; k++) {
       var origComp = components[k];
       var instance = origComp.createInstance();
-      instance.x = origComp.x + SECTION_PADDING24;
-      instance.y = origComp.y + SECTION_PADDING24;
+      instance.x = origComp.x + SECTION_PADDING;
+      instance.y = origComp.y + SECTION_PADDING;
       darkSection.frame.appendChild(instance);
     }
-    var totalWidth = contentWidth + SECTION_PADDING24 * 2;
-    var totalHeight = contentHeight + SECTION_PADDING24 * 2;
+    var totalWidth = contentWidth + SECTION_PADDING * 2;
+    var totalHeight = contentHeight + SECTION_PADDING * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     logComplete("Generated Toast ComponentSet (light + dark)");
-    return startY + totalHeight + SECTION_GAP24;
+    return startY + totalHeight + SECTION_GAP;
   }
 
   // scripts/figma/plugin/generators/tooltip.ts
-  var SECTION_PADDING25 = 48;
-  var SECTION_GAP25 = 160;
   var ARROW_WIDTH = 20;
   var ARROW_HEIGHT = 10;
   var tooltipComponent = component_registry_default.components.Tooltip;
@@ -13617,10 +14387,10 @@
     tooltipBox.layoutMode = "VERTICAL";
     tooltipBox.primaryAxisSizingMode = "AUTO";
     tooltipBox.counterAxisSizingMode = "AUTO";
-    tooltipBox.paddingLeft = 10;
-    tooltipBox.paddingRight = 10;
-    tooltipBox.paddingTop = 6;
-    tooltipBox.paddingBottom = 6;
+    tooltipBox.paddingLeft = theme_data_default.tailwind.spacing.scale["2.5"];
+    tooltipBox.paddingRight = theme_data_default.tailwind.spacing.scale["2.5"];
+    tooltipBox.paddingTop = theme_data_default.tailwind.spacing.scale["1.5"];
+    tooltipBox.paddingBottom = theme_data_default.tailwind.spacing.scale["1.5"];
     tooltipBox.cornerRadius = BORDER_RADIUS.md;
     tooltipBox.x = 0;
     tooltipBox.y = 0;
@@ -13628,7 +14398,7 @@
     if (bgVar) {
       bindFillToVariable(tooltipBox, bgVar.id);
     }
-    var text = await createTextNode("Tooltip text", 14, 400);
+    var text = await createTextNode("Tooltip text", FONT_SIZE.sm, FALLBACK_VALUES.fontWeight.normal);
     text.name = "Text";
     text.textAutoResize = "WIDTH_AND_HEIGHT";
     setWhiteTextColor(text);
@@ -13657,34 +14427,34 @@
     var contentHeight = componentSet.height;
     var lightSection = createModeSection(page, "Tooltip", "light");
     lightSection.frame.resize(
-      contentWidth + SECTION_PADDING25 * 2,
-      contentHeight + SECTION_PADDING25 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     var darkSection = createModeSection(page, "Tooltip", "dark");
     darkSection.frame.resize(
-      contentWidth + SECTION_PADDING25 * 2,
-      contentHeight + SECTION_PADDING25 * 2
+      contentWidth + SECTION_PADDING * 2,
+      contentHeight + SECTION_PADDING * 2
     );
     lightSection.frame.appendChild(componentSet);
-    componentSet.x = SECTION_PADDING25;
-    componentSet.y = SECTION_PADDING25;
+    componentSet.x = SECTION_PADDING;
+    componentSet.y = SECTION_PADDING;
     for (var k = 0; k < components.length; k++) {
       var origComp = components[k];
       var instance = origComp.createInstance();
-      instance.x = origComp.x + SECTION_PADDING25;
-      instance.y = origComp.y + SECTION_PADDING25;
+      instance.x = origComp.x + SECTION_PADDING;
+      instance.y = origComp.y + SECTION_PADDING;
       darkSection.frame.appendChild(instance);
     }
-    var totalWidth = contentWidth + SECTION_PADDING25 * 2;
-    var totalHeight = contentHeight + SECTION_PADDING25 * 2;
+    var totalWidth = contentWidth + SECTION_PADDING * 2;
+    var totalHeight = contentHeight + SECTION_PADDING * 2;
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    lightSection.section.x = 100;
+    lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
-    darkSection.section.x = 100 + totalWidth + 50;
+    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
     logComplete("Generated Tooltip ComponentSet (light + dark)");
-    return startY + totalHeight + SECTION_GAP25;
+    return startY + totalHeight + SECTION_GAP;
   }
 
   // scripts/figma/plugin/generated/icon-data.json
@@ -16457,7 +17227,7 @@
     frame.fills = [
       {
         type: "SOLID",
-        color: { r: 0.95, g: 0.95, b: 0.95 }
+        color: COLORS.lightGrayBg
         // Light gray background
       }
     ];
@@ -16473,7 +17243,8 @@
       label.fills = [
         {
           type: "SOLID",
-          color: { r: 0.4, g: 0.4, b: 0.4 }
+          color: COLORS.spinnerStroke
+          // Muted text color
         }
       ];
       exampleComponent.remove();
@@ -16539,7 +17310,7 @@
     containerFrame.fills = [
       {
         type: "SOLID",
-        color: { r: 1, g: 1, b: 1 }
+        color: COLORS.fallbackWhite
         // White background
       }
     ];
@@ -16557,8 +17328,8 @@
         sampleIcon,
         finalConfig.sizeExampleDimensions
       );
-      sizeExamplesFrame.x = 100;
-      sizeExamplesFrame.y = 100;
+      sizeExamplesFrame.x = SECTION_LAYOUT.startX;
+      sizeExamplesFrame.y = SECTION_LAYOUT.startY;
       containerFrame.appendChild(sizeExamplesFrame);
       console.log("\u2705 Size examples created");
     }

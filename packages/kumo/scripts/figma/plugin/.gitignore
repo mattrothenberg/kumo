@@ -1,5 +1,6 @@
-# Generated at build time by build-icon-data.ts
+# Generated at build time by build scripts
 generated/*.json
 
-# Keep the type declaration
+# Keep the type declarations
 !generated/icon-data.json.d.ts
+!generated/theme-data.json.d.ts

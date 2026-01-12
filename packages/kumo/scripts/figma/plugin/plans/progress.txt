@@ -5594,3 +5594,62 @@ Duration: 1.41s
 - Maintained 100% test coverage with no regressions
 
 **Status:** COMPLETE - Phase 10 goals achieved, all generators now aligned with registry
+
+---
+
+## PHASE 11: Comprehensive Hardcoded Values Elimination (IN PROGRESS)
+
+### Goal
+Eliminate ALL remaining hardcoded CSS-derived values in Figma generators by using themeData or shared.ts constants. Target: 100+ hardcoded values across 15+ generator files.
+
+### Status Summary
+- **Tasks:** 17 (T1-T17)
+- **Completed:** 1 (T1)
+- **In Progress:** 0
+- **Pending:** 16
+
+---
+
+## Iteration 29: T1 - Fix empty.ts Hardcoded Values (PHASE 11)
+
+**Task:** T1 - Fix empty.ts Hardcoded Values
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Added themeData import**:
+   - Added `import themeData from "../generated/theme-data.json"` for Tailwind fontSize access
+   - Added `FONT_SIZE` to existing shared.ts imports
+
+2. **Fixed getEmptyTextConfig() font sizes and weights**:
+   - Title fontSize: `24` → `themeData.tailwind.fontSize['2xl']` (24px from Tailwind)
+   - Title fontWeight: `600` → `FALLBACK_VALUES.fontWeight.semiBold` (600 from theme-data.json)
+   - Description fontSize: `14` → `FONT_SIZE.base` (14px from theme-kumo.css)
+   - Description fontWeight: `400` → `FALLBACK_VALUES.fontWeight.normal` (400 from theme-data.json)
+
+3. **Documented FIGMA-SPECIFIC value**:
+   - Added comment for `maxWidth: 560` explaining it's a Figma-specific layout value (max-w-140)
+
+4. **Updated Figma API calls to use config values**:
+   - createTextNode calls now use `textConfig.title.fontSize`, `textConfig.title.fontWeight`
+   - createTextNode calls now use `textConfig.description.fontSize`, `textConfig.description.fontWeight`
+   - Description frame width uses `textConfig.description.maxWidth`
+
+### Test Results:
+- ✅ All 17 empty tests pass
+- ✅ No snapshots changed (values remain identical: 24px, 14px, 600, 400, 560px)
+- ✅ Values now derive from theme-data.json instead of hardcoded literals
+
+### Files Modified:
+- `scripts/figma/plugin/generators/empty.ts` - Fixed hardcoded values
+- `plans/PRD.json` - T1 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- maxWidth: 560 kept as hardcoded value with FIGMA-SPECIFIC comment (unusual CSS class max-w-140)
+- All font sizes and weights now use centralized constants from theme-data.json
+- createEmptyComponent() function now uses getEmptyTextConfig() values consistently
+- Zero functional changes - only refactored to use constants instead of literals
+
+**Status:** COMPLETE - empty.ts now uses themeData and shared constants
+

@@ -1,304 +1,517 @@
 {
-  "title": "Figma Plugin Phase 10 - Hardcoded Values Elimination (Tabs, Toast, Shadow Validation)",
-  "overview": "Eliminate remaining hardcoded values in Tabs and Toast generators by reading from component-registry.json. Document SHADOWS.dialog as Figma-specific exception. Add validation tests to prevent drift in buttonCompactSize values.",
+  "title": "Figma Plugin Phase 11 - Comprehensive Hardcoded Values Elimination",
+  "overview": "Systematically eliminate ALL remaining hardcoded CSS-derived values in Figma generators by using themeData from theme-data.json or registry.styling. This phase addresses 100+ hardcoded values across 15+ generator files identified in audit.",
   "context": {
-    "problem": "Tabs and Toast generators have hardcoded configuration values (TABS_CONFIG, TOAST_WIDTH) despite registry.components.Tabs.styling and registry.components.Toasty.styling already existing with the correct values. Additionally, SHADOWS.dialog has undocumented values not backed by any CSS token, and FALLBACK_VALUES.buttonCompactSize is not validated against the component source.",
-    "current_state": "Phase 9 complete. Font sizes aligned with theme-kumo.css. However, several generators still use hardcoded values instead of registry, and some constants lack drift protection.",
-    "why_now": "The registry integration pattern is proven (Phase 7 completed for DateRangePicker, Pagination, InputArea, LayerCard, MenuBar). Tabs and Toast should follow the same pattern for consistency and maintainability.",
-    "architecture_pattern": {
-      "proven_in_phase_7": "Generator reads from registry.components.X.styling with fallback to hardcoded values",
-      "benefit": "Single source of truth - when CSS/component changes, registry regenerates, and generators automatically pick up new values"
+    "problem": "Multiple generator files contain hardcoded numeric values (fontSize, padding, borderRadius, gap, width, height) that should derive from theme-data.json or component-registry.json. When CSS/Tailwind changes, these values drift and Figma output becomes incorrect.",
+    "current_state": "Phase 10 complete. Tabs and Toast read from registry. But audit found ~100+ hardcoded values in: empty.ts, meter.ts, combobox.ts, layer-card.ts, dropdown.ts, switch.ts, pagination.ts, menubar.ts, surface.ts, input-area.ts, collapsible.ts, dialog.ts, code-block.ts, select.ts, date-range-picker.ts",
+    "existing_infrastructure": {
+      "theme_data_json": "packages/kumo/scripts/figma/plugin/generated/theme-data.json - Contains computed spacing, fontSize, fontWeight, borderRadius, shadows from CSS",
+      "shared_ts_imports": "SPACING, BORDER_RADIUS, FONT_SIZE, FALLBACK_VALUES already import from themeData - generators should use these",
+      "registry_styling": "Some components have registry.components.X.styling with dimensions - already used by date-range-picker.ts pattern"
     },
-    "gaps_identified": {
-      "tabs_generator": {
-        "file": "generators/tabs.ts",
-        "hardcoded_config": "TABS_CONFIG (lines 42-57) with containerHeight: 34, borderRadius: 8, etc.",
-        "registry_has": "registry.components.Tabs.styling with identical values",
-        "solution": "Read from registry with fallback"
-      },
-      "toast_generator": {
-        "file": "generators/toast.ts",
-        "hardcoded_config": "TOAST_WIDTH = 300 (line 47), font sizes 16/15",
-        "registry_has": "registry.components.Toasty.styling with width, fontSize, etc.",
-        "solution": "Read from registry with fallback"
-      },
-      "shadows_dialog": {
-        "file": "generators/shared.ts",
-        "hardcoded_values": "SHADOWS.dialog: blur=32, opacity=0.16 (lines 144-151)",
-        "css_backing": "NONE - Figma-specific exception",
-        "solution": "Remove --shadow-dialog from theme-kumo.css, keep hardcoded in plugin, document as Figma-specific exception (no drift test)"
-      },
-      "button_compact_size": {
-        "file": "generators/shared.ts",
-        "hardcoded_values": "buttonCompactSize: xs=14, sm=26, base=36, lg=40 (lines 266-281)",
-        "source": "Derived from button.tsx KUMO_BUTTON_VARIANTS.compactSize classes",
-        "solution": "Add drift detection test to validate against component"
-      }
+    "categories_of_hardcoded_values": {
+      "font_sizes": "fontSize: 12/14/16/24 should use FONT_SIZE.xs/sm/base/lg or themeData.tailwind.fontSize['2xl']",
+      "spacing_padding_gap": "4/8/12/16/24 should use themeData.tailwind.spacing.scale['1'/'2'/'3'/'4'/'6']",
+      "border_radius": "6/8/12 should use BORDER_RADIUS.md/lg/xl",
+      "component_dimensions": "width/height values specific to components - should be in registry.styling or FALLBACK config with comment"
     }
   },
   "goals": {
     "primary": [
-      "Update tabs.ts to read configuration from registry.components.Tabs.styling",
-      "Update toast.ts to read configuration from registry.components.Toasty.styling",
-      "Remove --shadow-dialog from theme-kumo.css (Figma-specific exception)",
-      "Document SHADOWS.dialog as Figma-specific hardcoded value (no drift test)",
-      "Add drift detection test for buttonCompactSize against button component",
-      "Add registry enforcement test for Tabs/Toast generators"
+      "Replace ALL hardcoded fontSize values with FONT_SIZE.* or themeData references",
+      "Replace ALL hardcoded spacing/padding/gap with themeData.tailwind.spacing.scale references",
+      "Replace ALL hardcoded borderRadius with BORDER_RADIUS.* references",
+      "Document remaining intentional hardcoded values with FIGMA-SPECIFIC comments",
+      "Add drift detection tests for high-risk generators"
     ],
     "metrics": [
-      "Tabs generator reads from registry: YES",
-      "Toast generator reads from registry: YES",
-      "SHADOWS.dialog documented as Figma-specific exception: YES",
-      "buttonCompactSize drift test: PASSING",
-      "All 1500+ generator tests pass",
-      "No snapshot changes (values already match)"
-    ]
-  },
-  "requirements": {
-    "functional": [
-      {
-        "id": "FR-1",
-        "title": "Update tabs.ts to Read from Registry",
-        "description": "Modify tabs.ts to read TABS_CONFIG values from registry.components.Tabs.styling with fallback",
-        "acceptance": [
-          "Import registry from component-registry.json",
-          "Create getTabsConfigFromRegistry() function",
-          "Read container, tab, indicator values from registry.components.Tabs.styling",
-          "Fall back to current hardcoded values if registry data missing",
-          "All 9 tabs tests pass",
-          "No snapshot changes (values already match)"
-        ]
-      },
-      {
-        "id": "FR-2",
-        "title": "Update toast.ts to Read from Registry",
-        "description": "Modify toast.ts to read configuration from registry.components.Toasty.styling with fallback",
-        "acceptance": [
-          "Create getToastConfigFromRegistry() function",
-          "Read container.width, title.fontSize, description.fontSize from registry",
-          "Read closeButton.size, closeButton.iconSize from registry",
-          "Fall back to current hardcoded values if registry data missing",
-          "All toast tests pass",
-          "No snapshot changes (values already match)"
-        ]
-      },
-      {
-        "id": "FR-3",
-        "title": "Remove --shadow-dialog and Document as Figma-Specific Exception",
-        "description": "Remove unused --shadow-dialog from theme-kumo.css and document SHADOWS.dialog as a Figma-specific hardcoded exception",
-        "acceptance": [
-          "Remove --shadow-dialog from theme-kumo.css",
-          "Update SHADOWS.dialog comment in shared.ts to document as Figma-specific exception",
-          "No drift test needed - intentional hardcoded value for Figma rendering"
-        ]
-      },
-      {
-        "id": "FR-4",
-        "title": "Add buttonCompactSize Drift Detection Test",
-        "description": "Add test that validates FALLBACK_VALUES.buttonCompactSize against button component classes",
-        "acceptance": [
-          "Read button.tsx to extract KUMO_BUTTON_VARIANTS.compactSize classes",
-          "Parse size-3.5, size-6.5, size-9, size-10 to pixel values",
-          "Compare against buttonCompactSize.xs, sm, base, lg",
-          "Test fails if values drift"
-        ]
-      },
-      {
-        "id": "FR-5",
-        "title": "Add Registry Enforcement Test for Tabs/Toast",
-        "description": "Add drift detection test that ensures Tabs and Toast generators read from registry",
-        "acceptance": [
-          "Scan tabs.ts and toast.ts for registry import pattern",
-          "Verify they import from component-registry.json",
-          "Test fails if generators use only hardcoded values"
-        ]
-      },
-      {
-        "id": "FR-6",
-        "title": "Final Verification",
-        "description": "Run all tests and verify no regressions",
-        "acceptance": [
-          "All generator tests pass (1500+)",
-          "All drift detection tests pass",
-          "No snapshot changes",
-          "Document completion in progress.txt"
-        ]
-      }
+      "Zero undocumented hardcoded CSS-derived values",
+      "All generators import themeData or use shared.ts constants",
+      "Drift detection tests for critical generators",
+      "All 1500+ generator tests pass"
     ]
   },
   "tasks": [
     {
       "id": "T1",
-      "name": "update-tabs-registry-import",
-      "title": "Update tabs.ts to Read from Registry",
+      "name": "fix-empty-generator",
+      "title": "Fix empty.ts Hardcoded Values",
       "priority": "high",
       "status": "complete",
-      "description": "Modify tabs.ts to read TABS_CONFIG from registry.components.Tabs.styling with fallback",
-      "files": ["scripts/figma/plugin/generators/tabs.ts"],
-      "acceptance": [
-        "Add import for registry",
-        "Create FALLBACK_TABS_CONFIG with current hardcoded values",
-        "Create getTabsConfigFromRegistry() function",
-        "Replace TABS_CONFIG usage with dynamic lookup",
-        "Run: pnpm --filter @cloudflare/kumo test generators/tabs.test.ts --run",
-        "All tests pass, no snapshot changes"
+      "description": "Replace hardcoded fontSize: 24/14, padding values with themeData references",
+      "files": ["scripts/figma/plugin/generators/empty.ts"],
+      "changes": [
+        {
+          "location": "getEmptyTextConfig() around line 96-113",
+          "current": "fontSize: 24, // text-2xl",
+          "replacement": "fontSize: themeData.tailwind.fontSize['2xl'], // 24px from Tailwind",
+          "import_needed": "import themeData from '../generated/theme-data.json'"
+        },
+        {
+          "location": "getEmptyTextConfig() description fontSize",
+          "current": "fontSize: 14, // text-base",
+          "replacement": "fontSize: FONT_SIZE.base, // 14px from theme-kumo.css"
+        },
+        {
+          "location": "maxWidth: 560, // max-w-140",
+          "current": "560",
+          "replacement": "themeData.tailwind.spacing.scale['4'] * 140, // max-w-140 = 140 * 4px",
+          "note": "Or keep hardcoded with FIGMA-SPECIFIC comment since max-w-140 is unusual"
+        }
       ],
-      "estimated_minutes": 20
+      "acceptance": [
+        "Import themeData from '../generated/theme-data.json'",
+        "Replace fontSize: 24 with themeData.tailwind.fontSize['2xl']",
+        "Replace fontSize: 14 with FONT_SIZE.base",
+        "Add comment for any remaining layout-specific values",
+        "Run: pnpm --filter @cloudflare/kumo test generators/empty.test.ts --run",
+        "All tests pass"
+      ],
+      "estimated_minutes": 15
     },
     {
       "id": "T2",
-      "name": "update-toast-registry-import",
-      "title": "Update toast.ts to Read from Registry",
+      "name": "fix-meter-generator",
+      "title": "Fix meter.ts Hardcoded Values",
       "priority": "high",
-      "status": "complete",
-      "description": "Modify toast.ts to read configuration from registry.components.Toasty.styling with fallback",
-      "files": ["scripts/figma/plugin/generators/toast.ts"],
-      "acceptance": [
-        "Create FALLBACK_TOAST_CONFIG with current hardcoded values",
-        "Create getToastConfigFromRegistry() function",
-        "Replace TOAST_WIDTH and inline font sizes with registry values",
-        "Run: pnpm --filter @cloudflare/kumo test generators/toast.test.ts --run",
-        "All tests pass, no snapshot changes"
+      "status": "pending",
+      "description": "Replace hardcoded fontSize: 12/14 with FONT_SIZE.xs/sm",
+      "files": ["scripts/figma/plugin/generators/meter.ts"],
+      "changes": [
+        {
+          "location": "getMeterTypographyConfig() around line 119-134",
+          "current": "fontSize: 12, // text-xs",
+          "replacement": "fontSize: FONT_SIZE.xs, // from theme-kumo.css"
+        },
+        {
+          "location": "getMeterTypographyConfig() value fontSize",
+          "current": "fontSize: 14, // text-sm",
+          "replacement": "fontSize: FONT_SIZE.sm, // 13px from theme-kumo.css",
+          "note": "NOTE: text-sm in Kumo is 13px, not 14px! Update value to 13 or use FONT_SIZE.sm"
+        },
+        {
+          "location": "METER_TRACK_HEIGHT/METER_GAP",
+          "current": "8",
+          "replacement": "themeData.tailwind.spacing.scale['2'], // h-2 = 8px"
+        }
       ],
-      "estimated_minutes": 20
+      "acceptance": [
+        "Import FONT_SIZE from './shared'",
+        "Replace fontSize: 12 with FONT_SIZE.xs",
+        "Replace fontSize: 14 with FONT_SIZE.sm (13px)",
+        "Replace METER_GAP/TRACK_HEIGHT with themeData.tailwind.spacing.scale['2']",
+        "Run: pnpm --filter @cloudflare/kumo test generators/meter.test.ts --run",
+        "All tests pass"
+      ],
+      "estimated_minutes": 10
     },
     {
       "id": "T3",
-      "name": "document-shadow-dialog-exception",
-      "title": "Remove --shadow-dialog CSS and Document as Figma-Specific Exception",
+      "name": "fix-combobox-generator",
+      "title": "Fix combobox.ts Hardcoded Values",
       "priority": "high",
-      "status": "complete",
-      "description": "Remove --shadow-dialog from theme-kumo.css and document SHADOWS.dialog as Figma-specific hardcoded exception",
-      "files": [
-        "src/styles/theme-kumo.css",
-        "scripts/figma/plugin/generators/shared.ts"
+      "status": "pending",
+      "description": "Replace hardcoded width/height/padding in getComboboxLayoutData",
+      "files": ["scripts/figma/plugin/generators/combobox.ts"],
+      "changes": [
+        {
+          "location": "getComboboxLayoutData() trigger config around line 203-209",
+          "current": "width: 280, height: 36, paddingX: 12, itemSpacing: 8",
+          "replacement": "Use FALLBACK_VALUES or add to registry.styling",
+          "pattern": "Create FALLBACK_COMBOBOX_CONFIG at top, reference themeData for standard values"
+        },
+        {
+          "location": "dropdown config around line 210-219",
+          "current": "width: 280, height: 120, paddingY: 4, itemHeight: 32, itemPaddingX: 12",
+          "replacement": "Add to FALLBACK_COMBOBOX_CONFIG, use themeData.tailwind.spacing.scale for padding"
+        }
       ],
       "acceptance": [
-        "Remove --shadow-dialog from theme-kumo.css",
-        "Update SHADOWS.dialog comment to document as Figma-specific exception",
-        "No drift test - intentional hardcoded value"
-      ],
-      "estimated_minutes": 5
-    },
-    {
-      "id": "T4",
-      "name": "add-button-compact-size-drift-test",
-      "title": "Add buttonCompactSize Drift Detection Test",
-      "priority": "medium",
-      "status": "complete",
-      "description": "Add test that validates FALLBACK_VALUES.buttonCompactSize against button component",
-      "files": ["scripts/figma/plugin/generators/drift-detection.test.ts"],
-      "acceptance": [
-        "Add test: 'should have buttonCompactSize matching button.tsx compactSize classes'",
-        "Read button.tsx KUMO_BUTTON_VARIANTS.compactSize",
-        "Parse Tailwind size classes to pixel values (size-3.5=14, size-6.5=26, size-9=36, size-10=40)",
-        "Compare against FALLBACK_VALUES.buttonCompactSize",
-        "Test fails if values drift"
+        "Create FALLBACK_COMBOBOX_CONFIG with all dimensions",
+        "Replace padding values (4, 8, 12) with themeData.tailwind.spacing.scale references",
+        "Use FALLBACK_VALUES.height.base for height: 36",
+        "Document component-specific widths (280, 120) with comments",
+        "Run: pnpm --filter @cloudflare/kumo test generators/combobox.test.ts --run",
+        "All tests pass"
       ],
       "estimated_minutes": 20
     },
     {
-      "id": "T5",
-      "name": "add-tabs-toast-registry-enforcement",
-      "title": "Add Registry Enforcement Test for Tabs/Toast",
-      "priority": "medium",
-      "status": "complete",
-      "description": "Add test that ensures Tabs and Toast generators read from registry",
-      "files": ["scripts/figma/plugin/generators/drift-detection.test.ts"],
+      "id": "T4",
+      "name": "fix-surface-generator",
+      "title": "Fix surface.ts Hardcoded Values",
+      "priority": "high",
+      "status": "pending",
+      "description": "Replace hardcoded padding: 16, itemSpacing: 8, fontSize: 14",
+      "files": ["scripts/figma/plugin/generators/surface.ts"],
+      "changes": [
+        {
+          "location": "createSurfaceComponent() around line 55-59",
+          "current": "paddingLeft/Right/Top/Bottom = 16, itemSpacing = 8",
+          "replacement": "Use themeData.tailwind.spacing.scale['4'] for 16px, scale['2'] for 8px"
+        },
+        {
+          "location": "createTextNode call around line 88",
+          "current": "createTextNode('Surface content', 14, 400)",
+          "replacement": "createTextNode('Surface content', FONT_SIZE.base, FALLBACK_VALUES.fontWeight.normal)"
+        }
+      ],
       "acceptance": [
-        "Add test: 'Tabs and Toast generators should read from registry'",
-        "Check tabs.ts imports component-registry.json",
-        "Check toast.ts imports component-registry.json",
-        "Verify getTabsConfigFromRegistry or similar pattern exists",
-        "Test fails if generators don't read from registry"
+        "Import themeData or use FALLBACK_VALUES.padding.standard for 16px",
+        "Replace itemSpacing: 8 with themeData reference",
+        "Replace fontSize: 14 with FONT_SIZE.base",
+        "Run: pnpm --filter @cloudflare/kumo test generators/surface.test.ts --run",
+        "All tests pass"
+      ],
+      "estimated_minutes": 10
+    },
+    {
+      "id": "T5",
+      "name": "fix-dropdown-generator",
+      "title": "Fix dropdown.ts Hardcoded Values",
+      "priority": "high",
+      "status": "pending",
+      "description": "Replace hardcoded itemHeight, padding, cornerRadius in dropdown configs",
+      "files": ["scripts/figma/plugin/generators/dropdown.ts"],
+      "changes": [
+        {
+          "location": "Panel/menu item dimensions (search for hardcoded 32, 6, 8)",
+          "current": "itemHeight: 32, padding: 6, itemSpacing: 2, cornerRadius: 6",
+          "replacement": "itemHeight: FALLBACK_VALUES.height.base, cornerRadius: BORDER_RADIUS.md, padding: themeData.tailwind.spacing.scale['1.5']"
+        }
+      ],
+      "acceptance": [
+        "Replace cornerRadius: 6 with BORDER_RADIUS.md",
+        "Replace itemHeight: 32 with appropriate FALLBACK_VALUES reference",
+        "Replace padding values with themeData.tailwind.spacing.scale references",
+        "Run: pnpm --filter @cloudflare/kumo test generators/dropdown.test.ts --run",
+        "All tests pass"
       ],
       "estimated_minutes": 15
     },
     {
       "id": "T6",
-      "name": "final-verification-phase-10",
+      "name": "fix-layer-card-generator",
+      "title": "Fix layer-card.ts Hardcoded Values",
+      "priority": "high",
+      "status": "pending",
+      "description": "Replace hardcoded width, padding, fontSize, fontWeight values",
+      "files": ["scripts/figma/plugin/generators/layer-card.ts"],
+      "changes": [
+        {
+          "location": "Fallback config around line 42-57",
+          "current": "width: 280, paddingX: 8, paddingY: 16, gap: 8, fontSize: 16, fontWeight: 400/500",
+          "replacement": "Use themeData references for all standard values"
+        }
+      ],
+      "acceptance": [
+        "Replace fontSize: 16 with FONT_SIZE.lg",
+        "Replace padding values with themeData.tailwind.spacing.scale",
+        "Replace fontWeight values with FALLBACK_VALUES.fontWeight",
+        "Document width: 280 as layout-specific with comment",
+        "Run: pnpm --filter @cloudflare/kumo test generators/layer-card.test.ts --run",
+        "All tests pass"
+      ],
+      "estimated_minutes": 15
+    },
+    {
+      "id": "T7",
+      "name": "fix-input-area-generator",
+      "title": "Fix input-area.ts Hardcoded Values",
+      "priority": "high",
+      "status": "pending",
+      "description": "Replace hardcoded minHeight, width, padding, fontSize, borderRadius",
+      "files": ["scripts/figma/plugin/generators/input-area.ts"],
+      "changes": [
+        {
+          "location": "Size configs around line 74-83",
+          "current": "minHeight: 60/72/88/100, width: 200/240/320/360, paddingX: 12, fontSize: 16, borderRadius: 8",
+          "replacement": "fontSize: FONT_SIZE.lg, borderRadius: BORDER_RADIUS.lg, padding: themeData.tailwind.spacing.scale['3']"
+        }
+      ],
+      "acceptance": [
+        "Replace fontSize: 16 with FONT_SIZE.lg",
+        "Replace borderRadius: 8 with BORDER_RADIUS.lg",
+        "Replace paddingX: 12 with themeData.tailwind.spacing.scale['3']",
+        "Document size-specific dimensions with comments",
+        "Run: pnpm --filter @cloudflare/kumo test generators/input-area.test.ts --run",
+        "All tests pass"
+      ],
+      "estimated_minutes": 15
+    },
+    {
+      "id": "T8",
+      "name": "fix-switch-generator",
+      "title": "Fix switch.ts Hardcoded Values",
+      "priority": "medium",
+      "status": "pending",
+      "description": "Replace hardcoded switch dimensions in fallback config",
+      "files": ["scripts/figma/plugin/generators/switch.ts"],
+      "changes": [
+        {
+          "location": "Size fallback config around line 99-101",
+          "current": "sm: {width: 34, height: 22}, base: {width: 42, height: 26}, lg: {width: 50, height: 30}",
+          "replacement": "Add to registry.styling or document as component-specific"
+        }
+      ],
+      "acceptance": [
+        "Check if registry.components.Switch.styling exists",
+        "If not, document dimensions with COMPONENT-SPECIFIC comments",
+        "Run: pnpm --filter @cloudflare/kumo test generators/switch.test.ts --run",
+        "All tests pass"
+      ],
+      "estimated_minutes": 10
+    },
+    {
+      "id": "T9",
+      "name": "fix-pagination-generator",
+      "title": "Fix pagination.ts Hardcoded Values",
+      "priority": "medium",
+      "status": "pending",
+      "description": "Replace hardcoded fallback layout values",
+      "files": ["scripts/figma/plugin/generators/pagination.ts"],
+      "changes": [
+        {
+          "location": "Fallback layout around line 44-49",
+          "current": "height: 36, buttonSize: 36, inputWidth: 50, iconSize: 16, gap: 8, borderRadius: 8",
+          "replacement": "height: FALLBACK_VALUES.height.base, iconSize: FALLBACK_VALUES.iconSize.sm, gap: themeData.tailwind.spacing.scale['2'], borderRadius: BORDER_RADIUS.lg"
+        }
+      ],
+      "acceptance": [
+        "Replace height: 36 with FALLBACK_VALUES.height.base",
+        "Replace iconSize: 16 with FALLBACK_VALUES.iconSize.sm",
+        "Replace gap: 8 with themeData.tailwind.spacing.scale['2']",
+        "Replace borderRadius: 8 with BORDER_RADIUS.lg",
+        "Run: pnpm --filter @cloudflare/kumo test generators/pagination.test.ts --run",
+        "All tests pass"
+      ],
+      "estimated_minutes": 10
+    },
+    {
+      "id": "T10",
+      "name": "fix-menubar-generator",
+      "title": "Fix menubar.ts Hardcoded Values",
+      "priority": "medium",
+      "status": "pending",
+      "description": "Replace hardcoded fallback config values",
+      "files": ["scripts/figma/plugin/generators/menubar.ts"],
+      "changes": [
+        {
+          "location": "Fallback config around line 54-62",
+          "current": "height: 32, buttonWidth: 36, iconSize: 18, borderRadius: 8, buttonBorderRadius: 6",
+          "replacement": "iconSize: FALLBACK_VALUES.iconSize.medium, borderRadius: BORDER_RADIUS.lg, buttonBorderRadius: BORDER_RADIUS.md"
+        }
+      ],
+      "acceptance": [
+        "Replace iconSize: 18 with FALLBACK_VALUES.iconSize.medium",
+        "Replace borderRadius: 8 with BORDER_RADIUS.lg",
+        "Replace buttonBorderRadius: 6 with BORDER_RADIUS.md",
+        "Run: pnpm --filter @cloudflare/kumo test generators/menubar.test.ts --run",
+        "All tests pass"
+      ],
+      "estimated_minutes": 10
+    },
+    {
+      "id": "T11",
+      "name": "fix-collapsible-generator",
+      "title": "Fix collapsible.ts Hardcoded Values",
+      "priority": "medium",
+      "status": "pending",
+      "description": "Replace hardcoded itemSpacing, padding values",
+      "files": ["scripts/figma/plugin/generators/collapsible.ts"],
+      "changes": [
+        {
+          "location": "Around lines 133, 154-157, 208-211",
+          "current": "itemSpacing = 8, paddingTop/Bottom/Left/Right = 4, itemSpacing = 16",
+          "replacement": "Use themeData.tailwind.spacing.scale references"
+        }
+      ],
+      "acceptance": [
+        "Replace itemSpacing: 8 with themeData.tailwind.spacing.scale['2']",
+        "Replace padding: 4 with themeData.tailwind.spacing.scale['1']",
+        "Replace itemSpacing: 16 with themeData.tailwind.spacing.scale['4']",
+        "Run: pnpm --filter @cloudflare/kumo test generators/collapsible.test.ts --run",
+        "All tests pass"
+      ],
+      "estimated_minutes": 10
+    },
+    {
+      "id": "T12",
+      "name": "fix-dialog-generator",
+      "title": "Fix dialog.ts Hardcoded Values",
+      "priority": "medium",
+      "status": "pending",
+      "description": "Replace hardcoded minWidth values",
+      "files": ["scripts/figma/plugin/generators/dialog.ts"],
+      "changes": [
+        {
+          "location": "Button minWidths around lines 158, 164",
+          "current": "minWidth = 70, minWidth = 100",
+          "replacement": "Document as FIGMA-SPECIFIC layout values with comments"
+        }
+      ],
+      "acceptance": [
+        "Add FIGMA-SPECIFIC comments explaining layout-specific minWidths",
+        "Run: pnpm --filter @cloudflare/kumo test generators/dialog.test.ts --run",
+        "All tests pass"
+      ],
+      "estimated_minutes": 5
+    },
+    {
+      "id": "T13",
+      "name": "fix-code-block-generator",
+      "title": "Fix code-block.ts Hardcoded Values",
+      "priority": "medium",
+      "status": "pending",
+      "description": "Replace hardcoded CODE_INNER_PADDING",
+      "files": ["scripts/figma/plugin/generators/code-block.ts"],
+      "changes": [
+        {
+          "location": "Around line 47",
+          "current": "CODE_INNER_PADDING = 10",
+          "replacement": "CODE_INNER_PADDING = themeData.tailwind.spacing.scale['2.5'] // p-2.5 = 10px"
+        }
+      ],
+      "acceptance": [
+        "Import themeData",
+        "Replace CODE_INNER_PADDING = 10 with themeData.tailwind.spacing.scale['2.5']",
+        "Run: pnpm --filter @cloudflare/kumo test generators/code-block.test.ts --run",
+        "All tests pass"
+      ],
+      "estimated_minutes": 5
+    },
+    {
+      "id": "T14",
+      "name": "fix-select-generator",
+      "title": "Fix select.ts Hardcoded Values",
+      "priority": "medium",
+      "status": "pending",
+      "description": "Replace hardcoded popup width",
+      "files": ["scripts/figma/plugin/generators/select.ts"],
+      "changes": [
+        {
+          "location": "Around line 679",
+          "current": "width: 280",
+          "replacement": "Document as layout-specific with FIGMA-SPECIFIC comment"
+        }
+      ],
+      "acceptance": [
+        "Add FIGMA-SPECIFIC comment explaining layout-specific width",
+        "Run: pnpm --filter @cloudflare/kumo test generators/select.test.ts --run",
+        "All tests pass"
+      ],
+      "estimated_minutes": 5
+    },
+    {
+      "id": "T15",
+      "name": "fix-date-range-picker-generator",
+      "title": "Fix date-range-picker.ts Hardcoded Values",
+      "priority": "medium",
+      "status": "pending",
+      "description": "Replace hardcoded textSize, iconSize, padding, gap in FALLBACK_SIZE_CONFIG",
+      "files": ["scripts/figma/plugin/generators/date-range-picker.ts"],
+      "changes": [
+        {
+          "location": "FALLBACK_SIZE_CONFIG around lines 93-121",
+          "current": "textSize: 12/14/16, iconSize: 14/16/18, padding: 12/16/20, gap: 8/10/12",
+          "replacement": "textSize: FONT_SIZE.xs/sm/lg, iconSize: FALLBACK_VALUES.iconSize.*, padding/gap: themeData.tailwind.spacing.scale"
+        }
+      ],
+      "acceptance": [
+        "Import FONT_SIZE, FALLBACK_VALUES from './shared'",
+        "Replace textSize values with FONT_SIZE references",
+        "Replace iconSize values with FALLBACK_VALUES.iconSize references",
+        "Replace padding/gap with themeData.tailwind.spacing.scale references",
+        "Document calendar-specific dimensions (cellWidth, cellHeight) with comments",
+        "Run: pnpm --filter @cloudflare/kumo test generators/date-range-picker.test.ts --run",
+        "All tests pass"
+      ],
+      "estimated_minutes": 20
+    },
+    {
+      "id": "T16",
+      "name": "add-comprehensive-drift-tests",
+      "title": "Add Drift Detection Tests for Fixed Generators",
+      "priority": "medium",
+      "status": "pending",
+      "description": "Add drift detection tests to ensure generators use themeData/shared constants",
+      "files": ["scripts/figma/plugin/generators/drift-detection.test.ts"],
+      "changes": [
+        {
+          "test_name": "Generator files should import themeData or use shared constants",
+          "description": "Scan generator files to ensure they import from theme-data.json or use FONT_SIZE/BORDER_RADIUS/FALLBACK_VALUES"
+        }
+      ],
+      "acceptance": [
+        "Add test that scans all generator .ts files (excluding .test.ts)",
+        "Check each file imports themeData OR uses FONT_SIZE/BORDER_RADIUS/FALLBACK_VALUES",
+        "Fail if generator has hardcoded fontSize/borderRadius without imports",
+        "Run: pnpm --filter @cloudflare/kumo test generators/drift-detection.test.ts --run",
+        "All tests pass"
+      ],
+      "estimated_minutes": 20
+    },
+    {
+      "id": "T17",
+      "name": "final-verification",
       "title": "Final Verification and Documentation",
       "priority": "medium",
-      "status": "complete",
+      "status": "pending",
       "description": "Run all tests, verify no regressions, document completion",
       "files": ["scripts/figma/plugin/plans/progress.txt"],
       "acceptance": [
         "Run: pnpm --filter @cloudflare/kumo test generators/ --run",
         "All 1500+ tests pass",
-        "Run: pnpm --filter @cloudflare/kumo test generators/drift-detection.test.ts --run",
-        "All drift detection tests pass (including new ones)",
-        "No snapshot changes",
-        "Append Phase 10 completion summary to progress.txt"
+        "No snapshot changes (values should match)",
+        "Append Phase 11 completion summary to progress.txt",
+        "Output <promise>COMPLETE</promise>"
       ],
       "estimated_minutes": 15
     }
   ],
   "technical_approach": {
-    "registry_reading_pattern": {
-      "description": "Same pattern used in Phase 7 for DateRangePicker, Pagination, etc.",
-      "example": "const styling = (registry.components.Tabs as any).styling;\nconst FALLBACK_CONFIG = { ... current hardcoded values ... };\nfunction getConfigFromRegistry() {\n  if (!styling) return FALLBACK_CONFIG;\n  return { ...FALLBACK_CONFIG, ...styling.container };\n}"
+    "pattern_for_font_sizes": {
+      "import": "import { FONT_SIZE } from './shared'",
+      "usage": "fontSize: FONT_SIZE.xs // 12px from theme-kumo.css",
+      "note": "FONT_SIZE already imports from themeData.computed.fontSize"
     },
-    "figma_specific_exceptions": {
-      "SHADOWS.dialog": {
-        "description": "Dialog shadow is Figma-specific - no CSS token backing",
-        "values": "offsetY=8, blur=32, opacity=0.16",
-        "reason": "Optimized for Figma rendering, Dialog component uses different shadow approach"
-      }
+    "pattern_for_spacing": {
+      "import": "import themeData from '../generated/theme-data.json'",
+      "usage": "padding: themeData.tailwind.spacing.scale['3'] // 12px",
+      "scale": "scale['1']=4, scale['2']=8, scale['3']=12, scale['4']=16, scale['6']=24"
     },
-    "button_compact_size_pattern": {
-      "description": "Parse Tailwind size classes to pixel values",
-      "mapping": {
-        "size-3.5": "14px (3.5 * 4)",
-        "size-6.5": "26px (6.5 * 4)",
-        "size-9": "36px (9 * 4)",
-        "size-10": "40px (10 * 4)"
-      }
+    "pattern_for_border_radius": {
+      "import": "import { BORDER_RADIUS } from './shared'",
+      "usage": "cornerRadius: BORDER_RADIUS.lg // 8px from Tailwind",
+      "values": "xs=2, sm=4, md=6, lg=8, xl=12"
+    },
+    "pattern_for_component_specific": {
+      "comment": "// FIGMA-SPECIFIC: Layout value for Figma canvas, not from CSS",
+      "note": "Use for values like popup width (280), min button widths (70/100)"
     }
   },
   "deliverables": [
-    {
-      "name": "Tabs Registry Integration",
-      "description": "tabs.ts reads from registry.components.Tabs.styling",
-      "files": ["scripts/figma/plugin/generators/tabs.ts"]
-    },
-    {
-      "name": "Toast Registry Integration",
-      "description": "toast.ts reads from registry.components.Toasty.styling",
-      "files": ["scripts/figma/plugin/generators/toast.ts"]
-    },
-    {
-      "name": "Shadow Dialog Exception Documentation",
-      "description": "SHADOWS.dialog documented as Figma-specific hardcoded exception (no CSS token)",
-      "files": ["scripts/figma/plugin/generators/shared.ts"]
-    },
-    {
-      "name": "Drift Detection Tests",
-      "description": "New tests for buttonCompactSize validation and registry enforcement",
-      "files": ["scripts/figma/plugin/generators/drift-detection.test.ts"]
-    }
+    "15 generator files updated to use themeData/shared constants",
+    "All hardcoded CSS-derived values replaced or documented",
+    "Drift detection test for generator imports",
+    "All 1500+ tests passing"
   ],
   "constraints": [
-    "Must maintain backward compatibility with fallback values",
-    "No snapshot changes expected (registry values match hardcoded)",
-    "Tests must fail if values drift (not just warn)",
-    "SHADOWS.dialog is Figma-specific exception - no drift test needed"
+    "Must maintain backward compatibility - values should not change",
+    "No snapshot changes expected (themeData has same values as current hardcoded)",
+    "Keep FIGMA-SPECIFIC layout values documented but hardcoded",
+    "Each task is atomic - one generator file per task"
   ],
   "success_criteria": [
-    "tabs.ts reads from registry: YES",
-    "toast.ts reads from registry: YES",
-    "SHADOWS.dialog documented as Figma-specific exception: YES",
-    "buttonCompactSize drift test: PASSING",
-    "Registry enforcement test: PASSING",
-    "All generator tests pass (1500+)"
+    "Zero undocumented hardcoded fontSize/borderRadius/spacing values",
+    "All generators use themeData or shared.ts constants",
+    "Drift detection test passing",
+    "All 1500+ generator tests pass"
   ],
   "references": {
-    "theme_kumo_css": "packages/kumo/src/styles/theme-kumo.css",
-    "tabs_generator": "scripts/figma/plugin/generators/tabs.ts",
-    "toast_generator": "scripts/figma/plugin/generators/toast.ts",
+    "theme_data_json": "scripts/figma/plugin/generated/theme-data.json",
     "shared_constants": "scripts/figma/plugin/generators/shared.ts",
-    "drift_detection": "scripts/figma/plugin/generators/drift-detection.test.ts",
-    "button_component": "src/components/button/button.tsx",
-    "phase_7_pattern": "scripts/figma/plugin/generators/pagination.ts (reference implementation)"
+    "example_pattern": "scripts/figma/plugin/generators/date-range-picker.ts (getSizeConfigFromRegistry pattern)"
   },
   "completed_phases": {
     "phase_1_test_refactoring": "COMPLETE",
@@ -310,6 +523,7 @@
     "phase_7_full_registry_integration": "COMPLETE",
     "phase_8_test_assertion_hardening": "COMPLETE",
     "phase_9_css_theme_sync": "COMPLETE",
-    "phase_10_hardcoded_values_elimination": "NOT_STARTED"
+    "phase_10_hardcoded_values_elimination": "COMPLETE",
+    "phase_11_comprehensive_hardcoded_elimination": "IN_PROGRESS"
   }
 }

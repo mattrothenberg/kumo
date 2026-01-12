@@ -23,6 +23,7 @@ import {
   FALLBACK_VALUES,
   SECTION_LAYOUT,
 } from "./shared";
+// Note: Line height for code uses FALLBACK_VALUES.lineHeight.code (20px)
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 import { logComplete } from "../logger";
 
@@ -204,8 +205,8 @@ async function createCodeBlockComponent(lang: string): Promise<ComponentNode> {
     }
   }
 
-  // Set line height
-  textNode.lineHeight = { value: 20, unit: "PIXELS" };
+  // Set line height - uses FALLBACK_VALUES.lineHeight.code (20px from code.tsx leading-[20px])
+  textNode.lineHeight = { value: FALLBACK_VALUES.lineHeight.code, unit: "PIXELS" };
 
   component.appendChild(textNode);
 

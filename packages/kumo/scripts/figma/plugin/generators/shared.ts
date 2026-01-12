@@ -4,46 +4,60 @@
  * Common functions used by all component generators (Button, Badge, etc.)
  * Provides abstractions over Figma Plugin API for creating frames, text,
  * binding variables, and applying layouts.
+ *
+ * IMPORTANT: Size/spacing/font constants are generated from CSS sources.
+ * Run `npx tsx build-theme-data.ts` to regenerate theme-data.json.
  */
 
+import themeData from "../generated/theme-data.json";
+
 /**
- * Size and spacing constants from SPEC.md
+ * Size and spacing constants
+ * Generated from: Tailwind v4 theme.css --spacing base unit
  */
 export const SPACING = {
   /** Extra small gap between elements */
-  xs: 4,
+  xs: themeData.computed.spacing.xs,
   /** Small gap between elements */
-  sm: 6,
+  sm: themeData.computed.spacing.sm,
   /** Base gap between elements */
-  base: 8,
+  base: themeData.computed.spacing.base,
   /** Large gap between elements */
-  lg: 12,
+  lg: themeData.computed.spacing.lg,
 } as const;
 
+/**
+ * Border radius constants
+ * Generated from: Tailwind v4 theme.css --radius-* values
+ */
 export const BORDER_RADIUS = {
-  /** Extra small radius (2px) - matches --radius-xs in Tailwind v4 theme.css */
-  xs: 2,
-  /** Small radius (4px) - matches --radius-sm in Tailwind v4 theme.css */
-  sm: 4,
-  /** Medium radius (6px) - matches --radius-md in Tailwind v4 theme.css */
-  md: 6,
-  /** Large radius (8px) - matches --radius-lg in Tailwind v4 theme.css */
-  lg: 8,
-  /** Extra large radius (12px) - matches --radius-xl in Tailwind v4 theme.css */
-  xl: 12,
+  /** Extra small radius - matches --radius-xs in Tailwind v4 theme.css */
+  xs: themeData.computed.borderRadius.xs,
+  /** Small radius - matches --radius-sm in Tailwind v4 theme.css */
+  sm: themeData.computed.borderRadius.sm,
+  /** Medium radius - matches --radius-md in Tailwind v4 theme.css */
+  md: themeData.computed.borderRadius.md,
+  /** Large radius - matches --radius-lg in Tailwind v4 theme.css */
+  lg: themeData.computed.borderRadius.lg,
+  /** Extra large radius - matches --radius-xl in Tailwind v4 theme.css */
+  xl: themeData.computed.borderRadius.xl,
   /** Full rounded (9999px) */
-  full: 9999,
+  full: themeData.computed.borderRadius.full,
 } as const;
 
+/**
+ * Font size constants
+ * Generated from: theme-kumo.css --text-* values (Kumo overrides Tailwind defaults)
+ */
 export const FONT_SIZE = {
-  /** Extra small (12px) - matches --text-xs in theme-kumo.css */
-  xs: 12,
-  /** Small (13px) - matches --text-sm in theme-kumo.css (Kumo override from 14px) */
-  sm: 13,
-  /** Base (14px) - matches --text-base in theme-kumo.css (Kumo override from 16px) */
-  base: 14,
-  /** Large (16px) - matches --text-lg in theme-kumo.css (Kumo override from 18px) */
-  lg: 16,
+  /** Extra small - matches --text-xs in theme-kumo.css */
+  xs: themeData.computed.fontSize.xs,
+  /** Small - matches --text-sm in theme-kumo.css (Kumo override) */
+  sm: themeData.computed.fontSize.sm,
+  /** Base - matches --text-base in theme-kumo.css (Kumo override) */
+  base: themeData.computed.fontSize.base,
+  /** Large - matches --text-lg in theme-kumo.css (Kumo override) */
+  lg: themeData.computed.fontSize.lg,
 } as const;
 
 /**
@@ -104,47 +118,88 @@ export const SECTION_PADDING = 48;
 export const SECTION_GAP = 160;
 
 /**
+ * Shadow layer type for single-layer shadows
+ */
+type ShadowLayer = {
+  offsetX: number;
+  offsetY: number;
+  blur: number;
+  spread: number;
+  opacity: number;
+};
+
+/**
+ * Get the first layer from a shadow definition in theme-data.json
+ * Falls back to provided defaults if no layers exist
+ */
+function getShadowLayer(
+  shadowDef: { layers: ShadowLayer[] } | undefined,
+  fallback: ShadowLayer,
+): ShadowLayer {
+  if (shadowDef?.layers && shadowDef.layers.length > 0) {
+    return shadowDef.layers[0];
+  }
+  return fallback;
+}
+
+/**
  * Shadow presets for components
- * Values match Figma shadow designs for elevated UI elements
+ * Generated from: Tailwind v4 theme.css shadow definitions via theme-data.json
+ * Run `npx tsx build-theme-data.ts` to regenerate.
  */
 export const SHADOWS = {
-  /** Extra small shadow - minimal elevation (0px 1px 2px rgba(0,0,0,0.05))
+  /** Extra small shadow - minimal elevation
    *  Used for: Surface, MenuBar, subtle elevation
    *  Matches Tailwind: shadow-xs
+   *  Generated from theme-data.json
    */
-  xs: {
+  xs: getShadowLayer(themeData.tailwind.shadows.xs, {
     offsetX: 0,
     offsetY: 1,
     blur: 2,
     spread: 0,
     opacity: 0.05,
-  },
+  }),
+  /** Small shadow - two layers
+   *  Used for: Tabs indicator, subtle elevation
+   *  Matches Tailwind: shadow-sm
+   *  Generated from theme-data.json (first layer)
+   */
+  sm: getShadowLayer(themeData.tailwind.shadows.sm, {
+    offsetX: 0,
+    offsetY: 1,
+    blur: 3,
+    spread: 0,
+    opacity: 0.1,
+  }),
   /** Large shadow - high elevation with two layers
    *  Used for: Toast, popups, floating elements
    *  Matches Tailwind: shadow-lg
-   *  Primary layer: 0px 10px 15px rgba(0,0,0,0.1)
-   *  Secondary layer: 0px 4px 6px rgba(0,0,0,0.1)
+   *  Generated from theme-data.json
    */
   lg: {
-    primary: {
+    primary: getShadowLayer(themeData.tailwind.shadows.lg, {
       offsetX: 0,
       offsetY: 10,
       blur: 15,
-      spread: 0,
+      spread: -3,
       opacity: 0.1,
-    },
-    secondary: {
-      offsetX: 0,
-      offsetY: 4,
-      blur: 6,
-      spread: 0,
-      opacity: 0.1,
-    },
+    }),
+    secondary:
+      themeData.tailwind.shadows.lg?.layers?.[1] ??
+      ({
+        offsetX: 0,
+        offsetY: 4,
+        blur: 6,
+        spread: -4,
+        opacity: 0.1,
+      } as ShadowLayer),
   },
   /** Dialog shadow - Figma-specific exception (no CSS token backing).
    *  This is intentionally hardcoded for Figma rendering optimization.
    *  The Dialog React component uses a different shadow approach.
    *  Format: 0 8px 32px rgb(0 0 0 / 0.16)
+   *  NOTE: This is NOT derived from Tailwind - it's a Figma-specific design choice.
    */
   dialog: {
     offsetX: 0,
@@ -153,16 +208,14 @@ export const SHADOWS = {
     spread: 0,
     opacity: 0.16,
   },
-  /** Subtle shadow for tabs indicator (0px 1px 2px rgba(0,0,0,0.05))
-   *  @deprecated Use SHADOWS.xs instead - same values
-   */
-  subtle: {
+  /** @deprecated Use SHADOWS.xs instead - same values */
+  subtle: getShadowLayer(themeData.tailwind.shadows.xs, {
     offsetX: 0,
     offsetY: 1,
     blur: 2,
     spread: 0,
     opacity: 0.05,
-  },
+  }),
 } as const;
 
 /**
@@ -218,85 +271,96 @@ export const GRID_LAYOUT = {
 /**
  * Fallback values when parsing fails
  * Used as defensive defaults when registry or parser doesn't provide expected values
+ *
+ * IMPORTANT: Many values are generated from CSS sources via theme-data.json.
+ * Run `npx tsx build-theme-data.ts` to regenerate.
  */
 export const FALLBACK_VALUES = {
-  /** Default font size (text-base = 16px) */
-  fontSize: 16,
-  /** Default font weight (normal = 400, medium = 500, semiBold = 600) */
+  /** Default font size (text-base from theme-kumo.css) */
+  fontSize: themeData.computed.fontSize.base,
+  /** Default font weight - generated from Tailwind v4 theme.css */
   fontWeight: {
     /** Normal weight (CSS default) */
-    normal: 400,
+    normal: themeData.computed.fontWeight.normal,
     /** Medium weight (commonly used in UI) */
-    medium: 500,
+    medium: themeData.computed.fontWeight.medium,
     /** Semi-bold weight (used in headings and emphasis) */
-    semiBold: 600,
+    semiBold: themeData.computed.fontWeight.semiBold,
   },
-  /** Default padding values (px-3 = 12px, py-1.5 = 6px) */
+  /** Default padding values - derived from Tailwind spacing scale */
   padding: {
     /** Horizontal padding for inputs/buttons (px-3 = 12px) */
-    horizontal: 12,
+    horizontal: themeData.tailwind.spacing.scale["3"],
     /** Vertical padding for compact components (py-1.5 = 6px) */
-    vertical: 6,
+    vertical: themeData.tailwind.spacing.scale["1.5"],
     /** Standard padding for content areas (p-4 = 16px) */
-    standard: 16,
+    standard: themeData.tailwind.spacing.scale["4"],
     /** Large padding for dialogs and cards (p-6 = 24px) */
-    large: 24,
+    large: themeData.tailwind.spacing.scale["6"],
   },
-  /** Default border radius (rounded-lg = 8px, rounded-md = 6px) */
+  /** Default border radius - generated from Tailwind v4 theme.css */
   borderRadius: {
-    /** Medium radius (rounded-md = 6px) */
-    medium: 6,
-    /** Large radius (rounded-lg = 8px) */
-    large: 8,
+    /** Medium radius (rounded-md) */
+    medium: themeData.computed.borderRadius.md,
+    /** Large radius (rounded-lg) */
+    large: themeData.computed.borderRadius.lg,
   },
-  /** Default gap between elements (gap-1.5 = 6px, gap-2 = 8px, gap-1 = 4px) */
+  /** Default gap between elements - derived from Tailwind spacing scale */
   gap: {
     /** Tight gap (gap-1 = 4px) */
-    tight: 4,
+    tight: themeData.tailwind.spacing.scale["1"],
     /** Standard gap (gap-1.5 = 6px) */
-    standard: 6,
+    standard: themeData.tailwind.spacing.scale["1.5"],
     /** Medium gap (gap-2 = 8px) */
-    medium: 8,
+    medium: themeData.tailwind.spacing.scale["2"],
     /** Large gap for dialogs and cards (gap-4 = 16px) */
-    large: 16,
+    large: themeData.tailwind.spacing.scale["4"],
   },
   /** Default height for inputs/buttons (h-9 = 36px) */
   height: {
     /** Base input/button height (h-9 = 36px) */
-    base: 36,
+    base: themeData.tailwind.spacing.scale["9"],
   },
   /**
    * Button compact sizes (square/circle shapes)
-   * From button.tsx KUMO_BUTTON_VARIANTS.compactSize:
-   * - xs: size-3.5 = 14px
-   * - sm: size-6.5 = 26px
-   * - base: size-9 = 36px
-   * - lg: size-10 = 40px
+   * Generated from: button.tsx KUMO_BUTTON_VARIANTS.compactSize
    */
   buttonCompactSize: {
-    /** Extra small compact button (size-3.5 = 14px) */
-    xs: 14,
-    /** Small compact button (size-6.5 = 26px) */
-    sm: 26,
-    /** Base compact button (size-9 = 36px) */
-    base: 36,
-    /** Large compact button (size-10 = 40px) */
-    lg: 40,
+    /** Extra small compact button (size-3.5) */
+    xs: themeData.computed.buttonCompactSize.xs,
+    /** Small compact button (size-6.5) */
+    sm: themeData.computed.buttonCompactSize.sm,
+    /** Base compact button (size-9) */
+    base: themeData.computed.buttonCompactSize.base,
+    /** Large compact button (size-10) */
+    lg: themeData.computed.buttonCompactSize.lg,
   },
   /** Default stroke weight for borders */
   strokeWeight: 1,
-  /** Default icon size (size-5 = 20px, size-4.5 = 18px, size-4 = 16px, size-3 = 12px) */
+  /** Thick stroke weight for emphasis borders (e.g., collapsible content border) */
+  strokeWeightThick: 2,
+  /** Default icon size - derived from Tailwind spacing scale */
   iconSize: {
     /** Extra small icon (size-3 = 12px) */
-    xs: 12,
+    xs: themeData.tailwind.spacing.scale["3"],
     /** Small icon (size-4 = 16px) */
-    sm: 16,
+    sm: themeData.tailwind.spacing.scale["4"],
     /** Medium icon (size-4.5 = 18px) */
-    medium: 18,
+    medium: themeData.tailwind.spacing.scale["4.5"] ?? 18,
     /** Base icon (size-5 = 20px) */
-    base: 20,
+    base: themeData.tailwind.spacing.scale["5"],
+    /** Large icon (size-12 = 48px) - used for Empty component */
+    lg: themeData.tailwind.spacing.scale["12"],
     /** @deprecated Use xs instead */
-    small: 12,
+    small: themeData.tailwind.spacing.scale["3"],
+  },
+  /**
+   * Line height values
+   * These are design-specific values for readability
+   */
+  lineHeight: {
+    /** Code block line height (leading-[20px] from code.tsx) */
+    code: 20,
   },
 } as const;
 

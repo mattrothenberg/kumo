@@ -32,7 +32,10 @@ import {
   SECTION_GAP,
   SECTION_LAYOUT,
   SHADOWS,
+  SPACING,
+  FALLBACK_VALUES,
 } from "./shared";
+import themeData from "../generated/theme-data.json";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import { logComplete } from "../logger";
 
@@ -42,15 +45,20 @@ import registry from "../../../../ai/component-registry.json";
 // Type for registry styling
 const toastStyling = (registry.components as any).Toasty?.styling;
 
-// Fallback config with original hardcoded values
+/**
+ * Fallback config using theme-data.json values to prevent drift
+ * Width is derived from sm:w-[300px] viewport constraint
+ * Typography uses Tailwind fontSize values
+ * Spacing uses Tailwind spacing scale
+ */
 const FALLBACK_TOAST_CONFIG = {
-  width: 300,
-  titleFontSize: 16,
-  titleFontWeight: 500,
-  descriptionFontSize: 15,
-  descriptionFontWeight: 400,
-  closeButtonSize: 20,
-  closeButtonIconSize: 16,
+  width: 300, // sm:w-[300px] - viewport-specific, not in theme
+  titleFontSize: themeData.tailwind.fontSize.base, // text-base = 16px
+  titleFontWeight: FALLBACK_VALUES.fontWeight.medium, // font-medium = 500
+  descriptionFontSize: 15, // text-[0.925rem] = ~14.8px, custom size not in Tailwind
+  descriptionFontWeight: FALLBACK_VALUES.fontWeight.normal, // font-normal = 400
+  closeButtonSize: themeData.tailwind.spacing.scale["5"], // h-5 w-5 = 20px
+  closeButtonIconSize: themeData.tailwind.spacing.scale["4"], // size-4 = 16px
 };
 
 /**
@@ -101,11 +109,11 @@ async function createToastComponent(): Promise<ComponentNode> {
   component.primaryAxisSizingMode = "AUTO";
   component.counterAxisSizingMode = "FIXED";
   component.resize(TOAST_WIDTH, 100); // Height will auto-adjust
-  component.itemSpacing = 4; // Small gap between header and description
-  component.paddingLeft = 16; // p-4 = 16px
-  component.paddingRight = 16;
-  component.paddingTop = 16;
-  component.paddingBottom = 16;
+  component.itemSpacing = SPACING.xs; // gap-1 = 4px, small gap between header and description
+  component.paddingLeft = themeData.tailwind.spacing.scale["4"]; // p-4 = 16px
+  component.paddingRight = themeData.tailwind.spacing.scale["4"];
+  component.paddingTop = themeData.tailwind.spacing.scale["4"];
+  component.paddingBottom = themeData.tailwind.spacing.scale["4"];
   component.cornerRadius = BORDER_RADIUS.lg; // rounded-lg = 8px
 
   // Apply background fill (bg-toast)
@@ -153,7 +161,7 @@ async function createToastComponent(): Promise<ComponentNode> {
   header.resize(TOAST_WIDTH - 32, 20); // Full width minus padding
   header.layoutAlign = "STRETCH";
   header.fills = [];
-  header.itemSpacing = 8;
+  header.itemSpacing = SPACING.base; // gap-2 = 8px
 
   // Create title text
   // text-[0.975rem] = ~15.6px, font-medium = 500
@@ -178,7 +186,7 @@ async function createToastComponent(): Promise<ComponentNode> {
   closeButton.primaryAxisAlignItems = "CENTER";
   closeButton.counterAxisAlignItems = "CENTER";
   closeButton.resize(TOAST_CONFIG.closeButtonSize, TOAST_CONFIG.closeButtonSize);
-  closeButton.cornerRadius = 4; // rounded
+  closeButton.cornerRadius = BORDER_RADIUS.sm; // rounded = 4px
   closeButton.fills = []; // bg-transparent
 
   // Create close icon (ph-x) - 16x16 inside 20x20 button
