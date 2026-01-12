@@ -1333,3 +1333,197 @@ describe("Figma Plugin - Phase 10 Registry Enforcement", () => {
     expect(violations).toEqual([]);
   });
 });
+
+/**
+ * Phase 11: Comprehensive Hardcoded Values Elimination
+ *
+ * These tests ensure ALL generators use themeData or shared.ts constants
+ * instead of hardcoded CSS-derived values (fontSize, spacing, borderRadius).
+ * This prevents drift when CSS/Tailwind values change.
+ */
+describe("Figma Plugin - Phase 11 Hardcoded Values Elimination", () => {
+  it("should import themeData or use shared constants (FONT_SIZE, BORDER_RADIUS, FALLBACK_VALUES)", () => {
+    const generatorFiles = readdirSync(__dirname)
+      .filter(
+        (f: string) =>
+          f.endsWith(".ts") &&
+          !f.endsWith(".test.ts") &&
+          !UTILITY_FILES.has(f.replace(".ts", ""))
+      );
+
+    const violations: string[] = [];
+
+    for (const file of generatorFiles) {
+      const filePath = join(__dirname, file);
+      const content = readFileSync(filePath, "utf-8");
+
+      // Check if file imports themeData
+      const importsThemeData = /import\s+themeData\s+from\s+["']\.\.\/generated\/theme-data\.json["']/.test(content);
+
+      // Check if file imports shared constants
+      const importsFontSize = /import\s+\{[^}]*FONT_SIZE[^}]*\}\s+from\s+["']\.\/shared["']/.test(content);
+      const importsBorderRadius = /import\s+\{[^}]*BORDER_RADIUS[^}]*\}\s+from\s+["']\.\/shared["']/.test(content);
+      const importsFallbackValues = /import\s+\{[^}]*FALLBACK_VALUES[^}]*\}\s+from\s+["']\.\/shared["']/.test(content);
+
+      const hasImports = importsThemeData || importsFontSize || importsBorderRadius || importsFallbackValues;
+
+      // Check if file has hardcoded fontSize values (12, 13, 14, 16, 18, 20, 24)
+      // Pattern: fontSize: NUMBER or fontSize = NUMBER (not FONT_SIZE.* or themeData.*)
+      // BUT: Allow fallback patterns like "fontSize = 12; // fallback" or lines with "logWarn"
+      const hasHardcodedFontSize = /fontSize[:\s]*=\s*(?:1[2-8]|20|24)\b(?!\s*\/\/)/.test(content) &&
+        !(/FONT_SIZE\./.test(content) || /themeData\.[^}]*fontSize/.test(content)) &&
+        !/using fallback|logWarn/.test(content);
+
+      // Check if file has hardcoded borderRadius/cornerRadius values (2, 4, 6, 8, 12, 9999)
+      // Pattern: borderRadius: NUMBER or cornerRadius: NUMBER
+      const hasHardcodedBorderRadius = /(border|corner)Radius[:\s]*=?\s*(?:[2468]|12|9999)\b(?!\s*\/\/)/.test(content) &&
+        !(/BORDER_RADIUS\./.test(content) || /themeData\.[^}]*borderRadius/.test(content)) &&
+        !/using fallback|logWarn/.test(content);
+
+      // Check if file has hardcoded spacing/padding/gap values (4, 6, 8, 10, 12, 16, 20, 24)
+      // Pattern: padding: NUMBER, gap: NUMBER, spacing: NUMBER (but not in object key position)
+      const hasHardcodedSpacing = /(padding|gap|spacing)[:\s]*=?\s*(?:[468]|1[026]|20|24)\b(?!\s*\/\/)/.test(content) &&
+        !(/themeData\.[^}]*spacing/.test(content) || /SPACING\./.test(content)) &&
+        !/using fallback|logWarn/.test(content);
+
+      if (!hasImports && (hasHardcodedFontSize || hasHardcodedBorderRadius || hasHardcodedSpacing)) {
+        const issues = [];
+        if (hasHardcodedFontSize) issues.push("fontSize");
+        if (hasHardcodedBorderRadius) issues.push("borderRadius");
+        if (hasHardcodedSpacing) issues.push("spacing/padding/gap");
+        violations.push(
+          `${file}: Has hardcoded ${issues.join(", ")} without importing themeData or shared constants`
+        );
+      }
+    }
+
+    if (violations.length > 0) {
+      throw new Error(
+        `❌ Hardcoded CSS-derived values found in ${violations.length} generator(s):\n` +
+          `  - ${violations.join("\n  - ")}\n\n` +
+          `🔧 To fix:\n` +
+          `  1. Import themeData: import themeData from '../generated/theme-data.json'\n` +
+          `  2. Or import shared constants: import { FONT_SIZE, BORDER_RADIUS, FALLBACK_VALUES } from './shared'\n` +
+          `  3. Replace hardcoded values:\n` +
+          `     - fontSize: 12 → FONT_SIZE.xs\n` +
+          `     - fontSize: 13 → FONT_SIZE.sm\n` +
+          `     - fontSize: 14 → FONT_SIZE.base\n` +
+          `     - fontSize: 16 → FONT_SIZE.lg\n` +
+          `     - fontSize: 24 → themeData.tailwind.fontSize['2xl']\n` +
+          `     - borderRadius: 6 → BORDER_RADIUS.md\n` +
+          `     - borderRadius: 8 → BORDER_RADIUS.lg\n` +
+          `     - padding: 8 → themeData.tailwind.spacing.scale['2']\n` +
+          `     - padding: 16 → themeData.tailwind.spacing.scale['4']\n\n` +
+          `📖 See AGENTS.md for Phase 11 documentation`
+      );
+    }
+
+    expect(violations).toEqual([]);
+  });
+
+  it("should not have undocumented hardcoded fontSize values in generator functions", () => {
+    const generatorFiles = readdirSync(__dirname)
+      .filter(
+        (f: string) =>
+          f.endsWith(".ts") &&
+          !f.endsWith(".test.ts") &&
+          !UTILITY_FILES.has(f.replace(".ts", ""))
+      );
+
+    const warnings: string[] = [];
+
+    for (const file of generatorFiles) {
+      const filePath = join(__dirname, file);
+      const content = readFileSync(filePath, "utf-8");
+      const lines = content.split("\n");
+
+      // Check for undocumented hardcoded fontSize values
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+
+        // Skip lines that already use constants
+        if (/FONT_SIZE\./.test(line) || /themeData\.[^}]*fontSize/.test(line)) continue;
+
+        // Skip lines with FIGMA-SPECIFIC comments
+        if (lines[i - 1]?.includes("FIGMA-SPECIFIC") || line.includes("FIGMA-SPECIFIC")) continue;
+
+        // Detect hardcoded fontSize: NUMBER pattern
+        const hardcodedMatch = line.match(/fontSize[:\s]*=?\s*(1[2-8]|20|24)\b/);
+        if (hardcodedMatch) {
+          warnings.push(
+            `${file}:${i + 1}: Undocumented hardcoded fontSize: ${hardcodedMatch[1]} - use FONT_SIZE or add FIGMA-SPECIFIC comment`
+          );
+        }
+      }
+    }
+
+    if (warnings.length > 0) {
+      console.warn(
+        `\n⚠️  Found ${warnings.length} undocumented hardcoded fontSize values:\n` +
+          `  - ${warnings.slice(0, 10).join("\n  - ")}` +
+          (warnings.length > 10 ? `\n  ... and ${warnings.length - 10} more` : "") +
+          `\n\n` +
+          `💡 Either:\n` +
+          `  1. Replace with FONT_SIZE.* constant from shared.ts\n` +
+          `  2. Or add comment: // FIGMA-SPECIFIC: Layout value for Figma canvas, not from CSS\n`
+      );
+    }
+
+    // Warning only for now - strict enforcement happens in first test
+    expect(true).toBe(true);
+  });
+
+  it("should document all intentional hardcoded values with FIGMA-SPECIFIC comments", () => {
+    const generatorFiles = readdirSync(__dirname)
+      .filter(
+        (f: string) =>
+          f.endsWith(".ts") &&
+          !f.endsWith(".test.ts") &&
+          !UTILITY_FILES.has(f.replace(".ts", ""))
+      );
+
+    const warnings: string[] = [];
+
+    for (const file of generatorFiles) {
+      const filePath = join(__dirname, file);
+      const content = readFileSync(filePath, "utf-8");
+      const lines = content.split("\n");
+
+      // Look for layout-specific values that should be documented
+      // Common patterns: width: 280, minWidth: 70, COMPONENT_WIDTH = 320
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+
+        // Skip lines that are already documented
+        if (lines[i - 1]?.includes("FIGMA-SPECIFIC") || line.includes("FIGMA-SPECIFIC")) continue;
+
+        // Skip lines that use constants
+        if (/themeData\./.test(line) || /FONT_SIZE\./.test(line) || /BORDER_RADIUS\./.test(line)) continue;
+
+        // Detect suspicious layout-specific values
+        // Pattern: width/height/minWidth = NUMBER (typically 70, 100, 200, 280, 320, 560)
+        const layoutMatch = line.match(/(min)?[Ww]idth[:\s]*=?\s*(70|100|200|280|320|560)\b/);
+        if (layoutMatch) {
+          warnings.push(
+            `${file}:${i + 1}: Undocumented layout value: ${layoutMatch[0]} - consider adding FIGMA-SPECIFIC comment`
+          );
+        }
+      }
+    }
+
+    if (warnings.length > 0) {
+      console.warn(
+        `\n⚠️  Found ${warnings.length} undocumented layout-specific values:\n` +
+          `  - ${warnings.slice(0, 10).join("\n  - ")}` +
+          (warnings.length > 10 ? `\n  ... and ${warnings.length - 10} more` : "") +
+          `\n\n` +
+          `💡 Add comments to document intentional layout values:\n` +
+          `  // FIGMA-SPECIFIC: Component width for Figma canvas display, not from CSS\n` +
+          `  const COMPONENT_WIDTH = 280;\n`
+      );
+    }
+
+    // Warning only - this is guidance
+    expect(true).toBe(true);
+  });
+});

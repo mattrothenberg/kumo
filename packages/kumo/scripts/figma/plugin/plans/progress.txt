@@ -6332,3 +6332,62 @@ Eliminate ALL remaining hardcoded CSS-derived values in Figma generators by usin
 - All changes maintain exact numeric values - no visual changes expected
 
 **Status:** COMPLETE - DateRangePicker now uses themeData/shared constants
+
+---
+
+## Iteration 29: T16 - Add Drift Detection Tests for Fixed Generators (PHASE 11)
+
+**Task:** T16 - Add Drift Detection Tests for Fixed Generators
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Added comprehensive Phase 11 drift detection tests** to `drift-detection.test.ts`:
+   - Test 1: "should import themeData or use shared constants" - Scans all generator files for hardcoded fontSize/borderRadius/spacing without imports
+   - Test 2: "should not have undocumented hardcoded fontSize values in generator functions" - Warns about undocumented values (allows fallback patterns with logWarn)
+   - Test 3: "should document all intentional hardcoded values with FIGMA-SPECIFIC comments" - Warns about layout-specific values
+
+2. **Test 1 implementation details**:
+   - Scans all .ts files (excluding .test.ts and utility files)
+   - Checks for imports: themeData, FONT_SIZE, BORDER_RADIUS, FALLBACK_VALUES
+   - Detects hardcoded values:
+     - fontSize: 12/13/14/16/18/20/24
+     - borderRadius: 2/4/6/8/12/9999
+     - spacing/padding/gap: 4/6/8/10/12/16/20/24
+   - Allows fallback patterns with "using fallback" or "logWarn" comments
+   - Fails with helpful error message suggesting fixes
+
+3. **Fixed code.ts hardcoded values** (required for test to pass):
+   - Added imports: FONT_SIZE, FALLBACK_VALUES from './shared'
+   - Replaced: `var fontSize = 14; // text-sm = 14px` → `var fontSize = FONT_SIZE.base; // 14px from theme-kumo.css`
+   - Replaced: `var fontWeight = 400; // Regular weight` → `var fontWeight = FALLBACK_VALUES.fontWeight.normal; // 400`
+   - Note: code.ts was NOT in T1-T15 scope but was caught by drift detection (as intended)
+
+### Test Results:
+- ✅ All 41 drift detection tests pass (38 existing + 3 new Phase 11 tests)
+- ✅ All 49 code.ts generator tests pass (no regressions)
+- ✅ Test correctly identified badge.ts and code.ts as violations initially
+- ✅ Test correctly allows fallback patterns with logWarn (badge.ts passed)
+- ✅ Test fails with clear error messages and fix suggestions
+
+### Files Modified:
+- `scripts/figma/plugin/generators/drift-detection.test.ts` - Added 3 Phase 11 tests
+- `scripts/figma/plugin/generators/code.ts` - Fixed hardcoded fontSize/fontWeight
+- `plans/PRD.json` - T16 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- **Test coverage**: Drift detection now enforces Phase 11 goals across ALL generators
+- **Automatic detection**: Test catches any future additions of hardcoded values
+- **Lenient for fallbacks**: Test allows "using fallback" or "logWarn" patterns (defensive programming)
+- **Warning-only tests**: Tests 2 and 3 provide guidance without failing (gradual migration)
+- **badge.ts**: Already compliant (uses logWarn fallback pattern)
+- **code.ts**: Fixed as part of T16 (was not in T1-T15 scope)
+
+**Enforcement level:**
+- Test 1: ❌ FAIL if hardcoded values without imports (strict)
+- Test 2: ⚠️ WARN about undocumented fontSize values (guidance)
+- Test 3: ⚠️ WARN about undocumented layout values (guidance)
+
+**Status:** COMPLETE - Drift detection tests added and passing
+

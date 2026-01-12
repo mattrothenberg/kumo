@@ -27,6 +27,8 @@ import {
   SECTION_PADDING,
   SECTION_GAP,
   SECTION_LAYOUT,
+  FONT_SIZE,
+  FALLBACK_VALUES,
 } from "./shared";
 import { logComplete } from "../logger";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
@@ -86,8 +88,8 @@ async function createCodeComponent(lang: string): Promise<ComponentNode> {
   component.fills = [];
 
   // Create text node with monospace font
-  var fontSize = 14; // text-sm = 14px
-  var fontWeight = 400; // Regular weight for code
+  var fontSize = FONT_SIZE.base; // 14px from theme-kumo.css
+  var fontWeight = FALLBACK_VALUES.fontWeight.normal; // 400
   var textNode = await createTextNode(
     getPlaceholderText(lang),
     fontSize,

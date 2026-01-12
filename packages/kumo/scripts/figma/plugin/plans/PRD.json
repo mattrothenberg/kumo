@@ -39,7 +39,9 @@
       "priority": "high",
       "status": "complete",
       "description": "Replace hardcoded fontSize: 24/14, padding values with themeData references",
-      "files": ["scripts/figma/plugin/generators/empty.ts"],
+      "files": [
+        "scripts/figma/plugin/generators/empty.ts"
+      ],
       "changes": [
         {
           "location": "getEmptyTextConfig() around line 96-113",
@@ -76,7 +78,9 @@
       "priority": "high",
       "status": "complete",
       "description": "Replace hardcoded fontSize: 12/14 with FONT_SIZE.xs/sm",
-      "files": ["scripts/figma/plugin/generators/meter.ts"],
+      "files": [
+        "scripts/figma/plugin/generators/meter.ts"
+      ],
       "changes": [
         {
           "location": "getMeterTypographyConfig() around line 119-134",
@@ -112,7 +116,9 @@
       "priority": "high",
       "status": "complete",
       "description": "Replace hardcoded width/height/padding in getComboboxLayoutData",
-      "files": ["scripts/figma/plugin/generators/combobox.ts"],
+      "files": [
+        "scripts/figma/plugin/generators/combobox.ts"
+      ],
       "changes": [
         {
           "location": "getComboboxLayoutData() trigger config around line 203-209",
@@ -143,7 +149,9 @@
       "priority": "high",
       "status": "complete",
       "description": "Replace hardcoded padding: 16, itemSpacing: 8, fontSize: 14",
-      "files": ["scripts/figma/plugin/generators/surface.ts"],
+      "files": [
+        "scripts/figma/plugin/generators/surface.ts"
+      ],
       "changes": [
         {
           "location": "createSurfaceComponent() around line 55-59",
@@ -172,7 +180,9 @@
       "priority": "high",
       "status": "complete",
       "description": "Replace hardcoded itemHeight, padding, cornerRadius in dropdown configs",
-      "files": ["scripts/figma/plugin/generators/dropdown.ts"],
+      "files": [
+        "scripts/figma/plugin/generators/dropdown.ts"
+      ],
       "changes": [
         {
           "location": "Panel/menu item dimensions (search for hardcoded 32, 6, 8)",
@@ -196,7 +206,9 @@
       "priority": "high",
       "status": "complete",
       "description": "Replace hardcoded width, padding, fontSize, fontWeight values",
-      "files": ["scripts/figma/plugin/generators/layer-card.ts"],
+      "files": [
+        "scripts/figma/plugin/generators/layer-card.ts"
+      ],
       "changes": [
         {
           "location": "Fallback config around line 42-57",
@@ -221,7 +233,9 @@
       "priority": "high",
       "status": "complete",
       "description": "Replace hardcoded minHeight, width, padding, fontSize, borderRadius",
-      "files": ["scripts/figma/plugin/generators/input-area.ts"],
+      "files": [
+        "scripts/figma/plugin/generators/input-area.ts"
+      ],
       "changes": [
         {
           "location": "Size configs around line 74-83",
@@ -246,7 +260,9 @@
       "priority": "medium",
       "status": "complete",
       "description": "Replace hardcoded switch dimensions in fallback config",
-      "files": ["scripts/figma/plugin/generators/switch.ts"],
+      "files": [
+        "scripts/figma/plugin/generators/switch.ts"
+      ],
       "changes": [
         {
           "location": "Size fallback config around line 99-101",
@@ -269,7 +285,9 @@
       "priority": "medium",
       "status": "complete",
       "description": "Replace hardcoded fallback layout values",
-      "files": ["scripts/figma/plugin/generators/pagination.ts"],
+      "files": [
+        "scripts/figma/plugin/generators/pagination.ts"
+      ],
       "changes": [
         {
           "location": "Fallback layout around line 44-49",
@@ -294,7 +312,9 @@
       "priority": "medium",
       "status": "complete",
       "description": "Replace hardcoded fallback config values",
-      "files": ["scripts/figma/plugin/generators/menubar.ts"],
+      "files": [
+        "scripts/figma/plugin/generators/menubar.ts"
+      ],
       "changes": [
         {
           "location": "Fallback config around line 54-62",
@@ -318,7 +338,9 @@
       "priority": "medium",
       "status": "complete",
       "description": "Replace hardcoded itemSpacing, padding values",
-      "files": ["scripts/figma/plugin/generators/collapsible.ts"],
+      "files": [
+        "scripts/figma/plugin/generators/collapsible.ts"
+      ],
       "changes": [
         {
           "location": "Around lines 133, 154-157, 208-211",
@@ -342,7 +364,9 @@
       "priority": "medium",
       "status": "complete",
       "description": "Replace hardcoded minWidth values",
-      "files": ["scripts/figma/plugin/generators/dialog.ts"],
+      "files": [
+        "scripts/figma/plugin/generators/dialog.ts"
+      ],
       "changes": [
         {
           "location": "Button minWidths around lines 158, 164",
@@ -364,7 +388,9 @@
       "priority": "medium",
       "status": "complete",
       "description": "Replace hardcoded CODE_INNER_PADDING",
-      "files": ["scripts/figma/plugin/generators/code-block.ts"],
+      "files": [
+        "scripts/figma/plugin/generators/code-block.ts"
+      ],
       "changes": [
         {
           "location": "Around line 47",
@@ -387,7 +413,9 @@
       "priority": "medium",
       "status": "complete",
       "description": "Replace hardcoded popup width",
-      "files": ["scripts/figma/plugin/generators/select.ts"],
+      "files": [
+        "scripts/figma/plugin/generators/select.ts"
+      ],
       "changes": [
         {
           "location": "Around line 679",
@@ -409,7 +437,9 @@
       "priority": "medium",
       "status": "complete",
       "description": "Replace hardcoded textSize, iconSize, padding, gap in FALLBACK_SIZE_CONFIG",
-      "files": ["scripts/figma/plugin/generators/date-range-picker.ts"],
+      "files": [
+        "scripts/figma/plugin/generators/date-range-picker.ts"
+      ],
       "changes": [
         {
           "location": "FALLBACK_SIZE_CONFIG around lines 93-121",
@@ -433,9 +463,11 @@
       "name": "add-comprehensive-drift-tests",
       "title": "Add Drift Detection Tests for Fixed Generators",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Add drift detection tests to ensure generators use themeData/shared constants",
-      "files": ["scripts/figma/plugin/generators/drift-detection.test.ts"],
+      "files": [
+        "scripts/figma/plugin/generators/drift-detection.test.ts"
+      ],
       "changes": [
         {
           "test_name": "Generator files should import themeData or use shared constants",
@@ -458,7 +490,9 @@
       "priority": "medium",
       "status": "pending",
       "description": "Run all tests, verify no regressions, document completion",
-      "files": ["scripts/figma/plugin/plans/progress.txt"],
+      "files": [
+        "scripts/figma/plugin/plans/progress.txt"
+      ],
       "acceptance": [
         "Run: pnpm --filter @cloudflare/kumo test generators/ --run",
         "All 1500+ tests pass",
