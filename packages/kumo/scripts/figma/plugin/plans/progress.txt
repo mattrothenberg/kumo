@@ -5436,3 +5436,51 @@ Duration: 1.41s
 
 **Status:** COMPLETE - Toast generator now reads from registry with proper fallback
 
+
+
+---
+
+## Iteration 29: T4 - Add buttonCompactSize Drift Detection Test (PHASE 10)
+
+**Task:** T4 - Add buttonCompactSize Drift Detection Test
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Added buttonCompactSize drift detection test** to drift-detection.test.ts:
+   - New test: "should have buttonCompactSize matching button.tsx compactSize classes"
+   - Reads button.tsx to extract KUMO_BUTTON_VARIANTS.compactSize classes
+   - Parses Tailwind size classes to pixel values (size-3.5 = 14px, etc.)
+   - Compares against FALLBACK_VALUES.buttonCompactSize from shared.ts
+   - Test will fail if values drift between component and plugin
+
+2. **Test implementation**:
+   - Extracts compactSize classes using regex: `:\s*\{\s*classes:\s*["']size-([\d.]+)["']`
+   - Converts Tailwind size values to pixels: size-X = X * 4
+   - Validates all four sizes: xs (14px), sm (26px), base (36px), lg (40px)
+   - Reads shared.ts FALLBACK_VALUES.buttonCompactSize block
+   - Compares each size value to ensure no drift
+
+### Test Results:
+- ✅ All 35 drift detection tests pass (34 existing + 1 new)
+- ✅ buttonCompactSize test correctly validates all 4 sizes
+- ✅ Test confirms values match between button.tsx and shared.ts:
+  - xs: 14px (size-3.5)
+  - sm: 26px (size-6.5)
+  - base: 36px (size-9)
+  - lg: 40px (size-10)
+
+### Files Modified:
+- `scripts/figma/plugin/generators/drift-detection.test.ts` - Added buttonCompactSize drift test
+- `plans/PRD.json` - T4 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- Test added to "Phase 9: CSS Theme Sync Validation" describe block
+- Uses same pattern as FONT_SIZE drift detection test
+- Test will immediately catch if button component compactSize classes change
+- Provides protection against manual edits to shared.ts that don't match component
+- Phase 10 progress: 4 of 6 tasks complete (T1-T4)
+
+**Status:** COMPLETE - buttonCompactSize drift detection test added and passing
+

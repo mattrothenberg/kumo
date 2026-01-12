@@ -141,7 +141,11 @@ export const SHADOWS = {
       opacity: 0.1,
     },
   },
-  /** Dialog shadow - elevated appearance (0px 8px 32px rgba(0,0,0,0.16)) */
+  /** Dialog shadow - Figma-specific exception (no CSS token backing).
+   *  This is intentionally hardcoded for Figma rendering optimization.
+   *  The Dialog React component uses a different shadow approach.
+   *  Format: 0 8px 32px rgb(0 0 0 / 0.16)
+   */
   dialog: {
     offsetX: 0,
     offsetY: 8,

@@ -2,6 +2,16 @@
 
 You are eliminating remaining hardcoded values in Figma generators and adding drift protection. This is Phase 10 of the Figma plugin robustness project.
 
+## IMPORTANT: File Path Context
+
+You are running from `packages/kumo/scripts/figma/plugin/`. All file paths in this document are relative to `packages/kumo/` unless otherwise specified.
+
+**Key paths:**
+
+- `src/styles/theme-kumo.css` → `packages/kumo/src/styles/theme-kumo.css`
+- `scripts/figma/plugin/generators/*.ts` → where you're running from
+- `src/components/button/button.tsx` → `packages/kumo/src/components/button/button.tsx`
+
 ## CRITICAL CONTEXT
 
 **Registry styling metadata already exists** for Tabs and Toast, but generators use hardcoded values instead of reading from registry.
@@ -95,14 +105,20 @@ dialog: {
 ## Task Order
 
 | Task | Title                                  | Priority | Status  |
-| ---- | -------------------------------------- | -------- | ------- |
+| ---- | -------------------------------------- | -------- | ------- | ----------------- |
 | T1   | Update tabs.ts to Read from Registry   | HIGH     | pending |
 | T2   | Update toast.ts to Read from Registry  | HIGH     | pending |
 | T3   | Add --shadow-dialog CSS Token          | HIGH     | pending |
-| T4   | Add Shadow Dialog Drift Detection Test | HIGH     | pending |
+| T4   | Add Shadow Dialog Drift Detection Test | HIGH     | pending | **Depends on T3** |
 | T5   | Add buttonCompactSize Drift Detection  | MEDIUM   | pending |
 | T6   | Add Registry Enforcement Test          | MEDIUM   | pending |
 | T7   | Final Verification                     | MEDIUM   | pending |
+
+## Task Dependencies
+
+- **T4 depends on T3**: The drift test for shadow-dialog requires the CSS token to exist first
+- **T6 depends on T1 & T2**: Registry enforcement test requires tabs.ts and toast.ts to be updated first (ALREADY DONE)
+- **T7 depends on all previous tasks**: Final verification runs after everything else
 
 ## Your Task (Single Task Per Iteration)
 
@@ -239,7 +255,10 @@ pnpm --filter @cloudflare/kumo test generators/toast.test.ts --run
 
 ### T3: Add --shadow-dialog CSS Token
 
-**File:** `packages/kumo/src/styles/theme-kumo.css`
+**File 1:** `src/styles/theme-kumo.css` (relative to packages/kumo/)
+
+- Full path from repo root: `packages/kumo/src/styles/theme-kumo.css`
+- This is OUTSIDE the plugin directory - go up 3 levels from generators/
 
 Find the @theme block where other shadows are defined and add:
 
@@ -318,15 +337,16 @@ it("should have buttonCompactSize matching button.tsx compactSize classes", () =
   const buttonContent = readFileSync(buttonPath, "utf-8");
 
   // Extract compactSize mapping from KUMO_BUTTON_VARIANTS
-  // Pattern: xs: "size-3.5", sm: "size-6.5", base: "size-9", lg: "size-10"
+  // Format in button.tsx: xs: { classes: "size-3.5" }, sm: { classes: "size-6.5" }, ...
   const extractSizeClass = (size: string): number | null => {
-    const match = buttonContent.match(new RegExp(`${size}:\\s*["']size-([\\d.]+)["']`));
+    // Match: xs: { classes: "size-3.5" }
+    const match = buttonContent.match(new RegExp(`${size}:\\s*\\{\\s*classes:\\s*["']size-([\\d.]+)["']`));
     if (!match) return null;
     // Convert Tailwind size to pixels: size-X = X * 4
     return parseFloat(match[1]) * 4;
   };
 
-  const cssValues = {
+  const componentValues = {
     xs: extractSizeClass("xs"),
     sm: extractSizeClass("sm"),
     base: extractSizeClass("base"),
@@ -334,16 +354,16 @@ it("should have buttonCompactSize matching button.tsx compactSize classes", () =
   };
 
   // Validate we could parse the classes
-  expect(cssValues.xs).toBe(14);  // size-3.5 = 14px
-  expect(cssValues.sm).toBe(26);  // size-6.5 = 26px
-  expect(cssValues.base).toBe(36); // size-9 = 36px
-  expect(cssValues.lg).toBe(40);  // size-10 = 40px
+  expect(componentValues.xs).toBe(14);  // size-3.5 = 14px
+  expect(componentValues.sm).toBe(26);  // size-6.5 = 26px
+  expect(componentValues.base).toBe(36); // size-9 = 36px
+  expect(componentValues.lg).toBe(40);  // size-10 = 40px
 
   // Compare against FALLBACK_VALUES.buttonCompactSize
-  expect(FALLBACK_VALUES.buttonCompactSize.xs).toBe(cssValues.xs);
-  expect(FALLBACK_VALUES.buttonCompactSize.sm).toBe(cssValues.sm);
-  expect(FALLBACK_VALUES.buttonCompactSize.base).toBe(cssValues.base);
-  expect(FALLBACK_VALUES.buttonCompactSize.lg).toBe(cssValues.lg);
+  expect(FALLBACK_VALUES.buttonCompactSize.xs).toBe(componentValues.xs);
+  expect(FALLBACK_VALUES.buttonCompactSize.sm).toBe(componentValues.sm);
+  expect(FALLBACK_VALUES.buttonCompactSize.base).toBe(componentValues.base);
+  expect(FALLBACK_VALUES.buttonCompactSize.lg).toBe(componentValues.lg);
 });
 ```
 

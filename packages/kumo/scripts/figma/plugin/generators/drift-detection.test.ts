@@ -1148,6 +1148,61 @@ describe("Figma Plugin - CSS Theme Sync Validation", () => {
     expect(sharedValues.base).toBe(extractFontSize("base"));
     expect(sharedValues.lg).toBe(extractFontSize("lg"));
   });
+
+  it("should have buttonCompactSize matching button.tsx compactSize classes", () => {
+    // Read button.tsx
+    const buttonPath = join(__dirname, "../../../../src/components/button/button.tsx");
+    const buttonContent = readFileSync(buttonPath, "utf-8");
+
+    // Extract compactSize mapping from KUMO_BUTTON_VARIANTS
+    // Format in button.tsx: xs: { classes: "size-3.5" }, sm: { classes: "size-6.5" }, ...
+    const extractSizeClass = (size: string): number | null => {
+      // Match: xs: { classes: "size-3.5" }
+      const match = buttonContent.match(new RegExp(`${size}:\\s*\\{\\s*classes:\\s*["']size-([\\d.]+)["']`));
+      if (!match) return null;
+      // Convert Tailwind size to pixels: size-X = X * 4
+      return parseFloat(match[1]) * 4;
+    };
+
+    const componentValues = {
+      xs: extractSizeClass("xs"),
+      sm: extractSizeClass("sm"),
+      base: extractSizeClass("base"),
+      lg: extractSizeClass("lg"),
+    };
+
+    // Validate we could parse the classes
+    expect(componentValues.xs).toBe(14);  // size-3.5 = 14px
+    expect(componentValues.sm).toBe(26);  // size-6.5 = 26px
+    expect(componentValues.base).toBe(36); // size-9 = 36px
+    expect(componentValues.lg).toBe(40);  // size-10 = 40px
+
+    // Read shared.ts FALLBACK_VALUES.buttonCompactSize
+    const sharedPath = join(__dirname, "shared.ts");
+    const sharedContent = readFileSync(sharedPath, "utf-8");
+
+    // Extract FALLBACK_VALUES.buttonCompactSize block
+    const extractFallbackValue = (size: string): number | null => {
+      // Match buttonCompactSize block, then extract size value
+      const fallbackBlock = sharedContent.match(/buttonCompactSize:\s*\{[\s\S]*?\}/);
+      if (!fallbackBlock) return null;
+      const match = fallbackBlock[0].match(new RegExp(`${size}:\\s*(\\d+)`));
+      return match ? parseInt(match[1], 10) : null;
+    };
+
+    const fallbackValues = {
+      xs: extractFallbackValue("xs"),
+      sm: extractFallbackValue("sm"),
+      base: extractFallbackValue("base"),
+      lg: extractFallbackValue("lg"),
+    };
+
+    // Compare against FALLBACK_VALUES.buttonCompactSize
+    expect(fallbackValues.xs).toBe(componentValues.xs);
+    expect(fallbackValues.sm).toBe(componentValues.sm);
+    expect(fallbackValues.base).toBe(componentValues.base);
+    expect(fallbackValues.lg).toBe(componentValues.lg);
+  });
 });
 
 /**

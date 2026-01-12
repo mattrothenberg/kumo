@@ -1,6 +1,6 @@
 {
   "title": "Figma Plugin Phase 10 - Hardcoded Values Elimination (Tabs, Toast, Shadow Validation)",
-  "overview": "Eliminate remaining hardcoded values in Tabs and Toast generators by reading from component-registry.json. Add CSS token for dialog shadow. Add validation tests to prevent drift in buttonCompactSize values.",
+  "overview": "Eliminate remaining hardcoded values in Tabs and Toast generators by reading from component-registry.json. Document SHADOWS.dialog as Figma-specific exception. Add validation tests to prevent drift in buttonCompactSize values.",
   "context": {
     "problem": "Tabs and Toast generators have hardcoded configuration values (TABS_CONFIG, TOAST_WIDTH) despite registry.components.Tabs.styling and registry.components.Toasty.styling already existing with the correct values. Additionally, SHADOWS.dialog has undocumented values not backed by any CSS token, and FALLBACK_VALUES.buttonCompactSize is not validated against the component source.",
     "current_state": "Phase 9 complete. Font sizes aligned with theme-kumo.css. However, several generators still use hardcoded values instead of registry, and some constants lack drift protection.",
@@ -25,8 +25,8 @@
       "shadows_dialog": {
         "file": "generators/shared.ts",
         "hardcoded_values": "SHADOWS.dialog: blur=32, opacity=0.16 (lines 144-151)",
-        "css_backing": "NONE - undocumented source",
-        "solution": "Add --shadow-dialog token to theme-kumo.css"
+        "css_backing": "NONE - Figma-specific exception",
+        "solution": "Remove --shadow-dialog from theme-kumo.css, keep hardcoded in plugin, document as Figma-specific exception (no drift test)"
       },
       "button_compact_size": {
         "file": "generators/shared.ts",
@@ -40,15 +40,15 @@
     "primary": [
       "Update tabs.ts to read configuration from registry.components.Tabs.styling",
       "Update toast.ts to read configuration from registry.components.Toasty.styling",
-      "Add --shadow-dialog CSS token to theme-kumo.css",
-      "Add drift detection test for SHADOWS.dialog against CSS token",
+      "Remove --shadow-dialog from theme-kumo.css (Figma-specific exception)",
+      "Document SHADOWS.dialog as Figma-specific hardcoded value (no drift test)",
       "Add drift detection test for buttonCompactSize against button component",
       "Add registry enforcement test for Tabs/Toast generators"
     ],
     "metrics": [
       "Tabs generator reads from registry: YES",
       "Toast generator reads from registry: YES",
-      "SHADOWS.dialog backed by CSS token: YES",
+      "SHADOWS.dialog documented as Figma-specific exception: YES",
       "buttonCompactSize drift test: PASSING",
       "All 1500+ generator tests pass",
       "No snapshot changes (values already match)"
@@ -84,26 +84,16 @@
       },
       {
         "id": "FR-3",
-        "title": "Add --shadow-dialog CSS Token",
-        "description": "Add dialog shadow token to theme-kumo.css to back SHADOWS.dialog values",
+        "title": "Remove --shadow-dialog and Document as Figma-Specific Exception",
+        "description": "Remove unused --shadow-dialog from theme-kumo.css and document SHADOWS.dialog as a Figma-specific hardcoded exception",
         "acceptance": [
-          "Add --shadow-dialog: 0 8px 32px rgb(0 0 0 / 0.16) to theme-kumo.css",
-          "Add in @theme block alongside existing shadow tokens",
-          "Update SHADOWS.dialog comment to reference CSS token source"
+          "Remove --shadow-dialog from theme-kumo.css",
+          "Update SHADOWS.dialog comment in shared.ts to document as Figma-specific exception",
+          "No drift test needed - intentional hardcoded value for Figma rendering"
         ]
       },
       {
         "id": "FR-4",
-        "title": "Add Shadow Dialog Drift Detection Test",
-        "description": "Add test that validates SHADOWS.dialog values against theme-kumo.css --shadow-dialog token",
-        "acceptance": [
-          "Parse theme-kumo.css to extract --shadow-dialog value",
-          "Compare blur (32), offsetY (8), opacity (0.16) against SHADOWS.dialog",
-          "Test fails if values drift"
-        ]
-      },
-      {
-        "id": "FR-5",
         "title": "Add buttonCompactSize Drift Detection Test",
         "description": "Add test that validates FALLBACK_VALUES.buttonCompactSize against button component classes",
         "acceptance": [
@@ -114,7 +104,7 @@
         ]
       },
       {
-        "id": "FR-6",
+        "id": "FR-5",
         "title": "Add Registry Enforcement Test for Tabs/Toast",
         "description": "Add drift detection test that ensures Tabs and Toast generators read from registry",
         "acceptance": [
@@ -124,7 +114,7 @@
         ]
       },
       {
-        "id": "FR-7",
+        "id": "FR-6",
         "title": "Final Verification",
         "description": "Run all tests and verify no regressions",
         "acceptance": [
@@ -174,51 +164,28 @@
     },
     {
       "id": "T3",
-      "name": "add-shadow-dialog-css-token",
-      "title": "Add --shadow-dialog CSS Token to theme-kumo.css",
+      "name": "document-shadow-dialog-exception",
+      "title": "Remove --shadow-dialog CSS and Document as Figma-Specific Exception",
       "priority": "high",
-      "status": "pending",
-      "description": "Add --shadow-dialog token to back SHADOWS.dialog values",
+      "status": "complete",
+      "description": "Remove --shadow-dialog from theme-kumo.css and document SHADOWS.dialog as Figma-specific hardcoded exception",
       "files": [
         "src/styles/theme-kumo.css",
         "scripts/figma/plugin/generators/shared.ts"
       ],
       "acceptance": [
-        "Add --shadow-dialog: 0 8px 32px rgb(0 0 0 / 0.16) to theme-kumo.css @theme block",
-        "Update SHADOWS.dialog comment to reference --shadow-dialog source",
-        "Verify CSS is valid"
+        "Remove --shadow-dialog from theme-kumo.css",
+        "Update SHADOWS.dialog comment to document as Figma-specific exception",
+        "No drift test - intentional hardcoded value"
       ],
-      "code_change": {
-        "theme_kumo_css": {
-          "add_after_shadow_lg": "--shadow-dialog: 0 8px 32px rgb(0 0 0 / 0.16);"
-        },
-        "shared_ts_comment": "/** Dialog shadow - elevated appearance. Matches --shadow-dialog in theme-kumo.css */"
-      },
-      "estimated_minutes": 10
+      "estimated_minutes": 5
     },
     {
       "id": "T4",
-      "name": "add-shadow-dialog-drift-test",
-      "title": "Add Shadow Dialog Drift Detection Test",
-      "priority": "high",
-      "status": "pending",
-      "description": "Add test that validates SHADOWS.dialog against theme-kumo.css --shadow-dialog token",
-      "files": ["scripts/figma/plugin/generators/drift-detection.test.ts"],
-      "acceptance": [
-        "Add test: 'should have SHADOWS.dialog matching --shadow-dialog in theme-kumo.css'",
-        "Parse --shadow-dialog from theme-kumo.css",
-        "Extract offsetY (8), blur (32), opacity (0.16)",
-        "Compare against SHADOWS.dialog values",
-        "Test fails if values drift"
-      ],
-      "estimated_minutes": 15
-    },
-    {
-      "id": "T5",
       "name": "add-button-compact-size-drift-test",
       "title": "Add buttonCompactSize Drift Detection Test",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Add test that validates FALLBACK_VALUES.buttonCompactSize against button component",
       "files": ["scripts/figma/plugin/generators/drift-detection.test.ts"],
       "acceptance": [
@@ -231,7 +198,7 @@
       "estimated_minutes": 20
     },
     {
-      "id": "T6",
+      "id": "T5",
       "name": "add-tabs-toast-registry-enforcement",
       "title": "Add Registry Enforcement Test for Tabs/Toast",
       "priority": "medium",
@@ -248,7 +215,7 @@
       "estimated_minutes": 15
     },
     {
-      "id": "T7",
+      "id": "T6",
       "name": "final-verification-phase-10",
       "title": "Final Verification and Documentation",
       "priority": "medium",
@@ -271,10 +238,12 @@
       "description": "Same pattern used in Phase 7 for DateRangePicker, Pagination, etc.",
       "example": "const styling = (registry.components.Tabs as any).styling;\nconst FALLBACK_CONFIG = { ... current hardcoded values ... };\nfunction getConfigFromRegistry() {\n  if (!styling) return FALLBACK_CONFIG;\n  return { ...FALLBACK_CONFIG, ...styling.container };\n}"
     },
-    "shadow_parsing_pattern": {
-      "description": "Parse CSS shadow shorthand: 0 8px 32px rgb(0 0 0 / 0.16)",
-      "regex": "/--shadow-dialog:\\s*0\\s+(\\d+)px\\s+(\\d+)px\\s+rgb\\(0\\s+0\\s+0\\s*\\/\\s*([\\d.]+)\\)/",
-      "extracts": ["offsetY (8)", "blur (32)", "opacity (0.16)"]
+    "figma_specific_exceptions": {
+      "SHADOWS.dialog": {
+        "description": "Dialog shadow is Figma-specific - no CSS token backing",
+        "values": "offsetY=8, blur=32, opacity=0.16",
+        "reason": "Optimized for Figma rendering, Dialog component uses different shadow approach"
+      }
     },
     "button_compact_size_pattern": {
       "description": "Parse Tailwind size classes to pixel values",
@@ -298,27 +267,26 @@
       "files": ["scripts/figma/plugin/generators/toast.ts"]
     },
     {
-      "name": "Shadow Dialog CSS Token",
-      "description": "--shadow-dialog added to theme-kumo.css",
-      "files": ["src/styles/theme-kumo.css"]
+      "name": "Shadow Dialog Exception Documentation",
+      "description": "SHADOWS.dialog documented as Figma-specific hardcoded exception (no CSS token)",
+      "files": ["scripts/figma/plugin/generators/shared.ts"]
     },
     {
       "name": "Drift Detection Tests",
-      "description": "New tests for shadow-dialog and buttonCompactSize validation",
+      "description": "New tests for buttonCompactSize validation and registry enforcement",
       "files": ["scripts/figma/plugin/generators/drift-detection.test.ts"]
     }
   ],
   "constraints": [
     "Must maintain backward compatibility with fallback values",
     "No snapshot changes expected (registry values match hardcoded)",
-    "CSS token must use same format as existing shadow tokens",
-    "Tests must fail if values drift (not just warn)"
+    "Tests must fail if values drift (not just warn)",
+    "SHADOWS.dialog is Figma-specific exception - no drift test needed"
   ],
   "success_criteria": [
     "tabs.ts reads from registry: YES",
     "toast.ts reads from registry: YES",
-    "--shadow-dialog CSS token exists: YES",
-    "SHADOWS.dialog drift test: PASSING",
+    "SHADOWS.dialog documented as Figma-specific exception: YES",
     "buttonCompactSize drift test: PASSING",
     "Registry enforcement test: PASSING",
     "All generator tests pass (1500+)"
