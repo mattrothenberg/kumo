@@ -10,9 +10,13 @@
   "observability": {
     "enabled": true,
   },
+  "routes": [{ "pattern": "kumo-ui.com/*", "zone_name": "kumo-ui.com" }],
   "env": {
     "staging": {
       "name": "kumo-docs-staging",
+      "routes": [
+        { "pattern": "staging.kumo-ui.com/*", "zone_name": "kumo-ui.com" },
+      ],
     },
   },
 }

@@ -308,6 +308,8 @@ The test suite will automatically validate that your component is properly confi
 
 ## Building and deploying
 
+> **Note:** For detailed CI/CD documentation including staging deployments, beta releases, and MR reporter system, see [`ci/README.md`](./ci/README.md).
+
 Create a production build:
 
 ```bash

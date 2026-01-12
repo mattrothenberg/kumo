@@ -17,6 +17,25 @@ The GitLab CI pipeline consists of the following stages:
 | `mr-report` | Post consolidated MR comment |
 | `production-release` | Deploy staging, manual production releases |
 
+## Staging Deployments
+
+On merge to main, both the documentation site and Storybook are automatically deployed to staging:
+
+| Package | Worker | URL |
+|---------|--------|-----|
+| `packages/kumo-docs` | `kumo-docs-staging` | `staging.kumo-ui.com` |
+| `packages/kumo` (Storybook) | `kumo-storybook-staging` | `storybook.staging.kumo-ui.com` |
+
+### Kumo Docs Staging
+
+```bash
+# What happens on main merge:
+wrangler deploy --env staging
+```
+
+- Deploys to `kumo-docs-staging` worker
+- Serves `staging.kumo-ui.com`
+
 ## Storybook Deployments
 
 Storybook is deployed to Cloudflare Workers with three environments:
