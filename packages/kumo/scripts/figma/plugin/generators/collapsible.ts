@@ -32,6 +32,7 @@ import {
   OPACITY,
   SPACING,
 } from "./shared";
+import themeData from "../generated/theme-data.json";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 import { logComplete } from "../logger";
@@ -130,7 +131,7 @@ async function createCollapsibleComponent(
   component.layoutMode = "VERTICAL";
   component.primaryAxisSizingMode = "AUTO";
   component.counterAxisSizingMode = "AUTO";
-  component.itemSpacing = 8; // my-2 translates to 8px spacing
+  component.itemSpacing = themeData.tailwind.spacing.scale['2']; // my-2 = 8px from Tailwind
   component.fills = [];
 
   // Get state-specific styles
@@ -151,10 +152,10 @@ async function createCollapsibleComponent(
   trigger.counterAxisSizingMode = "AUTO";
   trigger.itemSpacing = triggerStyles.gap || FALLBACK_VALUES.gap.tight;
   trigger.fills = [];
-  trigger.paddingTop = 4;
-  trigger.paddingBottom = 4;
-  trigger.paddingLeft = 4;
-  trigger.paddingRight = 4;
+  trigger.paddingTop = themeData.tailwind.spacing.scale['1']; // p-1 = 4px from Tailwind
+  trigger.paddingBottom = themeData.tailwind.spacing.scale['1'];
+  trigger.paddingLeft = themeData.tailwind.spacing.scale['1'];
+  trigger.paddingRight = themeData.tailwind.spacing.scale['1'];
   trigger.cornerRadius = BORDER_RADIUS.sm;
 
   // Add focus ring if in focus state
@@ -205,10 +206,10 @@ async function createCollapsibleComponent(
     contentPanel.layoutMode = "VERTICAL";
     contentPanel.primaryAxisSizingMode = "AUTO";
     contentPanel.counterAxisSizingMode = "AUTO";
-    contentPanel.itemSpacing = 16; // space-y-4
+    contentPanel.itemSpacing = themeData.tailwind.spacing.scale['4']; // space-y-4 = 16px from Tailwind
     contentPanel.paddingLeft = contentStyles.paddingX || FALLBACK_VALUES.padding.standard;
-    contentPanel.paddingTop = 8;
-    contentPanel.paddingBottom = 8;
+    contentPanel.paddingTop = themeData.tailwind.spacing.scale['2']; // py-2 = 8px from Tailwind
+    contentPanel.paddingBottom = themeData.tailwind.spacing.scale['2'];
     contentPanel.fills = [];
 
     // Add left border (border-l-2 border-color)
@@ -565,13 +566,13 @@ export function getCollapsibleLayoutData(open: boolean, state: string) {
     content: open
       ? {
           paddingX: contentStyles.paddingX || FALLBACK_VALUES.padding.standard,
-          // paddingTop/Bottom: SPACING.base (gap-2 = 8px)
+          // paddingTop/Bottom: py-2 = 8px from themeData
           paddingTop: SPACING.base,
           paddingBottom: SPACING.base,
-          // itemSpacing: FALLBACK_VALUES.gap.large (gap-4 = 16px)
+          // itemSpacing: space-y-4 = 16px from themeData
           itemSpacing: FALLBACK_VALUES.gap.large,
           borderVariable: "color-border",
-          // borderWeight: FALLBACK_VALUES.strokeWeightThick (2px for emphasis)
+          // borderWeight: 2px border for emphasis
           borderWeight: FALLBACK_VALUES.strokeWeightThick,
         }
       : null,

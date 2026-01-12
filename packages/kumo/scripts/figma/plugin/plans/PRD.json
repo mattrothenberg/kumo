@@ -316,7 +316,7 @@
       "name": "fix-collapsible-generator",
       "title": "Fix collapsible.ts Hardcoded Values",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Replace hardcoded itemSpacing, padding values",
       "files": ["scripts/figma/plugin/generators/collapsible.ts"],
       "changes": [

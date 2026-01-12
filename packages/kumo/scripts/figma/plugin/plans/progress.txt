@@ -6136,3 +6136,40 @@ Eliminate ALL remaining hardcoded CSS-derived values in Figma generators by usin
 - All CSS-derived values (iconSize, borderRadius) now use themeData references
 
 **Status:** COMPLETE - menubar.ts hardcoded values fixed
+
+---
+
+## Iteration 29: T11 - Fix collapsible.ts Hardcoded Values (PHASE 11)
+
+**Task:** T11 - Fix collapsible.ts Hardcoded Values
+**Status:** ✅ Complete
+**Date:** 2026-01-12
+
+### What was done:
+1. **Added themeData import** to collapsible.ts
+2. **Replaced hardcoded spacing values with themeData references**:
+   - Line 133: `itemSpacing = 8` → `themeData.tailwind.spacing.scale['2']` (my-2 = 8px)
+   - Lines 154-157: `paddingTop/Bottom/Left/Right = 4` → `themeData.tailwind.spacing.scale['1']` (p-1 = 4px)
+   - Line 208: `itemSpacing = 16` → `themeData.tailwind.spacing.scale['4']` (space-y-4 = 16px)
+   - Lines 210-211: `paddingTop/Bottom = 8` → `themeData.tailwind.spacing.scale['2']` (py-2 = 8px)
+3. **Updated comments** in getCollapsibleLayoutData() to reference themeData instead of just SPACING constants
+4. **Verified** that exported test functions already use SPACING and FALLBACK_VALUES, which indirectly reference themeData
+
+### Test Results:
+- ✅ All 43 collapsible tests pass
+- ✅ No snapshot changes (values remain the same)
+- ✅ Pre-existing TypeScript errors remain (rotation, strokeLeftWeight, layoutSizingHorizontal - documented in previous iterations)
+
+### Files Modified:
+- `scripts/figma/plugin/generators/collapsible.ts` - Replaced 4 hardcoded spacing values with themeData references
+- `plans/PRD.json` - T11 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- All hardcoded spacing values now derive from theme-data.json
+- Component spacing (8px, 4px, 16px) now automatically syncs with CSS changes
+- Exported test functions use SPACING and FALLBACK_VALUES which already reference themeData
+- Pre-existing TypeScript errors are not related to this task
+
+**Status:** COMPLETE - Collapsible generator now uses themeData for all spacing values
+
