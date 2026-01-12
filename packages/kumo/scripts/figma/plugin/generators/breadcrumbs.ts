@@ -15,7 +15,10 @@ import {
   SECTION_GAP,
   GRID_LAYOUT,
   SECTION_LAYOUT,
+  FONT_SIZE,
+  FALLBACK_VALUES,
 } from "./shared";
+import themeData from "../generated/theme-data.json";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 import { logInfo, logWarn } from "../logger";
 
@@ -78,7 +81,7 @@ export function getBreadcrumbsColorBindings() {
 export function getBreadcrumbsSeparatorConfig() {
   return {
     iconName: "ph-caret-right",
-    size: 20, // Separator icon size
+    size: FALLBACK_VALUES.iconSize.base, // 20px - size-5 from Tailwind spacing scale
   };
 }
 
@@ -98,10 +101,11 @@ export function getAllBreadcrumbsData() {
         ...sizeData,
         // Layout calculations
         layout: {
-          height: sizeData.parsed.height ?? (size === "sm" ? 40 : 48),
-          gap: sizeData.parsed.gap ?? (size === "sm" ? 2 : 4),
-          fontSize: sizeData.parsed.fontSize ?? (size === "sm" ? 14 : 16),
-          itemGap: 4, // gap-1 between icon and text within item
+          // Fallbacks derived from Tailwind spacing scale
+          height: sizeData.parsed.height ?? (size === "sm" ? themeData.tailwind.spacing.scale["10"] : themeData.tailwind.spacing.scale["12"]),
+          gap: sizeData.parsed.gap ?? (size === "sm" ? themeData.tailwind.spacing.scale["0.5"] : themeData.tailwind.spacing.scale["1"]),
+          fontSize: sizeData.parsed.fontSize ?? (size === "sm" ? FONT_SIZE.base : FONT_SIZE.lg),
+          itemGap: themeData.tailwind.spacing.scale["1"], // gap-1 between icon and text within item
         },
       };
     }),
@@ -132,16 +136,17 @@ async function createBreadcrumbsComponent(size: string): Promise<ComponentNode> 
   component.primaryAxisSizingMode = "AUTO";
   component.counterAxisSizingMode = "FIXED";
 
-  // Apply height from parsed styles with fallback
-  const height = sizeStyles.height ?? (size === "sm" ? 40 : 48);
+  // Apply height from parsed styles with fallback (h-10=40px for sm, h-12=48px for base)
+  const height = sizeStyles.height ?? (size === "sm" ? themeData.tailwind.spacing.scale["10"] : themeData.tailwind.spacing.scale["12"]);
   component.resize(component.width, height);
 
   // Apply gap between items (link, separator, link, separator, current)
-  const gap = sizeStyles.gap ?? (size === "sm" ? 2 : 4);
+  // gap-0.5=2px for sm, gap-1=4px for base
+  const gap = sizeStyles.gap ?? (size === "sm" ? themeData.tailwind.spacing.scale["0.5"] : themeData.tailwind.spacing.scale["1"]);
   component.itemSpacing = gap;
 
-  // Get font size for text elements
-  const fontSize = sizeStyles.fontSize ?? (size === "sm" ? 14 : 16);
+  // Get font size for text elements (text-base=14px for sm, text-lg=16px for base)
+  const fontSize = sizeStyles.fontSize ?? (size === "sm" ? FONT_SIZE.base : FONT_SIZE.lg);
 
   // Get color variables
   const linkTextVar = getVariableByName("text-color-muted");
@@ -155,7 +160,7 @@ async function createBreadcrumbsComponent(size: string): Promise<ComponentNode> 
   link1.layoutMode = "HORIZONTAL";
   link1.primaryAxisAlignItems = "CENTER";
   link1.counterAxisAlignItems = "CENTER";
-  link1.itemSpacing = 4; // gap-1
+  link1.itemSpacing = themeData.tailwind.spacing.scale["1"]; // gap-1
   link1.primaryAxisSizingMode = "AUTO";
   link1.counterAxisSizingMode = "AUTO";
   link1.fills = [];
@@ -178,7 +183,7 @@ async function createBreadcrumbsComponent(size: string): Promise<ComponentNode> 
   link2.layoutMode = "HORIZONTAL";
   link2.primaryAxisAlignItems = "CENTER";
   link2.counterAxisAlignItems = "CENTER";
-  link2.itemSpacing = 4;
+  link2.itemSpacing = themeData.tailwind.spacing.scale["1"]; // gap-1
   link2.primaryAxisSizingMode = "AUTO";
   link2.counterAxisSizingMode = "AUTO";
   link2.fills = [];
@@ -201,7 +206,7 @@ async function createBreadcrumbsComponent(size: string): Promise<ComponentNode> 
   current.layoutMode = "HORIZONTAL";
   current.primaryAxisAlignItems = "CENTER";
   current.counterAxisAlignItems = "CENTER";
-  current.itemSpacing = 4;
+  current.itemSpacing = themeData.tailwind.spacing.scale["1"]; // gap-1
   current.primaryAxisSizingMode = "AUTO";
   current.counterAxisSizingMode = "AUTO";
   current.fills = [];
@@ -223,7 +228,9 @@ async function createBreadcrumbsComponent(size: string): Promise<ComponentNode> 
 async function createSeparatorIcon(textVariableId?: string): Promise<FrameNode> {
   const separatorFrame = figma.createFrame();
   separatorFrame.name = "Separator";
-  separatorFrame.resize(24, 24);
+  // Separator icon container - size-6 = 24px from Tailwind spacing scale
+  const separatorSize = themeData.tailwind.spacing.scale["6"];
+  separatorFrame.resize(separatorSize, separatorSize);
   separatorFrame.fills = [];
   separatorFrame.layoutMode = "HORIZONTAL";
   separatorFrame.primaryAxisAlignItems = "CENTER";

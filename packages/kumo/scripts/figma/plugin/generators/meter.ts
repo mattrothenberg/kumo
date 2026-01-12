@@ -27,6 +27,7 @@ import {
   COLORS,
   FONT_SIZE,
   FALLBACK_VALUES,
+  BORDER_RADIUS,
 } from "./shared";
 
 // Import theme data for CSS-derived values
@@ -175,8 +176,8 @@ export function getAllMeterVariantData() {
     layout: {
       headerRowMode: "HORIZONTAL",
       headerRowAlign: "SPACE_BETWEEN",
-      trackCornerRadius: 9999, // rounded-full from meter.tsx
-      indicatorCornerRadius: 9999, // rounded-full from meter.tsx
+      trackCornerRadius: BORDER_RADIUS.full, // rounded-full from meter.tsx
+      indicatorCornerRadius: BORDER_RADIUS.full, // rounded-full from meter.tsx
       labelFontSize: typography.label.fontSize,
       labelFontWeight: typography.label.fontWeight,
       valueFontSize: typography.value.fontSize,
@@ -259,7 +260,7 @@ async function createMeterComponent(
   track.name = "Track";
   track.layoutMode = "NONE";
   track.resize(METER_WIDTH, METER_TRACK_HEIGHT);
-  track.cornerRadius = 9999; // fully rounded
+  track.cornerRadius = BORDER_RADIUS.full; // rounded-full
 
   // Bind track background to bg-color variable
   const bgColorVar = getVariableByName("color-color-4");
@@ -283,7 +284,7 @@ async function createMeterComponent(
   // Calculate indicator width based on fill percentage
   const indicatorWidth = (METER_WIDTH * fillPercentage) / 100;
   indicator.resize(indicatorWidth, METER_TRACK_HEIGHT);
-  indicator.cornerRadius = 9999; // fully rounded
+  indicator.cornerRadius = BORDER_RADIUS.full; // rounded-full
 
   // Bind indicator background to primary variable
   const primaryVar = getVariableByName("color-primary");
@@ -401,7 +402,7 @@ export async function generateMeterComponents(startY: number): Promise<number> {
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 8, // +8 to vertically center with meter
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md, // vertically center with meter
     );
     lightSection.frame.appendChild(labelNode);
   }
@@ -423,7 +424,7 @@ export async function generateMeterComponents(startY: number): Promise<number> {
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 8,
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md,
     );
     darkSection.frame.appendChild(labelNode);
   }

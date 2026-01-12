@@ -170,7 +170,7 @@ async function createMenuItem(
     var shortcutText = await createTextNode(opts.shortcut, FONT_SIZE.xs, FALLBACK_VALUES.fontWeight.normal);
     shortcutText.name = "Shortcut";
     shortcutText.textAutoResize = "WIDTH_AND_HEIGHT";
-    shortcutText.opacity = 0.6;
+    shortcutText.opacity = OPACITY.shortcut;
 
     var shortcutVar = getVariableByName("text-color-muted");
     if (shortcutVar) {
@@ -560,11 +560,11 @@ export async function generateDropdownComponents(
   // Track column headers: { x, text }
   var columnHeaders: { x: number; text: string }[] = [];
 
-  // Layout spacing
-  var componentGapX = 24;
-  var componentGapY = 40;
-  var headerRowHeight = 24;
-  var labelColumnWidth = 180;
+  // Layout spacing - using centralized constants
+  var componentGapX = GRID_LAYOUT.componentGapX.standard;
+  var componentGapY = GRID_LAYOUT.componentGapY.standard;
+  var headerRowHeight = GRID_LAYOUT.headerRowHeight;
+  var labelColumnWidth = GRID_LAYOUT.labelColumnWidth.medium;
 
   // Track layout by row (variant)
   var rowComponents: Map<number, ComponentNode[]> = new Map();
@@ -695,7 +695,7 @@ export async function generateDropdownComponents(
     var labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 8,
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md,
     );
     lightSection.frame.appendChild(labelNode);
   }
@@ -724,7 +724,7 @@ export async function generateDropdownComponents(
     var darkLabelNode = await createRowLabel(
       darkLabel.text,
       SECTION_PADDING,
-      SECTION_PADDING + darkLabel.y + 8,
+      SECTION_PADDING + darkLabel.y + GRID_LAYOUT.labelVerticalOffset.md,
     );
     darkSection.frame.appendChild(darkLabelNode);
   }

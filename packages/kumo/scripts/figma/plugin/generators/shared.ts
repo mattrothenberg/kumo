@@ -80,6 +80,8 @@ export const OPACITY = {
   disabled: 0.5,
   /** Opacity for backdrop/overlay */
   backdrop: 0.8,
+  /** Opacity for shortcut/secondary text (e.g., dropdown shortcuts) */
+  shortcut: 0.6,
 } as const;
 
 /**
@@ -265,6 +267,20 @@ export const GRID_LAYOUT = {
     md: 8,
     /** Large offset for larger components (button, dialog) */
     lg: 12,
+  },
+  /** Horizontal gap between components in a row */
+  componentGapX: {
+    /** Compact horizontal gap (e.g., loader) */
+    compact: 16,
+    /** Standard horizontal gap (e.g., dropdown, button) */
+    standard: 24,
+  },
+  /** Vertical gap between component groups */
+  componentGapY: {
+    /** Compact vertical gap */
+    compact: 24,
+    /** Standard vertical gap (e.g., dropdown) */
+    standard: 40,
   },
 } as const;
 
@@ -595,7 +611,7 @@ export async function createRowLabel(
   await figma.loadFontAsync({ family: "Inter", style: "Medium" });
 
   textNode.characters = text;
-  textNode.fontSize = 12;
+  textNode.fontSize = FONT_SIZE.xs;
   textNode.fontName = { family: "Inter", style: "Medium" };
 
   // Use muted color for labels

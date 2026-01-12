@@ -36,7 +36,9 @@ import {
   FALLBACK_VALUES,
   SECTION_LAYOUT,
   OPACITY,
+  SPACING,
 } from "./shared";
+import themeData from "../generated/theme-data.json";
 import { createIconInstance, bindIconColor } from "./icon-utils";
 import { logInfo } from "../logger";
 
@@ -109,10 +111,11 @@ export function getCheckboxStylingConfig() {
 /**
  * Get checkbox box size from styling dimensions
  * Parses "h-4 w-4" to extract 16px
+ * Generated from: Tailwind spacing scale (4 = 16px)
  */
 export function getCheckboxBoxSize(): number {
-  // h-4 w-4 = 16px (4 * 4 = 16)
-  return 16;
+  // h-4 w-4 = 16px from Tailwind spacing scale
+  return themeData.tailwind.spacing.scale["4"];
 }
 
 /**
@@ -125,9 +128,11 @@ export function getCheckboxIconSize(): number {
 
 /**
  * Get label gap (gap-2 = 8px)
+ * Generated from: Tailwind spacing scale (2 = 8px)
  */
 export function getCheckboxLabelGap(): number {
-  return 8;
+  // gap-2 = 8px from Tailwind spacing scale
+  return SPACING.base;
 }
 
 /**
@@ -208,8 +213,8 @@ export function getCheckboxLayoutConfig() {
  */
 export function getCheckboxTextConfig() {
   return {
-    fontSize: FONT_SIZE.base, // 16px
-    fontWeight: 500, // font-medium
+    fontSize: FONT_SIZE.base, // 14px from theme-kumo.css
+    fontWeight: FALLBACK_VALUES.fontWeight.medium, // font-medium = 500
     textVariable: "text-color-surface",
   };
 }
