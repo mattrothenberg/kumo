@@ -6209,3 +6209,37 @@ Eliminate ALL remaining hardcoded CSS-derived values in Figma generators by usin
 - Pre-existing TypeScript errors (minWidth property, textAutoResize, effects, layoutAlign, etc.) remain as documented
 
 **Status:** COMPLETE - Dialog hardcoded values documented with FIGMA-SPECIFIC comments
+
+---
+
+## Iteration 29: T13 - Fix code-block.ts Hardcoded Values (PHASE 11)
+
+**Task:** T13 - Fix code-block.ts Hardcoded Values
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Imported themeData** in code-block.ts (line 33):
+   - Added: `import themeData from "../generated/theme-data.json";`
+
+2. **Replaced hardcoded CODE_INNER_PADDING** (line 48):
+   - Changed: `var CODE_INNER_PADDING = 10; // p-2.5 = 10px`
+   - To: `var CODE_INNER_PADDING = themeData.tailwind.spacing.scale["2.5"]; // p-2.5 = 10px`
+
+### Files Modified:
+- `scripts/figma/plugin/generators/code-block.ts` - Replaced hardcoded padding with themeData reference
+- `plans/PRD.json` - T13 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Test Results:
+- ✅ All 41 code-block tests pass
+- ✅ No snapshot changes (value remains 10px)
+- ✅ CODE_INNER_PADDING now derives from theme-data.json instead of hardcoded value
+
+### Notes:
+- Pre-existing TypeScript error on line 210 (`lineHeight` property) is unrelated to this task
+- The value remains 10px but now reads from themeData.tailwind.spacing.scale["2.5"]
+- This ensures the padding stays in sync if CSS changes in the future
+- CodeBlock generator now uses themeData for all CSS-derived values
+
+**Status:** COMPLETE - CODE_INNER_PADDING now uses themeData reference

@@ -362,7 +362,7 @@
       "name": "fix-code-block-generator",
       "title": "Fix code-block.ts Hardcoded Values",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Replace hardcoded CODE_INNER_PADDING",
       "files": ["scripts/figma/plugin/generators/code-block.ts"],
       "changes": [
