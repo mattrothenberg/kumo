@@ -676,7 +676,8 @@ export function getPopupConfig() {
     ring: selectStyling.popup.ring,
     borderRadius: selectStyling.popup.borderRadius,
     padding: selectStyling.popup.padding,
-    width: 280, // Layout-specific (matches trigger width)
+    // FIGMA-SPECIFIC: Layout width for Figma canvas display, matches trigger width for visual consistency
+    width: 280,
   };
 }
 

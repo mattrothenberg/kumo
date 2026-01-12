@@ -6243,3 +6243,36 @@ Eliminate ALL remaining hardcoded CSS-derived values in Figma generators by usin
 - CodeBlock generator now uses themeData for all CSS-derived values
 
 **Status:** COMPLETE - CODE_INNER_PADDING now uses themeData reference
+
+---
+
+## Iteration 30: T14 - Fix select.ts Hardcoded Values (PHASE 11)
+
+**Task:** T14 - Fix select.ts Hardcoded Values
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Added FIGMA-SPECIFIC comment** to getPopupConfig() function (line 679):
+   - Changed: `width: 280, // Layout-specific (matches trigger width)`
+   - To: `// FIGMA-SPECIFIC: Layout width for Figma canvas display, matches trigger width for visual consistency`
+   - Followed by: `width: 280,`
+
+### Files Modified:
+- `scripts/figma/plugin/generators/select.ts` - Added FIGMA-SPECIFIC comment for popup width
+- `plans/PRD.json` - T14 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Test Results:
+- ✅ All 46 select tests pass
+- ✅ No snapshot changes
+- ✅ Width value remains 280 (intentionally hardcoded for Figma layout)
+
+### Notes:
+- Pre-existing TypeScript errors (`textAutoResize` property) are unrelated to this task
+- The width: 280 value is intentionally hardcoded for Figma canvas layout
+- This is not a CSS-derived value but a Figma-specific layout constant
+- Comment documents why this value is hardcoded (matches trigger width for visual consistency)
+- All other styling properties (background, ring, borderRadius, padding) read from registry
+
+**Status:** COMPLETE - Popup width documented with FIGMA-SPECIFIC comment

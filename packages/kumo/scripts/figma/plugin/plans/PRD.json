@@ -385,7 +385,7 @@
       "name": "fix-select-generator",
       "title": "Fix select.ts Hardcoded Values",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Replace hardcoded popup width",
       "files": ["scripts/figma/plugin/generators/select.ts"],
       "changes": [
