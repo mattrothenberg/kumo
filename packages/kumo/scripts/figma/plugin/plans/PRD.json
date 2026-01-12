@@ -160,7 +160,7 @@
       "name": "update-toast-registry-import",
       "title": "Update toast.ts to Read from Registry",
       "priority": "high",
-      "status": "pending",
+      "status": "complete",
       "description": "Modify toast.ts to read configuration from registry.components.Toasty.styling with fallback",
       "files": ["scripts/figma/plugin/generators/toast.ts"],
       "acceptance": [

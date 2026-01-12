@@ -94,7 +94,7 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
       "state": "default",
       "trigger": {
         "addRing": false,
-        "borderRadius": 2,
+        "borderRadius": 4,
         "fontSize": 13,
         "fontWeight": 400,
         "gap": 4,
@@ -113,7 +113,7 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
       "state": "hover",
       "trigger": {
         "addRing": false,
-        "borderRadius": 2,
+        "borderRadius": 4,
         "fontSize": 13,
         "fontWeight": 400,
         "gap": 4,
@@ -132,7 +132,7 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
       "state": "focus",
       "trigger": {
         "addRing": true,
-        "borderRadius": 2,
+        "borderRadius": 4,
         "fontSize": 13,
         "fontWeight": 400,
         "gap": 4,
@@ -151,7 +151,7 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
       "state": "disabled",
       "trigger": {
         "addRing": false,
-        "borderRadius": 2,
+        "borderRadius": 4,
         "fontSize": 13,
         "fontWeight": 400,
         "gap": 4,
@@ -177,7 +177,7 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
       "state": "default",
       "trigger": {
         "addRing": false,
-        "borderRadius": 2,
+        "borderRadius": 4,
         "fontSize": 13,
         "fontWeight": 400,
         "gap": 4,
@@ -203,7 +203,7 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
       "state": "hover",
       "trigger": {
         "addRing": false,
-        "borderRadius": 2,
+        "borderRadius": 4,
         "fontSize": 13,
         "fontWeight": 400,
         "gap": 4,
@@ -229,7 +229,7 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
       "state": "focus",
       "trigger": {
         "addRing": true,
-        "borderRadius": 2,
+        "borderRadius": 4,
         "fontSize": 13,
         "fontWeight": 400,
         "gap": 4,
@@ -255,7 +255,7 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
       "state": "disabled",
       "trigger": {
         "addRing": false,
-        "borderRadius": 2,
+        "borderRadius": 4,
         "fontSize": 13,
         "fontWeight": 400,
         "gap": 4,
@@ -279,7 +279,7 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
   "state": "default",
   "trigger": {
     "addRing": false,
-    "borderRadius": 2,
+    "borderRadius": 4,
     "fontSize": 13,
     "fontWeight": 400,
     "gap": 4,
@@ -301,7 +301,7 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
   "state": "disabled",
   "trigger": {
     "addRing": false,
-    "borderRadius": 2,
+    "borderRadius": 4,
     "fontSize": 13,
     "fontWeight": 400,
     "gap": 4,
@@ -323,7 +323,7 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
   "state": "focus",
   "trigger": {
     "addRing": true,
-    "borderRadius": 2,
+    "borderRadius": 4,
     "fontSize": 13,
     "fontWeight": 400,
     "gap": 4,
@@ -352,7 +352,7 @@ exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should pro
   "state": "default",
   "trigger": {
     "addRing": false,
-    "borderRadius": 2,
+    "borderRadius": 4,
     "fontSize": 13,
     "fontWeight": 400,
     "gap": 4,

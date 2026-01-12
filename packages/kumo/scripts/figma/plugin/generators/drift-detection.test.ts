@@ -15,6 +15,10 @@ import { existsSync, readdirSync, readFileSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import registry from "../../../../ai/component-registry.json";
+import {
+  parseTailwindTheme,
+  generateExpectedSpacingScale,
+} from "../parsers/tailwind-theme-parser";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -1143,5 +1147,289 @@ describe("Figma Plugin - CSS Theme Sync Validation", () => {
     expect(sharedValues.sm).toBe(extractFontSize("sm"));
     expect(sharedValues.base).toBe(extractFontSize("base"));
     expect(sharedValues.lg).toBe(extractFontSize("lg"));
+  });
+});
+
+/**
+ * Phase 10: Tailwind v4 theme.css Sync Validation
+ *
+ * These tests ensure hardcoded values in the Figma plugin match Tailwind v4's
+ * actual default values from node_modules/tailwindcss/theme.css.
+ *
+ * This prevents drift when:
+ * 1. Tailwind updates default values in a new version
+ * 2. Values are manually edited in the plugin without verification
+ *
+ * The source of truth is: node_modules/tailwindcss/theme.css
+ */
+describe("Figma Plugin - Tailwind v4 theme.css Sync Validation", () => {
+  // Parse theme once for all tests in this suite
+  const theme = parseTailwindTheme();
+
+  describe("SPACING_SCALE validation", () => {
+    it("should have correct base spacing unit (4px)", () => {
+      // Tailwind v4 uses --spacing: 0.25rem = 4px as base unit
+      expect(theme.spacing.baseUnitPx).toBe(4);
+    });
+
+    it("should have SPACING_SCALE in tailwind-to-figma.ts matching Tailwind defaults", () => {
+      const expectedScale = generateExpectedSpacingScale(theme.spacing.baseUnitPx);
+
+      // Read the parser file
+      const parserPath = join(__dirname, "../parsers/tailwind-to-figma.ts");
+      const parserContent = readFileSync(parserPath, "utf-8");
+
+      // Extract SPACING_SCALE block
+      const spacingScaleMatch = parserContent.match(
+        /const SPACING_SCALE[^=]*=\s*\{([^}]+)\}/
+      );
+      expect(spacingScaleMatch).not.toBeNull();
+
+      const spacingScaleBlock = spacingScaleMatch![1];
+
+      // Verify key values match
+      const keysToCheck = ["0", "1", "2", "3", "4", "5", "6", "8", "10", "12", "16", "20", "24"];
+
+      for (const key of keysToCheck) {
+        // Use precise regex: match quoted key exactly (not as part of another key like "0.5")
+        // Pattern matches: "5": 20 or '5': 20 (must be at start of line or after whitespace/comma)
+        const pattern = new RegExp(`(?:^|[,\\s])["']${key}["']:\\s*(\\d+)`);
+        const match = spacingScaleBlock.match(pattern);
+
+        expect(match).not.toBeNull();
+        if (match) {
+          const actualValue = parseInt(match[1], 10);
+          const expectedValue = expectedScale[key];
+          expect(actualValue).toBe(expectedValue);
+        }
+      }
+    });
+
+    it("should have SPACING constant in shared.ts using correct values", () => {
+      // theme is defined at suite level
+      const baseUnit = theme.spacing.baseUnitPx;
+
+      // Read shared.ts
+      const sharedPath = join(__dirname, "shared.ts");
+      const sharedContent = readFileSync(sharedPath, "utf-8");
+
+      // Extract SPACING block
+      const spacingMatch = sharedContent.match(
+        /export const SPACING = \{([^}]+)\} as const/
+      );
+      expect(spacingMatch).not.toBeNull();
+
+      const spacingBlock = spacingMatch![1];
+
+      // Verify values match Tailwind's spacing scale
+      // xs: 4 = 1 * 4px, sm: 6 = 1.5 * 4px, base: 8 = 2 * 4px, lg: 12 = 3 * 4px
+      const expectedValues: Record<string, number> = {
+        xs: 1 * baseUnit,    // gap-1 = 4px
+        sm: 1.5 * baseUnit,  // gap-1.5 = 6px
+        base: 2 * baseUnit,  // gap-2 = 8px
+        lg: 3 * baseUnit,    // gap-3 = 12px
+      };
+
+      for (const [key, expected] of Object.entries(expectedValues)) {
+        const pattern = new RegExp(`${key}:\\s*(\\d+)`);
+        const match = spacingBlock.match(pattern);
+        expect(match).not.toBeNull();
+        if (match) {
+          expect(parseInt(match[1], 10)).toBe(expected);
+        }
+      }
+    });
+  });
+
+  describe("BORDER_RADIUS_SCALE validation", () => {
+    it("should have BORDER_RADIUS_SCALE in tailwind-to-figma.ts matching Tailwind theme.css", () => {
+      // theme is defined at suite level
+
+      // Read the parser file
+      const parserPath = join(__dirname, "../parsers/tailwind-to-figma.ts");
+      const parserContent = readFileSync(parserPath, "utf-8");
+
+      // Extract BORDER_RADIUS_SCALE block
+      const radiusScaleMatch = parserContent.match(
+        /const BORDER_RADIUS_SCALE[^=]*=\s*\{([^}]+)\}/
+      );
+      expect(radiusScaleMatch).not.toBeNull();
+
+      const radiusBlock = radiusScaleMatch![1];
+
+      // Extract values from parser
+      const extractParserValue = (name: string): number | null => {
+        const pattern = new RegExp(`${name}:\\s*(\\d+)`);
+        const match = radiusBlock.match(pattern);
+        return match ? parseInt(match[1], 10) : null;
+      };
+
+      // Verify against Tailwind theme.css values
+      // Note: Tailwind uses --radius-sm: 0.25rem = 4px, but historically
+      // the Figma plugin used 2px. This test documents the expected values.
+      expect(extractParserValue("sm")).toBe(theme.borderRadius.sm);
+      expect(extractParserValue("md")).toBe(theme.borderRadius.md);
+      expect(extractParserValue("lg")).toBe(theme.borderRadius.lg);
+      expect(extractParserValue("xl")).toBe(theme.borderRadius.xl);
+    });
+
+    it("should have BORDER_RADIUS constant in shared.ts matching Tailwind theme.css", () => {
+      // theme is defined at suite level
+
+      // Read shared.ts
+      const sharedPath = join(__dirname, "shared.ts");
+      const sharedContent = readFileSync(sharedPath, "utf-8");
+
+      // Extract BORDER_RADIUS block
+      const radiusMatch = sharedContent.match(
+        /export const BORDER_RADIUS = \{([^}]+)\} as const/
+      );
+      expect(radiusMatch).not.toBeNull();
+
+      const radiusBlock = radiusMatch![1];
+
+      // Extract values
+      const extractValue = (name: string): number | null => {
+        const pattern = new RegExp(`${name}:\\s*(\\d+)`);
+        const match = radiusBlock.match(pattern);
+        return match ? parseInt(match[1], 10) : null;
+      };
+
+      // Verify against Tailwind theme.css values
+      expect(extractValue("sm")).toBe(theme.borderRadius.sm);
+      expect(extractValue("md")).toBe(theme.borderRadius.md);
+      expect(extractValue("lg")).toBe(theme.borderRadius.lg);
+    });
+  });
+
+  describe("FONT_WEIGHT_SCALE validation", () => {
+    it("should have FONT_WEIGHT_SCALE in tailwind-to-figma.ts matching Tailwind theme.css", () => {
+      // theme is defined at suite level
+
+      // Read the parser file
+      const parserPath = join(__dirname, "../parsers/tailwind-to-figma.ts");
+      const parserContent = readFileSync(parserPath, "utf-8");
+
+      // Extract FONT_WEIGHT_SCALE block
+      const weightScaleMatch = parserContent.match(
+        /const FONT_WEIGHT_SCALE[^=]*=\s*\{([^}]+)\}/
+      );
+      expect(weightScaleMatch).not.toBeNull();
+
+      const weightBlock = weightScaleMatch![1];
+
+      // Extract values - use word boundary to avoid matching "extralight" when looking for "light"
+      const extractValue = (name: string): number | null => {
+        // Match: name: NUMBER where name is preceded by whitespace/comma (not another letter)
+        const pattern = new RegExp(`(?:^|[,\\s])${name}:\\s*(\\d+)`);
+        const match = weightBlock.match(pattern);
+        return match ? parseInt(match[1], 10) : null;
+      };
+
+      // Verify all font weights match Tailwind's defaults
+      expect(extractValue("thin")).toBe(theme.fontWeight.thin);
+      expect(extractValue("extralight")).toBe(theme.fontWeight.extralight);
+      expect(extractValue("light")).toBe(theme.fontWeight.light);
+      expect(extractValue("normal")).toBe(theme.fontWeight.normal);
+      expect(extractValue("medium")).toBe(theme.fontWeight.medium);
+      expect(extractValue("semibold")).toBe(theme.fontWeight.semibold);
+      expect(extractValue("bold")).toBe(theme.fontWeight.bold);
+      expect(extractValue("extrabold")).toBe(theme.fontWeight.extrabold);
+      expect(extractValue("black")).toBe(theme.fontWeight.black);
+    });
+
+    it("should have FALLBACK_VALUES.fontWeight in shared.ts matching Tailwind theme.css", () => {
+      // theme is defined at suite level
+
+      // Read shared.ts
+      const sharedPath = join(__dirname, "shared.ts");
+      const sharedContent = readFileSync(sharedPath, "utf-8");
+
+      // Extract fontWeight block within FALLBACK_VALUES
+      const fallbackMatch = sharedContent.match(
+        /fontWeight:\s*\{([^}]+)\}/
+      );
+      expect(fallbackMatch).not.toBeNull();
+
+      const fontWeightBlock = fallbackMatch![1];
+
+      // Extract values
+      const extractValue = (name: string): number | null => {
+        const pattern = new RegExp(`${name}:\\s*(\\d+)`);
+        const match = fontWeightBlock.match(pattern);
+        return match ? parseInt(match[1], 10) : null;
+      };
+
+      // Verify key font weights match
+      expect(extractValue("normal")).toBe(theme.fontWeight.normal);
+      expect(extractValue("medium")).toBe(theme.fontWeight.medium);
+      expect(extractValue("semiBold")).toBe(theme.fontWeight.semibold);
+    });
+  });
+
+  describe("SHADOWS validation", () => {
+    it("should have SHADOWS.xs in shared.ts matching Tailwind shadow-xs", () => {
+      // theme is defined at suite level
+      const tailwindXs = theme.shadows.xs;
+
+      // Read shared.ts
+      const sharedPath = join(__dirname, "shared.ts");
+      const sharedContent = readFileSync(sharedPath, "utf-8");
+
+      // Extract xs shadow block
+      // Pattern: xs: { offsetX: 0, offsetY: 1, blur: 2, spread: 0, opacity: 0.05 }
+      const xsShadowMatch = sharedContent.match(
+        /xs:\s*\{([^}]+)\}/
+      );
+      expect(xsShadowMatch).not.toBeNull();
+
+      // For shadow-xs, Tailwind has: 0 1px 2px 0 rgb(0 0 0 / 0.05)
+      // We expect the first (and only) layer to match
+      expect(tailwindXs.layers.length).toBeGreaterThanOrEqual(1);
+
+      const expectedLayer = tailwindXs.layers[0];
+      expect(expectedLayer.offsetX).toBe(0);
+      expect(expectedLayer.offsetY).toBe(1);
+      expect(expectedLayer.blur).toBe(2);
+      expect(expectedLayer.spread).toBe(0);
+      expect(expectedLayer.opacity).toBe(0.05);
+    });
+
+    it("should have SHADOWS.lg in shared.ts matching Tailwind shadow-lg structure", () => {
+      // theme is defined at suite level
+      const tailwindLg = theme.shadows.lg;
+
+      // Tailwind shadow-lg has two layers:
+      // 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)
+      expect(tailwindLg.layers.length).toBe(2);
+
+      // Primary layer
+      expect(tailwindLg.layers[0].offsetY).toBe(10);
+      expect(tailwindLg.layers[0].blur).toBe(15);
+      expect(tailwindLg.layers[0].opacity).toBe(0.1);
+
+      // Secondary layer
+      expect(tailwindLg.layers[1].offsetY).toBe(4);
+      expect(tailwindLg.layers[1].blur).toBe(6);
+      expect(tailwindLg.layers[1].opacity).toBe(0.1);
+    });
+  });
+
+  describe("Tailwind default font sizes (for reference)", () => {
+    it("should document Tailwind v4 default font sizes", () => {
+      // theme is defined at suite level
+
+      // Document what Tailwind's defaults are (before Kumo overrides)
+      // These are in pixels, converted from rem
+      expect(theme.fontSize.xs).toBe(12);   // 0.75rem
+      expect(theme.fontSize.sm).toBe(14);   // 0.875rem
+      expect(theme.fontSize.base).toBe(16); // 1rem
+      expect(theme.fontSize.lg).toBe(18);   // 1.125rem
+
+      // Kumo overrides these in theme-kumo.css:
+      // --text-sm: 13px (not 14px)
+      // --text-base: 14px (not 16px)
+      // --text-lg: 16px (not 18px)
+    });
   });
 });

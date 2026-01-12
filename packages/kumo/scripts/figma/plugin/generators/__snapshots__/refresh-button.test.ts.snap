@@ -30,7 +30,7 @@ exports[`RefreshButton Generator - Snapshot Tests (Intermediate Data) > should p
       "compactSize": 14,
       "iconSize": 12,
       "parsed": {
-        "borderRadius": 2,
+        "borderRadius": 4,
         "fontSize": 12,
         "gap": 4,
         "height": 20,
@@ -118,7 +118,7 @@ exports[`RefreshButton Generator - Snapshot Tests (Intermediate Data) > should p
   {
     "classes": "h-5 gap-1 rounded-sm px-1.5 text-xs",
     "parsed": {
-      "borderRadius": 2,
+      "borderRadius": 4,
       "fontSize": 12,
       "gap": 4,
       "height": 20,

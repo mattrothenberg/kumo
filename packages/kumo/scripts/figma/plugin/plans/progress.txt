@@ -5380,3 +5380,59 @@ Duration: 1.41s
 
 **Status:** COMPLETE - Tabs generator now reads from registry with proper fallback
 
+
+---
+
+## Iteration 30: T2 - Update toast.ts to Read from Registry (PHASE 10)
+
+**Task:** T2 - Update toast.ts to Read from Registry
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Added registry styling access** (after line 40):
+   - Added `const toastStyling = (registry.components as any).Toasty?.styling;`
+   - Registry import already existed (line 40)
+
+2. **Created FALLBACK_TOAST_CONFIG**:
+   - Created fallback configuration with original hardcoded values
+   - All 7 properties: width, titleFontSize, titleFontWeight, descriptionFontSize, descriptionFontWeight, closeButtonSize, closeButtonIconSize
+
+3. **Created getToastConfigFromRegistry() function**:
+   - Reads from registry.components.Toasty.styling with fallback
+   - Maps registry structure to generator configuration:
+     - toastStyling.container.width → width
+     - toastStyling.title.fontSize → titleFontSize
+     - toastStyling.title.fontWeight → titleFontWeight
+     - toastStyling.description.fontSize → descriptionFontSize
+     - toastStyling.description.fontWeight → descriptionFontWeight
+     - toastStyling.closeButton.size → closeButtonSize
+     - toastStyling.closeButton.iconSize → closeButtonIconSize
+   - Uses nullish coalescing (??) for fallback values
+
+4. **Replaced hardcoded usages**:
+   - Line 47: `var TOAST_WIDTH = 300;` → `var TOAST_WIDTH = TOAST_CONFIG.width;`
+   - Line 126: `createTextNode("Toast created", 16, 500)` → `createTextNode("Toast created", TOAST_CONFIG.titleFontSize, TOAST_CONFIG.titleFontWeight)`
+   - Line 166: `createTextNode(..., 15, 400)` → `createTextNode(..., TOAST_CONFIG.descriptionFontSize, TOAST_CONFIG.descriptionFontWeight)`
+   - Line 147: `closeButton.resize(20, 20)` → `closeButton.resize(TOAST_CONFIG.closeButtonSize, TOAST_CONFIG.closeButtonSize)`
+
+### Test Results:
+- ✅ All 59 toast tests pass
+- ✅ No snapshot changes (values from registry match hardcoded values exactly)
+- ✅ Test run time: 5ms (59 tests)
+- ✅ Pre-existing TypeScript errors documented (not related to this change)
+
+### Files Modified:
+- `scripts/figma/plugin/generators/toast.ts` - Added registry reading with fallback, replaced hardcoded values
+- `plans/PRD.json` - T2 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- Pattern follows pagination.ts reference implementation exactly
+- Registry values match original hardcoded values (as expected)
+- Generator now automatically picks up changes from component-registry.json
+- Fallback ensures backward compatibility if registry data is missing
+- Toast component name in registry is "Toasty" (not "Toast")
+
+**Status:** COMPLETE - Toast generator now reads from registry with proper fallback
+

@@ -39,12 +39,46 @@ import { logComplete } from "../logger";
 // Import registry as source of truth
 import registry from "../../../../ai/component-registry.json";
 
+// Type for registry styling
+const toastStyling = (registry.components as any).Toasty?.styling;
 
+// Fallback config with original hardcoded values
+const FALLBACK_TOAST_CONFIG = {
+  width: 300,
+  titleFontSize: 16,
+  titleFontWeight: 500,
+  descriptionFontSize: 15,
+  descriptionFontWeight: 400,
+  closeButtonSize: 20,
+  closeButtonIconSize: 16,
+};
+
+/**
+ * Read Toast configuration from registry with fallback
+ */
+function getToastConfigFromRegistry() {
+  if (!toastStyling) {
+    return FALLBACK_TOAST_CONFIG;
+  }
+
+  return {
+    width: toastStyling.container?.width ?? FALLBACK_TOAST_CONFIG.width,
+    titleFontSize: toastStyling.title?.fontSize ?? FALLBACK_TOAST_CONFIG.titleFontSize,
+    titleFontWeight: toastStyling.title?.fontWeight ?? FALLBACK_TOAST_CONFIG.titleFontWeight,
+    descriptionFontSize: toastStyling.description?.fontSize ?? FALLBACK_TOAST_CONFIG.descriptionFontSize,
+    descriptionFontWeight: toastStyling.description?.fontWeight ?? FALLBACK_TOAST_CONFIG.descriptionFontWeight,
+    closeButtonSize: toastStyling.closeButton?.size ?? FALLBACK_TOAST_CONFIG.closeButtonSize,
+    closeButtonIconSize: toastStyling.closeButton?.iconSize ?? FALLBACK_TOAST_CONFIG.closeButtonIconSize,
+  };
+}
+
+const TOAST_CONFIG = getToastConfigFromRegistry();
 
 /**
  * Toast dimensions (matches sm:w-[300px] from viewport)
+ * Now reads from registry via TOAST_CONFIG
  */
-var TOAST_WIDTH = 300;
+var TOAST_WIDTH = TOAST_CONFIG.width;
 
 /**
  * Create a single Toast component
@@ -123,7 +157,7 @@ async function createToastComponent(): Promise<ComponentNode> {
 
   // Create title text
   // text-[0.975rem] = ~15.6px, font-medium = 500
-  var title = await createTextNode("Toast created", 16, 500);
+  var title = await createTextNode("Toast created", TOAST_CONFIG.titleFontSize, TOAST_CONFIG.titleFontWeight);
   title.name = "Title";
   title.textAutoResize = "WIDTH_AND_HEIGHT";
   title.layoutGrow = 1; // Take remaining space
@@ -143,13 +177,13 @@ async function createToastComponent(): Promise<ComponentNode> {
   closeButton.layoutMode = "HORIZONTAL";
   closeButton.primaryAxisAlignItems = "CENTER";
   closeButton.counterAxisAlignItems = "CENTER";
-  closeButton.resize(20, 20);
+  closeButton.resize(TOAST_CONFIG.closeButtonSize, TOAST_CONFIG.closeButtonSize);
   closeButton.cornerRadius = 4; // rounded
   closeButton.fills = []; // bg-transparent
 
   // Create close icon (ph-x) - 16x16 inside 20x20 button
   var closeIconName = "ph-x";
-  var closeIcon = getButtonIcon(closeIconName, "sm"); // sm = 16px
+  var closeIcon = getButtonIcon(closeIconName, "sm"); // sm = 16px (TOAST_CONFIG.closeButtonIconSize)
   closeIcon.name = "Icon";
 
   // Apply icon color (text-muted)
@@ -164,8 +198,8 @@ async function createToastComponent(): Promise<ComponentNode> {
   // text-[0.925rem] = ~14.8px, normal weight
   var description = await createTextNode(
     "This is a toast notification.",
-    15,
-    400,
+    TOAST_CONFIG.descriptionFontSize,
+    TOAST_CONFIG.descriptionFontWeight,
   );
   description.name = "Description";
   description.textAutoResize = "HEIGHT";

@@ -112,7 +112,7 @@ exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should prod
       "classes": "h-5 gap-1 rounded-sm px-1.5 text-xs",
       "description": "Extra small button for compact UIs",
       "parsed": {
-        "borderRadius": 2,
+        "borderRadius": 4,
         "fontSize": 12,
         "gap": 4,
         "height": 20,
@@ -447,7 +447,7 @@ exports[`LinkButton Generator - Snapshot Tests (Intermediate Data) > should prod
   "classes": "h-5 gap-1 rounded-sm px-1.5 text-xs",
   "description": "Extra small button for compact UIs",
   "parsed": {
-    "borderRadius": 2,
+    "borderRadius": 4,
     "fontSize": 12,
     "gap": 4,
     "height": 20,

@@ -80,16 +80,20 @@ const FONT_SIZE_SCALE: Record<string, number> = {
 
 /**
  * Tailwind border radius scale (in pixels)
+ * Values from Tailwind v4 theme.css --radius-* definitions
+ * See: node_modules/tailwindcss/theme.css
  */
 const BORDER_RADIUS_SCALE: Record<string, number> = {
   none: 0,
-  sm: 2,
-  DEFAULT: 4,
-  md: 6,
-  lg: 8,
-  xl: 12,
-  "2xl": 16,
-  "3xl": 24,
+  xs: 2,    // --radius-xs: 0.125rem = 2px
+  sm: 4,    // --radius-sm: 0.25rem = 4px
+  DEFAULT: 4, // Same as sm
+  md: 6,    // --radius-md: 0.375rem = 6px
+  lg: 8,    // --radius-lg: 0.5rem = 8px
+  xl: 12,   // --radius-xl: 0.75rem = 12px
+  "2xl": 16, // --radius-2xl: 1rem = 16px
+  "3xl": 24, // --radius-3xl: 1.5rem = 24px
+  "4xl": 32, // --radius-4xl: 2rem = 32px
   full: 9999,
 };
 

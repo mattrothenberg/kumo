@@ -21,12 +21,16 @@ export const SPACING = {
 } as const;
 
 export const BORDER_RADIUS = {
-  /** Small radius (2px) */
-  sm: 2,
-  /** Medium radius (6px) */
+  /** Extra small radius (2px) - matches --radius-xs in Tailwind v4 theme.css */
+  xs: 2,
+  /** Small radius (4px) - matches --radius-sm in Tailwind v4 theme.css */
+  sm: 4,
+  /** Medium radius (6px) - matches --radius-md in Tailwind v4 theme.css */
   md: 6,
-  /** Large radius (8px) */
+  /** Large radius (8px) - matches --radius-lg in Tailwind v4 theme.css */
   lg: 8,
+  /** Extra large radius (12px) - matches --radius-xl in Tailwind v4 theme.css */
+  xl: 12,
   /** Full rounded (9999px) */
   full: 9999,
 } as const;

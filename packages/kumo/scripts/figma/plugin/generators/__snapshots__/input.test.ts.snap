@@ -174,7 +174,7 @@ exports[`Input Generator - Snapshot Tests (Intermediate Data) > should produce c
         "size": "xs",
       },
       "parsed": {
-        "borderRadius": 2,
+        "borderRadius": 4,
         "fontSize": 12,
         "gap": 4,
         "height": 20,

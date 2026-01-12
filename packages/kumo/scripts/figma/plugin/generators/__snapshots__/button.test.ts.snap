@@ -41,7 +41,7 @@ exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce 
       "classes": "h-5 gap-1 rounded-sm px-1.5 text-xs",
       "description": "Extra small button for compact UIs",
       "parsed": {
-        "borderRadius": 2,
+        "borderRadius": 4,
         "fontSize": 12,
         "gap": 4,
         "height": 20,
@@ -1435,7 +1435,7 @@ exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce 
     "fillVariable": "color-secondary",
   },
   "layout": {
-    "cornerRadius": 2,
+    "cornerRadius": 4,
     "counterAxisAlignItems": "CENTER",
     "counterAxisSizingMode": "FIXED",
     "height": 20,
@@ -1462,7 +1462,7 @@ exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce 
     "classes": "h-5 gap-1 rounded-sm px-1.5 text-xs",
     "description": "Extra small button for compact UIs",
     "parsed": {
-      "borderRadius": 2,
+      "borderRadius": 4,
       "fontSize": 12,
       "gap": 4,
       "height": 20,
@@ -1545,7 +1545,7 @@ exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce 
       "classes": "h-5 gap-1 rounded-sm px-1.5 text-xs",
       "description": "Extra small button for compact UIs",
       "parsed": {
-        "borderRadius": 2,
+        "borderRadius": 4,
         "fontSize": 12,
         "gap": 4,
         "height": 20,
@@ -1961,7 +1961,7 @@ exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce 
   "classes": "h-5 gap-1 rounded-sm px-1.5 text-xs",
   "description": "Extra small button for compact UIs",
   "parsed": {
-    "borderRadius": 2,
+    "borderRadius": 4,
     "fontSize": 12,
     "gap": 4,
     "height": 20,
