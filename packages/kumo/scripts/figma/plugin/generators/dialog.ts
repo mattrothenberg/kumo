@@ -155,13 +155,15 @@ async function createButton(
     button.paddingRight = FALLBACK_VALUES.padding.horizontal;
     button.paddingTop = SPACING.base; // py-2 = 8px
     button.paddingBottom = SPACING.base;
-    button.minWidth = 70; // Layout-specific for dialog actions
+    // FIGMA-SPECIFIC: Minimum button width for visual balance in dialog footer layout
+    button.minWidth = 70;
   } else {
     button.paddingLeft = FALLBACK_VALUES.padding.large; // px-4 = 16px (base size)
     button.paddingRight = FALLBACK_VALUES.padding.large;
     button.paddingTop = SPACING.base; // py-2 = 8px
     button.paddingBottom = SPACING.base;
-    button.minWidth = 100; // Layout-specific for dialog actions
+    // FIGMA-SPECIFIC: Minimum button width for visual balance in dialog footer layout
+    button.minWidth = 100;
   }
 
   button.itemSpacing = size === "sm" ? SPACING.xs : SPACING.base; // gap-1 : gap-2

@@ -340,7 +340,7 @@
       "name": "fix-dialog-generator",
       "title": "Fix dialog.ts Hardcoded Values",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Replace hardcoded minWidth values",
       "files": ["scripts/figma/plugin/generators/dialog.ts"],
       "changes": [

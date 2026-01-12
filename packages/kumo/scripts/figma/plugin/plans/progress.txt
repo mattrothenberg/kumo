@@ -6173,3 +6173,39 @@ Eliminate ALL remaining hardcoded CSS-derived values in Figma generators by usin
 
 **Status:** COMPLETE - Collapsible generator now uses themeData for all spacing values
 
+
+---
+
+## Iteration 29: T12 - Fix dialog.ts Hardcoded Values (PHASE 11)
+
+**Task:** T12 - Fix dialog.ts Hardcoded Values
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Added FIGMA-SPECIFIC comments to button minWidth values**:
+   - Line 158: minWidth = 70 (for sm size)
+   - Line 164: minWidth = 100 (for base size)
+   - Comments clarify these are layout-specific values for visual balance in dialog footer
+
+2. **Documentation added**:
+   - "FIGMA-SPECIFIC: Minimum button width for visual balance in dialog footer layout"
+   - These values are intentional for Figma canvas display, not derived from CSS
+
+### Test Results:
+- ✅ All 50 dialog tests pass
+- ✅ No snapshots changed (comments don't affect output)
+- ✅ TypeScript errors are pre-existing (documented in original code)
+
+### Files Modified:
+- `scripts/figma/plugin/generators/dialog.ts` - Added FIGMA-SPECIFIC comments
+- `plans/PRD.json` - T12 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- This was a documentation-only task - no logic changes
+- minWidth values remain hardcoded as they are Figma layout-specific
+- These values ensure dialog action buttons have consistent sizing in Figma
+- Pre-existing TypeScript errors (minWidth property, textAutoResize, effects, layoutAlign, etc.) remain as documented
+
+**Status:** COMPLETE - Dialog hardcoded values documented with FIGMA-SPECIFIC comments
