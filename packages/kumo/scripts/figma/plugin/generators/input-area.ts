@@ -29,7 +29,9 @@ import {
   SECTION_GAP,
   SECTION_LAYOUT,
   OPACITY,
+  FONT_SIZE,
 } from "./shared";
+import themeData from "../generated/theme-data.json";
 import { logComplete } from "../logger";
 import registry from "../../../../ai/component-registry.json";
 
@@ -78,9 +80,9 @@ function getSizeConfigFromRegistry(size: string) {
   };
 
   var FALLBACK_INPUT_CONFIG = {
-    paddingX: 12,
-    fontSize: 16,
-    borderRadius: 8,
+    paddingX: themeData.tailwind.spacing.scale["3"], // px-3 = 12px
+    fontSize: FONT_SIZE.lg, // 16px from theme-kumo.css
+    borderRadius: BORDER_RADIUS.lg, // 8px
   };
 
   // Get InputArea-specific dimensions (minHeight, width) from registry
@@ -97,7 +99,7 @@ function getSizeConfigFromRegistry(size: string) {
     minHeight: inputAreaSizeData.minHeight,
     paddingX:
       inputSizeVariant?.dimensions?.paddingX || FALLBACK_INPUT_CONFIG.paddingX,
-    paddingY: 8, // py-2 for all sizes (InputArea-specific, not in registry)
+    paddingY: themeData.tailwind.spacing.scale["2"], // py-2 = 8px for all sizes (InputArea-specific, not in registry)
     fontSize:
       inputSizeVariant?.dimensions?.fontSize || FALLBACK_INPUT_CONFIG.fontSize,
     borderRadius:
@@ -242,7 +244,7 @@ async function createInputAreaComponent(
 
   // Create label (only if withLabel is true)
   if (withLabel && variantConfig.label) {
-    var labelText = await createTextNode(variantConfig.label, 14, 500);
+    var labelText = await createTextNode(variantConfig.label, FONT_SIZE.base, 500); // 14px from theme-kumo.css
     labelText.name = "Label";
     labelText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -315,7 +317,7 @@ async function createInputAreaComponent(
 
   // Create description or error message (only if withLabel is true)
   if (withLabel && variantConfig.description && variant === "default") {
-    var descText = await createTextNode(variantConfig.description, 12, 400);
+    var descText = await createTextNode(variantConfig.description, FONT_SIZE.xs, 400); // 12px from theme-kumo.css
     descText.name = "Description";
     descText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -328,7 +330,7 @@ async function createInputAreaComponent(
   }
 
   if (withLabel && variantConfig.errorMessage && variant === "error") {
-    var errorText = await createTextNode(variantConfig.errorMessage, 12, 400);
+    var errorText = await createTextNode(variantConfig.errorMessage, FONT_SIZE.xs, 400); // 12px from theme-kumo.css
     errorText.name = "Error";
     errorText.textAutoResize = "WIDTH_AND_HEIGHT";
 

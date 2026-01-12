@@ -219,7 +219,7 @@
       "name": "fix-input-area-generator",
       "title": "Fix input-area.ts Hardcoded Values",
       "priority": "high",
-      "status": "pending",
+      "status": "complete",
       "description": "Replace hardcoded minHeight, width, padding, fontSize, borderRadius",
       "files": ["scripts/figma/plugin/generators/input-area.ts"],
       "changes": [

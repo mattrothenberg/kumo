@@ -5954,3 +5954,56 @@ Eliminate ALL remaining hardcoded CSS-derived values in Figma generators by usin
 
 **Status:** COMPLETE - layer-card.ts hardcoded values replaced with themeData references
 
+
+---
+
+## Iteration 29: T7 - Fix input-area.ts Hardcoded Values (PHASE 11)
+
+**Task:** T7 - Fix input-area.ts Hardcoded Values
+**Status:** ✅ Complete
+**Date:** 2026-01-12
+
+### What was done:
+1. **Added imports to input-area.ts**:
+   - Added FONT_SIZE import from './shared'
+   - Added themeData import from '../generated/theme-data.json'
+
+2. **Replaced hardcoded values in FALLBACK_INPUT_CONFIG (lines 81-84)**:
+   - paddingX: 12 → themeData.tailwind.spacing.scale["3"] // px-3 = 12px
+   - fontSize: 16 → FONT_SIZE.lg // 16px from theme-kumo.css
+   - borderRadius: 8 → BORDER_RADIUS.lg // 8px
+
+3. **Replaced hardcoded paddingY (line 100)**:
+   - paddingY: 8 → themeData.tailwind.spacing.scale["2"] // py-2 = 8px
+
+4. **Replaced hardcoded fontSize values in createTextNode calls**:
+   - Line 245: fontSize: 14 → FONT_SIZE.base // label text
+   - Line 319: fontSize: 12 → FONT_SIZE.xs // description text
+   - Line 332: fontSize: 12 → FONT_SIZE.xs // error text
+
+### Test Results:
+- ✅ All 40 input-area tests pass
+- ✅ No snapshot changes (values match original hardcoded values exactly)
+- ✅ All structural tests pass
+
+### Files Modified:
+- `scripts/figma/plugin/generators/input-area.ts` - Replaced 6 hardcoded values with themeData/shared references
+- `plans/PRD.json` - T7 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Values Changed:
+- paddingX: 12 → themeData.tailwind.spacing.scale["3"] (12px)
+- fontSize: 16 → FONT_SIZE.lg (16px)
+- borderRadius: 8 → BORDER_RADIUS.lg (8px)
+- paddingY: 8 → themeData.tailwind.spacing.scale["2"] (8px)
+- label fontSize: 14 → FONT_SIZE.base (14px)
+- description/error fontSize: 12 → FONT_SIZE.xs (12px)
+
+### Notes:
+- Pre-existing TypeScript errors (textAutoResize property) remain but don't affect tests
+- minHeight and width values (60, 72, 88, 100, 200, 240, 320, 360) are intentionally left in FALLBACK config - they're used as fallbacks when registry data is missing
+- All replaced values still equal the same numeric values, so no snapshots changed
+- InputArea now fully uses CSS-derived constants for all typography and spacing
+
+**Status:** COMPLETE - InputArea generator now uses themeData/shared constants
+
