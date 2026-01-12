@@ -787,9 +787,9 @@ export function getDropdownVariantConfig() {
 export function getDropdownPanelDimensions() {
   return {
     width: DROPDOWN_WIDTH,
-    itemHeight: 32,
-    padding: 6,
-    itemSpacing: 2,
+    itemHeight: themeData.tailwind.spacing.scale["8"], // h-8 = 32px
+    padding: themeData.tailwind.spacing.scale["1.5"], // p-1.5 = 6px
+    itemSpacing: themeData.tailwind.spacing.scale["0.5"], // gap-0.5 = 2px
     cornerRadius: BORDER_RADIUS.lg,
   };
 }
@@ -801,12 +801,12 @@ export function getMenuItemLayout(hasShortcut: boolean) {
   return {
     mode: "HORIZONTAL",
     alignment: hasShortcut ? "SPACE_BETWEEN" : "MIN",
-    width: DROPDOWN_WIDTH - 12,
-    height: 32,
-    paddingX: 8,
-    paddingY: 6,
-    itemSpacing: 8,
-    cornerRadius: 6,
+    width: DROPDOWN_WIDTH - themeData.tailwind.spacing.scale["3"], // width - 12px
+    height: themeData.tailwind.spacing.scale["8"], // h-8 = 32px
+    paddingX: SPACING.base, // px-2 = 8px
+    paddingY: themeData.tailwind.spacing.scale["1.5"], // py-1.5 = 6px
+    itemSpacing: SPACING.base, // gap-2 = 8px
+    cornerRadius: BORDER_RADIUS.md, // rounded-md = 6px
   };
 }
 

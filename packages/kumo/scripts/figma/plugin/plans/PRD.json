@@ -170,7 +170,7 @@
       "name": "fix-dropdown-generator",
       "title": "Fix dropdown.ts Hardcoded Values",
       "priority": "high",
-      "status": "pending",
+      "status": "complete",
       "description": "Replace hardcoded itemHeight, padding, cornerRadius in dropdown configs",
       "files": ["scripts/figma/plugin/generators/dropdown.ts"],
       "changes": [

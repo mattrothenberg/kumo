@@ -5859,3 +5859,46 @@ Eliminate ALL remaining hardcoded CSS-derived values in Figma generators by usin
 
 **Status:** COMPLETE - Surface.ts now uses themeData and shared constants for all CSS-derived values
 
+
+---
+
+## Iteration 29: T5 - Fix dropdown.ts Hardcoded Values (PHASE 11)
+
+**Task:** T5 - Fix dropdown.ts Hardcoded Values
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Updated getDropdownPanelDimensions() function**:
+   - Replaced `itemHeight: 32` with `themeData.tailwind.spacing.scale["8"]` (h-8 = 32px)
+   - Replaced `padding: 6` with `themeData.tailwind.spacing.scale["1.5"]` (p-1.5 = 6px)
+   - Replaced `itemSpacing: 2` with `themeData.tailwind.spacing.scale["0.5"]` (gap-0.5 = 2px)
+   - All values derive from theme-data.json
+
+2. **Updated getMenuItemLayout() function**:
+   - Replaced `width: DROPDOWN_WIDTH - 12` with `DROPDOWN_WIDTH - themeData.tailwind.spacing.scale["3"]` (width - 12px)
+   - Replaced `height: 32` with `themeData.tailwind.spacing.scale["8"]` (h-8 = 32px)
+   - Replaced `paddingX: 8` with `SPACING.base` (px-2 = 8px)
+   - Replaced `paddingY: 6` with `themeData.tailwind.spacing.scale["1.5"]` (py-1.5 = 6px)
+   - Replaced `itemSpacing: 8` with `SPACING.base` (gap-2 = 8px)
+   - Replaced `cornerRadius: 6` with `BORDER_RADIUS.md` (rounded-md = 6px)
+
+### Test Results:
+- ✅ All 36 dropdown tests pass
+- ✅ No snapshots changed (values match original hardcoded values)
+- ✅ All dimensional values now use themeData or shared.ts constants
+
+### Files Modified:
+- `scripts/figma/plugin/generators/dropdown.ts` - Updated 2 test helper functions
+- `plans/PRD.json` - T5 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- Pre-existing TypeScript errors (layoutAlign, opacity, textAutoResize) documented
+- All hardcoded CSS-derived values in test functions replaced with themeData references
+- Generator implementation already uses themeData/shared constants (lines 110-116, 201-207, etc.)
+- Test functions updated to match generator implementation
+- DROPDOWN_WIDTH (200) remains hardcoded as a FIGMA-SPECIFIC layout value
+
+**Status:** COMPLETE - Dropdown test functions now use themeData/shared constants
+
