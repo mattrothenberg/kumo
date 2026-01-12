@@ -5653,3 +5653,74 @@ Eliminate ALL remaining hardcoded CSS-derived values in Figma generators by usin
 
 **Status:** COMPLETE - empty.ts now uses themeData and shared constants
 
+
+---
+
+## PHASE 11: Comprehensive Hardcoded Values Elimination (IN PROGRESS)
+
+### Goal
+Eliminate ALL remaining hardcoded CSS-derived values in Figma generators by using themeData from theme-data.json or registry.styling. This phase addresses 100+ hardcoded values across 15+ generator files.
+
+### Status Summary
+- **Tasks:** 17 (T1-T17)
+- **Completed:** 2 (T1-T2)
+- **In Progress:** 0
+- **Pending:** 15
+
+---
+
+## Iteration 29: T2 - Fix meter.ts Hardcoded Values (PHASE 11)
+
+**Task:** T2 - Fix meter.ts Hardcoded Values
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Added imports to meter.ts**:
+   - Added `FONT_SIZE` and `FALLBACK_VALUES` to imports from './shared'
+   - Added `import themeData from '../generated/theme-data.json'`
+
+2. **Replaced METER_TRACK_HEIGHT constant**:
+   - Changed: `const METER_TRACK_HEIGHT = 8;` 
+   - To: `const METER_TRACK_HEIGHT = themeData.tailwind.spacing.scale["2"];`
+   - Added comment: `// h-2 = 8px from meter.tsx`
+
+3. **Replaced METER_GAP constant**:
+   - Changed: `const METER_GAP = 8;`
+   - To: `const METER_GAP = themeData.tailwind.spacing.scale["2"];`
+   - Added comment: `// gap-2 = 8px from meter.tsx`
+
+4. **Added FIGMA-SPECIFIC comment to METER_WIDTH**:
+   - Documented `METER_WIDTH = 240` as layout-specific for Figma canvas display
+
+5. **Fixed getMeterTypographyConfig() function**:
+   - **Label fontSize**: Changed `12` to `FONT_SIZE.xs` (12px from theme-kumo.css)
+   - **Label fontWeight**: Changed `400` to `FALLBACK_VALUES.fontWeight.normal`
+   - **Value fontSize**: Changed `14` to `FONT_SIZE.sm` (13px from theme-kumo.css, NOT 14px!)
+   - **Value fontWeight**: Changed `500` to `FALLBACK_VALUES.fontWeight.medium`
+   - Added detailed comments explaining source of each value
+
+### Critical Fix:
+**The original code had `fontSize: 14` for text-sm, but Kumo's text-sm is actually 13px!**
+- Default Tailwind: text-sm = 14px
+- Kumo override: text-sm = 13px (from theme-kumo.css)
+- This fix corrects the drift between hardcoded value and actual CSS
+
+### Test Results:
+- ✅ All 33 meter tests pass
+- ✅ 1 snapshot updated (fontSize changed from 14 → 13, which is correct)
+- ✅ Snapshot update reflects actual CSS value correction, not a regression
+
+### Files Modified:
+- `scripts/figma/plugin/generators/meter.ts` - Replaced 7 hardcoded values with themeData/FONT_SIZE/FALLBACK_VALUES
+- `scripts/figma/plugin/generators/__snapshots__/meter.test.ts.snap` - Updated snapshot to reflect correct fontSize
+- `plans/PRD.json` - T2 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- Pre-existing TypeScript errors (same as Phase 1) documented but unrelated to this fix
+- All hardcoded CSS-derived values now replaced with centralized constants
+- METER_WIDTH (240) kept as hardcoded with FIGMA-SPECIFIC comment (intentional layout value)
+- Values unchanged (8, 12, 13, 400, 500) - only source changed from hardcoded to derived
+
+**Status:** COMPLETE - Meter generator now uses themeData and shared constants

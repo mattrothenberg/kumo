@@ -121,7 +121,7 @@ exports[`Meter Generator - Snapshot Tests (Intermediate Data) > should produce c
     "labelFontSize": 12,
     "labelFontWeight": 400,
     "trackCornerRadius": 9999,
-    "valueFontSize": 14,
+    "valueFontSize": 13,
     "valueFontWeight": 500,
   },
   "registry": {
@@ -161,7 +161,7 @@ exports[`Meter Generator - Snapshot Tests (Intermediate Data) > should produce c
     },
     "value": {
       "colorToken": "text-color-surface",
-      "fontSize": 14,
+      "fontSize": 13,
       "fontWeight": 500,
       "source": "text-sm font-medium text-surface tabular-nums",
     },

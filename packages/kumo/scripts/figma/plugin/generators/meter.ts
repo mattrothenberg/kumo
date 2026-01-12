@@ -25,7 +25,12 @@ import {
   GRID_LAYOUT,
   SECTION_LAYOUT,
   COLORS,
+  FONT_SIZE,
+  FALLBACK_VALUES,
 } from "./shared";
+
+// Import theme data for CSS-derived values
+import themeData from "../generated/theme-data.json";
 
 // Import registry as source of truth
 import registry from "../../../../ai/component-registry.json";
@@ -41,9 +46,9 @@ const meterColors = meterComponent.colors;
  * - METER_GAP: gap-2 = 8px (from Root className)
  * - METER_WIDTH: Layout-specific for Figma display
  */
-const METER_WIDTH = 240;
-const METER_TRACK_HEIGHT = 8; // h-2 from meter.tsx
-const METER_GAP = 8; // gap-2 from meter.tsx
+const METER_WIDTH = 240; // FIGMA-SPECIFIC: Layout width for Figma canvas display, not from CSS
+const METER_TRACK_HEIGHT = themeData.tailwind.spacing.scale["2"]; // h-2 = 8px from meter.tsx
+const METER_GAP = themeData.tailwind.spacing.scale["2"]; // gap-2 = 8px from meter.tsx
 
 
 
@@ -119,14 +124,14 @@ export function getMeterIndicatorWidth(fillPercentage: number) {
 export function getMeterTypographyConfig() {
   return {
     label: {
-      fontSize: 12, // text-xs from meter.tsx
-      fontWeight: 400, // default weight
+      fontSize: FONT_SIZE.xs, // 12px from theme-kumo.css (text-xs)
+      fontWeight: FALLBACK_VALUES.fontWeight.normal, // 400
       colorToken: "text-color-label",
       source: "text-xs text-label",
     },
     value: {
-      fontSize: 14, // text-sm from meter.tsx
-      fontWeight: 500, // font-medium from meter.tsx
+      fontSize: FONT_SIZE.sm, // 13px from theme-kumo.css (text-sm, NOT 14px!)
+      fontWeight: FALLBACK_VALUES.fontWeight.medium, // 500 (font-medium)
       colorToken: "text-color-surface",
       source: "text-sm font-medium text-surface tabular-nums",
     },

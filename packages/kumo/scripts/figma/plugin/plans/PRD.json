@@ -74,7 +74,7 @@
       "name": "fix-meter-generator",
       "title": "Fix meter.ts Hardcoded Values",
       "priority": "high",
-      "status": "pending",
+      "status": "complete",
       "description": "Replace hardcoded fontSize: 12/14 with FONT_SIZE.xs/sm",
       "files": ["scripts/figma/plugin/generators/meter.ts"],
       "changes": [
