@@ -202,7 +202,7 @@
       "name": "add-tabs-toast-registry-enforcement",
       "title": "Add Registry Enforcement Test for Tabs/Toast",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Add test that ensures Tabs and Toast generators read from registry",
       "files": ["scripts/figma/plugin/generators/drift-detection.test.ts"],
       "acceptance": [

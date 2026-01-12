@@ -1488,3 +1488,39 @@ describe("Figma Plugin - Tailwind v4 theme.css Sync Validation", () => {
     });
   });
 });
+
+/**
+ * Phase 10: Registry Enforcement for Tabs and Toast
+ *
+ * These tests ensure Tabs and Toast generators read configuration from
+ * component-registry.json instead of using hardcoded values.
+ */
+describe("Figma Plugin - Phase 10 Registry Enforcement", () => {
+  it("Tabs and Toast generators should read from component-registry.json", () => {
+    const violations: string[] = [];
+
+    // Check tabs.ts
+    const tabsPath = join(__dirname, "tabs.ts");
+    const tabsContent = readFileSync(tabsPath, "utf-8");
+
+    if (!tabsContent.includes("component-registry.json")) {
+      violations.push("tabs.ts: Does not import component-registry.json");
+    }
+    if (!tabsContent.includes("getTabsConfigFromRegistry") && !tabsContent.includes("tabsStyling")) {
+      violations.push("tabs.ts: Does not read from registry styling");
+    }
+
+    // Check toast.ts
+    const toastPath = join(__dirname, "toast.ts");
+    const toastContent = readFileSync(toastPath, "utf-8");
+
+    if (!toastContent.includes("component-registry.json")) {
+      violations.push("toast.ts: Does not import component-registry.json");
+    }
+    if (!toastContent.includes("getToastConfigFromRegistry") && !toastContent.includes("toastStyling")) {
+      violations.push("toast.ts: Does not read from registry styling");
+    }
+
+    expect(violations).toEqual([]);
+  });
+});

@@ -5484,3 +5484,46 @@ Duration: 1.41s
 
 **Status:** COMPLETE - buttonCompactSize drift detection test added and passing
 
+
+---
+
+## Iteration 29: T5 - Add Registry Enforcement Test for Tabs/Toast (PHASE 10)
+
+**Task:** T5 - Add Registry Enforcement Test for Tabs/Toast
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Added new test to drift-detection.test.ts**:
+   - Created new describe block: "Figma Plugin - Phase 10 Registry Enforcement"
+   - Added test: "Tabs and Toast generators should read from component-registry.json"
+   - Checks tabs.ts imports component-registry.json
+   - Checks tabs.ts has getTabsConfigFromRegistry or tabsStyling pattern
+   - Checks toast.ts imports component-registry.json
+   - Checks toast.ts has getToastConfigFromRegistry or toastStyling pattern
+   - Test fails if violations found (empty violations array = pass)
+
+2. **Test validates existing work**:
+   - Tabs generator already updated in T1 (reads from registry)
+   - Toast generator already updated in T2 (reads from registry)
+   - This enforcement test prevents future regressions
+
+### Test Results:
+- ✅ All 36 drift detection tests pass (35 existing + 1 new)
+- ✅ Test correctly validates tabs.ts imports and reads from registry
+- ✅ Test correctly validates toast.ts imports and reads from registry
+- ✅ Test will fail if generators remove registry reading in future
+
+### Files Modified:
+- `scripts/figma/plugin/generators/drift-detection.test.ts` - Added Phase 10 enforcement test
+- `plans/PRD.json` - T5 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- This test acts as drift protection for the work done in T1 and T2
+- If a developer accidentally removes registry reading, this test will fail immediately
+- Pattern checks for both function name (getTabsConfigFromRegistry) OR styling access (tabsStyling)
+- Similar pattern to existing registry enforcement tests in Phase 7
+- Next task (T6) is final verification - run all tests and document completion
+
+**Status:** COMPLETE - Registry enforcement test added and passing
