@@ -26,9 +26,12 @@ import {
   SECTION_GAP,
   SECTION_LAYOUT,
   SHADOWS,
+  FONT_SIZE,
+  FALLBACK_VALUES,
 } from "./shared";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 import registry from "../../../../ai/component-registry.json";
+import themeData from "../generated/theme-data.json";
 
 /**
  * Base styles from Surface component
@@ -52,11 +55,11 @@ async function createSurfaceComponent(): Promise<ComponentNode> {
   component.counterAxisSizingMode = "AUTO";
   component.primaryAxisAlignItems = "MIN";
   component.counterAxisAlignItems = "MIN";
-  component.paddingLeft = 16;
-  component.paddingRight = 16;
-  component.paddingTop = 16;
-  component.paddingBottom = 16;
-  component.itemSpacing = 8;
+  component.paddingLeft = themeData.tailwind.spacing.scale["4"]; // p-4 = 16px
+  component.paddingRight = themeData.tailwind.spacing.scale["4"]; // p-4 = 16px
+  component.paddingTop = themeData.tailwind.spacing.scale["4"]; // p-4 = 16px
+  component.paddingBottom = themeData.tailwind.spacing.scale["4"]; // p-4 = 16px
+  component.itemSpacing = themeData.tailwind.spacing.scale["2"]; // gap-2 = 8px
   component.cornerRadius = BORDER_RADIUS.lg;
 
   // Apply background fill (bg-surface for the container)
@@ -85,7 +88,11 @@ async function createSurfaceComponent(): Promise<ComponentNode> {
   ];
 
   // Add sample content text
-  var contentText = await createTextNode("Surface content", 14, 400);
+  var contentText = await createTextNode(
+    "Surface content",
+    FONT_SIZE.base, // 14px from theme-kumo.css
+    FALLBACK_VALUES.fontWeight.normal, // 400
+  );
   contentText.name = "Content";
   contentText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -217,15 +224,15 @@ export async function generateSurfaceComponents(
  * Get Surface dimensions configuration
  *
  * Returns the dimensions used for the Surface container.
- * These values are hardcoded in the generator.
+ * Values are derived from theme-data.json (Tailwind spacing scale).
  */
 export function getSurfaceDimensionsConfig() {
   return {
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingTop: 16,
-    paddingBottom: 16,
-    itemSpacing: 8,
+    paddingLeft: themeData.tailwind.spacing.scale["4"], // p-4 = 16px
+    paddingRight: themeData.tailwind.spacing.scale["4"], // p-4 = 16px
+    paddingTop: themeData.tailwind.spacing.scale["4"], // p-4 = 16px
+    paddingBottom: themeData.tailwind.spacing.scale["4"], // p-4 = 16px
+    itemSpacing: themeData.tailwind.spacing.scale["2"], // gap-2 = 8px
     cornerRadius: BORDER_RADIUS.lg,
   };
 }
@@ -290,8 +297,8 @@ export function getAllSurfaceData() {
     shadowConfig: shadowConfig,
     contentText: {
       text: "Surface content",
-      fontSize: 14,
-      fontWeight: 400,
+      fontSize: FONT_SIZE.base, // 14px from theme-kumo.css
+      fontWeight: FALLBACK_VALUES.fontWeight.normal, // 400
     },
   };
 }

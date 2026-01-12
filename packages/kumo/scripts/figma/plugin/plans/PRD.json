@@ -141,7 +141,7 @@
       "name": "fix-surface-generator",
       "title": "Fix surface.ts Hardcoded Values",
       "priority": "high",
-      "status": "pending",
+      "status": "complete",
       "description": "Replace hardcoded padding: 16, itemSpacing: 8, fontSize: 14",
       "files": ["scripts/figma/plugin/generators/surface.ts"],
       "changes": [

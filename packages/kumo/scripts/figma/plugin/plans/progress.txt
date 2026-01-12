@@ -5806,3 +5806,56 @@ Eliminate ALL remaining hardcoded CSS-derived values in Figma generators by usin
 
 **Status:** COMPLETE - Combobox generator now uses themeData/shared constants
 
+
+---
+
+## Iteration 29: T4 - Fix surface.ts Hardcoded Values (PHASE 11)
+
+**Task:** T4 - Fix surface.ts Hardcoded Values
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Added imports for themeData and shared constants**:
+   - Added `FONT_SIZE` and `FALLBACK_VALUES` imports from `./shared`
+   - Added `themeData` import from `../generated/theme-data.json`
+
+2. **Replaced hardcoded padding values in createSurfaceComponent()**:
+   - paddingLeft: 16 → themeData.tailwind.spacing.scale["4"] // p-4 = 16px
+   - paddingRight: 16 → themeData.tailwind.spacing.scale["4"] // p-4 = 16px
+   - paddingTop: 16 → themeData.tailwind.spacing.scale["4"] // p-4 = 16px
+   - paddingBottom: 16 → themeData.tailwind.spacing.scale["4"] // p-4 = 16px
+   - itemSpacing: 8 → themeData.tailwind.spacing.scale["2"] // gap-2 = 8px
+
+3. **Replaced hardcoded typography values in createTextNode() call**:
+   - fontSize: 14 → FONT_SIZE.base // 14px from theme-kumo.css
+   - fontWeight: 400 → FALLBACK_VALUES.fontWeight.normal // 400
+
+4. **Updated getSurfaceDimensionsConfig() export function**:
+   - Replaced all hardcoded padding/spacing values with themeData references
+   - Updated function comment to reflect values are derived from theme-data.json
+
+5. **Updated getAllSurfaceData() export function**:
+   - Replaced hardcoded contentText.fontSize: 14 with FONT_SIZE.base
+   - Replaced hardcoded contentText.fontWeight: 400 with FALLBACK_VALUES.fontWeight.normal
+
+### Test Results:
+- ✅ All 31 surface tests pass
+- ✅ No snapshots changed (values match original hardcoded values exactly)
+- ✅ Pre-existing TypeScript errors remain (component.effects, textAutoResize) - not related to changes
+
+### Files Modified:
+- `scripts/figma/plugin/generators/surface.ts` - Replaced all hardcoded CSS-derived values
+- `plans/PRD.json` - T4 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- All padding values (16px) now derive from themeData.tailwind.spacing.scale["4"]
+- itemSpacing (8px) now derives from themeData.tailwind.spacing.scale["2"]
+- Typography values use FONT_SIZE.base (14px) and FALLBACK_VALUES.fontWeight.normal (400)
+- Values match original hardcoded values exactly, preventing snapshot changes
+- Pre-existing TypeScript errors (component.effects, textAutoResize) documented but not fixed
+- No changes to visual output - purely refactoring to use CSS-derived constants
+
+**Status:** COMPLETE - Surface.ts now uses themeData and shared constants for all CSS-derived values
+
