@@ -6094,3 +6094,45 @@ Eliminate ALL remaining hardcoded CSS-derived values in Figma generators by usin
 
 **Status:** COMPLETE - pagination.ts now uses themeData and FALLBACK_VALUES for all CSS-derived dimensions
 
+
+---
+
+## Iteration 29: T10 - Fix menubar.ts Hardcoded Values (PHASE 11)
+
+**Task:** T10 - Fix menubar.ts Hardcoded Values
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Added imports to menubar.ts**:
+   - Added `BORDER_RADIUS` import from shared.ts
+   - Added `FALLBACK_VALUES` import from shared.ts
+
+2. **Updated FALLBACK_MENUBAR_CONFIG (lines 52-63)**:
+   - Replaced `iconSize: 18` with `FALLBACK_VALUES.iconSize.medium` (18px from spacing scale)
+   - Replaced `borderRadius: 8` with `BORDER_RADIUS.lg` (8px from Tailwind theme)
+   - Replaced `buttonBorderRadius: 6` with `BORDER_RADIUS.md` (6px from Tailwind theme)
+   - Kept `height: 32` and `buttonWidth: 36` as-is (component-specific dimensions)
+
+3. **Values now match themeData sources**:
+   - iconSize.medium: `themeData.tailwind.spacing.scale["4.5"]` (18px)
+   - BORDER_RADIUS.lg: `themeData.computed.borderRadius.lg` (8px)
+   - BORDER_RADIUS.md: `themeData.computed.borderRadius.md` (6px)
+
+### Test Results:
+- ✅ All 35 menubar tests pass
+- ✅ No snapshots changed (values match original hardcoded values)
+- ✅ Generator now uses centralized constants from shared.ts
+
+### Files Modified:
+- `scripts/figma/plugin/generators/menubar.ts` - Added imports, replaced hardcoded values with constants
+- `plans/PRD.json` - T10 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- Pre-existing TypeScript error (Property 'effects' does not exist on type 'ComponentNode') documented but not related to this task
+- height: 32 and buttonWidth: 36 are component-specific dimensions (not CSS-derived) and correctly left as-is
+- These dimensions are already being read from registry.components.MenuBar.styling with fallback
+- All CSS-derived values (iconSize, borderRadius) now use themeData references
+
+**Status:** COMPLETE - menubar.ts hardcoded values fixed

@@ -292,7 +292,7 @@
       "name": "fix-menubar-generator",
       "title": "Fix menubar.ts Hardcoded Values",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Replace hardcoded fallback config values",
       "files": ["scripts/figma/plugin/generators/menubar.ts"],
       "changes": [

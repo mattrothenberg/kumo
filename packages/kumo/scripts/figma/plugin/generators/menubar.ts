@@ -30,6 +30,8 @@ import {
   SECTION_LAYOUT,
   GRID_LAYOUT,
   SHADOWS,
+  BORDER_RADIUS,
+  FALLBACK_VALUES,
 } from "./shared";
 import { createIconInstance, bindIconColor } from "./icon-utils";
 import registry from "../../../../ai/component-registry.json";
@@ -54,12 +56,12 @@ var FALLBACK_MENUBAR_CONFIG = {
   height: 32,
   /** Width of each menu option button (w-11 = 44px, but visually looks ~36px) */
   buttonWidth: 36,
-  /** Icon size inside buttons */
-  iconSize: 18,
+  /** Icon size inside buttons (size-4.5 = 18px) */
+  iconSize: FALLBACK_VALUES.iconSize.medium,
   /** Border radius for the container (rounded-lg = 8px) */
-  borderRadius: 8,
+  borderRadius: BORDER_RADIUS.lg,
   /** Border radius for individual buttons (rounded-md = 6px) */
-  buttonBorderRadius: 6,
+  buttonBorderRadius: BORDER_RADIUS.md,
 };
 
 /**
