@@ -3,6 +3,7 @@ import DocLayout from "../../layouts/DocLayout.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
+import PropsTable from "../../components/docs/PropsTable.astro";
 import { DropdownBasicDemo } from "../../components/demos/DropdownDemo";
 ---
 
@@ -66,6 +67,36 @@ export default function Example() {
 </DropdownMenu>`}>
           <DropdownBasicDemo client:load />
         </ComponentExample>
+      </div>
+    </div>
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-6 text-2xl font-bold">API Reference</h2>
+    
+    <div class="space-y-8">
+      <div>
+        <h3 class="mb-3 text-lg font-semibold font-mono">DropdownMenu</h3>
+        <p class="mb-3 text-sm text-secondary">
+          Root component that manages the dropdown state.
+        </p>
+        <PropsTable component="DropdownMenu" />
+      </div>
+
+      <div>
+        <h3 class="mb-3 text-lg font-semibold font-mono">DropdownMenu.Trigger</h3>
+        <p class="mb-3 text-sm text-secondary">
+          Button that opens the dropdown when clicked.
+        </p>
+        <PropsTable component="DropdownMenu.Trigger" />
+      </div>
+
+      <div>
+        <h3 class="mb-3 text-lg font-semibold font-mono">DropdownMenu.Item</h3>
+        <p class="mb-3 text-sm text-secondary">
+          Individual menu item.
+        </p>
+        <PropsTable component="DropdownMenu.Item" />
       </div>
     </div>
   </ComponentSection>

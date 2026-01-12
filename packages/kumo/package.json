@@ -303,7 +303,8 @@
     "./styles/tailwind": "./dist/styles/kumo.css",
     "./styles/standalone": "./dist/styles/kumo-standalone.css",
     "./styles": "./dist/styles/kumo.css",
-    "./styles/*": "./dist/styles/*.css"
+    "./styles/*": "./dist/styles/*.css",
+    "./ai/component-registry.json": "./ai/component-registry.json"
   },
   "files": [
     "dist",

@@ -3,6 +3,7 @@ import DocLayout from "../../layouts/DocLayout.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
+import PropsTable from "../../components/docs/PropsTable.astro";
 import {
   BannerVariantsDemo,
   BannerDefaultDemo,
@@ -122,40 +123,6 @@ export default function Example() {
   <!-- API Reference -->
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm">
-        <thead>
-          <tr class="border-b border-border">
-            <th class="px-4 py-3 text-left font-semibold">Prop</th>
-            <th class="px-4 py-3 text-left font-semibold">Type</th>
-            <th class="px-4 py-3 text-left font-semibold">Default</th>
-          </tr>
-        </thead>
-        <tbody class="text-label">
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">text</td>
-            <td class="px-4 py-3 font-mono text-xs">string</td>
-            <td class="px-4 py-3 font-mono text-xs">required</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">icon</td>
-            <td class="px-4 py-3 font-mono text-xs">React.ReactNode</td>
-            <td class="px-4 py-3 font-mono text-xs">undefined</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">variant</td>
-            <td class="px-4 py-3 font-mono text-xs"
-              >BannerVariant.DEFAULT | BannerVariant.ALERT | BannerVariant.ERROR</td
-            >
-            <td class="px-4 py-3 font-mono text-xs">BannerVariant.DEFAULT</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">className</td>
-            <td class="px-4 py-3 font-mono text-xs">string</td>
-            <td class="px-4 py-3 font-mono text-xs">undefined</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <PropsTable component="Banner" />
   </ComponentSection>
 </DocLayout>

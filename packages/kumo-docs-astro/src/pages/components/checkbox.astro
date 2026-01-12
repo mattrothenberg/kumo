@@ -3,6 +3,7 @@ import DocLayout from "../../layouts/DocLayout.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
+import PropsTable from "../../components/docs/PropsTable.astro";
 import {
   CheckboxBasicDemo,
   CheckboxDefaultDemo,
@@ -170,174 +171,32 @@ export default function Example() {
 
   <!-- API Reference -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
+    <h2 class="mb-6 text-2xl font-bold">API Reference</h2>
 
-    <h3 class="mb-2 mt-6 text-lg font-semibold">Checkbox</h3>
-    <p class="mb-4 text-sm text-label">
-      Single checkbox component with built-in label and horizontal layout.
-    </p>
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm">
-        <thead>
-          <tr class="border-b border-border">
-            <th class="px-4 py-3 text-left font-semibold">Prop</th>
-            <th class="px-4 py-3 text-left font-semibold">Type</th>
-            <th class="px-4 py-3 text-left font-semibold">Default</th>
-            <th class="px-4 py-3 text-left font-semibold">Description</th>
-          </tr>
-        </thead>
-        <tbody class="text-label">
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">label</td>
-            <td class="px-4 py-3 font-mono text-xs">string</td>
-            <td class="px-4 py-3 font-mono text-xs">-</td>
-            <td class="px-4 py-3 text-xs">Label text (required for accessibility)</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">checked</td>
-            <td class="px-4 py-3 font-mono text-xs">boolean</td>
-            <td class="px-4 py-3 font-mono text-xs">false</td>
-            <td class="px-4 py-3 text-xs">Checked state</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">indeterminate</td>
-            <td class="px-4 py-3 font-mono text-xs">boolean</td>
-            <td class="px-4 py-3 font-mono text-xs">false</td>
-            <td class="px-4 py-3 text-xs">Indeterminate state (for "select all")</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">controlFirst</td>
-            <td class="px-4 py-3 font-mono text-xs">boolean</td>
-            <td class="px-4 py-3 font-mono text-xs">true</td>
-            <td class="px-4 py-3 text-xs"
-              >When true, checkbox before label; false for label first</td
-            >
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">disabled</td>
-            <td class="px-4 py-3 font-mono text-xs">boolean</td>
-            <td class="px-4 py-3 font-mono text-xs">false</td>
-            <td class="px-4 py-3 text-xs">Disabled state</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">variant</td>
-            <td class="px-4 py-3 font-mono text-xs">"default" | "error"</td>
-            <td class="px-4 py-3 font-mono text-xs">"default"</td>
-            <td class="px-4 py-3 text-xs">Visual variant</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">onValueChange</td>
-            <td class="px-4 py-3 font-mono text-xs">(checked: boolean) =&gt; void</td>
-            <td class="px-4 py-3 font-mono text-xs">-</td>
-            <td class="px-4 py-3 text-xs">Callback when toggled</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <div class="space-y-8">
+      <div>
+        <h3 class="mb-3 text-lg font-semibold font-mono">Checkbox</h3>
+        <p class="mb-3 text-sm text-secondary">
+          Single checkbox component with built-in label and horizontal layout.
+        </p>
+        <PropsTable component="Checkbox" />
+      </div>
 
-    <h3 class="mb-2 mt-6 text-lg font-semibold">Checkbox.Group</h3>
-    <p class="mb-4 text-sm text-label">
-      Wrapper for multiple checkboxes with legend, description, and error
-      support.
-    </p>
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm">
-        <thead>
-          <tr class="border-b border-border">
-            <th class="px-4 py-3 text-left font-semibold">Prop</th>
-            <th class="px-4 py-3 text-left font-semibold">Type</th>
-            <th class="px-4 py-3 text-left font-semibold">Default</th>
-            <th class="px-4 py-3 text-left font-semibold">Description</th>
-          </tr>
-        </thead>
-        <tbody class="text-label">
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">legend</td>
-            <td class="px-4 py-3 font-mono text-xs">string</td>
-            <td class="px-4 py-3 font-mono text-xs">-</td>
-            <td class="px-4 py-3 text-xs">Group legend/title</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">value</td>
-            <td class="px-4 py-3 font-mono text-xs">string[]</td>
-            <td class="px-4 py-3 font-mono text-xs">-</td>
-            <td class="px-4 py-3 text-xs">Controlled selected values</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">onValueChange</td>
-            <td class="px-4 py-3 font-mono text-xs">(value: string[]) =&gt; void</td>
-            <td class="px-4 py-3 font-mono text-xs">-</td>
-            <td class="px-4 py-3 text-xs">Callback when selection changes</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">description</td>
-            <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
-            <td class="px-4 py-3 font-mono text-xs">-</td>
-            <td class="px-4 py-3 text-xs">Helper text below items</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">error</td>
-            <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
-            <td class="px-4 py-3 font-mono text-xs">-</td>
-            <td class="px-4 py-3 text-xs">Error message (replaces description)</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">controlFirst</td>
-            <td class="px-4 py-3 font-mono text-xs">boolean</td>
-            <td class="px-4 py-3 font-mono text-xs">true</td>
-            <td class="px-4 py-3 text-xs">Layout direction for all items</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">disabled</td>
-            <td class="px-4 py-3 font-mono text-xs">boolean</td>
-            <td class="px-4 py-3 font-mono text-xs">false</td>
-            <td class="px-4 py-3 text-xs">Disables all items</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+      <div>
+        <h3 class="mb-3 text-lg font-semibold font-mono">Checkbox.Group</h3>
+        <p class="mb-3 text-sm text-secondary">
+          Wrapper for multiple checkboxes with legend, description, and error support.
+        </p>
+        <PropsTable component="Checkbox.Group" />
+      </div>
 
-    <h3 class="mb-2 mt-6 text-lg font-semibold">Checkbox.Item</h3>
-    <p class="mb-4 text-sm text-label">
-      Individual checkbox within Checkbox.Group.
-    </p>
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm">
-        <thead>
-          <tr class="border-b border-border">
-            <th class="px-4 py-3 text-left font-semibold">Prop</th>
-            <th class="px-4 py-3 text-left font-semibold">Type</th>
-            <th class="px-4 py-3 text-left font-semibold">Default</th>
-            <th class="px-4 py-3 text-left font-semibold">Description</th>
-          </tr>
-        </thead>
-        <tbody class="text-label">
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">value</td>
-            <td class="px-4 py-3 font-mono text-xs">string</td>
-            <td class="px-4 py-3 font-mono text-xs">-</td>
-            <td class="px-4 py-3 text-xs">Unique value for this item</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">label</td>
-            <td class="px-4 py-3 font-mono text-xs">string</td>
-            <td class="px-4 py-3 font-mono text-xs">-</td>
-            <td class="px-4 py-3 text-xs">Label text</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">variant</td>
-            <td class="px-4 py-3 font-mono text-xs">"default" | "error"</td>
-            <td class="px-4 py-3 font-mono text-xs">"default"</td>
-            <td class="px-4 py-3 text-xs">Visual variant</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">disabled</td>
-            <td class="px-4 py-3 font-mono text-xs">boolean</td>
-            <td class="px-4 py-3 font-mono text-xs">false</td>
-            <td class="px-4 py-3 text-xs">Disabled state</td>
-          </tr>
-        </tbody>
-      </table>
+      <div>
+        <h3 class="mb-3 text-lg font-semibold font-mono">Checkbox.Item</h3>
+        <p class="mb-3 text-sm text-secondary">
+          Individual checkbox within Checkbox.Group.
+        </p>
+        <PropsTable component="Checkbox.Item" />
+      </div>
     </div>
   </ComponentSection>
 

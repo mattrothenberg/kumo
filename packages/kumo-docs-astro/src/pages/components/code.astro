@@ -3,6 +3,7 @@ import DocLayout from "../../layouts/DocLayout.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
+import PropsTable from "../../components/docs/PropsTable.astro";
 import { CodeDemo, CodeTypeScriptDemo, CodeBashDemo, CodeJsonDemo, CodeWithValuesDemo } from "../../components/demos/CodeDemo";
 
 const heroCode = `<CodeBlock
@@ -125,34 +126,6 @@ const templateValuesCode = `<Code
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm">
-        <thead>
-          <tr class="border-b border-border">
-            <th class="px-4 py-3 text-left font-semibold">Prop</th>
-            <th class="px-4 py-3 text-left font-semibold">Type</th>
-            <th class="px-4 py-3 text-left font-semibold">Default</th>
-          </tr>
-        </thead>
-        <tbody class="text-label">
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">code</td>
-            <td class="px-4 py-3 font-mono text-xs">string</td>
-            <td class="px-4 py-3 font-mono text-xs">undefined</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">lang</td>
-            <td class="px-4 py-3 font-mono text-xs">BundledLanguage</td>
-            <td class="px-4 py-3 font-mono text-xs">undefined</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">values</td>
-            <td class="px-4 py-3 font-mono text-xs">Record&lt;string, &#123; value: string; highlight?: boolean &#125;&gt;</td>
-            <td class="px-4 py-3 font-mono text-xs">-</td>
-          </tr>
-
-        </tbody>
-      </table>
-    </div>
+    <PropsTable component="Code" />
   </ComponentSection>
 </DocLayout>

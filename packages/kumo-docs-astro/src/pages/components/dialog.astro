@@ -3,6 +3,7 @@ import DocLayout from "../../layouts/DocLayout.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
+import PropsTable from "../../components/docs/PropsTable.astro";
 import { DialogBasicDemo, DialogWithActionsDemo } from "../../components/demos/DialogDemo";
 ---
 
@@ -165,30 +166,56 @@ export default function Example() {
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm">
-        <thead>
-          <tr class="border-b border-border">
-            <th class="px-4 py-3 text-left font-semibold">Component</th>
-            <th class="px-4 py-3 text-left font-semibold">Props</th>
-          </tr>
-        </thead>
-        <tbody class="text-label">
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">Dialog.Root</td>
-            <td class="px-4 py-3 font-mono text-xs">open?: boolean, onOpenChange?: (open: boolean) =&gt; void</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">Dialog.Trigger</td>
-            <td class="px-4 py-3 font-mono text-xs">render: (props) =&gt; ReactNode</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">Dialog</td>
-            <td class="px-4 py-3 font-mono text-xs">children: ReactNode</td>
-          </tr>
-        </tbody>
-      </table>
+    <h2 class="mb-6 text-2xl font-bold">API Reference</h2>
+
+    <div class="space-y-8">
+      <div>
+        <h3 class="mb-3 text-lg font-semibold font-mono">Dialog</h3>
+        <p class="mb-3 text-sm text-secondary">
+          The main dialog container that renders the modal overlay and popup.
+        </p>
+        <PropsTable component="Dialog" />
+      </div>
+
+      <div>
+        <h3 class="mb-3 text-lg font-semibold font-mono">Dialog.Root</h3>
+        <p class="mb-3 text-sm text-secondary">
+          Controls the open state of the dialog. Doesn't render its own HTML element.
+        </p>
+        <PropsTable component="Dialog.Root" />
+      </div>
+
+      <div>
+        <h3 class="mb-3 text-lg font-semibold font-mono">Dialog.Trigger</h3>
+        <p class="mb-3 text-sm text-secondary">
+          A button that opens the dialog when clicked.
+        </p>
+        <PropsTable component="Dialog.Trigger" />
+      </div>
+
+      <div>
+        <h3 class="mb-3 text-lg font-semibold font-mono">Dialog.Title</h3>
+        <p class="mb-3 text-sm text-secondary">
+          A heading that labels the dialog for accessibility.
+        </p>
+        <PropsTable component="Dialog.Title" />
+      </div>
+
+      <div>
+        <h3 class="mb-3 text-lg font-semibold font-mono">Dialog.Description</h3>
+        <p class="mb-3 text-sm text-secondary">
+          A paragraph providing additional context about the dialog.
+        </p>
+        <PropsTable component="Dialog.Description" />
+      </div>
+
+      <div>
+        <h3 class="mb-3 text-lg font-semibold font-mono">Dialog.Close</h3>
+        <p class="mb-3 text-sm text-secondary">
+          A button that closes the dialog when clicked.
+        </p>
+        <PropsTable component="Dialog.Close" />
+      </div>
     </div>
   </ComponentSection>
 </DocLayout>

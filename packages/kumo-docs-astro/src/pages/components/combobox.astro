@@ -3,6 +3,7 @@ import DocLayout from "../../layouts/DocLayout.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
+import PropsTable from "../../components/docs/PropsTable.astro";
 import { ComboboxDemo, ComboboxSearchableInsideDemo, ComboboxGroupedDemo, ComboboxMultipleDemo, ComboboxWithFieldDemo, ComboboxErrorDemo } from "../../components/demos/ComboboxDemo";
 ---
 
@@ -257,72 +258,41 @@ interface ServerLocationGroup {
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
+    <h2 class="mb-6 text-2xl font-bold">API Reference</h2>
     
-    <h3 class="mb-2 text-lg font-semibold mt-6">Combobox</h3>
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm">
-        <thead>
-          <tr class="border-b border-border">
-            <th class="px-4 py-3 text-left font-semibold">Prop</th>
-            <th class="px-4 py-3 text-left font-semibold">Type</th>
-            <th class="px-4 py-3 text-left font-semibold">Default</th>
-          </tr>
-        </thead>
-        <tbody class="text-label">
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">items</td>
-            <td class="px-4 py-3 font-mono text-xs">T[]</td>
-            <td class="px-4 py-3 font-mono text-xs">required</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">value</td>
-            <td class="px-4 py-3 font-mono text-xs">T | T[]</td>
-            <td class="px-4 py-3 font-mono text-xs">-</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">onValueChange</td>
-            <td class="px-4 py-3 font-mono text-xs">(value: T | T[]) =&gt; void</td>
-            <td class="px-4 py-3 font-mono text-xs">-</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">multiple</td>
-            <td class="px-4 py-3 font-mono text-xs">boolean</td>
-            <td class="px-4 py-3 font-mono text-xs">false</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">inputSide</td>
-            <td class="px-4 py-3 font-mono text-xs">"right" | "top"</td>
-            <td class="px-4 py-3 font-mono text-xs">"right"</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">label</td>
-            <td class="px-4 py-3 font-mono text-xs">string</td>
-            <td class="px-4 py-3 font-mono text-xs">-</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">description</td>
-            <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
-            <td class="px-4 py-3 font-mono text-xs">-</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="px-4 py-3 font-mono text-xs">error</td>
-            <td class="px-4 py-3 font-mono text-xs">string | object</td>
-            <td class="px-4 py-3 font-mono text-xs">-</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="space-y-8">
+      <div>
+        <h3 class="mb-3 text-lg font-semibold font-mono">Combobox</h3>
+        <p class="mb-3 text-sm text-secondary">
+          Root component for the searchable select.
+        </p>
+        <PropsTable component="Combobox" />
+      </div>
+
+      <div>
+        <h3 class="mb-3 text-lg font-semibold font-mono">Combobox.Content</h3>
+        <p class="mb-3 text-sm text-secondary">
+          Dropdown container for the list.
+        </p>
+        <PropsTable component="Combobox.Content" />
+      </div>
+
+      <div>
+        <h3 class="mb-3 text-lg font-semibold font-mono">Combobox.Item</h3>
+        <p class="mb-3 text-sm text-secondary">
+          Individual selectable option.
+        </p>
+        <PropsTable component="Combobox.Item" />
+      </div>
     </div>
 
-    <h3 class="mb-2 text-lg font-semibold mt-6">Sub-components</h3>
+    <h3 class="mb-2 text-lg font-semibold mt-6">Additional Sub-components</h3>
     <ul class="list-disc list-inside text-label space-y-1">
       <li><code class="text-surface">Combobox.TriggerInput</code> - Single-select input trigger</li>
       <li><code class="text-surface">Combobox.TriggerValue</code> - Button trigger showing selected value</li>
       <li><code class="text-surface">Combobox.TriggerMultipleWithInput</code> - Multi-select with chips</li>
-      <li><code class="text-surface">Combobox.Content</code> - Dropdown container</li>
       <li><code class="text-surface">Combobox.Input</code> - Search input inside dropdown</li>
       <li><code class="text-surface">Combobox.List</code> - List container with render prop</li>
-      <li><code class="text-surface">Combobox.Item</code> - Individual option</li>
       <li><code class="text-surface">Combobox.Group</code> - Group container for categorized items</li>
       <li><code class="text-surface">Combobox.GroupLabel</code> - Header label for a group</li>
       <li><code class="text-surface">Combobox.Collection</code> - Items container within a group</li>
