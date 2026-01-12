@@ -29,17 +29,20 @@ import {
   SECTION_LAYOUT,
 } from "./shared";
 import { logComplete, logStart, logProgress } from "../logger";
+import registry from "../../../../ai/component-registry.json";
 
-
+// Type for registry styling
+const tabsStyling = (registry.components as any).Tabs?.styling;
 
 /**
- * Tabs dimensions and styling
+ * Fallback tabs dimensions and styling
+ * Used if registry doesn't have styling metadata
  * Based on tabs.tsx:
  * - Container: h-8.5 (34px), rounded-lg (8px), bg-accent, px-px (1px)
  * - Tab buttons: my-px (1px vertical margin), px-2.5 (10px horizontal), rounded-lg
  * - Indicator: rounded-lg, bg-surface-elevated, shadow-sm, ring ring-color-2
  */
-var TABS_CONFIG = {
+const FALLBACK_TABS_CONFIG = {
   /** Height of tabs container (h-8.5 = 34px) */
   containerHeight: 34,
   /** Border radius for container (rounded-lg = 8px) */
@@ -55,6 +58,31 @@ var TABS_CONFIG = {
   /** Tab font weight (font-medium = 500) */
   tabFontWeight: 500,
 };
+
+/**
+ * Get tabs configuration from registry with fallback
+ * Reads from registry.components.Tabs.styling
+ */
+function getTabsConfigFromRegistry() {
+  if (!tabsStyling) {
+    return FALLBACK_TABS_CONFIG;
+  }
+
+  return {
+    containerHeight: tabsStyling.container?.height ?? FALLBACK_TABS_CONFIG.containerHeight,
+    borderRadius: tabsStyling.container?.borderRadius ?? FALLBACK_TABS_CONFIG.borderRadius,
+    containerPadding: tabsStyling.container?.padding ?? FALLBACK_TABS_CONFIG.containerPadding,
+    tabVerticalMargin: tabsStyling.tab?.verticalMargin ?? FALLBACK_TABS_CONFIG.tabVerticalMargin,
+    tabHorizontalPadding: tabsStyling.tab?.paddingX ?? FALLBACK_TABS_CONFIG.tabHorizontalPadding,
+    tabFontSize: tabsStyling.tab?.fontSize ?? FALLBACK_TABS_CONFIG.tabFontSize,
+    tabFontWeight: tabsStyling.tab?.fontWeight ?? FALLBACK_TABS_CONFIG.tabFontWeight,
+  };
+}
+
+/**
+ * Tabs configuration (reads from registry with fallback)
+ */
+var TABS_CONFIG = getTabsConfigFromRegistry();
 
 /**
  * Default tab items to display (matches Storybook Default story)

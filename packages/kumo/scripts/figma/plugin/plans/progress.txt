@@ -5327,3 +5327,56 @@ Duration: 1.41s
 
 **Status:** COMPLETE - Phase 9 CSS-to-Constants Sync successfully completed
 
+
+---
+
+## Iteration 29: T1 - Update tabs.ts to Read from Registry (PHASE 10)
+
+**Task:** T1 - Update tabs.ts to Read from Registry
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Added registry import** (line 32):
+   - Added `import registry from "../../../../ai/component-registry.json";`
+   - Added `const tabsStyling = (registry.components as any).Tabs?.styling;`
+
+2. **Renamed TABS_CONFIG to FALLBACK_TABS_CONFIG**:
+   - Created fallback configuration with original hardcoded values
+   - All 7 properties preserved: containerHeight, borderRadius, containerPadding, tabVerticalMargin, tabHorizontalPadding, tabFontSize, tabFontWeight
+
+3. **Created getTabsConfigFromRegistry() function**:
+   - Reads from registry.components.Tabs.styling with fallback
+   - Maps registry structure to generator configuration:
+     - tabsStyling.container.height → containerHeight
+     - tabsStyling.container.borderRadius → borderRadius
+     - tabsStyling.container.padding → containerPadding
+     - tabsStyling.tab.verticalMargin → tabVerticalMargin
+     - tabsStyling.tab.paddingX → tabHorizontalPadding
+     - tabsStyling.tab.fontSize → tabFontSize
+     - tabsStyling.tab.fontWeight → tabFontWeight
+   - Uses nullish coalescing (??) for fallback values
+
+4. **Replaced TABS_CONFIG with dynamic lookup**:
+   - `var TABS_CONFIG = getTabsConfigFromRegistry();`
+   - All existing code continues to reference TABS_CONFIG (no changes needed)
+
+### Test Results:
+- ✅ All 60 tabs tests pass
+- ✅ No snapshot changes (values from registry match hardcoded values exactly)
+- ✅ Test run time: 5ms (60 tests)
+- ✅ Pre-existing TypeScript errors documented (not related to this change)
+
+### Files Modified:
+- `scripts/figma/plugin/generators/tabs.ts` - Added registry reading with fallback
+- `plans/PRD.json` - T1 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- Pattern follows pagination.ts reference implementation exactly
+- Registry values match original hardcoded values (as expected)
+- Generator now automatically picks up changes from component-registry.json
+- Fallback ensures backward compatibility if registry data is missing
+
+**Status:** COMPLETE - Tabs generator now reads from registry with proper fallback
+

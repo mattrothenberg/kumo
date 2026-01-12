@@ -1,421 +1,336 @@
 {
-  "title": "Figma Plugin Phase 9 - CSS-to-Constants Sync (Tailwind v4 Theme Alignment)",
-  "overview": "Eliminate drift between theme-kumo.css @theme values and hardcoded Tailwind scales in the parser. Kumo uses Tailwind v4's CSS-based theme, which overrides default Tailwind values, but the Figma plugin's parser still uses default Tailwind scales.",
+  "title": "Figma Plugin Phase 10 - Hardcoded Values Elimination (Tabs, Toast, Shadow Validation)",
+  "overview": "Eliminate remaining hardcoded values in Tabs and Toast generators by reading from component-registry.json. Add CSS token for dialog shadow. Add validation tests to prevent drift in buttonCompactSize values.",
   "context": {
-    "problem": "CRITICAL DRIFT DETECTED: Kumo's theme-kumo.css defines custom typography sizes (--text-sm: 13px, --text-base: 14px, --text-lg: 16px) but the Figma plugin's FONT_SIZE_SCALE uses Tailwind defaults (sm: 14, base: 16, lg: 18). This means Figma components are generated with WRONG font sizes.",
-    "current_state": "Phase 8 tasks T1-T3 COMPLETE (test assertions hardened). However, those tests now assert INCORRECT values because the source constants themselves are wrong.",
-    "why_now": "The font size drift is actively causing incorrect Figma components. Fixing test assertions without fixing the source values perpetuates the error.",
-    "architecture_vulnerability": {
-      "layer_1": "tailwind-to-figma.ts (parser) - Lines 70-78 contain FONT_SIZE_SCALE with Tailwind defaults",
-      "layer_2": "shared.ts (fallback constants) - FONT_SIZE constant has same incorrect values",
-      "root_cause": "Tailwind v4 moved theme values to CSS @theme directive. Neither parser nor constants read from theme-kumo.css."
+    "problem": "Tabs and Toast generators have hardcoded configuration values (TABS_CONFIG, TOAST_WIDTH) despite registry.components.Tabs.styling and registry.components.Toasty.styling already existing with the correct values. Additionally, SHADOWS.dialog has undocumented values not backed by any CSS token, and FALLBACK_VALUES.buttonCompactSize is not validated against the component source.",
+    "current_state": "Phase 9 complete. Font sizes aligned with theme-kumo.css. However, several generators still use hardcoded values instead of registry, and some constants lack drift protection.",
+    "why_now": "The registry integration pattern is proven (Phase 7 completed for DateRangePicker, Pagination, InputArea, LayerCard, MenuBar). Tabs and Toast should follow the same pattern for consistency and maintainability.",
+    "architecture_pattern": {
+      "proven_in_phase_7": "Generator reads from registry.components.X.styling with fallback to hardcoded values",
+      "benefit": "Single source of truth - when CSS/component changes, registry regenerates, and generators automatically pick up new values"
     },
-    "concrete_drift": {
-      "font_sizes": {
-        "text-xs": {
-          "theme_kumo_css": 12,
-          "parser_value": 12,
-          "status": "MATCH"
-        },
-        "text-sm": {
-          "theme_kumo_css": 13,
-          "parser_value": 14,
-          "status": "DRIFTED"
-        },
-        "text-base": {
-          "theme_kumo_css": 14,
-          "parser_value": 16,
-          "status": "DRIFTED"
-        },
-        "text-lg": {
-          "theme_kumo_css": 16,
-          "parser_value": 18,
-          "status": "DRIFTED"
-        }
+    "gaps_identified": {
+      "tabs_generator": {
+        "file": "generators/tabs.ts",
+        "hardcoded_config": "TABS_CONFIG (lines 42-57) with containerHeight: 34, borderRadius: 8, etc.",
+        "registry_has": "registry.components.Tabs.styling with identical values",
+        "solution": "Read from registry with fallback"
+      },
+      "toast_generator": {
+        "file": "generators/toast.ts",
+        "hardcoded_config": "TOAST_WIDTH = 300 (line 47), font sizes 16/15",
+        "registry_has": "registry.components.Toasty.styling with width, fontSize, etc.",
+        "solution": "Read from registry with fallback"
+      },
+      "shadows_dialog": {
+        "file": "generators/shared.ts",
+        "hardcoded_values": "SHADOWS.dialog: blur=32, opacity=0.16 (lines 144-151)",
+        "css_backing": "NONE - undocumented source",
+        "solution": "Add --shadow-dialog token to theme-kumo.css"
+      },
+      "button_compact_size": {
+        "file": "generators/shared.ts",
+        "hardcoded_values": "buttonCompactSize: xs=14, sm=26, base=36, lg=40 (lines 266-281)",
+        "source": "Derived from button.tsx KUMO_BUTTON_VARIANTS.compactSize classes",
+        "solution": "Add drift detection test to validate against component"
       }
-    },
-    "files_with_fragile_assertions": [
-      "banner.test.ts (8 warnings) - COMPLETE",
-      "text.test.ts (5+ warnings) - COMPLETE",
-      "select.test.ts (2 warnings) - COMPLETE",
-      "Other files with similar patterns (22+ warnings) - T4 pending"
-    ]
+    }
   },
   "goals": {
     "primary": [
-      "Fix FONT_SIZE_SCALE in tailwind-to-figma.ts to match theme-kumo.css",
-      "Fix FONT_SIZE in shared.ts to match theme-kumo.css",
-      "Add drift detection test that validates parser values against CSS theme",
-      "Ensure Figma components use correct Kumo typography (13px sm, 14px base, 16px lg)",
-      "Complete Phase 8 test assertion hardening (T4-T6)"
+      "Update tabs.ts to read configuration from registry.components.Tabs.styling",
+      "Update toast.ts to read configuration from registry.components.Toasty.styling",
+      "Add --shadow-dialog CSS token to theme-kumo.css",
+      "Add drift detection test for SHADOWS.dialog against CSS token",
+      "Add drift detection test for buttonCompactSize against button component",
+      "Add registry enforcement test for Tabs/Toast generators"
     ],
     "metrics": [
-      "Font size values match theme-kumo.css: 100% (currently 25% - only xs matches)",
-      "Drift detection test for CSS theme alignment: PASSING",
-      "All generator tests passing (1500+ tests)",
-      "Figma-generated components use correct typography sizes"
+      "Tabs generator reads from registry: YES",
+      "Toast generator reads from registry: YES",
+      "SHADOWS.dialog backed by CSS token: YES",
+      "buttonCompactSize drift test: PASSING",
+      "All 1500+ generator tests pass",
+      "No snapshot changes (values already match)"
     ]
   },
   "requirements": {
     "functional": [
       {
         "id": "FR-1",
-        "title": "Fix FONT_SIZE_SCALE in Parser",
-        "description": "Update tailwind-to-figma.ts FONT_SIZE_SCALE to match theme-kumo.css values",
+        "title": "Update tabs.ts to Read from Registry",
+        "description": "Modify tabs.ts to read TABS_CONFIG values from registry.components.Tabs.styling with fallback",
         "acceptance": [
-          "Change sm: 14 → sm: 13 (matches --text-sm: 13px)",
-          "Change base: 16 → base: 14 (matches --text-base: 14px)",
-          "Change lg: 18 → lg: 16 (matches --text-lg: 16px)",
-          "All parser tests pass with new values"
-        ],
-        "code_change": {
-          "file": "parsers/tailwind-to-figma.ts",
-          "before": "const FONT_SIZE_SCALE: Record<string, number> = {\n  xs: 12,\n  sm: 14,\n  base: 16,\n  lg: 18,",
-          "after": "const FONT_SIZE_SCALE: Record<string, number> = {\n  xs: 12,   // --text-xs: 12px\n  sm: 13,   // --text-sm: 13px (Kumo override)\n  base: 14, // --text-base: 14px (Kumo override)\n  lg: 16,   // --text-lg: 16px (Kumo override)"
-        }
+          "Import registry from component-registry.json",
+          "Create getTabsConfigFromRegistry() function",
+          "Read container, tab, indicator values from registry.components.Tabs.styling",
+          "Fall back to current hardcoded values if registry data missing",
+          "All 9 tabs tests pass",
+          "No snapshot changes (values already match)"
+        ]
       },
       {
         "id": "FR-2",
-        "title": "Fix FONT_SIZE in shared.ts",
-        "description": "Update shared.ts FONT_SIZE constant to match theme-kumo.css values",
+        "title": "Update toast.ts to Read from Registry",
+        "description": "Modify toast.ts to read configuration from registry.components.Toasty.styling with fallback",
         "acceptance": [
-          "Add sm: 13 to FONT_SIZE constant",
-          "Change base: 16 → base: 14",
-          "Change lg: 20 → lg: 16",
-          "All generator tests pass with new values"
-        ],
-        "code_change": {
-          "file": "generators/shared.ts",
-          "before": "export const FONT_SIZE = {\n  /** Extra small (12px) */\n  xs: 12,\n  /** Base (16px) */\n  base: 16,\n  /** Large (20px) */\n  lg: 20,\n} as const;",
-          "after": "export const FONT_SIZE = {\n  /** Extra small (12px) - --text-xs */\n  xs: 12,\n  /** Small (13px) - --text-sm (Kumo override from 14px) */\n  sm: 13,\n  /** Base (14px) - --text-base (Kumo override from 16px) */\n  base: 14,\n  /** Large (16px) - --text-lg (Kumo override from 18px) */\n  lg: 16,\n} as const;"
-        }
+          "Create getToastConfigFromRegistry() function",
+          "Read container.width, title.fontSize, description.fontSize from registry",
+          "Read closeButton.size, closeButton.iconSize from registry",
+          "Fall back to current hardcoded values if registry data missing",
+          "All toast tests pass",
+          "No snapshot changes (values already match)"
+        ]
       },
       {
         "id": "FR-3",
-        "title": "Add CSS Theme Drift Detection Test",
-        "description": "Create test that validates parser values against theme-kumo.css",
+        "title": "Add --shadow-dialog CSS Token",
+        "description": "Add dialog shadow token to theme-kumo.css to back SHADOWS.dialog values",
         "acceptance": [
-          "Parse theme-kumo.css @theme blocks programmatically",
-          "Extract --text-xs, --text-sm, --text-base, --text-lg values",
-          "Compare against FONT_SIZE_SCALE in parser",
-          "Test fails if values drift"
+          "Add --shadow-dialog: 0 8px 32px rgb(0 0 0 / 0.16) to theme-kumo.css",
+          "Add in @theme block alongside existing shadow tokens",
+          "Update SHADOWS.dialog comment to reference CSS token source"
         ]
       },
       {
         "id": "FR-4",
-        "title": "Fix Remaining Test File Assertions (Phase 8 T4)",
-        "description": "Address remaining 22+ warnings in other test files",
+        "title": "Add Shadow Dialog Drift Detection Test",
+        "description": "Add test that validates SHADOWS.dialog values against theme-kumo.css --shadow-dialog token",
         "acceptance": [
-          "Identify all remaining files with fragile assertions",
-          "Import appropriate constants from shared.ts",
-          "Replace hardcoded values with constants",
-          "All affected tests pass"
+          "Parse theme-kumo.css to extract --shadow-dialog value",
+          "Compare blur (32), offsetY (8), opacity (0.16) against SHADOWS.dialog",
+          "Test fails if values drift"
         ]
       },
       {
         "id": "FR-5",
-        "title": "Convert Warning to Enforcement (Phase 8 T5)",
-        "description": "Change drift detection test from warning-only to enforcing",
+        "title": "Add buttonCompactSize Drift Detection Test",
+        "description": "Add test that validates FALLBACK_VALUES.buttonCompactSize against button component classes",
         "acceptance": [
-          "Update 'should prefer registry comparisons...' test in drift-detection.test.ts",
-          "Change from expect(true).toBe(true) to expect(warnings).toEqual([])",
-          "Test now fails if fragile assertions are reintroduced",
-          "All drift detection tests pass"
+          "Read button.tsx to extract KUMO_BUTTON_VARIANTS.compactSize classes",
+          "Parse size-3.5, size-6.5, size-9, size-10 to pixel values",
+          "Compare against buttonCompactSize.xs, sm, base, lg",
+          "Test fails if values drift"
         ]
       },
       {
         "id": "FR-6",
-        "title": "Final Verification and Snapshot Updates",
-        "description": "Verify all font sizes correct and update snapshots",
+        "title": "Add Registry Enforcement Test for Tabs/Toast",
+        "description": "Add drift detection test that ensures Tabs and Toast generators read from registry",
         "acceptance": [
-          "Run all generator tests - expect snapshot changes due to font size corrections",
-          "Review snapshot diffs to confirm correct font sizes (13, 14, 16 not 14, 16, 18)",
-          "Update snapshots: pnpm --filter @cloudflare/kumo test generators/ --run -u",
+          "Scan tabs.ts and toast.ts for registry import pattern",
+          "Verify they import from component-registry.json",
+          "Test fails if generators use only hardcoded values"
+        ]
+      },
+      {
+        "id": "FR-7",
+        "title": "Final Verification",
+        "description": "Run all tests and verify no regressions",
+        "acceptance": [
+          "All generator tests pass (1500+)",
+          "All drift detection tests pass",
+          "No snapshot changes",
           "Document completion in progress.txt"
         ]
       }
-    ],
-    "non_functional": [
-      {
-        "id": "NFR-1",
-        "title": "No Behavioral Changes",
-        "description": "Tests should validate the same values, just using constants",
-        "acceptance": [
-          "No test logic changes",
-          "Only import additions and value replacements",
-          "All snapshot tests unchanged"
-        ]
-      }
-    ]
-  },
-  "scope": {
-    "in_scope": [
-      "Replacing hardcoded numeric assertions with shared constants",
-      "Adding imports for FONT_SIZE, FALLBACK_VALUES, SPACING, OPACITY",
-      "Converting drift detection warning to enforcement",
-      "Updating progress.txt with completion status"
-    ],
-    "out_of_scope": [
-      "Modifying generator implementation code",
-      "Adding new test cases",
-      "Changing test assertion logic",
-      "Modifying shared.ts constants"
     ]
   },
   "tasks": [
     {
       "id": "T1",
-      "name": "fix-banner-test-assertions",
-      "title": "[Phase 8] Fix banner.test.ts Hardcoded Assertions",
+      "name": "update-tabs-registry-import",
+      "title": "Update tabs.ts to Read from Registry",
       "priority": "high",
       "status": "complete",
-      "description": "Replace 8 hardcoded numeric assertions with shared constants",
-      "files": ["scripts/figma/plugin/generators/banner.test.ts"],
-      "estimated_minutes": 15
+      "description": "Modify tabs.ts to read TABS_CONFIG from registry.components.Tabs.styling with fallback",
+      "files": ["scripts/figma/plugin/generators/tabs.ts"],
+      "acceptance": [
+        "Add import for registry",
+        "Create FALLBACK_TABS_CONFIG with current hardcoded values",
+        "Create getTabsConfigFromRegistry() function",
+        "Replace TABS_CONFIG usage with dynamic lookup",
+        "Run: pnpm --filter @cloudflare/kumo test generators/tabs.test.ts --run",
+        "All tests pass, no snapshot changes"
+      ],
+      "estimated_minutes": 20
     },
     {
       "id": "T2",
-      "name": "fix-text-test-assertions",
-      "title": "[Phase 8] Fix text.test.ts Hardcoded Assertions",
+      "name": "update-toast-registry-import",
+      "title": "Update toast.ts to Read from Registry",
       "priority": "high",
-      "status": "complete",
-      "description": "Replace 5+ hardcoded numeric assertions with shared constants",
-      "files": ["scripts/figma/plugin/generators/text.test.ts"],
+      "status": "pending",
+      "description": "Modify toast.ts to read configuration from registry.components.Toasty.styling with fallback",
+      "files": ["scripts/figma/plugin/generators/toast.ts"],
+      "acceptance": [
+        "Create FALLBACK_TOAST_CONFIG with current hardcoded values",
+        "Create getToastConfigFromRegistry() function",
+        "Replace TOAST_WIDTH and inline font sizes with registry values",
+        "Run: pnpm --filter @cloudflare/kumo test generators/toast.test.ts --run",
+        "All tests pass, no snapshot changes"
+      ],
       "estimated_minutes": 20
     },
     {
       "id": "T3",
-      "name": "fix-select-test-assertions",
-      "title": "[Phase 8] Fix select.test.ts Hardcoded Assertions",
-      "priority": "medium",
-      "status": "complete",
-      "description": "Replace 2 hardcoded numeric assertions with shared constants",
-      "files": ["scripts/figma/plugin/generators/select.test.ts"],
+      "name": "add-shadow-dialog-css-token",
+      "title": "Add --shadow-dialog CSS Token to theme-kumo.css",
+      "priority": "high",
+      "status": "pending",
+      "description": "Add --shadow-dialog token to back SHADOWS.dialog values",
+      "files": [
+        "src/styles/theme-kumo.css",
+        "scripts/figma/plugin/generators/shared.ts"
+      ],
+      "acceptance": [
+        "Add --shadow-dialog: 0 8px 32px rgb(0 0 0 / 0.16) to theme-kumo.css @theme block",
+        "Update SHADOWS.dialog comment to reference --shadow-dialog source",
+        "Verify CSS is valid"
+      ],
+      "code_change": {
+        "theme_kumo_css": {
+          "add_after_shadow_lg": "--shadow-dialog: 0 8px 32px rgb(0 0 0 / 0.16);"
+        },
+        "shared_ts_comment": "/** Dialog shadow - elevated appearance. Matches --shadow-dialog in theme-kumo.css */"
+      },
       "estimated_minutes": 10
     },
     {
       "id": "T4",
-      "name": "fix-font-size-scale-parser",
-      "title": "[Phase 9] Fix FONT_SIZE_SCALE in Parser to Match theme-kumo.css",
-      "priority": "critical",
-      "status": "complete",
-      "description": "Update tailwind-to-figma.ts FONT_SIZE_SCALE to match Kumo's CSS theme values",
-      "files": ["scripts/figma/plugin/parsers/tailwind-to-figma.ts"],
+      "name": "add-shadow-dialog-drift-test",
+      "title": "Add Shadow Dialog Drift Detection Test",
+      "priority": "high",
+      "status": "pending",
+      "description": "Add test that validates SHADOWS.dialog against theme-kumo.css --shadow-dialog token",
+      "files": ["scripts/figma/plugin/generators/drift-detection.test.ts"],
       "acceptance": [
-        "Update FONT_SIZE_SCALE at line 70-78",
-        "Change sm: 14 → sm: 13 (--text-sm: 13px)",
-        "Change base: 16 → base: 14 (--text-base: 14px)",
-        "Change lg: 18 → lg: 16 (--text-lg: 16px)",
-        "Add comments documenting Kumo overrides",
-        "Run parser tests to verify"
+        "Add test: 'should have SHADOWS.dialog matching --shadow-dialog in theme-kumo.css'",
+        "Parse --shadow-dialog from theme-kumo.css",
+        "Extract offsetY (8), blur (32), opacity (0.16)",
+        "Compare against SHADOWS.dialog values",
+        "Test fails if values drift"
       ],
-      "code_change": {
-        "before": "const FONT_SIZE_SCALE: Record<string, number> = {\n  xs: 12,\n  sm: 14,\n  base: 16,\n  lg: 18,\n  xl: 20,\n  \"2xl\": 24,\n  \"3xl\": 30,\n};",
-        "after": "const FONT_SIZE_SCALE: Record<string, number> = {\n  xs: 12,   // --text-xs: 12px\n  sm: 13,   // --text-sm: 13px (Kumo override from Tailwind's 14px)\n  base: 14, // --text-base: 14px (Kumo override from Tailwind's 16px)\n  lg: 16,   // --text-lg: 16px (Kumo override from Tailwind's 18px)\n  xl: 20,\n  \"2xl\": 24,\n  \"3xl\": 30,\n};"
-      },
-      "estimated_minutes": 10
+      "estimated_minutes": 15
     },
     {
       "id": "T5",
-      "name": "fix-font-size-shared-constants",
-      "title": "[Phase 9] Fix FONT_SIZE in shared.ts to Match theme-kumo.css",
-      "priority": "critical",
-      "status": "complete",
-      "description": "Update shared.ts FONT_SIZE constant to match Kumo's CSS theme values",
-      "files": ["scripts/figma/plugin/generators/shared.ts"],
-      "acceptance": [
-        "Update FONT_SIZE constant at lines 34-41",
-        "Add sm: 13 (currently missing)",
-        "Change base: 16 → base: 14",
-        "Change lg: 20 → lg: 16",
-        "Add comments documenting source as theme-kumo.css",
-        "Run generator tests to identify affected snapshots"
-      ],
-      "code_change": {
-        "before": "export const FONT_SIZE = {\n  /** Extra small (12px) */\n  xs: 12,\n  /** Base (16px) */\n  base: 16,\n  /** Large (20px) */\n  lg: 20,\n} as const;",
-        "after": "export const FONT_SIZE = {\n  /** Extra small (12px) - matches --text-xs in theme-kumo.css */\n  xs: 12,\n  /** Small (13px) - matches --text-sm in theme-kumo.css (Kumo override from 14px) */\n  sm: 13,\n  /** Base (14px) - matches --text-base in theme-kumo.css (Kumo override from 16px) */\n  base: 14,\n  /** Large (16px) - matches --text-lg in theme-kumo.css (Kumo override from 18px) */\n  lg: 16,\n} as const;"
-      },
-      "estimated_minutes": 10
-    },
-    {
-      "id": "T6",
-      "name": "add-css-theme-drift-test",
-      "title": "[Phase 9] Add Drift Detection Test for CSS Theme Values",
-      "priority": "high",
-      "status": "complete",
-      "description": "Create test that parses theme-kumo.css and validates parser values match",
+      "name": "add-button-compact-size-drift-test",
+      "title": "Add buttonCompactSize Drift Detection Test",
+      "priority": "medium",
+      "status": "pending",
+      "description": "Add test that validates FALLBACK_VALUES.buttonCompactSize against button component",
       "files": ["scripts/figma/plugin/generators/drift-detection.test.ts"],
       "acceptance": [
-        "Add new describe block: 'Figma Plugin - CSS Theme Sync Validation'",
-        "Parse theme-kumo.css @theme blocks programmatically",
-        "Extract --text-xs, --text-sm, --text-base, --text-lg values",
-        "Compare against FONT_SIZE_SCALE in tailwind-to-figma.ts",
-        "Compare against FONT_SIZE in shared.ts",
+        "Add test: 'should have buttonCompactSize matching button.tsx compactSize classes'",
+        "Read button.tsx KUMO_BUTTON_VARIANTS.compactSize",
+        "Parse Tailwind size classes to pixel values (size-3.5=14, size-6.5=26, size-9=36, size-10=40)",
+        "Compare against FALLBACK_VALUES.buttonCompactSize",
         "Test fails if values drift"
       ],
-      "test_code": "describe('Figma Plugin - CSS Theme Sync Validation', () => {\n  it('should have FONT_SIZE_SCALE matching theme-kumo.css @theme values', () => {\n    // Read theme-kumo.css\n    const themeCss = readFileSync(\n      join(__dirname, '../../../src/styles/theme-kumo.css'),\n      'utf-8'\n    );\n    \n    // Parse @theme block for typography\n    const textXs = themeCss.match(/--text-xs:\\s*(\\d+)px/);\n    const textSm = themeCss.match(/--text-sm:\\s*(\\d+)px/);\n    const textBase = themeCss.match(/--text-base:\\s*(\\d+)px/);\n    const textLg = themeCss.match(/--text-lg:\\s*(\\d+)px/);\n    \n    // Import parser values\n    // ... compare and assert\n  });\n});",
-      "estimated_minutes": 30
-    },
-    {
-      "id": "T7",
-      "name": "update-snapshots-font-sizes",
-      "title": "[Phase 9] Update Snapshots with Correct Font Sizes",
-      "priority": "high",
-      "status": "complete",
-      "description": "Run tests and update snapshots to reflect correct Kumo font sizes",
-      "files": ["scripts/figma/plugin/generators/*.test.ts"],
-      "acceptance": [
-        "Run: pnpm --filter @cloudflare/kumo test generators/ --run",
-        "Review snapshot diffs - expect fontSize changes from 14→13, 16→14, 18→16",
-        "Confirm changes reflect Kumo theme values",
-        "Update snapshots: pnpm --filter @cloudflare/kumo test generators/ --run -u",
-        "All tests pass with updated snapshots"
-      ],
-      "notes": "Snapshot changes are EXPECTED and CORRECT - this is fixing incorrect values",
       "estimated_minutes": 20
     },
     {
-      "id": "T8",
-      "name": "fix-remaining-test-assertions",
-      "title": "[Phase 8] Fix Remaining Test File Assertions",
+      "id": "T6",
+      "name": "add-tabs-toast-registry-enforcement",
+      "title": "Add Registry Enforcement Test for Tabs/Toast",
       "priority": "medium",
-      "status": "complete",
-      "description": "Address remaining 22+ fragile assertions in other test files",
-      "files": ["scripts/figma/plugin/generators/*.test.ts"],
-      "acceptance": [
-        "Run drift detection to identify all remaining warnings",
-        "For each file: add imports and replace hardcoded values",
-        "Run: pnpm --filter @cloudflare/kumo test generators/drift-detection.test.ts --run",
-        "Warnings reduced to near 0"
-      ],
-      "notes": "Now uses CORRECT FONT_SIZE values after T4-T5",
-      "estimated_minutes": 30
-    },
-    {
-      "id": "T9",
-      "name": "convert-warning-to-enforcement",
-      "title": "[Phase 8] Convert Drift Detection Warning to Enforcement",
-      "priority": "high",
-      "status": "complete",
-      "description": "Change the 'should prefer registry comparisons...' test from warning-only to enforcing",
+      "status": "pending",
+      "description": "Add test that ensures Tabs and Toast generators read from registry",
       "files": ["scripts/figma/plugin/generators/drift-detection.test.ts"],
       "acceptance": [
-        "Find the test 'should prefer registry comparisons over hardcoded values'",
-        "Change: expect(true).toBe(true) to expect(warnings).toEqual([])",
-        "Run: pnpm --filter @cloudflare/kumo test generators/drift-detection.test.ts --run",
-        "Test passes with 0 warnings"
+        "Add test: 'Tabs and Toast generators should read from registry'",
+        "Check tabs.ts imports component-registry.json",
+        "Check toast.ts imports component-registry.json",
+        "Verify getTabsConfigFromRegistry or similar pattern exists",
+        "Test fails if generators don't read from registry"
       ],
-      "estimated_minutes": 10
+      "estimated_minutes": 15
     },
     {
-      "id": "T10",
-      "name": "final-verification-phase-9",
-      "title": "[Phase 9] Final Verification and Documentation",
+      "id": "T7",
+      "name": "final-verification-phase-10",
+      "title": "Final Verification and Documentation",
       "priority": "medium",
-      "status": "complete",
-      "description": "Verify all font sizes correct, CSS sync test passes, document completion",
+      "status": "pending",
+      "description": "Run all tests, verify no regressions, document completion",
       "files": ["scripts/figma/plugin/plans/progress.txt"],
       "acceptance": [
-        "Run: pnpm --filter @cloudflare/kumo test generators/drift-detection.test.ts --run",
-        "CSS theme sync test passes",
-        "All tests pass with 0 fragile assertion warnings",
         "Run: pnpm --filter @cloudflare/kumo test generators/ --run",
         "All 1500+ tests pass",
-        "Append Phase 9 completion summary to progress.txt"
+        "Run: pnpm --filter @cloudflare/kumo test generators/drift-detection.test.ts --run",
+        "All drift detection tests pass (including new ones)",
+        "No snapshot changes",
+        "Append Phase 10 completion summary to progress.txt"
       ],
       "estimated_minutes": 15
     }
   ],
   "technical_approach": {
-    "css_theme_parsing": {
-      "description": "Parse theme-kumo.css @theme blocks to extract actual values",
-      "source_file": "packages/kumo/src/styles/theme-kumo.css",
-      "target_values": {
-        "--text-xs": "12px",
-        "--text-sm": "13px (Kumo override)",
-        "--text-base": "14px (Kumo override)",
-        "--text-lg": "16px (Kumo override)"
-      },
-      "regex_pattern": "/--text-(xs|sm|base|lg):\\s*(\\d+)px/"
+    "registry_reading_pattern": {
+      "description": "Same pattern used in Phase 7 for DateRangePicker, Pagination, etc.",
+      "example": "const styling = (registry.components.Tabs as any).styling;\nconst FALLBACK_CONFIG = { ... current hardcoded values ... };\nfunction getConfigFromRegistry() {\n  if (!styling) return FALLBACK_CONFIG;\n  return { ...FALLBACK_CONFIG, ...styling.container };\n}"
     },
-    "import_pattern": {
-      "description": "Add imports from shared.ts at top of test file",
-      "example": "import { FONT_SIZE, FALLBACK_VALUES, SPACING, OPACITY } from \"./shared\";"
+    "shadow_parsing_pattern": {
+      "description": "Parse CSS shadow shorthand: 0 8px 32px rgb(0 0 0 / 0.16)",
+      "regex": "/--shadow-dialog:\\s*0\\s+(\\d+)px\\s+(\\d+)px\\s+rgb\\(0\\s+0\\s+0\\s*\\/\\s*([\\d.]+)\\)/",
+      "extracts": ["offsetY (8)", "blur (32)", "opacity (0.16)"]
     },
-    "replacement_patterns": {
-      "font_sizes_corrected": {
-        ".toBe(12)": ".toBe(FONT_SIZE.xs)  // 12px",
-        ".toBe(13)": ".toBe(FONT_SIZE.sm)  // 13px (Kumo)",
-        ".toBe(14)": ".toBe(FONT_SIZE.base) // 14px (Kumo)",
-        ".toBe(16)": ".toBe(FONT_SIZE.lg)  // 16px (Kumo)"
-      },
-      "font_weights": {
-        ".toBe(400)": ".toBe(FALLBACK_VALUES.fontWeight.normal)",
-        ".toBe(500)": ".toBe(FALLBACK_VALUES.fontWeight.medium)",
-        ".toBe(600)": ".toBe(FALLBACK_VALUES.fontWeight.semiBold)"
-      }
-    },
-    "tailwind_v4_context": {
-      "description": "Tailwind v4 uses CSS @theme directive instead of tailwind.config.js",
-      "implication": "Theme values must be read from CSS, not assumed from Tailwind defaults",
-      "kumo_overrides": {
-        "text-sm": "13px (was 14px)",
-        "text-base": "14px (was 16px)",
-        "text-lg": "16px (was 18px)"
+    "button_compact_size_pattern": {
+      "description": "Parse Tailwind size classes to pixel values",
+      "mapping": {
+        "size-3.5": "14px (3.5 * 4)",
+        "size-6.5": "26px (6.5 * 4)",
+        "size-9": "36px (9 * 4)",
+        "size-10": "40px (10 * 4)"
       }
     }
   },
   "deliverables": [
     {
-      "name": "Corrected Parser Font Sizes",
-      "description": "FONT_SIZE_SCALE in tailwind-to-figma.ts matches theme-kumo.css",
-      "files": ["scripts/figma/plugin/parsers/tailwind-to-figma.ts"]
+      "name": "Tabs Registry Integration",
+      "description": "tabs.ts reads from registry.components.Tabs.styling",
+      "files": ["scripts/figma/plugin/generators/tabs.ts"]
     },
     {
-      "name": "Corrected Shared Constants",
-      "description": "FONT_SIZE in shared.ts matches theme-kumo.css with sm added",
-      "files": ["scripts/figma/plugin/generators/shared.ts"]
+      "name": "Toast Registry Integration",
+      "description": "toast.ts reads from registry.components.Toasty.styling",
+      "files": ["scripts/figma/plugin/generators/toast.ts"]
     },
     {
-      "name": "CSS Theme Drift Detection",
-      "description": "Test that validates parser values against theme-kumo.css",
+      "name": "Shadow Dialog CSS Token",
+      "description": "--shadow-dialog added to theme-kumo.css",
+      "files": ["src/styles/theme-kumo.css"]
+    },
+    {
+      "name": "Drift Detection Tests",
+      "description": "New tests for shadow-dialog and buttonCompactSize validation",
       "files": ["scripts/figma/plugin/generators/drift-detection.test.ts"]
-    },
-    {
-      "name": "Updated Snapshots",
-      "description": "All generator snapshots updated with correct Kumo font sizes",
-      "files": ["scripts/figma/plugin/generators/*.test.ts"]
-    },
-    {
-      "name": "Updated Test Files (Phase 8)",
-      "description": "Test files using shared constants instead of hardcoded values",
-      "files": [
-        "scripts/figma/plugin/generators/banner.test.ts",
-        "scripts/figma/plugin/generators/text.test.ts",
-        "scripts/figma/plugin/generators/select.test.ts"
-      ]
     }
   ],
   "constraints": [
-    "Must update FONT_SIZE values to match theme-kumo.css exactly",
-    "Must add FONT_SIZE.sm (13px) which is currently missing",
-    "Snapshot changes ARE EXPECTED - this is fixing incorrect values",
-    "Must not change test logic or assertions (only values)",
-    "CSS theme sync test must programmatically parse theme-kumo.css"
+    "Must maintain backward compatibility with fallback values",
+    "No snapshot changes expected (registry values match hardcoded)",
+    "CSS token must use same format as existing shadow tokens",
+    "Tests must fail if values drift (not just warn)"
   ],
   "success_criteria": [
-    "FONT_SIZE_SCALE values: xs=12, sm=13, base=14, lg=16 (matches theme-kumo.css)",
-    "FONT_SIZE constant: xs=12, sm=13, base=14, lg=16 (matches theme-kumo.css)",
-    "CSS theme sync drift detection test: PASSING",
-    "Fragile assertion warnings: 0",
-    "All 1500+ generator tests pass (with updated snapshots)"
+    "tabs.ts reads from registry: YES",
+    "toast.ts reads from registry: YES",
+    "--shadow-dialog CSS token exists: YES",
+    "SHADOWS.dialog drift test: PASSING",
+    "buttonCompactSize drift test: PASSING",
+    "Registry enforcement test: PASSING",
+    "All generator tests pass (1500+)"
   ],
   "references": {
     "theme_kumo_css": "packages/kumo/src/styles/theme-kumo.css",
-    "tailwind_to_figma": "scripts/figma/plugin/parsers/tailwind-to-figma.ts",
+    "tabs_generator": "scripts/figma/plugin/generators/tabs.ts",
+    "toast_generator": "scripts/figma/plugin/generators/toast.ts",
     "shared_constants": "scripts/figma/plugin/generators/shared.ts",
     "drift_detection": "scripts/figma/plugin/generators/drift-detection.test.ts",
-    "phase7_completion": "plans/progress.txt (Phase 7 section)"
+    "button_component": "src/components/button/button.tsx",
+    "phase_7_pattern": "scripts/figma/plugin/generators/pagination.ts (reference implementation)"
   },
   "completed_phases": {
     "phase_1_test_refactoring": "COMPLETE",
@@ -425,29 +340,8 @@
     "phase_5_magic_numbers": "COMPLETE",
     "phase_6_magic_numbers_audit": "COMPLETE",
     "phase_7_full_registry_integration": "COMPLETE",
-    "phase_8_test_assertion_hardening": "IN_PROGRESS (T1-T3 complete)",
-    "phase_9_css_theme_sync": "NOT_STARTED"
-  },
-  "risk_assessment": {
-    "font_size_drift": {
-      "severity": "HIGH",
-      "current_state": "3 of 4 font sizes are WRONG in Figma-generated components",
-      "affected_values": {
-        "text-sm": "Parser uses 14px, should be 13px",
-        "text-base": "Parser uses 16px, should be 14px",
-        "text-lg": "Parser uses 18px, should be 16px"
-      },
-      "impact": "All Figma components with text-sm, text-base, or text-lg have incorrect font sizes"
-    },
-    "spacing_drift": {
-      "severity": "LOW",
-      "current_state": "Kumo has not customized spacing scale",
-      "notes": "SPACING_SCALE uses Tailwind defaults which are still correct"
-    },
-    "border_radius_drift": {
-      "severity": "LOW",
-      "current_state": "Kumo has not customized border radius scale",
-      "notes": "BORDER_RADIUS_SCALE uses Tailwind defaults which are still correct"
-    }
+    "phase_8_test_assertion_hardening": "COMPLETE",
+    "phase_9_css_theme_sync": "COMPLETE",
+    "phase_10_hardcoded_values_elimination": "NOT_STARTED"
   }
 }
