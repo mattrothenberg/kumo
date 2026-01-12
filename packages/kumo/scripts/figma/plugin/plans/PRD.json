@@ -267,7 +267,7 @@
       "name": "fix-pagination-generator",
       "title": "Fix pagination.ts Hardcoded Values",
       "priority": "medium",
-      "status": "pending",
+      "status": "complete",
       "description": "Replace hardcoded fallback layout values",
       "files": ["scripts/figma/plugin/generators/pagination.ts"],
       "changes": [

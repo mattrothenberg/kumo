@@ -26,6 +26,7 @@ import {
   FALLBACK_VALUES,
   SPACING,
 } from "./shared";
+import themeData from "../generated/theme-data.json";
 import { createIconInstance, bindIconColor } from "./icon-utils";
 
 // Import component metadata from registry
@@ -41,12 +42,12 @@ const paginationStyling = (registry.components.Pagination as any).styling;
  * Used if registry doesn't have styling metadata
  */
 const FALLBACK_LAYOUT = {
-  height: 36,
-  buttonSize: 36,
-  inputWidth: 50,
-  iconSize: 16,
-  gap: 8,
-  borderRadius: 8,
+  height: FALLBACK_VALUES.height.base, // h-9 = 36px
+  buttonSize: FALLBACK_VALUES.height.base, // h-9 = 36px
+  inputWidth: 50, // FIGMA-SPECIFIC: Page number input width for Figma display
+  iconSize: FALLBACK_VALUES.iconSize.sm, // size-4 = 16px
+  gap: themeData.tailwind.spacing.scale["2"], // gap-2 = 8px
+  borderRadius: themeData.tailwind.borderRadius.lg, // rounded-lg = 8px
 };
 
 /**

@@ -6050,3 +6050,47 @@ Eliminate ALL remaining hardcoded CSS-derived values in Figma generators by usin
 - All hardcoded CSS-derived values now eliminated or documented in switch.ts
 
 **Status:** COMPLETE - Switch hardcoded values documented or replaced
+
+---
+
+## Iteration 29: T9 - Fix pagination.ts Hardcoded Values (PHASE 11)
+
+**Task:** T9 - Fix pagination.ts Hardcoded Values
+**Status:** ✅ Complete
+**Date:** 2026-01-12
+
+### What was done:
+1. **Replaced hardcoded values in FALLBACK_LAYOUT**:
+   - height: 36 → FALLBACK_VALUES.height.base (h-9 = 36px)
+   - buttonSize: 36 → FALLBACK_VALUES.height.base (h-9 = 36px)
+   - iconSize: 16 → FALLBACK_VALUES.iconSize.sm (size-4 = 16px)
+   - gap: 8 → themeData.tailwind.spacing.scale["2"] (gap-2 = 8px)
+   - borderRadius: 8 → themeData.tailwind.borderRadius.lg (rounded-lg = 8px)
+   - inputWidth: 50 - Kept with FIGMA-SPECIFIC comment (page input width for display)
+
+2. **Added imports**:
+   - Added themeData import from "../generated/theme-data.json"
+   - Already had FALLBACK_VALUES import from shared.ts
+
+3. **Fixed naming conflict**:
+   - Did not import BORDER_RADIUS from shared.ts (conflict with local BORDER_RADIUS variable)
+   - Used themeData.tailwind.borderRadius.lg directly instead
+
+### Test Results:
+- ✅ All 51 pagination tests pass
+- ✅ No snapshots changed (values match original hardcoded values exactly)
+- ✅ Pre-existing TypeScript errors (topLeftRadius, bottomLeftRadius, textAlignHorizontal) are documented in progress.txt from Iteration 8
+
+### Files Modified:
+- `scripts/figma/plugin/generators/pagination.ts` - Replaced hardcoded values with themeData/FALLBACK_VALUES references
+- `plans/PRD.json` - T9 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- inputWidth: 50 is intentionally kept hardcoded with FIGMA-SPECIFIC comment (not CSS-derived)
+- All CSS-derived values now reference centralized constants
+- Values remain unchanged (36px, 16px, 8px, 8px) to maintain visual consistency
+- Pre-existing TypeScript errors are not related to this refactoring
+
+**Status:** COMPLETE - pagination.ts now uses themeData and FALLBACK_VALUES for all CSS-derived dimensions
+
