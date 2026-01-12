@@ -6007,3 +6007,46 @@ Eliminate ALL remaining hardcoded CSS-derived values in Figma generators by usin
 
 **Status:** COMPLETE - InputArea generator now uses themeData/shared constants
 
+
+---
+
+## Iteration 29: T8 - Fix switch.ts Hardcoded Values (PHASE 11)
+
+**Task:** T8 - Fix switch.ts Hardcoded Values
+**Status:** ✅ Complete
+**Date:** 2026-01-11
+
+### What was done:
+1. **Checked registry for Switch.styling**:
+   - Verified registry.components.Switch.styling is null
+   - No styling metadata exists in registry (as expected)
+
+2. **Documented fallback dimensions with COMPONENT-SPECIFIC comments**:
+   - Added detailed comments explaining fallback dimensions (lines 97-106)
+   - Documented that values derive from Tailwind fractional classes:
+     - sm: h-5.5 w-8.5 → 22px × 34px
+     - base: h-6.5 w-10.5 → 26px × 42px
+     - lg: h-7.5 w-12.5 → 30px × 50px
+   - Noted these are only used if regex parsing fails
+
+3. **Fixed hardcoded disabledOpacity value**:
+   - Line 999: Changed `disabledOpacity: 0.5` → `disabledOpacity: OPACITY.disabled`
+   - Added comment: "// 0.5 from shared.ts"
+
+### Test Results:
+- ✅ All 50 switch tests pass
+- ✅ No snapshots changed (values match existing implementation)
+- ✅ Switch already imports OPACITY from shared.ts (line 45)
+
+### Files Modified:
+- `scripts/figma/plugin/generators/switch.ts` - Documented fallback dimensions, fixed disabledOpacity
+- `plans/PRD.json` - T8 status: pending → complete
+- `plans/progress.txt` - This entry
+
+### Notes:
+- Switch component does NOT need registry.styling because dimensions are dynamically parsed from Tailwind classes
+- Fallback dimensions are component-specific (fractional classes like h-5.5) and properly documented
+- Pre-existing TypeScript errors (opacity, layoutWrap, counterAxisSpacing) documented in progress log
+- All hardcoded CSS-derived values now eliminated or documented in switch.ts
+
+**Status:** COMPLETE - Switch hardcoded values documented or replaced

@@ -94,11 +94,16 @@ function parseSwitchDimensions(size: string): { width: number; height: number } 
     };
   }
   
-  // Fallback if parsing fails (should not happen if registry is correct)
+  // COMPONENT-SPECIFIC: Fallback dimensions for Switch component sizes
+  // These values are derived from Tailwind fractional classes in switch.tsx:
+  // sm: h-5.5 w-8.5 (5.5*4=22px, 8.5*4=34px)
+  // base: h-6.5 w-10.5 (6.5*4=26px, 10.5*4=42px)
+  // lg: h-7.5 w-12.5 (7.5*4=30px, 12.5*4=50px)
+  // Fallback only used if regex parsing fails (should not happen if registry is correct)
   var fallbackDimensions: Record<string, { width: number; height: number }> = {
-    sm: { width: 34, height: 22 },
-    base: { width: 42, height: 26 },
-    lg: { width: 50, height: 30 },
+    sm: { width: 34, height: 22 }, // h-5.5 w-8.5
+    base: { width: 42, height: 26 }, // h-6.5 w-10.5
+    lg: { width: 50, height: 30 }, // h-7.5 w-12.5
   };
   return fallbackDimensions[size] || fallbackDimensions.base;
 }
@@ -996,7 +1001,7 @@ export function getAllSwitchVariantData() {
     trackColors: allTrackColors,
     labelGap: SWITCH_LABEL_GAP,
     thumbColor: { r: 1, g: 1, b: 1 }, // white
-    disabledOpacity: 0.5,
+    disabledOpacity: OPACITY.disabled, // 0.5 from shared.ts
   };
 }
 
