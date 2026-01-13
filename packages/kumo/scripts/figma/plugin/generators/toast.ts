@@ -47,15 +47,20 @@ const toastStyling = (registry.components as any).Toasty?.styling;
 
 /**
  * Fallback config using theme-data.json values to prevent drift
- * Width is derived from sm:w-[300px] viewport constraint
  * Typography uses Tailwind fontSize values
  * Spacing uses Tailwind spacing scale
  */
 const FALLBACK_TOAST_CONFIG = {
-  width: 300, // sm:w-[300px] - viewport-specific, not in theme
+  // FIGMA-SPECIFIC: Fixed width for Figma canvas rendering
+  // React component uses sm:w-[300px] which is viewport-responsive
+  // This is intentionally hardcoded as there's no Tailwind token for arbitrary values
+  width: 300,
   titleFontSize: themeData.tailwind.fontSize.base, // text-base = 16px
   titleFontWeight: FALLBACK_VALUES.fontWeight.medium, // font-medium = 500
-  descriptionFontSize: 15, // text-[0.925rem] = ~14.8px, custom size not in Tailwind
+  // COMPONENT-SPECIFIC: text-[0.925rem] = ~14.8px is a custom arbitrary value in toast.tsx
+  // Using 15px as closest integer approximation (0.925 * 16 = 14.8)
+  // This cannot be derived from Tailwind tokens as it's an arbitrary value
+  descriptionFontSize: 15,
   descriptionFontWeight: FALLBACK_VALUES.fontWeight.normal, // font-normal = 400
   closeButtonSize: themeData.tailwind.spacing.scale["5"], // h-5 w-5 = 20px
   closeButtonIconSize: themeData.tailwind.spacing.scale["4"], // size-4 = 16px

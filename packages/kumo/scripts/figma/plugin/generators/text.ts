@@ -231,9 +231,9 @@ export async function generateTextComponents(
   const columnHeaders: { x: number; text: string }[] = [];
   let columnHeadersRecorded = false;
 
-  // Layout configuration
-  const componentGap = 20;
-  const rowHeight = 50;
+  // Layout configuration - using centralized GRID_LAYOUT constants from shared.ts
+  const componentGap = GRID_LAYOUT.componentGapX.standard; // 24px
+  const rowHeight = GRID_LAYOUT.rowGap.standard; // 48px (closest to 50)
   const headerRowHeight = GRID_LAYOUT.headerRowHeight;
   const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.standard;
   let currentRow = 0;

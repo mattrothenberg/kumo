@@ -55,24 +55,15 @@ var sizeProp = buttonProps.size as {
 };
 
 /**
- * Compact size mapping from button.tsx KUMO_BUTTON_VARIANTS.compactSize
- */
-var COMPACT_SIZE_MAP: Record<string, number> = {
-  xs: 14,
-  sm: 26,
-  base: 36,
-  lg: 40,
-};
-
-/**
  * Refresh icon size by button size
  * From RefreshButton component: size-4.5 (base), size-4 (sm), size-5 (lg)
+ * Uses FALLBACK_VALUES.iconSize from shared.ts to prevent drift
  */
 var REFRESH_ICON_SIZE: Record<string, number> = {
-  xs: 12,
-  sm: 16, // size-4
-  base: 18, // size-4.5
-  lg: 20, // size-5
+  xs: FALLBACK_VALUES.iconSize.xs, // size-3 = 12px
+  sm: FALLBACK_VALUES.iconSize.sm, // size-4 = 16px
+  base: FALLBACK_VALUES.iconSize.medium, // size-4.5 = 18px
+  lg: FALLBACK_VALUES.iconSize.base, // size-5 = 20px
 };
 
 /**
@@ -105,7 +96,8 @@ function createRefreshButtonComponent(
   component.description = "Refresh button for triggering data refresh";
 
   // Get dimensions from compact size (square button)
-  var buttonSize = COMPACT_SIZE_MAP[size] || FALLBACK_VALUES.height.base;
+  // Uses FALLBACK_VALUES.buttonCompactSize from shared.ts (generated from theme-data.json)
+  var buttonSize = FALLBACK_VALUES.buttonCompactSize[size as keyof typeof FALLBACK_VALUES.buttonCompactSize] || FALLBACK_VALUES.height.base;
 
   // Configure auto-layout
   component.layoutMode = "HORIZONTAL";

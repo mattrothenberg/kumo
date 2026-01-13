@@ -99,11 +99,15 @@ function parseSwitchDimensions(size: string): { width: number; height: number } 
   // sm: h-5.5 w-8.5 (5.5*4=22px, 8.5*4=34px)
   // base: h-6.5 w-10.5 (6.5*4=26px, 10.5*4=42px)
   // lg: h-7.5 w-12.5 (7.5*4=30px, 12.5*4=50px)
-  // Fallback only used if regex parsing fails (should not happen if registry is correct)
+  //
+  // FALLBACK ONLY: These hardcoded values are only used if regex parsing of
+  // sizeProp.classes fails. The primary source is the registry classes which
+  // are parsed dynamically. If you see drift here, update the registry or
+  // check that parseSwitchDimensions regex is working correctly.
   var fallbackDimensions: Record<string, { width: number; height: number }> = {
-    sm: { width: 34, height: 22 }, // h-5.5 w-8.5
-    base: { width: 42, height: 26 }, // h-6.5 w-10.5
-    lg: { width: 50, height: 30 }, // h-7.5 w-12.5
+    sm: { width: 34, height: 22 }, // h-5.5 w-8.5 = 5.5*4, 8.5*4
+    base: { width: 42, height: 26 }, // h-6.5 w-10.5 = 6.5*4, 10.5*4
+    lg: { width: 50, height: 30 }, // h-7.5 w-12.5 = 7.5*4, 12.5*4
   };
   return fallbackDimensions[size] || fallbackDimensions.base;
 }

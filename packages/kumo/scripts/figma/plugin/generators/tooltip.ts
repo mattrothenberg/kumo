@@ -45,6 +45,8 @@ import registry from "../../../../ai/component-registry.json";
 
 /**
  * Tooltip dimensions
+ * FIGMA-SPECIFIC: Arrow dimensions are for Figma canvas rendering only,
+ * not derived from design tokens (no CSS equivalent for tooltip arrows)
  */
 var ARROW_WIDTH = 20;
 var ARROW_HEIGHT = 10;
@@ -58,8 +60,9 @@ var tooltipComponent = registry.components.Tooltip;
 
 // Tooltip popup styles from tooltip.tsx
 var TOOLTIP_BOX_STYLES = "rounded-md bg-black-icon px-2.5 py-1.5 text-sm text-white";
-var TOOLTIP_TEXT_SIZE = 14; // text-sm
-var TOOLTIP_TEXT_WEIGHT = 400; // normal
+// Use centralized values from shared.ts to prevent drift
+var TOOLTIP_TEXT_SIZE = FONT_SIZE.sm; // text-sm from theme-data.json
+var TOOLTIP_TEXT_WEIGHT = FALLBACK_VALUES.fontWeight.normal; // font-normal from theme-data.json
 
 /**
  * Create a tooltip arrow as a simple triangle pointing down using vector path

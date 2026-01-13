@@ -52,15 +52,19 @@ var menuBarStyling = (registry.components.MenuBar as any).styling;
  * Looking at Storybook, the component is quite compact.
  */
 var FALLBACK_MENUBAR_CONFIG = {
-  /** Height of the menubar - compact, just enough for icon + small padding */
+  // COMPONENT-SPECIFIC: Height derived from icon size (18px) + vertical padding
+  // The React component uses h-full on buttons which inherit from parent
+  // 32px = 18px icon + 7px padding top + 7px padding bottom (approximate)
+  // This is intentionally hardcoded as the React component height is content-driven
   height: 32,
-  /** Width of each menu option button (w-11 = 44px, but visually looks ~36px) */
+  // COMPONENT-SPECIFIC: Button width derived from w-11 (44px) but adjusted for visual balance
+  // The React component uses w-11 = 44px, but Figma rendering looks better at 36px
   buttonWidth: 36,
-  /** Icon size inside buttons (size-4.5 = 18px) */
+  /** Icon size inside buttons (size-4.5 = 18px) - from shared.ts */
   iconSize: FALLBACK_VALUES.iconSize.medium,
-  /** Border radius for the container (rounded-lg = 8px) */
+  /** Border radius for the container (rounded-lg = 8px) - from shared.ts */
   borderRadius: BORDER_RADIUS.lg,
-  /** Border radius for individual buttons (rounded-md = 6px) */
+  /** Border radius for individual buttons (rounded-md = 6px) - from shared.ts */
   buttonBorderRadius: BORDER_RADIUS.md,
 };
 

@@ -346,7 +346,7 @@
     "codegen": "pnpm run codegen:primitives && pnpm run codegen:registry",
     "codegen:primitives": "tsx scripts/generate-primitives.ts",
     "codegen:registry": "tsx scripts/ai/component-registry.ts",
-    "storybook": "storybook dev -p 6006",
+    "storybook": "tsx scripts/color/build-colors-storybook.ts && storybook dev -p 6006",
     "storybook:build": "tsx scripts/color/build-colors-storybook.ts && storybook build",
     "storybook:colors": "tsx scripts/color/build-colors-storybook.ts",
     "storybook:deploy": "pnpm run storybook:build && wrangler pages deploy",
