@@ -344,8 +344,10 @@ Checkbox component
 - `variant`: enum [default: default]
   - `"default"`: Default checkbox appearance
   - `"error"`: Error state for validation failures
-- `label`: string
-  Label text for the checkbox (enables built-in Field wrapper)
+- `label`: ReactNode
+  Label content for the checkbox (enables built-in Field wrapper) - can be a string or any React node
+- `labelTooltip`: ReactNode
+  Tooltip content to display next to the label via an info icon
 - `controlFirst`: boolean
   When true (default), checkbox appears before label. When false, label appears before checkbox.
 - `checked`: boolean
@@ -448,6 +450,30 @@ Props:
 
 ```tsx
 <Checkbox label="Label first" controlFirst={false} />
+```
+
+```tsx
+<Checkbox label="I agree to the terms and conditions" required={true} />
+```
+
+```tsx
+<Checkbox label="Enable two-factor authentication" labelTooltip="Adds an extra layer of security to your account" />
+```
+
+```tsx
+<Checkbox label="I accept the privacy policy" required={true} labelTooltip="You must accept our privacy policy to continue" />
+```
+
+```tsx
+<Checkbox
+      label={
+        <span>
+          I agree to the <strong>Terms of Service</strong> and{" "}
+          <strong>Privacy Policy</strong>
+        </span>
+      }
+      required
+    />
 ```
 
 ```tsx
@@ -810,8 +836,12 @@ Combobox component
   Combobox content (trigger, content, items)
 - `className`: string
   Additional CSS classes
-- `label`: string
-  Label text for the combobox (enables Field wrapper)
+- `label`: ReactNode
+  Label content for the combobox (enables Field wrapper) - can be a string or any React node
+- `required`: boolean
+  Whether the combobox is required
+- `labelTooltip`: ReactNode
+  Tooltip content to display next to the label via an info icon
 - `description`: ReactNode
   Helper text displayed below the combobox
 - `error`: string | object
@@ -1294,7 +1324,12 @@ Field component
 - `controlFirst`: boolean
   When true, places the control (checkbox/switch) before the label visually. When false (default), places the label before the control. Used to support different layout patterns (e.g., iOS-style toggles on the right).
 - `children`: ReactNode
-- `label`: string (required)
+- `label`: ReactNode
+  The label content - can be a string or any React node
+- `required`: boolean
+  When true, shows a red asterisk (*) to indicate the field is required. When explicitly false, shows gray "(optional)" text after the label. When undefined, no indicator is shown.
+- `labelTooltip`: ReactNode
+  Tooltip content to display next to the label via an info icon
 - `error`: object
 - `description`: ReactNode
 
@@ -1314,8 +1349,10 @@ Input component
 
 **Props:**
 
-- `label`: string
-  Label text for the input (enables Field wrapper)
+- `label`: ReactNode
+  Label content for the input (enables Field wrapper) - can be a string or any React node
+- `labelTooltip`: ReactNode
+  Tooltip content to display next to the label via an info icon
 - `description`: ReactNode
   Helper text displayed below the input
 - `error`: string | object
@@ -1341,6 +1378,66 @@ Input component
       placeholder="Enter your email"
       description="We'll never share your email with anyone else"
     />
+```
+
+```tsx
+<Input
+      label="Phone Number"
+      required={false}
+      placeholder="+1 (555) 000-0000"
+      description="Optional fields show '(optional)' indicator"
+    />
+```
+
+```tsx
+<Input
+      label="API Key"
+      labelTooltip="Find this in your dashboard under Settings > API Keys"
+      placeholder="sk_live_..."
+    />
+```
+
+```tsx
+<Input
+      label="Password"
+      required
+      labelTooltip="Must be at least 8 characters with one uppercase letter and one number"
+      type="password"
+      placeholder="Enter password"
+    />
+```
+
+```tsx
+<Input
+      label={
+        <span>
+          Email for <strong>billing</strong>
+        </span>
+      }
+      required
+      placeholder="billing@company.com"
+      type="email"
+    />
+```
+
+```tsx
+<div className="flex max-w-md flex-col gap-4">
+      <Input label="Full Name" required placeholder="John Doe" />
+      <Input
+        label="Email"
+        required
+        labelTooltip="We'll send your receipt here"
+        placeholder="john@example.com"
+        type="email"
+      />
+      <Input label="Company" required={false} placeholder="Acme Inc." />
+      <Input
+        label="Notes"
+        required={false}
+        labelTooltip="Any additional information"
+        placeholder="Tell us more..."
+      />
+    </div>
 ```
 
 ```tsx
@@ -1507,6 +1604,83 @@ function InputGroupExamplesRender() {
 
 ```tsx
 <Input placeholder="Input without Field wrapper" />
+```
+
+
+---
+
+### Label
+
+When true, only renders the inline content (indicators, tooltip) without the outer span with font styling. Useful when composed inside another label element that already provides the text styling. / asContent?: boolean; } /** Label component for form fields. Provides a standardized way to display labels with optional indicators: - Required indicator: red asterisk (*) when `required={true}` - Optional indicator: gray "(optional)" text when `showOptional={true}` and not required - Tooltip: info icon with hover tooltip for additional context // Basic label <Label>Email</Label> // Required field <Label required>Password</Label> // Optional field with indicator <Label showOptional>Middle Name</Label> // With tooltip <Label tooltip="We'll use this to send you updates">Email</Label> // With ReactNode children <Label> <span>Custom label with <strong>bold</strong> text</span> </Label>
+
+**Import:** `import { Label } from "@cloudflare/kumo";`
+
+**Category:** Other
+
+**Props:**
+
+- `children`: ReactNode
+  The label content - can be a string or any React node
+- `required`: boolean
+  When true, shows a red asterisk (*) to indicate the field is required
+- `showOptional`: boolean
+  When true (and required is false), shows gray "(optional)" text after the label
+- `tooltip`: ReactNode
+  Tooltip content to display next to the label via an info icon
+- `className`: string
+  Additional CSS classes
+- `asContent`: boolean
+  When true, only renders the inline content (indicators, tooltip) without the outer span with font styling. Useful when composed inside another label element that already provides the text styling.
+
+**Colors (kumo tokens used):**
+
+`text-destructive`, `text-muted`, `text-surface`
+
+**Examples:**
+
+```tsx
+<Label>Email Address</Label>
+```
+
+```tsx
+<Label tooltip="We'll use this to send you important updates about your account">
+      Email Address
+    </Label>
+```
+
+```tsx
+<div className="flex flex-col gap-4">
+      <Label>Default Label</Label>
+      <Label required>Required Label</Label>
+      <Label showOptional>Optional Label</Label>
+      <Label tooltip="More information">Label with Tooltip</Label>
+      <Label required tooltip="Required field info">
+        Required with Tooltip
+      </Label>
+      <Label showOptional tooltip="Optional field info">
+        Optional with Tooltip
+      </Label>
+    </div>
+```
+
+```tsx
+<div className="flex max-w-md flex-col gap-4">
+      <Input label="Full Name" required placeholder="John Doe" />
+      <Input
+        label="Email"
+        required
+        labelTooltip="We'll send your receipt here"
+        placeholder="john@example.com"
+        type="email"
+      />
+      <Input label="Company" required={false} placeholder="Acme Inc." />
+      <Input
+        label="Notes"
+        required={false}
+        labelTooltip="Any additional information you'd like to share"
+        placeholder="Tell us more..."
+      />
+    </div>
 ```
 
 
@@ -1864,8 +2038,8 @@ Select component
 
 - `className`: string
   Additional CSS classes
-- `label`: string
-  Label text for the select (enables Field wrapper)
+- `label`: ReactNode
+  Label content for the select (enables Field wrapper) - can be a string or any React node
 - `hideLabel`: boolean
   Whether to visually hide the label (still accessible to screen readers)
 - `placeholder`: string
@@ -1874,6 +2048,10 @@ Select component
   Whether the select is in a loading state
 - `disabled`: boolean
   Whether the select is disabled
+- `required`: boolean
+  Whether the select is required
+- `labelTooltip`: ReactNode
+  Tooltip content to display next to the label via an info icon
 - `value`: string
   The currently selected value
 - `children`: ReactNode
@@ -1921,6 +2099,45 @@ Option sub-component
       <Select.Option value="uk">United Kingdom</Select.Option>
       <Select.Option value="ca">Canada</Select.Option>
       <Select.Option value="au">Australia</Select.Option>
+    </Select>
+```
+
+```tsx
+<Select
+      label="Country"
+      hideLabel={false}
+      required
+      placeholder="Select a country"
+    >
+      <Select.Option value="us">United States</Select.Option>
+      <Select.Option value="uk">United Kingdom</Select.Option>
+      <Select.Option value="ca">Canada</Select.Option>
+    </Select>
+```
+
+```tsx
+<Select
+      label="Preferred Language"
+      hideLabel={false}
+      required={false}
+      placeholder="Select a language"
+    >
+      <Select.Option value="en">English</Select.Option>
+      <Select.Option value="es">Spanish</Select.Option>
+      <Select.Option value="fr">French</Select.Option>
+    </Select>
+```
+
+```tsx
+<Select
+      label="Timezone"
+      hideLabel={false}
+      labelTooltip="This will be used for scheduling and notifications"
+      placeholder="Select your timezone"
+    >
+      <Select.Option value="utc">UTC</Select.Option>
+      <Select.Option value="est">Eastern Time (EST)</Select.Option>
+      <Select.Option value="pst">Pacific Time (PST)</Select.Option>
     </Select>
 ```
 
@@ -2003,8 +2220,10 @@ SensitiveInput component
   Size variant
 - `variant`: KumoInputVariant [default: default]
   Style variant
-- `label`: string
-  Label text for the input (enables Field wrapper and sets masked state label)
+- `label`: ReactNode
+  Label content for the input (enables Field wrapper and sets masked state label) - can be a string or any React node
+- `labelTooltip`: ReactNode
+  Tooltip content to display next to the label via an info icon
 - `description`: ReactNode
   Helper text displayed below the input
 - `error`: string | object
@@ -2085,6 +2304,31 @@ SensitiveInput component
 
 ```tsx
 <SensitiveInput
+      label="Backup Password"
+      required={false}
+      placeholder="Enter backup password"
+    />
+```
+
+```tsx
+<SensitiveInput
+      label="Secret Key"
+      labelTooltip="Find this in your dashboard under Settings > API Keys"
+      defaultValue="sk_live_abc123xyz789"
+    />
+```
+
+```tsx
+<SensitiveInput
+      label="Production API Key"
+      required
+      labelTooltip="This key is required to deploy to production. Keep it secure!"
+      placeholder="sk_live_..."
+    />
+```
+
+```tsx
+<SensitiveInput
       label="API Key"
       defaultValue="copyable-secret-key"
       onCopy={() => console.log("Value copied!")}
@@ -2140,8 +2384,12 @@ Switch component
 - `variant`: enum [default: default]
   - `"default"`: Default switch appearance
   - `"error"`: Error state for validation failures
-- `label`: string
-  Label text for the switch (Field wrapper is built-in). Optional when used standalone for visual-only purposes.
+- `label`: ReactNode
+  Label content for the switch (Field wrapper is built-in) - can be a string or any React node. Optional when used standalone for visual-only purposes.
+- `labelTooltip`: ReactNode
+  Tooltip content to display next to the label via an info icon
+- `required`: boolean
+  Whether the switch is required. When true, shows a red asterisk (*) on the label. When explicitly false, shows "(optional)" text after the label.
 - `controlFirst`: boolean
   When true (default), switch appears before label. When false, label appears before switch.
 - `size`: enum [default: base]
@@ -2238,6 +2486,28 @@ Props:
 
 ```tsx
 <Switch label="Label first" controlFirst={false} />
+```
+
+```tsx
+<Switch label="Enable notifications" required={true} />
+```
+
+```tsx
+<Switch label="Enable two-factor authentication" labelTooltip="Adds an extra layer of security by requiring a code from your phone" />
+```
+
+```tsx
+<Switch label="Accept cookies" required={true} labelTooltip="Required for the website to function properly" />
+```
+
+```tsx
+<Switch
+      label={
+        <span>
+          Enable <strong>automatic updates</strong>
+        </span>
+      }
+    />
 ```
 
 ```tsx
@@ -2581,6 +2851,6 @@ Tooltip component
 - **Action:** Button, ClipboardText
 - **Input:** Checkbox, Combobox, DateRangePicker, Field, Input, Select, Switch
 - **Overlay:** Dialog, DropdownMenu, Tooltip
+- **Other:** Label, SensitiveInput
 - **Navigation:** MenuBar, Pagination, Tabs
-- **Other:** SensitiveInput
 - **Layout:** Surface

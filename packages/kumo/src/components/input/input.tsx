@@ -84,10 +84,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     size = "base",
     variant = "default",
     label,
+    labelTooltip,
     description,
     error,
     ...inputProps
   } = props;
+
+  // Extract required from inputProps to pass to Field for label decoration
+  const { required } = inputProps;
 
   // A11y enforcement: warn in dev if no accessible name provided
   if (process.env.NODE_ENV !== "production") {
@@ -123,6 +127,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     return (
       <Field
         label={label}
+        required={required}
+        labelTooltip={labelTooltip}
         description={description}
         error={
           error
@@ -177,8 +183,10 @@ Input.displayName = "Input";
  */
 export type InputProps = Pick<KumoInputVariantsProps, "size" | "variant"> &
   BaseInputProps & {
-    /** Label text for the input (enables Field wrapper) */
-    label?: string;
+    /** Label content for the input (enables Field wrapper) - can be a string or any React node */
+    label?: ReactNode;
+    /** Tooltip content to display next to the label via an info icon */
+    labelTooltip?: ReactNode;
     /** Helper text displayed below the input */
     description?: ReactNode;
     /** Error message or validation error object */

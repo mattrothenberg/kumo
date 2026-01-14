@@ -94,6 +94,49 @@ export const LabelFirst: Story = {
   },
 };
 
+export const RequiredField: Story = {
+  args: {
+    label: "I agree to the terms and conditions",
+    required: true,
+  },
+};
+
+export const OptionalField: Story = {
+  args: {
+    label: "Subscribe to newsletter",
+    required: false,
+  },
+};
+
+export const WithLabelTooltip: Story = {
+  args: {
+    label: "Enable two-factor authentication",
+    labelTooltip: "Adds an extra layer of security to your account",
+  },
+};
+
+export const RequiredWithTooltip: Story = {
+  args: {
+    label: "I accept the privacy policy",
+    required: true,
+    labelTooltip: "You must accept our privacy policy to continue",
+  },
+};
+
+export const ReactNodeLabel: Story = {
+  render: () => (
+    <Checkbox
+      label={
+        <span>
+          I agree to the <strong>Terms of Service</strong> and{" "}
+          <strong>Privacy Policy</strong>
+        </span>
+      }
+      required
+    />
+  ),
+};
+
 export const Group: Story = {
   args: { label: "Checkbox" },
   render: () => (

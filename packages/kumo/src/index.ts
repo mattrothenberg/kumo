@@ -34,6 +34,14 @@ export {
   KUMO_FIELD_DEFAULT_VARIANTS,
 } from "./components/field";
 export {
+  Label,
+  type LabelProps,
+  labelVariants,
+  labelContentVariants,
+  KUMO_LABEL_VARIANTS,
+  KUMO_LABEL_DEFAULT_VARIANTS,
+} from "./components/label";
+export {
   Input,
   inputVariants,
   type InputProps,

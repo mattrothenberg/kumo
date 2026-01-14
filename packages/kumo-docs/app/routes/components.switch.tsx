@@ -101,18 +101,69 @@ export default function Example() {
                 <th className="px-4 py-3 text-left font-semibold">Prop</th>
                 <th className="px-4 py-3 text-left font-semibold">Type</th>
                 <th className="px-4 py-3 text-left font-semibold">Default</th>
+                <th className="px-4 py-3 text-left font-semibold">
+                  Description
+                </th>
               </tr>
             </thead>
             <tbody className="text-neutral-600 dark:text-neutral-400">
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
+                <td className="px-4 py-3 font-mono text-xs">label</td>
+                <td className="px-4 py-3 font-mono text-xs">ReactNode</td>
+                <td className="px-4 py-3 font-mono text-xs">-</td>
+                <td className="px-4 py-3 text-xs">Label content</td>
+              </tr>
+              <tr className="border-b border-neutral-200 dark:border-neutral-800">
+                <td className="px-4 py-3 font-mono text-xs">required</td>
+                <td className="px-4 py-3 font-mono text-xs">boolean</td>
+                <td className="px-4 py-3 font-mono text-xs">-</td>
+                <td className="px-4 py-3 text-xs">
+                  When true: shows asterisk (*). When false: shows "(optional)".
+                </td>
+              </tr>
+              <tr className="border-b border-neutral-200 dark:border-neutral-800">
+                <td className="px-4 py-3 font-mono text-xs">labelTooltip</td>
+                <td className="px-4 py-3 font-mono text-xs">ReactNode</td>
+                <td className="px-4 py-3 font-mono text-xs">-</td>
+                <td className="px-4 py-3 text-xs">
+                  Tooltip content shown via info icon next to label
+                </td>
+              </tr>
+              <tr className="border-b border-neutral-200 dark:border-neutral-800">
                 <td className="px-4 py-3 font-mono text-xs">checked</td>
                 <td className="px-4 py-3 font-mono text-xs">boolean</td>
                 <td className="px-4 py-3 font-mono text-xs">false</td>
+                <td className="px-4 py-3 text-xs">Checked state</td>
               </tr>
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                <td className="px-4 py-3 font-mono text-xs">onClick</td>
-                <td className="px-4 py-3 font-mono text-xs">{"() => void"}</td>
-                <td className="px-4 py-3 font-mono text-xs">undefined</td>
+                <td className="px-4 py-3 font-mono text-xs">onCheckedChange</td>
+                <td className="px-4 py-3 font-mono text-xs">
+                  {"(checked: boolean) => void"}
+                </td>
+                <td className="px-4 py-3 font-mono text-xs">-</td>
+                <td className="px-4 py-3 text-xs">Callback when toggled</td>
+              </tr>
+              <tr className="border-b border-neutral-200 dark:border-neutral-800">
+                <td className="px-4 py-3 font-mono text-xs">controlFirst</td>
+                <td className="px-4 py-3 font-mono text-xs">boolean</td>
+                <td className="px-4 py-3 font-mono text-xs">true</td>
+                <td className="px-4 py-3 text-xs">
+                  When true, switch before label; false for label first
+                </td>
+              </tr>
+              <tr className="border-b border-neutral-200 dark:border-neutral-800">
+                <td className="px-4 py-3 font-mono text-xs">disabled</td>
+                <td className="px-4 py-3 font-mono text-xs">boolean</td>
+                <td className="px-4 py-3 font-mono text-xs">false</td>
+                <td className="px-4 py-3 text-xs">Disabled state</td>
+              </tr>
+              <tr className="border-b border-neutral-200 dark:border-neutral-800">
+                <td className="px-4 py-3 font-mono text-xs">variant</td>
+                <td className="px-4 py-3 font-mono text-xs">
+                  "default" | "error"
+                </td>
+                <td className="px-4 py-3 font-mono text-xs">"default"</td>
+                <td className="px-4 py-3 text-xs">Visual variant</td>
               </tr>
             </tbody>
           </table>

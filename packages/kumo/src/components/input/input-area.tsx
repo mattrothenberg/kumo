@@ -13,10 +13,14 @@ export const InputArea = React.forwardRef<HTMLTextAreaElement, InputAreaProps>(
       variant = "default",
       onChange,
       label,
+      labelTooltip,
       description,
       error,
       ...inputProps
     } = props;
+
+    // Extract required from inputProps to pass to Field for label decoration
+    const { required } = inputProps;
     const handleChange = useCallback(
       (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         onChange?.(event);
@@ -43,6 +47,8 @@ export const InputArea = React.forwardRef<HTMLTextAreaElement, InputAreaProps>(
       return (
         <KumoField
           label={label}
+          required={required}
+          labelTooltip={labelTooltip}
           description={description}
           error={
             error
@@ -66,7 +72,7 @@ InputArea.displayName = "InputArea";
 
 /**
  * InputArea component props
- * @property {string} [label] - Label text for the textarea (enables Field wrapper)
+ * @property {ReactNode} [label] - Label content for the textarea (enables Field wrapper)
  * @property {ReactNode} [description] - Helper text displayed below the textarea
  * @property {string | { message: ReactNode, match: FieldErrorMatch }} [error] - Error message or validation error object
  */
@@ -77,8 +83,10 @@ export type InputAreaProps = {
   // Then other custom props
   children?: React.ReactNode;
   className?: string;
-  /** Label text for the textarea (enables Field wrapper) */
-  label?: string;
+  /** Label content for the textarea (enables Field wrapper) - can be a string or any React node */
+  label?: ReactNode;
+  /** Tooltip content to display next to the label via an info icon */
+  labelTooltip?: ReactNode;
   /** Helper text displayed below the textarea */
   description?: ReactNode;
   /** Error message or validation error object */

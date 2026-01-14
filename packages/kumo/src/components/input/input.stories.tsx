@@ -57,6 +57,87 @@ export const WithLabel: Story = {
   ),
 };
 
+export const RequiredField: Story = {
+  render: () => (
+    <Input
+      label="Email"
+      required
+      placeholder="you@example.com"
+      description="Required fields are marked with an asterisk"
+    />
+  ),
+};
+
+export const OptionalField: Story = {
+  render: () => (
+    <Input
+      label="Phone Number"
+      required={false}
+      placeholder="+1 (555) 000-0000"
+      description="Optional fields show '(optional)' indicator"
+    />
+  ),
+};
+
+export const WithLabelTooltip: Story = {
+  render: () => (
+    <Input
+      label="API Key"
+      labelTooltip="Find this in your dashboard under Settings > API Keys"
+      placeholder="sk_live_..."
+    />
+  ),
+};
+
+export const RequiredWithTooltip: Story = {
+  render: () => (
+    <Input
+      label="Password"
+      required
+      labelTooltip="Must be at least 8 characters with one uppercase letter and one number"
+      type="password"
+      placeholder="Enter password"
+    />
+  ),
+};
+
+export const ReactNodeLabel: Story = {
+  render: () => (
+    <Input
+      label={
+        <span>
+          Email for <strong>billing</strong>
+        </span>
+      }
+      required
+      placeholder="billing@company.com"
+      type="email"
+    />
+  ),
+};
+
+export const FormWithMixedRequirements: Story = {
+  render: () => (
+    <div className="flex max-w-md flex-col gap-4">
+      <Input label="Full Name" required placeholder="John Doe" />
+      <Input
+        label="Email"
+        required
+        labelTooltip="We'll send your receipt here"
+        placeholder="john@example.com"
+        type="email"
+      />
+      <Input label="Company" required={false} placeholder="Acme Inc." />
+      <Input
+        label="Notes"
+        required={false}
+        labelTooltip="Any additional information"
+        placeholder="Tell us more..."
+      />
+    </div>
+  ),
+};
+
 export const WithError: Story = {
   render: () => (
     <Input

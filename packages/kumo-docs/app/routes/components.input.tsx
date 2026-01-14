@@ -222,6 +222,94 @@ export default function Example() {
           </div>
 
           <div>
+            <h3 className="mb-4 text-xl font-semibold">Required Field</h3>
+            <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
+              Use the <code>required</code> prop to show an asterisk (*)
+              indicating the field is required.
+            </p>
+            <ComponentExample
+              code={`<Input 
+  label="Email" 
+  required
+  placeholder="you@example.com"
+/>`}
+            >
+              <Input label="Email" required placeholder="you@example.com" />
+            </ComponentExample>
+          </div>
+
+          <div>
+            <h3 className="mb-4 text-xl font-semibold">Optional Field</h3>
+            <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
+              Set{" "}
+              <code>
+                required={"{"}false{"}"}
+              </code>{" "}
+              to show "(optional)" text after the label.
+            </p>
+            <ComponentExample
+              code={`<Input 
+  label="Phone Number" 
+  required={false}
+  placeholder="+1 (555) 000-0000"
+/>`}
+            >
+              <Input
+                label="Phone Number"
+                required={false}
+                placeholder="+1 (555) 000-0000"
+              />
+            </ComponentExample>
+          </div>
+
+          <div>
+            <h3 className="mb-4 text-xl font-semibold">With Label Tooltip</h3>
+            <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
+              Use <code>labelTooltip</code> to add an info icon with additional
+              context on hover.
+            </p>
+            <ComponentExample
+              code={`<Input 
+  label="API Key" 
+  labelTooltip="Find this in your dashboard under Settings > API Keys"
+  placeholder="sk_live_..."
+/>`}
+            >
+              <Input
+                label="API Key"
+                labelTooltip="Find this in your dashboard under Settings > API Keys"
+                placeholder="sk_live_..."
+              />
+            </ComponentExample>
+          </div>
+
+          <div>
+            <h3 className="mb-4 text-xl font-semibold">ReactNode Label</h3>
+            <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
+              The <code>label</code> prop accepts ReactNode for rich formatting.
+            </p>
+            <ComponentExample
+              code={`<Input 
+  label={<span>Email for <strong>billing</strong></span>}
+  required
+  placeholder="billing@company.com"
+  type="email"
+/>`}
+            >
+              <Input
+                label={
+                  <span>
+                    Email for <strong>billing</strong>
+                  </span>
+                }
+                required
+                placeholder="billing@company.com"
+                type="email"
+              />
+            </ComponentExample>
+          </div>
+
+          <div>
             <h3 className="mb-4 text-xl font-semibold">
               Bare Input (No Label)
             </h3>
@@ -295,10 +383,27 @@ export default function Example() {
             <tbody className="text-neutral-600 dark:text-neutral-400">
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
                 <td className="px-4 py-3 font-mono text-xs">label</td>
-                <td className="px-4 py-3 font-mono text-xs">string</td>
+                <td className="px-4 py-3 font-mono text-xs">ReactNode</td>
                 <td className="px-4 py-3 font-mono text-xs">-</td>
                 <td className="px-4 py-3 text-xs">
-                  Label text (enables built-in Field wrapper)
+                  Label content (enables built-in Field wrapper)
+                </td>
+              </tr>
+              <tr className="border-b border-neutral-200 dark:border-neutral-800">
+                <td className="px-4 py-3 font-mono text-xs">required</td>
+                <td className="px-4 py-3 font-mono text-xs">boolean</td>
+                <td className="px-4 py-3 font-mono text-xs">-</td>
+                <td className="px-4 py-3 text-xs">
+                  When true: shows asterisk (*). When false: shows "(optional)".
+                  Also sets HTML required attribute.
+                </td>
+              </tr>
+              <tr className="border-b border-neutral-200 dark:border-neutral-800">
+                <td className="px-4 py-3 font-mono text-xs">labelTooltip</td>
+                <td className="px-4 py-3 font-mono text-xs">ReactNode</td>
+                <td className="px-4 py-3 font-mono text-xs">-</td>
+                <td className="px-4 py-3 text-xs">
+                  Tooltip content shown via info icon next to label
                 </td>
               </tr>
               <tr className="border-b border-neutral-200 dark:border-neutral-800">

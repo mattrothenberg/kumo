@@ -30,7 +30,7 @@ type Mode = "masked" | "revealed" | "empty";
 
 /**
  * SensitiveInput component props
- * @property {string} [label] - Label text for the input (enables Field wrapper)
+ * @property {ReactNode} [label] - Label content for the input (enables Field wrapper)
  * @property {ReactNode} [description] - Helper text displayed below the input
  * @property {string | { message: ReactNode, match: FieldErrorMatch }} [error] - Error message or validation error object
  */
@@ -51,8 +51,10 @@ export interface SensitiveInputProps
   size?: KumoInputSize;
   /** Style variant */
   variant?: KumoInputVariant;
-  /** Label text for the input (enables Field wrapper and sets masked state label) */
-  label?: string;
+  /** Label content for the input (enables Field wrapper and sets masked state label) - can be a string or any React node */
+  label?: ReactNode;
+  /** Tooltip content to display next to the label via an info icon */
+  labelTooltip?: ReactNode;
   /** Helper text displayed below the input */
   description?: ReactNode;
   /** Error message or validation error object */
@@ -75,12 +77,17 @@ export const SensitiveInput = forwardRef<HTMLInputElement, SensitiveInputProps>(
       autoComplete = "off",
       className,
       label,
+      labelTooltip,
       description,
       error,
+      required,
       ...inputProps
     },
     ref,
   ) => {
+    // For aria-label, only use string labels (ReactNode labels can't be used for aria-label)
+    const ariaLabelFallback =
+      typeof label === "string" ? label : "Sensitive value";
     const isControlled = controlledValue !== undefined;
     const [internalValue, setInternalValue] = useState(defaultValue);
     const value = isControlled ? controlledValue : internalValue;
@@ -341,13 +348,13 @@ export const SensitiveInput = forwardRef<HTMLInputElement, SensitiveInputProps>(
               className={cn(
                 isMaskedWithValue &&
                   !disabled &&
-                  "group-hover/mask:invisible group-focus-within/container:invisible",
+                  "group-focus-within/container:invisible group-hover/mask:invisible",
               )}
             >
               ●●●●●●●●
             </span>
             {isMaskedWithValue && !disabled && (
-              <span className="invisible absolute inset-0 text-muted group-hover/mask:visible group-focus-within/container:visible">
+              <span className="invisible absolute inset-0 text-muted group-focus-within/container:visible group-hover/mask:visible">
                 Click to reveal
               </span>
             )}
@@ -387,7 +394,7 @@ export const SensitiveInput = forwardRef<HTMLInputElement, SensitiveInputProps>(
             onKeyDown={(e) => e.stopPropagation()}
             aria-label={copied ? "Copied" : "Copy to clipboard"}
             className={cn(
-              "absolute -top-px right-2 -translate-y-full cursor-pointer rounded-t-md bg-primary px-2 py-0.5 text-xs text-white opacity-0 transition-opacity group-hover/container:opacity-100 group-focus-within/container:opacity-100 hover:brightness-120 focus-visible:outline focus-visible:outline-offset-1 focus-visible:outline-active",
+              "absolute -top-px right-2 -translate-y-full cursor-pointer rounded-t-md bg-primary px-2 py-0.5 text-xs text-white opacity-0 transition-opacity group-focus-within/container:opacity-100 group-hover/container:opacity-100 hover:brightness-120 focus-visible:outline focus-visible:outline-offset-1 focus-visible:outline-active",
             )}
           >
             {copied ? "Copied" : "Copy"}
@@ -409,7 +416,7 @@ export const SensitiveInput = forwardRef<HTMLInputElement, SensitiveInputProps>(
             className={containerClassName}
             onClick={handleContainerClick}
             onKeyDown={handleContainerKeyDown}
-            aria-label={`${label || 'Sensitive value'}, masked.`}
+            aria-label={`${ariaLabelFallback}, masked.`}
             aria-describedby={`${maskedInstructionId} ${liveRegionId}`}
             aria-disabled={disabled}
           >
@@ -437,6 +444,8 @@ export const SensitiveInput = forwardRef<HTMLInputElement, SensitiveInputProps>(
       return (
         <Field
           label={label}
+          required={required}
+          labelTooltip={labelTooltip}
           description={description}
           error={
             error

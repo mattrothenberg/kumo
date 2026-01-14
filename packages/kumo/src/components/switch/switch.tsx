@@ -100,8 +100,15 @@ export type SwitchProps = Omit<
 > & {
   /** Visual variant: "default" or "error" for validation failures (visual only, no error text) */
   variant?: SwitchVariant;
-  /** Label text for the switch (Field wrapper is built-in). Optional when used standalone for visual-only purposes. */
-  label?: string;
+  /** Label content for the switch (Field wrapper is built-in) - can be a string or any React node. Optional when used standalone for visual-only purposes. */
+  label?: ReactNode;
+  /** Tooltip content to display next to the label via an info icon */
+  labelTooltip?: ReactNode;
+  /**
+   * Whether the switch is required. When true, shows a red asterisk (*) on the label.
+   * When explicitly false, shows "(optional)" text after the label.
+   */
+  required?: boolean;
   /** When true (default), switch appears before label. When false, label appears before switch. */
   controlFirst?: boolean;
   size?: KumoSwitchSize;
@@ -169,6 +176,8 @@ const SwitchBase = forwardRef<HTMLButtonElement, SwitchProps>(
       size = "base",
       variant = "default",
       label,
+      labelTooltip,
+      required,
       controlFirst = true,
       onCheckedChange,
       transitioning,
@@ -176,6 +185,8 @@ const SwitchBase = forwardRef<HTMLButtonElement, SwitchProps>(
     },
     ref,
   ) => {
+    // For aria-label, only use string labels (ReactNode labels can't be used for aria-label)
+    const ariaLabelFallback = typeof label === "string" ? label : "Switch";
     const switchControl = (
       <BaseSwitch.Root
         ref={ref}
@@ -239,7 +250,7 @@ const SwitchBase = forwardRef<HTMLButtonElement, SwitchProps>(
               role={role}
               {...checkedA11yProps}
               aria-busy={transitioning || undefined}
-              aria-label={props["aria-label"] ?? label ?? "Switch"}
+              aria-label={props["aria-label"] ?? ariaLabelFallback}
               className={mergedClassName}
             >
               <BaseSwitch.Thumb
@@ -263,7 +274,12 @@ const SwitchBase = forwardRef<HTMLButtonElement, SwitchProps>(
     }
 
     return (
-      <Field label={label} controlFirst={controlFirst}>
+      <Field
+        label={label}
+        required={required}
+        labelTooltip={labelTooltip}
+        controlFirst={controlFirst}
+      >
         {switchControl}
       </Field>
     );
