@@ -11,7 +11,7 @@ exports[`Tooltip Generator - Snapshot Tests (Intermediate Data) > should produce
 {
   "borderRadius": 6,
   "fillVariable": undefined,
-  "fontSize": 14,
+  "fontSize": 13,
   "fontWeight": 400,
   "isWhiteText": true,
   "paddingX": 10,
@@ -29,7 +29,7 @@ exports[`Tooltip Generator - Snapshot Tests (Intermediate Data) > should produce
   "boxLayout": {
     "borderRadius": 6,
     "fillVariable": undefined,
-    "fontSize": 14,
+    "fontSize": 13,
     "fontWeight": 400,
     "isWhiteText": true,
     "paddingX": 10,
@@ -80,7 +80,7 @@ exports[`Tooltip Generator - Snapshot Tests (Intermediate Data) > should produce
     },
   },
   "text": {
-    "fontSize": 14,
+    "fontSize": 13,
     "fontWeight": 400,
   },
 }
