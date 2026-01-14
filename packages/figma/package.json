@@ -12,9 +12,8 @@
     "dev": "pnpm run build:data && pnpm run build:plugin --watch",
     "clean": "rm -rf src/generated src/code.js",
     "test": "vitest run",
-    "test:drift": "vitest run src/generators/drift-detection.test.ts",
     "typecheck": "tsc --noEmit",
-    "validate": "pnpm run build:data && pnpm run test:drift"
+    "validate": "pnpm run build:data && vitest run src/generators/drift-detection.test.ts"
   },
   "dependencies": {
     "@cloudflare/kumo": "workspace:*"
