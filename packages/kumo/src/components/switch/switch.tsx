@@ -182,6 +182,7 @@ const SwitchBase = forwardRef<HTMLButtonElement, SwitchProps>(
         checked={checked}
         disabled={disabled}
         onCheckedChange={onCheckedChange}
+        nativeButton
         render={(rootProps, state) => {
           const {
             ref: rootRef,
@@ -305,6 +306,7 @@ const SwitchItem = forwardRef<HTMLButtonElement, SwitchItemProps>(
           checked={checked}
           disabled={disabled}
           onCheckedChange={onCheckedChange}
+          nativeButton
           render={(rootProps, state) => {
             const {
               ref: rootRef,
