@@ -1,6 +1,7 @@
 import { Field as FieldBase } from "@base-ui/react/field";
 import type { ReactNode } from "react";
 import { cn } from "../../utils/cn";
+import { Label } from "../label";
 
 export const KUMO_FIELD_VARIANTS = {
   // Field currently has no variant options but structure is ready for future additions
@@ -61,7 +62,16 @@ export type FieldErrorMatch =
 
 export interface FieldProps extends KumoFieldVariantsProps {
   children: ReactNode;
-  label: string;
+  /** The label content - can be a string or any React node */
+  label: ReactNode;
+  /**
+   * When true, shows a red asterisk (*) to indicate the field is required.
+   * When explicitly false, shows gray "(optional)" text after the label.
+   * When undefined, no indicator is shown.
+   */
+  required?: boolean;
+  /** Tooltip content to display next to the label via an info icon */
+  labelTooltip?: ReactNode;
   error?: {
     message: ReactNode;
     match: FieldErrorMatch;
@@ -73,14 +83,26 @@ export interface FieldProps extends KumoFieldVariantsProps {
 export function Field({
   children,
   label,
+  required,
+  labelTooltip,
   error,
   description,
   controlFirst = false,
 }: FieldProps) {
+  // Show "(optional)" when required is explicitly false
+  const showOptional = required === false;
+
   return (
     <FieldBase.Root className={fieldVariants({ controlFirst })}>
       <FieldBase.Label className="text-base font-medium text-surface">
-        {label}
+        <Label
+          required={required}
+          showOptional={showOptional}
+          tooltip={labelTooltip}
+          asContent
+        >
+          {label}
+        </Label>
       </FieldBase.Label>
       {children}
       {error ? (

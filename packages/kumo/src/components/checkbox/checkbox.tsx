@@ -103,8 +103,10 @@ export type CheckboxProps = Omit<
 > & {
   /** Visual variant: "default" or "error" for validation failures (visual only, no error text) */
   variant?: CheckboxVariant;
-  /** Label text for the checkbox (enables built-in Field wrapper) */
-  label?: string;
+  /** Label content for the checkbox (enables built-in Field wrapper) - can be a string or any React node */
+  label?: ReactNode;
+  /** Tooltip content to display next to the label via an info icon */
+  labelTooltip?: ReactNode;
   /** When true (default), checkbox appears before label. When false, label appears before checkbox. */
   controlFirst?: boolean;
   checked?: boolean;
@@ -182,9 +184,11 @@ const CheckboxBase = forwardRef<HTMLInputElement, CheckboxProps>(
       disabled,
       variant = "default",
       label,
+      labelTooltip,
       controlFirst = true,
       onValueChange,
       onChange,
+      required,
       ...props
     },
     ref,
@@ -263,7 +267,12 @@ const CheckboxBase = forwardRef<HTMLInputElement, CheckboxProps>(
     }
 
     return (
-      <Field label={label} controlFirst={controlFirst}>
+      <Field
+        label={label}
+        required={required}
+        labelTooltip={labelTooltip}
+        controlFirst={controlFirst}
+      >
         {checkboxControl}
       </Field>
     );

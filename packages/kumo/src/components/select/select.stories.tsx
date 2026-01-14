@@ -35,6 +35,67 @@ export const WithLabel: Story = {
   ),
 };
 
+export const RequiredField: Story = {
+  render: () => (
+    <Select
+      label="Country"
+      hideLabel={false}
+      required
+      placeholder="Select a country"
+    >
+      <Select.Option value="us">United States</Select.Option>
+      <Select.Option value="uk">United Kingdom</Select.Option>
+      <Select.Option value="ca">Canada</Select.Option>
+    </Select>
+  ),
+};
+
+export const OptionalField: Story = {
+  render: () => (
+    <Select
+      label="Preferred Language"
+      hideLabel={false}
+      required={false}
+      placeholder="Select a language"
+    >
+      <Select.Option value="en">English</Select.Option>
+      <Select.Option value="es">Spanish</Select.Option>
+      <Select.Option value="fr">French</Select.Option>
+    </Select>
+  ),
+};
+
+export const WithLabelTooltip: Story = {
+  render: () => (
+    <Select
+      label="Timezone"
+      hideLabel={false}
+      labelTooltip="This will be used for scheduling and notifications"
+      placeholder="Select your timezone"
+    >
+      <Select.Option value="utc">UTC</Select.Option>
+      <Select.Option value="est">Eastern Time (EST)</Select.Option>
+      <Select.Option value="pst">Pacific Time (PST)</Select.Option>
+    </Select>
+  ),
+};
+
+export const RequiredWithTooltip: Story = {
+  render: () => (
+    <Select
+      label="Plan"
+      hideLabel={false}
+      required
+      labelTooltip="Choose the plan that best fits your needs. You can upgrade anytime."
+      placeholder="Select a plan"
+    >
+      <Select.Option value="free">Free</Select.Option>
+      <Select.Option value="pro">Pro - $9/month</Select.Option>
+      <Select.Option value="enterprise">Enterprise - Contact us</Select.Option>
+    </Select>
+  ),
+};
+
 export const WithError: Story = {
   render: () => (
     <Select

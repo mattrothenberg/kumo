@@ -58,8 +58,12 @@ export interface ComboboxProps extends KumoComboboxVariantsProps {
   children: ReactNode;
   /** Additional CSS classes */
   className?: string;
-  /** Label text for the combobox (enables Field wrapper) */
-  label?: string;
+  /** Label content for the combobox (enables Field wrapper) - can be a string or any React node */
+  label?: ReactNode;
+  /** Whether the combobox is required */
+  required?: boolean;
+  /** Tooltip content to display next to the label via an info icon */
+  labelTooltip?: ReactNode;
   /** Helper text displayed below the combobox */
   description?: ReactNode;
   /** Error message or validation error object */
@@ -68,12 +72,16 @@ export interface ComboboxProps extends KumoComboboxVariantsProps {
 
 function Root<Value, Multiple extends boolean | undefined = false>({
   label,
+  required,
+  labelTooltip,
   description,
   error,
   children,
   ...props
 }: ComboboxBase.Root.Props<Value, Multiple> & {
-  label?: string;
+  label?: ReactNode;
+  required?: boolean;
+  labelTooltip?: ReactNode;
   description?: ReactNode;
   error?: string | { message: ReactNode; match: FieldErrorMatch };
 }) {
@@ -86,6 +94,8 @@ function Root<Value, Multiple extends boolean | undefined = false>({
     return (
       <Field
         label={label}
+        required={required}
+        labelTooltip={labelTooltip}
         description={description}
         error={
           error

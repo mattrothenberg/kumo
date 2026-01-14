@@ -93,6 +93,48 @@ export const LabelFirst: Story = {
   },
 };
 
+export const RequiredField: Story = {
+  args: {
+    label: "Enable notifications",
+    required: true,
+  },
+};
+
+export const OptionalField: Story = {
+  args: {
+    label: "Enable dark mode",
+    required: false,
+  },
+};
+
+export const WithLabelTooltip: Story = {
+  args: {
+    label: "Enable two-factor authentication",
+    labelTooltip:
+      "Adds an extra layer of security by requiring a code from your phone",
+  },
+};
+
+export const RequiredWithTooltip: Story = {
+  args: {
+    label: "Accept cookies",
+    required: true,
+    labelTooltip: "Required for the website to function properly",
+  },
+};
+
+export const ReactNodeLabel: Story = {
+  render: () => (
+    <Switch
+      label={
+        <span>
+          Enable <strong>automatic updates</strong>
+        </span>
+      }
+    />
+  ),
+};
+
 export const Controlled: Story = {
   render: () => {
     const [checked, setChecked] = React.useState(false);
