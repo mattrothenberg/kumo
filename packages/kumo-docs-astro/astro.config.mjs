@@ -55,6 +55,7 @@ const buildInfo = getBuildInfo();
 export default defineConfig({
   integrations: [react(), pagefind()],
   vite: {
+    // @ts-expect-error - Vite version mismatch between Astro and @tailwindcss/vite
     plugins: [tailwindcss()],
     resolve: {
       alias: {
