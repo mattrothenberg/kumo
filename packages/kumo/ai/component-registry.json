@@ -1508,6 +1508,14 @@
           "type": "ReactNode",
           "optional": true
         },
+        "title": {
+          "type": "string",
+          "optional": true
+        },
+        "description": {
+          "type": "string",
+          "optional": true
+        },
         "tabs": {
           "type": "TabsItem[]",
           "optional": true
@@ -1531,10 +1539,15 @@
         "<PageHeader spacing=\"base\" breadcrumbs={<Breadcrumbs>\n              <Breadcrumbs.Link href=\"/\">Home</Breadcrumbs.Link>\n              <Breadcrumbs.Separator />\n              <Breadcrumbs.Current>Current</Breadcrumbs.Current>\n            </Breadcrumbs>} tabs={[\n            { label: \"General\", value: \"general\" },\n            { label: \"Settings\", value: \"settings\" },\n          ]} defaultTab=\"general\" />",
         "<PageHeader spacing=\"relaxed\" breadcrumbs={<Breadcrumbs>\n              <Breadcrumbs.Link href=\"/\">Home</Breadcrumbs.Link>\n              <Breadcrumbs.Separator />\n              <Breadcrumbs.Current>Current</Breadcrumbs.Current>\n            </Breadcrumbs>} tabs={[\n            { label: \"General\", value: \"general\" },\n            { label: \"Settings\", value: \"settings\" },\n          ]} defaultTab=\"general\" />",
         "<PageHeader\n      breadcrumbs={\n        <Breadcrumbs>\n          <Breadcrumbs.Link href=\"/\">Home</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Current>Settings</Breadcrumbs.Current>\n        </Breadcrumbs>\n      }\n      tabs={[\n        { label: \"General\", value: \"general\" },\n        { label: \"Security\", value: \"security\" },\n        { label: \"Notifications\", value: \"notifications\" },\n        { label: \"Billing\", value: \"billing\" },\n      ]}\n      defaultTab=\"general\"\n    />",
-        "<PageHeader\n      breadcrumbs={\n        <Breadcrumbs>\n          <Breadcrumbs.Link href=\"/\">Home</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Link href=\"/projects\">Projects</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Current>My Project</Breadcrumbs.Current>\n        </Breadcrumbs>\n      }\n      tabs={[\n        { label: \"Overview\", value: \"overview\" },\n        { label: \"Analytics\", value: \"analytics\" },\n        { label: \"Settings\", value: \"settings\" },\n      ]}\n      defaultTab=\"overview\"\n    >\n      <Button variant=\"outline\" size=\"sm\">\n        Export\n      </Button>\n      <Button variant=\"primary\" size=\"sm\">\n        <PlusIcon size={16} />\n        New Item\n      </Button>\n    </PageHeader>"
+        "<PageHeader\n      breadcrumbs={\n        <Breadcrumbs>\n          <Breadcrumbs.Link href=\"/\">Home</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Link href=\"/projects\">Projects</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Current>My Project</Breadcrumbs.Current>\n        </Breadcrumbs>\n      }\n      tabs={[\n        { label: \"Overview\", value: \"overview\" },\n        { label: \"Analytics\", value: \"analytics\" },\n        { label: \"Settings\", value: \"settings\" },\n      ]}\n      defaultTab=\"overview\"\n    >\n      <Button variant=\"outline\" size=\"sm\">\n        Export\n      </Button>\n      <Button variant=\"primary\" size=\"sm\">\n        <PlusIcon size={16} />\n        New Item\n      </Button>\n    </PageHeader>",
+        "<PageHeader\n      breadcrumbs={\n        <Breadcrumbs>\n          <Breadcrumbs.Link href=\"/\">Home</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Link href=\"/products\">Products</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Current>Page title</Breadcrumbs.Current>\n        </Breadcrumbs>\n      }\n      title=\"Page title\"\n    />",
+        "<PageHeader\n      breadcrumbs={\n        <Breadcrumbs>\n          <Breadcrumbs.Link href=\"/\">Home</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Link href=\"/products\">Products</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Current>Page title</Breadcrumbs.Current>\n        </Breadcrumbs>\n      }\n      title=\"Page title\"\n      description=\"Action-led, value-oriented description of what this page does. Optional second sentence with use cases or prerequisites.\"\n    />",
+        "<PageHeader\n      breadcrumbs={\n        <Breadcrumbs>\n          <Breadcrumbs.Link href=\"/\">Home</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Link href=\"/products\">Products</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Current>Page title</Breadcrumbs.Current>\n        </Breadcrumbs>\n      }\n      title=\"Page title\"\n      description=\"Action-led, value-oriented description of what this page does. Optional second sentence with use cases or prerequisites.\"\n      tabs={[\n        { label: \"Overview\", value: \"overview\" },\n        { label: \"Analytics\", value: \"analytics\" },\n        { label: \"Settings\", value: \"settings\" },\n      ]}\n      defaultTab=\"overview\"\n    >\n      <Button variant=\"outline\" size=\"sm\">\n        Export\n      </Button>\n      <Button variant=\"primary\" size=\"sm\">\n        <PlusIcon size={16} />\n        New Item\n      </Button>\n    </PageHeader>"
       ],
       "colors": [
-        "border-color"
+        "border-color",
+        "text-muted",
+        "text-surface"
       ]
     },
     "Pagination": {

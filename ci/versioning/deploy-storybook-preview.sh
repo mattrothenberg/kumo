@@ -3,6 +3,11 @@ set -euo pipefail
 
 # Storybook Preview Deployment Script
 # Uploads a new version to kumo-storybook worker, outputs report artifact
+#
+# PREREQUISITES:
+# - Preview URLs must be enabled in Cloudflare dashboard:
+#   Workers & Pages > kumo-storybook > Settings > Domains & Routes > Preview URLs > Enable
+# - wrangler.jsonc must have "preview_urls": true (already configured)
 
 echo "📖 Starting Storybook preview deployment..."
 
@@ -19,19 +24,37 @@ pnpm run build:storybook
 echo "🚀 Uploading version to kumo-storybook worker..."
 echo "  Using wrangler version: $(npx wrangler --version)"
 
-# Try without --x-versions first (wrangler 3.73.0+), fall back to with flag
-if ! VERSION_OUTPUT=$(npx wrangler versions upload --message "Preview for ${CI_COMMIT_SHORT_SHA:-local}" 2>&1); then
-  echo "⚠️  First attempt failed, trying with --x-versions flag..."
-  VERSION_OUTPUT=$(npx wrangler versions upload --x-versions --message "Preview for ${CI_COMMIT_SHORT_SHA:-local}" 2>&1)
-fi
+# Upload version - capture output regardless of exit code
+VERSION_OUTPUT=$(npx wrangler versions upload --message "Preview for ${CI_COMMIT_SHORT_SHA:-local}" 2>&1) || true
 
 echo "$VERSION_OUTPUT"
 
-# Extract Version Preview URL directly from wrangler output
+# Verify upload succeeded by checking for Worker Version ID
+if ! echo "$VERSION_OUTPUT" | grep -q "Worker Version ID:"; then
+  echo "❌ Failed to upload version - no Worker Version ID in output"
+  exit 1
+fi
+
+# Try to extract Version Preview URL from wrangler output
 PREVIEW_URL=$(echo "$VERSION_OUTPUT" | grep -oE 'Version Preview URL: https://[^ ]+' | sed 's/Version Preview URL: //')
 
+# If wrangler didn't output a preview URL, construct it from the version ID
+# Format: https://<version-prefix>-<worker-name>.<subdomain>.workers.dev
 if [ -z "$PREVIEW_URL" ]; then
-  echo "❌ Failed to extract Version Preview URL from wrangler output"
+  echo "  Wrangler did not output preview URL, constructing from version ID..."
+  VERSION_ID=$(echo "$VERSION_OUTPUT" | grep -oE 'Worker Version ID: [a-f0-9-]+' | sed 's/Worker Version ID: //')
+  if [ -n "$VERSION_ID" ]; then
+    # Version prefix is first 8 chars of the version ID
+    VERSION_PREFIX=$(echo "$VERSION_ID" | cut -c1-8)
+    WORKER_NAME="kumo-storybook"
+    SUBDOMAIN="design-engineering"
+    PREVIEW_URL="https://${VERSION_PREFIX}-${WORKER_NAME}.${SUBDOMAIN}.workers.dev"
+    echo "  Constructed preview URL: $PREVIEW_URL"
+  fi
+fi
+
+if [ -z "$PREVIEW_URL" ]; then
+  echo "❌ Failed to determine preview URL"
   echo "Full output was:"
   echo "$VERSION_OUTPUT"
   exit 1

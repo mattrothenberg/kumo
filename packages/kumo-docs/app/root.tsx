@@ -37,6 +37,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="build-version" content={__BUILD_VERSION__} />
+        <meta name="build-commit" content={__BUILD_COMMIT__} />
+        <meta name="build-date" content={__BUILD_DATE__} />
         <Meta />
         <Links />
       </head>
@@ -589,6 +592,12 @@ export default function App() {
               </li>
             </ul>
           </div>
+        </div>
+        {/* Version badge at bottom of sidebar */}
+        <div className="flex-none border-t border-neutral-200 p-3 text-xs text-neutral-400 dark:border-neutral-800">
+          <span title={`Built: ${__BUILD_DATE__}`}>
+            v{__BUILD_VERSION__} ({__BUILD_COMMIT__})
+          </span>
         </div>
       </aside>
 

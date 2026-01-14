@@ -6,24 +6,24 @@ This document describes the CI/CD workflows for the Kumo monorepo.
 
 The GitLab CI pipeline consists of the following stages:
 
-| Stage | Purpose |
-|-------|---------|
-| `build` | Build packages |
-| `checks` | Linting, typechecking, validation |
-| `test` | Run tests |
-| `review` | AI-powered code review |
-| `beta-release` | Publish beta npm packages |
-| `beta-preview` | Deploy Storybook previews |
-| `mr-report` | Post consolidated MR comment |
+| Stage                | Purpose                                    |
+| -------------------- | ------------------------------------------ |
+| `build`              | Build packages                             |
+| `checks`             | Linting, typechecking, validation          |
+| `test`               | Run tests                                  |
+| `review`             | AI-powered code review                     |
+| `beta-release`       | Publish beta npm packages                  |
+| `beta-preview`       | Deploy Storybook previews                  |
+| `mr-report`          | Post consolidated MR comment               |
 | `production-release` | Deploy staging, manual production releases |
 
 ## Staging Deployments
 
 On merge to main, both the documentation site and Storybook are automatically deployed to staging:
 
-| Package | Worker | URL |
-|---------|--------|-----|
-| `packages/kumo-docs` | `kumo-docs-staging` | `staging.kumo-ui.com` |
+| Package                     | Worker                   | URL                             |
+| --------------------------- | ------------------------ | ------------------------------- |
+| `packages/kumo-docs`        | `kumo-docs-staging`      | `staging.kumo-ui.com`           |
 | `packages/kumo` (Storybook) | `kumo-storybook-staging` | `storybook.staging.kumo-ui.com` |
 
 ### Kumo Docs Staging
@@ -40,11 +40,11 @@ wrangler deploy --env staging
 
 Storybook is deployed to Cloudflare Workers with three environments:
 
-| Environment | Worker | URL | Trigger |
-|-------------|--------|-----|---------|
-| **Preview** | `kumo-storybook` (version) | `<version-id>-kumo-storybook.design-engineering.workers.dev` | MR commits |
-| **Staging** | `kumo-storybook-staging` | `storybook.staging.kumo-ui.com` | Merge to main |
-| **Production** | `kumo-storybook` | `storybook.kumo-ui.com` | Manual |
+| Environment    | Worker                     | URL                                                          | Trigger       |
+| -------------- | -------------------------- | ------------------------------------------------------------ | ------------- |
+| **Preview**    | `kumo-storybook` (version) | `<version-id>-kumo-storybook.design-engineering.workers.dev` | MR commits    |
+| **Staging**    | `kumo-storybook-staging`   | `storybook.staging.kumo-ui.com`                              | Merge to main |
+| **Production** | `kumo-storybook`           | `storybook.kumo-ui.com`                                      | Manual        |
 
 ### Preview Deployments
 
@@ -58,6 +58,21 @@ wrangler versions upload --message "Preview for <sha>"
 - Creates a version under the `kumo-storybook` worker
 - Does NOT affect production traffic
 - Preview URL uses first 8 chars of version ID: `<version-id>-kumo-storybook.design-engineering.workers.dev`
+
+#### Preview URL Requirements
+
+Preview URLs must be enabled in the Cloudflare dashboard for preview deployments to work:
+
+1. Go to **Workers & Pages** in the Cloudflare dashboard
+2. Select your Worker (`kumo-docs` or `kumo-storybook`)
+3. Navigate to **Settings** > **Domains & Routes**
+4. Under **Preview URLs**, click **Enable**
+
+The `preview_urls: true` setting in `wrangler.jsonc` is necessary but not sufficient -
+the dashboard setting is the primary control that enables/disables preview URL generation.
+
+**Note:** If wrangler doesn't output a preview URL, the deployment scripts will construct
+one from the Worker Version ID as a fallback.
 
 ### Staging Deployments
 
@@ -135,28 +150,30 @@ Each job writes a JSON artifact to `ci/reports/`:
 
 ```typescript
 interface ReportItem {
-  id: string;          // e.g., "npm-release", "storybook-preview"
-  title: string;       // Section title in comment
-  priority: number;    // Sort order (lower = first)
-  content: string;     // Markdown content
+  id: string; // e.g., "npm-release", "storybook-preview"
+  title: string; // Section title in comment
+  priority: number; // Sort order (lower = first)
+  content: string; // Markdown content
   success: boolean;
 }
 ```
 
 Priority ranges:
+
 - `10-19`: Release info (npm)
 - `20-29`: Previews (storybook)
 
 ### Adding a New Reporter
 
 1. Create reporter in `ci/reporters/<name>.ts`:
+
    ```typescript
    export const myReporter: Reporter = {
-     id: 'my-reporter',
-     name: 'My Reporter',
+     id: "my-reporter",
+     name: "My Reporter",
      async collect(context: CIContext): Promise<ReportItem | null> {
        // Return report item or null
-     }
+     },
    };
    ```
 
@@ -197,22 +214,22 @@ ci/
 
 ### CI Variables (from GitLab)
 
-| Variable | Description |
-|----------|-------------|
-| `CI_COMMIT_SHA` | Full commit SHA |
-| `CI_COMMIT_SHORT_SHA` | Short commit SHA (8 chars) |
-| `CI_MERGE_REQUEST_IID` | MR number |
-| `CI_PROJECT_ID` | GitLab project ID |
+| Variable               | Description                |
+| ---------------------- | -------------------------- |
+| `CI_COMMIT_SHA`        | Full commit SHA            |
+| `CI_COMMIT_SHORT_SHA`  | Short commit SHA (8 chars) |
+| `CI_MERGE_REQUEST_IID` | MR number                  |
+| `CI_PROJECT_ID`        | GitLab project ID          |
 
 ### Secrets (from Vault)
 
-| Secret | Path | Used By |
-|--------|------|---------|
-| `NPM_TOKEN` | `gitlab/_ci_components/_dev/npm/kv_token` | Beta/production releases |
-| `CLOUDFLARE_API_TOKEN` | `gitlab/cloudflare/fe/kumo/_dev/cloudflare_api_token/data` | Storybook deployments |
-| `CLOUDFLARE_ACCOUNT_ID` | `gitlab/cloudflare/fe/kumo/_dev/cloudflare_account_id/data` | Storybook deployments |
-| `GITLAB_API_TOKEN` | `gitlab/cloudflare/fe/kumo/_dev/kumo_preview_bot_v2/data` | MR comments |
-| `CI_RELEASE_TOKEN` | `gitlab/cloudflare/fe/kumo/_dev/ci_release_token_v2/data` | Production releases |
+| Secret                  | Path                                                        | Used By                  |
+| ----------------------- | ----------------------------------------------------------- | ------------------------ |
+| `NPM_TOKEN`             | `gitlab/_ci_components/_dev/npm/kv_token`                   | Beta/production releases |
+| `CLOUDFLARE_API_TOKEN`  | `gitlab/cloudflare/fe/kumo/_dev/cloudflare_api_token/data`  | Storybook deployments    |
+| `CLOUDFLARE_ACCOUNT_ID` | `gitlab/cloudflare/fe/kumo/_dev/cloudflare_account_id/data` | Storybook deployments    |
+| `GITLAB_API_TOKEN`      | `gitlab/cloudflare/fe/kumo/_dev/kumo_preview_bot_v2/data`   | MR comments              |
+| `CI_RELEASE_TOKEN`      | `gitlab/cloudflare/fe/kumo/_dev/ci_release_token_v2/data`   | Production releases      |
 
 ## Local Testing
 
@@ -251,15 +268,18 @@ The Storybook worker configuration is in `packages/kumo/wrangler.jsonc`:
 {
   "name": "kumo-storybook",
   "routes": [
-    { "pattern": "storybook.kumo-ui.com/*", "zone_name": "kumo-ui.com" }
+    { "pattern": "storybook.kumo-ui.com/*", "zone_name": "kumo-ui.com" },
   ],
   "env": {
     "staging": {
       "routes": [
-        { "pattern": "storybook.staging.kumo-ui.com/*", "zone_name": "kumo-ui.com" }
-      ]
-    }
-  }
+        {
+          "pattern": "storybook.staging.kumo-ui.com/*",
+          "zone_name": "kumo-ui.com",
+        },
+      ],
+    },
+  },
 }
 ```
 
