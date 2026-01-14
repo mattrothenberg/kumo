@@ -13,7 +13,8 @@
     "clean": "rm -rf src/generated src/code.js",
     "test": "vitest run",
     "test:drift": "vitest run src/generators/drift-detection.test.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "validate": "pnpm run build:data && pnpm run test:drift"
   },
   "dependencies": {
     "@cloudflare/kumo": "workspace:*"
