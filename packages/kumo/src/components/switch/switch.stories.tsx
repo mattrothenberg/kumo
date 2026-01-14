@@ -93,13 +93,6 @@ export const LabelFirst: Story = {
   },
 };
 
-export const RequiredField: Story = {
-  args: {
-    label: "Enable notifications",
-    required: true,
-  },
-};
-
 export const OptionalField: Story = {
   args: {
     label: "Enable dark mode",
@@ -115,11 +108,11 @@ export const WithLabelTooltip: Story = {
   },
 };
 
-export const RequiredWithTooltip: Story = {
+export const OptionalWithTooltip: Story = {
   args: {
-    label: "Accept cookies",
-    required: true,
-    labelTooltip: "Required for the website to function properly",
+    label: "Save preferences",
+    required: false,
+    labelTooltip: "We'll remember your settings for next time",
   },
 };
 

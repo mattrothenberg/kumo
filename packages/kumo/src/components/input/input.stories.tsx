@@ -57,17 +57,6 @@ export const WithLabel: Story = {
   ),
 };
 
-export const RequiredField: Story = {
-  render: () => (
-    <Input
-      label="Email"
-      required
-      placeholder="you@example.com"
-      description="Required fields are marked with an asterisk"
-    />
-  ),
-};
-
 export const OptionalField: Story = {
   render: () => (
     <Input
@@ -89,14 +78,14 @@ export const WithLabelTooltip: Story = {
   ),
 };
 
-export const RequiredWithTooltip: Story = {
+export const WithTooltipAndOptional: Story = {
   render: () => (
     <Input
-      label="Password"
-      required
-      labelTooltip="Must be at least 8 characters with one uppercase letter and one number"
-      type="password"
-      placeholder="Enter password"
+      label="Backup Email"
+      required={false}
+      labelTooltip="Used for account recovery if you lose access to your primary email"
+      type="email"
+      placeholder="backup@example.com"
     />
   ),
 };
@@ -109,20 +98,18 @@ export const ReactNodeLabel: Story = {
           Email for <strong>billing</strong>
         </span>
       }
-      required
       placeholder="billing@company.com"
       type="email"
     />
   ),
 };
 
-export const FormWithMixedRequirements: Story = {
+export const FormWithOptionalFields: Story = {
   render: () => (
     <div className="flex max-w-md flex-col gap-4">
-      <Input label="Full Name" required placeholder="John Doe" />
+      <Input label="Full Name" placeholder="John Doe" />
       <Input
         label="Email"
-        required
         labelTooltip="We'll send your receipt here"
         placeholder="john@example.com"
         type="email"

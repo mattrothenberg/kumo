@@ -143,12 +143,6 @@ export const WithDescription: Story = {
   ),
 };
 
-export const RequiredField: Story = {
-  render: () => (
-    <SensitiveInput label="API Key" required placeholder="Enter your API key" />
-  ),
-};
-
 export const OptionalField: Story = {
   render: () => (
     <SensitiveInput
@@ -165,17 +159,6 @@ export const WithLabelTooltip: Story = {
       label="Secret Key"
       labelTooltip="Find this in your dashboard under Settings > API Keys"
       defaultValue="sk_live_abc123xyz789"
-    />
-  ),
-};
-
-export const RequiredWithTooltip: Story = {
-  render: () => (
-    <SensitiveInput
-      label="Production API Key"
-      required
-      labelTooltip="This key is required to deploy to production. Keep it secure!"
-      placeholder="sk_live_..."
     />
   ),
 };

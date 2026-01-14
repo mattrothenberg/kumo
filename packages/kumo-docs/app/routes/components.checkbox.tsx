@@ -244,7 +244,7 @@ export default function Example() {
                 <td className="px-4 py-3 font-mono text-xs">boolean</td>
                 <td className="px-4 py-3 font-mono text-xs">-</td>
                 <td className="px-4 py-3 text-xs">
-                  When true: shows asterisk (*). When false: shows "(optional)".
+                  When false: shows "(optional)" text.
                 </td>
               </tr>
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
