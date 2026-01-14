@@ -8,6 +8,7 @@ export default [
   route("figma", "routes/figma.tsx"),
   route("playground", "routes/playground-sandpack.tsx"),
   route("api/generate", "routes/api.generate.tsx"),
+  route("api/version", "routes/api.version.tsx"),
   route("components/badge", "routes/components.badge.tsx"),
   route("components/banner", "routes/components.banner.tsx"),
   route("components/button", "routes/components.button.tsx"),

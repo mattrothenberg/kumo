@@ -3,6 +3,7 @@
   "name": "kumo-docs",
   "account_id": "61e3887ff0554f81e1e175d106c3926f",
   "compatibility_date": "2025-04-04",
+  "preview_urls": true,
   "main": "./workers/app.ts",
   "assets": {
     "directory": "./build/client",
