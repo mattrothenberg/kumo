@@ -7,18 +7,22 @@ Generates production-quality Figma components from Kumo component definitions.
 ### Building the Plugin
 
 ```bash
-# From packages/kumo/scripts/figma/plugin/
-./build.sh
+# From the repository root
+pnpm --filter @cloudflare/figma-plugin build
 
-# Or manually:
-npx esbuild code.ts --bundle --outfile=code.js --format=iife --target=es2020
+# Or from packages/figma/
+cd packages/figma
+pnpm build
+
+# Or using the build script directly
+./packages/figma/src/build.sh
 ```
 
 ### Running in Figma
 
 1. Open Figma Desktop
 2. Go to **Plugins > Development > Import plugin from manifest...**
-3. Select `packages/kumo/scripts/figma/plugin/manifest.json`
+3. Select `packages/figma/src/manifest.json`
 4. Open the target file: https://www.figma.com/design/sKKZc6pC6W1TtzWBLxDGSU/kumo-ai
 5. Run the plugin from **Plugins > Development > Kumo UI Kit Generator**
 
@@ -31,24 +35,31 @@ npx esbuild code.ts --bundle --outfile=code.js --format=iife --target=es2020
 ## Structure
 
 ```
-plugin/
-├── manifest.json          # Figma plugin manifest
-├── code.ts                # Main plugin entry point
-├── code.js                # Compiled output (generated)
-├── ui.html                # Plugin UI
-├── build.sh               # Build script
+packages/figma/
+├── package.json           # Package configuration
 ├── tsconfig.json          # TypeScript config
-├── figma-types.d.ts       # Figma API type declarations
-├── parsers/
-│   ├── opacity-extractor.ts      # Extract opacity modifiers from source
-│   ├── tailwind-to-figma.ts      # Parse Tailwind classes to Figma values
-│   └── component-registry.ts     # Parse component-registry.json
-└── generators/
-    ├── shared.ts                 # Shared utilities for all generators
-    ├── badge.ts                  # Badge component generator
-    ├── button-text.ts            # Button text component generator
-    ├── button-icon.ts            # Button icon component generator (Phase 4)
-    └── placeholders.ts           # Placeholder icon/loader generators
+├── vitest.config.ts       # Test configuration
+└── src/
+    ├── manifest.json      # Figma plugin manifest
+    ├── code.ts            # Main plugin entry point
+    ├── code.js            # Compiled output (generated)
+    ├── ui.html            # Plugin UI
+    ├── build.sh           # Build script
+    ├── figma-types.d.ts   # Figma API type declarations
+    ├── build-theme-data.ts    # Generate theme data from CSS
+    ├── build-icon-data.ts     # Generate icon data from sprite
+    ├── build-loader-data.ts   # Generate loader data
+    ├── generated/         # Generated data files (JSON)
+    ├── parsers/
+    │   ├── opacity-extractor.ts      # Extract opacity modifiers from source
+    │   ├── tailwind-to-figma.ts      # Parse Tailwind classes to Figma values
+    │   └── component-registry.ts     # Parse component-registry.json
+    └── generators/
+        ├── shared.ts                 # Shared utilities for all generators
+        ├── badge.ts                  # Badge component generator
+        ├── button.ts                 # Button component generator
+        ├── icon-library.ts           # Icon library generator
+        └── ...                       # 30+ component generators
 ```
 
 ## Key Modules
@@ -198,20 +209,20 @@ This plugin and the token sync script serve different purposes:
 **Workflow:**
 
 ```bash
-# 1. Sync tokens first
+# 1. Sync tokens first (from repo root)
 npx tsx packages/kumo/scripts/figma/sync-tokens-to-figma.ts
 
-# 2. Build and run plugin
-cd packages/kumo/scripts/figma/plugin
-./build.sh
-# Then run in Figma: Plugins > Development > Kumo UI Kit Generator
+# 2. Build the plugin (from repo root)
+pnpm --filter @cloudflare/figma-plugin build
+
+# 3. Run in Figma: Plugins > Development > Kumo UI Kit Generator
 ```
 
 ## Troubleshooting
 
 ### "kumo-colors collection not found"
 
-The target Figma file must have the `kumo-colors` variable collection. Run the token sync script first:
+The target Figma file must have the `kumo-colors` variable collection. Run the token sync script first (from repo root):
 
 ```bash
 npx tsx packages/kumo/scripts/figma/sync-tokens-to-figma.ts
@@ -258,14 +269,16 @@ The plugin includes automated drift detection to ensure Figma generators stay in
 When you add a new component to Kumo, follow these steps to add Figma support:
 
 #### 1. Component Implementation
+
 ```bash
 # Your component code in packages/kumo/src/components/
-# component-registry.json updates automatically via build:ai-metadata
+# component-registry.json updates automatically via codegen:registry
 ```
 
 #### 2. Create Figma Generator
 
 Create `generators/yourcomponent.ts`:
+
 ```typescript
 import {
   createTextNode,
@@ -297,6 +310,7 @@ export async function generateYourComponentComponents(
 #### 3. Register in code.ts
 
 Add to the `GENERATORS` array in `code.ts`:
+
 ```typescript
 import { generateYourComponentComponents } from "./generators/yourcomponent";
 
@@ -313,15 +327,17 @@ const GENERATORS = [
 ```
 
 #### 4. Run Tests Locally
+
 ```bash
-cd packages/kumo
-pnpm validate:figma  # Runs drift detection test
+# From repo root
+pnpm --filter @cloudflare/figma-plugin validate  # Runs drift detection test
 ```
 
 #### 5. Test the Plugin
+
 ```bash
-cd packages/kumo/scripts/figma/plugin
-./build.sh
+# From repo root
+pnpm --filter @cloudflare/figma-plugin build
 # Open Figma Desktop and run the plugin
 ```
 
@@ -348,12 +364,13 @@ A: Make sure you registered it in `code.ts` GENERATORS array. The test checks bo
 
 **Q: My generator has a different name than the component**
 A: Add a mapping in `drift-detection.test.ts`:
-   ```typescript
-   const COMPONENT_NAME_MAPPING: Record<string, string> = {
-     "Switch.Group": "switch",  // Both in same file
-     "YourComponent": "special-name",  // Custom mapping
-   };
-   ```
+
+```typescript
+const COMPONENT_NAME_MAPPING: Record<string, string> = {
+  "Switch.Group": "switch",  // Both in same file
+  "YourComponent": "special-name",  // Custom mapping
+};
+```
 
 **Q: How do I test my generator logic?**
 A: Export pure functions (like `getYourComponentConfig()`) and write tests in `generators/yourcomponent.test.ts`. See `badge.test.ts` for examples.

@@ -4,7 +4,7 @@
 
 Add Figma plugin for UI kit generation
 
-- New plugin at `packages/kumo/scripts/figma/plugin/`
+- New plugin at `packages/figma/` (`@cloudflare/figma-plugin`)
 - Generates 29 component types: Badge, Banner, Button, Checkbox, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, Dialog, Dropdown, Icon Library, Input, InputArea, LayerCard, LinkButton, Loader, MenuBar, Meter, Pagination, RefreshButton, Select, SensitiveInput, Surface, Switch, Switch.Group, Tabs, Text, Toast
 - Each component generated with light and dark mode sections
 - Icon Library generator creates all Phosphor and Cloudflare brand icons

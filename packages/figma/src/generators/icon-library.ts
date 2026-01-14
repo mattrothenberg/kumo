@@ -11,10 +11,10 @@
  * - Grid layout: 20 icons per row, 48px spacing, 24px icon size
  * - Size examples frame: 16px, 20px, 24px variants
  *
- * IMPORTANT: Run `npx tsx scripts/figma/plugin/build-icon-data.ts` before
+ * IMPORTANT: Run `pnpm --filter @cloudflare/figma-plugin build:data` before
  * building the plugin to generate the icon data JSON.
  *
- * @see packages/kumo/scripts/figma/plugin/build-icon-data.ts
+ * @see packages/figma/src/build-icon-data.ts
  */
 
 // Icon data is generated at build time by build-icon-data.ts

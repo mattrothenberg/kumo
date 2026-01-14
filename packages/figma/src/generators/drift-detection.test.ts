@@ -89,7 +89,7 @@ describe("Figma Plugin Drift Detection", () => {
           `     import { generate${firstMissing}Components } from "./generators/${expectedFile}";\n` +
           `     { name: "${firstMissing}", execute: async (page, y) => { ... } }\n` +
           `  3. Or add to EXCLUDED_COMPONENTS in drift-detection.test.ts if intentional\n\n` +
-          `📖 See scripts/figma/plugin/README.md for full instructions`
+          `📖 See packages/figma/src/README.md for full instructions`
       );
     }
 
@@ -134,7 +134,7 @@ describe("Figma Plugin Drift Detection", () => {
           `🔧 To fix, add to the GENERATORS array in code.ts:\n` +
           `  import { generate${componentName}Components } from "./generators/${firstUnreg}";\n` +
           `  { name: "${componentName}", execute: async (page, y) => { ... } }\n\n` +
-          `📖 See scripts/figma/plugin/README.md for full instructions`
+          `📖 See packages/figma/src/README.md for full instructions`
       );
     }
 

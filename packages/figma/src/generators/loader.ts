@@ -13,7 +13,7 @@
  * representation at the animation midpoint.
  *
  * @see packages/kumo/src/components/loader/loader.tsx
- * @see packages/kumo/scripts/figma/plugin/build-loader-data.ts
+ * @see packages/figma/src/build-loader-data.ts
  */
 
 import loaderData from "../generated/loader-data.json";

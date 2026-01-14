@@ -6,10 +6,10 @@
  * This runs at BUILD TIME before bundling the plugin.
  *
  * Usage:
- *   npx tsx scripts/figma/plugin/build-loader-data.ts
+ *   pnpm --filter @cloudflare/figma-plugin build:data
  *
  * Output:
- *   scripts/figma/plugin/generated/loader-data.json
+ *   packages/figma/src/generated/loader-data.json
  */
 
 import { writeFileSync, mkdirSync } from "node:fs";

@@ -32,13 +32,14 @@ Kumo provides extensive automated tooling (`packages/kumo/scripts/`):
 - Includes: props, variants, examples, semantic tokens, sub-components
 - **Exported CLI:** `npx @cloudflare/kumo {ls|doc|docs}` - Quick component reference
 
-**2. Figma Plugin** (`scripts/figma/plugin/`) - React → Figma components
+**2. Figma Plugin** (`packages/figma/`) - React → Figma components
 
+- Separate package: `@cloudflare/figma-plugin`
 - 30+ generators (Button, Dialog, Tabs, Toast, etc.)
 - Parses Tailwind → Figma auto-layout, binds semantic tokens to variables
 - Icon library generation, loader variants, opacity modifiers
 
-**3. Figma Token Sync** (`scripts/figma/`) - CSS → Figma Variables API
+**3. Figma Token Sync** (`packages/kumo/scripts/figma/`) - CSS → Figma Variables API
 
 - Syncs semantic tokens (`kumo-binding.css`) to Figma
 - Parses `light-dark()`, converts colors (oklch/hex → Figma RGB)
@@ -67,7 +68,7 @@ Kumo provides extensive automated tooling (`packages/kumo/scripts/`):
 pnpm --filter @cloudflare/kumo codegen:registry  # Component registry
 pnpm --filter @cloudflare/kumo codegen           # All codegen (primitives + registry)
 npx @cloudflare/kumo doc                         # CLI docs (works in any project)
-pnpm --filter @cloudflare/kumo figma:plugin      # Figma generators
+pnpm --filter @cloudflare/figma-plugin build     # Build Figma plugin
 pnpm --filter @cloudflare/kumo icons:add         # Add icon with normalization
 pnpm lint                                        # Custom rules + oxlint
 ```
@@ -740,7 +741,7 @@ The Figma plugin generates an **Icon Library** page with all icons from the code
 
 ```bash
 # Build and run the Figma plugin
-cd packages/kumo/scripts/figma/plugin && ./build.sh
+pnpm --filter @cloudflare/figma-plugin build
 # Then run in Figma: Plugins > Development > Kumo UI Kit Generator
 ```
 
