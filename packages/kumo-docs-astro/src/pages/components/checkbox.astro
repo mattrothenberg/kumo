@@ -1,0 +1,237 @@
+---
+import DocLayout from "../../layouts/DocLayout.astro";
+import ComponentSection from "../../components/docs/ComponentSection.astro";
+import ComponentExample from "../../components/docs/ComponentExample.astro";
+import CodeBlock from "../../components/docs/CodeBlock.astro";
+import PropsTable from "../../components/docs/PropsTable.astro";
+import {
+  CheckboxBasicDemo,
+  CheckboxDefaultDemo,
+  CheckboxCheckedDemo,
+  CheckboxIndeterminateDemo,
+  CheckboxLabelFirstDemo,
+  CheckboxDisabledDemo,
+  CheckboxErrorDemo,
+  CheckboxGroupDemo,
+  CheckboxGroupErrorDemo,
+} from "../../components/demos/CheckboxDemo";
+---
+
+<DocLayout
+  title="Checkbox"
+  description="A control that allows the user to toggle between checked and not checked. Features built-in label support with automatic horizontal layout."
+  sourceFile="components/checkbox"
+  storybookPath="story/components-checkbox"
+  baseUIComponent="checkbox"
+>
+  <!-- Demo -->
+  <ComponentSection>
+    <ComponentExample code={`<Checkbox label="Accept terms and conditions" />`}>
+      <CheckboxBasicDemo client:visible />
+    </ComponentExample>
+  </ComponentSection>
+
+  <!-- Installation -->
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
+    <h3 class="mb-2 text-lg font-semibold">Barrel</h3>
+    <CodeBlock code={`import { Checkbox } from "@cloudflare/kumo";`} lang="tsx" />
+    <h3 class="mb-2 mt-4 text-lg font-semibold">Granular</h3>
+    <CodeBlock
+      code={`import { Checkbox } from "@cloudflare/kumo/components/checkbox";`}
+      lang="tsx"
+    />
+  </ComponentSection>
+
+  <!-- Usage -->
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+    <CodeBlock
+      code={`import { Checkbox } from "@cloudflare/kumo";
+
+export default function Example() {
+  return <Checkbox label="Accept terms" />;
+}`}
+      lang="tsx"
+    />
+  </ComponentSection>
+
+  <!-- Examples -->
+  <ComponentSection>
+    <h2 class="mb-6 text-2xl font-bold">Examples</h2>
+
+    <div class="space-y-8">
+      <div>
+        <h3 class="mb-4 text-xl font-semibold">Default</h3>
+        <p class="mb-4 text-sm text-label">
+          Checkbox with built-in label. The label automatically displays in a
+          horizontal layout (checkbox before label).
+        </p>
+        <ComponentExample code={`<Checkbox label="Enable notifications" />`}>
+          <CheckboxDefaultDemo client:visible />
+        </ComponentExample>
+      </div>
+
+      <div>
+        <h3 class="mb-4 text-xl font-semibold">Checked</h3>
+        <ComponentExample code={`<Checkbox label="I agree" checked />`}>
+          <CheckboxCheckedDemo client:visible />
+        </ComponentExample>
+      </div>
+
+      <div>
+        <h3 class="mb-4 text-xl font-semibold">Indeterminate</h3>
+        <p class="mb-4 text-sm text-label">
+          Used for "select all" patterns when some but not all items are
+          selected.
+        </p>
+        <ComponentExample code={`<Checkbox label="Select all" indeterminate />`}>
+          <CheckboxIndeterminateDemo client:visible />
+        </ComponentExample>
+      </div>
+
+      <div>
+        <h3 class="mb-4 text-xl font-semibold">Label First Layout</h3>
+        <p class="mb-4 text-sm text-label">
+          Use <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+            >controlFirst={"{false}"}</code
+          > to place the label before the checkbox.
+        </p>
+        <ComponentExample
+          code={`<Checkbox label="Remember me" controlFirst={false} />`}
+        >
+          <CheckboxLabelFirstDemo client:visible />
+        </ComponentExample>
+      </div>
+
+      <div>
+        <h3 class="mb-4 text-xl font-semibold">Disabled</h3>
+        <ComponentExample code={`<Checkbox label="Disabled option" disabled />`}>
+          <CheckboxDisabledDemo client:visible />
+        </ComponentExample>
+      </div>
+
+      <div>
+        <h3 class="mb-4 text-xl font-semibold">Error</h3>
+        <p class="mb-4 text-sm text-label">
+          Error variant provides visual styling (red ring). For error messages,
+          use Checkbox.Group.
+        </p>
+        <ComponentExample
+          code={`<Checkbox label="Invalid option" variant="error" />`}
+        >
+          <CheckboxErrorDemo client:visible />
+        </ComponentExample>
+      </div>
+
+      <div>
+        <h3 class="mb-4 text-xl font-semibold">Checkbox Group</h3>
+        <p class="mb-4 text-sm text-label">
+          Group multiple checkboxes with a legend, description, and shared error
+          messages. Uses Checkbox.Group and Checkbox.Item.
+        </p>
+        <ComponentExample
+          code={`<Checkbox.Group
+  legend="Email preferences"
+  description="Choose how you'd like to receive updates"
+  value={preferences}
+  onValueChange={setPreferences}
+>
+  <Checkbox.Item value="email" label="Email notifications" />
+  <Checkbox.Item value="sms" label="SMS notifications" />
+  <Checkbox.Item value="push" label="Push notifications" />
+</Checkbox.Group>`}
+        >
+          <CheckboxGroupDemo client:visible />
+        </ComponentExample>
+      </div>
+
+      <div>
+        <h3 class="mb-4 text-xl font-semibold">Checkbox Group with Error</h3>
+        <p class="mb-4 text-sm text-label">
+          Show validation errors at the group level. Error replaces description
+          when present.
+        </p>
+        <ComponentExample
+          code={`<Checkbox.Group
+  legend="Required preferences"
+  error="Please select at least one notification method"
+  value={[]}
+  onValueChange={() => {}}
+>
+  <Checkbox.Item value="email" label="Email" variant="error" />
+  <Checkbox.Item value="sms" label="SMS" variant="error" />
+</Checkbox.Group>`}
+        >
+          <CheckboxGroupErrorDemo client:visible />
+        </ComponentExample>
+      </div>
+    </div>
+  </ComponentSection>
+
+  <!-- API Reference -->
+  <ComponentSection>
+    <h2 class="mb-6 text-2xl font-bold">API Reference</h2>
+
+    <div class="space-y-8">
+      <div>
+        <h3 class="mb-3 text-lg font-semibold font-mono">Checkbox</h3>
+        <p class="mb-3 text-sm text-label">
+          Single checkbox component with built-in label and horizontal layout.
+        </p>
+        <PropsTable component="Checkbox" />
+      </div>
+
+      <div>
+        <h3 class="mb-3 text-lg font-semibold font-mono">Checkbox.Group</h3>
+        <p class="mb-3 text-sm text-label">
+          Wrapper for multiple checkboxes with legend, description, and error support.
+        </p>
+        <PropsTable component="Checkbox.Group" />
+      </div>
+
+      <div>
+        <h3 class="mb-3 text-lg font-semibold font-mono">Checkbox.Item</h3>
+        <p class="mb-3 text-sm text-label">
+          Individual checkbox within Checkbox.Group.
+        </p>
+        <PropsTable component="Checkbox.Item" />
+      </div>
+    </div>
+  </ComponentSection>
+
+  <!-- Accessibility -->
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Accessibility</h2>
+    <div class="space-y-4 text-sm">
+      <div>
+        <h3 class="mb-2 font-semibold">Label Requirement</h3>
+        <p class="text-label">
+          Single checkboxes require a <code
+            class="rounded bg-secondary px-1 py-0.5 text-sm">label</code
+          > prop or <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+            >aria-label</code
+          > for accessibility. Missing labels trigger console warnings in development.
+        </p>
+      </div>
+      <div>
+        <h3 class="mb-2 font-semibold">Keyboard Navigation</h3>
+        <p class="text-label">
+          <kbd class="rounded bg-secondary px-1.5 py-0.5">Space</kbd> toggles the
+          checkbox. <kbd class="rounded bg-secondary px-1.5 py-0.5">Tab</kbd> moves
+          focus between checkboxes.
+        </p>
+      </div>
+      <div>
+        <h3 class="mb-2 font-semibold">Screen Readers</h3>
+        <p class="text-label">
+          Checkbox.Group uses semantic <code
+            class="rounded bg-secondary px-1 py-0.5 text-sm">&lt;fieldset&gt;</code
+          > and <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+            >&lt;legend&gt;</code
+          > elements for proper grouping announcement.
+        </p>
+      </div>
+    </div>
+  </ComponentSection>
+</DocLayout>

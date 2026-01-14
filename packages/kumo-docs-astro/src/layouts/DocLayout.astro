@@ -1,0 +1,129 @@
+---
+import MainLayout from "./MainLayout.astro";
+import { StickyDocHeader } from "../components/docs/StickyDocHeader";
+import { BaseUIIcon } from "../components/docs/icons/BaseUIIcon";
+import { StorybookIcon } from "../components/docs/icons/StorybookIcon";
+import { GitlabLogoSimple } from "@phosphor-icons/react";
+
+interface Props {
+  title: string;
+  description: string;
+  baseUIComponent?: string;
+  /** Path to the source file in the kumo package (e.g., "components/button") - will link to GitLab */
+  sourceFile?: string;
+  /** Storybook path (e.g., "story/components-button" or "docs/components-button") - will link to Storybook */
+  storybookPath?: string;
+}
+
+const { title, description, baseUIComponent, sourceFile, storybookPath } =
+  Astro.props;
+
+const baseUIUrl = baseUIComponent
+  ? `https://base-ui.com/react/components/${baseUIComponent}`
+  : null;
+
+// Extract the component name from the path (e.g., "components/button" -> "button")
+// and construct the direct file URL (e.g., "components/button/button.tsx")
+const gitlabSourceUrl = sourceFile
+  ? (() => {
+      const componentName = sourceFile.split("/").pop();
+      return `https://gitlab.cfdata.org/cloudflare/fe/kumo/-/blob/main/packages/kumo/src/${sourceFile}/${componentName}.tsx`;
+    })()
+  : null;
+
+// Construct Storybook URL from storybookPath prop (e.g., "story/components-button" or "docs/components-button")
+const storybookUrl = storybookPath
+  ? `https://storybook.kumo-ui.com/?path=/${storybookPath}`
+  : null;
+---
+
+<MainLayout title={`${title} - Kumo`} description={description}>
+  <div class="flex min-h-screen flex-col" data-pagefind-body>
+    <!-- Pagefind metadata -->
+    <span data-pagefind-meta="title" class="hidden">{title}</span>
+    
+    <StickyDocHeader
+      title={title}
+      gitlabSourceUrl={gitlabSourceUrl}
+      storybookUrl={storybookUrl}
+      baseUIUrl={baseUIUrl}
+      client:load
+      data-pagefind-ignore
+    />
+
+    <!-- Page Header -->
+    <div
+      id="page-header"
+      class="border-b border-border bg-surface-secondary pr-12"
+      data-pagefind-ignore
+    >
+      <div
+        class="mx-auto border-r border-border"
+      >
+        <div class="mx-auto max-w-5xl px-8 py-12">
+          <div class="mb-3 flex items-center gap-3">
+            <h1 class="text-4xl font-bold text-surface">{title}</h1>
+            {
+              gitlabSourceUrl && (
+                <a
+                  href={gitlabSourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-muted transition-colors hover:text-label"
+                  title="View source on GitLab"
+                  aria-label="View source on GitLab"
+                >
+                  <GitlabLogoSimple size={28} weight="fill" />
+                </a>
+              )
+            }
+            {
+              storybookUrl && (
+                <a
+                  href={storybookUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-muted transition-colors hover:text-label"
+                  title="View in Storybook"
+                  aria-label="View in Storybook"
+                >
+                  <StorybookIcon size={28} />
+                </a>
+              )
+            }
+            {
+              baseUIUrl && (
+                <a
+                  href={baseUIUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-muted transition-colors hover:text-label"
+                  title="View Base UI documentation"
+                  aria-label="View Base UI documentation"
+                >
+                  <BaseUIIcon size={28} />
+                </a>
+              )
+            }
+          </div>
+          <p class="text-lg text-label">
+            {description}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <main class="flex grow flex-col bg-surface-secondary pr-12">
+      <div
+        class="mx-auto w-full grow border-r border-border"
+      >
+        <div class="mx-auto max-w-5xl px-8 py-12">
+          <div class="max-w-none">
+            <slot />
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</MainLayout>

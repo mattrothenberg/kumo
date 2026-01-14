@@ -1,0 +1,18 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import Header from "../components/Header.astro";
+import { FigmaPage } from "../components/demos/FigmaPage";
+---
+
+<MainLayout title="Figma Resources - Kumo" description="Figma resources for Kumo component library">
+  <div class="flex min-h-screen flex-col">
+    <Header />
+    <main class="flex grow flex-col bg-surface-secondary pr-12">
+      <div
+        class="mx-auto flex w-full grow items-center justify-center border-r border-border"
+      >
+        <FigmaPage client:load />
+      </div>
+    </main>
+  </div>
+</MainLayout>

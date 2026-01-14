@@ -1,0 +1,17 @@
+---
+interface Props {
+  type?: "info" | "warning" | "error";
+}
+
+const { type = "info" } = Astro.props;
+
+const styles = {
+  info: "border-info-border bg-info-surface text-surface",
+  warning: "border-alert-border bg-alert-surface text-surface",
+  error: "border-error-border bg-error-surface text-surface",
+};
+---
+
+<div class:list={["rounded-lg border p-4 text-sm", styles[type]]}>
+  <slot />
+</div>

@@ -1,0 +1,18 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import Header from "../components/Header.astro";
+import { HomeGrid } from "../components/demos/HomeGrid";
+---
+
+<MainLayout title="Kumo" description="Kumo – a modern component library">
+  <div class="flex min-h-screen flex-col">
+    <Header />
+    <main class="flex grow flex-col bg-surface-secondary pr-12" data-pagefind-body>
+      <div
+        class="mx-auto w-full grow border-r border-border"
+      >
+        <HomeGrid client:only="react" />
+      </div>
+    </main>
+  </div>
+</MainLayout>

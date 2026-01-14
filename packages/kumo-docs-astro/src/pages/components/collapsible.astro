@@ -1,0 +1,82 @@
+---
+import DocLayout from "../../layouts/DocLayout.astro";
+import ComponentSection from "../../components/docs/ComponentSection.astro";
+import ComponentExample from "../../components/docs/ComponentExample.astro";
+import CodeBlock from "../../components/docs/CodeBlock.astro";
+import PropsTable from "../../components/docs/PropsTable.astro";
+import { CollapsibleHeroDemo, CollapsibleBasicDemo, CollapsibleMultipleDemo } from "../../components/demos/CollapsibleDemo";
+---
+
+<DocLayout
+  title="Collapsible"
+  description="A vertically stacked set of interactive headings that each reveal a section of content."
+  sourceFile="components/collapsible"
+  storybookPath="story/components-collapsible"
+  baseUIComponent="collapsible"
+>
+  <ComponentSection>
+    <ComponentExample code={`<Collapsible label="What is Kumo?">
+  Kumo is Cloudflare's new design system.
+</Collapsible>`}>
+      <CollapsibleHeroDemo client:load />
+    </ComponentExample>
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
+    <h3 class="mb-2 text-lg font-semibold">Barrel</h3>
+    <CodeBlock code={`import { Collapsible } from "@cloudflare/kumo";`} lang="tsx" />
+    <h3 class="mt-4 mb-2 text-lg font-semibold">Granular</h3>
+    <CodeBlock code={`import { Collapsible } from "@cloudflare/kumo/components/collapsible";`} lang="tsx" />
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+    <CodeBlock code={`import { Collapsible } from "@cloudflare/kumo";
+
+export default function Example() {
+  return (
+    <Collapsible label="Question">
+      Answer content goes here.
+    </Collapsible>
+  );
+}`} lang="tsx" />
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-6 text-2xl font-bold">Examples</h2>
+
+    <div class="space-y-8">
+      <div>
+        <h3 class="mb-4 text-xl font-semibold">Single Item</h3>
+        <ComponentExample code={`<Collapsible label="What is Kumo?">
+  Kumo is Cloudflare's new design system.
+</Collapsible>`}>
+          <CollapsibleBasicDemo client:load />
+        </ComponentExample>
+      </div>
+
+      <div>
+        <h3 class="mb-4 text-xl font-semibold">Multiple Items</h3>
+        <ComponentExample code={`<div className="space-y-2">
+  <Collapsible label="What is Kumo?">
+    Kumo is Cloudflare's new design system.
+  </Collapsible>
+  <Collapsible label="How do I use it?">
+    Install the components and import them into your project.
+  </Collapsible>
+  <Collapsible label="Is it open source?">
+    Check the repository for license information.
+  </Collapsible>
+</div>`}>
+          <CollapsibleMultipleDemo client:load />
+        </ComponentExample>
+      </div>
+    </div>
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
+    <PropsTable component="Collapsible" />
+  </ComponentSection>
+</DocLayout>

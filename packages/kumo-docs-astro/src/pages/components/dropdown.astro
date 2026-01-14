@@ -1,0 +1,103 @@
+---
+import DocLayout from "../../layouts/DocLayout.astro";
+import ComponentSection from "../../components/docs/ComponentSection.astro";
+import ComponentExample from "../../components/docs/ComponentExample.astro";
+import CodeBlock from "../../components/docs/CodeBlock.astro";
+import PropsTable from "../../components/docs/PropsTable.astro";
+import { DropdownBasicDemo } from "../../components/demos/DropdownDemo";
+---
+
+<DocLayout
+  title="Dropdown Menu"
+  description="Displays a menu to the user—such as a set of actions or functions—triggered by a button."
+  sourceFile="components/dropdown"
+  storybookPath="story/components-dropdown"
+  baseUIComponent="menu"
+>
+  <ComponentSection>
+    <ComponentExample code={`<DropdownMenu>
+  <DropdownMenu.Trigger render={<Button icon={PlusIcon}>Add</Button>} />
+  <DropdownMenu.Content>
+    <DropdownMenu.Item>Worker</DropdownMenu.Item>
+    <DropdownMenu.Item>Pages</DropdownMenu.Item>
+    <DropdownMenu.Item>KV Namespace</DropdownMenu.Item>
+  </DropdownMenu.Content>
+</DropdownMenu>`}>
+      <DropdownBasicDemo client:load />
+    </ComponentExample>
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
+    <h3 class="mb-2 text-lg font-semibold">Barrel</h3>
+    <CodeBlock code={`import { DropdownMenu } from "@cloudflare/kumo";`} lang="tsx" />
+    <h3 class="mt-4 mb-2 text-lg font-semibold">Granular</h3>
+    <CodeBlock code={`import { DropdownMenu } from "@cloudflare/kumo/components/dropdown";`} lang="tsx" />
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+    <CodeBlock code={`import { DropdownMenu, Button } from "@cloudflare/kumo";
+
+export default function Example() {
+  return (
+    <DropdownMenu>
+      <DropdownMenu.Trigger render={<Button>Menu</Button>} />
+      <DropdownMenu.Content>
+        <DropdownMenu.Item>Option 1</DropdownMenu.Item>
+        <DropdownMenu.Item>Option 2</DropdownMenu.Item>
+      </DropdownMenu.Content>
+    </DropdownMenu>
+  );
+}`} lang="tsx" />
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-6 text-2xl font-bold">Examples</h2>
+
+    <div class="space-y-8">
+      <div>
+        <h3 class="mb-4 text-xl font-semibold">Basic Dropdown</h3>
+        <ComponentExample code={`<DropdownMenu>
+  <DropdownMenu.Trigger render={<Button icon={PlusIcon}>Add</Button>} />
+  <DropdownMenu.Content>
+    <DropdownMenu.Item>Worker</DropdownMenu.Item>
+    <DropdownMenu.Item>Pages</DropdownMenu.Item>
+  </DropdownMenu.Content>
+</DropdownMenu>`}>
+          <DropdownBasicDemo client:load />
+        </ComponentExample>
+      </div>
+    </div>
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-6 text-2xl font-bold">API Reference</h2>
+    
+    <div class="space-y-8">
+      <div>
+        <h3 class="mb-3 text-lg font-semibold font-mono">DropdownMenu</h3>
+        <p class="mb-3 text-sm text-label">
+          Root component that manages the dropdown state.
+        </p>
+        <PropsTable component="DropdownMenu" />
+      </div>
+
+      <div>
+        <h3 class="mb-3 text-lg font-semibold font-mono">DropdownMenu.Trigger</h3>
+        <p class="mb-3 text-sm text-label">
+          Button that opens the dropdown when clicked.
+        </p>
+        <PropsTable component="DropdownMenu.Trigger" />
+      </div>
+
+      <div>
+        <h3 class="mb-3 text-lg font-semibold font-mono">DropdownMenu.Item</h3>
+        <p class="mb-3 text-sm text-label">
+          Individual menu item.
+        </p>
+        <PropsTable component="DropdownMenu.Item" />
+      </div>
+    </div>
+  </ComponentSection>
+</DocLayout>
