@@ -30,6 +30,7 @@ import {
   SECTION_LAYOUT,
   OPACITY,
   FONT_SIZE,
+  GRID_LAYOUT,
 } from "./shared";
 import themeData from "../generated/theme-data.json";
 import { logComplete } from "../logger";

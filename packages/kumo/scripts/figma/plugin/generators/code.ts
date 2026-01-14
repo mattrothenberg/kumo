@@ -29,6 +29,7 @@ import {
   SECTION_LAYOUT,
   FONT_SIZE,
   FALLBACK_VALUES,
+  GRID_LAYOUT,
 } from "./shared";
 import { logComplete } from "../logger";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";

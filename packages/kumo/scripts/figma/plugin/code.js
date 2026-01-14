@@ -42,7 +42,7 @@
 
   // scripts/figma/plugin/generated/theme-data.json
   var theme_data_default = {
-    _generated: "2026-01-14T05:07:34.815Z",
+    _generated: "2026-01-14T05:12:59.717Z",
     _sources: [
       "packages/kumo/src/styles/theme-kumo.css",
       "node_modules/tailwindcss/theme.css",
@@ -456,7 +456,7 @@
       opacity: 0.05
     })
   };
-  var GRID_LAYOUT2 = {
+  var GRID_LAYOUT = {
     /** Vertical gap between component rows (common: 24-80px depending on component density) */
     rowGap: {
       /** Compact spacing for dense components (e.g., tabs, menubar, clipboard-text) */
@@ -6321,8 +6321,8 @@
       const variants = variantProp.values;
       const components = [];
       const rowLabels = [];
-      const rowGap = GRID_LAYOUT2.rowGap.medium;
-      const labelColumnWidth = GRID_LAYOUT2.labelColumnWidth.medium;
+      const rowGap = GRID_LAYOUT.rowGap.medium;
+      const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.medium;
       let currentY = 0;
       for (let i = 0; i < variants.length; i++) {
         const variant = variants[i];
@@ -6355,7 +6355,7 @@
         const labelNode = yield createRowLabel(
           label.text,
           SECTION_PADDING,
-          SECTION_PADDING + label.y + GRID_LAYOUT2.labelVerticalOffset.sm
+          SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.sm
           // Small offset to vertically center with badge
         );
         lightSection.frame.appendChild(labelNode);
@@ -6370,7 +6370,7 @@
         const labelNode = yield createRowLabel(
           label.text,
           SECTION_PADDING,
-          SECTION_PADDING + label.y + GRID_LAYOUT2.labelVerticalOffset.sm
+          SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.sm
         );
         darkSection.frame.appendChild(labelNode);
       }
@@ -6641,8 +6641,8 @@
       const variants = variantProp2.values;
       const components = [];
       const rowLabels = [];
-      const rowGap = GRID_LAYOUT2.rowGap.standard;
-      const labelColumnWidth = GRID_LAYOUT2.labelColumnWidth.standard;
+      const rowGap = GRID_LAYOUT.rowGap.standard;
+      const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.standard;
       let currentY = 0;
       for (let i = 0; i < variants.length; i++) {
         const variant = variants[i];
@@ -6675,7 +6675,7 @@
         const labelNode = yield createRowLabel(
           label.text,
           SECTION_PADDING,
-          SECTION_PADDING + label.y + GRID_LAYOUT2.labelVerticalOffset.md
+          SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md
           // +8 to vertically center with banner
         );
         lightSection.frame.appendChild(labelNode);
@@ -6690,7 +6690,7 @@
         const labelNode = yield createRowLabel(
           label.text,
           SECTION_PADDING,
-          SECTION_PADDING + label.y + GRID_LAYOUT2.labelVerticalOffset.md
+          SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md
         );
         darkSection.frame.appendChild(labelNode);
       }
@@ -6840,8 +6840,8 @@
       const sizes = sizeProp.values;
       const components = [];
       const rowLabels = [];
-      const rowGap = GRID_LAYOUT2.rowGap.medium;
-      const labelColumnWidth = GRID_LAYOUT2.labelColumnWidth.medium;
+      const rowGap = GRID_LAYOUT.rowGap.medium;
+      const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.medium;
       let currentY = 0;
       for (let i = 0; i < sizes.length; i++) {
         const size = sizes[i];
@@ -6878,7 +6878,7 @@
         const labelNode = yield createRowLabel(
           label.text,
           SECTION_PADDING,
-          SECTION_PADDING + label.y + GRID_LAYOUT2.labelVerticalOffset.mdLg
+          SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.mdLg
           // Center vertically with breadcrumbs
         );
         lightSection.frame.appendChild(labelNode);
@@ -6893,7 +6893,7 @@
         const labelNode = yield createRowLabel(
           label.text,
           SECTION_PADDING,
-          SECTION_PADDING + label.y + GRID_LAYOUT2.labelVerticalOffset.mdLg
+          SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.mdLg
         );
         darkSection.frame.appendChild(labelNode);
       }
@@ -7130,9 +7130,9 @@
       const components = [];
       const rowLabels = [];
       const componentGap = 16;
-      const rowGap = GRID_LAYOUT2.rowGap.extraSpacious;
-      const headerRowHeight = GRID_LAYOUT2.headerRowHeight;
-      const labelColumnWidth = GRID_LAYOUT2.labelColumnWidth.wider;
+      const rowGap = GRID_LAYOUT.rowGap.extraSpacious;
+      const headerRowHeight = GRID_LAYOUT.headerRowHeight;
+      const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.wider;
       const rowComponents = /* @__PURE__ */ new Map();
       const rowLabelTexts = /* @__PURE__ */ new Map();
       let columnHeaders = [];
@@ -7338,7 +7338,7 @@
         const labelNode = yield createRowLabel(
           label.text,
           SECTION_PADDING,
-          SECTION_PADDING + label.y + GRID_LAYOUT2.labelVerticalOffset.lg
+          SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.lg
           // Large offset to vertically center with button
         );
         lightSection.frame.appendChild(labelNode);
@@ -7371,7 +7371,7 @@
         const darkLabelNode = yield createRowLabel(
           darkLabel.text,
           SECTION_PADDING,
-          SECTION_PADDING + darkLabel.y + GRID_LAYOUT2.labelVerticalOffset.lg
+          SECTION_PADDING + darkLabel.y + GRID_LAYOUT.labelVerticalOffset.lg
         );
         darkSection.frame.appendChild(darkLabelNode);
       }
@@ -7558,9 +7558,9 @@
       const components = [];
       const rowLabels = [];
       const componentGap = 24;
-      const rowGap = GRID_LAYOUT2.rowGap.standard;
-      const headerRowHeight = GRID_LAYOUT2.headerRowHeight;
-      const labelColumnWidth = GRID_LAYOUT2.labelColumnWidth.medium;
+      const rowGap = GRID_LAYOUT.rowGap.standard;
+      const headerRowHeight = GRID_LAYOUT.headerRowHeight;
+      const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.medium;
       const columnHeaderTexts = ["Unchecked", "Checked", "Indeterminate"];
       const columnXPositions = [];
       let currentY = headerRowHeight;
@@ -7637,7 +7637,7 @@
         const labelNode = yield createRowLabel(
           labelData.text,
           SECTION_PADDING,
-          SECTION_PADDING + labelData.y + GRID_LAYOUT2.labelVerticalOffset.sm
+          SECTION_PADDING + labelData.y + GRID_LAYOUT.labelVerticalOffset.sm
           // Small offset to vertically center with checkbox
         );
         lightSection.frame.appendChild(labelNode);
@@ -7655,7 +7655,7 @@
         const darkLabelNode = yield createRowLabel(
           darkLabelData.text,
           SECTION_PADDING,
-          SECTION_PADDING + darkLabelData.y + GRID_LAYOUT2.labelVerticalOffset.sm
+          SECTION_PADDING + darkLabelData.y + GRID_LAYOUT.labelVerticalOffset.sm
         );
         darkSection.frame.appendChild(darkLabelNode);
       }
@@ -7851,8 +7851,8 @@
       const sizes = sizeProp3.values;
       const components = [];
       const rowLabels = [];
-      const rowGap = GRID_LAYOUT2.rowGap.compact;
-      const labelColumnWidth = GRID_LAYOUT2.labelColumnWidth.small;
+      const rowGap = GRID_LAYOUT.rowGap.compact;
+      const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.small;
       let currentY = 0;
       for (let i = 0; i < sizes.length; i++) {
         const size = sizes[i];
@@ -7893,7 +7893,7 @@
         const labelNode = yield createRowLabel(
           label.text,
           SECTION_PADDING,
-          SECTION_PADDING + label.y + GRID_LAYOUT2.labelVerticalOffset.md
+          SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md
           // +8 to vertically center
         );
         lightSection.frame.appendChild(labelNode);
@@ -7908,7 +7908,7 @@
         const labelNode = yield createRowLabel(
           label.text,
           SECTION_PADDING,
-          SECTION_PADDING + label.y + GRID_LAYOUT2.labelVerticalOffset.md
+          SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md
         );
         darkSection.frame.appendChild(labelNode);
       }
@@ -9681,7 +9681,7 @@
       header.counterAxisAlignItems = "CENTER";
       header.primaryAxisSizingMode = "FIXED";
       header.counterAxisSizingMode = "AUTO";
-      header.resize(config.width - config.padding * 2, GRID_LAYOUT2.headerRowHeight);
+      header.resize(config.width - config.padding * 2, GRID_LAYOUT.headerRowHeight);
       header.layoutAlign = "STRETCH";
       header.layoutGrow = 0;
       header.fills = [];
@@ -9745,8 +9745,8 @@
       figma.currentPage = page;
       const components = [];
       const rowLabels = [];
-      const componentGapY = GRID_LAYOUT2.rowGap.medium;
-      const labelColumnWidth = GRID_LAYOUT2.labelColumnWidth.compact;
+      const componentGapY = GRID_LAYOUT.rowGap.medium;
+      const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.compact;
       let yOffset = 0;
       let maxWidth = 0;
       for (let i = 0; i < SIZE_VALUES2.length; i++) {
@@ -9788,7 +9788,7 @@
         const labelNode = yield createRowLabel(
           label.text,
           SECTION_PADDING,
-          SECTION_PADDING + label.y + GRID_LAYOUT2.labelVerticalOffset.lg
+          SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.lg
           // Center label for dialog
         );
         lightSection.frame.appendChild(labelNode);
@@ -9805,7 +9805,7 @@
         const darkLabelNode = yield createRowLabel(
           darkLabel.text,
           SECTION_PADDING,
-          SECTION_PADDING + darkLabel.y + GRID_LAYOUT2.labelVerticalOffset.lg
+          SECTION_PADDING + darkLabel.y + GRID_LAYOUT.labelVerticalOffset.lg
           // Center label for dialog
         );
         darkSection.frame.appendChild(darkLabelNode);
@@ -10471,8 +10471,8 @@
       const sizes = sizeProp6.values;
       const components = [];
       const rowLabels = [];
-      const rowGap = GRID_LAYOUT2.rowGap.medium;
-      const labelColumnWidth = GRID_LAYOUT2.labelColumnWidth.medium;
+      const rowGap = GRID_LAYOUT.rowGap.medium;
+      const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.medium;
       let currentY = 0;
       for (let i = 0; i < sizes.length; i++) {
         const size = sizes[i];
@@ -10505,7 +10505,7 @@
         const labelNode = yield createRowLabel(
           label.text,
           SECTION_PADDING,
-          SECTION_PADDING + label.y + GRID_LAYOUT2.labelVerticalOffset.xl
+          SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.xl
           // Offset to align with component center
         );
         lightSection.frame.appendChild(labelNode);
@@ -10520,7 +10520,7 @@
         const labelNode = yield createRowLabel(
           label.text,
           SECTION_PADDING,
-          SECTION_PADDING + label.y + GRID_LAYOUT2.labelVerticalOffset.xl
+          SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.xl
         );
         darkSection.frame.appendChild(labelNode);
       }
@@ -10699,9 +10699,9 @@
       const rowLabels = [];
       let columnHeaders = [];
       const componentGapX = 24;
-      const componentGapY = GRID_LAYOUT2.rowGap.medium;
-      const headerRowHeight = GRID_LAYOUT2.headerRowHeight;
-      const labelColumnWidth = GRID_LAYOUT2.labelColumnWidth.wide;
+      const componentGapY = GRID_LAYOUT.rowGap.medium;
+      const headerRowHeight = GRID_LAYOUT.headerRowHeight;
+      const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.wide;
       const rowComponents = /* @__PURE__ */ new Map();
       let rowIndex = 0;
       for (let si = 0; si < SIZE_VALUES3.length; si++) {
@@ -10815,7 +10815,7 @@
         const labelNode = yield createRowLabel(
           label.text,
           SECTION_PADDING,
-          SECTION_PADDING + label.y + GRID_LAYOUT2.labelVerticalOffset.md
+          SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md
         );
         lightSection.frame.appendChild(labelNode);
       }
@@ -10838,7 +10838,7 @@
         const darkLabelNode = yield createRowLabel(
           darkLabel.text,
           SECTION_PADDING,
-          SECTION_PADDING + darkLabel.y + GRID_LAYOUT2.labelVerticalOffset.md
+          SECTION_PADDING + darkLabel.y + GRID_LAYOUT.labelVerticalOffset.md
         );
         darkSection.frame.appendChild(darkLabelNode);
       }
@@ -11616,7 +11616,7 @@
           const labelNode = yield createRowLabel(
             label.text,
             SECTION_PADDING,
-            SECTION_PADDING + label.y + GRID_LAYOUT2.labelVerticalOffset.sm
+            SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.sm
           );
           lightSection.frame.appendChild(labelNode);
         }
@@ -11632,7 +11632,7 @@
           const darkLabelNode = yield createRowLabel(
             darkLabel.text,
             SECTION_PADDING,
-            SECTION_PADDING + darkLabel.y + GRID_LAYOUT2.labelVerticalOffset.sm
+            SECTION_PADDING + darkLabel.y + GRID_LAYOUT.labelVerticalOffset.sm
           );
           darkSection.frame.appendChild(darkLabelNode);
         }
@@ -11975,8 +11975,8 @@
         figma.currentPage = page;
         const components = [];
         const rowLabels = [];
-        const labelColumnWidth = GRID_LAYOUT2.labelColumnWidth.standard;
-        const rowGap = GRID_LAYOUT2.rowGap.compact;
+        const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.standard;
+        const rowGap = GRID_LAYOUT.rowGap.compact;
         let currentY = 0;
         for (let i = 0; i < DEFAULT_OPTIONS.length; i++) {
           const option = DEFAULT_OPTIONS[i];
@@ -12013,7 +12013,7 @@
           const labelNode = yield createRowLabel(
             label.text,
             SECTION_PADDING,
-            SECTION_PADDING + label.y + GRID_LAYOUT2.labelVerticalOffset.lg
+            SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.lg
             // Center vertically with menubar
           );
           lightSection.frame.appendChild(labelNode);
@@ -12182,8 +12182,8 @@
       const fillLevels = FILL_LEVELS;
       const components = [];
       const rowLabels = [];
-      const rowGap = GRID_LAYOUT2.rowGap.medium;
-      const labelColumnWidth = GRID_LAYOUT2.labelColumnWidth.medium;
+      const rowGap = GRID_LAYOUT.rowGap.medium;
+      const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.medium;
       let currentY = 0;
       for (let i = 0; i < fillLevels.length; i++) {
         const fillLevel = fillLevels[i];
@@ -12217,7 +12217,7 @@
         const labelNode = yield createRowLabel(
           label.text,
           SECTION_PADDING,
-          SECTION_PADDING + label.y + GRID_LAYOUT2.labelVerticalOffset.md
+          SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md
           // vertically center with meter
         );
         lightSection.frame.appendChild(labelNode);
@@ -12234,7 +12234,7 @@
         const labelNode = yield createRowLabel(
           label.text,
           SECTION_PADDING,
-          SECTION_PADDING + label.y + GRID_LAYOUT2.labelVerticalOffset.md
+          SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md
         );
         darkSection.frame.appendChild(labelNode);
       }
@@ -12465,8 +12465,8 @@
       const totalCount = 100;
       const components = [];
       const rowLabels = [];
-      const rowGap = GRID_LAYOUT2.rowGap.standard;
-      const labelColumnWidth = GRID_LAYOUT2.labelColumnWidth.medium;
+      const rowGap = GRID_LAYOUT.rowGap.standard;
+      const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.medium;
       let currentY = 0;
       for (let i = 0; i < pageStates.length; i++) {
         const state = pageStates[i];
@@ -12505,7 +12505,7 @@
         const labelNode = yield createRowLabel(
           label.text,
           SECTION_PADDING,
-          SECTION_PADDING + label.y + GRID_LAYOUT2.labelVerticalOffset.mdLg
+          SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.mdLg
         );
         lightSection.frame.appendChild(labelNode);
       }
@@ -13815,9 +13815,9 @@
       const components = [];
       const rowLabels = [];
       const componentGap = 24;
-      const rowGap = GRID_LAYOUT2.rowGap.standard;
-      const headerRowHeight = GRID_LAYOUT2.headerRowHeight;
-      const labelColumnWidth = GRID_LAYOUT2.labelColumnWidth.widest;
+      const rowGap = GRID_LAYOUT.rowGap.standard;
+      const headerRowHeight = GRID_LAYOUT.headerRowHeight;
+      const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.widest;
       const columnHeaderTexts = ["size=sm", "size=base", "size=lg"];
       let currentY = headerRowHeight;
       rowLabels.push({ y: currentY, text: "checked=false, variant=default" });
@@ -13991,7 +13991,7 @@
         const labelNode = yield createRowLabel(
           label.text,
           SECTION_PADDING,
-          SECTION_PADDING + label.y + GRID_LAYOUT2.labelVerticalOffset.sm
+          SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.sm
           // vertically center with switch
         );
         lightSection.frame.appendChild(labelNode);
@@ -14009,7 +14009,7 @@
         const labelNode = yield createRowLabel(
           label.text,
           SECTION_PADDING,
-          SECTION_PADDING + label.y + GRID_LAYOUT2.labelVerticalOffset.sm
+          SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.sm
         );
         darkSection.frame.appendChild(labelNode);
       }
@@ -14246,8 +14246,8 @@
         figma.currentPage = page;
         const components = [];
         const rowLabels = [];
-        const labelColumnWidth = GRID_LAYOUT2.labelColumnWidth.standard;
-        const rowGap = GRID_LAYOUT2.rowGap.compact;
+        const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.standard;
+        const rowGap = GRID_LAYOUT.rowGap.compact;
         let currentY = 0;
         for (let i = 0; i < DEFAULT_TABS.length; i++) {
           const tab = DEFAULT_TABS[i];
@@ -14284,7 +14284,7 @@
           const labelNode = yield createRowLabel(
             label.text,
             SECTION_PADDING,
-            SECTION_PADDING + label.y + GRID_LAYOUT2.labelVerticalOffset.lg
+            SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.lg
             // Large offset to center vertically with tabs
           );
           lightSection.frame.appendChild(labelNode);
@@ -14301,7 +14301,7 @@
           const darkLabelNode = yield createRowLabel(
             darkLabel.text,
             SECTION_PADDING,
-            SECTION_PADDING + darkLabel.y + GRID_LAYOUT2.labelVerticalOffset.lg
+            SECTION_PADDING + darkLabel.y + GRID_LAYOUT.labelVerticalOffset.lg
           );
           darkSection.frame.appendChild(darkLabelNode);
         }
@@ -14421,10 +14421,10 @@
       const rowLabels = [];
       let columnHeaders = [];
       let columnHeadersRecorded = false;
-      const componentGap = GRID_LAYOUT2.componentGapX.standard;
-      const rowHeight = GRID_LAYOUT2.rowGap.standard;
-      const headerRowHeight = GRID_LAYOUT2.headerRowHeight;
-      const labelColumnWidth = GRID_LAYOUT2.labelColumnWidth.standard;
+      const componentGap = GRID_LAYOUT.componentGapX.standard;
+      const rowHeight = GRID_LAYOUT.rowGap.standard;
+      const headerRowHeight = GRID_LAYOUT.headerRowHeight;
+      const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.standard;
       let currentRow = 0;
       for (let i = 0; i < variants.length; i++) {
         const variant = variants[i];
@@ -14496,7 +14496,7 @@
         const labelNode = yield createRowLabel(
           label.text,
           SECTION_PADDING,
-          SECTION_PADDING + label.y + GRID_LAYOUT2.labelVerticalOffset.md
+          SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md
           // +8 to vertically center with text
         );
         lightSection.frame.appendChild(labelNode);
@@ -14516,7 +14516,7 @@
         const labelNode = yield createRowLabel(
           label.text,
           SECTION_PADDING,
-          SECTION_PADDING + label.y + GRID_LAYOUT2.labelVerticalOffset.md
+          SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md
         );
         darkSection.frame.appendChild(labelNode);
       }

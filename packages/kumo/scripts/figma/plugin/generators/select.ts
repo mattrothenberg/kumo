@@ -32,6 +32,7 @@ import {
   SECTION_LAYOUT,
   OPACITY,
   COLORS,
+  GRID_LAYOUT,
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import { logComplete } from "../logger";

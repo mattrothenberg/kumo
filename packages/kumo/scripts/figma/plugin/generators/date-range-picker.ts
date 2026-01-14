@@ -38,6 +38,7 @@ import {
   SECTION_LAYOUT,
   FONT_SIZE,
   FALLBACK_VALUES,
+  GRID_LAYOUT,
 } from "./shared";
 import themeData from "../generated/theme-data.json";
 import { getButtonIcon, bindIconColor } from "./icon-utils";

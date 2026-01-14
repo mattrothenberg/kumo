@@ -28,6 +28,7 @@ import {
   SECTION_PADDING,
   SECTION_GAP,
   FALLBACK_VALUES,
+  GRID_LAYOUT,
   SECTION_LAYOUT,
 } from "./shared";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";

@@ -31,6 +31,7 @@ import {
   SECTION_GAP,
   SECTION_LAYOUT,
   OPACITY,
+  GRID_LAYOUT,
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import registry from "../../../../ai/component-registry.json";

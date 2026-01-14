@@ -28,6 +28,7 @@ import {
   SHADOWS,
   FONT_SIZE,
   FALLBACK_VALUES,
+  GRID_LAYOUT,
 } from "./shared";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 import registry from "../../../../ai/component-registry.json";

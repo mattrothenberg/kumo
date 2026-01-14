@@ -21,6 +21,7 @@ import {
   SECTION_PADDING,
   SECTION_GAP,
   FALLBACK_VALUES,
+  GRID_LAYOUT,
   SECTION_LAYOUT,
 } from "./shared";
 // Note: Line height for code uses FALLBACK_VALUES.lineHeight.code (20px)

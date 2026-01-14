@@ -48,6 +48,7 @@ import {
   OPACITY,
   FONT_SIZE,
   FALLBACK_VALUES,
+  GRID_LAYOUT,
 } from "./shared";
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
