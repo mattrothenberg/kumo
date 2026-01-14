@@ -8,6 +8,16 @@ interface Props {
 
 const { title = "Kumo", description = "Kumo – a modern component library" } =
   Astro.props;
+
+// Build info is injected via Vite define in astro.config.mjs
+// These are replaced at build time with actual values
+declare const __BUILD_VERSION__: string;
+declare const __BUILD_COMMIT__: string;
+declare const __BUILD_DATE__: string;
+
+const buildVersion = typeof __BUILD_VERSION__ !== "undefined" ? __BUILD_VERSION__ : "dev";
+const buildCommit = typeof __BUILD_COMMIT__ !== "undefined" ? __BUILD_COMMIT__ : "local";
+const buildDate = typeof __BUILD_DATE__ !== "undefined" ? __BUILD_DATE__ : new Date().toISOString();
 ---
 
 <!doctype html>
@@ -15,6 +25,9 @@ const { title = "Kumo", description = "Kumo – a modern component library" } =
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="build-version" content={buildVersion} />
+    <meta name="build-commit" content={buildCommit} />
+    <meta name="build-date" content={buildDate} />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

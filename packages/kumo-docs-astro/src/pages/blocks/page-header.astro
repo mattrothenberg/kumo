@@ -4,7 +4,7 @@ import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
 import PropsTable from "../../components/docs/PropsTable.astro";
-import { PageHeaderHeroDemo, PageHeaderBasicDemo, PageHeaderWithIconsDemo, PageHeaderWithTabsDemo, PageHeaderWithActionsDemo } from "../../components/demos/PageHeaderDemo";
+import { PageHeaderHeroDemo, PageHeaderBasicDemo, PageHeaderWithIconsDemo, PageHeaderWithTabsDemo, PageHeaderWithActionsDemo, PageHeaderWithTitleDemo, PageHeaderWithTitleDescriptionDemo, PageHeaderCompleteDemo } from "../../components/demos/PageHeaderDemo";
 ---
 
 <DocLayout
@@ -160,6 +160,72 @@ export default function Example() {
   </Button>
 </PageHeader>`}>
         <PageHeaderWithActionsDemo client:visible />
+      </ComponentExample>
+    </div>
+
+    <div class="mb-12">
+      <h3 class="mb-4 text-xl font-semibold">With Title</h3>
+      <ComponentExample code={`<PageHeader
+  breadcrumbs={
+    <Breadcrumbs>
+      <Breadcrumbs.Link href="#">Home</Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Link href="#">Products</Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Current>Page title</Breadcrumbs.Current>
+    </Breadcrumbs>
+  }
+  title="Page title"
+/>`}>
+        <PageHeaderWithTitleDemo client:visible />
+      </ComponentExample>
+    </div>
+
+    <div class="mb-12">
+      <h3 class="mb-4 text-xl font-semibold">With Title and Description</h3>
+      <ComponentExample code={`<PageHeader
+  breadcrumbs={
+    <Breadcrumbs>
+      <Breadcrumbs.Link href="#">Home</Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Link href="#">Products</Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Current>Page title</Breadcrumbs.Current>
+    </Breadcrumbs>
+  }
+  title="Page title"
+  description="Action-led, value-oriented description of what this page does. Optional second sentence with use cases or prerequisites."
+/>`}>
+        <PageHeaderWithTitleDescriptionDemo client:visible />
+      </ComponentExample>
+    </div>
+
+    <div class="mb-12">
+      <h3 class="mb-4 text-xl font-semibold">Complete Example</h3>
+      <p class="mb-4 text-label">Combining breadcrumbs, title, description, tabs, and actions.</p>
+      <ComponentExample code={`<PageHeader
+  breadcrumbs={
+    <Breadcrumbs>
+      <Breadcrumbs.Link href="#">Home</Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Link href="#">Products</Breadcrumbs.Link>
+      <Breadcrumbs.Separator />
+      <Breadcrumbs.Current>Page title</Breadcrumbs.Current>
+    </Breadcrumbs>
+  }
+  title="Page title"
+  description="Action-led, value-oriented description of what this page does."
+  tabs={[
+    { label: "Overview", value: "overview" },
+    { label: "Analytics", value: "analytics" },
+    { label: "Settings", value: "settings" },
+  ]}
+  defaultTab="overview"
+>
+  <Button variant="outline" size="sm">Export</Button>
+  <Button variant="primary" size="sm" icon={<PlusIcon />}>New Item</Button>
+</PageHeader>`}>
+        <PageHeaderCompleteDemo client:visible />
       </ComponentExample>
     </div>
   </ComponentSection>

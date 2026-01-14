@@ -278,6 +278,13 @@ export function SidebarNav({ currentPath }: SidebarNavProps) {
             </ul>
           </div>
         </div>
+
+        {/* Version badge at bottom of sidebar */}
+        <div className="flex-none border-t border-border p-3 text-xs text-muted">
+          <span title={`Built: ${__BUILD_DATE__}`}>
+            v{__BUILD_VERSION__} ({__BUILD_COMMIT__})
+          </span>
+        </div>
       </aside>
 
       {/* Search Dialog */}
