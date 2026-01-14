@@ -36,7 +36,7 @@ import themeData from "../generated/theme-data.json";
 /**
  * Base styles from Surface component
  */
-var BASE_STYLES = "shadow-xs ring ring-border";
+const BASE_STYLES = "shadow-xs ring ring-border";
 
 
 
@@ -44,7 +44,7 @@ var BASE_STYLES = "shadow-xs ring ring-border";
  * Create a single Surface component
  */
 async function createSurfaceComponent(): Promise<ComponentNode> {
-  var component = figma.createComponent();
+  const component = figma.createComponent();
   component.name = "Surface";
   component.description =
     "A container component with shadow and border for creating elevated surfaces.";
@@ -63,13 +63,13 @@ async function createSurfaceComponent(): Promise<ComponentNode> {
   component.cornerRadius = BORDER_RADIUS.lg;
 
   // Apply background fill (bg-surface for the container)
-  var bgVar = getVariableByName("color-surface");
+  const bgVar = getVariableByName("color-surface");
   if (bgVar) {
     bindFillToVariable(component, bgVar.id);
   }
 
   // Apply border (ring ring-border)
-  var borderVar = getVariableByName("color-border");
+  const borderVar = getVariableByName("color-border");
   if (borderVar) {
     bindStrokeToVariable(component, borderVar.id, 1);
   }
@@ -88,7 +88,7 @@ async function createSurfaceComponent(): Promise<ComponentNode> {
   ];
 
   // Add sample content text
-  var contentText = await createTextNode(
+  const contentText = await createTextNode(
     "Surface content",
     FONT_SIZE.base, // 14px from theme-kumo.css
     FALLBACK_VALUES.fontWeight.normal, // 400
@@ -96,7 +96,7 @@ async function createSurfaceComponent(): Promise<ComponentNode> {
   contentText.name = "Content";
   contentText.textAutoResize = "WIDTH_AND_HEIGHT";
 
-  var textVar = getVariableByName("text-color-surface");
+  const textVar = getVariableByName("text-color-surface");
   if (textVar) {
     bindTextColorToVariable(contentText, textVar.id);
   }
@@ -122,13 +122,13 @@ export async function generateSurfaceComponents(
 
   figma.currentPage = page;
 
-  var components: ComponentNode[] = [];
-  var rowLabels: { y: number; text: string }[] = [];
+  const components: ComponentNode[] = [];
+  const rowLabels: { y: number; text: string }[] = [];
 
-  var labelColumnWidth = 100;
+  const labelColumnWidth = 100;
 
   // Create single surface component
-  var component = await createSurfaceComponent();
+  const component = await createSurfaceComponent();
   component.x = labelColumnWidth;
   component.y = 0;
   rowLabels.push({ y: 0, text: "default" });
@@ -136,23 +136,23 @@ export async function generateSurfaceComponents(
 
   // Combine into ComponentSet (even with single variant for consistency)
   // @ts-ignore
-  var componentSet = figma.combineAsVariants(components, page);
+  const componentSet = figma.combineAsVariants(components, page);
   componentSet.name = "Surface";
   componentSet.description =
     "A polymorphic container component for creating elevated surfaces with shadow and border.";
   componentSet.layoutMode = "NONE";
 
-  var contentWidth = componentSet.width + labelColumnWidth;
-  var contentHeight = componentSet.height;
+  const contentWidth = componentSet.width + labelColumnWidth;
+  const contentHeight = componentSet.height;
 
   // Create sections
-  var lightSection = createModeSection(page, "Surface", "light");
+  const lightSection = createModeSection(page, "Surface", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
   );
 
-  var darkSection = createModeSection(page, "Surface", "dark");
+  const darkSection = createModeSection(page, "Surface", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
@@ -164,29 +164,29 @@ export async function generateSurfaceComponents(
   componentSet.y = SECTION_PADDING;
 
   // Add row labels to light section
-  for (var li = 0; li < rowLabels.length; li++) {
-    var label = rowLabels[li];
-    var labelNode = await createRowLabel(
+  for (let li = 0; li < rowLabels.length; li++) {
+    const label = rowLabels[li];
+    const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 8,
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md,
     );
     lightSection.frame.appendChild(labelNode);
   }
 
   // Create instances for dark section
-  for (var k = 0; k < components.length; k++) {
-    var origComp = components[k];
-    var instance = origComp.createInstance();
+  for (let k = 0; k < components.length; k++) {
+    const origComp = components[k];
+    const instance = origComp.createInstance();
     instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
     instance.y = origComp.y + SECTION_PADDING;
     darkSection.frame.appendChild(instance);
   }
 
   // Add row labels to dark section
-  for (var di = 0; di < rowLabels.length; di++) {
-    var darkLabel = rowLabels[di];
-    var darkLabelNode = await createRowLabel(
+  for (let di = 0; di < rowLabels.length; di++) {
+    const darkLabel = rowLabels[di];
+    const darkLabelNode = await createRowLabel(
       darkLabel.text,
       SECTION_PADDING,
       SECTION_PADDING + darkLabel.y + 8,
@@ -195,8 +195,8 @@ export async function generateSurfaceComponents(
   }
 
   // Resize and position sections
-  var totalWidth = contentWidth + SECTION_PADDING * 2;
-  var totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalWidth = contentWidth + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
@@ -282,10 +282,10 @@ export function getSurfaceParsedBaseStyles() {
  * This is used for snapshot testing to catch unintended changes.
  */
 export function getAllSurfaceData() {
-  var dimensions = getSurfaceDimensionsConfig();
-  var colorBindings = getSurfaceColorBindings();
-  var shadowConfig = getSurfaceShadowConfig();
-  var parsedBaseStyles = getSurfaceParsedBaseStyles();
+  const dimensions = getSurfaceDimensionsConfig();
+  const colorBindings = getSurfaceColorBindings();
+  const shadowConfig = getSurfaceShadowConfig();
+  const parsedBaseStyles = getSurfaceParsedBaseStyles();
 
   return {
     baseStyles: {

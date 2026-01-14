@@ -87,12 +87,12 @@ function getTabsConfigFromRegistry() {
 /**
  * Tabs configuration (reads from registry with fallback)
  */
-var TABS_CONFIG = getTabsConfigFromRegistry();
+const TABS_CONFIG = getTabsConfigFromRegistry();
 
 /**
  * Default tab items to display (matches Storybook Default story)
  */
-var DEFAULT_TABS = ["Tab 1", "Tab 2", "Tab 3"];
+const DEFAULT_TABS = ["Tab 1", "Tab 2", "Tab 3"];
 
 /**
  * Testable export functions for testing
@@ -167,7 +167,7 @@ async function createTabButton(
   label: string,
   isActive: boolean,
 ): Promise<FrameNode> {
-  var button = figma.createFrame();
+  const button = figma.createFrame();
   button.name = isActive ? "Tab (active)" : "Tab";
 
   // Layout: horizontal, hug content
@@ -178,7 +178,7 @@ async function createTabButton(
   button.counterAxisSizingMode = "FIXED"; // Fixed height
 
   // Height accounts for vertical margin (34px container - 2px margin = 32px)
-  var buttonHeight =
+  const buttonHeight =
     TABS_CONFIG.containerHeight - TABS_CONFIG.tabVerticalMargin * 2;
   button.resize(100, buttonHeight); // Width will auto-resize
 
@@ -195,7 +195,7 @@ async function createTabButton(
   button.fills = [];
 
   // Create text label
-  var text = await createTextNode(
+  const text = await createTextNode(
     label,
     TABS_CONFIG.tabFontSize,
     TABS_CONFIG.tabFontWeight,
@@ -204,12 +204,12 @@ async function createTabButton(
 
   // Text color: text-surface for active, text-label for inactive
   if (isActive) {
-    var surfaceTextVar = getVariableByName("text-color-surface");
+    const surfaceTextVar = getVariableByName("text-color-surface");
     if (surfaceTextVar) {
       bindTextColorToVariable(text, surfaceTextVar.id);
     }
   } else {
-    var labelTextVar = getVariableByName("text-color-label");
+    const labelTextVar = getVariableByName("text-color-label");
     if (labelTextVar) {
       bindTextColorToVariable(text, labelTextVar.id);
     }
@@ -231,27 +231,27 @@ function createTabIndicator(
   activeIndex: number,
   tabWidths: number[],
 ): FrameNode {
-  var indicator = figma.createFrame();
+  const indicator = figma.createFrame();
   indicator.name = "Indicator";
 
   // NOTE: layoutPositioning = "ABSOLUTE" must be set AFTER adding to parent
   // It will be set in createTabsComponent after insertChild
 
   // Calculate position and size based on active tab
-  var indicatorHeight =
+  const indicatorHeight =
     TABS_CONFIG.containerHeight - TABS_CONFIG.tabVerticalMargin * 2;
 
   // Width matches the active tab
-  var indicatorWidth = tabWidths[activeIndex];
+  const indicatorWidth = tabWidths[activeIndex];
 
   // X position is sum of previous tab widths + container padding
-  var indicatorX = TABS_CONFIG.containerPadding;
-  for (var i = 0; i < activeIndex; i++) {
+  let indicatorX = TABS_CONFIG.containerPadding;
+  for (let i = 0; i < activeIndex; i++) {
     indicatorX = indicatorX + tabWidths[i];
   }
 
   // Y position accounts for vertical margin
-  var indicatorY = TABS_CONFIG.tabVerticalMargin;
+  const indicatorY = TABS_CONFIG.tabVerticalMargin;
 
   indicator.resize(indicatorWidth, indicatorHeight);
   indicator.x = indicatorX;
@@ -261,13 +261,13 @@ function createTabIndicator(
   indicator.cornerRadius = TABS_CONFIG.borderRadius;
 
   // Background: bg-surface-elevated
-  var surfaceElevatedVar = getVariableByName("color-surface-elevated");
+  const surfaceElevatedVar = getVariableByName("color-surface-elevated");
   if (surfaceElevatedVar) {
     bindFillToVariable(indicator, surfaceElevatedVar.id);
   }
 
   // Border: ring ring-color-2 (1px)
-  var ringVar = getVariableByName("color-color-2");
+  const ringVar = getVariableByName("color-color-2");
   if (ringVar) {
     bindStrokeToVariable(indicator, ringVar.id, 1);
   }
@@ -297,7 +297,7 @@ function createTabIndicator(
 async function createTabsComponent(
   activeIndex: number,
 ): Promise<ComponentNode> {
-  var component = figma.createComponent();
+  const component = figma.createComponent();
   component.name = "active=" + DEFAULT_TABS[activeIndex];
   component.description =
     "Tabs navigation component. " +
@@ -319,19 +319,19 @@ async function createTabsComponent(
   component.cornerRadius = TABS_CONFIG.borderRadius;
 
   // Background: bg-accent
-  var accentVar = getVariableByName("color-accent");
+  const accentVar = getVariableByName("color-accent");
   if (accentVar) {
     bindFillToVariable(component, accentVar.id);
   }
 
   // Create tab buttons and add to component
-  var tabButtons: FrameNode[] = [];
-  var tabWidths: number[] = [];
+  const tabButtons: FrameNode[] = [];
+  const tabWidths: number[] = [];
 
-  for (var i = 0; i < DEFAULT_TABS.length; i++) {
-    var tab = DEFAULT_TABS[i];
-    var isActive = i === activeIndex;
-    var button = await createTabButton(tab, isActive);
+  for (let i = 0; i < DEFAULT_TABS.length; i++) {
+    const tab = DEFAULT_TABS[i];
+    const isActive = i === activeIndex;
+    const button = await createTabButton(tab, isActive);
     tabButtons.push(button);
     component.appendChild(button);
     // Width is calculated after appendChild due to auto-layout
@@ -340,7 +340,7 @@ async function createTabsComponent(
 
   // Create indicator and insert at index 0 (behind tabs)
   // In Figma, lower index = further back in z-order
-  var indicator = createTabIndicator(activeIndex, tabWidths);
+  const indicator = createTabIndicator(activeIndex, tabWidths);
 
   // Insert indicator at the beginning so it appears behind tabs
   // In Figma, lower index = further back in z-order
@@ -374,19 +374,19 @@ export async function generateTabsComponents(
   try {
     figma.currentPage = page;
 
-    var components: ComponentNode[] = [];
-    var rowLabels: { y: number; text: string }[] = [];
+    const components: ComponentNode[] = [];
+    const rowLabels: { y: number; text: string }[] = [];
 
-    var labelColumnWidth = GRID_LAYOUT.labelColumnWidth.standard;
-    var rowGap = GRID_LAYOUT.rowGap.compact;
-    var currentY = 0;
+    const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.standard;
+    const rowGap = GRID_LAYOUT.rowGap.compact;
+    let currentY = 0;
 
     // Create a component for each active state
-    for (var i = 0; i < DEFAULT_TABS.length; i++) {
-      var tab = DEFAULT_TABS[i];
+    for (let i = 0; i < DEFAULT_TABS.length; i++) {
+      const tab = DEFAULT_TABS[i];
       logProgress("Tabs", "Creating active=" + tab);
 
-      var component = await createTabsComponent(i);
+      const component = await createTabsComponent(i);
       component.x = labelColumnWidth;
       component.y = currentY;
 
@@ -398,7 +398,7 @@ export async function generateTabsComponents(
 
     logProgress("Tabs", "Combining as variants...");
     // @ts-ignore - combineAsVariants works at runtime
-    var componentSet = figma.combineAsVariants(components, page);
+    const componentSet = figma.combineAsVariants(components, page);
     componentSet.name = "Tabs";
     componentSet.description =
       "Tabs - Horizontal tab navigation. " +
@@ -407,18 +407,18 @@ export async function generateTabsComponents(
     componentSet.layoutMode = "NONE";
 
     // Calculate content dimensions
-    var contentWidth = componentSet.width + labelColumnWidth;
-    var contentHeight = componentSet.height;
+    const contentWidth = componentSet.width + labelColumnWidth;
+    const contentHeight = componentSet.height;
 
     // Create light mode section
-    var lightSection = createModeSection(page, "Tabs", "light");
+    const lightSection = createModeSection(page, "Tabs", "light");
     lightSection.frame.resize(
       contentWidth + SECTION_PADDING * 2,
       contentHeight + SECTION_PADDING * 2,
     );
 
     // Create dark mode section
-    var darkSection = createModeSection(page, "Tabs", "dark");
+    const darkSection = createModeSection(page, "Tabs", "dark");
     darkSection.frame.resize(
       contentWidth + SECTION_PADDING * 2,
       contentHeight + SECTION_PADDING * 2,
@@ -430,9 +430,9 @@ export async function generateTabsComponents(
     componentSet.y = SECTION_PADDING;
 
     // Add row labels to light section
-    for (var li = 0; li < rowLabels.length; li++) {
-      var label = rowLabels[li];
-      var labelNode = await createRowLabel(
+    for (let li = 0; li < rowLabels.length; li++) {
+      const label = rowLabels[li];
+      const labelNode = await createRowLabel(
         label.text,
         SECTION_PADDING,
         SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.lg, // Large offset to center vertically with tabs
@@ -441,18 +441,18 @@ export async function generateTabsComponents(
     }
 
     // Create instances for dark section
-    for (var k = 0; k < components.length; k++) {
-      var origComp = components[k];
-      var instance = origComp.createInstance();
+    for (let k = 0; k < components.length; k++) {
+      const origComp = components[k];
+      const instance = origComp.createInstance();
       instance.x = SECTION_PADDING + labelColumnWidth;
       instance.y = origComp.y + SECTION_PADDING;
       darkSection.frame.appendChild(instance);
     }
 
     // Add row labels to dark section
-    for (var di = 0; di < rowLabels.length; di++) {
-      var darkLabel = rowLabels[di];
-      var darkLabelNode = await createRowLabel(
+    for (let di = 0; di < rowLabels.length; di++) {
+      const darkLabel = rowLabels[di];
+      const darkLabelNode = await createRowLabel(
         darkLabel.text,
         SECTION_PADDING,
         SECTION_PADDING + darkLabel.y + GRID_LAYOUT.labelVerticalOffset.lg,
@@ -461,8 +461,8 @@ export async function generateTabsComponents(
     }
 
     // Resize sections to fit content with padding
-    var totalWidth = contentWidth + SECTION_PADDING * 2;
-    var totalHeight = contentHeight + SECTION_PADDING * 2;
+    const totalWidth = contentWidth + SECTION_PADDING * 2;
+    const totalHeight = contentHeight + SECTION_PADDING * 2;
 
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
@@ -482,8 +482,8 @@ export async function generateTabsComponents(
 
     return startY + totalHeight + SECTION_GAP;
   } catch (error) {
-    var errorMessage = error instanceof Error ? error.message : String(error);
-    var errorStack = error instanceof Error ? error.stack : "";
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorStack = error instanceof Error ? error.stack : "";
     console.error("Tabs generation failed: " + errorMessage);
     console.error("Stack: " + errorStack);
     throw error;

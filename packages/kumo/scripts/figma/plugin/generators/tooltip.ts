@@ -48,21 +48,21 @@ import registry from "../../../../ai/component-registry.json";
  * FIGMA-SPECIFIC: Arrow dimensions are for Figma canvas rendering only,
  * not derived from design tokens (no CSS equivalent for tooltip arrows)
  */
-var ARROW_WIDTH = 20;
-var ARROW_HEIGHT = 10;
+const ARROW_WIDTH = 20;
+const ARROW_HEIGHT = 10;
 
 /**
  * Tooltip styling - read from React component
  * Matches the actual Tooltip.Popup styles from tooltip.tsx:
  * "rounded-md bg-black-icon px-2.5 py-1.5 text-sm text-white"
  */
-var tooltipComponent = registry.components.Tooltip;
+const tooltipComponent = registry.components.Tooltip;
 
 // Tooltip popup styles from tooltip.tsx
-var TOOLTIP_BOX_STYLES = "rounded-md bg-black-icon px-2.5 py-1.5 text-sm text-white";
+const TOOLTIP_BOX_STYLES = "rounded-md bg-black-icon px-2.5 py-1.5 text-sm text-white";
 // Use centralized values from shared.ts to prevent drift
-var TOOLTIP_TEXT_SIZE = FONT_SIZE.sm; // text-sm from theme-data.json
-var TOOLTIP_TEXT_WEIGHT = FALLBACK_VALUES.fontWeight.normal; // font-normal from theme-data.json
+const TOOLTIP_TEXT_SIZE = FONT_SIZE.sm; // text-sm from theme-data.json
+const TOOLTIP_TEXT_WEIGHT = FALLBACK_VALUES.fontWeight.normal; // font-normal from theme-data.json
 
 /**
  * Create a tooltip arrow as a simple triangle pointing down using vector path
@@ -73,7 +73,7 @@ var TOOLTIP_TEXT_WEIGHT = FALLBACK_VALUES.fontWeight.normal; // font-normal from
  * @returns VectorNode for the arrow
  */
 function createTooltipArrow(): VectorNode {
-  var arrow = figma.createVector();
+  const arrow = figma.createVector();
   arrow.name = "Arrow";
 
   // Create a downward-pointing triangle using vector network
@@ -98,7 +98,7 @@ function createTooltipArrow(): VectorNode {
   };
 
   // Bind arrow fill to bg-black-icon variable (matches tooltip box)
-  var bgVar = getVariableByName("color-black-icon");
+  const bgVar = getVariableByName("color-black-icon");
   if (bgVar) {
     bindFillToVariable(arrow as unknown as SceneNode, bgVar.id);
   }
@@ -127,14 +127,14 @@ function createTooltipArrow(): VectorNode {
  */
 async function createTooltipComponent(): Promise<ComponentNode> {
   // Create component (no auto-layout - manual positioning)
-  var component = figma.createComponent();
+  const component = figma.createComponent();
   component.name = "Tooltip";
   component.description = "Tooltip popup component for contextual help";
   component.layoutMode = "NONE";
   component.fills = []; // Transparent - the inner box has the fill
 
   // Create the tooltip box (the rounded rectangle with text)
-  var tooltipBox = figma.createFrame();
+  const tooltipBox = figma.createFrame();
   tooltipBox.name = "Tooltip Box";
   tooltipBox.layoutMode = "VERTICAL";
   tooltipBox.primaryAxisSizingMode = "AUTO";
@@ -148,14 +148,14 @@ async function createTooltipComponent(): Promise<ComponentNode> {
   tooltipBox.y = 0;
 
   // Apply background fill (bg-black-icon)
-  var bgVar = getVariableByName("color-black-icon");
+  const bgVar = getVariableByName("color-black-icon");
   if (bgVar) {
     bindFillToVariable(tooltipBox, bgVar.id);
   }
 
   // Create tooltip text content
   // text-sm = 14px, normal weight = 400
-  var text = await createTextNode("Tooltip text", FONT_SIZE.sm, FALLBACK_VALUES.fontWeight.normal);
+  const text = await createTextNode("Tooltip text", FONT_SIZE.sm, FALLBACK_VALUES.fontWeight.normal);
   text.name = "Text";
   text.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -167,7 +167,7 @@ async function createTooltipComponent(): Promise<ComponentNode> {
   component.appendChild(tooltipBox);
 
   // Create arrow and position below the box
-  var arrow = createTooltipArrow();
+  const arrow = createTooltipArrow();
   // Center arrow horizontally under the box
   arrow.x = (tooltipBox.width - ARROW_WIDTH) / 2;
   // Position directly at bottom of box (no gap)
@@ -200,10 +200,10 @@ export async function generateTooltipComponents(
   figma.currentPage = page;
 
   // Generate the tooltip component
-  var components: ComponentNode[] = [];
+  const components: ComponentNode[] = [];
 
   // Create the tooltip component
-  var component = await createTooltipComponent();
+  const component = await createTooltipComponent();
 
   // Position component
   component.x = 0;
@@ -213,7 +213,7 @@ export async function generateTooltipComponents(
 
   // Combine into ComponentSet (even with single variant for consistency)
   // @ts-ignore - combineAsVariants works at runtime
-  var componentSet = figma.combineAsVariants(components, page);
+  const componentSet = figma.combineAsVariants(components, page);
   componentSet.name = "Tooltip";
   componentSet.description =
     "Tooltip popup component. " +
@@ -221,18 +221,18 @@ export async function generateTooltipComponents(
   componentSet.layoutMode = "NONE";
 
   // Calculate content dimensions
-  var contentWidth = componentSet.width;
-  var contentHeight = componentSet.height;
+  const contentWidth = componentSet.width;
+  const contentHeight = componentSet.height;
 
   // Create light mode section
-  var lightSection = createModeSection(page, "Tooltip", "light");
+  const lightSection = createModeSection(page, "Tooltip", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
   );
 
   // Create dark mode section
-  var darkSection = createModeSection(page, "Tooltip", "dark");
+  const darkSection = createModeSection(page, "Tooltip", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
@@ -244,17 +244,17 @@ export async function generateTooltipComponents(
   componentSet.y = SECTION_PADDING;
 
   // Create instances for dark section
-  for (var k = 0; k < components.length; k++) {
-    var origComp = components[k];
-    var instance = origComp.createInstance();
+  for (let k = 0; k < components.length; k++) {
+    const origComp = components[k];
+    const instance = origComp.createInstance();
     instance.x = origComp.x + SECTION_PADDING;
     instance.y = origComp.y + SECTION_PADDING;
     darkSection.frame.appendChild(instance);
   }
 
   // Resize sections to fit content with padding
-  var totalWidth = contentWidth + SECTION_PADDING * 2;
-  var totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalWidth = contentWidth + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
@@ -283,8 +283,8 @@ export async function generateTooltipComponents(
  * @returns Side variant configuration
  */
 export function getTooltipSideConfig() {
-  var props = tooltipComponent.props;
-  var sideProp = props.side as {
+  const props = tooltipComponent.props;
+  const sideProp = props.side as {
     values: string[];
     descriptions: Record<string, string>;
     default: string;
@@ -340,7 +340,7 @@ export function getTooltipParsedBoxStyles() {
  * @returns Layout dimensions and styling
  */
 export function getTooltipBoxLayout() {
-  var parsed = parseTailwindClasses(TOOLTIP_BOX_STYLES);
+  const parsed = parseTailwindClasses(TOOLTIP_BOX_STYLES);
 
   return {
     // Padding
@@ -377,11 +377,11 @@ export function getTooltipArrowDimensions() {
  * @returns All intermediate data for Tooltip component
  */
 export function getAllTooltipData() {
-  var sideConfig = getTooltipSideConfig();
-  var stylingConfig = getTooltipStylingConfig();
-  var boxLayout = getTooltipBoxLayout();
-  var arrowDimensions = getTooltipArrowDimensions();
-  var parsedStyles = getTooltipParsedBoxStyles();
+  const sideConfig = getTooltipSideConfig();
+  const stylingConfig = getTooltipStylingConfig();
+  const boxLayout = getTooltipBoxLayout();
+  const arrowDimensions = getTooltipArrowDimensions();
+  const parsedStyles = getTooltipParsedBoxStyles();
 
   return {
     sideConfig,

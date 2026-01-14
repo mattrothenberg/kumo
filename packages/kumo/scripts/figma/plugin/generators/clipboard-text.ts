@@ -107,7 +107,7 @@ export function getBaseStyles() {
  * Returns height, classes, buttonSize, and dimensions from sizeVariants
  */
 export function getSizeConfig(size: string) {
-  const sizeVariant = clipboardTextStyling.sizeVariants[size];
+  let sizeVariant = clipboardTextStyling.sizeVariants[size];
 
   return {
     height: sizeVariant.height as number,
@@ -295,7 +295,7 @@ async function createClipboardTextComponent(
       },
     ];
     // Bind stroke to variable
-    var stroke: SolidPaint = {
+    let stroke: SolidPaint = {
       type: "SOLID",
       color: COLORS.borderGray,
     };
@@ -430,7 +430,7 @@ export async function generateClipboardTextComponents(
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 8, // +8 to vertically center
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md, // +8 to vertically center
     );
     lightSection.frame.appendChild(labelNode);
   }
@@ -450,7 +450,7 @@ export async function generateClipboardTextComponents(
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 8,
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md,
     );
     darkSection.frame.appendChild(labelNode);
   }

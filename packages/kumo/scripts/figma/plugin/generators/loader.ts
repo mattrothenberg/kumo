@@ -39,11 +39,11 @@ import { logComplete, logStart, logProgress } from "../logger";
  * @returns ComponentNode for the Loader
  */
 async function createLoaderComponent(size: string): Promise<ComponentNode> {
-  var sizeConfig = loaderData.sizes[size as keyof typeof loaderData.sizes];
-  var sizeValue = sizeConfig.value;
+  const sizeConfig = loaderData.sizes[size as keyof typeof loaderData.sizes];
+  const sizeValue = sizeConfig.value;
 
   // Create component
-  var component = figma.createComponent();
+  const component = figma.createComponent();
   component.name = "size=" + size;
   component.description = sizeConfig.description;
 
@@ -55,10 +55,10 @@ async function createLoaderComponent(size: string): Promise<ComponentNode> {
   component.counterAxisAlignItems = "CENTER";
 
   // Create SVG node from the loader SVG (parsed from loader.tsx)
-  var svgString = loaderData.svgString;
+  const svgString = loaderData.svgString;
 
   try {
-    var svgNode = figma.createNodeFromSvg(svgString);
+    const svgNode = figma.createNodeFromSvg(svgString);
     svgNode.name = "Spinner";
 
     // Resize to match the component size
@@ -71,7 +71,7 @@ async function createLoaderComponent(size: string): Promise<ComponentNode> {
     };
 
     // Bind stroke colors to text-color-surface
-    var strokeVar = getVariableByName("text-color-surface");
+    const strokeVar = getVariableByName("text-color-surface");
     if (strokeVar) {
       // Traverse all children and bind stroke colors
       traverseAndBindStrokes(svgNode, strokeVar.id);
@@ -81,7 +81,7 @@ async function createLoaderComponent(size: string): Promise<ComponentNode> {
   } catch (error) {
     console.error("Failed to create SVG node for Loader:", error);
     // Fallback: create a simple ellipse
-    var fallbackCircle = figma.createEllipse();
+    const fallbackCircle = figma.createEllipse();
     fallbackCircle.name = "Fallback";
     fallbackCircle.resize(sizeValue - 4, sizeValue - 4);
     fallbackCircle.x = 2;
@@ -110,7 +110,7 @@ function traverseAndBindStrokes(node: SceneNode, variableId: string): void {
     node.type === "POLYGON" ||
     node.type === "STAR"
   ) {
-    var strokeNode = node as
+    const strokeNode = node as
       | VectorNode
       | EllipseNode
       | RectangleNode
@@ -118,7 +118,7 @@ function traverseAndBindStrokes(node: SceneNode, variableId: string): void {
       | PolygonNode
       | StarNode;
     if (strokeNode.strokes && strokeNode.strokes.length > 0) {
-      var strokeWeight =
+      const strokeWeight =
         typeof strokeNode.strokeWeight === "number"
           ? strokeNode.strokeWeight
           : 1;
@@ -128,8 +128,8 @@ function traverseAndBindStrokes(node: SceneNode, variableId: string): void {
 
   // Recursively process children for frames and groups
   if (node.type === "FRAME" || node.type === "GROUP") {
-    var containerNode = node as FrameNode | GroupNode;
-    for (var i = 0; i < containerNode.children.length; i++) {
+    const containerNode = node as FrameNode | GroupNode;
+    for (let i = 0; i < containerNode.children.length; i++) {
       traverseAndBindStrokes(containerNode.children[i], variableId);
     }
   }
@@ -177,7 +177,7 @@ export function getLoaderSvgData() {
  * @returns Object with dimension data for the size
  */
 export function getLoaderSizeDimensions(size: string) {
-  var sizeConfig = loaderData.sizes[size as keyof typeof loaderData.sizes];
+  const sizeConfig = loaderData.sizes[size as keyof typeof loaderData.sizes];
   if (!sizeConfig) {
     throw new Error("Invalid size: " + size);
   }
@@ -211,9 +211,9 @@ export function getLoaderColorBinding() {
  * @returns Complete Loader data structure
  */
 export function getAllLoaderData() {
-  var sizeConfig = getLoaderSizeConfig();
-  var svgData = getLoaderSvgData();
-  var colorBinding = getLoaderColorBinding();
+  const sizeConfig = getLoaderSizeConfig();
+  const svgData = getLoaderSvgData();
+  const colorBinding = getLoaderColorBinding();
 
   return {
     sizeConfig,
@@ -246,22 +246,22 @@ export async function generateLoaderComponents(
   try {
     figma.currentPage = page;
 
-    var sizes = Object.keys(loaderData.sizes);
-    var components: ComponentNode[] = [];
-    var rowLabels: { y: number; text: string }[] = [];
+    const sizes = Object.keys(loaderData.sizes);
+    const components: ComponentNode[] = [];
+    const rowLabels: { y: number; text: string }[] = [];
 
-    var labelColumnWidth = 120;
-    var componentGap = 24;
-    var currentY = 0;
+    const labelColumnWidth = 120;
+    const componentGap = 24;
+    let currentY = 0;
 
     // Create components for each size
-    for (var i = 0; i < sizes.length; i++) {
-      var size = sizes[i];
-      var sizeValue =
+    for (let i = 0; i < sizes.length; i++) {
+      const size = sizes[i];
+      const sizeValue =
         loaderData.sizes[size as keyof typeof loaderData.sizes].value;
 
       logProgress("Loader", "Creating size=" + size);
-      var component = await createLoaderComponent(size);
+      const component = await createLoaderComponent(size);
       component.x = labelColumnWidth;
       component.y = currentY;
 
@@ -273,7 +273,7 @@ export async function generateLoaderComponents(
 
     logProgress("Loader", "Combining as variants...");
     // @ts-ignore - combineAsVariants works at runtime
-    var componentSet = figma.combineAsVariants(components, page);
+    const componentSet = figma.combineAsVariants(components, page);
     componentSet.name = "Loader";
     componentSet.description =
       "Loader - Circular loading spinner. Sizes: sm (16px), base (24px), lg (32px). " +
@@ -282,18 +282,18 @@ export async function generateLoaderComponents(
     componentSet.layoutMode = "NONE";
 
     // Calculate content dimensions
-    var contentWidth = componentSet.width + labelColumnWidth;
-    var contentHeight = componentSet.height;
+    const contentWidth = componentSet.width + labelColumnWidth;
+    const contentHeight = componentSet.height;
 
     // Create light mode section
-    var lightSection = createModeSection(page, "Loader", "light");
+    const lightSection = createModeSection(page, "Loader", "light");
     lightSection.frame.resize(
       contentWidth + SECTION_PADDING * 2,
       contentHeight + SECTION_PADDING * 2,
     );
 
     // Create dark mode section
-    var darkSection = createModeSection(page, "Loader", "dark");
+    const darkSection = createModeSection(page, "Loader", "dark");
     darkSection.frame.resize(
       contentWidth + SECTION_PADDING * 2,
       contentHeight + SECTION_PADDING * 2,
@@ -305,9 +305,9 @@ export async function generateLoaderComponents(
     componentSet.y = SECTION_PADDING;
 
     // Add row labels to light section
-    for (var li = 0; li < rowLabels.length; li++) {
-      var label = rowLabels[li];
-      var labelNode = await createRowLabel(
+    for (let li = 0; li < rowLabels.length; li++) {
+      const label = rowLabels[li];
+      const labelNode = await createRowLabel(
         label.text,
         SECTION_PADDING,
         SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.sm,
@@ -316,9 +316,9 @@ export async function generateLoaderComponents(
     }
 
     // Create instances for dark section
-    for (var k = 0; k < components.length; k++) {
-      var origComp = components[k];
-      var instance = origComp.createInstance();
+    for (let k = 0; k < components.length; k++) {
+      const origComp = components[k];
+      const instance = origComp.createInstance();
       // Position relative to componentSet position, not origComp position
       instance.x = SECTION_PADDING + labelColumnWidth;
       instance.y = origComp.y + SECTION_PADDING;
@@ -326,9 +326,9 @@ export async function generateLoaderComponents(
     }
 
     // Add row labels to dark section
-    for (var di = 0; di < rowLabels.length; di++) {
-      var darkLabel = rowLabels[di];
-      var darkLabelNode = await createRowLabel(
+    for (let di = 0; di < rowLabels.length; di++) {
+      const darkLabel = rowLabels[di];
+      const darkLabelNode = await createRowLabel(
         darkLabel.text,
         SECTION_PADDING,
         SECTION_PADDING + darkLabel.y + GRID_LAYOUT.labelVerticalOffset.sm,
@@ -337,8 +337,8 @@ export async function generateLoaderComponents(
     }
 
     // Resize sections to fit content with padding
-    var totalWidth = contentWidth + SECTION_PADDING * 2;
-    var totalHeight = contentHeight + SECTION_PADDING * 2;
+    const totalWidth = contentWidth + SECTION_PADDING * 2;
+    const totalHeight = contentHeight + SECTION_PADDING * 2;
 
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
@@ -358,8 +358,8 @@ export async function generateLoaderComponents(
 
     return startY + totalHeight + SECTION_GAP;
   } catch (error) {
-    var errorMessage = error instanceof Error ? error.message : String(error);
-    var errorStack = error instanceof Error ? error.stack : "";
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorStack = error instanceof Error ? error.stack : "";
     console.error("Loader generation failed: " + errorMessage);
     console.error("Stack: " + errorStack);
     throw error;

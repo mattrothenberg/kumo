@@ -58,19 +58,19 @@ import registry from "../../../../ai/component-registry.json";
 /**
  * Extract DropdownMenu component data from registry (for metadata)
  */
-var dropdownComponent = registry.components.DropdownMenu;
+const dropdownComponent = registry.components.DropdownMenu;
 
 
 
 /**
  * Open state values
  */
-var OPEN_VALUES = [false, true];
+const OPEN_VALUES = [false, true];
 
 /**
  * Variant types for different dropdown configurations
  */
-var VARIANT_VALUES = [
+const VARIANT_VALUES = [
   "default",
   "withIcons",
   "withDanger",
@@ -82,7 +82,7 @@ var VARIANT_VALUES = [
 /**
  * Dropdown panel width
  */
-var DROPDOWN_WIDTH = 200;
+const DROPDOWN_WIDTH = 200;
 
 /**
  * Create a menu item frame
@@ -97,8 +97,8 @@ async function createMenuItem(
     highlighted?: boolean;
   },
 ): Promise<FrameNode> {
-  var opts = options || {};
-  var itemFrame = figma.createFrame();
+  const opts = options || {};
+  const itemFrame = figma.createFrame();
   itemFrame.name = "Item: " + label;
   itemFrame.layoutMode = "HORIZONTAL";
   // Use SPACE_BETWEEN only when there's a shortcut, otherwise left-align
@@ -118,7 +118,7 @@ async function createMenuItem(
 
   // Apply highlight background if highlighted
   if (opts.highlighted) {
-    var highlightVar = getVariableByName("color-color-3");
+    const highlightVar = getVariableByName("color-color-3");
     if (highlightVar) {
       bindFillToVariable(itemFrame, highlightVar.id);
     }
@@ -130,7 +130,7 @@ async function createMenuItem(
   }
 
   // Left side container (icon + label)
-  var leftContainer = figma.createFrame();
+  const leftContainer = figma.createFrame();
   leftContainer.name = "Left";
   leftContainer.layoutMode = "HORIZONTAL";
   leftContainer.primaryAxisSizingMode = "AUTO";
@@ -141,23 +141,23 @@ async function createMenuItem(
 
   // Add icon if provided
   if (opts.icon) {
-    var icon = getButtonIcon(opts.icon, "sm");
+    const icon = getButtonIcon(opts.icon, "sm");
     icon.name = "Icon";
-    var iconColorToken =
+    const iconColorToken =
       opts.variant === "danger" ? "text-error" : "text-surface";
     bindIconColor(icon, iconColorToken);
     leftContainer.appendChild(icon);
   }
 
   // Create label text
-  var labelText = await createTextNode(label, FONT_SIZE.base, FALLBACK_VALUES.fontWeight.normal);
+  const labelText = await createTextNode(label, FONT_SIZE.base, FALLBACK_VALUES.fontWeight.normal);
   labelText.name = "Label";
   labelText.textAutoResize = "WIDTH_AND_HEIGHT";
 
   // Apply text color based on variant
-  var textColorToken =
+  const textColorToken =
     opts.variant === "danger" ? "text-color-error" : "text-color-surface";
-  var textVar = getVariableByName(textColorToken);
+  const textVar = getVariableByName(textColorToken);
   if (textVar) {
     bindTextColorToVariable(labelText, textVar.id);
   }
@@ -167,12 +167,12 @@ async function createMenuItem(
 
   // Add shortcut if provided
   if (opts.shortcut) {
-    var shortcutText = await createTextNode(opts.shortcut, FONT_SIZE.xs, FALLBACK_VALUES.fontWeight.normal);
+    const shortcutText = await createTextNode(opts.shortcut, FONT_SIZE.xs, FALLBACK_VALUES.fontWeight.normal);
     shortcutText.name = "Shortcut";
     shortcutText.textAutoResize = "WIDTH_AND_HEIGHT";
     shortcutText.opacity = OPACITY.shortcut;
 
-    var shortcutVar = getVariableByName("text-color-muted");
+    const shortcutVar = getVariableByName("text-color-muted");
     if (shortcutVar) {
       bindTextColorToVariable(shortcutText, shortcutVar.id);
     }
@@ -190,7 +190,7 @@ async function createCheckboxItem(
   label: string,
   checked: boolean,
 ): Promise<FrameNode> {
-  var itemFrame = figma.createFrame();
+  const itemFrame = figma.createFrame();
   itemFrame.name = "CheckboxItem: " + label;
   itemFrame.layoutMode = "HORIZONTAL";
   itemFrame.primaryAxisAlignItems = "MIN";
@@ -209,8 +209,8 @@ async function createCheckboxItem(
 
   // Use the real Checkbox component from the ComponentSet
   // Checkbox variant format: "state=checked, variant=default, disabled=false"
-  var checkboxState = checked ? "checked" : "unchecked";
-  var checkboxInstance = createComponentInstance("Checkbox", {
+  const checkboxState = checked ? "checked" : "unchecked";
+  const checkboxInstance = createComponentInstance("Checkbox", {
     state: checkboxState,
     variant: "default",
     disabled: "false",
@@ -221,17 +221,17 @@ async function createCheckboxItem(
     itemFrame.appendChild(checkboxInstance);
   } else {
     // Fallback: create a simple checkbox indicator if component not found
-    var checkboxFrame = figma.createFrame();
+    const checkboxFrame = figma.createFrame();
     checkboxFrame.name = "Checkbox";
     checkboxFrame.resize(themeData.tailwind.spacing.scale["4"], themeData.tailwind.spacing.scale["4"]); // size-4 = 16px
     checkboxFrame.cornerRadius = BORDER_RADIUS.sm; // rounded = 4px
 
     if (checked) {
-      var primaryVar = getVariableByName("color-primary");
+      const primaryVar = getVariableByName("color-primary");
       if (primaryVar) {
         bindFillToVariable(checkboxFrame, primaryVar.id);
       }
-      var checkIcon = getButtonIcon("ph-check", "xs");
+      const checkIcon = getButtonIcon("ph-check", "xs");
       checkIcon.name = "Check";
       bindIconColor(checkIcon, "text-white");
       checkboxFrame.layoutMode = "HORIZONTAL";
@@ -239,7 +239,7 @@ async function createCheckboxItem(
       checkboxFrame.counterAxisAlignItems = "CENTER";
       checkboxFrame.appendChild(checkIcon);
     } else {
-      var borderVar = getVariableByName("color-border");
+      const borderVar = getVariableByName("color-border");
       if (borderVar) {
         bindStrokeToVariable(checkboxFrame, borderVar.id, 1);
       }
@@ -250,11 +250,11 @@ async function createCheckboxItem(
   }
 
   // Create label text
-  var labelText = await createTextNode(label, FONT_SIZE.base, FALLBACK_VALUES.fontWeight.normal);
+  const labelText = await createTextNode(label, FONT_SIZE.base, FALLBACK_VALUES.fontWeight.normal);
   labelText.name = "Label";
   labelText.textAutoResize = "WIDTH_AND_HEIGHT";
 
-  var textVar = getVariableByName("text-color-surface");
+  const textVar = getVariableByName("text-color-surface");
   if (textVar) {
     bindTextColorToVariable(labelText, textVar.id);
   }
@@ -268,7 +268,7 @@ async function createCheckboxItem(
  * Create a separator line
  */
 function createSeparator(): FrameNode {
-  var separator = figma.createFrame();
+  const separator = figma.createFrame();
   separator.name = "Separator";
   separator.layoutMode = "HORIZONTAL";
   separator.primaryAxisSizingMode = "FIXED";
@@ -278,7 +278,7 @@ function createSeparator(): FrameNode {
   separator.fills = [];
 
   // Create the line
-  var line = figma.createFrame();
+  const line = figma.createFrame();
   line.name = "Line";
   line.layoutMode = "HORIZONTAL";
   line.primaryAxisSizingMode = "FIXED";
@@ -286,7 +286,7 @@ function createSeparator(): FrameNode {
   line.layoutAlign = "STRETCH";
   line.resize(DROPDOWN_WIDTH - themeData.tailwind.spacing.scale["3"], 1); // width - 12px
 
-  var mutedVar = getVariableByName("color-muted");
+  const mutedVar = getVariableByName("color-muted");
   if (mutedVar) {
     bindFillToVariable(line, mutedVar.id);
   }
@@ -302,7 +302,7 @@ function createSeparator(): FrameNode {
  * Create a group label
  */
 async function createGroupLabel(label: string): Promise<FrameNode> {
-  var labelFrame = figma.createFrame();
+  const labelFrame = figma.createFrame();
   labelFrame.name = "GroupLabel: " + label;
   labelFrame.layoutMode = "HORIZONTAL";
   labelFrame.primaryAxisSizingMode = "FIXED";
@@ -315,11 +315,11 @@ async function createGroupLabel(label: string): Promise<FrameNode> {
   labelFrame.paddingBottom = themeData.tailwind.spacing.scale["0.5"]; // py-0.5 = 2px
   labelFrame.fills = [];
 
-  var labelText = await createTextNode(label, FONT_SIZE.base, FALLBACK_VALUES.fontWeight.semiBold);
+  const labelText = await createTextNode(label, FONT_SIZE.base, FALLBACK_VALUES.fontWeight.semiBold);
   labelText.name = "Label";
   labelText.textAutoResize = "WIDTH_AND_HEIGHT";
 
-  var textVar = getVariableByName("text-color-surface");
+  const textVar = getVariableByName("text-color-surface");
   if (textVar) {
     bindTextColorToVariable(labelText, textVar.id);
   }
@@ -333,7 +333,7 @@ async function createGroupLabel(label: string): Promise<FrameNode> {
  * Create the trigger button
  */
 async function createTriggerButton(label: string): Promise<FrameNode> {
-  var button = figma.createFrame();
+  const button = figma.createFrame();
   button.name = "Trigger";
   button.layoutMode = "HORIZONTAL";
   button.primaryAxisAlignItems = "CENTER";
@@ -348,22 +348,22 @@ async function createTriggerButton(label: string): Promise<FrameNode> {
   button.cornerRadius = BORDER_RADIUS.lg;
 
   // Apply secondary button styles
-  var bgVar = getVariableByName("color-secondary");
+  const bgVar = getVariableByName("color-secondary");
   if (bgVar) {
     bindFillToVariable(button, bgVar.id);
   }
 
-  var borderVar = getVariableByName("color-border");
+  const borderVar = getVariableByName("color-border");
   if (borderVar) {
     bindStrokeToVariable(button, borderVar.id, 1);
   }
 
   // Create button text
-  var buttonText = await createTextNode(label, FONT_SIZE.base, FALLBACK_VALUES.fontWeight.medium);
+  const buttonText = await createTextNode(label, FONT_SIZE.base, FALLBACK_VALUES.fontWeight.medium);
   buttonText.name = "Label";
   buttonText.textAutoResize = "WIDTH_AND_HEIGHT";
 
-  var textVar = getVariableByName("text-color-surface");
+  const textVar = getVariableByName("text-color-surface");
   if (textVar) {
     bindTextColorToVariable(buttonText, textVar.id);
   }
@@ -377,7 +377,7 @@ async function createTriggerButton(label: string): Promise<FrameNode> {
  * Create the dropdown panel with items based on variant
  */
 async function createDropdownPanel(variant: string): Promise<FrameNode> {
-  var panel = figma.createFrame();
+  const panel = figma.createFrame();
   panel.name = "Dropdown";
   panel.layoutMode = "VERTICAL";
   panel.primaryAxisSizingMode = "AUTO";
@@ -392,33 +392,33 @@ async function createDropdownPanel(variant: string): Promise<FrameNode> {
   panel.cornerRadius = BORDER_RADIUS.lg;
 
   // Apply background (bg-secondary)
-  var bgVar = getVariableByName("color-secondary");
+  const bgVar = getVariableByName("color-secondary");
   if (bgVar) {
     bindFillToVariable(panel, bgVar.id);
   }
 
   // Apply border (ring ring-border)
-  var borderVar = getVariableByName("color-border");
+  const borderVar = getVariableByName("color-border");
   if (borderVar) {
     bindStrokeToVariable(panel, borderVar.id, 1);
   }
 
   // Add items based on variant
   if (variant === "default") {
-    var item1 = await createMenuItem("Item 1");
-    var item2 = await createMenuItem("Item 2", { highlighted: true });
-    var item3 = await createMenuItem("Item 3");
+    const item1 = await createMenuItem("Item 1");
+    const item2 = await createMenuItem("Item 2", { highlighted: true });
+    const item3 = await createMenuItem("Item 3");
     panel.appendChild(item1);
     panel.appendChild(item2);
     panel.appendChild(item3);
   } else if (variant === "withIcons") {
-    var editItem = await createMenuItem("Edit", { icon: "ph-pencil" });
-    var copyItem = await createMenuItem("Copy", {
+    const editItem = await createMenuItem("Edit", { icon: "ph-pencil" });
+    const copyItem = await createMenuItem("Copy", {
       icon: "ph-copy",
       highlighted: true,
     });
-    var shareItem = await createMenuItem("Share", { icon: "ph-share" });
-    var downloadItem = await createMenuItem("Download", {
+    const shareItem = await createMenuItem("Share", { icon: "ph-share" });
+    const downloadItem = await createMenuItem("Download", {
       icon: "ph-download",
     });
     panel.appendChild(editItem);
@@ -426,10 +426,10 @@ async function createDropdownPanel(variant: string): Promise<FrameNode> {
     panel.appendChild(shareItem);
     panel.appendChild(downloadItem);
   } else if (variant === "withDanger") {
-    var editItem2 = await createMenuItem("Edit", { icon: "ph-pencil" });
-    var duplicateItem = await createMenuItem("Duplicate", { icon: "ph-copy" });
-    var sep1 = createSeparator();
-    var deleteItem = await createMenuItem("Delete", {
+    const editItem2 = await createMenuItem("Edit", { icon: "ph-pencil" });
+    const duplicateItem = await createMenuItem("Duplicate", { icon: "ph-copy" });
+    const sep1 = createSeparator();
+    const deleteItem = await createMenuItem("Delete", {
       icon: "ph-trash",
       variant: "danger",
     });
@@ -438,11 +438,11 @@ async function createDropdownPanel(variant: string): Promise<FrameNode> {
     panel.appendChild(sep1);
     panel.appendChild(deleteItem);
   } else if (variant === "withGroups") {
-    var accountLabel = await createGroupLabel("Account");
-    var profileItem = await createMenuItem("Profile", { icon: "ph-user" });
-    var settingsItem = await createMenuItem("Settings", { icon: "ph-gear" });
-    var sep2 = createSeparator();
-    var signOutItem = await createMenuItem("Sign out", {
+    const accountLabel = await createGroupLabel("Account");
+    const profileItem = await createMenuItem("Profile", { icon: "ph-user" });
+    const settingsItem = await createMenuItem("Settings", { icon: "ph-gear" });
+    const sep2 = createSeparator();
+    const signOutItem = await createMenuItem("Sign out", {
       icon: "ph-sign-out",
       variant: "danger",
     });
@@ -452,26 +452,26 @@ async function createDropdownPanel(variant: string): Promise<FrameNode> {
     panel.appendChild(sep2);
     panel.appendChild(signOutItem);
   } else if (variant === "withCheckbox") {
-    var displayLabel = await createGroupLabel("Display");
-    var sidebarItem = await createCheckboxItem("Show sidebar", true);
-    var lineNumItem = await createCheckboxItem("Show line numbers", false);
-    var wrapItem = await createCheckboxItem("Word wrap", true);
+    const displayLabel = await createGroupLabel("Display");
+    const sidebarItem = await createCheckboxItem("Show sidebar", true);
+    const lineNumItem = await createCheckboxItem("Show line numbers", false);
+    const wrapItem = await createCheckboxItem("Word wrap", true);
     panel.appendChild(displayLabel);
     panel.appendChild(sidebarItem);
     panel.appendChild(lineNumItem);
     panel.appendChild(wrapItem);
   } else if (variant === "withShortcuts") {
-    var copyShortcut = await createMenuItem("Copy", {
+    const copyShortcut = await createMenuItem("Copy", {
       icon: "ph-copy",
       shortcut: "\u2318C",
     });
-    var editShortcut = await createMenuItem("Edit", {
+    const editShortcut = await createMenuItem("Edit", {
       icon: "ph-pencil",
       shortcut: "\u2318E",
       highlighted: true,
     });
-    var sep3 = createSeparator();
-    var deleteShortcut = await createMenuItem("Delete", {
+    const sep3 = createSeparator();
+    const deleteShortcut = await createMenuItem("Delete", {
       icon: "ph-trash",
       variant: "danger",
       shortcut: "\u2318\u232B",
@@ -492,7 +492,7 @@ async function createDropdownComponent(
   open: boolean,
   variant: string,
 ): Promise<ComponentNode> {
-  var component = figma.createComponent();
+  const component = figma.createComponent();
   component.name = "open=" + open + ", variant=" + variant;
   component.description =
     "Dropdown " + variant + " " + (open ? "open" : "closed");
@@ -506,7 +506,7 @@ async function createDropdownComponent(
   component.fills = [];
 
   // Create trigger button
-  var triggerLabel =
+  const triggerLabel =
     variant === "withCheckbox"
       ? "View Options"
       : variant === "withGroups"
@@ -514,12 +514,12 @@ async function createDropdownComponent(
         : variant === "withShortcuts"
           ? "Edit"
           : "Open Menu";
-  var trigger = await createTriggerButton(triggerLabel);
+  const trigger = await createTriggerButton(triggerLabel);
   component.appendChild(trigger);
 
   // Create dropdown panel if open
   if (open) {
-    var panel = await createDropdownPanel(variant);
+    const panel = await createDropdownPanel(variant);
     component.appendChild(panel);
   }
 
@@ -552,48 +552,48 @@ export async function generateDropdownComponents(
   figma.currentPage = page;
 
   // Generate all combinations
-  var components: ComponentNode[] = [];
+  const components: ComponentNode[] = [];
 
   // Track row labels: { y, text }
-  var rowLabels: { y: number; text: string }[] = [];
+  const rowLabels: { y: number; text: string }[] = [];
 
   // Track column headers: { x, text }
-  var columnHeaders: { x: number; text: string }[] = [];
+  let columnHeaders: { x: number; text: string }[] = [];
 
   // Layout spacing - using centralized constants
-  var componentGapX = GRID_LAYOUT.componentGapX.standard;
-  var componentGapY = GRID_LAYOUT.componentGapY.standard;
-  var headerRowHeight = GRID_LAYOUT.headerRowHeight;
-  var labelColumnWidth = GRID_LAYOUT.labelColumnWidth.medium;
+  const componentGapX = GRID_LAYOUT.componentGapX.standard;
+  const componentGapY = GRID_LAYOUT.componentGapY.standard;
+  const headerRowHeight = GRID_LAYOUT.headerRowHeight;
+  const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.medium;
 
   // Track layout by row (variant)
-  var rowComponents: Map<number, ComponentNode[]> = new Map();
+  const rowComponents: Map<number, ComponentNode[]> = new Map();
 
   // Generate components for each combination
   // Rows = variants, Columns = open states
-  for (var vi = 0; vi < VARIANT_VALUES.length; vi++) {
-    var variant = VARIANT_VALUES[vi];
+  for (let vi = 0; vi < VARIANT_VALUES.length; vi++) {
+    const variant = VARIANT_VALUES[vi];
     rowComponents.set(vi, []);
 
-    for (var oi = 0; oi < OPEN_VALUES.length; oi++) {
-      var open = OPEN_VALUES[oi];
-      var component = await createDropdownComponent(open, variant);
+    for (let oi = 0; oi < OPEN_VALUES.length; oi++) {
+      const open = OPEN_VALUES[oi];
+      const component = await createDropdownComponent(open, variant);
       rowComponents.get(vi)!.push(component);
       components.push(component);
     }
   }
 
   // First pass: calculate max width per column and max height per row
-  var columnWidths: number[] = [];
-  var rowHeights: number[] = [];
+  const columnWidths: number[] = [];
+  const rowHeights: number[] = [];
 
-  var numColumns = OPEN_VALUES.length;
+  const numColumns = OPEN_VALUES.length;
 
-  for (var colIdx = 0; colIdx < numColumns; colIdx++) {
-    var maxColWidth = 0;
-    for (var rowIdx = 0; rowIdx < VARIANT_VALUES.length; rowIdx++) {
-      var row = rowComponents.get(rowIdx) || [];
-      var comp = row[colIdx];
+  for (let colIdx = 0; colIdx < numColumns; colIdx++) {
+    let maxColWidth = 0;
+    for (let rowIdx = 0; rowIdx < VARIANT_VALUES.length; rowIdx++) {
+      const row = rowComponents.get(rowIdx) || [];
+      const comp = row[colIdx];
       if (comp && comp.width > maxColWidth) {
         maxColWidth = comp.width;
       }
@@ -601,11 +601,11 @@ export async function generateDropdownComponents(
     columnWidths.push(maxColWidth);
   }
 
-  for (var rowIdx = 0; rowIdx < VARIANT_VALUES.length; rowIdx++) {
-    var row = rowComponents.get(rowIdx) || [];
-    var maxRowHeight = 0;
-    for (var colIdx = 0; colIdx < row.length; colIdx++) {
-      var comp = row[colIdx];
+  for (let rowIdx = 0; rowIdx < VARIANT_VALUES.length; rowIdx++) {
+    const row = rowComponents.get(rowIdx) || [];
+    let maxRowHeight = 0;
+    for (let colIdx = 0; colIdx < row.length; colIdx++) {
+      const comp = row[colIdx];
       if (comp && comp.height > maxRowHeight) {
         maxRowHeight = comp.height;
       }
@@ -614,12 +614,12 @@ export async function generateDropdownComponents(
   }
 
   // Second pass: position components using consistent column widths
-  var yOffset = headerRowHeight;
+  let yOffset = headerRowHeight;
 
-  for (var rowIdx = 0; rowIdx < VARIANT_VALUES.length; rowIdx++) {
-    var row = rowComponents.get(rowIdx) || [];
-    var xOffset = labelColumnWidth;
-    var variantValue = VARIANT_VALUES[rowIdx];
+  for (let rowIdx = 0; rowIdx < VARIANT_VALUES.length; rowIdx++) {
+    const row = rowComponents.get(rowIdx) || [];
+    let xOffset = labelColumnWidth;
+    const variantValue = VARIANT_VALUES[rowIdx];
 
     // Record row label
     rowLabels.push({
@@ -627,14 +627,14 @@ export async function generateDropdownComponents(
       text: "variant=" + variantValue,
     });
 
-    for (var colIdx = 0; colIdx < row.length; colIdx++) {
-      var comp = row[colIdx];
+    for (let colIdx = 0; colIdx < row.length; colIdx++) {
+      const comp = row[colIdx];
       comp.x = xOffset;
       comp.y = yOffset;
 
       // Record column headers from first row
       if (rowIdx === 0) {
-        var openVal = OPEN_VALUES[colIdx];
+        const openVal = OPEN_VALUES[colIdx];
         columnHeaders.push({
           x: xOffset,
           text: "open=" + openVal,
@@ -650,7 +650,7 @@ export async function generateDropdownComponents(
 
   // Combine all variants into a single ComponentSet
   // @ts-ignore - combineAsVariants works at runtime
-  var componentSet = figma.combineAsVariants(components, page);
+  const componentSet = figma.combineAsVariants(components, page);
   componentSet.name = "Dropdown";
   componentSet.description =
     "Dropdown menu component with trigger button and menu items. " +
@@ -658,18 +658,18 @@ export async function generateDropdownComponents(
   componentSet.layoutMode = "NONE";
 
   // Calculate content dimensions
-  var contentWidth = componentSet.width + labelColumnWidth;
-  var contentHeight = componentSet.height + headerRowHeight;
+  const contentWidth = componentSet.width + labelColumnWidth;
+  const contentHeight = componentSet.height + headerRowHeight;
 
   // Create light mode section
-  var lightSection = createModeSection(page, "Dropdown", "light");
+  const lightSection = createModeSection(page, "Dropdown", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
   );
 
   // Create dark mode section
-  var darkSection = createModeSection(page, "Dropdown", "dark");
+  const darkSection = createModeSection(page, "Dropdown", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
@@ -690,9 +690,9 @@ export async function generateDropdownComponents(
   );
 
   // Add row labels to light section
-  for (var li = 0; li < rowLabels.length; li++) {
-    var label = rowLabels[li];
-    var labelNode = await createRowLabel(
+  for (let li = 0; li < rowLabels.length; li++) {
+    const label = rowLabels[li];
+    const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
       SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md,
@@ -701,9 +701,9 @@ export async function generateDropdownComponents(
   }
 
   // Create instances for dark section
-  for (var k = 0; k < components.length; k++) {
-    var origComp = components[k];
-    var instance = origComp.createInstance();
+  for (let k = 0; k < components.length; k++) {
+    const origComp = components[k];
+    const instance = origComp.createInstance();
     instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
     instance.y = origComp.y + SECTION_PADDING + headerRowHeight;
     darkSection.frame.appendChild(instance);
@@ -719,9 +719,9 @@ export async function generateDropdownComponents(
   );
 
   // Add row labels to dark section
-  for (var di = 0; di < rowLabels.length; di++) {
-    var darkLabel = rowLabels[di];
-    var darkLabelNode = await createRowLabel(
+  for (let di = 0; di < rowLabels.length; di++) {
+    const darkLabel = rowLabels[di];
+    const darkLabelNode = await createRowLabel(
       darkLabel.text,
       SECTION_PADDING,
       SECTION_PADDING + darkLabel.y + GRID_LAYOUT.labelVerticalOffset.md,
@@ -730,8 +730,8 @@ export async function generateDropdownComponents(
   }
 
   // Resize sections to fit content with padding
-  var totalWidth = contentWidth + SECTION_PADDING * 2;
-  var totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalWidth = contentWidth + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
@@ -755,8 +755,8 @@ export async function generateDropdownComponents(
 /**
  * Exports for tests and backwards compatibility
  */
-export var DROPDOWN_OPEN_VALUES = OPEN_VALUES;
-export var DROPDOWN_VARIANT_VALUES = VARIANT_VALUES;
+export const DROPDOWN_OPEN_VALUES = OPEN_VALUES;
+export const DROPDOWN_VARIANT_VALUES = VARIANT_VALUES;
 
 // ============================================================================
 // TESTABLE EXPORTS - Pure functions for testing (no Figma API calls)
@@ -834,9 +834,9 @@ export function getDropdownRegistryData() {
  * Returns complete intermediate data structure for snapshot testing
  */
 export function getAllDropdownVariantData() {
-  var config = getDropdownVariantConfig();
-  var panelDims = getDropdownPanelDimensions();
-  var descriptions = config.descriptions as Record<string, string>;
+  const config = getDropdownVariantConfig();
+  const panelDims = getDropdownPanelDimensions();
+  const descriptions = config.descriptions as Record<string, string>;
 
   return {
     config: config,

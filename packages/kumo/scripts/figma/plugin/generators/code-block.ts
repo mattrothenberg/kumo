@@ -32,8 +32,8 @@ import { logComplete } from "../logger";
 import registry from "../../../../ai/component-registry.json";
 import themeData from "../generated/theme-data.json";
 
-var codeProps = registry.components.Code.props;
-var langProp = codeProps.lang as unknown as {
+const codeProps = registry.components.Code.props;
+const langProp = codeProps.lang as unknown as {
   values: string[];
   descriptions: Record<string, string>;
   default: string;
@@ -43,9 +43,9 @@ var langProp = codeProps.lang as unknown as {
  * CodeBlock wrapper styles from code-block.tsx
  * Container: "min-w-0 rounded-md border border-color bg-surface [&>pre]:p-2.5!"
  */
-var CODE_BLOCK_WRAPPER_STYLES =
+const CODE_BLOCK_WRAPPER_STYLES =
   "min-w-0 rounded-md border border-color bg-surface";
-var CODE_INNER_PADDING = themeData.tailwind.spacing.scale["2.5"]; // p-2.5 = 10px
+const CODE_INNER_PADDING = themeData.tailwind.spacing.scale["2.5"]; // p-2.5 = 10px
 
 
 
@@ -148,13 +148,13 @@ function getPlaceholderText(lang: string): string {
  * Create a single CodeBlock component with the specified lang variant
  */
 async function createCodeBlockComponent(lang: string): Promise<ComponentNode> {
-  var description = langProp.descriptions[lang] || "";
+  const description = langProp.descriptions[lang] || "";
 
   // Parse wrapper styles
-  var wrapperStyles = parseTailwindClasses(CODE_BLOCK_WRAPPER_STYLES);
+  const wrapperStyles = parseTailwindClasses(CODE_BLOCK_WRAPPER_STYLES);
 
   // Create component with auto-layout
-  var component = figma.createComponent();
+  const component = figma.createComponent();
   component.name = "lang=" + lang;
   component.description = description;
 
@@ -172,7 +172,7 @@ async function createCodeBlockComponent(lang: string): Promise<ComponentNode> {
 
   // Apply background (bg-surface)
   if (wrapperStyles.fillVariable) {
-    var fillVar = getVariableByName(wrapperStyles.fillVariable);
+    const fillVar = getVariableByName(wrapperStyles.fillVariable);
     if (fillVar) {
       bindFillToVariable(component, fillVar.id);
     }
@@ -180,14 +180,14 @@ async function createCodeBlockComponent(lang: string): Promise<ComponentNode> {
 
   // Apply border (border-color)
   if (wrapperStyles.strokeVariable) {
-    var strokeVar = getVariableByName(wrapperStyles.strokeVariable);
+    const strokeVar = getVariableByName(wrapperStyles.strokeVariable);
     if (strokeVar) {
       bindStrokeToVariable(component, strokeVar.id, 1);
     }
   }
 
   // Create monospace text node
-  var textNode = await createTextNode(getPlaceholderText(lang), 14, 400);
+  const textNode = await createTextNode(getPlaceholderText(lang), 14, 400);
   textNode.name = "Code";
 
   // Load monospace font (Roboto Mono is reliably available in Figma)
@@ -195,12 +195,12 @@ async function createCodeBlockComponent(lang: string): Promise<ComponentNode> {
   textNode.fontName = { family: "Roboto Mono", style: "Regular" };
 
   // Apply text color - text-label with fallback to text-surface
-  var labelVar = getVariableByName("text-color-label");
+  const labelVar = getVariableByName("text-color-label");
   if (labelVar) {
     bindTextColorToVariable(textNode, labelVar.id);
   } else {
     // Fallback to text-surface if text-label doesn't exist
-    var surfaceVar = getVariableByName("text-color-surface");
+    const surfaceVar = getVariableByName("text-color-surface");
     if (surfaceVar) {
       bindTextColorToVariable(textNode, surfaceVar.id);
     }
@@ -225,17 +225,17 @@ export async function generateCodeBlockComponents(
 
   figma.currentPage = page;
 
-  var langs = langProp.values;
-  var components: ComponentNode[] = [];
-  var rowLabels: { y: number; text: string }[] = [];
+  const langs = langProp.values;
+  const components: ComponentNode[] = [];
+  const rowLabels: { y: number; text: string }[] = [];
 
-  var rowGap = 50;
-  var labelColumnWidth = 160;
-  var currentY = 0;
+  const rowGap = 50;
+  const labelColumnWidth = 160;
+  let currentY = 0;
 
-  for (var i = 0; i < langs.length; i++) {
-    var lang = langs[i];
-    var component = await createCodeBlockComponent(lang);
+  for (let i = 0; i < langs.length; i++) {
+    const lang = langs[i];
+    const component = await createCodeBlockComponent(lang);
 
     rowLabels.push({ y: currentY, text: "lang=" + lang });
 
@@ -246,21 +246,21 @@ export async function generateCodeBlockComponents(
   }
 
   // @ts-ignore - combineAsVariants works at runtime
-  var componentSet = figma.combineAsVariants(components, page);
+  const componentSet = figma.combineAsVariants(components, page);
   componentSet.name = "CodeBlock";
   componentSet.description = "CodeBlock component with lang variants";
   componentSet.layoutMode = "NONE";
 
-  var contentWidth = componentSet.width + labelColumnWidth;
-  var contentHeight = componentSet.height;
+  const contentWidth = componentSet.width + labelColumnWidth;
+  const contentHeight = componentSet.height;
 
-  var lightSection = createModeSection(page, "CodeBlock", "light");
+  const lightSection = createModeSection(page, "CodeBlock", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
   );
 
-  var darkSection = createModeSection(page, "CodeBlock", "dark");
+  const darkSection = createModeSection(page, "CodeBlock", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
@@ -270,27 +270,27 @@ export async function generateCodeBlockComponents(
   componentSet.x = SECTION_PADDING + labelColumnWidth;
   componentSet.y = SECTION_PADDING;
 
-  for (var li = 0; li < rowLabels.length; li++) {
-    var label = rowLabels[li];
-    var labelNode = await createRowLabel(
+  for (let li = 0; li < rowLabels.length; li++) {
+    const label = rowLabels[li];
+    const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 8,
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md,
     );
     lightSection.frame.appendChild(labelNode);
   }
 
-  for (var ci = 0; ci < components.length; ci++) {
-    var comp = components[ci];
-    var instance = comp.createInstance();
+  for (let ci = 0; ci < components.length; ci++) {
+    const comp = components[ci];
+    const instance = comp.createInstance();
     instance.x = comp.x + SECTION_PADDING + labelColumnWidth;
     instance.y = comp.y + SECTION_PADDING;
     darkSection.frame.appendChild(instance);
   }
 
-  for (var di = 0; di < rowLabels.length; di++) {
-    var darkLabel = rowLabels[di];
-    var darkLabelNode = await createRowLabel(
+  for (let di = 0; di < rowLabels.length; di++) {
+    const darkLabel = rowLabels[di];
+    const darkLabelNode = await createRowLabel(
       darkLabel.text,
       SECTION_PADDING,
       SECTION_PADDING + darkLabel.y + 8,
@@ -298,8 +298,8 @@ export async function generateCodeBlockComponents(
     darkSection.frame.appendChild(darkLabelNode);
   }
 
-  var totalWidth = contentWidth + SECTION_PADDING * 2;
-  var totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalWidth = contentWidth + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);

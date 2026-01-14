@@ -91,7 +91,7 @@ const TOAST_CONFIG = getToastConfigFromRegistry();
  * Toast dimensions (matches sm:w-[300px] from viewport)
  * Now reads from registry via TOAST_CONFIG
  */
-var TOAST_WIDTH = TOAST_CONFIG.width;
+const TOAST_WIDTH = TOAST_CONFIG.width;
 
 /**
  * Create a single Toast component
@@ -105,7 +105,7 @@ var TOAST_WIDTH = TOAST_CONFIG.width;
  */
 async function createToastComponent(): Promise<ComponentNode> {
   // Create component
-  var component = figma.createComponent();
+  const component = figma.createComponent();
   component.name = "Toast";
   component.description = "Toast notification component for transient messages";
 
@@ -122,13 +122,13 @@ async function createToastComponent(): Promise<ComponentNode> {
   component.cornerRadius = BORDER_RADIUS.lg; // rounded-lg = 8px
 
   // Apply background fill (bg-toast)
-  var bgVar = getVariableByName("color-toast");
+  const bgVar = getVariableByName("color-toast");
   if (bgVar) {
     bindFillToVariable(component, bgVar.id);
   }
 
   // Apply border (border-color)
-  var borderVar = getVariableByName("color-color");
+  const borderVar = getVariableByName("color-color");
   if (borderVar) {
     bindStrokeToVariable(component, borderVar.id, 1);
   }
@@ -156,7 +156,7 @@ async function createToastComponent(): Promise<ComponentNode> {
   ];
 
   // Create header frame (title + close button with SPACE_BETWEEN)
-  var header = figma.createFrame();
+  const header = figma.createFrame();
   header.name = "Header";
   header.layoutMode = "HORIZONTAL";
   header.primaryAxisAlignItems = "SPACE_BETWEEN";
@@ -170,13 +170,13 @@ async function createToastComponent(): Promise<ComponentNode> {
 
   // Create title text
   // text-[0.975rem] = ~15.6px, font-medium = 500
-  var title = await createTextNode("Toast created", TOAST_CONFIG.titleFontSize, TOAST_CONFIG.titleFontWeight);
+  const title = await createTextNode("Toast created", TOAST_CONFIG.titleFontSize, TOAST_CONFIG.titleFontWeight);
   title.name = "Title";
   title.textAutoResize = "WIDTH_AND_HEIGHT";
   title.layoutGrow = 1; // Take remaining space
 
   // Apply title text color (text-surface)
-  var titleVar = getVariableByName("text-color-surface");
+  const titleVar = getVariableByName("text-color-surface");
   if (titleVar) {
     bindTextColorToVariable(title, titleVar.id);
   }
@@ -185,7 +185,7 @@ async function createToastComponent(): Promise<ComponentNode> {
 
   // Create close button
   // h-5 w-5 = 20x20px
-  var closeButton = figma.createFrame();
+  const closeButton = figma.createFrame();
   closeButton.name = "Close Button";
   closeButton.layoutMode = "HORIZONTAL";
   closeButton.primaryAxisAlignItems = "CENTER";
@@ -195,8 +195,8 @@ async function createToastComponent(): Promise<ComponentNode> {
   closeButton.fills = []; // bg-transparent
 
   // Create close icon (ph-x) - 16x16 inside 20x20 button
-  var closeIconName = "ph-x";
-  var closeIcon = getButtonIcon(closeIconName, "sm"); // sm = 16px (TOAST_CONFIG.closeButtonIconSize)
+  const closeIconName = "ph-x";
+  const closeIcon = getButtonIcon(closeIconName, "sm"); // sm = 16px (TOAST_CONFIG.closeButtonIconSize)
   closeIcon.name = "Icon";
 
   // Apply icon color (text-muted)
@@ -209,7 +209,7 @@ async function createToastComponent(): Promise<ComponentNode> {
 
   // Create description text
   // text-[0.925rem] = ~14.8px, normal weight
-  var description = await createTextNode(
+  const description = await createTextNode(
     "This is a toast notification.",
     TOAST_CONFIG.descriptionFontSize,
     TOAST_CONFIG.descriptionFontWeight,
@@ -220,7 +220,7 @@ async function createToastComponent(): Promise<ComponentNode> {
   description.resize(TOAST_WIDTH - 32, description.height); // Full width minus padding
 
   // Apply description text color (text-muted)
-  var descVar = getVariableByName("text-color-muted");
+  const descVar = getVariableByName("text-color-muted");
   if (descVar) {
     bindTextColorToVariable(description, descVar.id);
   }
@@ -249,10 +249,10 @@ export async function generateToastComponents(
   figma.currentPage = page;
 
   // Generate the toast component
-  var components: ComponentNode[] = [];
+  const components: ComponentNode[] = [];
 
   // Create the toast component
-  var component = await createToastComponent();
+  const component = await createToastComponent();
 
   // Position component
   component.x = 0;
@@ -262,7 +262,7 @@ export async function generateToastComponents(
 
   // Combine into ComponentSet (even with single variant for consistency)
   // @ts-ignore - combineAsVariants works at runtime
-  var componentSet = figma.combineAsVariants(components, page);
+  const componentSet = figma.combineAsVariants(components, page);
   componentSet.name = "Toast";
   componentSet.description =
     "Toast notification component. " +
@@ -270,18 +270,18 @@ export async function generateToastComponents(
   componentSet.layoutMode = "NONE";
 
   // Calculate content dimensions
-  var contentWidth = componentSet.width;
-  var contentHeight = componentSet.height;
+  const contentWidth = componentSet.width;
+  const contentHeight = componentSet.height;
 
   // Create light mode section
-  var lightSection = createModeSection(page, "Toast", "light");
+  const lightSection = createModeSection(page, "Toast", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
   );
 
   // Create dark mode section
-  var darkSection = createModeSection(page, "Toast", "dark");
+  const darkSection = createModeSection(page, "Toast", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
@@ -293,17 +293,17 @@ export async function generateToastComponents(
   componentSet.y = SECTION_PADDING;
 
   // Create instances for dark section
-  for (var k = 0; k < components.length; k++) {
-    var origComp = components[k];
-    var instance = origComp.createInstance();
+  for (let k = 0; k < components.length; k++) {
+    const origComp = components[k];
+    const instance = origComp.createInstance();
     instance.x = origComp.x + SECTION_PADDING;
     instance.y = origComp.y + SECTION_PADDING;
     darkSection.frame.appendChild(instance);
   }
 
   // Resize sections to fit content with padding
-  var totalWidth = contentWidth + SECTION_PADDING * 2;
-  var totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalWidth = contentWidth + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);

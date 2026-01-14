@@ -38,16 +38,16 @@ import {
 import registry from "../../../../ai/component-registry.json";
 
 // Extract props from registry
-var buttonProps = registry.components.Button.props;
+const buttonProps = registry.components.Button.props;
 
-var variantProp = buttonProps.variant as {
+const variantProp = buttonProps.variant as {
   values: string[];
   classes: Record<string, string>;
   descriptions: Record<string, string>;
   default: string;
 };
 
-var sizeProp = buttonProps.size as {
+const sizeProp = buttonProps.size as {
   values: string[];
   classes: Record<string, string>;
   descriptions: Record<string, string>;
@@ -59,7 +59,7 @@ var sizeProp = buttonProps.size as {
  * From RefreshButton component: size-4.5 (base), size-4 (sm), size-5 (lg)
  * Uses FALLBACK_VALUES.iconSize from shared.ts to prevent drift
  */
-var REFRESH_ICON_SIZE: Record<string, number> = {
+const REFRESH_ICON_SIZE: Record<string, number> = {
   xs: FALLBACK_VALUES.iconSize.xs, // size-3 = 12px
   sm: FALLBACK_VALUES.iconSize.sm, // size-4 = 16px
   base: FALLBACK_VALUES.iconSize.medium, // size-4.5 = 18px
@@ -70,8 +70,8 @@ var REFRESH_ICON_SIZE: Record<string, number> = {
  * Get border radius for size
  */
 function getBorderRadiusForSize(size: string): number {
-  var sizeClasses = sizeProp.classes[size] || "";
-  var parsed = parseTailwindClasses(sizeClasses);
+  const sizeClasses = sizeProp.classes[size] || "";
+  const parsed = parseTailwindClasses(sizeClasses);
   return parsed.borderRadius !== undefined
     ? parsed.borderRadius
     : BORDER_RADIUS.lg;
@@ -87,17 +87,17 @@ function createRefreshButtonComponent(
   loading: boolean,
 ): ComponentNode {
   // RefreshButton uses secondary variant by default
-  var variant = variantProp.default; // "secondary"
-  var variantClasses = variantProp.classes[variant] || "";
-  var variantStyles = parseTailwindClasses(variantClasses);
+  const variant = variantProp.default; // "secondary"
+  const variantClasses = variantProp.classes[variant] || "";
+  const variantStyles = parseTailwindClasses(variantClasses);
 
-  var component = figma.createComponent();
+  const component = figma.createComponent();
   component.name = "size=" + size + ", loading=" + loading;
   component.description = "Refresh button for triggering data refresh";
 
   // Get dimensions from compact size (square button)
   // Uses FALLBACK_VALUES.buttonCompactSize from shared.ts (generated from theme-data.json)
-  var buttonSize = FALLBACK_VALUES.buttonCompactSize[size as keyof typeof FALLBACK_VALUES.buttonCompactSize] || FALLBACK_VALUES.height.base;
+  const buttonSize = FALLBACK_VALUES.buttonCompactSize[size as keyof typeof FALLBACK_VALUES.buttonCompactSize] || FALLBACK_VALUES.height.base;
 
   // Configure auto-layout
   component.layoutMode = "HORIZONTAL";
@@ -112,7 +112,7 @@ function createRefreshButtonComponent(
 
   // Apply fill from variant
   if (variantStyles.fillVariable) {
-    var fillVar = getVariableByName(variantStyles.fillVariable);
+    const fillVar = getVariableByName(variantStyles.fillVariable);
     if (fillVar) {
       bindFillToVariable(component, fillVar.id);
     }
@@ -120,21 +120,21 @@ function createRefreshButtonComponent(
 
   // Apply stroke for secondary variant
   if (variantStyles.hasBorder && variantStyles.strokeVariable) {
-    var strokeVar = getVariableByName(variantStyles.strokeVariable);
+    const strokeVar = getVariableByName(variantStyles.strokeVariable);
     if (strokeVar) {
       bindStrokeToVariable(component, strokeVar.id, 1);
     }
   }
 
   // Add refresh icon or loader
-  var iconSize = REFRESH_ICON_SIZE[size] || FALLBACK_VALUES.iconSize.medium;
+  const iconSize = REFRESH_ICON_SIZE[size] || FALLBACK_VALUES.iconSize.medium;
 
   if (loading) {
-    var loader = createLoader(iconSize);
+    const loader = createLoader(iconSize);
     component.appendChild(loader);
   } else {
     // Use real refresh icon from Icon Library
-    var icon = getButtonIcon(DEFAULT_ICONS.refresh, size);
+    const icon = getButtonIcon(DEFAULT_ICONS.refresh, size);
     // Resize to match refresh button icon sizes
     if ("resize" in icon) {
       icon.resize(iconSize, iconSize);
@@ -170,28 +170,28 @@ export async function generateRefreshButtonComponents(
 
   figma.currentPage = page;
 
-  var sizes = sizeProp.values;
-  var loadingOptions = [false, true];
+  const sizes = sizeProp.values;
+  const loadingOptions = [false, true];
 
   // Generate all combinations
-  var components: ComponentNode[] = [];
+  const components: ComponentNode[] = [];
 
   // Track row labels: { y, text }
-  var rowLabels: { y: number; text: string }[] = [];
+  const rowLabels: { y: number; text: string }[] = [];
 
-  var componentGap = 20;
-  var rowGap = 60;
-  var labelColumnWidth = 140; // Space for labels on the left
+  const componentGap = 20;
+  const rowGap = 60;
+  const labelColumnWidth = 140; // Space for labels on the left
 
   // Layout vertically by loading state
-  var currentY = 0;
-  for (var lo = 0; lo < loadingOptions.length; lo++) {
-    var loading = loadingOptions[lo];
+  let currentY = 0;
+  for (let lo = 0; lo < loadingOptions.length; lo++) {
+    const loading = loadingOptions[lo];
     rowLabels.push({ y: currentY, text: "loading=" + loading });
 
-    var currentX = labelColumnWidth;
-    for (var sz = 0; sz < sizes.length; sz++) {
-      var component = createRefreshButtonComponent(sizes[sz], loading);
+    let currentX = labelColumnWidth;
+    for (let sz = 0; sz < sizes.length; sz++) {
+      const component = createRefreshButtonComponent(sizes[sz], loading);
       component.x = currentX;
       component.y = currentY;
       currentX = currentX + component.width + componentGap;
@@ -202,7 +202,7 @@ export async function generateRefreshButtonComponents(
 
   // Combine into ComponentSet
   // @ts-ignore
-  var componentSet = figma.combineAsVariants(components, page);
+  const componentSet = figma.combineAsVariants(components, page);
   componentSet.name = "RefreshButton";
   componentSet.description =
     "RefreshButton component with size and loading state";
@@ -210,18 +210,18 @@ export async function generateRefreshButtonComponents(
   componentSet.layoutMode = "NONE";
 
   // Calculate content dimensions (add label column width)
-  var contentWidth = componentSet.width + labelColumnWidth;
-  var contentHeight = componentSet.height;
+  const contentWidth = componentSet.width + labelColumnWidth;
+  const contentHeight = componentSet.height;
 
   // Create light mode section
-  var lightSection = createModeSection(page, "RefreshButton", "light");
+  const lightSection = createModeSection(page, "RefreshButton", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
   );
 
   // Create dark mode section
-  var darkSection = createModeSection(page, "RefreshButton", "dark");
+  const darkSection = createModeSection(page, "RefreshButton", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
@@ -233,12 +233,12 @@ export async function generateRefreshButtonComponents(
   componentSet.y = SECTION_PADDING;
 
   // Add row labels to light section
-  for (var li = 0; li < rowLabels.length; li++) {
-    var label = rowLabels[li];
-    var labelNode = await createRowLabel(
+  for (let li = 0; li < rowLabels.length; li++) {
+    const label = rowLabels[li];
+    const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 10,
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.mdLg,
     );
     lightSection.frame.appendChild(labelNode);
   }
@@ -246,18 +246,18 @@ export async function generateRefreshButtonComponents(
   // Create instances for dark section
   // Note: component positions are relative to ComponentSet after combineAsVariants
   // We need to add labelColumnWidth to match the light section layout
-  for (var i = 0; i < components.length; i++) {
-    var comp = components[i];
-    var instance = comp.createInstance();
+  for (let i = 0; i < components.length; i++) {
+    const comp = components[i];
+    const instance = comp.createInstance();
     instance.x = comp.x + SECTION_PADDING + labelColumnWidth;
     instance.y = comp.y + SECTION_PADDING;
     darkSection.frame.appendChild(instance);
   }
 
   // Add row labels to dark section
-  for (var di = 0; di < rowLabels.length; di++) {
-    var darkLabel = rowLabels[di];
-    var darkLabelNode = await createRowLabel(
+  for (let di = 0; di < rowLabels.length; di++) {
+    const darkLabel = rowLabels[di];
+    const darkLabelNode = await createRowLabel(
       darkLabel.text,
       SECTION_PADDING,
       SECTION_PADDING + darkLabel.y + 10,
@@ -266,8 +266,8 @@ export async function generateRefreshButtonComponents(
   }
 
   // Resize sections to fit content with padding
-  var totalWidth = contentWidth + SECTION_PADDING * 2;
-  var totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalWidth = contentWidth + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
@@ -279,7 +279,7 @@ export async function generateRefreshButtonComponents(
   darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
-  var totalComponents = sizes.length * loadingOptions.length;
+  const totalComponents = sizes.length * loadingOptions.length;
   logComplete(
     "✅ Generated RefreshButton ComponentSet with " +
       totalComponents +
@@ -292,4 +292,4 @@ export async function generateRefreshButtonComponents(
 /**
  * Exports for tests
  */
-export var REFRESH_BUTTON_SIZES_EXPORT = sizeProp.values;
+export const REFRESH_BUTTON_SIZES_EXPORT = sizeProp.values;

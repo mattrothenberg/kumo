@@ -327,7 +327,7 @@ export async function generateMeterComponents(startY: number): Promise<number> {
   if (startY === undefined) startY = 100;
 
   // Find or create Components page
-  var componentsPage = figma.root.children.find(function (page) {
+  let componentsPage = figma.root.children.find(function (page) {
     return page.type === "PAGE" && page.name === "Components";
   }) as PageNode | undefined;
 
@@ -350,9 +350,9 @@ export async function generateMeterComponents(startY: number): Promise<number> {
   const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.medium;
 
   // Track position for laying out components vertically
-  var currentY = 0;
+  let currentY = 0;
 
-  for (var i = 0; i < fillLevels.length; i++) {
+  for (let i = 0; i < fillLevels.length; i++) {
     const fillLevel = fillLevels[i];
     const component = await createMeterComponent("Progress", fillLevel);
 
@@ -397,7 +397,7 @@ export async function generateMeterComponents(startY: number): Promise<number> {
   componentSet.y = SECTION_PADDING;
 
   // Add row labels to light section
-  for (var j = 0; j < rowLabels.length; j++) {
+  for (let j = 0; j < rowLabels.length; j++) {
     const label = rowLabels[j];
     const labelNode = await createRowLabel(
       label.text,
@@ -410,7 +410,7 @@ export async function generateMeterComponents(startY: number): Promise<number> {
   // Create instances for dark section
   // Note: component positions are relative to ComponentSet after combineAsVariants
   // We need to add labelColumnWidth to match the light section layout
-  for (var k = 0; k < components.length; k++) {
+  for (let k = 0; k < components.length; k++) {
     const component = components[k];
     const instance = component.createInstance();
     instance.x = component.x + SECTION_PADDING + labelColumnWidth;
@@ -419,7 +419,7 @@ export async function generateMeterComponents(startY: number): Promise<number> {
   }
 
   // Add row labels to dark section
-  for (var m = 0; m < rowLabels.length; m++) {
+  for (let m = 0; m < rowLabels.length; m++) {
     const label = rowLabels[m];
     const labelNode = await createRowLabel(
       label.text,

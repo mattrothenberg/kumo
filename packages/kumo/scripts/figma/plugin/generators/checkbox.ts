@@ -46,11 +46,11 @@ import { logInfo } from "../logger";
 import registry from "../../../../ai/component-registry.json";
 
 // Extract props and styling from registry
-var checkboxComponent = registry.components.Checkbox;
-var checkboxProps = checkboxComponent.props;
-var checkboxStyling = checkboxComponent.styling;
+const checkboxComponent = registry.components.Checkbox;
+const checkboxProps = checkboxComponent.props;
+const checkboxStyling = checkboxComponent.styling;
 
-var variantProp = checkboxProps.variant as {
+const variantProp = checkboxProps.variant as {
   values: string[];
   classes: Record<string, string>;
   descriptions: Record<string, string>;
@@ -66,7 +66,7 @@ type CheckboxState = "unchecked" | "checked" | "indeterminate";
 /**
  * Checkbox states (derived from styling.states in registry)
  */
-var CHECKBOX_STATES: CheckboxState[] = [
+const CHECKBOX_STATES: CheckboxState[] = [
   "unchecked",
   "checked",
   "indeterminate",
@@ -122,7 +122,7 @@ export function getCheckboxBoxSize(): number {
  * Get icon size from styling
  */
 export function getCheckboxIconSize(): number {
-  var styling = getCheckboxStylingConfig();
+  const styling = getCheckboxStylingConfig();
   return styling.icons[0]?.size || FALLBACK_VALUES.iconSize.small;
 }
 
@@ -147,7 +147,7 @@ export function getCheckboxBorderRadius(): number {
  * Get background variable for a given state
  */
 export function getCheckboxBgVariable(state: CheckboxState): string {
-  var isActive = state === "checked" || state === "indeterminate";
+  const isActive = state === "checked" || state === "indeterminate";
   return isActive ? "color-surface-inverse" : "color-surface";
 }
 
@@ -177,7 +177,7 @@ export function getCheckboxBoxConfig(
   variant: string,
   disabled: boolean,
 ) {
-  var iconName = getCheckboxIconName(state);
+  const iconName = getCheckboxIconName(state);
 
   return {
     state,
@@ -244,19 +244,19 @@ export function getCheckboxCompleteConfig(
  * Returns intermediate data before Figma API calls
  */
 export function getAllCheckboxVariantData() {
-  var variantConfig = getCheckboxVariantConfig();
-  var stylingConfig = getCheckboxStylingConfig();
-  var layoutConfig = getCheckboxLayoutConfig();
-  var textConfig = getCheckboxTextConfig();
+  const variantConfig = getCheckboxVariantConfig();
+  const stylingConfig = getCheckboxStylingConfig();
+  const layoutConfig = getCheckboxLayoutConfig();
+  const textConfig = getCheckboxTextConfig();
 
   // Generate all box configurations
-  var boxConfigs: ReturnType<typeof getCheckboxBoxConfig>[] = [];
-  for (var si = 0; si < CHECKBOX_STATES.length; si++) {
-    var state = CHECKBOX_STATES[si];
-    for (var vi = 0; vi < variantConfig.values.length; vi++) {
-      var variant = variantConfig.values[vi];
-      for (var di = 0; di < 2; di++) {
-        var disabled = di === 1;
+  const boxConfigs: ReturnType<typeof getCheckboxBoxConfig>[] = [];
+  for (let si = 0; si < CHECKBOX_STATES.length; si++) {
+    const state = CHECKBOX_STATES[si];
+    for (let vi = 0; vi < variantConfig.values.length; vi++) {
+      const variant = variantConfig.values[vi];
+      for (let di = 0; di < 2; di++) {
+        const disabled = di === 1;
         boxConfigs.push(getCheckboxBoxConfig(state, variant, disabled));
       }
     }
@@ -290,9 +290,9 @@ function createCheckboxBox(
   variant: string,
   _disabled: boolean,
 ): FrameNode {
-  var boxConfig = getCheckboxBoxConfig(state, variant, _disabled);
+  const boxConfig = getCheckboxBoxConfig(state, variant, _disabled);
 
-  var box = figma.createFrame();
+  const box = figma.createFrame();
   box.name = "Checkbox Box";
   box.resize(boxConfig.size, boxConfig.size);
 
@@ -307,20 +307,20 @@ function createCheckboxBox(
   box.cornerRadius = boxConfig.borderRadius;
 
   // Background fill from config
-  var bgVar = getVariableByName(boxConfig.bgVariable);
+  const bgVar = getVariableByName(boxConfig.bgVariable);
   if (bgVar) {
     bindFillToVariable(box, bgVar.id);
   }
 
   // Ring/border from config
-  var ringVar = getVariableByName(boxConfig.ringVariable);
+  const ringVar = getVariableByName(boxConfig.ringVariable);
   if (ringVar) {
     bindStrokeToVariable(box, ringVar.id, 1);
   }
 
   // Add icon if needed
   if (boxConfig.icon && boxConfig.iconSize) {
-    var iconInstance = createIconInstance(boxConfig.icon, boxConfig.iconSize);
+    const iconInstance = createIconInstance(boxConfig.icon, boxConfig.iconSize);
     if (iconInstance) {
       bindIconColor(iconInstance, boxConfig.iconColor || "text-white");
       box.appendChild(iconInstance);
@@ -339,15 +339,15 @@ async function createCheckboxComponent(
   disabled: boolean,
   labelText: string,
 ): Promise<ComponentNode> {
-  var completeConfig = getCheckboxCompleteConfig(state, variant, disabled);
-  var layoutConfig = completeConfig.layoutConfig;
-  var textConfig = completeConfig.textConfig;
+  const completeConfig = getCheckboxCompleteConfig(state, variant, disabled);
+  const layoutConfig = completeConfig.layoutConfig;
+  const textConfig = completeConfig.textConfig;
 
-  var component = figma.createComponent();
+  const component = figma.createComponent();
   component.name =
     "state=" + state + ", variant=" + variant + ", disabled=" + disabled;
 
-  var variantDesc = variantProp.descriptions[variant] || "";
+  const variantDesc = variantProp.descriptions[variant] || "";
   component.description = variantDesc;
 
   // Configure as horizontal auto-layout (checkbox + label)
@@ -360,18 +360,18 @@ async function createCheckboxComponent(
   component.fills = [];
 
   // Create checkbox box
-  var checkboxBox = createCheckboxBox(state, variant, disabled);
+  const checkboxBox = createCheckboxBox(state, variant, disabled);
   component.appendChild(checkboxBox);
 
   // Create label text
-  var label = await createTextNode(
+  const label = await createTextNode(
     labelText,
     textConfig.fontSize,
     textConfig.fontWeight,
   );
 
   // Bind text color
-  var textVar = getVariableByName(textConfig.textVariable);
+  const textVar = getVariableByName(textConfig.textVariable);
   if (textVar) {
     bindTextColorToVariable(label, textVar.id);
   }
@@ -413,41 +413,41 @@ export async function generateCheckboxComponents(
 ): Promise<number> {
   figma.currentPage = page;
 
-  var states = CHECKBOX_STATES;
-  var variants = variantProp.values;
+  const states = CHECKBOX_STATES;
+  const variants = variantProp.values;
 
   // Generate all meaningful combinations
-  var components: ComponentNode[] = [];
+  const components: ComponentNode[] = [];
 
   // Track row labels: { y, text }
-  var rowLabels: { y: number; text: string }[] = [];
+  const rowLabels: { y: number; text: string }[] = [];
 
   // Layout grid spacing
-  var componentGap = 24;
-  var rowGap = GRID_LAYOUT.rowGap.standard;
-  var headerRowHeight = GRID_LAYOUT.headerRowHeight;
+  const componentGap = 24;
+  const rowGap = GRID_LAYOUT.rowGap.standard;
+  const headerRowHeight = GRID_LAYOUT.headerRowHeight;
 
-  var labelColumnWidth = GRID_LAYOUT.labelColumnWidth.medium;
+  const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.medium;
 
   // Column headers for states
-  var columnHeaderTexts = ["Unchecked", "Checked", "Indeterminate"];
+  const columnHeaderTexts = ["Unchecked", "Checked", "Indeterminate"];
 
   // Track original X positions for column headers (before combineAsVariants moves them)
-  var columnXPositions: number[] = [];
+  const columnXPositions: number[] = [];
 
   // Track layout - each scenario on its own row for readability
-  var currentY = headerRowHeight; // Start below header row
+  let currentY = headerRowHeight; // Start below header row
 
   // Generate rows for each variant × disabled combination
-  for (var vi = 0; vi < variants.length; vi++) {
-    var variant = variants[vi];
+  for (let vi = 0; vi < variants.length; vi++) {
+    const variant = variants[vi];
 
     // Enabled row
     rowLabels.push({ y: currentY, text: "variant=" + variant });
-    var currentX = labelColumnWidth;
-    for (var si = 0; si < states.length; si++) {
-      var state = states[si];
-      var component = await createCheckboxComponent(
+    let currentX = labelColumnWidth;
+    for (let si = 0; si < states.length; si++) {
+      const state = states[si];
+      const component = await createCheckboxComponent(
         state,
         variant,
         false,
@@ -470,9 +470,9 @@ export async function generateCheckboxComponents(
       text: "variant=" + variant + ", disabled=true",
     });
     currentX = labelColumnWidth;
-    for (var sdi = 0; sdi < states.length; sdi++) {
-      var stateD = states[sdi];
-      var componentD = await createCheckboxComponent(
+    for (let sdi = 0; sdi < states.length; sdi++) {
+      const stateD = states[sdi];
+      const componentD = await createCheckboxComponent(
         stateD,
         variant,
         true,
@@ -488,7 +488,7 @@ export async function generateCheckboxComponents(
 
   // Combine into ComponentSet
   // @ts-ignore - combineAsVariants works at runtime
-  var componentSet = figma.combineAsVariants(components, page);
+  const componentSet = figma.combineAsVariants(components, page);
   componentSet.name = "Checkbox";
   componentSet.description =
     "Checkbox component with state (unchecked/checked/indeterminate), variant (default/error), and disabled properties. Includes label text.";
@@ -496,18 +496,18 @@ export async function generateCheckboxComponents(
   componentSet.layoutMode = "NONE";
 
   // Calculate content dimensions (add label column width and header row)
-  var contentWidth = componentSet.width + labelColumnWidth;
-  var contentHeight = componentSet.height + headerRowHeight;
+  const contentWidth = componentSet.width + labelColumnWidth;
+  const contentHeight = componentSet.height + headerRowHeight;
 
   // Create light mode section
-  var lightSection = createModeSection(page, "Checkbox", "light");
+  const lightSection = createModeSection(page, "Checkbox", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
   );
 
   // Create dark mode section
-  var darkSection = createModeSection(page, "Checkbox", "dark");
+  const darkSection = createModeSection(page, "Checkbox", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
@@ -519,8 +519,8 @@ export async function generateCheckboxComponents(
   componentSet.y = SECTION_PADDING + headerRowHeight;
 
   // Build column headers with stored original positions
-  var columnHeaders: { x: number; text: string }[] = [];
-  for (var i = 0; i < columnXPositions.length; i++) {
+  let columnHeaders: { x: number; text: string }[] = [];
+  for (let i = 0; i < columnXPositions.length; i++) {
     columnHeaders.push({
       x: columnXPositions[i] + SECTION_PADDING,
       text: columnHeaderTexts[i],
@@ -531,9 +531,9 @@ export async function generateCheckboxComponents(
   await createColumnHeaders(columnHeaders, SECTION_PADDING, lightSection.frame);
 
   // Add row labels to light section
-  for (var li = 0; li < rowLabels.length; li++) {
-    var labelData = rowLabels[li];
-    var labelNode = await createRowLabel(
+  for (let li = 0; li < rowLabels.length; li++) {
+    const labelData = rowLabels[li];
+    const labelNode = await createRowLabel(
       labelData.text,
       SECTION_PADDING,
       SECTION_PADDING + labelData.y + GRID_LAYOUT.labelVerticalOffset.sm, // Small offset to vertically center with checkbox
@@ -544,9 +544,9 @@ export async function generateCheckboxComponents(
   // Create instances for dark section
   // Note: component.x/y are relative to ComponentSet after combineAsVariants
   // We need to add labelColumnWidth to match the light section layout
-  for (var ci = 0; ci < components.length; ci++) {
-    var comp = components[ci];
-    var instance = comp.createInstance();
+  for (let ci = 0; ci < components.length; ci++) {
+    const comp = components[ci];
+    const instance = comp.createInstance();
     instance.x = comp.x + SECTION_PADDING + labelColumnWidth;
     instance.y = comp.y + SECTION_PADDING + headerRowHeight;
     darkSection.frame.appendChild(instance);
@@ -556,9 +556,9 @@ export async function generateCheckboxComponents(
   await createColumnHeaders(columnHeaders, SECTION_PADDING, darkSection.frame);
 
   // Add row labels to dark section
-  for (var dli = 0; dli < rowLabels.length; dli++) {
-    var darkLabelData = rowLabels[dli];
-    var darkLabelNode = await createRowLabel(
+  for (let dli = 0; dli < rowLabels.length; dli++) {
+    const darkLabelData = rowLabels[dli];
+    const darkLabelNode = await createRowLabel(
       darkLabelData.text,
       SECTION_PADDING,
       SECTION_PADDING + darkLabelData.y + GRID_LAYOUT.labelVerticalOffset.sm,
@@ -567,8 +567,8 @@ export async function generateCheckboxComponents(
   }
 
   // Resize sections to fit content with padding
-  var totalWidth = contentWidth + SECTION_PADDING * 2;
-  var totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalWidth = contentWidth + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
@@ -592,6 +592,6 @@ export async function generateCheckboxComponents(
 /**
  * Exports for tests and backwards compatibility
  */
-export var CHECKBOX_VARIANTS_EXPORT = variantProp.values;
-export var CHECKBOX_STATES_EXPORT = CHECKBOX_STATES;
-export var CHECKBOX_DISABLED_OPTIONS = [false, true];
+export const CHECKBOX_VARIANTS_EXPORT = variantProp.values;
+export const CHECKBOX_STATES_EXPORT = CHECKBOX_STATES;
+export const CHECKBOX_DISABLED_OPTIONS = [false, true];

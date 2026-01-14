@@ -52,16 +52,16 @@ import { logInfo } from "../logger";
 import registry from "../../../../ai/component-registry.json";
 
 // Extract props from registry
-var switchProps = registry.components.Switch.props;
+const switchProps = registry.components.Switch.props;
 
-var variantProp = switchProps.variant as {
+const variantProp = switchProps.variant as {
   values: string[];
   classes: Record<string, string>;
   descriptions: Record<string, string>;
   default: string;
 };
 
-var sizeProp = switchProps.size as {
+const sizeProp = switchProps.size as {
   values: string[];
   classes: Record<string, string>;
   descriptions: Record<string, string>;
@@ -78,16 +78,16 @@ var sizeProp = switchProps.size as {
  * so we parse dimensions manually using regex and 1 Tailwind unit = 4px conversion
  */
 function parseSwitchDimensions(size: string): { width: number; height: number } {
-  var sizeClasses = sizeProp.classes[size] || "";
+  const sizeClasses = sizeProp.classes[size] || "";
   
   // Parse fractional Tailwind classes manually
   // Classes format: "h-5.5 w-8.5" or "h-6.5 w-10.5" or "h-7.5 w-12.5"
-  var heightMatch = sizeClasses.match(/h-(\d+(?:\.\d+)?)/);
-  var widthMatch = sizeClasses.match(/w-(\d+(?:\.\d+)?)/);
+  const heightMatch = sizeClasses.match(/h-(\d+(?:\.\d+)?)/);
+  const widthMatch = sizeClasses.match(/w-(\d+(?:\.\d+)?)/);
   
   if (heightMatch && widthMatch) {
-    var heightUnits = parseFloat(heightMatch[1]);
-    var widthUnits = parseFloat(widthMatch[1]);
+    const heightUnits = parseFloat(heightMatch[1]);
+    const widthUnits = parseFloat(widthMatch[1]);
     return {
       width: widthUnits * 4,
       height: heightUnits * 4,
@@ -104,7 +104,7 @@ function parseSwitchDimensions(size: string): { width: number; height: number } 
   // sizeProp.classes fails. The primary source is the registry classes which
   // are parsed dynamically. If you see drift here, update the registry or
   // check that parseSwitchDimensions regex is working correctly.
-  var fallbackDimensions: Record<string, { width: number; height: number }> = {
+  const fallbackDimensions: Record<string, { width: number; height: number }> = {
     sm: { width: 34, height: 22 }, // h-5.5 w-8.5 = 5.5*4, 8.5*4
     base: { width: 42, height: 26 }, // h-6.5 w-10.5 = 6.5*4, 10.5*4
     lg: { width: 50, height: 30 }, // h-7.5 w-12.5 = 7.5*4, 12.5*4
@@ -116,9 +116,9 @@ function parseSwitchDimensions(size: string): { width: number; height: number } 
  * Switch dimensions computed from registry
  * Dynamically generated from sizeProp.classes
  */
-var SWITCH_DIMENSIONS: Record<string, { width: number; height: number }> = {};
-for (var i = 0; i < sizeProp.values.length; i++) {
-  var sizeValue = sizeProp.values[i];
+const SWITCH_DIMENSIONS: Record<string, { width: number; height: number }> = {};
+for (let i = 0; i < sizeProp.values.length; i++) {
+  const sizeValue = sizeProp.values[i];
   SWITCH_DIMENSIONS[sizeValue] = parseSwitchDimensions(sizeValue);
 }
 
@@ -126,22 +126,22 @@ for (var i = 0; i < sizeProp.values.length; i++) {
  * Thumb padding from switch.tsx (p-1 = 4px)
  * Derived from theme-data.json to prevent drift
  */
-var SWITCH_PADDING = themeData.tailwind.spacing.scale["1"]; // p-1 = 4px
+const SWITCH_PADDING = themeData.tailwind.spacing.scale["1"]; // p-1 = 4px
 
 /**
  * Gap between switch and label (gap-2 = 8px)
  * Derived from theme-data.json to prevent drift
  */
-var SWITCH_LABEL_GAP = SPACING.base; // gap-2 = 8px
+const SWITCH_LABEL_GAP = SPACING.base; // gap-2 = 8px
 
 /**
  * Create the switch thumb (the circular moving part)
  */
 function createSwitchThumb(size: string, checked: boolean): EllipseNode {
-  var dimensions = SWITCH_DIMENSIONS[size];
-  var thumbSize = dimensions.height - SWITCH_PADDING * 2;
+  const dimensions = SWITCH_DIMENSIONS[size];
+  const thumbSize = dimensions.height - SWITCH_PADDING * 2;
 
-  var thumb = figma.createEllipse();
+  const thumb = figma.createEllipse();
   thumb.name = "Thumb";
   thumb.resize(thumbSize, thumbSize);
 
@@ -173,9 +173,9 @@ function createSwitchTrack(
   checked: boolean,
   disabled: boolean,
 ): FrameNode {
-  var dimensions = SWITCH_DIMENSIONS[size];
+  const dimensions = SWITCH_DIMENSIONS[size];
 
-  var track = figma.createFrame();
+  const track = figma.createFrame();
   track.name = "Switch Track";
   track.resize(dimensions.width, dimensions.height);
 
@@ -189,7 +189,7 @@ function createSwitchTrack(
   // - Unchecked: bg-surface-3
   // - Checked + default: bg-primary
   // - Checked + error: bg-error
-  var bgVariableName = "color-surface-3";
+  let bgVariableName = "color-surface-3";
   if (checked && !disabled) {
     if (variant === "error") {
       bgVariableName = "color-error";
@@ -198,7 +198,7 @@ function createSwitchTrack(
     }
   }
 
-  var bgVar = getVariableByName(bgVariableName);
+  const bgVar = getVariableByName(bgVariableName);
   if (bgVar) {
     bindFillToVariable(track, bgVar.id);
   }
@@ -207,7 +207,7 @@ function createSwitchTrack(
   // Note: The switch uses border-transparent, so we skip adding a stroke
 
   // Add the thumb
-  var thumb = createSwitchThumb(size, checked);
+  const thumb = createSwitchThumb(size, checked);
   track.appendChild(thumb);
 
   return track;
@@ -252,7 +252,7 @@ async function createSwitchWithLayout(
   controlFirst: boolean,
   labelText: string,
 ): Promise<ComponentNode> {
-  var component = figma.createComponent();
+  const component = figma.createComponent();
   component.name =
     "size=" +
     size +
@@ -265,9 +265,9 @@ async function createSwitchWithLayout(
     ", controlFirst=" +
     controlFirst;
 
-  var variantDesc = variantProp.descriptions[variant] || "";
-  var sizeDesc = sizeProp.descriptions[size] || "";
-  var layoutDesc = controlFirst
+  const variantDesc = variantProp.descriptions[variant] || "";
+  const sizeDesc = sizeProp.descriptions[size] || "";
+  const layoutDesc = controlFirst
     ? "Switch appears before label"
     : "Label appears before switch";
   component.description = variantDesc + " - " + sizeDesc + ". " + layoutDesc;
@@ -282,11 +282,11 @@ async function createSwitchWithLayout(
   component.fills = [];
 
   // Create switch track
-  var switchTrack = createSwitchTrack(size, variant, checked, disabled);
+  const switchTrack = createSwitchTrack(size, variant, checked, disabled);
 
   // Create label text
-  var label = await createTextNode(labelText, FONT_SIZE.base, 500);
-  var textVar = getVariableByName("text-color-surface");
+  const label = await createTextNode(labelText, FONT_SIZE.base, 500);
+  const textVar = getVariableByName("text-color-surface");
   if (textVar) {
     bindTextColorToVariable(label, textVar.id);
   }
@@ -317,7 +317,7 @@ async function createSwitchItem(
   controlFirst: boolean,
   labelText: string,
 ): Promise<FrameNode> {
-  var item = figma.createFrame();
+  const item = figma.createFrame();
   item.name = "Switch.Item";
   item.layoutMode = "HORIZONTAL";
   item.primaryAxisAlignItems = "MIN";
@@ -328,11 +328,11 @@ async function createSwitchItem(
   item.fills = [];
 
   // Create switch track (always base size in groups)
-  var switchTrack = createSwitchTrack("base", "default", checked, disabled);
+  const switchTrack = createSwitchTrack("base", "default", checked, disabled);
 
   // Create label text
-  var label = await createTextNode(labelText, FONT_SIZE.base, 500);
-  var textVar = getVariableByName("text-color-surface");
+  const label = await createTextNode(labelText, FONT_SIZE.base, 500);
+  const textVar = getVariableByName("text-color-surface");
   if (textVar) {
     bindTextColorToVariable(label, textVar.id);
   }
@@ -362,7 +362,7 @@ async function createSwitchGroupComponent(
   hasError: boolean,
   controlFirst: boolean,
 ): Promise<ComponentNode> {
-  var component = figma.createComponent();
+  const component = figma.createComponent();
   component.name =
     "hasDescription=" +
     hasDescription +
@@ -391,7 +391,7 @@ async function createSwitchGroupComponent(
   component.cornerRadius = BORDER_RADIUS.lg; // rounded-lg = 8px
 
   // Border: border-border
-  var borderVar = getVariableByName("color-border");
+  const borderVar = getVariableByName("color-border");
   if (borderVar) {
     component.strokes = [
       figma.variables.setBoundVariableForPaint(
@@ -407,15 +407,15 @@ async function createSwitchGroupComponent(
   component.fills = [];
 
   // Legend: text-lg font-medium text-surface
-  var legend = await createTextNode("Notification settings", FONT_SIZE.lg, 500);
-  var textVar = getVariableByName("text-color-surface");
+  const legend = await createTextNode("Notification settings", FONT_SIZE.lg, 500);
+  const textVar = getVariableByName("text-color-surface");
   if (textVar) {
     bindTextColorToVariable(legend, textVar.id);
   }
   component.appendChild(legend);
 
   // Items container: flex flex-col gap-2
-  var itemsContainer = figma.createFrame();
+  const itemsContainer = figma.createFrame();
   itemsContainer.name = "Items";
   itemsContainer.layoutMode = "VERTICAL";
   itemsContainer.primaryAxisSizingMode = "AUTO";
@@ -424,19 +424,19 @@ async function createSwitchGroupComponent(
   itemsContainer.fills = [];
 
   // Add 3 switch items
-  var item1 = await createSwitchItem(
+  const item1 = await createSwitchItem(
     true,
     false,
     controlFirst,
     "Email notifications",
   );
-  var item2 = await createSwitchItem(
+  const item2 = await createSwitchItem(
     false,
     false,
     controlFirst,
     "SMS notifications",
   );
-  var item3 = await createSwitchItem(
+  const item3 = await createSwitchItem(
     true,
     false,
     controlFirst,
@@ -451,12 +451,12 @@ async function createSwitchGroupComponent(
 
   // Error message: text-sm text-error (14px, but we use xs=12 as closest)
   if (hasError) {
-    var errorText = await createTextNode(
+    const errorText = await createTextNode(
       "You must enable at least one notification method",
       FONT_SIZE.xs,
       400,
     );
-    var errorVar = getVariableByName("text-color-error");
+    const errorVar = getVariableByName("text-color-error");
     if (errorVar) {
       bindTextColorToVariable(errorText, errorVar.id);
     }
@@ -465,12 +465,12 @@ async function createSwitchGroupComponent(
 
   // Description: text-sm text-muted (14px, but we use xs=12 as closest)
   if (hasDescription) {
-    var descText = await createTextNode(
+    const descText = await createTextNode(
       "Choose how you want to be notified about important updates",
       FONT_SIZE.xs,
       400,
     );
-    var mutedVar = getVariableByName("text-color-muted");
+    const mutedVar = getVariableByName("text-color-muted");
     if (mutedVar) {
       bindTextColorToVariable(descText, mutedVar.id);
     }
@@ -506,32 +506,32 @@ export async function generateSwitchComponents(
 
   figma.currentPage = page;
 
-  var sizes: string[] = sizeProp.values;
+  const sizes: string[] = sizeProp.values;
 
   // Generate all meaningful combinations
-  var components: ComponentNode[] = [];
+  const components: ComponentNode[] = [];
 
   // Track row labels: { y, text }
-  var rowLabels: { y: number; text: string }[] = [];
+  const rowLabels: { y: number; text: string }[] = [];
 
   // Layout grid spacing
-  var componentGap = 24;
-  var rowGap = GRID_LAYOUT.rowGap.standard;
-  var headerRowHeight = GRID_LAYOUT.headerRowHeight;
+  const componentGap = 24;
+  const rowGap = GRID_LAYOUT.rowGap.standard;
+  const headerRowHeight = GRID_LAYOUT.headerRowHeight;
 
-  var labelColumnWidth = GRID_LAYOUT.labelColumnWidth.widest;
+  const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.widest;
 
   // Column headers for sizes
-  var columnHeaderTexts = ["size=sm", "size=base", "size=lg"];
+  const columnHeaderTexts = ["size=sm", "size=base", "size=lg"];
 
   // Track layout - each scenario on its own row for readability
-  var currentY = headerRowHeight; // Start below header row
+  let currentY = headerRowHeight; // Start below header row
 
   // Row 1: checked=false, variant=default
   rowLabels.push({ y: currentY, text: "checked=false, variant=default" });
-  var currentX = labelColumnWidth;
-  for (var i = 0; i < sizes.length; i++) {
-    var component = await createSwitchComponent(
+  let currentX = labelColumnWidth;
+  for (let i = 0; i < sizes.length; i++) {
+    const component = await createSwitchComponent(
       sizes[i],
       "default",
       false,
@@ -548,8 +548,8 @@ export async function generateSwitchComponents(
   // Row 2: checked=true, variant=default
   rowLabels.push({ y: currentY, text: "checked=true, variant=default" });
   currentX = labelColumnWidth;
-  for (var i = 0; i < sizes.length; i++) {
-    var component = await createSwitchComponent(
+  for (let i = 0; i < sizes.length; i++) {
+    const component = await createSwitchComponent(
       sizes[i],
       "default",
       true,
@@ -569,8 +569,8 @@ export async function generateSwitchComponents(
     text: "checked=false, variant=default, disabled=true",
   });
   currentX = labelColumnWidth;
-  for (var i = 0; i < sizes.length; i++) {
-    var component = await createSwitchComponent(
+  for (let i = 0; i < sizes.length; i++) {
+    const component = await createSwitchComponent(
       sizes[i],
       "default",
       false,
@@ -590,8 +590,8 @@ export async function generateSwitchComponents(
     text: "checked=true, variant=default, disabled=true",
   });
   currentX = labelColumnWidth;
-  for (var i = 0; i < sizes.length; i++) {
-    var component = await createSwitchComponent(
+  for (let i = 0; i < sizes.length; i++) {
+    const component = await createSwitchComponent(
       sizes[i],
       "default",
       true,
@@ -608,8 +608,8 @@ export async function generateSwitchComponents(
   // Row 5: checked=false, variant=error
   rowLabels.push({ y: currentY, text: "checked=false, variant=error" });
   currentX = labelColumnWidth;
-  for (var i = 0; i < sizes.length; i++) {
-    var component = await createSwitchComponent(
+  for (let i = 0; i < sizes.length; i++) {
+    const component = await createSwitchComponent(
       sizes[i],
       "error",
       false,
@@ -626,8 +626,8 @@ export async function generateSwitchComponents(
   // Row 6: checked=true, variant=error
   rowLabels.push({ y: currentY, text: "checked=true, variant=error" });
   currentX = labelColumnWidth;
-  for (var i = 0; i < sizes.length; i++) {
-    var component = await createSwitchComponent(
+  for (let i = 0; i < sizes.length; i++) {
+    const component = await createSwitchComponent(
       sizes[i],
       "error",
       true,
@@ -647,8 +647,8 @@ export async function generateSwitchComponents(
     text: "checked=false, variant=error, disabled=true",
   });
   currentX = labelColumnWidth;
-  for (var i = 0; i < sizes.length; i++) {
-    var component = await createSwitchComponent(
+  for (let i = 0; i < sizes.length; i++) {
+    const component = await createSwitchComponent(
       sizes[i],
       "error",
       false,
@@ -668,8 +668,8 @@ export async function generateSwitchComponents(
     text: "checked=true, variant=error, disabled=true",
   });
   currentX = labelColumnWidth;
-  for (var i = 0; i < sizes.length; i++) {
-    var component = await createSwitchComponent(
+  for (let i = 0; i < sizes.length; i++) {
+    const component = await createSwitchComponent(
       sizes[i],
       "error",
       true,
@@ -684,7 +684,7 @@ export async function generateSwitchComponents(
 
   // Combine into ComponentSet
   // @ts-ignore - combineAsVariants works at runtime
-  var componentSet = figma.combineAsVariants(components, page);
+  const componentSet = figma.combineAsVariants(components, page);
   componentSet.name = "Switch";
   componentSet.description =
     "Switch component with size (sm/base/lg), checked (false/true), variant (default/error), and disabled properties. Includes label text.";
@@ -692,18 +692,18 @@ export async function generateSwitchComponents(
   componentSet.layoutMode = "NONE";
 
   // Calculate content dimensions (add label column width and header row)
-  var contentWidth = componentSet.width + labelColumnWidth;
-  var contentHeight = componentSet.height + headerRowHeight;
+  const contentWidth = componentSet.width + labelColumnWidth;
+  const contentHeight = componentSet.height + headerRowHeight;
 
   // Create light mode section
-  var lightSection = createModeSection(page, "Switch", "light");
+  const lightSection = createModeSection(page, "Switch", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
   );
 
   // Create dark mode section
-  var darkSection = createModeSection(page, "Switch", "dark");
+  const darkSection = createModeSection(page, "Switch", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
@@ -715,9 +715,9 @@ export async function generateSwitchComponents(
   componentSet.y = SECTION_PADDING + headerRowHeight;
 
   // Build column headers with positions from first row components
-  var columnHeaders: { x: number; text: string }[] = [];
+  let columnHeaders: { x: number; text: string }[] = [];
   // Get first 3 components (first row) for column positions
-  for (var i = 0; i < Math.min(3, components.length); i++) {
+  for (let i = 0; i < Math.min(3, components.length); i++) {
     columnHeaders.push({
       x: components[i].x + SECTION_PADDING,
       text: columnHeaderTexts[i],
@@ -728,9 +728,9 @@ export async function generateSwitchComponents(
   await createColumnHeaders(columnHeaders, SECTION_PADDING, lightSection.frame);
 
   // Add row labels to light section
-  for (var i = 0; i < rowLabels.length; i++) {
-    var label = rowLabels[i];
-    var labelNode = await createRowLabel(
+  for (let i = 0; i < rowLabels.length; i++) {
+    const label = rowLabels[i];
+    const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
       SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.sm, // vertically center with switch
@@ -741,9 +741,9 @@ export async function generateSwitchComponents(
   // Create instances for dark section
   // Note: component.x/y are relative to ComponentSet after combineAsVariants
   // We need to add labelColumnWidth to match the light section layout
-  for (var i = 0; i < components.length; i++) {
-    var component = components[i];
-    var instance = component.createInstance();
+  for (let i = 0; i < components.length; i++) {
+    const component = components[i];
+    const instance = component.createInstance();
     instance.x = component.x + SECTION_PADDING + labelColumnWidth;
     instance.y = component.y + SECTION_PADDING + headerRowHeight;
     darkSection.frame.appendChild(instance);
@@ -753,9 +753,9 @@ export async function generateSwitchComponents(
   await createColumnHeaders(columnHeaders, SECTION_PADDING, darkSection.frame);
 
   // Add row labels to dark section
-  for (var i = 0; i < rowLabels.length; i++) {
-    var label = rowLabels[i];
-    var labelNode = await createRowLabel(
+  for (let i = 0; i < rowLabels.length; i++) {
+    const label = rowLabels[i];
+    const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
       SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.sm,
@@ -764,8 +764,8 @@ export async function generateSwitchComponents(
   }
 
   // Resize sections to fit content with padding
-  var totalWidth = contentWidth + SECTION_PADDING * 2;
-  var totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalWidth = contentWidth + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
@@ -810,17 +810,17 @@ export async function generateSwitchGroupComponents(
 
   figma.currentPage = page;
 
-  var components: ComponentNode[] = [];
+  const components: ComponentNode[] = [];
 
   // Generate all combinations: hasDescription × hasError × controlFirst
-  var hasDescriptionValues = [false, true];
-  var hasErrorValues = [false, true];
-  var controlFirstValues = [true, false];
+  const hasDescriptionValues = [false, true];
+  const hasErrorValues = [false, true];
+  const controlFirstValues = [true, false];
 
-  for (var d = 0; d < hasDescriptionValues.length; d++) {
-    for (var e = 0; e < hasErrorValues.length; e++) {
-      for (var c = 0; c < controlFirstValues.length; c++) {
-        var component = await createSwitchGroupComponent(
+  for (let d = 0; d < hasDescriptionValues.length; d++) {
+    for (let e = 0; e < hasErrorValues.length; e++) {
+      for (let c = 0; c < controlFirstValues.length; c++) {
+        const component = await createSwitchGroupComponent(
           hasDescriptionValues[d],
           hasErrorValues[e],
           controlFirstValues[c],
@@ -832,7 +832,7 @@ export async function generateSwitchGroupComponents(
 
   // Combine into ComponentSet
   // @ts-ignore - combineAsVariants works at runtime
-  var componentSet = figma.combineAsVariants(components, page);
+  const componentSet = figma.combineAsVariants(components, page);
   componentSet.name = "Switch.Group";
   componentSet.description =
     "Switch group with fieldset, legend, optional description and error message. " +
@@ -847,10 +847,10 @@ export async function generateSwitchGroupComponents(
   componentSet.counterAxisSizingMode = "AUTO";
 
   // Create light mode section
-  var lightSection = createModeSection(page, "Switch.Group", "light");
+  const lightSection = createModeSection(page, "Switch.Group", "light");
 
   // Create dark mode section
-  var darkSection = createModeSection(page, "Switch.Group", "dark");
+  const darkSection = createModeSection(page, "Switch.Group", "dark");
 
   // Move ComponentSet into light section
   lightSection.frame.appendChild(componentSet);
@@ -858,17 +858,17 @@ export async function generateSwitchGroupComponents(
   componentSet.y = SECTION_PADDING;
 
   // Create instances for dark section
-  for (var i = 0; i < components.length; i++) {
-    var comp = components[i];
-    var instance = comp.createInstance();
+  for (let i = 0; i < components.length; i++) {
+    const comp = components[i];
+    const instance = comp.createInstance();
     instance.x = comp.x + SECTION_PADDING;
     instance.y = comp.y + SECTION_PADDING;
     darkSection.frame.appendChild(instance);
   }
 
   // Resize sections to fit content
-  var contentWidth = componentSet.width + SECTION_PADDING * 2;
-  var contentHeight = componentSet.height + SECTION_PADDING * 2;
+  const contentWidth = componentSet.width + SECTION_PADDING * 2;
+  const contentHeight = componentSet.height + SECTION_PADDING * 2;
 
   lightSection.frame.resize(contentWidth, contentHeight);
   darkSection.frame.resize(contentWidth, contentHeight);
@@ -924,7 +924,7 @@ export function getSwitchSizeConfig() {
  * Get switch dimensions for a specific size
  */
 export function getSwitchDimensions(size: string) {
-  var dimensions = SWITCH_DIMENSIONS[size];
+  const dimensions = SWITCH_DIMENSIONS[size];
   if (!dimensions) {
     throw new Error("Invalid size: " + size);
   }
@@ -945,7 +945,7 @@ export function getSwitchTrackColorBinding(
   checked: boolean,
   disabled: boolean,
 ) {
-  var bgVariableName = "color-surface-3";
+  let bgVariableName = "color-surface-3";
   if (checked && !disabled) {
     if (variant === "error") {
       bgVariableName = "color-error";
@@ -965,14 +965,14 @@ export function getSwitchTrackColorBinding(
  * Get complete switch data for all variants (golden path)
  */
 export function getAllSwitchVariantData() {
-  var variantConfig = getSwitchVariantConfig();
-  var sizeConfig = getSwitchSizeConfig();
+  const variantConfig = getSwitchVariantConfig();
+  const sizeConfig = getSwitchSizeConfig();
 
-  var allDimensions = sizeConfig.values.map(function (size) {
+  const allDimensions = sizeConfig.values.map(function (size) {
     return getSwitchDimensions(size);
   });
 
-  var allTrackColors: {
+  const allTrackColors: {
     variant: string;
     checked: boolean;
     disabled: boolean;
@@ -980,13 +980,13 @@ export function getAllSwitchVariantData() {
   }[] = [];
 
   // Generate all meaningful combinations
-  var variantValues = variantConfig.values;
-  var checkedValues = [false, true];
-  var disabledValues = [false, true];
+  const variantValues = variantConfig.values;
+  const checkedValues = [false, true];
+  const disabledValues = [false, true];
 
-  for (var v = 0; v < variantValues.length; v++) {
-    for (var c = 0; c < checkedValues.length; c++) {
-      for (var d = 0; d < disabledValues.length; d++) {
+  for (let v = 0; v < variantValues.length; v++) {
+    for (let c = 0; c < checkedValues.length; c++) {
+      for (let d = 0; d < disabledValues.length; d++) {
         allTrackColors.push(
           getSwitchTrackColorBinding(
             variantValues[v],
@@ -1012,5 +1012,5 @@ export function getAllSwitchVariantData() {
 /**
  * Legacy exports for backwards compatibility
  */
-export var SWITCH_VARIANTS_EXPORT = variantProp.values;
-export var SWITCH_SIZES_EXPORT = sizeProp.values;
+export const SWITCH_VARIANTS_EXPORT = variantProp.values;
+export const SWITCH_SIZES_EXPORT = sizeProp.values;

@@ -41,18 +41,18 @@ import registry from "../../../../ai/component-registry.json";
  * Extract Input component data from registry
  * SensitiveInput uses Input's size and variant configuration
  */
-var inputComponent = registry.components.Input;
-var inputProps = inputComponent.props;
-var inputStyling = inputComponent.styling;
+const inputComponent = registry.components.Input;
+const inputProps = inputComponent.props;
+const inputStyling = inputComponent.styling;
 
-var sizeProp = inputProps.size as {
+const sizeProp = inputProps.size as {
   values: string[];
   classes: Record<string, string>;
   descriptions: Record<string, string>;
   default: string;
 };
 
-var variantProp = inputProps.variant as {
+const variantProp = inputProps.variant as {
   values: string[];
   classes: Record<string, string>;
   descriptions: Record<string, string>;
@@ -62,17 +62,17 @@ var variantProp = inputProps.variant as {
 /**
  * Size values from Input registry
  */
-var SIZE_VALUES = sizeProp.values;
+const SIZE_VALUES = sizeProp.values;
 
 /**
  * Variant values from Input registry
  */
-var VARIANT_VALUES = variantProp.values;
+const VARIANT_VALUES = variantProp.values;
 
 /**
  * Width mapping for SensitiveInput (layout-specific)
  */
-var SIZE_WIDTHS: Record<string, number> = {
+const SIZE_WIDTHS: Record<string, number> = {
   xs: 200,
   sm: 220,
   base: 280,
@@ -82,7 +82,7 @@ var SIZE_WIDTHS: Record<string, number> = {
 /**
  * Icon size mapping for SensitiveInput (layout-specific)
  */
-var ICON_SIZES: Record<string, string> = {
+const ICON_SIZES: Record<string, string> = {
   xs: "sm",
   sm: "sm",
   base: "base",
@@ -102,7 +102,7 @@ function getSizeConfigFromRegistry(
   width: number;
   iconSize: string;
 } {
-  var sizeVariants = inputStyling.sizeVariants as Record<
+  const sizeVariants = inputStyling.sizeVariants as Record<
     string,
     {
       height: number;
@@ -114,7 +114,7 @@ function getSizeConfigFromRegistry(
       };
     }
   >;
-  var sizeVariant = sizeVariants[size] || sizeVariants["base"];
+  let sizeVariant = sizeVariants[size] || sizeVariants["base"];
 
   return {
     height: sizeVariant.height,
@@ -129,7 +129,7 @@ function getSizeConfigFromRegistry(
 /**
  * Size configuration from registry (dynamically computed)
  */
-var SIZE_CONFIG: Record<
+const SIZE_CONFIG: Record<
   string,
   {
     height: number;
@@ -142,30 +142,30 @@ var SIZE_CONFIG: Record<
 > = {};
 
 // Populate SIZE_CONFIG from registry at generator init time
-for (var i = 0; i < SIZE_VALUES.length; i++) {
-  var sizeKey = SIZE_VALUES[i];
+for (let i = 0; i < SIZE_VALUES.length; i++) {
+  const sizeKey = SIZE_VALUES[i];
   SIZE_CONFIG[sizeKey] = getSizeConfigFromRegistry(sizeKey);
 }
 
 /**
  * State values
  */
-var STATE_VALUES = ["default", "focus", "disabled"];
+const STATE_VALUES = ["default", "focus", "disabled"];
 
 /**
  * Mode values - masked shows dots, revealed shows text
  */
-var MODE_VALUES = ["masked", "revealed"];
+const MODE_VALUES = ["masked", "revealed"];
 
 /**
  * WithLabel values - whether to show Field wrapper
  */
-var WITH_LABEL_VALUES = [false, true];
+const WITH_LABEL_VALUES = [false, true];
 
 /**
  * State-specific style overrides
  */
-var STATE_STYLES: Record<
+const STATE_STYLES: Record<
   string,
   {
     ringVariable?: string;
@@ -187,7 +187,7 @@ var STATE_STYLES: Record<
 /**
  * Variant-specific configuration
  */
-var VARIANT_CONFIG: Record<
+const VARIANT_CONFIG: Record<
   string,
   {
     ringVariable: string;
@@ -218,12 +218,12 @@ async function createSensitiveInputComponent(
   mode: string,
   withLabel: boolean,
 ): Promise<ComponentNode> {
-  var sizeConfig = SIZE_CONFIG[size] || SIZE_CONFIG["base"];
-  var variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
-  var stateStyle = STATE_STYLES[state] || STATE_STYLES["default"];
+  const sizeConfig = SIZE_CONFIG[size] || SIZE_CONFIG["base"];
+  const variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
+  const stateStyle = STATE_STYLES[state] || STATE_STYLES["default"];
 
   // Create component
-  var component = figma.createComponent();
+  const component = figma.createComponent();
   component.name =
     "size=" +
     size +
@@ -261,11 +261,11 @@ async function createSensitiveInputComponent(
 
   // Create label (only if withLabel is true)
   if (withLabel && variantConfig.label) {
-    var labelText = await createTextNode(variantConfig.label, 14, 500);
+    const labelText = await createTextNode(variantConfig.label, 14, 500);
     labelText.name = "Label";
     labelText.textAutoResize = "WIDTH_AND_HEIGHT";
 
-    var labelVar = getVariableByName("text-color-label");
+    const labelVar = getVariableByName("text-color-label");
     if (labelVar) {
       bindTextColorToVariable(labelText, labelVar.id);
     }
@@ -274,7 +274,7 @@ async function createSensitiveInputComponent(
   }
 
   // Create input container frame
-  var inputFrame = figma.createFrame();
+  const inputFrame = figma.createFrame();
   inputFrame.name = "Input";
   inputFrame.layoutMode = "HORIZONTAL";
   inputFrame.primaryAxisAlignItems = "SPACE_BETWEEN";
@@ -290,19 +290,19 @@ async function createSensitiveInputComponent(
   inputFrame.cornerRadius = sizeConfig.borderRadius;
 
   // Apply background fill (bg-secondary)
-  var bgVar = getVariableByName("color-secondary");
+  const bgVar = getVariableByName("color-secondary");
   if (bgVar) {
     bindFillToVariable(inputFrame, bgVar.id);
   }
 
   // Apply ring (stroke) - use variant ring in default state, state ring for focus
-  var ringVarName = variantConfig.ringVariable;
+  let ringVarName = variantConfig.ringVariable;
   if (state === "focus" && variant === "default") {
     ringVarName = "color-active";
   } else if (state === "focus" && variant === "error") {
     ringVarName = "color-error";
   }
-  var ringVar = getVariableByName(ringVarName);
+  const ringVar = getVariableByName(ringVarName);
   if (ringVar) {
     bindStrokeToVariable(inputFrame, ringVar.id, 1);
   }
@@ -310,11 +310,11 @@ async function createSensitiveInputComponent(
   // Create content based on mode
   if (mode === "masked") {
     // Show masked dots
-    var maskedText = await createTextNode("●●●●●●●●", sizeConfig.fontSize, 400);
+    const maskedText = await createTextNode("●●●●●●●●", sizeConfig.fontSize, 400);
     maskedText.name = "MaskedValue";
     maskedText.textAutoResize = "WIDTH_AND_HEIGHT";
 
-    var maskedTextVar = getVariableByName("text-color-surface");
+    const maskedTextVar = getVariableByName("text-color-surface");
     if (maskedTextVar) {
       bindTextColorToVariable(maskedText, maskedTextVar.id);
     }
@@ -322,7 +322,7 @@ async function createSensitiveInputComponent(
     inputFrame.appendChild(maskedText);
   } else {
     // Show revealed text
-    var revealedText = await createTextNode(
+    const revealedText = await createTextNode(
       "sk_live_abc123",
       sizeConfig.fontSize,
       400,
@@ -330,7 +330,7 @@ async function createSensitiveInputComponent(
     revealedText.name = "Value";
     revealedText.textAutoResize = "WIDTH_AND_HEIGHT";
 
-    var revealedTextVar = getVariableByName("text-color-surface");
+    const revealedTextVar = getVariableByName("text-color-surface");
     if (revealedTextVar) {
       bindTextColorToVariable(revealedText, revealedTextVar.id);
     }
@@ -339,11 +339,11 @@ async function createSensitiveInputComponent(
   }
 
   // Create eye icon (EyeSlash when revealed, Eye when masked)
-  var eyeIconName = mode === "revealed" ? "ph-eye-slash" : "ph-eye";
-  var eyeIcon = getButtonIcon(eyeIconName, sizeConfig.iconSize);
+  const eyeIconName = mode === "revealed" ? "ph-eye-slash" : "ph-eye";
+  const eyeIcon = getButtonIcon(eyeIconName, sizeConfig.iconSize);
   eyeIcon.name = "EyeIcon";
 
-  var iconColorToken = state === "disabled" ? "text-disabled" : "text-muted";
+  const iconColorToken = state === "disabled" ? "text-disabled" : "text-muted";
   bindIconColor(eyeIcon, iconColorToken);
 
   inputFrame.appendChild(eyeIcon);
@@ -351,11 +351,11 @@ async function createSensitiveInputComponent(
 
   // Create description or error message (only if withLabel is true)
   if (withLabel && variantConfig.description && variant === "default") {
-    var descText = await createTextNode(variantConfig.description, 12, 400);
+    const descText = await createTextNode(variantConfig.description, 12, 400);
     descText.name = "Description";
     descText.textAutoResize = "WIDTH_AND_HEIGHT";
 
-    var descVar = getVariableByName("text-color-muted");
+    const descVar = getVariableByName("text-color-muted");
     if (descVar) {
       bindTextColorToVariable(descText, descVar.id);
     }
@@ -364,11 +364,11 @@ async function createSensitiveInputComponent(
   }
 
   if (withLabel && variantConfig.errorMessage && variant === "error") {
-    var errorText = await createTextNode(variantConfig.errorMessage, 12, 400);
+    const errorText = await createTextNode(variantConfig.errorMessage, 12, 400);
     errorText.name = "Error";
     errorText.textAutoResize = "WIDTH_AND_HEIGHT";
 
-    var errorVar = getVariableByName("text-color-error");
+    const errorVar = getVariableByName("text-color-error");
     if (errorVar) {
       bindTextColorToVariable(errorText, errorVar.id);
     }
@@ -403,36 +403,36 @@ export async function generateSensitiveInputComponents(
 
   figma.currentPage = page;
 
-  var components: ComponentNode[] = [];
-  var rowLabels: { y: number; text: string }[] = [];
-  var columnHeaders: { x: number; text: string }[] = [];
+  const components: ComponentNode[] = [];
+  const rowLabels: { y: number; text: string }[] = [];
+  let columnHeaders: { x: number; text: string }[] = [];
 
-  var componentGapX = 24;
-  var componentGapY = 40;
-  var headerRowHeight = 24;
-  var labelColumnWidth = 220;
+  const componentGapX = 24;
+  const componentGapY = 40;
+  const headerRowHeight = 24;
+  const labelColumnWidth = 220;
 
-  var rowComponents: Map<number, ComponentNode[]> = new Map();
+  const rowComponents: Map<number, ComponentNode[]> = new Map();
 
   // Generate components
   // Rows = size x withLabel, Columns = variant x state x mode
-  var rowIndex = 0;
-  for (var si = 0; si < SIZE_VALUES.length; si++) {
-    var size = SIZE_VALUES[si];
+  let rowIndex = 0;
+  for (let si = 0; si < SIZE_VALUES.length; si++) {
+    const size = SIZE_VALUES[si];
 
-    for (var wli = 0; wli < WITH_LABEL_VALUES.length; wli++) {
-      var withLabel = WITH_LABEL_VALUES[wli];
+    for (let wli = 0; wli < WITH_LABEL_VALUES.length; wli++) {
+      const withLabel = WITH_LABEL_VALUES[wli];
       rowComponents.set(rowIndex, []);
 
-      for (var vi = 0; vi < VARIANT_VALUES.length; vi++) {
-        var variant = VARIANT_VALUES[vi];
+      for (let vi = 0; vi < VARIANT_VALUES.length; vi++) {
+        const variant = VARIANT_VALUES[vi];
 
-        for (var sti = 0; sti < STATE_VALUES.length; sti++) {
-          var state = STATE_VALUES[sti];
+        for (let sti = 0; sti < STATE_VALUES.length; sti++) {
+          const state = STATE_VALUES[sti];
 
-          for (var mi = 0; mi < MODE_VALUES.length; mi++) {
-            var mode = MODE_VALUES[mi];
-            var component = await createSensitiveInputComponent(
+          for (let mi = 0; mi < MODE_VALUES.length; mi++) {
+            const mode = MODE_VALUES[mi];
+            const component = await createSensitiveInputComponent(
               size,
               variant,
               state,
@@ -450,18 +450,18 @@ export async function generateSensitiveInputComponents(
   }
 
   // Calculate column widths and row heights
-  var columnWidths: number[] = [];
-  var rowHeights: number[] = [];
+  const columnWidths: number[] = [];
+  const rowHeights: number[] = [];
 
-  var numColumns =
+  const numColumns =
     VARIANT_VALUES.length * STATE_VALUES.length * MODE_VALUES.length;
-  var totalRows = SIZE_VALUES.length * WITH_LABEL_VALUES.length;
+  const totalRows = SIZE_VALUES.length * WITH_LABEL_VALUES.length;
 
-  for (var colIdx = 0; colIdx < numColumns; colIdx++) {
-    var maxColWidth = 0;
-    for (var rowIdx = 0; rowIdx < totalRows; rowIdx++) {
-      var row = rowComponents.get(rowIdx) || [];
-      var comp = row[colIdx];
+  for (let colIdx = 0; colIdx < numColumns; colIdx++) {
+    let maxColWidth = 0;
+    for (let rowIdx = 0; rowIdx < totalRows; rowIdx++) {
+      const row = rowComponents.get(rowIdx) || [];
+      const comp = row[colIdx];
       if (comp && comp.width > maxColWidth) {
         maxColWidth = comp.width;
       }
@@ -469,11 +469,11 @@ export async function generateSensitiveInputComponents(
     columnWidths.push(maxColWidth);
   }
 
-  for (var rowIdx = 0; rowIdx < totalRows; rowIdx++) {
-    var row = rowComponents.get(rowIdx) || [];
-    var maxRowHeight = 0;
-    for (var colIdx = 0; colIdx < row.length; colIdx++) {
-      var comp = row[colIdx];
+  for (let rowIdx = 0; rowIdx < totalRows; rowIdx++) {
+    const row = rowComponents.get(rowIdx) || [];
+    let maxRowHeight = 0;
+    for (let colIdx = 0; colIdx < row.length; colIdx++) {
+      const comp = row[colIdx];
       if (comp && comp.height > maxRowHeight) {
         maxRowHeight = comp.height;
       }
@@ -482,40 +482,40 @@ export async function generateSensitiveInputComponents(
   }
 
   // Position components
-  var yOffset = headerRowHeight;
+  let yOffset = headerRowHeight;
 
-  var currentRowIndex = 0;
-  for (var si2 = 0; si2 < SIZE_VALUES.length; si2++) {
-    var sizeValue = SIZE_VALUES[si2];
+  let currentRowIndex = 0;
+  for (let si2 = 0; si2 < SIZE_VALUES.length; si2++) {
+    const sizeValue = SIZE_VALUES[si2];
 
-    for (var wli2 = 0; wli2 < WITH_LABEL_VALUES.length; wli2++) {
-      var withLabelValue = WITH_LABEL_VALUES[wli2];
-      var row = rowComponents.get(currentRowIndex) || [];
-      var xOffset = labelColumnWidth;
+    for (let wli2 = 0; wli2 < WITH_LABEL_VALUES.length; wli2++) {
+      const withLabelValue = WITH_LABEL_VALUES[wli2];
+      const row = rowComponents.get(currentRowIndex) || [];
+      let xOffset = labelColumnWidth;
 
       rowLabels.push({
         y: yOffset,
         text: "size=" + sizeValue + ", withLabel=" + withLabelValue,
       });
 
-      for (var colIdx = 0; colIdx < row.length; colIdx++) {
-        var comp = row[colIdx];
+      for (let colIdx = 0; colIdx < row.length; colIdx++) {
+        const comp = row[colIdx];
         comp.x = xOffset;
         comp.y = yOffset;
 
         // Record column headers from first row
         if (currentRowIndex === 0) {
-          var variantIdx = Math.floor(
+          const variantIdx = Math.floor(
             colIdx / (STATE_VALUES.length * MODE_VALUES.length),
           );
-          var stateIdx = Math.floor(
+          const stateIdx = Math.floor(
             (colIdx % (STATE_VALUES.length * MODE_VALUES.length)) /
               MODE_VALUES.length,
           );
-          var modeIdx = colIdx % MODE_VALUES.length;
-          var variantVal = VARIANT_VALUES[variantIdx];
-          var stateVal = STATE_VALUES[stateIdx];
-          var modeVal = MODE_VALUES[modeIdx];
+          const modeIdx = colIdx % MODE_VALUES.length;
+          const variantVal = VARIANT_VALUES[variantIdx];
+          const stateVal = STATE_VALUES[stateIdx];
+          const modeVal = MODE_VALUES[modeIdx];
           columnHeaders.push({
             x: xOffset,
             text:
@@ -538,24 +538,24 @@ export async function generateSensitiveInputComponents(
 
   // Combine into ComponentSet
   // @ts-ignore
-  var componentSet = figma.combineAsVariants(components, page);
+  const componentSet = figma.combineAsVariants(components, page);
   componentSet.name = "SensitiveInput";
   componentSet.description =
     "SensitiveInput component for passwords and API keys. " +
     "Shows masked dots or revealed text with eye toggle.";
   componentSet.layoutMode = "NONE";
 
-  var contentWidth = componentSet.width + labelColumnWidth;
-  var contentHeight = componentSet.height + headerRowHeight;
+  const contentWidth = componentSet.width + labelColumnWidth;
+  const contentHeight = componentSet.height + headerRowHeight;
 
   // Create sections
-  var lightSection = createModeSection(page, "SensitiveInput", "light");
+  const lightSection = createModeSection(page, "SensitiveInput", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
   );
 
-  var darkSection = createModeSection(page, "SensitiveInput", "dark");
+  const darkSection = createModeSection(page, "SensitiveInput", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
@@ -576,20 +576,20 @@ export async function generateSensitiveInputComponents(
   );
 
   // Add row labels to light section
-  for (var li = 0; li < rowLabels.length; li++) {
-    var label = rowLabels[li];
-    var labelNode = await createRowLabel(
+  for (let li = 0; li < rowLabels.length; li++) {
+    const label = rowLabels[li];
+    const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 8,
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md,
     );
     lightSection.frame.appendChild(labelNode);
   }
 
   // Create instances for dark section
-  for (var k = 0; k < components.length; k++) {
-    var origComp = components[k];
-    var instance = origComp.createInstance();
+  for (let k = 0; k < components.length; k++) {
+    const origComp = components[k];
+    const instance = origComp.createInstance();
     instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
     instance.y = origComp.y + SECTION_PADDING + headerRowHeight;
     darkSection.frame.appendChild(instance);
@@ -605,9 +605,9 @@ export async function generateSensitiveInputComponents(
   );
 
   // Add row labels to dark section
-  for (var di = 0; di < rowLabels.length; di++) {
-    var darkLabel = rowLabels[di];
-    var darkLabelNode = await createRowLabel(
+  for (let di = 0; di < rowLabels.length; di++) {
+    const darkLabel = rowLabels[di];
+    const darkLabelNode = await createRowLabel(
       darkLabel.text,
       SECTION_PADDING,
       SECTION_PADDING + darkLabel.y + 8,
@@ -616,8 +616,8 @@ export async function generateSensitiveInputComponents(
   }
 
   // Resize and position sections
-  var totalWidth = contentWidth + SECTION_PADDING * 2;
-  var totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalWidth = contentWidth + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
@@ -720,7 +720,7 @@ export function getAllSensitiveInputVariantData() {
 /**
  * Legacy exports for backward compatibility
  */
-export var SENSITIVE_INPUT_SIZE_VALUES = SIZE_VALUES;
-export var SENSITIVE_INPUT_VARIANT_VALUES = VARIANT_VALUES;
-export var SENSITIVE_INPUT_STATE_VALUES = STATE_VALUES;
-export var SENSITIVE_INPUT_MODE_VALUES = MODE_VALUES;
+export const SENSITIVE_INPUT_SIZE_VALUES = SIZE_VALUES;
+export const SENSITIVE_INPUT_VARIANT_VALUES = VARIANT_VALUES;
+export const SENSITIVE_INPUT_STATE_VALUES = STATE_VALUES;
+export const SENSITIVE_INPUT_MODE_VALUES = MODE_VALUES;

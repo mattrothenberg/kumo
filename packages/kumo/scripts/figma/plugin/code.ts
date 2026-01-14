@@ -396,7 +396,7 @@ figma.ui.onmessage = async (msg: { type: string }) => {
 
       figma.notify("✅ Generation complete!", { timeout: 3000 });
       figma.closePlugin(
-        "Generation complete - created Badge, Banner, Button, Checkbox, ClipboardText, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, Dialog, Dropdown, Input, InputArea, LayerCard, Loader, LinkButton, MenuBar, Meter, Pagination, RefreshButton, Select, SensitiveInput, Surface, Switch, Switch.Group, Tabs, Text, Toast, Tooltip components, and Icon Library",
+        `Generation complete - created ${TOTAL_COMPONENTS} component types with light + dark modes`,
       );
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);

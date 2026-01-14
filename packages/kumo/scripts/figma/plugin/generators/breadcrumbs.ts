@@ -367,7 +367,7 @@ export async function generateBreadcrumbsComponents(
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 10 // Center vertically with breadcrumbs
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.mdLg // Center vertically with breadcrumbs
     );
     lightSection.frame.appendChild(labelNode);
   }
@@ -385,7 +385,7 @@ export async function generateBreadcrumbsComponents(
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 10
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.mdLg
     );
     darkSection.frame.appendChild(labelNode);
   }

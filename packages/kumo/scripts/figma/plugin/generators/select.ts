@@ -38,11 +38,11 @@ import { logComplete } from "../logger";
 import registry from "../../../../ai/component-registry.json";
 
 // Extract Select component data from registry
-var selectRegistry = registry.components.Select;
-var selectRegistryStyling = (registry.components.Select as any).styling;
+const selectRegistry = registry.components.Select;
+const selectRegistryStyling = (registry.components.Select as any).styling;
 
 // Styling configuration - reads from registry with semantic token additions
-var selectStyling = {
+const selectStyling = {
   trigger: {
     height: selectRegistryStyling?.trigger?.height ?? 36, // h-9
     paddingX: selectRegistryStyling?.trigger?.paddingX ?? 12, // px-3
@@ -79,23 +79,23 @@ var selectStyling = {
  * Variant types (generator-specific display variants)
  * Note: These are presentation variants for Figma, not React component variants
  */
-var VARIANT_VALUES = ["default", "withLabel", "withError"];
+const VARIANT_VALUES = ["default", "withLabel", "withError"];
 
 /**
  * Open state values
  */
-var OPEN_VALUES = [false, true];
+const OPEN_VALUES = [false, true];
 
 /**
  * Interaction state values
  */
-var STATE_VALUES = ["default", "focus", "disabled", "loading"];
+const STATE_VALUES = ["default", "focus", "disabled", "loading"];
 
 /**
  * State-specific style overrides for the trigger
  * Reads from selectStyling (source of truth)
  */
-var STATE_STYLES: Record<
+const STATE_STYLES: Record<
   string,
   {
     ringVariable?: string;
@@ -120,7 +120,7 @@ var STATE_STYLES: Record<
 /**
  * Variant-specific configuration
  */
-var VARIANT_CONFIG: Record<
+const VARIANT_CONFIG: Record<
   string,
   {
     label?: string;
@@ -145,13 +145,13 @@ var VARIANT_CONFIG: Record<
  * Create a skeleton loading line (matches SkeletonLine component)
  */
 function createSkeletonLine(width: number, height: number): FrameNode {
-  var skeleton = figma.createFrame();
+  const skeleton = figma.createFrame();
   skeleton.name = "SkeletonLine";
   skeleton.resize(width, height);
   skeleton.cornerRadius = 4;
 
   // Use a subtle background color for skeleton
-  var bgVar = getVariableByName("color-color-3");
+  const bgVar = getVariableByName("color-color-3");
   if (bgVar) {
     bindFillToVariable(skeleton, bgVar.id);
   } else {
@@ -175,10 +175,10 @@ async function createSelectComponent(
   state: string,
 ): Promise<ComponentNode> {
   // Get variant config
-  var variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
+  const variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
 
   // Create component
-  var component = figma.createComponent();
+  const component = figma.createComponent();
   component.name = "variant=" + variant + ", open=" + open + ", state=" + state;
   component.description =
     "Select " +
@@ -198,7 +198,7 @@ async function createSelectComponent(
   component.fills = [];
 
   // Get state-specific styles
-  var stateStyle = STATE_STYLES[state] || STATE_STYLES["default"];
+  const stateStyle = STATE_STYLES[state] || STATE_STYLES["default"];
 
   // Apply disabled opacity to entire component
   if (stateStyle.opacity !== undefined) {
@@ -207,12 +207,12 @@ async function createSelectComponent(
 
   // Create label if needed
   if (variantConfig.label) {
-    var labelText = await createTextNode(variantConfig.label, 14, 500);
+    const labelText = await createTextNode(variantConfig.label, 14, 500);
     labelText.name = "Label";
     labelText.textAutoResize = "WIDTH_AND_HEIGHT";
 
     // Apply label text color (text-label)
-    var labelVar = getVariableByName("text-color-label");
+    const labelVar = getVariableByName("text-color-label");
     if (labelVar) {
       bindTextColorToVariable(labelText, labelVar.id);
     }
@@ -221,7 +221,7 @@ async function createSelectComponent(
   }
 
   // Create trigger button frame (matches buttonVariants() styling)
-  var trigger = figma.createFrame();
+  const trigger = figma.createFrame();
   trigger.name = "Trigger";
   trigger.layoutMode = "HORIZONTAL";
   trigger.primaryAxisAlignItems = "SPACE_BETWEEN"; // Text left, icon right
@@ -237,16 +237,16 @@ async function createSelectComponent(
   trigger.cornerRadius = selectStyling.trigger.borderRadius;
 
   // Apply background fill (from selectStyling)
-  var bgVar = getVariableByName(selectStyling.trigger.background);
+  const bgVar = getVariableByName(selectStyling.trigger.background);
   if (bgVar) {
     bindFillToVariable(trigger, bgVar.id);
   }
 
   // Apply ring (stroke) - use error ring if error variant
-  var ringVarName = variantConfig.useErrorRing
+  let ringVarName = variantConfig.useErrorRing
     ? "color-error"
     : stateStyle.ringVariable || "color-border";
-  var ringVar = getVariableByName(ringVarName);
+  const ringVar = getVariableByName(ringVarName);
   if (ringVar) {
     bindStrokeToVariable(trigger, ringVar.id, 1);
   }
@@ -254,11 +254,11 @@ async function createSelectComponent(
   // Create content based on state
   if (state === "loading") {
     // Show skeleton line when loading
-    var skeleton = createSkeletonLine(128, 16);
+    const skeleton = createSkeletonLine(128, 16);
     trigger.appendChild(skeleton);
   } else {
     // Create placeholder/value text (from selectStyling)
-    var placeholderText = await createTextNode(
+    const placeholderText = await createTextNode(
       "Select an option",
       selectStyling.trigger.fontSize,
       selectStyling.trigger.fontWeight,
@@ -267,7 +267,7 @@ async function createSelectComponent(
     placeholderText.textAutoResize = "WIDTH_AND_HEIGHT";
 
     // Apply text color (from selectStyling)
-    var textVar = getVariableByName(selectStyling.trigger.text);
+    const textVar = getVariableByName(selectStyling.trigger.text);
     if (textVar) {
       bindTextColorToVariable(placeholderText, textVar.id);
     }
@@ -276,12 +276,12 @@ async function createSelectComponent(
   }
 
   // Create caret up/down icon
-  var caretIconName = "ph-caret-up-down";
-  var caret = getButtonIcon(caretIconName, "sm");
+  const caretIconName = "ph-caret-up-down";
+  const caret = getButtonIcon(caretIconName, "sm");
   caret.name = "Caret";
 
   // Apply icon color based on state
-  var iconColorToken = state === "disabled" ? "text-disabled" : "text-surface";
+  const iconColorToken = state === "disabled" ? "text-disabled" : "text-surface";
   bindIconColor(caret, iconColorToken);
 
   trigger.appendChild(caret);
@@ -289,12 +289,12 @@ async function createSelectComponent(
 
   // Create description or error message if needed
   if (variantConfig.description) {
-    var descText = await createTextNode(variantConfig.description, 12, 400);
+    const descText = await createTextNode(variantConfig.description, 12, 400);
     descText.name = "Description";
     descText.textAutoResize = "WIDTH_AND_HEIGHT";
 
     // Apply description text color (text-muted)
-    var descVar = getVariableByName("text-color-muted");
+    const descVar = getVariableByName("text-color-muted");
     if (descVar) {
       bindTextColorToVariable(descText, descVar.id);
     }
@@ -303,12 +303,12 @@ async function createSelectComponent(
   }
 
   if (variantConfig.errorMessage) {
-    var errorText = await createTextNode(variantConfig.errorMessage, 12, 400);
+    const errorText = await createTextNode(variantConfig.errorMessage, 12, 400);
     errorText.name = "Error";
     errorText.textAutoResize = "WIDTH_AND_HEIGHT";
 
     // Apply error text color (text-error)
-    var errorVar = getVariableByName("text-color-error");
+    const errorVar = getVariableByName("text-color-error");
     if (errorVar) {
       bindTextColorToVariable(errorText, errorVar.id);
     }
@@ -318,7 +318,7 @@ async function createSelectComponent(
 
   // Create dropdown panel (only when open and not loading/disabled)
   if (open && state !== "loading" && state !== "disabled") {
-    var dropdownPanel = figma.createFrame();
+    const dropdownPanel = figma.createFrame();
     dropdownPanel.name = "Popup";
     dropdownPanel.layoutMode = "VERTICAL";
     dropdownPanel.primaryAxisSizingMode = "AUTO";
@@ -332,21 +332,21 @@ async function createSelectComponent(
     dropdownPanel.cornerRadius = selectStyling.popup.borderRadius;
 
     // Apply background fill (from selectStyling)
-    var dropdownBgVar = getVariableByName(selectStyling.popup.background);
+    const dropdownBgVar = getVariableByName(selectStyling.popup.background);
     if (dropdownBgVar) {
       bindFillToVariable(dropdownPanel, dropdownBgVar.id);
     }
 
     // Apply border (from selectStyling)
-    var borderVar = getVariableByName(selectStyling.popup.ring);
+    const borderVar = getVariableByName(selectStyling.popup.ring);
     if (borderVar) {
       bindStrokeToVariable(dropdownPanel, borderVar.id, 1);
     }
 
     // Create 3 sample options
-    var optionLabels = ["Option 1", "Option 2", "Option 3"];
-    for (var i = 0; i < optionLabels.length; i++) {
-      var optionFrame = figma.createFrame();
+    const optionLabels = ["Option 1", "Option 2", "Option 3"];
+    for (let i = 0; i < optionLabels.length; i++) {
+      const optionFrame = figma.createFrame();
       optionFrame.name = "Option " + (i + 1);
       optionFrame.layoutMode = "HORIZONTAL";
       optionFrame.primaryAxisAlignItems = "SPACE_BETWEEN";
@@ -364,14 +364,14 @@ async function createSelectComponent(
 
       // Highlight second item (selected/hover state) - from selectStyling
       if (i === 1) {
-        var accentVar = getVariableByName(selectStyling.option.highlightBackground);
+        const accentVar = getVariableByName(selectStyling.option.highlightBackground);
         if (accentVar) {
           bindFillToVariable(optionFrame, accentVar.id);
         }
       }
 
       // Create option text (from selectStyling)
-      var optionText = await createTextNode(
+      const optionText = await createTextNode(
         optionLabels[i],
         selectStyling.option.fontSize,
         400,
@@ -380,7 +380,7 @@ async function createSelectComponent(
       optionText.textAutoResize = "WIDTH_AND_HEIGHT";
 
       // Apply text color
-      var optionTextVar = getVariableByName("text-color-surface");
+      const optionTextVar = getVariableByName("text-color-surface");
       if (optionTextVar) {
         bindTextColorToVariable(optionText, optionTextVar.id);
       }
@@ -389,7 +389,7 @@ async function createSelectComponent(
 
       // Add check icon to selected item (second item)
       if (i === 1) {
-        var checkIcon = getButtonIcon("ph-check", "sm");
+        const checkIcon = getButtonIcon("ph-check", "sm");
         checkIcon.name = "Check";
         bindIconColor(checkIcon, "text-surface");
         optionFrame.appendChild(checkIcon);
@@ -431,35 +431,35 @@ export async function generateSelectComponents(
   figma.currentPage = page;
 
   // Generate all combinations
-  var components: ComponentNode[] = [];
+  const components: ComponentNode[] = [];
 
   // Track row labels: { y, text }
-  var rowLabels: { y: number; text: string }[] = [];
+  const rowLabels: { y: number; text: string }[] = [];
 
   // Track column headers: { x, text }
-  var columnHeaders: { x: number; text: string }[] = [];
+  let columnHeaders: { x: number; text: string }[] = [];
 
   // Layout spacing
-  var componentGapX = 24;
-  var componentGapY = 40;
-  var headerRowHeight = 24;
-  var labelColumnWidth = 150; // Wider for variant labels
+  const componentGapX = 24;
+  const componentGapY = 40;
+  const headerRowHeight = 24;
+  const labelColumnWidth = 150; // Wider for variant labels
 
   // Track layout by row (variant)
-  var rowComponents: Map<number, ComponentNode[]> = new Map();
+  const rowComponents: Map<number, ComponentNode[]> = new Map();
 
   // Generate components for each combination
   // Rows = variants, Columns = open x state
-  for (var vi = 0; vi < VARIANT_VALUES.length; vi++) {
-    var variant = VARIANT_VALUES[vi];
+  for (let vi = 0; vi < VARIANT_VALUES.length; vi++) {
+    const variant = VARIANT_VALUES[vi];
     rowComponents.set(vi, []);
 
-    for (var oi = 0; oi < OPEN_VALUES.length; oi++) {
-      var open = OPEN_VALUES[oi];
+    for (let oi = 0; oi < OPEN_VALUES.length; oi++) {
+      const open = OPEN_VALUES[oi];
 
-      for (var si = 0; si < STATE_VALUES.length; si++) {
-        var state = STATE_VALUES[si];
-        var component = await createSelectComponent(variant, open, state);
+      for (let si = 0; si < STATE_VALUES.length; si++) {
+        const state = STATE_VALUES[si];
+        const component = await createSelectComponent(variant, open, state);
         rowComponents.get(vi)!.push(component);
         components.push(component);
       }
@@ -467,16 +467,16 @@ export async function generateSelectComponents(
   }
 
   // First pass: calculate max width per column and max height per row
-  var columnWidths: number[] = [];
-  var rowHeights: number[] = [];
+  const columnWidths: number[] = [];
+  const rowHeights: number[] = [];
 
-  var numColumns = OPEN_VALUES.length * STATE_VALUES.length;
+  const numColumns = OPEN_VALUES.length * STATE_VALUES.length;
 
-  for (var colIdx = 0; colIdx < numColumns; colIdx++) {
-    var maxColWidth = 0;
-    for (var rowIdx = 0; rowIdx < VARIANT_VALUES.length; rowIdx++) {
-      var row = rowComponents.get(rowIdx) || [];
-      var comp = row[colIdx];
+  for (let colIdx = 0; colIdx < numColumns; colIdx++) {
+    let maxColWidth = 0;
+    for (let rowIdx = 0; rowIdx < VARIANT_VALUES.length; rowIdx++) {
+      const row = rowComponents.get(rowIdx) || [];
+      const comp = row[colIdx];
       if (comp && comp.width > maxColWidth) {
         maxColWidth = comp.width;
       }
@@ -484,11 +484,11 @@ export async function generateSelectComponents(
     columnWidths.push(maxColWidth);
   }
 
-  for (var rowIdx = 0; rowIdx < VARIANT_VALUES.length; rowIdx++) {
-    var row = rowComponents.get(rowIdx) || [];
-    var maxRowHeight = 0;
-    for (var colIdx = 0; colIdx < row.length; colIdx++) {
-      var comp = row[colIdx];
+  for (let rowIdx = 0; rowIdx < VARIANT_VALUES.length; rowIdx++) {
+    const row = rowComponents.get(rowIdx) || [];
+    let maxRowHeight = 0;
+    for (let colIdx = 0; colIdx < row.length; colIdx++) {
+      const comp = row[colIdx];
       if (comp && comp.height > maxRowHeight) {
         maxRowHeight = comp.height;
       }
@@ -497,12 +497,12 @@ export async function generateSelectComponents(
   }
 
   // Second pass: position components using consistent column widths
-  var yOffset = headerRowHeight;
+  let yOffset = headerRowHeight;
 
-  for (var rowIdx = 0; rowIdx < VARIANT_VALUES.length; rowIdx++) {
-    var row = rowComponents.get(rowIdx) || [];
-    var xOffset = labelColumnWidth;
-    var variantValue = VARIANT_VALUES[rowIdx];
+  for (let rowIdx = 0; rowIdx < VARIANT_VALUES.length; rowIdx++) {
+    const row = rowComponents.get(rowIdx) || [];
+    let xOffset = labelColumnWidth;
+    const variantValue = VARIANT_VALUES[rowIdx];
 
     // Record row label
     rowLabels.push({
@@ -510,17 +510,17 @@ export async function generateSelectComponents(
       text: "variant=" + variantValue,
     });
 
-    for (var colIdx = 0; colIdx < row.length; colIdx++) {
-      var comp = row[colIdx];
+    for (let colIdx = 0; colIdx < row.length; colIdx++) {
+      const comp = row[colIdx];
       comp.x = xOffset;
       comp.y = yOffset;
 
       // Record column headers from first row
       if (rowIdx === 0) {
-        var openIdx = Math.floor(colIdx / STATE_VALUES.length);
-        var stateIdx = colIdx % STATE_VALUES.length;
-        var openVal = OPEN_VALUES[openIdx];
-        var stateVal = STATE_VALUES[stateIdx];
+        const openIdx = Math.floor(colIdx / STATE_VALUES.length);
+        const stateIdx = colIdx % STATE_VALUES.length;
+        const openVal = OPEN_VALUES[openIdx];
+        const stateVal = STATE_VALUES[stateIdx];
         columnHeaders.push({
           x: xOffset,
           text: "open=" + openVal + ", state=" + stateVal,
@@ -536,7 +536,7 @@ export async function generateSelectComponents(
 
   // Combine all variants into a single ComponentSet
   // @ts-ignore - combineAsVariants works at runtime
-  var componentSet = figma.combineAsVariants(components, page);
+  const componentSet = figma.combineAsVariants(components, page);
   componentSet.name = "Select";
   componentSet.description =
     "Select component with variant, open, and state properties. " +
@@ -544,18 +544,18 @@ export async function generateSelectComponents(
   componentSet.layoutMode = "NONE";
 
   // Calculate content dimensions
-  var contentWidth = componentSet.width + labelColumnWidth;
-  var contentHeight = componentSet.height + headerRowHeight;
+  const contentWidth = componentSet.width + labelColumnWidth;
+  const contentHeight = componentSet.height + headerRowHeight;
 
   // Create light mode section
-  var lightSection = createModeSection(page, "Select", "light");
+  const lightSection = createModeSection(page, "Select", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
   );
 
   // Create dark mode section
-  var darkSection = createModeSection(page, "Select", "dark");
+  const darkSection = createModeSection(page, "Select", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
@@ -576,20 +576,20 @@ export async function generateSelectComponents(
   );
 
   // Add row labels to light section
-  for (var li = 0; li < rowLabels.length; li++) {
-    var label = rowLabels[li];
-    var labelNode = await createRowLabel(
+  for (let li = 0; li < rowLabels.length; li++) {
+    const label = rowLabels[li];
+    const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 8,
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md,
     );
     lightSection.frame.appendChild(labelNode);
   }
 
   // Create instances for dark section
-  for (var k = 0; k < components.length; k++) {
-    var origComp = components[k];
-    var instance = origComp.createInstance();
+  for (let k = 0; k < components.length; k++) {
+    const origComp = components[k];
+    const instance = origComp.createInstance();
     instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
     instance.y = origComp.y + SECTION_PADDING + headerRowHeight;
     darkSection.frame.appendChild(instance);
@@ -605,9 +605,9 @@ export async function generateSelectComponents(
   );
 
   // Add row labels to dark section
-  for (var di = 0; di < rowLabels.length; di++) {
-    var darkLabel = rowLabels[di];
-    var darkLabelNode = await createRowLabel(
+  for (let di = 0; di < rowLabels.length; di++) {
+    const darkLabel = rowLabels[di];
+    const darkLabelNode = await createRowLabel(
       darkLabel.text,
       SECTION_PADDING,
       SECTION_PADDING + darkLabel.y + 8,
@@ -616,8 +616,8 @@ export async function generateSelectComponents(
   }
 
   // Resize sections to fit content with padding
-  var totalWidth = contentWidth + SECTION_PADDING * 2;
-  var totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalWidth = contentWidth + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
@@ -641,9 +641,9 @@ export async function generateSelectComponents(
 /**
  * Exports for tests and backwards compatibility
  */
-export var SELECT_VARIANT_VALUES = VARIANT_VALUES;
-export var SELECT_OPEN_VALUES = OPEN_VALUES;
-export var SELECT_STATE_VALUES = STATE_VALUES;
+export const SELECT_VARIANT_VALUES = VARIANT_VALUES;
+export const SELECT_OPEN_VALUES = OPEN_VALUES;
+export const SELECT_STATE_VALUES = STATE_VALUES;
 
 /**
  * TESTABLE EXPORTS - Pure functions that return intermediate data
@@ -701,21 +701,21 @@ export function getOptionConfig() {
  * Returns intermediate data before Figma API calls
  */
 export function getAllVariantData() {
-  var triggerConfig = getTriggerConfig();
-  var popupConfig = getPopupConfig();
-  var optionConfig = getOptionConfig();
+  const triggerConfig = getTriggerConfig();
+  const popupConfig = getPopupConfig();
+  const optionConfig = getOptionConfig();
 
-  var variants = [];
-  for (var vi = 0; vi < VARIANT_VALUES.length; vi++) {
-    var variant = VARIANT_VALUES[vi];
-    var variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
+  const variants = [];
+  for (let vi = 0; vi < VARIANT_VALUES.length; vi++) {
+    const variant = VARIANT_VALUES[vi];
+    const variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
 
-    for (var oi = 0; oi < OPEN_VALUES.length; oi++) {
-      var open = OPEN_VALUES[oi];
+    for (let oi = 0; oi < OPEN_VALUES.length; oi++) {
+      const open = OPEN_VALUES[oi];
 
-      for (var si = 0; si < STATE_VALUES.length; si++) {
-        var state = STATE_VALUES[si];
-        var stateStyle = STATE_STYLES[state] || STATE_STYLES["default"];
+      for (let si = 0; si < STATE_VALUES.length; si++) {
+        const state = STATE_VALUES[si];
+        const stateStyle = STATE_STYLES[state] || STATE_STYLES["default"];
 
         variants.push({
           variant: variant,

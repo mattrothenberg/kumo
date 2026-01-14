@@ -228,7 +228,7 @@ export async function generateTextComponents(
   const rowLabels: { y: number; text: string }[] = [];
 
   // Track column headers: { x, text }
-  const columnHeaders: { x: number; text: string }[] = [];
+  let columnHeaders: { x: number; text: string }[] = [];
   let columnHeadersRecorded = false;
 
   // Layout configuration - using centralized GRID_LAYOUT constants from shared.ts
@@ -342,7 +342,7 @@ export async function generateTextComponents(
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 8, // +8 to vertically center with text
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md, // +8 to vertically center with text
     );
     lightSection.frame.appendChild(labelNode);
   }
@@ -369,7 +369,7 @@ export async function generateTextComponents(
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 8,
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md,
     );
     darkSection.frame.appendChild(labelNode);
   }
@@ -400,8 +400,8 @@ export async function generateTextComponents(
 /**
  * Exports for testing - derived from registry
  */
-export var TEXT_VARIANTS_EXPORT = variantProp.values;
-export var TEXT_SIZES_EXPORT = sizeProp.values;
+export const TEXT_VARIANTS_EXPORT = variantProp.values;
+export const TEXT_SIZES_EXPORT = sizeProp.values;
 
 /**
  * Testable export functions for tests

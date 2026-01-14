@@ -14,6 +14,28 @@ import {
 } from "./shared";
 
 /**
+ * Ensure the Icon Library page exists
+ * Call this at the start of generators that depend on icons
+ *
+ * @throws Error if Icon Library page is not found
+ *
+ * @example
+ * // At the start of a generator that uses icons:
+ * ensureIconLibraryExists();
+ */
+export function ensureIconLibraryExists(): void {
+  const iconLibraryPage = figma.root.children.find(
+    (page) => page.type === "PAGE" && page.name === "Icon Library",
+  );
+
+  if (!iconLibraryPage) {
+    throw new Error(
+      "Icon Library must be generated first. Ensure Icon Library generator runs before other generators.",
+    );
+  }
+}
+
+/**
  * Corner radius multiplier for placeholder icons
  * Creates softly rounded corners (0.2 = 20% of icon size)
  */
@@ -23,7 +45,7 @@ const PLACEHOLDER_CORNER_RADIUS_MULTIPLIER = 0.2;
  * Icon size mapping for different button sizes
  * Matches Tailwind size classes used in components
  */
-export var ICON_SIZE_MAP: Record<string, number> = {
+export const ICON_SIZE_MAP: Record<string, number> = {
   xs: FALLBACK_VALUES.iconSize.xs, // size-3 = 12px
   sm: FALLBACK_VALUES.iconSize.sm, // size-4 = 16px
   base: FALLBACK_VALUES.iconSize.base, // size-5 = 20px
@@ -33,7 +55,7 @@ export var ICON_SIZE_MAP: Record<string, number> = {
 /**
  * Default icons used in components
  */
-export var DEFAULT_ICONS = {
+export const DEFAULT_ICONS = {
   /** Plus icon for add buttons */
   plus: "ph-plus",
   /** Refresh/arrows clockwise for refresh button */
@@ -54,7 +76,7 @@ export var DEFAULT_ICONS = {
  */
 export function findIconComponent(iconId: string): ComponentNode | undefined {
   // Find the Icon Library page
-  var iconLibraryPage = figma.root.children.find(function (page) {
+  const iconLibraryPage = figma.root.children.find(function (page) {
     return page.type === "PAGE" && page.name === "Icon Library";
   }) as PageNode | undefined;
 
@@ -64,7 +86,7 @@ export function findIconComponent(iconId: string): ComponentNode | undefined {
   }
 
   // Find the Icons container frame
-  var iconsFrame = iconLibraryPage.children.find(function (node) {
+  const iconsFrame = iconLibraryPage.children.find(function (node) {
     return node.type === "FRAME" && node.name === "Icons";
   }) as FrameNode | undefined;
 
@@ -74,8 +96,8 @@ export function findIconComponent(iconId: string): ComponentNode | undefined {
   }
 
   // Search for the icon component by name
-  var componentName = "Icon/" + iconId;
-  var iconComponent = iconsFrame.children.find(function (node) {
+  const componentName = "Icon/" + iconId;
+  const iconComponent = iconsFrame.children.find(function (node) {
     return node.type === "COMPONENT" && node.name === componentName;
   }) as ComponentNode | undefined;
 
@@ -97,12 +119,12 @@ export function createIconInstance(
   iconId: string,
   size: number,
 ): InstanceNode | undefined {
-  var iconComponent = findIconComponent(iconId);
+  const iconComponent = findIconComponent(iconId);
   if (!iconComponent) {
     return undefined;
   }
 
-  var instance = iconComponent.createInstance();
+  const instance = iconComponent.createInstance();
   instance.resize(size, size);
   return instance;
 }
@@ -115,13 +137,13 @@ export function createIconInstance(
  * @returns FrameNode with a simple placeholder shape
  */
 export function createPlaceholderIcon(size: number): FrameNode {
-  var frame = figma.createFrame();
+  const frame = figma.createFrame();
   frame.name = "Placeholder Icon";
   frame.resize(size, size);
   frame.fills = [];
 
   // Create a rounded rectangle as the icon placeholder
-  var rect = figma.createRectangle();
+  const rect = figma.createRectangle();
   rect.resize(size, size);
   rect.x = 0;
   rect.y = 0;
@@ -143,8 +165,8 @@ export function getButtonIcon(
   iconId: string,
   size: string,
 ): InstanceNode | FrameNode {
-  var iconSize = ICON_SIZE_MAP[size] || FALLBACK_VALUES.iconSize.base;
-  var instance = createIconInstance(iconId, iconSize);
+  const iconSize = ICON_SIZE_MAP[size] || FALLBACK_VALUES.iconSize.base;
+  const instance = createIconInstance(iconId, iconSize);
 
   if (instance) {
     return instance;
@@ -166,13 +188,13 @@ export function getButtonIcon(
 export function createLoader(size: number): FrameNode {
   if (size === undefined) size = 16; // Default loader size (sm)
 
-  var frame = figma.createFrame();
+  const frame = figma.createFrame();
   frame.name = "Loader";
   frame.resize(size, size);
   frame.fills = [];
 
   // Create circle with stroke (spinner ring)
-  var spinner = figma.createEllipse();
+  const spinner = figma.createEllipse();
   spinner.resize(size, size);
   spinner.x = 0;
   spinner.y = 0;
@@ -214,11 +236,11 @@ export function bindIconColor(
   colorVariableName: string,
 ): void {
   // Handle hardcoded white (not a variable)
-  var isHardcodedWhite =
+  const isHardcodedWhite =
     colorVariableName === "text-white" || colorVariableName === "!text-white";
 
   // Map semantic names to Figma variable names
-  var figmaVariableName = colorVariableName;
+  let figmaVariableName = colorVariableName;
   if (colorVariableName === "text-surface") {
     figmaVariableName = "text-color-surface";
   } else if (colorVariableName === "text-surface-inverse") {
@@ -238,7 +260,7 @@ export function bindIconColor(
     figmaVariableName = "text-color-label";
   }
 
-  var variable: Variable | undefined;
+  let variable: Variable | undefined;
   if (!isHardcodedWhite) {
     variable = getVariableByName(figmaVariableName);
 
@@ -270,7 +292,7 @@ export function bindIconColor(
     ) {
       if (isHardcodedWhite) {
         // Set hardcoded white fill
-        var whiteFill: SolidPaint = {
+        const whiteFill: SolidPaint = {
           type: "SOLID",
           color: { r: 1, g: 1, b: 1 },
         };
@@ -282,7 +304,7 @@ export function bindIconColor(
 
     // Recursively process children
     if ("children" in node && node.children) {
-      for (var i = 0; i < node.children.length; i++) {
+      for (let i = 0; i < node.children.length; i++) {
         traverseAndBind(node.children[i]);
       }
     }

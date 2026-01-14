@@ -332,7 +332,7 @@ export async function generateBannerComponents(
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 8, // +8 to vertically center with banner
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md, // +8 to vertically center with banner
     );
     lightSection.frame.appendChild(labelNode);
   }
@@ -352,7 +352,7 @@ export async function generateBannerComponents(
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 8,
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md,
     );
     darkSection.frame.appendChild(labelNode);
   }

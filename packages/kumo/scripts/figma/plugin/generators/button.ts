@@ -48,23 +48,23 @@ import { logInfo, logWarn } from "../logger";
 import registry from "../../../../ai/component-registry.json";
 
 // Extract props from registry
-var buttonProps = registry.components.Button.props;
+const buttonProps = registry.components.Button.props;
 
-var variantProp = buttonProps.variant as {
+const variantProp = buttonProps.variant as {
   values: string[];
   classes: Record<string, string>;
   descriptions: Record<string, string>;
   default: string;
 };
 
-var sizeProp = buttonProps.size as {
+const sizeProp = buttonProps.size as {
   values: string[];
   classes: Record<string, string>;
   descriptions: Record<string, string>;
   default: string;
 };
 
-var shapeProp = buttonProps.shape as {
+const shapeProp = buttonProps.shape as {
   values: string[];
   classes: Record<string, string>;
   descriptions: Record<string, string>;
@@ -198,7 +198,7 @@ export function getCompactSizeMap(): Record<string, number> {
   return result;
 }
 
-var COMPACT_SIZE_MAP_LOCAL: Record<string, number> = getCompactSizeMap();
+const COMPACT_SIZE_MAP_LOCAL: Record<string, number> = getCompactSizeMap();
 
 /**
  * Get state styles mapping
@@ -269,7 +269,7 @@ export function getStateStylesMap(): Record<
  * Note: Figma doesn't support pseudo-states, so we create separate
  * component variants for each state to document the visual appearance.
  */
-var STATE_STYLES: Record<
+const STATE_STYLES: Record<
   string,
   Record<
     string,
@@ -333,15 +333,15 @@ async function createButtonComponent(
   loading: boolean,
   state: string,
 ): Promise<ComponentNode> {
-  var variantClasses = variantProp.classes[variant] || "";
-  var sizeClasses = sizeProp.classes[size] || "";
+  const variantClasses = variantProp.classes[variant] || "";
+  const sizeClasses = sizeProp.classes[size] || "";
 
   // Parse styles from Tailwind classes
-  var variantStyles = parseTailwindClasses(variantClasses);
-  var sizeStyles = parseTailwindClasses(sizeClasses);
+  const variantStyles = parseTailwindClasses(variantClasses);
+  const sizeStyles = parseTailwindClasses(sizeClasses);
 
   // Create component
-  var component = figma.createComponent();
+  const component = figma.createComponent();
   component.name =
     "variant=" +
     variant +
@@ -356,7 +356,7 @@ async function createButtonComponent(
     ", state=" +
     state;
 
-  var isCompactShape = shape === "square" || shape === "circle";
+  const isCompactShape = shape === "square" || shape === "circle";
 
   // Configure auto-layout
   component.layoutMode = "HORIZONTAL";
@@ -365,7 +365,7 @@ async function createButtonComponent(
 
   if (isCompactShape) {
     // Square/circle: fixed size, no padding
-    var buttonSize = COMPACT_SIZE_MAP_LOCAL[size] || FALLBACK_VALUES.height.base;
+    const buttonSize = COMPACT_SIZE_MAP_LOCAL[size] || FALLBACK_VALUES.height.base;
     component.primaryAxisSizingMode = "FIXED";
     component.counterAxisSizingMode = "FIXED";
     component.resize(buttonSize, buttonSize);
@@ -397,7 +397,7 @@ async function createButtonComponent(
 
   // Apply fill from variant
   if (variantStyles.fillVariable) {
-    var fillVar = getVariableByName(variantStyles.fillVariable);
+    const fillVar = getVariableByName(variantStyles.fillVariable);
     if (fillVar) {
       bindFillToVariable(component, fillVar.id);
     }
@@ -408,7 +408,7 @@ async function createButtonComponent(
 
   // Apply stroke for variants with borders (ring or border)
   if (variantStyles.hasBorder && variantStyles.strokeVariable) {
-    var strokeVar = getVariableByName(variantStyles.strokeVariable);
+    const strokeVar = getVariableByName(variantStyles.strokeVariable);
     if (strokeVar) {
       bindStrokeToVariable(component, strokeVar.id, 1);
     }
@@ -416,29 +416,29 @@ async function createButtonComponent(
 
   // Apply state-specific styles (hover, focus, pressed)
   if (state !== "default" && !disabled && !loading) {
-    var stateStyle = STATE_STYLES[variant] && STATE_STYLES[variant][state];
+    const stateStyle = STATE_STYLES[variant] && STATE_STYLES[variant][state];
     if (stateStyle) {
       // Apply state-specific fill
       if (stateStyle.fillVariable) {
         // Try the exact variable name first (e.g., "color-primary/70")
-        var stateFillVar = getVariableByName(stateStyle.fillVariable);
+        const stateFillVar = getVariableByName(stateStyle.fillVariable);
         if (stateFillVar) {
           bindFillToVariable(component, stateFillVar.id);
         } else {
           // Fallback: try without opacity suffix and apply opacity separately
-          var baseVarName = stateStyle.fillVariable.split("/")[0];
-          var opacityMatch = stateStyle.fillVariable.match(/\/(\d+)$/);
-          var baseFillVar = getVariableByName(baseVarName);
+          const baseVarName = stateStyle.fillVariable.split("/")[0];
+          const opacityMatch = stateStyle.fillVariable.match(/\/(\d+)$/);
+          const baseFillVar = getVariableByName(baseVarName);
           if (baseFillVar) {
             bindFillToVariable(component, baseFillVar.id);
             if (opacityMatch) {
               // Apply opacity to the fill
-              var opacityValue = parseInt(opacityMatch[1], 10) / 100;
-              var fills = component.fills;
+              const opacityValue = parseInt(opacityMatch[1], 10) / 100;
+              const fills = component.fills;
               if (fills && fills.length > 0) {
-                var newFills = [];
-                for (var fi = 0; fi < fills.length; fi++) {
-                  var fill = Object.assign({}, fills[fi]);
+                const newFills = [];
+                for (let fi = 0; fi < fills.length; fi++) {
+                  const fill = Object.assign({}, fills[fi]);
                   fill.opacity = opacityValue;
                   newFills.push(fill);
                 }
@@ -454,7 +454,7 @@ async function createButtonComponent(
               "state=" + state + ". Using default fill.",
             );
             // Apply a default fill color (using color-surface as fallback)
-            var fallbackVar = getVariableByName("color-surface");
+            const fallbackVar = getVariableByName("color-surface");
             if (fallbackVar) {
               bindFillToVariable(component, fallbackVar.id);
             }
@@ -464,7 +464,7 @@ async function createButtonComponent(
 
       // Apply state-specific stroke
       if (stateStyle.strokeVariable) {
-        var stateStrokeVar = getVariableByName(stateStyle.strokeVariable);
+        const stateStrokeVar = getVariableByName(stateStyle.strokeVariable);
         if (stateStrokeVar) {
           bindStrokeToVariable(component, stateStrokeVar.id, 1);
         }
@@ -472,7 +472,7 @@ async function createButtonComponent(
 
       // Add focus ring (ring-active)
       if (stateStyle.addRing) {
-        var ringVar = getVariableByName("color-active");
+        const ringVar = getVariableByName("color-active");
         if (ringVar) {
           bindStrokeToVariable(component, ringVar.id, 2);
         }
@@ -487,14 +487,14 @@ async function createButtonComponent(
 
   // Add loader for loading state
   if (loading) {
-    var loaderSize = size === "lg" ? 16 : 14;
-    var loader = createLoader(loaderSize);
+    const loaderSize = size === "lg" ? 16 : 14;
+    const loader = createLoader(loaderSize);
     component.appendChild(loader);
   }
 
   // Add icon for compact shapes (when not loading)
   if (isCompactShape && !loading) {
-    var icon = getButtonIcon(DEFAULT_ICONS.plus, size);
+    const icon = getButtonIcon(DEFAULT_ICONS.plus, size);
 
     // Bind icon color based on variant
     if (variantStyles.isWhiteText) {
@@ -510,9 +510,9 @@ async function createButtonComponent(
 
   // Add text label for base shape
   if (shape === "base") {
-    var fontWeight = FALLBACK_VALUES.fontWeight.medium; // font-medium
-    var labelText = loading ? "Loading..." : "Button";
-    var textNode = await createTextNode(
+    const fontWeight = FALLBACK_VALUES.fontWeight.medium; // font-medium
+    const labelText = loading ? "Loading..." : "Button";
+    const textNode = await createTextNode(
       labelText,
       sizeStyles.fontSize || FALLBACK_VALUES.fontSize,
       fontWeight,
@@ -523,7 +523,7 @@ async function createButtonComponent(
     if (variantStyles.isWhiteText) {
       setWhiteTextColor(textNode);
     } else if (variantStyles.textVariable) {
-      var textVar = getVariableByName(variantStyles.textVariable);
+      const textVar = getVariableByName(variantStyles.textVariable);
       if (textVar) {
         bindTextColorToVariable(textNode, textVar.id);
       }
@@ -574,36 +574,36 @@ export async function generateButtonComponents(
 
   figma.currentPage = page;
 
-  var variants = variantProp.values;
-  var sizes = sizeProp.values;
+  const variants = variantProp.values;
+  const sizes = sizeProp.values;
 
   // Generate selected combinations only
-  var components: ComponentNode[] = [];
+  const components: ComponentNode[] = [];
 
   // Track row labels: { y, text }
-  var rowLabels: { y: number; text: string }[] = [];
+  const rowLabels: { y: number; text: string }[] = [];
 
   // Layout grid spacing
-  var componentGap = 16;
-  var rowGap = GRID_LAYOUT.rowGap.extraSpacious;
-  var headerRowHeight = GRID_LAYOUT.headerRowHeight;
-  var labelColumnWidth = GRID_LAYOUT.labelColumnWidth.wider;
+  const componentGap = 16;
+  const rowGap = GRID_LAYOUT.rowGap.extraSpacious;
+  const headerRowHeight = GRID_LAYOUT.headerRowHeight;
+  const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.wider;
 
   // Track layout position by row type
   // - Rows 0-5: text buttons by variant (base shape)
   // - Row 6: square shape buttons
   // - Row 7: circle shape buttons
-  var rowComponents: Map<number, ComponentNode[]> = new Map();
+  const rowComponents: Map<number, ComponentNode[]> = new Map();
 
   // Track row labels by index
-  var rowLabelTexts: Map<number, string> = new Map();
+  const rowLabelTexts: Map<number, string> = new Map();
 
   // Track column headers: { x, text }
-  var columnHeaders: { x: number; text: string }[] = [];
+  let columnHeaders: { x: number; text: string }[] = [];
 
   // Generate components in a specific order for clean layout
   // For base shape: states first, then disabled, then loading
-  var baseShapeColumnOrder = [
+  const baseShapeColumnOrder = [
     { state: "default", disabled: false, loading: false },
     { state: "hover", disabled: false, loading: false },
     { state: "focus", disabled: false, loading: false },
@@ -613,18 +613,18 @@ export async function generateButtonComponents(
   ];
 
   // Generate base shape buttons (all variants × states/disabled/loading)
-  for (var vi = 0; vi < variants.length; vi++) {
-    var variant = variants[vi];
-    var rowIndex = vi;
+  for (let vi = 0; vi < variants.length; vi++) {
+    const variant = variants[vi];
+    let rowIndex = vi;
     rowLabelTexts.set(rowIndex, "variant=" + variant);
 
     if (!rowComponents.has(rowIndex)) {
       rowComponents.set(rowIndex, []);
     }
 
-    for (var ci = 0; ci < baseShapeColumnOrder.length; ci++) {
-      var colConfig = baseShapeColumnOrder[ci];
-      var component = await createButtonComponent(
+    for (let ci = 0; ci < baseShapeColumnOrder.length; ci++) {
+      const colConfig = baseShapeColumnOrder[ci];
+      const component = await createButtonComponent(
         variant,
         "base", // Always base size for variant rows
         "base", // Always base shape
@@ -639,15 +639,15 @@ export async function generateButtonComponents(
   }
 
   // Generate base shape buttons showing all sizes (text buttons)
-  var sizeRowIndex = variants.length;
+  const sizeRowIndex = variants.length;
   rowLabelTexts.set(sizeRowIndex, "shape=base (sizes)");
   if (!rowComponents.has(sizeRowIndex)) {
     rowComponents.set(sizeRowIndex, []);
   }
 
-  for (var sizeIdx = 0; sizeIdx < sizes.length; sizeIdx++) {
-    var sizeVal = sizes[sizeIdx];
-    var sizeComponent = await createButtonComponent(
+  for (let sizeIdx = 0; sizeIdx < sizes.length; sizeIdx++) {
+    const sizeVal = sizes[sizeIdx];
+    const sizeComponent = await createButtonComponent(
       "secondary",
       sizeVal,
       "base", // base shape = text button
@@ -660,15 +660,15 @@ export async function generateButtonComponents(
   }
 
   // Generate square shape buttons (secondary variant × all sizes)
-  var squareRowIndex = variants.length + 1;
+  const squareRowIndex = variants.length + 1;
   rowLabelTexts.set(squareRowIndex, "shape=square");
   if (!rowComponents.has(squareRowIndex)) {
     rowComponents.set(squareRowIndex, []);
   }
 
-  for (var si = 0; si < sizes.length; si++) {
-    var size = sizes[si];
-    var squareComponent = await createButtonComponent(
+  for (let si = 0; si < sizes.length; si++) {
+    const size = sizes[si];
+    const squareComponent = await createButtonComponent(
       "secondary",
       size,
       "square",
@@ -681,15 +681,15 @@ export async function generateButtonComponents(
   }
 
   // Generate circle shape buttons (secondary variant × all sizes)
-  var circleRowIndex = variants.length + 2;
+  const circleRowIndex = variants.length + 2;
   rowLabelTexts.set(circleRowIndex, "shape=circle");
   if (!rowComponents.has(circleRowIndex)) {
     rowComponents.set(circleRowIndex, []);
   }
 
-  for (var si2 = 0; si2 < sizes.length; si2++) {
-    var size2 = sizes[si2];
-    var circleComponent = await createButtonComponent(
+  for (let si2 = 0; si2 < sizes.length; si2++) {
+    const size2 = sizes[si2];
+    const circleComponent = await createButtonComponent(
       "secondary",
       size2,
       "circle",
@@ -702,7 +702,7 @@ export async function generateButtonComponents(
   }
 
   // Define column headers for variant rows (states + disabled + loading)
-  var variantColumnHeaders = [
+  const variantColumnHeaders = [
     "default",
     "hover",
     "focus",
@@ -712,28 +712,28 @@ export async function generateButtonComponents(
   ];
 
   // Define column headers for shape rows (sizes)
-  var shapeColumnHeaders = ["xs", "sm", "base", "lg"];
+  const shapeColumnHeaders = ["xs", "sm", "base", "lg"];
 
   // Track shape section column headers separately
-  var shapeColumnHeaderPositions: { x: number; text: string }[] = [];
+  const shapeColumnHeaderPositions: { x: number; text: string }[] = [];
 
   // Track column X positions for shape section (set from first shape row - text buttons)
-  var shapeColumnXPositions: number[] = [];
+  const shapeColumnXPositions: number[] = [];
 
   // Layout components in rows
-  var yOffset = headerRowHeight; // Start below header row
-  var variantRowCount = variants.length;
-  var totalRows = variantRowCount + 3; // variants + base sizes + square + circle
+  let yOffset = headerRowHeight; // Start below header row
+  const variantRowCount = variants.length;
+  const totalRows = variantRowCount + 3; // variants + base sizes + square + circle
 
   // Gap between variant section and shape section (for shape column headers)
-  var sectionGap = 60; // Extra space for shape section header
+  const sectionGap = 60; // Extra space for shape section header
 
   // First shape row index (base sizes with text)
-  var firstShapeRowIndex = variantRowCount;
+  const firstShapeRowIndex = variantRowCount;
 
-  for (var i = 0; i < totalRows; i++) {
-    var row = rowComponents.get(i) || [];
-    var xOffset = labelColumnWidth;
+  for (let i = 0; i < totalRows; i++) {
+    const row = rowComponents.get(i) || [];
+    let xOffset = labelColumnWidth;
 
     // Add extra gap before shape rows for shape column headers
     if (i === variantRowCount) {
@@ -741,14 +741,14 @@ export async function generateButtonComponents(
     }
 
     // Record row label position
-    var labelText = rowLabelTexts.get(i);
+    const labelText = rowLabelTexts.get(i);
     if (labelText && row.length > 0) {
       rowLabels.push({ y: yOffset, text: labelText });
     }
 
     // Record column headers from first row
     if (i === 0) {
-      for (var hi = 0; hi < variantColumnHeaders.length; hi++) {
+      for (let hi = 0; hi < variantColumnHeaders.length; hi++) {
         columnHeaders.push({
           x: xOffset + hi * (100 + componentGap), // Approximate width
           text: variantColumnHeaders[hi],
@@ -757,11 +757,11 @@ export async function generateButtonComponents(
     }
 
     // Check if this is a shape row (after variant rows)
-    var isShapeRow = i >= firstShapeRowIndex;
-    var isFirstShapeRow = i === firstShapeRowIndex;
+    const isShapeRow = i >= firstShapeRowIndex;
+    const isFirstShapeRow = i === firstShapeRowIndex;
 
-    for (var j = 0; j < row.length; j++) {
-      var comp = row[j];
+    for (let j = 0; j < row.length; j++) {
+      const comp = row[j];
 
       // For shape rows after the first one, use stored column positions
       if (isShapeRow && !isFirstShapeRow && j < shapeColumnXPositions.length) {
@@ -789,12 +789,12 @@ export async function generateButtonComponents(
   }
 
   // Update column headers with actual positions from first row
-  var firstRow = rowComponents.get(0) || [];
+  const firstRow = rowComponents.get(0) || [];
   if (firstRow.length > 0) {
     columnHeaders = [];
-    var headerXOffset = labelColumnWidth;
-    for (var chi = 0; chi < firstRow.length; chi++) {
-      var headerComp = firstRow[chi];
+    let headerXOffset = labelColumnWidth;
+    for (let chi = 0; chi < firstRow.length; chi++) {
+      const headerComp = firstRow[chi];
       columnHeaders.push({
         x: headerXOffset,
         text: variantColumnHeaders[chi] || "",
@@ -804,14 +804,14 @@ export async function generateButtonComponents(
   }
 
   // Calculate shape section header Y position (just above first shape row)
-  var shapeHeaderY = 0;
-  var squareRow = rowComponents.get(variantRowCount) || [];
+  let shapeHeaderY = 0;
+  const squareRow = rowComponents.get(variantRowCount) || [];
   if (squareRow.length > 0) {
     shapeHeaderY = squareRow[0].y - headerRowHeight - 8; // 8px gap above row
   }
 
   // Combine all into a single ComponentSet
-  var componentSet = figma.combineAsVariants(components, page);
+  const componentSet = figma.combineAsVariants(components, page);
   componentSet.name = "Button";
   componentSet.description =
     "Button component with variant, size, shape, disabled, loading, and state properties";
@@ -819,18 +819,18 @@ export async function generateButtonComponents(
   componentSet.layoutMode = "NONE";
 
   // Calculate content dimensions (add label column width and header row)
-  var contentWidth = componentSet.width + labelColumnWidth;
-  var contentHeight = componentSet.height + headerRowHeight;
+  const contentWidth = componentSet.width + labelColumnWidth;
+  const contentHeight = componentSet.height + headerRowHeight;
 
   // Create light mode section
-  var lightSection = createModeSection(page, "Button", "light");
+  const lightSection = createModeSection(page, "Button", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
   );
 
   // Create dark mode section
-  var darkSection = createModeSection(page, "Button", "dark");
+  const darkSection = createModeSection(page, "Button", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
@@ -862,9 +862,9 @@ export async function generateButtonComponents(
   }
 
   // Add row labels to light section
-  for (var li = 0; li < rowLabels.length; li++) {
-    var label = rowLabels[li];
-    var labelNode = await createRowLabel(
+  for (let li = 0; li < rowLabels.length; li++) {
+    const label = rowLabels[li];
+    const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
       SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.lg, // Large offset to vertically center with button
@@ -875,9 +875,9 @@ export async function generateButtonComponents(
   // Create instances of all components for dark section
   // Note: component positions are relative to ComponentSet after combineAsVariants
   // We need to add labelColumnWidth to match the light section layout
-  for (var k = 0; k < components.length; k++) {
-    var origComp = components[k];
-    var instance = origComp.createInstance();
+  for (let k = 0; k < components.length; k++) {
+    const origComp = components[k];
+    const instance = origComp.createInstance();
     instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
     instance.y = origComp.y + SECTION_PADDING + headerRowHeight;
     darkSection.frame.appendChild(instance);
@@ -904,9 +904,9 @@ export async function generateButtonComponents(
   }
 
   // Add row labels to dark section
-  for (var di = 0; di < rowLabels.length; di++) {
-    var darkLabel = rowLabels[di];
-    var darkLabelNode = await createRowLabel(
+  for (let di = 0; di < rowLabels.length; di++) {
+    const darkLabel = rowLabels[di];
+    const darkLabelNode = await createRowLabel(
       darkLabel.text,
       SECTION_PADDING,
       SECTION_PADDING + darkLabel.y + GRID_LAYOUT.labelVerticalOffset.lg,
@@ -915,8 +915,8 @@ export async function generateButtonComponents(
   }
 
   // Resize sections to fit content
-  var totalWidth = contentWidth + SECTION_PADDING * 2;
-  var totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalWidth = contentWidth + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
@@ -940,9 +940,9 @@ export async function generateButtonComponents(
 /**
  * Exports for tests and backwards compatibility
  */
-export var BUTTON_VARIANTS_EXPORT = variantProp.values;
-export var BUTTON_SIZES_EXPORT = sizeProp.values;
-export var BUTTON_SHAPES_EXPORT = shapeProp.values;
-export var BUTTON_DISABLED_OPTIONS = [false, true];
-export var BUTTON_LOADING_OPTIONS = [false, true];
-export var BUTTON_STATE_OPTIONS = ["default", "hover", "focus", "pressed"];
+export const BUTTON_VARIANTS_EXPORT = variantProp.values;
+export const BUTTON_SIZES_EXPORT = sizeProp.values;
+export const BUTTON_SHAPES_EXPORT = shapeProp.values;
+export const BUTTON_DISABLED_OPTIONS = [false, true];
+export const BUTTON_LOADING_OPTIONS = [false, true];
+export const BUTTON_STATE_OPTIONS = ["default", "hover", "focus", "pressed"];

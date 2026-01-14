@@ -44,8 +44,8 @@ import themeData from "../generated/theme-data.json";
 /**
  * Extract props from registry
  */
-var dialogProps = (registry as any).components.Dialog.props;
-var sizeProp = dialogProps.size as {
+const dialogProps = (registry as any).components.Dialog.props;
+const sizeProp = dialogProps.size as {
   values: string[];
   classes: Record<string, string>;
   descriptions: Record<string, string>;
@@ -57,7 +57,7 @@ var sizeProp = dialogProps.size as {
 /**
  * Size values from registry
  */
-var SIZE_VALUES = sizeProp.values;
+const SIZE_VALUES = sizeProp.values;
 
 /**
  * Parse width from registry size classes
@@ -65,10 +65,10 @@ var SIZE_VALUES = sizeProp.values;
  * Falls back to hardcoded value if parsing fails
  */
 function parseDialogWidth(size: string, fallbackWidth: number): number {
-  var classes = sizeProp.classes[size];
+  const classes = sizeProp.classes[size];
   if (!classes) return fallbackWidth;
   
-  var parsed = parseTailwindClasses(classes);
+  const parsed = parseTailwindClasses(classes);
   return parsed.minWidth !== undefined ? parsed.minWidth : fallbackWidth;
 }
 
@@ -78,7 +78,7 @@ function parseDialogWidth(size: string, fallbackWidth: number): number {
  * Widths are derived from registry classes where possible
  * Typography and spacing use centralized constants from shared.ts
  */
-var SIZE_CONFIG: Record<
+const SIZE_CONFIG: Record<
   string,
   {
     width: number;
@@ -141,7 +141,7 @@ async function createButton(
   isPrimary: boolean,
   size: "sm" | "base",
 ): Promise<FrameNode> {
-  var button = figma.createFrame();
+  const button = figma.createFrame();
   button.name = isPrimary ? "Primary Button" : "Secondary Button";
   button.layoutMode = "HORIZONTAL";
   button.primaryAxisAlignItems = "CENTER";
@@ -171,14 +171,14 @@ async function createButton(
 
   if (isPrimary) {
     // Primary button: bg-primary text-white
-    var primaryBgVar = getVariableByName("color-primary");
+    const primaryBgVar = getVariableByName("color-primary");
     if (primaryBgVar) {
       bindFillToVariable(button, primaryBgVar.id);
     }
   } else {
     // Secondary button: bg-transparent border-border
     button.fills = [];
-    var borderVar = getVariableByName("color-border");
+    const borderVar = getVariableByName("color-border");
     if (borderVar) {
       bindStrokeToVariable(button, borderVar.id, 1);
     }
@@ -186,8 +186,8 @@ async function createButton(
 
   // Create button label
   // For sm buttons, use Tailwind's text-sm (14px) rather than Kumo's 13px override
-  var fontSize = size === "sm" ? themeData.tailwind.fontSize.sm : FONT_SIZE.base; // 14px (sm) or 14px (base)
-  var buttonLabel = await createTextNode(label, fontSize, FALLBACK_VALUES.fontWeight.semiBold);
+  const fontSize = size === "sm" ? themeData.tailwind.fontSize.sm : FONT_SIZE.base; // 14px (sm) or 14px (base)
+  const buttonLabel = await createTextNode(label, fontSize, FALLBACK_VALUES.fontWeight.semiBold);
   buttonLabel.name = "Label";
   buttonLabel.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -196,7 +196,7 @@ async function createButton(
     buttonLabel.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
   } else {
     // text-surface for secondary
-    var textVar = getVariableByName("text-color-surface");
+    const textVar = getVariableByName("text-color-surface");
     if (textVar) {
       bindTextColorToVariable(buttonLabel, textVar.id);
     }
@@ -214,10 +214,10 @@ async function createButton(
  */
 async function createDialogComponent(size: string): Promise<ComponentNode> {
   // Get size config
-  var config = SIZE_CONFIG[size] || SIZE_CONFIG["base"];
+  const config = SIZE_CONFIG[size] || SIZE_CONFIG["base"];
 
   // Create component
-  var component = figma.createComponent();
+  const component = figma.createComponent();
   component.name = "size=" + size;
   component.description =
     sizeProp.descriptions[size] || "Dialog " + size + " variant";
@@ -235,7 +235,7 @@ async function createDialogComponent(size: string): Promise<ComponentNode> {
   component.cornerRadius = BORDER_RADIUS.lg; // rounded-lg = 8px
 
   // Apply background fill (bg-surface)
-  var bgVar = getVariableByName("color-surface");
+  const bgVar = getVariableByName("color-surface");
   if (bgVar) {
     bindFillToVariable(component, bgVar.id);
   }
@@ -255,7 +255,7 @@ async function createDialogComponent(size: string): Promise<ComponentNode> {
 
   // Create header frame (title + close button)
   // Header must fill width so SPACE_BETWEEN pushes X to the right
-  var header = figma.createFrame();
+  const header = figma.createFrame();
   header.name = "Header";
   header.layoutMode = "HORIZONTAL";
   header.primaryAxisAlignItems = "SPACE_BETWEEN";
@@ -269,7 +269,7 @@ async function createDialogComponent(size: string): Promise<ComponentNode> {
   header.itemSpacing = SPACING.base; // gap-2 = 8px
 
   // Create title text
-  var title = await createTextNode(
+  const title = await createTextNode(
     "Dialog Title",
     config.titleSize,
     config.titleWeight,
@@ -279,7 +279,7 @@ async function createDialogComponent(size: string): Promise<ComponentNode> {
   title.layoutGrow = 1;
 
   // Apply title text color (text-surface)
-  var titleVar = getVariableByName("text-color-surface");
+  const titleVar = getVariableByName("text-color-surface");
   if (titleVar) {
     bindTextColorToVariable(title, titleVar.id);
   }
@@ -288,8 +288,8 @@ async function createDialogComponent(size: string): Promise<ComponentNode> {
 
   // Create close icon (ph-x) - 20x20 directly in header
   // Color is text-muted to match code: className="text-muted hover:text-surface"
-  var closeIconName = "ph-x";
-  var closeIcon = getButtonIcon(closeIconName, "base");
+  const closeIconName = "ph-x";
+  const closeIcon = getButtonIcon(closeIconName, "base");
   closeIcon.name = "Close";
 
   // Apply icon color (text-muted to match code)
@@ -299,7 +299,7 @@ async function createDialogComponent(size: string): Promise<ComponentNode> {
   component.appendChild(header);
 
   // Create description text
-  var description = await createTextNode(
+  const description = await createTextNode(
     "This is a dialog description with some content explaining the purpose of this dialog.",
     config.descSize,
     FALLBACK_VALUES.fontWeight.normal, // 400
@@ -310,7 +310,7 @@ async function createDialogComponent(size: string): Promise<ComponentNode> {
   description.resize(config.width - config.padding * 2, description.height);
 
   // Apply description text color (text-muted)
-  var descVar = getVariableByName("text-color-muted");
+  const descVar = getVariableByName("text-color-muted");
   if (descVar) {
     bindTextColorToVariable(description, descVar.id);
   }
@@ -318,7 +318,7 @@ async function createDialogComponent(size: string): Promise<ComponentNode> {
   component.appendChild(description);
 
   // Create actions frame (buttons)
-  var actions = figma.createFrame();
+  const actions = figma.createFrame();
   actions.name = "Actions";
   actions.layoutMode = "HORIZONTAL";
   actions.primaryAxisAlignItems = "MAX"; // Right-align buttons
@@ -331,11 +331,11 @@ async function createDialogComponent(size: string): Promise<ComponentNode> {
   actions.itemSpacing = SPACING.lg; // gap-3 = 12px
 
   // Create Cancel button (secondary)
-  var cancelButton = await createButton("Cancel", false, config.buttonSize);
+  const cancelButton = await createButton("Cancel", false, config.buttonSize);
   actions.appendChild(cancelButton);
 
   // Create primary action button
-  var primaryButton = await createButton("Confirm", true, config.buttonSize);
+  const primaryButton = await createButton("Confirm", true, config.buttonSize);
   actions.appendChild(primaryButton);
 
   component.appendChild(actions);
@@ -364,23 +364,23 @@ export async function generateDialogComponents(
   figma.currentPage = page;
 
   // Generate all size variants
-  var components: ComponentNode[] = [];
+  const components: ComponentNode[] = [];
 
   // Track row labels: { y, text }
-  var rowLabels: { y: number; text: string }[] = [];
+  const rowLabels: { y: number; text: string }[] = [];
 
   // Layout spacing
-  var componentGapY = GRID_LAYOUT.rowGap.medium;
-  var labelColumnWidth = GRID_LAYOUT.labelColumnWidth.compact;
+  const componentGapY = GRID_LAYOUT.rowGap.medium;
+  const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.compact;
 
   // Track layout
-  var yOffset = 0;
-  var maxWidth = 0;
+  let yOffset = 0;
+  let maxWidth = 0;
 
   // Generate components for each size
-  for (var i = 0; i < SIZE_VALUES.length; i++) {
-    var size = SIZE_VALUES[i];
-    var component = await createDialogComponent(size);
+  for (let i = 0; i < SIZE_VALUES.length; i++) {
+    const size = SIZE_VALUES[i];
+    const component = await createDialogComponent(size);
 
     // Position component
     component.x = labelColumnWidth;
@@ -405,7 +405,7 @@ export async function generateDialogComponents(
 
   // Combine all variants into a single ComponentSet
   // @ts-ignore - combineAsVariants works at runtime
-  var componentSet = figma.combineAsVariants(components, page);
+  const componentSet = figma.combineAsVariants(components, page);
   componentSet.name = "Dialog";
   componentSet.description =
     "Dialog component with size variants. " +
@@ -413,18 +413,18 @@ export async function generateDialogComponents(
   componentSet.layoutMode = "NONE";
 
   // Calculate content dimensions
-  var contentWidth = componentSet.width + labelColumnWidth;
-  var contentHeight = componentSet.height;
+  const contentWidth = componentSet.width + labelColumnWidth;
+  const contentHeight = componentSet.height;
 
   // Create light mode section
-  var lightSection = createModeSection(page, "Dialog", "light");
+  const lightSection = createModeSection(page, "Dialog", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
   );
 
   // Create dark mode section
-  var darkSection = createModeSection(page, "Dialog", "dark");
+  const darkSection = createModeSection(page, "Dialog", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
@@ -436,9 +436,9 @@ export async function generateDialogComponents(
   componentSet.y = SECTION_PADDING;
 
   // Add row labels to light section
-  for (var li = 0; li < rowLabels.length; li++) {
-    var label = rowLabels[li];
-    var labelNode = await createRowLabel(
+  for (let li = 0; li < rowLabels.length; li++) {
+    const label = rowLabels[li];
+    const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
       SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.lg, // Center label for dialog
@@ -447,18 +447,18 @@ export async function generateDialogComponents(
   }
 
   // Create instances for dark section
-  for (var k = 0; k < components.length; k++) {
-    var origComp = components[k];
-    var instance = origComp.createInstance();
+  for (let k = 0; k < components.length; k++) {
+    const origComp = components[k];
+    const instance = origComp.createInstance();
     instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
     instance.y = origComp.y + SECTION_PADDING;
     darkSection.frame.appendChild(instance);
   }
 
   // Add row labels to dark section
-  for (var di = 0; di < rowLabels.length; di++) {
-    var darkLabel = rowLabels[di];
-    var darkLabelNode = await createRowLabel(
+  for (let di = 0; di < rowLabels.length; di++) {
+    const darkLabel = rowLabels[di];
+    const darkLabelNode = await createRowLabel(
       darkLabel.text,
       SECTION_PADDING,
       SECTION_PADDING + darkLabel.y + GRID_LAYOUT.labelVerticalOffset.lg, // Center label for dialog
@@ -467,8 +467,8 @@ export async function generateDialogComponents(
   }
 
   // Resize sections to fit content with padding
-  var totalWidth = contentWidth + SECTION_PADDING * 2;
-  var totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalWidth = contentWidth + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
@@ -541,10 +541,10 @@ export function getBaseConfig() {
  * @returns Complete variant data structure with all sizes and configurations
  */
 export function getAllVariantData() {
-  var baseConfig = getBaseConfig();
+  const baseConfig = getBaseConfig();
 
-  var variants = SIZE_VALUES.map((size) => {
-    var config = getSizeConfig(size);
+  const variants = SIZE_VALUES.map((size) => {
+    const config = getSizeConfig(size);
     return {
       size: size,
       description: sizeProp.descriptions[size] || "Dialog " + size + " variant",
@@ -564,4 +564,4 @@ export function getAllVariantData() {
 /**
  * Exports for tests and backwards compatibility
  */
-export var DIALOG_SIZE_VALUES = SIZE_VALUES;
+export const DIALOG_SIZE_VALUES = SIZE_VALUES;

@@ -45,16 +45,16 @@ import { getButtonIcon, bindIconColor } from "./icon-utils";
 /**
  * Extract DateRangePicker configuration from registry
  */
-var dateRangePickerComponent = registry.components.DateRangePicker;
-var dateRangePickerProps = dateRangePickerComponent.props;
-var dateRangePickerStyling = (registry.components.DateRangePicker as any).styling;
-var sizeProp = dateRangePickerProps.size as {
+const dateRangePickerComponent = registry.components.DateRangePicker;
+const dateRangePickerProps = dateRangePickerComponent.props;
+const dateRangePickerStyling = (registry.components.DateRangePicker as any).styling;
+const sizeProp = dateRangePickerProps.size as {
   values: string[];
   classes: Record<string, string>;
   descriptions: Record<string, string>;
   default: string;
 };
-var variantProp = dateRangePickerProps.variant as {
+const variantProp = dateRangePickerProps.variant as {
   values: string[];
   classes: Record<string, string>;
   descriptions: Record<string, string>;
@@ -66,23 +66,23 @@ var variantProp = dateRangePickerProps.variant as {
 /**
  * Size values (from registry)
  */
-var SIZE_VALUES = sizeProp.values;
+const SIZE_VALUES = sizeProp.values;
 
 /**
  * Variant values (from registry)
  */
-var VARIANT_VALUES = variantProp.values;
+const VARIANT_VALUES = variantProp.values;
 
 /**
  * Selected state values
  */
-var SELECTED_VALUES = [false, true];
+const SELECTED_VALUES = [false, true];
 
 /**
  * Fallback size-specific configurations (from date-range-picker.tsx)
  * Used if registry.styling is not available.
  */
-var FALLBACK_SIZE_CONFIG: Record<
+const FALLBACK_SIZE_CONFIG: Record<
   string,
   {
     calendarWidth: number;
@@ -132,10 +132,10 @@ var FALLBACK_SIZE_CONFIG: Record<
 function getSizeConfigFromRegistry() {
   if (!dateRangePickerStyling?.sizeVariants) return FALLBACK_SIZE_CONFIG;
   
-  var config: Record<string, any> = {};
-  for (var i = 0; i < SIZE_VALUES.length; i++) {
-    var size = SIZE_VALUES[i];
-    var sizeData = dateRangePickerStyling.sizeVariants[size];
+  const config: Record<string, any> = {};
+  for (let i = 0; i < SIZE_VALUES.length; i++) {
+    const size = SIZE_VALUES[i];
+    const sizeData = dateRangePickerStyling.sizeVariants[size];
     if (sizeData && (sizeData as any).dimensions) {
       config[size] = (sizeData as any).dimensions;
     } else {
@@ -148,13 +148,13 @@ function getSizeConfigFromRegistry() {
 /**
  * Size-specific configurations (from registry or fallback)
  */
-var SIZE_CONFIG = getSizeConfigFromRegistry();
+const SIZE_CONFIG = getSizeConfigFromRegistry();
 
 /**
  * Variant-specific background colors (from registry)
  */
 function getVariantBackground(variant: string): string {
-  var classes = variantProp.classes[variant] || variantProp.classes.default;
+  const classes = variantProp.classes[variant] || variantProp.classes.default;
   // Extract semantic token from class (e.g., "bg-calendar" -> "color-calendar")
   if (classes.indexOf("bg-calendar") >= 0) {
     return "color-calendar";
@@ -164,16 +164,16 @@ function getVariantBackground(variant: string): string {
   return "color-calendar"; // fallback
 }
 
-var VARIANT_CONFIG: Record<string, { bgVariable: string }> = {};
-for (var vi = 0; vi < VARIANT_VALUES.length; vi++) {
-  var v = VARIANT_VALUES[vi];
+const VARIANT_CONFIG: Record<string, { bgVariable: string }> = {};
+for (let vi = 0; vi < VARIANT_VALUES.length; vi++) {
+  const v = VARIANT_VALUES[vi];
   VARIANT_CONFIG[v] = { bgVariable: getVariantBackground(v) };
 }
 
 /**
  * Day-of-week labels
  */
-var DAYS_OF_WEEK = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+const DAYS_OF_WEEK = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
 /**
  * Create day-of-week header row
@@ -182,7 +182,7 @@ async function createDayHeaders(
   size: string,
   sizeConfig: (typeof SIZE_CONFIG)["base"],
 ): Promise<FrameNode> {
-  var headerRow = figma.createFrame();
+  const headerRow = figma.createFrame();
   headerRow.name = "Day Headers";
   headerRow.layoutMode = "HORIZONTAL";
   headerRow.primaryAxisSizingMode = "AUTO";
@@ -190,8 +190,8 @@ async function createDayHeaders(
   headerRow.itemSpacing = 4;
   headerRow.fills = [];
 
-  for (var i = 0; i < DAYS_OF_WEEK.length; i++) {
-    var dayLabel = await createTextNode(
+  for (let i = 0; i < DAYS_OF_WEEK.length; i++) {
+    const dayLabel = await createTextNode(
       DAYS_OF_WEEK[i],
       sizeConfig.textSize,
       400,
@@ -201,7 +201,7 @@ async function createDayHeaders(
     dayLabel.resize(sizeConfig.cellWidth, 22);
 
     // Apply muted text color
-    var mutedVar = getVariableByName("text-color-muted");
+    const mutedVar = getVariableByName("text-color-muted");
     if (mutedVar) {
       bindTextColorToVariable(dayLabel, mutedVar.id);
     }
@@ -220,7 +220,7 @@ async function createDayCell(
   mode: "normal" | "selected" | "start" | "end" | "outOfRange",
   sizeConfig: (typeof SIZE_CONFIG)["base"],
 ): Promise<FrameNode> {
-  var cell = figma.createFrame();
+  const cell = figma.createFrame();
   cell.name = "Day " + dayNumber;
   cell.layoutMode = "HORIZONTAL";
   cell.primaryAxisAlignItems = "CENTER";
@@ -234,12 +234,12 @@ async function createDayCell(
   // Note: "outOfRange" has NO background - just muted text
   // "selectedOutOfRange" would have bg-calendar-day-range-selected-out-of-range but we don't use that state
   if (mode === "selected") {
-    var selectedVar = getVariableByName("color-calendar-day-range-selected");
+    const selectedVar = getVariableByName("color-calendar-day-range-selected");
     if (selectedVar) {
       bindFillToVariable(cell, selectedVar.id);
     }
   } else if (mode === "start" || mode === "end") {
-    var endpointVar = getVariableByName(
+    const endpointVar = getVariableByName(
       "color-calendar-day-range-selected-endpoints",
     );
     if (endpointVar) {
@@ -257,7 +257,7 @@ async function createDayCell(
   // outOfRange mode: no background fill, just muted text (applied below)
 
   // Create day number text
-  var dayText = await createTextNode(
+  const dayText = await createTextNode(
     String(dayNumber),
     sizeConfig.textSize,
     400,
@@ -267,17 +267,17 @@ async function createDayCell(
 
   // Apply text color based on mode
   if (mode === "start" || mode === "end") {
-    var inverseVar = getVariableByName("text-color-surface-inverse");
+    const inverseVar = getVariableByName("text-color-surface-inverse");
     if (inverseVar) {
       bindTextColorToVariable(dayText, inverseVar.id);
     }
   } else if (mode === "outOfRange") {
-    var labelVar = getVariableByName("text-color-label");
+    const labelVar = getVariableByName("text-color-label");
     if (labelVar) {
       bindTextColorToVariable(dayText, labelVar.id);
     }
   } else {
-    var surfaceVar = getVariableByName("text-color-surface");
+    const surfaceVar = getVariableByName("text-color-surface");
     if (surfaceVar) {
       bindTextColorToVariable(dayText, surfaceVar.id);
     }
@@ -292,7 +292,7 @@ async function createDayCell(
  * December 2025 starts on Monday (index 1), has 31 days
  * January 2026 starts on Thursday (index 4), has 31 days
  */
-var MONTH_CONFIG: Record<
+const MONTH_CONFIG: Record<
   string,
   { startDay: number; daysInMonth: number; prevMonthDays: number }
 > = {
@@ -309,7 +309,7 @@ async function createCalendarGrid(
   selected: boolean,
   sizeConfig: (typeof SIZE_CONFIG)["base"],
 ): Promise<FrameNode> {
-  var grid = figma.createFrame();
+  const grid = figma.createFrame();
   grid.name = "Calendar Grid";
   grid.layoutMode = "VERTICAL";
   grid.primaryAxisSizingMode = "AUTO";
@@ -317,14 +317,14 @@ async function createCalendarGrid(
   grid.itemSpacing = 2;
   grid.fills = [];
 
-  var config = MONTH_CONFIG[monthName] || MONTH_CONFIG["January"];
-  var startDay = config.startDay; // 0=Sun, 1=Mon, etc.
-  var daysInMonth = config.daysInMonth;
-  var prevMonthDays = config.prevMonthDays;
+  const config = MONTH_CONFIG[monthName] || MONTH_CONFIG["January"];
+  const startDay = config.startDay; // 0=Sun, 1=Mon, etc.
+  const daysInMonth = config.daysInMonth;
+  const prevMonthDays = config.prevMonthDays;
 
   // Create 6 rows of 7 days each
-  for (var row = 0; row < 6; row++) {
-    var rowFrame = figma.createFrame();
+  for (let row = 0; row < 6; row++) {
+    const rowFrame = figma.createFrame();
     rowFrame.name = "Row " + (row + 1);
     rowFrame.layoutMode = "HORIZONTAL";
     rowFrame.primaryAxisSizingMode = "AUTO";
@@ -332,10 +332,10 @@ async function createCalendarGrid(
     rowFrame.itemSpacing = 0;
     rowFrame.fills = [];
 
-    for (var col = 0; col < 7; col++) {
-      var cellIndex = row * 7 + col;
-      var dayNumber: number;
-      var isOutOfRange = false;
+    for (let col = 0; col < 7; col++) {
+      const cellIndex = row * 7 + col;
+      let dayNumber: number;
+      let isOutOfRange = false;
 
       if (cellIndex < startDay) {
         // Previous month's trailing days
@@ -351,7 +351,7 @@ async function createCalendarGrid(
       }
 
       // Determine cell mode
-      var cellMode: "normal" | "selected" | "start" | "end" | "outOfRange" =
+      let cellMode: "normal" | "selected" | "start" | "end" | "outOfRange" =
         isOutOfRange ? "outOfRange" : "normal";
 
       // Apply selection only to current month days (not overflow)
@@ -366,7 +366,7 @@ async function createCalendarGrid(
         }
       }
 
-      var cell = await createDayCell(dayNumber, cellMode, sizeConfig);
+      const cell = await createDayCell(dayNumber, cellMode, sizeConfig);
       rowFrame.appendChild(cell);
     }
 
@@ -386,7 +386,7 @@ async function createMonthHeader(
   showRightNav: boolean,
   sizeConfig: (typeof SIZE_CONFIG)["base"],
 ): Promise<FrameNode> {
-  var header = figma.createFrame();
+  const header = figma.createFrame();
   header.name = "Month Header";
   header.layoutMode = "HORIZONTAL";
   header.primaryAxisAlignItems = "SPACE_BETWEEN";
@@ -398,7 +398,7 @@ async function createMonthHeader(
 
   // Left navigation button (if applicable)
   if (showLeftNav) {
-    var leftButton = figma.createFrame();
+    const leftButton = figma.createFrame();
     leftButton.name = "Prev Month";
     leftButton.layoutMode = "HORIZONTAL";
     leftButton.primaryAxisAlignItems = "CENTER";
@@ -411,26 +411,26 @@ async function createMonthHeader(
     leftButton.paddingBottom = 6;
     leftButton.cornerRadius = BORDER_RADIUS.md;
 
-    var selectedOpacityVar = getVariableByName(
+    const selectedOpacityVar = getVariableByName(
       "color-calendar-day-range-selected/85",
     );
     if (selectedOpacityVar) {
       bindFillToVariable(leftButton, selectedOpacityVar.id);
     }
 
-    var leftIcon = getButtonIcon("ph-caret-left", "sm");
+    const leftIcon = getButtonIcon("ph-caret-left", "sm");
     bindIconColor(leftIcon, "text-surface");
     leftButton.appendChild(leftIcon);
     header.appendChild(leftButton);
   } else {
-    var spacer = figma.createFrame();
+    const spacer = figma.createFrame();
     spacer.resize(1, 1);
     spacer.fills = [];
     header.appendChild(spacer);
   }
 
   // Month and year text
-  var titleText = await createTextNode(
+  const titleText = await createTextNode(
     monthName + " " + year,
     sizeConfig.textSize,
     600,
@@ -438,7 +438,7 @@ async function createMonthHeader(
   titleText.name = "Month Year";
   titleText.textAlignHorizontal = "CENTER";
 
-  var surfaceVar = getVariableByName("text-color-surface");
+  const surfaceVar = getVariableByName("text-color-surface");
   if (surfaceVar) {
     bindTextColorToVariable(titleText, surfaceVar.id);
   }
@@ -447,7 +447,7 @@ async function createMonthHeader(
 
   // Right navigation button (if applicable)
   if (showRightNav) {
-    var rightButton = figma.createFrame();
+    const rightButton = figma.createFrame();
     rightButton.name = "Next Month";
     rightButton.layoutMode = "HORIZONTAL";
     rightButton.primaryAxisAlignItems = "CENTER";
@@ -460,19 +460,19 @@ async function createMonthHeader(
     rightButton.paddingBottom = 6;
     rightButton.cornerRadius = BORDER_RADIUS.md;
 
-    var selectedOpacityVar2 = getVariableByName(
+    const selectedOpacityVar2 = getVariableByName(
       "color-calendar-day-range-selected/85",
     );
     if (selectedOpacityVar2) {
       bindFillToVariable(rightButton, selectedOpacityVar2.id);
     }
 
-    var rightIcon = getButtonIcon("ph-caret-right", "sm");
+    const rightIcon = getButtonIcon("ph-caret-right", "sm");
     bindIconColor(rightIcon, "text-surface");
     rightButton.appendChild(rightIcon);
     header.appendChild(rightButton);
   } else {
-    var spacer2 = figma.createFrame();
+    const spacer2 = figma.createFrame();
     spacer2.resize(1, 1);
     spacer2.fills = [];
     header.appendChild(spacer2);
@@ -492,7 +492,7 @@ async function createCalendar(
   selected: boolean,
   sizeConfig: (typeof SIZE_CONFIG)["base"],
 ): Promise<FrameNode> {
-  var calendar = figma.createFrame();
+  const calendar = figma.createFrame();
   calendar.name = monthName + " Calendar";
   calendar.layoutMode = "VERTICAL";
   calendar.primaryAxisSizingMode = "AUTO";
@@ -500,7 +500,7 @@ async function createCalendar(
   calendar.itemSpacing = 12;
   calendar.fills = [];
 
-  var monthHeader = await createMonthHeader(
+  const monthHeader = await createMonthHeader(
     monthName,
     year,
     showLeftNav,
@@ -509,10 +509,10 @@ async function createCalendar(
   );
   calendar.appendChild(monthHeader);
 
-  var dayHeaders = await createDayHeaders("base", sizeConfig);
+  const dayHeaders = await createDayHeaders("base", sizeConfig);
   calendar.appendChild(dayHeaders);
 
-  var grid = await createCalendarGrid(monthName, selected, sizeConfig);
+  const grid = await createCalendarGrid(monthName, selected, sizeConfig);
   calendar.appendChild(grid);
 
   return calendar;
@@ -524,7 +524,7 @@ async function createCalendar(
 async function createFooter(
   sizeConfig: (typeof SIZE_CONFIG)["base"],
 ): Promise<FrameNode> {
-  var footer = figma.createFrame();
+  const footer = figma.createFrame();
   footer.name = "Footer";
   footer.layoutMode = "HORIZONTAL";
   footer.primaryAxisAlignItems = "SPACE_BETWEEN";
@@ -536,7 +536,7 @@ async function createFooter(
   footer.fills = [];
 
   // Timezone section with icon
-  var timezoneSection = figma.createFrame();
+  const timezoneSection = figma.createFrame();
   timezoneSection.name = "Timezone";
   timezoneSection.layoutMode = "HORIZONTAL";
   timezoneSection.primaryAxisAlignItems = "MIN";
@@ -546,18 +546,18 @@ async function createFooter(
   timezoneSection.itemSpacing = 8;
   timezoneSection.fills = [];
 
-  var globeIcon = getButtonIcon("ph-globe-hemisphere-west", "sm");
+  const globeIcon = getButtonIcon("ph-globe-hemisphere-west", "sm");
   bindIconColor(globeIcon, "text-label");
   timezoneSection.appendChild(globeIcon);
 
-  var timezoneText = await createTextNode(
+  const timezoneText = await createTextNode(
     "Timezone: New York, NY, USA (GMT-4)",
     sizeConfig.textSize,
     400,
   );
   timezoneText.name = "Timezone Text";
 
-  var labelVar = getVariableByName("text-color-label");
+  const labelVar = getVariableByName("text-color-label");
   if (labelVar) {
     bindTextColorToVariable(timezoneText, labelVar.id);
   }
@@ -566,7 +566,7 @@ async function createFooter(
   footer.appendChild(timezoneSection);
 
   // Reset button
-  var resetButton = await createTextNode(
+  const resetButton = await createTextNode(
     "Reset Dates",
     sizeConfig.textSize,
     600,
@@ -574,7 +574,7 @@ async function createFooter(
   resetButton.name = "Reset Button";
   resetButton.textDecoration = "UNDERLINE";
 
-  var surfaceVar = getVariableByName("text-color-surface");
+  const surfaceVar = getVariableByName("text-color-surface");
   if (surfaceVar) {
     bindTextColorToVariable(resetButton, surfaceVar.id);
   }
@@ -592,10 +592,10 @@ async function createDateRangePickerComponent(
   variant: string,
   selected: boolean,
 ): Promise<ComponentNode> {
-  var sizeConfig = SIZE_CONFIG[size] || SIZE_CONFIG["base"];
-  var variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
+  const sizeConfig = SIZE_CONFIG[size] || SIZE_CONFIG["base"];
+  const variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
 
-  var component = figma.createComponent();
+  const component = figma.createComponent();
   component.name =
     "size=" + size + ", variant=" + variant + ", selected=" + selected;
   component.description =
@@ -617,13 +617,13 @@ async function createDateRangePickerComponent(
   component.cornerRadius = BORDER_RADIUS.lg;
 
   // Apply background
-  var bgVar = getVariableByName(variantConfig.bgVariable);
+  const bgVar = getVariableByName(variantConfig.bgVariable);
   if (bgVar) {
     bindFillToVariable(component, bgVar.id);
   }
 
   // Create calendars container
-  var calendarsContainer = figma.createFrame();
+  const calendarsContainer = figma.createFrame();
   calendarsContainer.name = "Calendars";
   calendarsContainer.layoutMode = "HORIZONTAL";
   calendarsContainer.primaryAxisSizingMode = "AUTO";
@@ -632,7 +632,7 @@ async function createDateRangePickerComponent(
   calendarsContainer.fills = [];
 
   // Left calendar (December 2025) - shows selection when selected=true
-  var leftCalendar = await createCalendar(
+  const leftCalendar = await createCalendar(
     "December",
     "2025",
     true,
@@ -643,7 +643,7 @@ async function createDateRangePickerComponent(
   calendarsContainer.appendChild(leftCalendar);
 
   // Right calendar (January 2026) - never shows selection (range is in December)
-  var rightCalendar = await createCalendar(
+  const rightCalendar = await createCalendar(
     "January",
     "2026",
     false,
@@ -656,7 +656,7 @@ async function createDateRangePickerComponent(
   component.appendChild(calendarsContainer);
 
   // Footer
-  var footer = await createFooter(sizeConfig);
+  const footer = await createFooter(sizeConfig);
   component.appendChild(footer);
 
   return component;
@@ -687,37 +687,37 @@ export async function generateDateRangePickerComponents(
   figma.currentPage = page;
 
   // Only generate base size for performance (sm, lg available in code)
-  var sizesToGenerate = ["base"];
+  const sizesToGenerate = ["base"];
 
   // Generate combinations
-  var components: ComponentNode[] = [];
-  var rowLabels: { y: number; text: string }[] = [];
-  var columnHeaders: { x: number; text: string }[] = [];
+  const components: ComponentNode[] = [];
+  const rowLabels: { y: number; text: string }[] = [];
+  let columnHeaders: { x: number; text: string }[] = [];
 
-  var componentGapX = 24;
-  var componentGapY = 40;
-  var headerRowHeight = 24;
-  var labelColumnWidth = 150;
+  const componentGapX = 24;
+  const componentGapY = 40;
+  const headerRowHeight = 24;
+  const labelColumnWidth = 150;
 
   // Track layout by row (size)
-  var rowComponents: Map<number, ComponentNode[]> = new Map();
+  const rowComponents: Map<number, ComponentNode[]> = new Map();
 
   // Generate components for each combination
-  for (var si = 0; si < sizesToGenerate.length; si++) {
-    var size = sizesToGenerate[si];
+  for (let si = 0; si < sizesToGenerate.length; si++) {
+    const size = sizesToGenerate[si];
     rowComponents.set(si, []);
 
-    for (var vi = 0; vi < VARIANT_VALUES.length; vi++) {
-      var variant = VARIANT_VALUES[vi];
+    for (let vi = 0; vi < VARIANT_VALUES.length; vi++) {
+      const variant = VARIANT_VALUES[vi];
 
-      for (var seli = 0; seli < SELECTED_VALUES.length; seli++) {
-        var selected = SELECTED_VALUES[seli];
-        var component = await createDateRangePickerComponent(
+      for (let seli = 0; seli < SELECTED_VALUES.length; seli++) {
+        const selected = SELECTED_VALUES[seli];
+        const component = await createDateRangePickerComponent(
           size,
           variant,
           selected,
         );
-        var row = rowComponents.get(si);
+        const row = rowComponents.get(si);
         if (row) {
           row.push(component);
         }
@@ -727,17 +727,17 @@ export async function generateDateRangePickerComponents(
   }
 
   // First pass: calculate max width per column and max height per row
-  var columnWidths: number[] = [];
-  var rowHeights: number[] = [];
+  const columnWidths: number[] = [];
+  const rowHeights: number[] = [];
 
-  var numColumns = VARIANT_VALUES.length * SELECTED_VALUES.length;
+  const numColumns = VARIANT_VALUES.length * SELECTED_VALUES.length;
 
-  for (var colIdx = 0; colIdx < numColumns; colIdx++) {
-    var maxColWidth = 0;
-    for (var rowIdx = 0; rowIdx < sizesToGenerate.length; rowIdx++) {
-      var row = rowComponents.get(rowIdx);
+  for (let colIdx = 0; colIdx < numColumns; colIdx++) {
+    let maxColWidth = 0;
+    for (let rowIdx = 0; rowIdx < sizesToGenerate.length; rowIdx++) {
+      const row = rowComponents.get(rowIdx);
       if (row) {
-        var comp = row[colIdx];
+        const comp = row[colIdx];
         if (comp && comp.width > maxColWidth) {
           maxColWidth = comp.width;
         }
@@ -746,12 +746,12 @@ export async function generateDateRangePickerComponents(
     columnWidths.push(maxColWidth);
   }
 
-  for (var rowIdx = 0; rowIdx < sizesToGenerate.length; rowIdx++) {
-    var row = rowComponents.get(rowIdx);
+  for (let rowIdx = 0; rowIdx < sizesToGenerate.length; rowIdx++) {
+    const row = rowComponents.get(rowIdx);
     if (row) {
-      var maxRowHeight = 0;
-      for (var colIdx = 0; colIdx < row.length; colIdx++) {
-        var comp = row[colIdx];
+      let maxRowHeight = 0;
+      for (let colIdx = 0; colIdx < row.length; colIdx++) {
+        const comp = row[colIdx];
         if (comp && comp.height > maxRowHeight) {
           maxRowHeight = comp.height;
         }
@@ -761,29 +761,29 @@ export async function generateDateRangePickerComponents(
   }
 
   // Second pass: position components
-  var yOffset = headerRowHeight;
+  let yOffset = headerRowHeight;
 
-  for (var rowIdx = 0; rowIdx < sizesToGenerate.length; rowIdx++) {
-    var row = rowComponents.get(rowIdx);
+  for (let rowIdx = 0; rowIdx < sizesToGenerate.length; rowIdx++) {
+    const row = rowComponents.get(rowIdx);
     if (row) {
-      var xOffset = labelColumnWidth;
-      var sizeValue = sizesToGenerate[rowIdx];
+      let xOffset = labelColumnWidth;
+      const sizeValue = sizesToGenerate[rowIdx];
 
       rowLabels.push({
         y: yOffset,
         text: "size=" + sizeValue,
       });
 
-      for (var colIdx = 0; colIdx < row.length; colIdx++) {
-        var comp = row[colIdx];
+      for (let colIdx = 0; colIdx < row.length; colIdx++) {
+        const comp = row[colIdx];
         comp.x = xOffset;
         comp.y = yOffset;
 
         if (rowIdx === 0) {
-          var variantIdx = Math.floor(colIdx / SELECTED_VALUES.length);
-          var selectedIdx = colIdx % SELECTED_VALUES.length;
-          var variantVal = VARIANT_VALUES[variantIdx];
-          var selectedVal = SELECTED_VALUES[selectedIdx];
+          const variantIdx = Math.floor(colIdx / SELECTED_VALUES.length);
+          const selectedIdx = colIdx % SELECTED_VALUES.length;
+          const variantVal = VARIANT_VALUES[variantIdx];
+          const selectedVal = SELECTED_VALUES[selectedIdx];
           columnHeaders.push({
             x: xOffset,
             text: "variant=" + variantVal + ", selected=" + selectedVal,
@@ -799,7 +799,7 @@ export async function generateDateRangePickerComponents(
 
   // Combine into ComponentSet
   // @ts-ignore - combineAsVariants works at runtime
-  var componentSet = figma.combineAsVariants(components, page);
+  const componentSet = figma.combineAsVariants(components, page);
   componentSet.name = "DateRangePicker";
   componentSet.description =
     "DateRangePicker component with variant and selected properties. " +
@@ -807,18 +807,18 @@ export async function generateDateRangePickerComponents(
   componentSet.layoutMode = "NONE";
 
   // Calculate dimensions
-  var contentWidth = componentSet.width + labelColumnWidth;
-  var contentHeight = componentSet.height + headerRowHeight;
+  const contentWidth = componentSet.width + labelColumnWidth;
+  const contentHeight = componentSet.height + headerRowHeight;
 
   // Create light mode section
-  var lightSection = createModeSection(page, "DateRangePicker", "light");
+  const lightSection = createModeSection(page, "DateRangePicker", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
   );
 
   // Create dark mode section
-  var darkSection = createModeSection(page, "DateRangePicker", "dark");
+  const darkSection = createModeSection(page, "DateRangePicker", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
@@ -839,24 +839,24 @@ export async function generateDateRangePickerComponents(
   );
 
   // Add row labels to light section
-  for (var li = 0; li < rowLabels.length; li++) {
-    var label = rowLabels[li];
-    var labelNode = await createRowLabel(
+  for (let li = 0; li < rowLabels.length; li++) {
+    const label = rowLabels[li];
+    const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 8,
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md,
     );
     lightSection.frame.appendChild(labelNode);
   }
 
   // Add note about other sizes
-  var noteText = await createTextNode(
+  const noteText = await createTextNode(
     "Note: sm and lg sizes also available in code",
     12,
     400,
   );
   noteText.name = "Size Note";
-  var mutedVar = getVariableByName("text-color-muted");
+  const mutedVar = getVariableByName("text-color-muted");
   if (mutedVar) {
     bindTextColorToVariable(noteText, mutedVar.id);
   }
@@ -865,9 +865,9 @@ export async function generateDateRangePickerComponents(
   lightSection.frame.appendChild(noteText);
 
   // Create instances for dark section
-  for (var k = 0; k < components.length; k++) {
-    var origComp = components[k];
-    var instance = origComp.createInstance();
+  for (let k = 0; k < components.length; k++) {
+    const origComp = components[k];
+    const instance = origComp.createInstance();
     instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
     instance.y = origComp.y + SECTION_PADDING + headerRowHeight;
     darkSection.frame.appendChild(instance);
@@ -883,9 +883,9 @@ export async function generateDateRangePickerComponents(
   );
 
   // Add row labels to dark section
-  for (var di = 0; di < rowLabels.length; di++) {
-    var darkLabel = rowLabels[di];
-    var darkLabelNode = await createRowLabel(
+  for (let di = 0; di < rowLabels.length; di++) {
+    const darkLabel = rowLabels[di];
+    const darkLabelNode = await createRowLabel(
       darkLabel.text,
       SECTION_PADDING,
       SECTION_PADDING + darkLabel.y + 8,
@@ -894,7 +894,7 @@ export async function generateDateRangePickerComponents(
   }
 
   // Add note about other sizes to dark section
-  var darkNoteText = await createTextNode(
+  const darkNoteText = await createTextNode(
     "Note: sm and lg sizes also available in code",
     12,
     400,
@@ -908,8 +908,8 @@ export async function generateDateRangePickerComponents(
   darkSection.frame.appendChild(darkNoteText);
 
   // Resize sections (add extra height for note)
-  var totalWidth = contentWidth + SECTION_PADDING * 2;
-  var totalHeight = contentHeight + SECTION_PADDING * 2 + 40;
+  const totalWidth = contentWidth + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2 + 40;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
@@ -933,9 +933,9 @@ export async function generateDateRangePickerComponents(
 /**
  * Exports for tests and backwards compatibility
  */
-export var DATE_RANGE_PICKER_SIZE_VALUES = SIZE_VALUES;
-export var DATE_RANGE_PICKER_VARIANT_VALUES = VARIANT_VALUES;
-export var DATE_RANGE_PICKER_SELECTED_VALUES = SELECTED_VALUES;
+export const DATE_RANGE_PICKER_SIZE_VALUES = SIZE_VALUES;
+export const DATE_RANGE_PICKER_VARIANT_VALUES = VARIANT_VALUES;
+export const DATE_RANGE_PICKER_SELECTED_VALUES = SELECTED_VALUES;
 
 /**
  * TESTABLE EXPORTS - Pure functions for testing without Figma API
@@ -981,7 +981,7 @@ export function getDateRangePickerSelectedConfig() {
  * Returns size-specific dimensions for a given size
  */
 export function getDateRangePickerSizeDimensions(size: string) {
-  var sizeConfig = SIZE_CONFIG[size] || SIZE_CONFIG["base"];
+  const sizeConfig = SIZE_CONFIG[size] || SIZE_CONFIG["base"];
   return {
     size: size,
     calendarWidth: sizeConfig.calendarWidth,
@@ -998,7 +998,7 @@ export function getDateRangePickerSizeDimensions(size: string) {
  * Returns variant-specific background variable
  */
 export function getDateRangePickerVariantBackground(variant: string) {
-  var variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
+  const variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
   return {
     variant: variant,
     bgVariable: variantConfig.bgVariable,
@@ -1023,7 +1023,7 @@ export function getDateRangePickerMonthConfig() {
  * Returns complete intermediate data for all size/variant/selected combinations
  */
 export function getAllDateRangePickerVariantData() {
-  var allData: {
+  const allData: {
     size: string;
     variant: string;
     selected: boolean;
@@ -1031,12 +1031,12 @@ export function getAllDateRangePickerVariantData() {
     variantConfig: ReturnType<typeof getDateRangePickerVariantBackground>;
   }[] = [];
 
-  for (var si = 0; si < SIZE_VALUES.length; si++) {
-    var size = SIZE_VALUES[si];
-    for (var vi = 0; vi < VARIANT_VALUES.length; vi++) {
-      var variant = VARIANT_VALUES[vi];
-      for (var seli = 0; seli < SELECTED_VALUES.length; seli++) {
-        var selected = SELECTED_VALUES[seli];
+  for (let si = 0; si < SIZE_VALUES.length; si++) {
+    const size = SIZE_VALUES[si];
+    for (let vi = 0; vi < VARIANT_VALUES.length; vi++) {
+      const variant = VARIANT_VALUES[vi];
+      for (let seli = 0; seli < SELECTED_VALUES.length; seli++) {
+        const selected = SELECTED_VALUES[seli];
         allData.push({
           size: size,
           variant: variant,

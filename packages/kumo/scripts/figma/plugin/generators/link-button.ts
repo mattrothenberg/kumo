@@ -37,16 +37,16 @@ import { getButtonIcon, bindIconColor, DEFAULT_ICONS } from "./icon-utils";
 import registry from "../../../../ai/component-registry.json";
 
 // Extract props from registry (LinkButton uses same variants as Button)
-var buttonProps = registry.components.Button.props;
+const buttonProps = registry.components.Button.props;
 
-var variantProp = buttonProps.variant as {
+const variantProp = buttonProps.variant as {
   values: string[];
   classes: Record<string, string>;
   descriptions: Record<string, string>;
   default: string;
 };
 
-var sizeProp = buttonProps.size as {
+const sizeProp = buttonProps.size as {
   values: string[];
   classes: Record<string, string>;
   descriptions: Record<string, string>;
@@ -63,17 +63,17 @@ async function createLinkButtonComponent(
   size: string,
   hasIcon: boolean,
 ): Promise<ComponentNode> {
-  var variantClasses = variantProp.classes[variant] || "";
-  var sizeClasses = sizeProp.classes[size] || "";
-  var variantDesc = variantProp.descriptions[variant] || "";
-  var sizeDesc = sizeProp.descriptions[size] || "";
+  const variantClasses = variantProp.classes[variant] || "";
+  const sizeClasses = sizeProp.classes[size] || "";
+  const variantDesc = variantProp.descriptions[variant] || "";
+  const sizeDesc = sizeProp.descriptions[size] || "";
 
   // Parse variant styles and size styles
-  var variantStyles = parseTailwindClasses(variantClasses);
-  var sizeStyles = parseTailwindClasses(sizeClasses);
+  const variantStyles = parseTailwindClasses(variantClasses);
+  const sizeStyles = parseTailwindClasses(sizeClasses);
 
   // Create component
-  var component = figma.createComponent();
+  const component = figma.createComponent();
   component.name =
     "variant=" + variant + ", size=" + size + ", hasIcon=" + hasIcon;
   component.description = variantDesc + ". " + sizeDesc;
@@ -92,13 +92,13 @@ async function createLinkButtonComponent(
   component.resize(100, sizeStyles.height || FALLBACK_VALUES.height.base);
 
   // Set corner radius from size classes
-  var cornerRadius =
+  const cornerRadius =
     sizeStyles.borderRadius !== undefined ? sizeStyles.borderRadius : 8;
   component.cornerRadius = cornerRadius;
 
   // Apply fill from variant
   if (variantStyles.fillVariable) {
-    var fillVar = getVariableByName(variantStyles.fillVariable);
+    const fillVar = getVariableByName(variantStyles.fillVariable);
     if (fillVar) {
       bindFillToVariable(component, fillVar.id);
     }
@@ -109,7 +109,7 @@ async function createLinkButtonComponent(
 
   // Apply stroke for variants with borders
   if (variantStyles.hasBorder && variantStyles.strokeVariable) {
-    var strokeVar = getVariableByName(variantStyles.strokeVariable);
+    const strokeVar = getVariableByName(variantStyles.strokeVariable);
     if (strokeVar) {
       bindStrokeToVariable(component, strokeVar.id, 1);
     }
@@ -117,7 +117,7 @@ async function createLinkButtonComponent(
 
   // Add icon if hasIcon is true - use real icon from Icon Library
   if (hasIcon) {
-    var icon = getButtonIcon(DEFAULT_ICONS.arrowRight, size);
+    const icon = getButtonIcon(DEFAULT_ICONS.arrowRight, size);
 
     // Bind icon color to match text color
     if (variantStyles.isWhiteText) {
@@ -132,8 +132,8 @@ async function createLinkButtonComponent(
   }
 
   // Create text label
-  var fontWeight = FALLBACK_VALUES.fontWeight.medium;
-  var textNode = await createTextNode(
+  const fontWeight = FALLBACK_VALUES.fontWeight.medium;
+  const textNode = await createTextNode(
     "Link Button",
     sizeStyles.fontSize || FALLBACK_VALUES.fontSize,
     fontWeight,
@@ -144,7 +144,7 @@ async function createLinkButtonComponent(
   if (variantStyles.isWhiteText) {
     setWhiteTextColor(textNode);
   } else if (variantStyles.textVariable) {
-    var textVar = getVariableByName(variantStyles.textVariable);
+    const textVar = getVariableByName(variantStyles.textVariable);
     if (textVar) {
       bindTextColorToVariable(textNode, textVar.id);
     }
@@ -170,37 +170,37 @@ export async function generateLinkButtonComponents(
 
   figma.currentPage = page;
 
-  var variants = variantProp.values;
-  var sizes = sizeProp.values;
-  var hasIconOptions = [false, true];
+  const variants = variantProp.values;
+  const sizes = sizeProp.values;
+  const hasIconOptions = [false, true];
 
   // Generate all combinations
-  var components: ComponentNode[] = [];
+  const components: ComponentNode[] = [];
 
   // Track row labels: { y, text }
-  var rowLabels: { y: number; text: string }[] = [];
+  const rowLabels: { y: number; text: string }[] = [];
 
   // Track column headers: { x, text }
-  var columnHeaders: { x: number; text: string }[] = [];
-  var columnHeadersRecorded = false;
+  let columnHeaders: { x: number; text: string }[] = [];
+  let columnHeadersRecorded = false;
 
-  var componentGap = 20;
-  var iconGap = 40;
-  var rowGap = 80; // Vertical space between variant rows
-  var headerRowHeight = 24; // Space for column headers at top
-  var labelColumnWidth = 220; // Space for labels on the left
+  const componentGap = 20;
+  const iconGap = 40;
+  const rowGap = 80; // Vertical space between variant rows
+  const headerRowHeight = 24; // Space for column headers at top
+  const labelColumnWidth = 220; // Space for labels on the left
 
-  for (var v = 0; v < variants.length; v++) {
+  for (let v = 0; v < variants.length; v++) {
     // Record row label (offset by header row)
     rowLabels.push({
       y: v * rowGap + headerRowHeight,
       text: "variant=" + variants[v],
     });
 
-    for (var hi = 0; hi < hasIconOptions.length; hi++) {
-      var currentX = labelColumnWidth + hi * (sizes.length * 140 + iconGap);
-      for (var sz = 0; sz < sizes.length; sz++) {
-        var component = await createLinkButtonComponent(
+    for (let hi = 0; hi < hasIconOptions.length; hi++) {
+      let currentX = labelColumnWidth + hi * (sizes.length * 140 + iconGap);
+      for (let sz = 0; sz < sizes.length; sz++) {
+        const component = await createLinkButtonComponent(
           variants[v],
           sizes[sz],
           hasIconOptions[hi],
@@ -210,7 +210,7 @@ export async function generateLinkButtonComponents(
 
         // Record column headers from first row
         if (!columnHeadersRecorded) {
-          var headerText =
+          const headerText =
             "size=" + sizes[sz] + (hasIconOptions[hi] ? " +icon" : "");
           columnHeaders.push({ x: currentX, text: headerText });
         }
@@ -226,7 +226,7 @@ export async function generateLinkButtonComponents(
 
   // Combine into ComponentSet
   // @ts-ignore
-  var componentSet = figma.combineAsVariants(components, page);
+  const componentSet = figma.combineAsVariants(components, page);
   componentSet.name = "LinkButton";
   componentSet.description =
     "LinkButton component for navigation with variant, size, and icon options";
@@ -234,18 +234,18 @@ export async function generateLinkButtonComponents(
   componentSet.layoutMode = "NONE";
 
   // Calculate content dimensions (add label column width and header row)
-  var contentWidth = componentSet.width + labelColumnWidth;
-  var contentHeight = componentSet.height + headerRowHeight;
+  const contentWidth = componentSet.width + labelColumnWidth;
+  const contentHeight = componentSet.height + headerRowHeight;
 
   // Create light mode section
-  var lightSection = createModeSection(page, "LinkButton", "light");
+  const lightSection = createModeSection(page, "LinkButton", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
   );
 
   // Create dark mode section
-  var darkSection = createModeSection(page, "LinkButton", "dark");
+  const darkSection = createModeSection(page, "LinkButton", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
@@ -266,12 +266,12 @@ export async function generateLinkButtonComponents(
   );
 
   // Add row labels to light section
-  for (var li = 0; li < rowLabels.length; li++) {
-    var label = rowLabels[li];
-    var labelNode = await createRowLabel(
+  for (let li = 0; li < rowLabels.length; li++) {
+    const label = rowLabels[li];
+    const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 12,
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.lg,
     );
     lightSection.frame.appendChild(labelNode);
   }
@@ -279,9 +279,9 @@ export async function generateLinkButtonComponents(
   // Create instances for dark section
   // Note: component positions are relative to ComponentSet after combineAsVariants
   // We need to add labelColumnWidth to match the light section layout
-  for (var i = 0; i < components.length; i++) {
-    var comp = components[i];
-    var instance = comp.createInstance();
+  for (let i = 0; i < components.length; i++) {
+    const comp = components[i];
+    const instance = comp.createInstance();
     instance.x = comp.x + SECTION_PADDING + labelColumnWidth;
     instance.y = comp.y + SECTION_PADDING + headerRowHeight;
     darkSection.frame.appendChild(instance);
@@ -297,9 +297,9 @@ export async function generateLinkButtonComponents(
   );
 
   // Add row labels to dark section
-  for (var di = 0; di < rowLabels.length; di++) {
-    var darkLabel = rowLabels[di];
-    var darkLabelNode = await createRowLabel(
+  for (let di = 0; di < rowLabels.length; di++) {
+    const darkLabel = rowLabels[di];
+    const darkLabelNode = await createRowLabel(
       darkLabel.text,
       SECTION_PADDING,
       SECTION_PADDING + darkLabel.y + 12,
@@ -308,8 +308,8 @@ export async function generateLinkButtonComponents(
   }
 
   // Resize sections to fit content with padding
-  var totalWidth = contentWidth + SECTION_PADDING * 2;
-  var totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalWidth = contentWidth + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
@@ -321,7 +321,7 @@ export async function generateLinkButtonComponents(
   darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
-  var totalComponents = variants.length * sizes.length * hasIconOptions.length;
+  const totalComponents = variants.length * sizes.length * hasIconOptions.length;
   logComplete(
     "✅ Generated LinkButton ComponentSet with " +
       totalComponents +
@@ -363,7 +363,7 @@ export function getLinkButtonSizeConfig() {
  * Get parsed styles for a specific variant
  */
 export function getLinkButtonParsedVariantStyles(variant: string) {
-  var classes = variantProp.classes[variant] || "";
+  const classes = variantProp.classes[variant] || "";
   return {
     variant: variant,
     classes: classes,
@@ -376,7 +376,7 @@ export function getLinkButtonParsedVariantStyles(variant: string) {
  * Get parsed styles for a specific size
  */
 export function getLinkButtonParsedSizeStyles(size: string) {
-  var classes = sizeProp.classes[size] || "";
+  const classes = sizeProp.classes[size] || "";
   return {
     size: size,
     classes: classes,
@@ -393,11 +393,11 @@ export function getLinkButtonLayoutData(
   size: string,
   hasIcon: boolean,
 ) {
-  var variantClasses = variantProp.classes[variant] || "";
-  var sizeClasses = sizeProp.classes[size] || "";
+  const variantClasses = variantProp.classes[variant] || "";
+  const sizeClasses = sizeProp.classes[size] || "";
 
-  var variantStyles = parseTailwindClasses(variantClasses);
-  var sizeStyles = parseTailwindClasses(sizeClasses);
+  const variantStyles = parseTailwindClasses(variantClasses);
+  const sizeStyles = parseTailwindClasses(sizeClasses);
 
   return {
     variant: variant,
@@ -432,8 +432,8 @@ export function getLinkButtonLayoutData(
  * Get complete intermediate data for all link button variants
  */
 export function getAllLinkButtonVariantData() {
-  var variantConfig = getLinkButtonVariantConfig();
-  var sizeConfig = getLinkButtonSizeConfig();
+  const variantConfig = getLinkButtonVariantConfig();
+  const sizeConfig = getLinkButtonSizeConfig();
 
   return {
     variantConfig: variantConfig,
@@ -457,5 +457,5 @@ export function getAllLinkButtonVariantData() {
 }
 
 // Legacy exports (kept for backwards compatibility if needed)
-export var LINK_BUTTON_VARIANTS_EXPORT = variantProp.values;
-export var LINK_BUTTON_SIZES_EXPORT = sizeProp.values;
+export const LINK_BUTTON_VARIANTS_EXPORT = variantProp.values;
+export const LINK_BUTTON_SIZES_EXPORT = sizeProp.values;

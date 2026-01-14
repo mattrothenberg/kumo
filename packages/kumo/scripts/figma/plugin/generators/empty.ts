@@ -386,7 +386,7 @@ export async function generateEmptyComponents(startY: number): Promise<number> {
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 20, // Offset to align with component center
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.xl, // Offset to align with component center
     );
     lightSection.frame.appendChild(labelNode);
   }
@@ -404,7 +404,7 @@ export async function generateEmptyComponents(startY: number): Promise<number> {
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 20,
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.xl,
     );
     darkSection.frame.appendChild(labelNode);
   }

@@ -33,7 +33,7 @@ import registry from "../../../../ai/component-registry.json";
 import themeData from "../generated/theme-data.json";
 
 // Read LayerCard styling from registry
-var layerCardStyling = (registry.components.LayerCard as any).styling;
+const layerCardStyling = (registry.components.LayerCard as any).styling;
 
 /**
  * LayerCard dimensions
@@ -41,7 +41,7 @@ var layerCardStyling = (registry.components.LayerCard as any).styling;
  * Now reads from registry.components.LayerCard.styling
  * with fallback to hardcoded values for backward compatibility.
  */
-var FALLBACK_LAYER_CARD_CONFIG = {
+const FALLBACK_LAYER_CARD_CONFIG = {
   // FIGMA-SPECIFIC: Layout width for Figma canvas display, not from CSS
   width: 280,
   borderRadius: BORDER_RADIUS.lg, // 8px
@@ -91,7 +91,7 @@ function getConfigFromRegistry() {
   };
 }
 
-var LAYER_CARD_CONFIG = getConfigFromRegistry();
+const LAYER_CARD_CONFIG = getConfigFromRegistry();
 
 /**
  * Create a single LayerCard component
@@ -105,10 +105,10 @@ var LAYER_CARD_CONFIG = getConfigFromRegistry();
  */
 async function createLayerCardComponent(): Promise<ComponentNode> {
   console.log("LayerCard: Creating component...");
-  var config = LAYER_CARD_CONFIG;
+  const config = LAYER_CARD_CONFIG;
 
   // Create component
-  var component = figma.createComponent();
+  const component = figma.createComponent();
   console.log("LayerCard: Component created");
   component.name = "default";
   component.description =
@@ -124,7 +124,7 @@ async function createLayerCardComponent(): Promise<ComponentNode> {
   component.cornerRadius = config.borderRadius;
 
   // Apply root background (bg-surface-2)
-  var rootBgVar = getVariableByName("color-surface-2");
+  const rootBgVar = getVariableByName("color-surface-2");
   if (rootBgVar) {
     bindFillToVariable(component, rootBgVar.id);
   } else {
@@ -132,20 +132,20 @@ async function createLayerCardComponent(): Promise<ComponentNode> {
       "LayerCard: color-surface-2 variable not found, using fallback",
     );
     // Fallback to surface variable
-    var fallbackBgVar = getVariableByName("color-surface");
+    const fallbackBgVar = getVariableByName("color-surface");
     if (fallbackBgVar) {
       bindFillToVariable(component, fallbackBgVar.id);
     }
   }
 
   // Apply root ring (ring-border)
-  var rootRingVar = getVariableByName("color-border");
+  const rootRingVar = getVariableByName("color-border");
   if (rootRingVar) {
     bindStrokeToVariable(component, rootRingVar.id, 1);
   }
 
   // Create Secondary section (header)
-  var secondaryFrame = figma.createFrame();
+  const secondaryFrame = figma.createFrame();
   secondaryFrame.name = "Secondary";
   secondaryFrame.layoutMode = "HORIZONTAL";
   // Use SPACE_BETWEEN to push icon to the right (like justify-between in CSS)
@@ -163,7 +163,7 @@ async function createLayerCardComponent(): Promise<ComponentNode> {
 
   // Secondary text
   console.log("LayerCard: Creating secondary text...");
-  var secondaryText = await createTextNode(
+  const secondaryText = await createTextNode(
     "Next Steps",
     config.secondary.fontSize,
     config.secondary.fontWeight,
@@ -172,13 +172,13 @@ async function createLayerCardComponent(): Promise<ComponentNode> {
   secondaryText.name = "Title";
   secondaryText.textAutoResize = "WIDTH_AND_HEIGHT";
 
-  var secondaryTextVar = getVariableByName("text-color-label");
+  const secondaryTextVar = getVariableByName("text-color-label");
   if (secondaryTextVar) {
     bindTextColorToVariable(secondaryText, secondaryTextVar.id);
   }
 
   // Create arrow icon button (ghost button with arrow-right icon)
-  var iconButtonFrame = figma.createFrame();
+  const iconButtonFrame = figma.createFrame();
   iconButtonFrame.name = "Action Button";
   iconButtonFrame.layoutMode = "HORIZONTAL";
   iconButtonFrame.primaryAxisAlignItems = "CENTER";
@@ -188,7 +188,7 @@ async function createLayerCardComponent(): Promise<ComponentNode> {
   iconButtonFrame.fills = []; // Ghost button has no background
 
   // Create arrow-right icon
-  var arrowIcon = createIconInstance(DEFAULT_ICONS.arrowRight, 16);
+  const arrowIcon = createIconInstance(DEFAULT_ICONS.arrowRight, 16);
   if (arrowIcon) {
     arrowIcon.name = "Icon";
     // Bind icon color to text-label (same as the title text)
@@ -197,11 +197,11 @@ async function createLayerCardComponent(): Promise<ComponentNode> {
   } else {
     // Fallback: create a simple arrow placeholder if icon library not generated
     console.log("LayerCard: Arrow icon not found, using placeholder");
-    var arrowPlaceholder = figma.createFrame();
+    const arrowPlaceholder = figma.createFrame();
     arrowPlaceholder.name = "Arrow Placeholder";
     arrowPlaceholder.resize(16, 16);
     arrowPlaceholder.fills = [];
-    var arrowBorderVar = getVariableByName("color-border");
+    const arrowBorderVar = getVariableByName("color-border");
     if (arrowBorderVar) {
       bindStrokeToVariable(arrowPlaceholder, arrowBorderVar.id, 1);
     }
@@ -215,7 +215,7 @@ async function createLayerCardComponent(): Promise<ComponentNode> {
   secondaryFrame.layoutSizingHorizontal = "FILL";
 
   // Create Primary section (main content)
-  var primaryFrame = figma.createFrame();
+  const primaryFrame = figma.createFrame();
   primaryFrame.name = "Primary";
   primaryFrame.layoutMode = "VERTICAL";
   primaryFrame.primaryAxisAlignItems = "MIN";
@@ -232,7 +232,7 @@ async function createLayerCardComponent(): Promise<ComponentNode> {
 
   // Apply primary background (bg-layer-card-primary)
   // Fallback to color-surface if color-layer-card-primary doesn't exist
-  var primaryBgVar = getVariableByName("color-layer-card-primary");
+  let primaryBgVar = getVariableByName("color-layer-card-primary");
   if (!primaryBgVar) {
     primaryBgVar = getVariableByName("color-surface");
   }
@@ -242,7 +242,7 @@ async function createLayerCardComponent(): Promise<ComponentNode> {
 
   // Apply primary ring (ring-color)
   // Fallback to color-border if color-color doesn't exist
-  var primaryRingVar = getVariableByName("color-color");
+  let primaryRingVar = getVariableByName("color-color");
   if (!primaryRingVar) {
     console.log("LayerCard: color-color not found, trying color-border");
     primaryRingVar = getVariableByName("color-border");
@@ -255,7 +255,7 @@ async function createLayerCardComponent(): Promise<ComponentNode> {
 
   // Primary text content
   console.log("LayerCard: Creating primary text...");
-  var primaryText = await createTextNode(
+  const primaryText = await createTextNode(
     "Get started with Kumo",
     config.primary.fontSize,
     config.primary.fontWeight,
@@ -264,7 +264,7 @@ async function createLayerCardComponent(): Promise<ComponentNode> {
   primaryText.name = "Content";
   primaryText.textAutoResize = "WIDTH_AND_HEIGHT";
 
-  var primaryTextVar = getVariableByName("text-color-surface");
+  const primaryTextVar = getVariableByName("text-color-surface");
   if (primaryTextVar) {
     bindTextColorToVariable(primaryText, primaryTextVar.id);
   }
@@ -302,13 +302,13 @@ export async function generateLayerCardComponents(
     figma.currentPage = page;
 
     // Generate single component (no variants)
-    var components: ComponentNode[] = [];
-    var rowLabels: { y: number; text: string }[] = [];
+    const components: ComponentNode[] = [];
+    const rowLabels: { y: number; text: string }[] = [];
 
-    var labelColumnWidth = 160;
+    const labelColumnWidth = 160;
 
     console.log("LayerCard: Calling createLayerCardComponent...");
-    var component = await createLayerCardComponent();
+    const component = await createLayerCardComponent();
     console.log("LayerCard: Component returned, setting position...");
     component.x = labelColumnWidth; // Position after label column
     component.y = 0;
@@ -318,7 +318,7 @@ export async function generateLayerCardComponents(
     console.log("LayerCard: Combining as variants...");
     // Combine into ComponentSet (even with single variant for consistency)
     // @ts-ignore - combineAsVariants works at runtime
-    var componentSet = figma.combineAsVariants(components, page);
+    const componentSet = figma.combineAsVariants(components, page);
     console.log("LayerCard: ComponentSet created");
     componentSet.name = "LayerCard";
     componentSet.description =
@@ -327,18 +327,18 @@ export async function generateLayerCardComponents(
     componentSet.layoutMode = "NONE";
 
     // Calculate content dimensions
-    var contentWidth = componentSet.width + labelColumnWidth;
-    var contentHeight = componentSet.height;
+    const contentWidth = componentSet.width + labelColumnWidth;
+    const contentHeight = componentSet.height;
 
     // Create light mode section
-    var lightSection = createModeSection(page, "LayerCard", "light");
+    const lightSection = createModeSection(page, "LayerCard", "light");
     lightSection.frame.resize(
       contentWidth + SECTION_PADDING * 2,
       contentHeight + SECTION_PADDING * 2,
     );
 
     // Create dark mode section
-    var darkSection = createModeSection(page, "LayerCard", "dark");
+    const darkSection = createModeSection(page, "LayerCard", "dark");
     darkSection.frame.resize(
       contentWidth + SECTION_PADDING * 2,
       contentHeight + SECTION_PADDING * 2,
@@ -350,29 +350,29 @@ export async function generateLayerCardComponents(
     componentSet.y = SECTION_PADDING;
 
     // Add row labels to light section
-    for (var li = 0; li < rowLabels.length; li++) {
-      var label = rowLabels[li];
-      var labelNode = await createRowLabel(
+    for (let li = 0; li < rowLabels.length; li++) {
+      const label = rowLabels[li];
+      const labelNode = await createRowLabel(
         label.text,
         SECTION_PADDING,
-        SECTION_PADDING + label.y + 8,
+        SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md,
       );
       lightSection.frame.appendChild(labelNode);
     }
 
     // Create instances for dark section
-    for (var k = 0; k < components.length; k++) {
-      var origComp = components[k];
-      var instance = origComp.createInstance();
+    for (let k = 0; k < components.length; k++) {
+      const origComp = components[k];
+      const instance = origComp.createInstance();
       instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
       instance.y = origComp.y + SECTION_PADDING;
       darkSection.frame.appendChild(instance);
     }
 
     // Add row labels to dark section
-    for (var di = 0; di < rowLabels.length; di++) {
-      var darkLabel = rowLabels[di];
-      var darkLabelNode = await createRowLabel(
+    for (let di = 0; di < rowLabels.length; di++) {
+      const darkLabel = rowLabels[di];
+      const darkLabelNode = await createRowLabel(
         darkLabel.text,
         SECTION_PADDING,
         SECTION_PADDING + darkLabel.y + 8,
@@ -381,8 +381,8 @@ export async function generateLayerCardComponents(
     }
 
     // Resize sections to fit content with padding
-    var totalWidth = contentWidth + SECTION_PADDING * 2;
-    var totalHeight = contentHeight + SECTION_PADDING * 2;
+    const totalWidth = contentWidth + SECTION_PADDING * 2;
+    const totalHeight = contentHeight + SECTION_PADDING * 2;
 
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
@@ -406,8 +406,8 @@ export async function generateLayerCardComponents(
 
     return startY + totalHeight + SECTION_GAP;
   } catch (error) {
-    var errorMessage = error instanceof Error ? error.message : String(error);
-    var errorStack = error instanceof Error ? error.stack : "";
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorStack = error instanceof Error ? error.stack : "";
     console.error("LayerCard generation failed: " + errorMessage);
     console.error("Stack: " + errorStack);
     throw error;
@@ -460,7 +460,7 @@ export function getLayerCardColorBindings() {
  * Returns metadata about the Secondary and Primary sub-components.
  */
 export function getLayerCardSubComponentConfig() {
-  var layerCardComponent = registry.components.LayerCard;
+  const layerCardComponent = registry.components.LayerCard;
   return {
     subComponents: layerCardComponent.subComponents || {},
     hasSubComponents: Object.keys(layerCardComponent.subComponents || {}).length > 0,
@@ -492,10 +492,10 @@ export function getLayerCardContentConfig() {
  * This is used for snapshot testing to catch unintended changes.
  */
 export function getAllLayerCardData() {
-  var dimensions = getLayerCardDimensionsConfig();
-  var colorBindings = getLayerCardColorBindings();
-  var subComponentConfig = getLayerCardSubComponentConfig();
-  var contentConfig = getLayerCardContentConfig();
+  const dimensions = getLayerCardDimensionsConfig();
+  const colorBindings = getLayerCardColorBindings();
+  const subComponentConfig = getLayerCardSubComponentConfig();
+  const contentConfig = getLayerCardContentConfig();
 
   return {
     dimensions: dimensions,

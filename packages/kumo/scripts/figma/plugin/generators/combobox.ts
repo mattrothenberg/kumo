@@ -58,25 +58,25 @@ import themeData from "../generated/theme-data.json";
 /**
  * Extract Combobox component data from registry (for metadata)
  */
-var comboboxComponent = registry.components.Combobox;
+const comboboxComponent = registry.components.Combobox;
 
 /**
  * Base styles for TriggerInput container
  * "bg-secondary ring ring-border rounded-lg"
  */
-var TRIGGER_BASE_STYLES = "bg-secondary ring ring-border rounded-lg";
+const TRIGGER_BASE_STYLES = "bg-secondary ring ring-border rounded-lg";
 
 /**
  * Dropdown panel styles
  * "bg-surface border border-border"
  */
-var DROPDOWN_PANEL_STYLES = "bg-surface border border-border";
+const DROPDOWN_PANEL_STYLES = "bg-surface border border-border";
 
 /**
  * Fallback configuration for Combobox dimensions
  * These values define trigger, dropdown, and item layouts
  */
-var FALLBACK_COMBOBOX_CONFIG = {
+const FALLBACK_COMBOBOX_CONFIG = {
   trigger: {
     width: 280, // FIGMA-SPECIFIC: Layout width for Figma canvas display
     height: FALLBACK_VALUES.height.base, // h-9 = 36px
@@ -114,22 +114,22 @@ var FALLBACK_COMBOBOX_CONFIG = {
 /**
  * Variant types
  */
-var VARIANT_VALUES = ["default", "withLabel", "withError"];
+const VARIANT_VALUES = ["default", "withLabel", "withError"];
 
 /**
  * Open state values
  */
-var OPEN_VALUES = [false, true];
+const OPEN_VALUES = [false, true];
 
 /**
  * Interaction state values
  */
-var STATE_VALUES = ["default", "focus", "disabled"];
+const STATE_VALUES = ["default", "focus", "disabled"];
 
 /**
  * State-specific style overrides for the trigger
  */
-var STATE_STYLES: Record<
+const STATE_STYLES: Record<
   string,
   {
     ringVariable?: string;
@@ -151,7 +151,7 @@ var STATE_STYLES: Record<
 /**
  * Variant-specific configuration
  */
-var VARIANT_CONFIG: Record<
+const VARIANT_CONFIG: Record<
   string,
   {
     label?: string;
@@ -226,8 +226,8 @@ export function getComboboxLayoutData(
   open: boolean,
   state: string,
 ) {
-  var config = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
-  var stateStyle = STATE_STYLES[state] || STATE_STYLES["default"];
+  const config = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
+  const stateStyle = STATE_STYLES[state] || STATE_STYLES["default"];
 
   return {
     variant,
@@ -282,18 +282,18 @@ export function getComboboxRegistryData() {
 }
 
 export function getAllComboboxVariantData() {
-  var triggerStyles = getComboboxParsedTriggerStyles();
-  var dropdownStyles = getComboboxParsedDropdownStyles();
-  var config = getComboboxVariantConfig();
+  const triggerStyles = getComboboxParsedTriggerStyles();
+  const dropdownStyles = getComboboxParsedDropdownStyles();
+  const config = getComboboxVariantConfig();
 
-  var variants: any[] = [];
+  const variants: any[] = [];
 
-  for (var vi = 0; vi < config.variants.length; vi++) {
-    var variant = config.variants[vi];
-    for (var oi = 0; oi < config.openStates.length; oi++) {
-      var open = config.openStates[oi];
-      for (var si = 0; si < config.interactionStates.length; si++) {
-        var state = config.interactionStates[si];
+  for (let vi = 0; vi < config.variants.length; vi++) {
+    const variant = config.variants[vi];
+    for (let oi = 0; oi < config.openStates.length; oi++) {
+      const open = config.openStates[oi];
+      for (let si = 0; si < config.interactionStates.length; si++) {
+        const state = config.interactionStates[si];
         variants.push(getComboboxLayoutData(variant, open, state));
       }
     }
@@ -328,14 +328,14 @@ async function createComboboxComponent(
   state: string,
 ): Promise<ComponentNode> {
   // Parse base styles (for potential future use)
-  var _triggerStyles = parseTailwindClasses(TRIGGER_BASE_STYLES);
-  var _dropdownStyles = parseTailwindClasses(DROPDOWN_PANEL_STYLES);
+  const _triggerStyles = parseTailwindClasses(TRIGGER_BASE_STYLES);
+  const _dropdownStyles = parseTailwindClasses(DROPDOWN_PANEL_STYLES);
 
   // Get variant config
-  var variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
+  const variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
 
   // Create component
-  var component = figma.createComponent();
+  const component = figma.createComponent();
   component.name = "variant=" + variant + ", open=" + open + ", state=" + state;
   component.description =
     "Combobox " +
@@ -355,7 +355,7 @@ async function createComboboxComponent(
   component.fills = [];
 
   // Get state-specific styles
-  var stateStyle = STATE_STYLES[state] || STATE_STYLES["default"];
+  const stateStyle = STATE_STYLES[state] || STATE_STYLES["default"];
 
   // Apply disabled opacity to entire component
   if (stateStyle.opacity !== undefined) {
@@ -364,7 +364,7 @@ async function createComboboxComponent(
 
   // Create label if needed
   if (variantConfig.label) {
-    var labelText = await createTextNode(
+    const labelText = await createTextNode(
       variantConfig.label,
       FALLBACK_COMBOBOX_CONFIG.label.fontSize,
       FALLBACK_COMBOBOX_CONFIG.label.fontWeight,
@@ -373,7 +373,7 @@ async function createComboboxComponent(
     labelText.textAutoResize = "WIDTH_AND_HEIGHT";
 
     // Apply label text color (text-label)
-    var labelVar = getVariableByName("text-color-label");
+    const labelVar = getVariableByName("text-color-label");
     if (labelVar) {
       bindTextColorToVariable(labelText, labelVar.id);
     }
@@ -382,7 +382,7 @@ async function createComboboxComponent(
   }
 
   // Create trigger input frame
-  var trigger = figma.createFrame();
+  const trigger = figma.createFrame();
   trigger.name = "TriggerInput";
   trigger.layoutMode = "HORIZONTAL";
   trigger.primaryAxisAlignItems = "SPACE_BETWEEN"; // Text left, icon right
@@ -401,22 +401,22 @@ async function createComboboxComponent(
   trigger.cornerRadius = FALLBACK_COMBOBOX_CONFIG.trigger.borderRadius;
 
   // Apply background fill (bg-secondary)
-  var bgVar = getVariableByName("color-secondary");
+  const bgVar = getVariableByName("color-secondary");
   if (bgVar) {
     bindFillToVariable(trigger, bgVar.id);
   }
 
   // Apply ring (stroke) - use error ring if error variant
-  var ringVarName = variantConfig.useErrorRing
+  let ringVarName = variantConfig.useErrorRing
     ? "color-error"
     : stateStyle.ringVariable || "color-border";
-  var ringVar = getVariableByName(ringVarName);
+  const ringVar = getVariableByName(ringVarName);
   if (ringVar) {
     bindStrokeToVariable(trigger, ringVar.id, 1);
   }
 
   // Create placeholder text
-  var placeholderText = await createTextNode(
+  const placeholderText = await createTextNode(
     "Select item...",
     FALLBACK_COMBOBOX_CONFIG.placeholder.fontSize,
     FALLBACK_COMBOBOX_CONFIG.placeholder.fontWeight,
@@ -425,7 +425,7 @@ async function createComboboxComponent(
   placeholderText.textAutoResize = "WIDTH_AND_HEIGHT";
 
   // Apply text color (text-muted for placeholder)
-  var mutedVar = getVariableByName("text-color-muted");
+  const mutedVar = getVariableByName("text-color-muted");
   if (mutedVar) {
     bindTextColorToVariable(placeholderText, mutedVar.id);
   }
@@ -433,8 +433,8 @@ async function createComboboxComponent(
   trigger.appendChild(placeholderText);
 
   // Create chevron down icon
-  var chevronIconName = "ph-caret-down";
-  var chevron = getButtonIcon(chevronIconName, "sm");
+  const chevronIconName = "ph-caret-down";
+  const chevron = getButtonIcon(chevronIconName, "sm");
   chevron.name = "Chevron";
 
   // Rotate chevron 180° when open (pointing up)
@@ -443,7 +443,7 @@ async function createComboboxComponent(
   }
 
   // Apply icon color based on state
-  var iconColorToken = state === "disabled" ? "text-disabled" : "text-surface";
+  const iconColorToken = state === "disabled" ? "text-disabled" : "text-surface";
   bindIconColor(chevron, iconColorToken);
 
   trigger.appendChild(chevron);
@@ -451,7 +451,7 @@ async function createComboboxComponent(
 
   // Create description or error message if needed
   if (variantConfig.description) {
-    var descText = await createTextNode(
+    const descText = await createTextNode(
       variantConfig.description,
       FALLBACK_COMBOBOX_CONFIG.description.fontSize,
       FALLBACK_COMBOBOX_CONFIG.description.fontWeight,
@@ -460,7 +460,7 @@ async function createComboboxComponent(
     descText.textAutoResize = "WIDTH_AND_HEIGHT";
 
     // Apply description text color (text-muted)
-    var descVar = getVariableByName("text-color-muted");
+    const descVar = getVariableByName("text-color-muted");
     if (descVar) {
       bindTextColorToVariable(descText, descVar.id);
     }
@@ -469,7 +469,7 @@ async function createComboboxComponent(
   }
 
   if (variantConfig.errorMessage) {
-    var errorText = await createTextNode(
+    const errorText = await createTextNode(
       variantConfig.errorMessage,
       FALLBACK_COMBOBOX_CONFIG.description.fontSize,
       FALLBACK_COMBOBOX_CONFIG.description.fontWeight,
@@ -478,7 +478,7 @@ async function createComboboxComponent(
     errorText.textAutoResize = "WIDTH_AND_HEIGHT";
 
     // Apply error text color (text-error)
-    var errorVar = getVariableByName("text-color-error");
+    const errorVar = getVariableByName("text-color-error");
     if (errorVar) {
       bindTextColorToVariable(errorText, errorVar.id);
     }
@@ -488,7 +488,7 @@ async function createComboboxComponent(
 
   // Create dropdown panel (only when open)
   if (open) {
-    var dropdownPanel = figma.createFrame();
+    const dropdownPanel = figma.createFrame();
     dropdownPanel.name = "Dropdown";
     dropdownPanel.layoutMode = "VERTICAL";
     dropdownPanel.primaryAxisSizingMode = "FIXED";
@@ -505,21 +505,21 @@ async function createComboboxComponent(
     dropdownPanel.cornerRadius = FALLBACK_COMBOBOX_CONFIG.dropdown.borderRadius;
 
     // Apply background fill (bg-secondary) - matches Content/Popup in combobox.tsx
-    var dropdownBgVar = getVariableByName("color-secondary");
+    const dropdownBgVar = getVariableByName("color-secondary");
     if (dropdownBgVar) {
       bindFillToVariable(dropdownPanel, dropdownBgVar.id);
     }
 
     // Apply border
-    var borderVar = getVariableByName("color-border");
+    const borderVar = getVariableByName("color-border");
     if (borderVar) {
       bindStrokeToVariable(dropdownPanel, borderVar.id, 1);
     }
 
     // Create 3 sample items
-    var itemLabels = ["Option 1", "Option 2", "Option 3"];
-    for (var i = 0; i < itemLabels.length; i++) {
-      var itemFrame = figma.createFrame();
+    const itemLabels = ["Option 1", "Option 2", "Option 3"];
+    for (let i = 0; i < itemLabels.length; i++) {
+      const itemFrame = figma.createFrame();
       itemFrame.name = "Item " + (i + 1);
       itemFrame.layoutMode = "HORIZONTAL";
       itemFrame.primaryAxisAlignItems = "MIN"; // Text left-aligned
@@ -539,14 +539,14 @@ async function createComboboxComponent(
 
       // Highlight second item (selected/hover state) - matches data-highlighted:bg-color-3
       if (i === 1) {
-        var accentVar = getVariableByName("color-color-3");
+        const accentVar = getVariableByName("color-color-3");
         if (accentVar) {
           bindFillToVariable(itemFrame, accentVar.id);
         }
       }
 
       // Create item text
-      var itemText = await createTextNode(
+      const itemText = await createTextNode(
         itemLabels[i],
         FALLBACK_COMBOBOX_CONFIG.item.fontSize,
         FALLBACK_COMBOBOX_CONFIG.item.fontWeight,
@@ -555,7 +555,7 @@ async function createComboboxComponent(
       itemText.textAutoResize = "WIDTH_AND_HEIGHT";
 
       // Apply text color
-      var textVar = getVariableByName("text-color-surface");
+      const textVar = getVariableByName("text-color-surface");
       if (textVar) {
         bindTextColorToVariable(itemText, textVar.id);
       }
@@ -593,7 +593,7 @@ export async function generateComboboxComponents(
   if (startY === undefined) startY = 100;
 
   // Find or create Components page
-  var componentsPage = figma.root.children.find(function (page) {
+  let componentsPage = figma.root.children.find(function (page) {
     return page.type === "PAGE" && page.name === "Components";
   }) as PageNode | undefined;
 
@@ -605,35 +605,35 @@ export async function generateComboboxComponents(
   figma.currentPage = componentsPage;
 
   // Generate all combinations
-  var components: ComponentNode[] = [];
+  const components: ComponentNode[] = [];
 
   // Track row labels: { y, text }
-  var rowLabels: { y: number; text: string }[] = [];
+  const rowLabels: { y: number; text: string }[] = [];
 
   // Track column headers: { x, text }
-  var columnHeaders: { x: number; text: string }[] = [];
+  let columnHeaders: { x: number; text: string }[] = [];
 
   // Layout spacing
-  var componentGapX = 24;
-  var componentGapY = 40;
-  var headerRowHeight = 24;
-  var labelColumnWidth = 150; // Wider for variant labels
+  const componentGapX = 24;
+  const componentGapY = 40;
+  const headerRowHeight = 24;
+  const labelColumnWidth = 150; // Wider for variant labels
 
   // Track layout by row (variant)
-  var rowComponents: Map<number, ComponentNode[]> = new Map();
+  const rowComponents: Map<number, ComponentNode[]> = new Map();
 
   // Generate components for each combination
   // Rows = variants, Columns = open × state
-  for (var vi = 0; vi < VARIANT_VALUES.length; vi++) {
-    var variant = VARIANT_VALUES[vi];
+  for (let vi = 0; vi < VARIANT_VALUES.length; vi++) {
+    const variant = VARIANT_VALUES[vi];
     rowComponents.set(vi, []);
 
-    for (var oi = 0; oi < OPEN_VALUES.length; oi++) {
-      var open = OPEN_VALUES[oi];
+    for (let oi = 0; oi < OPEN_VALUES.length; oi++) {
+      const open = OPEN_VALUES[oi];
 
-      for (var si = 0; si < STATE_VALUES.length; si++) {
-        var state = STATE_VALUES[si];
-        var component = await createComboboxComponent(variant, open, state);
+      for (let si = 0; si < STATE_VALUES.length; si++) {
+        const state = STATE_VALUES[si];
+        const component = await createComboboxComponent(variant, open, state);
         rowComponents.get(vi)!.push(component);
         components.push(component);
       }
@@ -641,16 +641,16 @@ export async function generateComboboxComponents(
   }
 
   // First pass: calculate max width per column and max height per row
-  var columnWidths: number[] = [];
-  var rowHeights: number[] = [];
+  const columnWidths: number[] = [];
+  const rowHeights: number[] = [];
 
-  var numColumns = OPEN_VALUES.length * STATE_VALUES.length;
+  const numColumns = OPEN_VALUES.length * STATE_VALUES.length;
 
-  for (var colIdx = 0; colIdx < numColumns; colIdx++) {
-    var maxColWidth = 0;
-    for (var rowIdx = 0; rowIdx < VARIANT_VALUES.length; rowIdx++) {
-      var row = rowComponents.get(rowIdx) || [];
-      var comp = row[colIdx];
+  for (let colIdx = 0; colIdx < numColumns; colIdx++) {
+    let maxColWidth = 0;
+    for (let rowIdx = 0; rowIdx < VARIANT_VALUES.length; rowIdx++) {
+      const row = rowComponents.get(rowIdx) || [];
+      const comp = row[colIdx];
       if (comp && comp.width > maxColWidth) {
         maxColWidth = comp.width;
       }
@@ -658,11 +658,11 @@ export async function generateComboboxComponents(
     columnWidths.push(maxColWidth);
   }
 
-  for (var rowIdx = 0; rowIdx < VARIANT_VALUES.length; rowIdx++) {
-    var row = rowComponents.get(rowIdx) || [];
-    var maxRowHeight = 0;
-    for (var colIdx = 0; colIdx < row.length; colIdx++) {
-      var comp = row[colIdx];
+  for (let rowIdx = 0; rowIdx < VARIANT_VALUES.length; rowIdx++) {
+    const row = rowComponents.get(rowIdx) || [];
+    let maxRowHeight = 0;
+    for (let colIdx = 0; colIdx < row.length; colIdx++) {
+      const comp = row[colIdx];
       if (comp && comp.height > maxRowHeight) {
         maxRowHeight = comp.height;
       }
@@ -671,12 +671,12 @@ export async function generateComboboxComponents(
   }
 
   // Second pass: position components using consistent column widths
-  var yOffset = headerRowHeight;
+  let yOffset = headerRowHeight;
 
-  for (var rowIdx = 0; rowIdx < VARIANT_VALUES.length; rowIdx++) {
-    var row = rowComponents.get(rowIdx) || [];
-    var xOffset = labelColumnWidth;
-    var variantValue = VARIANT_VALUES[rowIdx];
+  for (let rowIdx = 0; rowIdx < VARIANT_VALUES.length; rowIdx++) {
+    const row = rowComponents.get(rowIdx) || [];
+    let xOffset = labelColumnWidth;
+    const variantValue = VARIANT_VALUES[rowIdx];
 
     // Record row label
     rowLabels.push({
@@ -684,17 +684,17 @@ export async function generateComboboxComponents(
       text: "variant=" + variantValue,
     });
 
-    for (var colIdx = 0; colIdx < row.length; colIdx++) {
-      var comp = row[colIdx];
+    for (let colIdx = 0; colIdx < row.length; colIdx++) {
+      const comp = row[colIdx];
       comp.x = xOffset;
       comp.y = yOffset;
 
       // Record column headers from first row
       if (rowIdx === 0) {
-        var openIdx = Math.floor(colIdx / STATE_VALUES.length);
-        var stateIdx = colIdx % STATE_VALUES.length;
-        var openVal = OPEN_VALUES[openIdx];
-        var stateVal = STATE_VALUES[stateIdx];
+        const openIdx = Math.floor(colIdx / STATE_VALUES.length);
+        const stateIdx = colIdx % STATE_VALUES.length;
+        const openVal = OPEN_VALUES[openIdx];
+        const stateVal = STATE_VALUES[stateIdx];
         columnHeaders.push({
           x: xOffset,
           text: "open=" + openVal + ", state=" + stateVal,
@@ -710,7 +710,7 @@ export async function generateComboboxComponents(
 
   // Combine all variants into a single ComponentSet
   // @ts-ignore - combineAsVariants works at runtime
-  var componentSet = figma.combineAsVariants(components, componentsPage);
+  const componentSet = figma.combineAsVariants(components, componentsPage);
   componentSet.name = "Combobox";
   componentSet.description =
     "Combobox component with variant, open, and state properties. " +
@@ -718,18 +718,18 @@ export async function generateComboboxComponents(
   componentSet.layoutMode = "NONE";
 
   // Calculate content dimensions
-  var contentWidth = componentSet.width + labelColumnWidth;
-  var contentHeight = componentSet.height + headerRowHeight;
+  const contentWidth = componentSet.width + labelColumnWidth;
+  const contentHeight = componentSet.height + headerRowHeight;
 
   // Create light mode section
-  var lightSection = createModeSection(componentsPage, "Combobox", "light");
+  const lightSection = createModeSection(componentsPage, "Combobox", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
   );
 
   // Create dark mode section
-  var darkSection = createModeSection(componentsPage, "Combobox", "dark");
+  const darkSection = createModeSection(componentsPage, "Combobox", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
@@ -750,20 +750,20 @@ export async function generateComboboxComponents(
   );
 
   // Add row labels to light section
-  for (var li = 0; li < rowLabels.length; li++) {
-    var label = rowLabels[li];
-    var labelNode = await createRowLabel(
+  for (let li = 0; li < rowLabels.length; li++) {
+    const label = rowLabels[li];
+    const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 8,
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md,
     );
     lightSection.frame.appendChild(labelNode);
   }
 
   // Create instances for dark section
-  for (var k = 0; k < components.length; k++) {
-    var origComp = components[k];
-    var instance = origComp.createInstance();
+  for (let k = 0; k < components.length; k++) {
+    const origComp = components[k];
+    const instance = origComp.createInstance();
     instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
     instance.y = origComp.y + SECTION_PADDING + headerRowHeight;
     darkSection.frame.appendChild(instance);
@@ -779,9 +779,9 @@ export async function generateComboboxComponents(
   );
 
   // Add row labels to dark section
-  for (var di = 0; di < rowLabels.length; di++) {
-    var darkLabel = rowLabels[di];
-    var darkLabelNode = await createRowLabel(
+  for (let di = 0; di < rowLabels.length; di++) {
+    const darkLabel = rowLabels[di];
+    const darkLabelNode = await createRowLabel(
       darkLabel.text,
       SECTION_PADDING,
       SECTION_PADDING + darkLabel.y + 8,
@@ -790,8 +790,8 @@ export async function generateComboboxComponents(
   }
 
   // Resize sections to fit content with padding
-  var totalWidth = contentWidth + SECTION_PADDING * 2;
-  var totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalWidth = contentWidth + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
@@ -815,6 +815,6 @@ export async function generateComboboxComponents(
 /**
  * Exports for tests and backwards compatibility
  */
-export var COMBOBOX_VARIANT_VALUES = VARIANT_VALUES;
-export var COMBOBOX_OPEN_VALUES = OPEN_VALUES;
-export var COMBOBOX_STATE_VALUES = STATE_VALUES;
+export const COMBOBOX_VARIANT_VALUES = VARIANT_VALUES;
+export const COMBOBOX_OPEN_VALUES = OPEN_VALUES;
+export const COMBOBOX_STATE_VALUES = STATE_VALUES;

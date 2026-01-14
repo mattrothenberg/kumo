@@ -265,8 +265,12 @@ export const GRID_LAYOUT = {
     sm: 4,
     /** Medium offset for standard components (input, checkbox) */
     md: 8,
+    /** Medium-large offset for breadcrumbs, pagination, refresh-button */
+    mdLg: 10,
     /** Large offset for larger components (button, dialog) */
     lg: 12,
+    /** Extra large offset for tall components (empty) */
+    xl: 20,
   },
   /** Horizontal gap between components in a row */
   componentGapX: {
@@ -882,44 +886,6 @@ export function createModeSection(
 }
 
 /**
- * Get or create a section node on a page with white background
- *
- * @param page - Page to create section on
- * @param sectionName - Section name
- * @returns Section node with white fill and padding
- *
- * @example
- * const page = figma.currentPage;
- * const section = getOrCreateSection(page, "Badge");
- *
- * @deprecated Use createModeSection instead for light/dark mode support
- */
-export function getOrCreateSection(
-  page: any,
-  sectionName: string,
-): SectionNode {
-  const existing = page.findChild((n: any) => n.name === sectionName);
-  if (existing && existing.type === "SECTION") {
-    return existing as SectionNode;
-  }
-
-  const section = figma.createSection();
-  section.name = sectionName;
-
-  // Set white background fill
-  section.fills = [
-    {
-      type: "SOLID",
-      color: { r: 1, g: 1, b: 1 }, // White
-    },
-  ];
-
-  page.appendChild(section);
-
-  return section;
-}
-
-/**
  * Create a component property definition
  *
  * @param name - Property name
@@ -1003,7 +969,7 @@ export function findComponentSet(
   componentSetName: string,
 ): ComponentSetNode | undefined {
   // Find the Components page
-  const componentsPage = figma.root.children.find(function (page) {
+  let componentsPage = figma.root.children.find(function (page) {
     return (
       page.type === "PAGE" && page.name.trim().toLowerCase() === "components"
     );

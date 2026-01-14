@@ -37,7 +37,7 @@ import { createIconInstance, bindIconColor } from "./icon-utils";
 import registry from "../../../../ai/component-registry.json";
 
 // Read styling metadata from registry (added in Phase 7)
-var menuBarStyling = (registry.components.MenuBar as any).styling;
+const menuBarStyling = (registry.components.MenuBar as any).styling;
 
 /**
  * MenuBar dimensions and styling
@@ -51,7 +51,7 @@ var menuBarStyling = (registry.components.MenuBar as any).styling;
  * The height is determined by the icon + minimal padding.
  * Looking at Storybook, the component is quite compact.
  */
-var FALLBACK_MENUBAR_CONFIG = {
+const FALLBACK_MENUBAR_CONFIG = {
   // COMPONENT-SPECIFIC: Height derived from icon size (18px) + vertical padding
   // The React component uses h-full on buttons which inherit from parent
   // 32px = 18px icon + 7px padding top + 7px padding bottom (approximate)
@@ -88,12 +88,12 @@ function getConfigFromRegistry() {
   };
 }
 
-var MENUBAR_CONFIG = getConfigFromRegistry();
+const MENUBAR_CONFIG = getConfigFromRegistry();
 
 /**
  * Default menu options to display (matches Storybook Default story)
  */
-var DEFAULT_OPTIONS = [
+const DEFAULT_OPTIONS = [
   { icon: "ph-house", tooltip: "Home", id: "home" },
   { icon: "ph-magnifying-glass", tooltip: "Search", id: "search" },
   { icon: "ph-bell", tooltip: "Notifications", id: "notifications" },
@@ -108,7 +108,7 @@ var DEFAULT_OPTIONS = [
  * @returns FrameNode representing the menu option
  */
 function createMenuOption(iconId: string, isActive: boolean): FrameNode {
-  var button = figma.createFrame();
+  const button = figma.createFrame();
   button.name = isActive ? "Option (active)" : "Option";
   button.resize(MENUBAR_CONFIG.buttonWidth, MENUBAR_CONFIG.height);
 
@@ -130,19 +130,19 @@ function createMenuOption(iconId: string, isActive: boolean): FrameNode {
 
   // Background: bg-color for inactive, bg-surface for active
   if (isActive) {
-    var surfaceVar = getVariableByName("color-surface");
+    const surfaceVar = getVariableByName("color-surface");
     if (surfaceVar) {
       bindFillToVariable(button, surfaceVar.id);
     }
   } else {
-    var colorVar = getVariableByName("color-color");
+    const colorVar = getVariableByName("color-color");
     if (colorVar) {
       bindFillToVariable(button, colorVar.id);
     }
   }
 
   // Create icon
-  var icon = createIconInstance(iconId, MENUBAR_CONFIG.iconSize);
+  const icon = createIconInstance(iconId, MENUBAR_CONFIG.iconSize);
   if (icon) {
     icon.name = "Icon";
     // Icon color: fill-surface-inverse (dark on light, light on dark)
@@ -163,7 +163,7 @@ function createMenuOption(iconId: string, isActive: boolean): FrameNode {
 async function createMenuBarComponent(
   activeIndex: number,
 ): Promise<ComponentNode> {
-  var component = figma.createComponent();
+  const component = figma.createComponent();
 
   // Name based on active state
   if (activeIndex >= 0 && activeIndex < DEFAULT_OPTIONS.length) {
@@ -192,13 +192,13 @@ async function createMenuBarComponent(
   component.cornerRadius = MENUBAR_CONFIG.borderRadius;
 
   // Border: border-color
-  var borderVar = getVariableByName("color-color");
+  const borderVar = getVariableByName("color-color");
   if (borderVar) {
     bindStrokeToVariable(component, borderVar.id, 1);
   }
 
   // Background: bg-color
-  var bgVar = getVariableByName("color-color");
+  const bgVar = getVariableByName("color-color");
   if (bgVar) {
     bindFillToVariable(component, bgVar.id);
   }
@@ -217,10 +217,10 @@ async function createMenuBarComponent(
   ];
 
   // Create menu option buttons
-  for (var i = 0; i < DEFAULT_OPTIONS.length; i++) {
-    var option = DEFAULT_OPTIONS[i];
-    var isActive = i === activeIndex;
-    var button = createMenuOption(option.icon, isActive);
+  for (let i = 0; i < DEFAULT_OPTIONS.length; i++) {
+    const option = DEFAULT_OPTIONS[i];
+    const isActive = i === activeIndex;
+    const button = createMenuOption(option.icon, isActive);
     button.name = option.id;
     component.appendChild(button);
   }
@@ -249,20 +249,20 @@ export async function generateMenuBarComponents(
   try {
     figma.currentPage = page;
 
-    var components: ComponentNode[] = [];
-    var rowLabels: { y: number; text: string }[] = [];
+    const components: ComponentNode[] = [];
+    const rowLabels: { y: number; text: string }[] = [];
 
     // Layout spacing - using centralized GRID_LAYOUT constants
-    var labelColumnWidth = GRID_LAYOUT.labelColumnWidth.standard; // 160px
-    var rowGap = GRID_LAYOUT.rowGap.compact; // 24px
-    var currentY = 0;
+    const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.standard; // 160px
+    const rowGap = GRID_LAYOUT.rowGap.compact; // 24px
+    let currentY = 0;
 
     // Create a component for each active state
-    for (var i = 0; i < DEFAULT_OPTIONS.length; i++) {
-      var option = DEFAULT_OPTIONS[i];
+    for (let i = 0; i < DEFAULT_OPTIONS.length; i++) {
+      const option = DEFAULT_OPTIONS[i];
       console.log("MenuBar: Creating active=" + option.id);
 
-      var component = await createMenuBarComponent(i);
+      const component = await createMenuBarComponent(i);
       component.x = labelColumnWidth;
       component.y = currentY;
 
@@ -274,7 +274,7 @@ export async function generateMenuBarComponents(
 
     console.log("MenuBar: Combining as variants...");
     // @ts-ignore - combineAsVariants works at runtime
-    var componentSet = figma.combineAsVariants(components, page);
+    const componentSet = figma.combineAsVariants(components, page);
     componentSet.name = "MenuBar";
     componentSet.description =
       "MenuBar - Horizontal icon navigation bar. " +
@@ -284,18 +284,18 @@ export async function generateMenuBarComponents(
     componentSet.layoutMode = "NONE";
 
     // Calculate content dimensions
-    var contentWidth = componentSet.width + labelColumnWidth;
-    var contentHeight = componentSet.height;
+    const contentWidth = componentSet.width + labelColumnWidth;
+    const contentHeight = componentSet.height;
 
     // Create light mode section
-    var lightSection = createModeSection(page, "MenuBar", "light");
+    const lightSection = createModeSection(page, "MenuBar", "light");
     lightSection.frame.resize(
       contentWidth + SECTION_PADDING * 2,
       contentHeight + SECTION_PADDING * 2,
     );
 
     // Create dark mode section
-    var darkSection = createModeSection(page, "MenuBar", "dark");
+    const darkSection = createModeSection(page, "MenuBar", "dark");
     darkSection.frame.resize(
       contentWidth + SECTION_PADDING * 2,
       contentHeight + SECTION_PADDING * 2,
@@ -307,29 +307,29 @@ export async function generateMenuBarComponents(
     componentSet.y = SECTION_PADDING;
 
     // Add row labels to light section
-    for (var li = 0; li < rowLabels.length; li++) {
-      var label = rowLabels[li];
-      var labelNode = await createRowLabel(
+    for (let li = 0; li < rowLabels.length; li++) {
+      const label = rowLabels[li];
+      const labelNode = await createRowLabel(
         label.text,
         SECTION_PADDING,
-        SECTION_PADDING + label.y + 12, // Center vertically with menubar
+        SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.lg, // Center vertically with menubar
       );
       lightSection.frame.appendChild(labelNode);
     }
 
     // Create instances for dark section
-    for (var k = 0; k < components.length; k++) {
-      var origComp = components[k];
-      var instance = origComp.createInstance();
+    for (let k = 0; k < components.length; k++) {
+      const origComp = components[k];
+      const instance = origComp.createInstance();
       instance.x = SECTION_PADDING + labelColumnWidth;
       instance.y = origComp.y + SECTION_PADDING;
       darkSection.frame.appendChild(instance);
     }
 
     // Add row labels to dark section
-    for (var di = 0; di < rowLabels.length; di++) {
-      var darkLabel = rowLabels[di];
-      var darkLabelNode = await createRowLabel(
+    for (let di = 0; di < rowLabels.length; di++) {
+      const darkLabel = rowLabels[di];
+      const darkLabelNode = await createRowLabel(
         darkLabel.text,
         SECTION_PADDING,
         SECTION_PADDING + darkLabel.y + 12,
@@ -338,8 +338,8 @@ export async function generateMenuBarComponents(
     }
 
     // Resize sections to fit content with padding
-    var totalWidth = contentWidth + SECTION_PADDING * 2;
-    var totalHeight = contentHeight + SECTION_PADDING * 2;
+    const totalWidth = contentWidth + SECTION_PADDING * 2;
+    const totalHeight = contentHeight + SECTION_PADDING * 2;
 
     lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
     darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
@@ -359,8 +359,8 @@ export async function generateMenuBarComponents(
 
     return startY + totalHeight + SECTION_GAP;
   } catch (error) {
-    var errorMessage = error instanceof Error ? error.message : String(error);
-    var errorStack = error instanceof Error ? error.stack : "";
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorStack = error instanceof Error ? error.stack : "";
     console.error("MenuBar generation failed: " + errorMessage);
     console.error("Stack: " + errorStack);
     throw error;
@@ -435,10 +435,10 @@ export function getMenuBarShadowConfig() {
  * This is used for snapshot testing to catch unintended changes.
  */
 export function getAllMenuBarData() {
-  var dimensions = getMenuBarDimensionsConfig();
-  var defaultOptions = getMenuBarDefaultOptions();
-  var colorBindings = getMenuBarColorBindings();
-  var shadowConfig = getMenuBarShadowConfig();
+  const dimensions = getMenuBarDimensionsConfig();
+  const defaultOptions = getMenuBarDefaultOptions();
+  const colorBindings = getMenuBarColorBindings();
+  const shadowConfig = getMenuBarShadowConfig();
 
   return {
     dimensions: dimensions,

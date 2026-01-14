@@ -39,8 +39,8 @@ import { logComplete } from "../logger";
 import registry from "../../../../ai/component-registry.json";
 
 // Extract Collapsible component data from registry
-var collapsibleComponent = registry.components.Collapsible;
-var collapsibleColors = collapsibleComponent.colors as string[];
+const collapsibleComponent = registry.components.Collapsible;
+const collapsibleColors = collapsibleComponent.colors as string[];
 
 /**
  * Base styles from collapsibleVariants() in collapsible.tsx
@@ -51,7 +51,7 @@ var collapsibleColors = collapsibleComponent.colors as string[];
  * The collapsibleVariants() function returns a fixed set of base styles.
  * Using actual class string from collapsible.tsx collapsibleVariants().
  */
-var TRIGGER_BASE_STYLES = "flex items-center gap-1 text-sm text-info";
+const TRIGGER_BASE_STYLES = "flex items-center gap-1 text-sm text-info";
 
 /**
  * Content panel styles from collapsible.tsx
@@ -60,24 +60,24 @@ var TRIGGER_BASE_STYLES = "flex items-center gap-1 text-sm text-info";
  * 
  * These classes are directly in the JSX, not in a variant function.
  */
-var CONTENT_PANEL_STYLES = "my-2 border-l-2 border-color pl-4";
+const CONTENT_PANEL_STYLES = "my-2 border-l-2 border-color pl-4";
 
 
 
 /**
  * Open state values
  */
-var OPEN_VALUES = [false, true];
+const OPEN_VALUES = [false, true];
 
 /**
  * Interaction state values
  */
-var STATE_VALUES = ["default", "hover", "focus", "disabled"];
+const STATE_VALUES = ["default", "hover", "focus", "disabled"];
 
 /**
  * State-specific style overrides for the trigger
  */
-var STATE_STYLES: Record<
+const STATE_STYLES: Record<
   string,
   {
     textVariable?: string;
@@ -114,11 +114,11 @@ async function createCollapsibleComponent(
   state: string,
 ): Promise<ComponentNode> {
   // Parse base styles
-  var triggerStyles = parseTailwindClasses(TRIGGER_BASE_STYLES);
-  var contentStyles = parseTailwindClasses(CONTENT_PANEL_STYLES);
+  const triggerStyles = parseTailwindClasses(TRIGGER_BASE_STYLES);
+  const contentStyles = parseTailwindClasses(CONTENT_PANEL_STYLES);
 
   // Create component
-  var component = figma.createComponent();
+  const component = figma.createComponent();
   component.name = "open=" + open + ", state=" + state;
   component.description =
     "Collapsible " +
@@ -135,7 +135,7 @@ async function createCollapsibleComponent(
   component.fills = [];
 
   // Get state-specific styles
-  var stateStyle = STATE_STYLES[state] || STATE_STYLES["default"];
+  const stateStyle = STATE_STYLES[state] || STATE_STYLES["default"];
 
   // Apply disabled opacity to entire component
   if (stateStyle.opacity !== undefined) {
@@ -143,7 +143,7 @@ async function createCollapsibleComponent(
   }
 
   // Create trigger frame (label + chevron)
-  var trigger = figma.createFrame();
+  const trigger = figma.createFrame();
   trigger.name = "Trigger";
   trigger.layoutMode = "HORIZONTAL";
   trigger.primaryAxisAlignItems = "CENTER";
@@ -160,14 +160,14 @@ async function createCollapsibleComponent(
 
   // Add focus ring if in focus state
   if (stateStyle.addRing) {
-    var ringVar = getVariableByName("color-active");
+    const ringVar = getVariableByName("color-active");
     if (ringVar) {
       bindStrokeToVariable(trigger, ringVar.id, 2);
     }
   }
 
   // Create label text
-  var labelText = await createTextNode(
+  const labelText = await createTextNode(
     "Click to expand",
     triggerStyles.fontSize || FALLBACK_VALUES.fontSize,
     400,
@@ -175,7 +175,7 @@ async function createCollapsibleComponent(
   labelText.name = "Label";
 
   // Apply text color based on state
-  var textVar = getVariableByName(stateStyle.textVariable || "text-color-info");
+  const textVar = getVariableByName(stateStyle.textVariable || "text-color-info");
   if (textVar) {
     bindTextColorToVariable(labelText, textVar.id);
   }
@@ -183,8 +183,8 @@ async function createCollapsibleComponent(
   trigger.appendChild(labelText);
 
   // Create chevron icon (caret-down from Phosphor)
-  var chevronIconName = "ph-caret-down";
-  var chevron = getButtonIcon(chevronIconName, "sm");
+  const chevronIconName = "ph-caret-down";
+  const chevron = getButtonIcon(chevronIconName, "sm");
   chevron.name = "Chevron";
 
   // Rotate chevron 180° when open (pointing up)
@@ -193,7 +193,7 @@ async function createCollapsibleComponent(
   }
 
   // Apply icon color based on state
-  var iconColorToken = state === "disabled" ? "text-disabled" : "text-info";
+  const iconColorToken = state === "disabled" ? "text-disabled" : "text-info";
   bindIconColor(chevron, iconColorToken);
 
   trigger.appendChild(chevron);
@@ -201,7 +201,7 @@ async function createCollapsibleComponent(
 
   // Create content panel (always present, visibility controlled by open state)
   if (open) {
-    var contentPanel = figma.createFrame();
+    const contentPanel = figma.createFrame();
     contentPanel.name = "Content";
     contentPanel.layoutMode = "VERTICAL";
     contentPanel.primaryAxisSizingMode = "AUTO";
@@ -213,7 +213,7 @@ async function createCollapsibleComponent(
     contentPanel.fills = [];
 
     // Add left border (border-l-2 border-color)
-    var borderVar = getVariableByName("color-border");
+    const borderVar = getVariableByName("color-border");
     if (borderVar) {
       bindStrokeToVariable(contentPanel, borderVar.id, 2);
       // Set stroke to left side only
@@ -224,7 +224,7 @@ async function createCollapsibleComponent(
     }
 
     // Create placeholder content text
-    var contentText = await createTextNode(
+    const contentText = await createTextNode(
       "This is the collapsible content that can be shown or hidden.",
       14,
       400,
@@ -236,7 +236,7 @@ async function createCollapsibleComponent(
     contentText.resize(280, contentText.height);
     contentText.textAutoResize = "HEIGHT";
 
-    var contentTextVar = getVariableByName("text-color-surface");
+    const contentTextVar = getVariableByName("text-color-surface");
     if (contentTextVar) {
       bindTextColorToVariable(contentText, contentTextVar.id);
     }
@@ -270,7 +270,7 @@ export async function generateCollapsibleComponents(
   if (startY === undefined) startY = 100;
 
   // Find or create Components page
-  var componentsPage = figma.root.children.find(function (page) {
+  let componentsPage = figma.root.children.find(function (page) {
     return page.type === "PAGE" && page.name === "Components";
   }) as PageNode | undefined;
 
@@ -282,45 +282,45 @@ export async function generateCollapsibleComponents(
   figma.currentPage = componentsPage;
 
   // Generate all combinations
-  var components: ComponentNode[] = [];
+  const components: ComponentNode[] = [];
 
   // Track row labels: { y, text }
-  var rowLabels: { y: number; text: string }[] = [];
+  const rowLabels: { y: number; text: string }[] = [];
 
   // Track column headers: { x, text }
-  var columnHeaders: { x: number; text: string }[] = [];
+  let columnHeaders: { x: number; text: string }[] = [];
 
   // Layout spacing
-  var componentGapX = 24;
-  var componentGapY = 40;
-  var headerRowHeight = 24;
-  var labelColumnWidth = 120;
+  const componentGapX = 24;
+  const componentGapY = 40;
+  const headerRowHeight = 24;
+  const labelColumnWidth = 120;
 
   // Track layout by row (open state)
-  var rowComponents: Map<number, ComponentNode[]> = new Map();
+  const rowComponents: Map<number, ComponentNode[]> = new Map();
 
   // Generate components for each combination
-  for (var oi = 0; oi < OPEN_VALUES.length; oi++) {
-    var open = OPEN_VALUES[oi];
+  for (let oi = 0; oi < OPEN_VALUES.length; oi++) {
+    const open = OPEN_VALUES[oi];
     rowComponents.set(oi, []);
 
-    for (var si = 0; si < STATE_VALUES.length; si++) {
-      var state = STATE_VALUES[si];
-      var component = await createCollapsibleComponent(open, state);
+    for (let si = 0; si < STATE_VALUES.length; si++) {
+      const state = STATE_VALUES[si];
+      const component = await createCollapsibleComponent(open, state);
       rowComponents.get(oi)!.push(component);
       components.push(component);
     }
   }
 
   // First pass: calculate max width per column and max height per row
-  var columnWidths: number[] = [];
-  var rowHeights: number[] = [];
+  const columnWidths: number[] = [];
+  const rowHeights: number[] = [];
 
-  for (var colIdx = 0; colIdx < STATE_VALUES.length; colIdx++) {
-    var maxColWidth = 0;
-    for (var rowIdx = 0; rowIdx < OPEN_VALUES.length; rowIdx++) {
-      var row = rowComponents.get(rowIdx) || [];
-      var comp = row[colIdx];
+  for (let colIdx = 0; colIdx < STATE_VALUES.length; colIdx++) {
+    let maxColWidth = 0;
+    for (let rowIdx = 0; rowIdx < OPEN_VALUES.length; rowIdx++) {
+      const row = rowComponents.get(rowIdx) || [];
+      const comp = row[colIdx];
       if (comp && comp.width > maxColWidth) {
         maxColWidth = comp.width;
       }
@@ -328,11 +328,11 @@ export async function generateCollapsibleComponents(
     columnWidths.push(maxColWidth);
   }
 
-  for (var rowIdx = 0; rowIdx < OPEN_VALUES.length; rowIdx++) {
-    var row = rowComponents.get(rowIdx) || [];
-    var maxRowHeight = 0;
-    for (var colIdx = 0; colIdx < row.length; colIdx++) {
-      var comp = row[colIdx];
+  for (let rowIdx = 0; rowIdx < OPEN_VALUES.length; rowIdx++) {
+    const row = rowComponents.get(rowIdx) || [];
+    let maxRowHeight = 0;
+    for (let colIdx = 0; colIdx < row.length; colIdx++) {
+      const comp = row[colIdx];
       if (comp && comp.height > maxRowHeight) {
         maxRowHeight = comp.height;
       }
@@ -341,12 +341,12 @@ export async function generateCollapsibleComponents(
   }
 
   // Second pass: position components using consistent column widths
-  var yOffset = headerRowHeight;
+  let yOffset = headerRowHeight;
 
-  for (var rowIdx = 0; rowIdx < OPEN_VALUES.length; rowIdx++) {
-    var row = rowComponents.get(rowIdx) || [];
-    var xOffset = labelColumnWidth;
-    var openValue = OPEN_VALUES[rowIdx];
+  for (let rowIdx = 0; rowIdx < OPEN_VALUES.length; rowIdx++) {
+    const row = rowComponents.get(rowIdx) || [];
+    let xOffset = labelColumnWidth;
+    const openValue = OPEN_VALUES[rowIdx];
 
     // Record row label
     rowLabels.push({
@@ -354,8 +354,8 @@ export async function generateCollapsibleComponents(
       text: "open=" + openValue,
     });
 
-    for (var colIdx = 0; colIdx < row.length; colIdx++) {
-      var comp = row[colIdx];
+    for (let colIdx = 0; colIdx < row.length; colIdx++) {
+      const comp = row[colIdx];
       comp.x = xOffset;
       comp.y = yOffset;
 
@@ -376,7 +376,7 @@ export async function generateCollapsibleComponents(
 
   // Combine all variants into a single ComponentSet
   // @ts-ignore - combineAsVariants works at runtime
-  var componentSet = figma.combineAsVariants(components, componentsPage);
+  const componentSet = figma.combineAsVariants(components, componentsPage);
   componentSet.name = "Collapsible";
   componentSet.description =
     "Collapsible component with open and state properties. " +
@@ -384,18 +384,18 @@ export async function generateCollapsibleComponents(
   componentSet.layoutMode = "NONE";
 
   // Calculate content dimensions
-  var contentWidth = componentSet.width + labelColumnWidth;
-  var contentHeight = componentSet.height + headerRowHeight;
+  const contentWidth = componentSet.width + labelColumnWidth;
+  const contentHeight = componentSet.height + headerRowHeight;
 
   // Create light mode section
-  var lightSection = createModeSection(componentsPage, "Collapsible", "light");
+  const lightSection = createModeSection(componentsPage, "Collapsible", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
   );
 
   // Create dark mode section
-  var darkSection = createModeSection(componentsPage, "Collapsible", "dark");
+  const darkSection = createModeSection(componentsPage, "Collapsible", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
@@ -416,20 +416,20 @@ export async function generateCollapsibleComponents(
   );
 
   // Add row labels to light section
-  for (var li = 0; li < rowLabels.length; li++) {
-    var label = rowLabels[li];
-    var labelNode = await createRowLabel(
+  for (let li = 0; li < rowLabels.length; li++) {
+    const label = rowLabels[li];
+    const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 8,
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md,
     );
     lightSection.frame.appendChild(labelNode);
   }
 
   // Create instances for dark section
-  for (var k = 0; k < components.length; k++) {
-    var origComp = components[k];
-    var instance = origComp.createInstance();
+  for (let k = 0; k < components.length; k++) {
+    const origComp = components[k];
+    const instance = origComp.createInstance();
     instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
     instance.y = origComp.y + SECTION_PADDING + headerRowHeight;
     darkSection.frame.appendChild(instance);
@@ -445,9 +445,9 @@ export async function generateCollapsibleComponents(
   );
 
   // Add row labels to dark section
-  for (var di = 0; di < rowLabels.length; di++) {
-    var darkLabel = rowLabels[di];
-    var darkLabelNode = await createRowLabel(
+  for (let di = 0; di < rowLabels.length; di++) {
+    const darkLabel = rowLabels[di];
+    const darkLabelNode = await createRowLabel(
       darkLabel.text,
       SECTION_PADDING,
       SECTION_PADDING + darkLabel.y + 8,
@@ -456,8 +456,8 @@ export async function generateCollapsibleComponents(
   }
 
   // Resize sections to fit content with padding
-  var totalWidth = contentWidth + SECTION_PADDING * 2;
-  var totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalWidth = contentWidth + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
@@ -548,9 +548,9 @@ export function getCollapsibleParsedContentStyles() {
  * Get computed layout data for a specific open/state combination
  */
 export function getCollapsibleLayoutData(open: boolean, state: string) {
-  var triggerStyles = parseTailwindClasses(TRIGGER_BASE_STYLES);
-  var contentStyles = parseTailwindClasses(CONTENT_PANEL_STYLES);
-  var stateStyle = STATE_STYLES[state] || STATE_STYLES["default"];
+  const triggerStyles = parseTailwindClasses(TRIGGER_BASE_STYLES);
+  const contentStyles = parseTailwindClasses(CONTENT_PANEL_STYLES);
+  const stateStyle = STATE_STYLES[state] || STATE_STYLES["default"];
 
   return {
     open: open,
@@ -589,13 +589,13 @@ export function getCollapsibleLayoutData(open: boolean, state: string) {
  * Get all collapsible variant data (for snapshot testing)
  */
 export function getAllCollapsibleVariantData() {
-  var registryData = getCollapsibleRegistryData();
-  var triggerStylesData = getCollapsibleTriggerStyles();
-  var contentStylesData = getCollapsibleContentStyles();
-  var triggerStyles = getCollapsibleParsedTriggerStyles();
-  var contentStyles = getCollapsibleParsedContentStyles();
-  var openConfig = getCollapsibleOpenConfig();
-  var stateConfig = getCollapsibleStateConfig();
+  const registryData = getCollapsibleRegistryData();
+  const triggerStylesData = getCollapsibleTriggerStyles();
+  const contentStylesData = getCollapsibleContentStyles();
+  const triggerStyles = getCollapsibleParsedTriggerStyles();
+  const contentStyles = getCollapsibleParsedContentStyles();
+  const openConfig = getCollapsibleOpenConfig();
+  const stateConfig = getCollapsibleStateConfig();
 
   return {
     registry: {
@@ -625,5 +625,5 @@ export function getAllCollapsibleVariantData() {
 /**
  * Exports for tests and backwards compatibility
  */
-export var COLLAPSIBLE_OPEN_VALUES = OPEN_VALUES;
-export var COLLAPSIBLE_STATE_VALUES = STATE_VALUES;
+export const COLLAPSIBLE_OPEN_VALUES = OPEN_VALUES;
+export const COLLAPSIBLE_STATE_VALUES = STATE_VALUES;

@@ -67,12 +67,12 @@ function getLayoutFromRegistry() {
  * The React component uses Button (h-9, 36px) and Input components, which have their own sizing.
  */
 const LAYOUT = getLayoutFromRegistry();
-var PAGINATION_HEIGHT = LAYOUT.height;
-var BUTTON_SIZE = LAYOUT.buttonSize;
-var INPUT_WIDTH = LAYOUT.inputWidth;
-var ICON_SIZE = LAYOUT.iconSize;
-var GAP = 0; // InputGroup buttons are flush against each other (overridden from registry gap: 8)
-var BORDER_RADIUS = LAYOUT.borderRadius;
+const PAGINATION_HEIGHT = LAYOUT.height;
+const BUTTON_SIZE = LAYOUT.buttonSize;
+const INPUT_WIDTH = LAYOUT.inputWidth;
+const ICON_SIZE = LAYOUT.iconSize;
+const GAP = 0; // InputGroup buttons are flush against each other (overridden from registry gap: 8)
+const BORDER_RADIUS = LAYOUT.borderRadius;
 
 
 
@@ -149,9 +149,9 @@ export function calculateShowingRange(
   perPage: number,
   totalCount: number,
 ) {
-  var lower = page * perPage - perPage + 1;
-  var upper = Math.min(page * perPage, totalCount);
-  var maxPage = Math.ceil(totalCount / perPage);
+  const lower = page * perPage - perPage + 1;
+  const upper = Math.min(page * perPage, totalCount);
+  const maxPage = Math.ceil(totalCount / perPage);
   return {
     lower: lower,
     upper: upper,
@@ -164,8 +164,8 @@ export function calculateShowingRange(
  * Get button states for a given page
  */
 export function getButtonStates(page: number, maxPage: number) {
-  var isFirstPage = page <= 1;
-  var isLastPage = page >= maxPage;
+  const isFirstPage = page <= 1;
+  const isLastPage = page >= maxPage;
   return {
     isFirstPage: isFirstPage,
     isLastPage: isLastPage,
@@ -202,24 +202,24 @@ export function getButtonStates(page: number, maxPage: number) {
  * Get all pagination intermediate data (for snapshot testing)
  */
 export function getAllPaginationData() {
-  var registry = getPaginationRegistryData();
-  var dimensions = getPaginationDimensionsConfig();
-  var states = getPaginationStateConfig();
-  var colors = getPaginationColorBindings();
-  var perPage = 10;
-  var totalCount = 100;
+  const registry = getPaginationRegistryData();
+  const dimensions = getPaginationDimensionsConfig();
+  const states = getPaginationStateConfig();
+  const colors = getPaginationColorBindings();
+  const perPage = 10;
+  const totalCount = 100;
 
   return {
     registry: registry,
     dimensions: dimensions,
     colors: colors,
     states: states.map(function (state) {
-      var showingRange = calculateShowingRange(
+      const showingRange = calculateShowingRange(
         state.page,
         perPage,
         totalCount,
       );
-      var buttonStates = getButtonStates(state.page, showingRange.maxPage);
+      const buttonStates = getButtonStates(state.page, showingRange.maxPage);
       return {
         label: state.label,
         page: state.page,
@@ -241,7 +241,7 @@ async function createNavButton(
   position: "first" | "middle" | "last" | "single",
   disabled: boolean,
 ): Promise<FrameNode> {
-  var button = figma.createFrame();
+  const button = figma.createFrame();
   button.name = ariaLabel;
   button.layoutMode = "HORIZONTAL";
   button.primaryAxisAlignItems = "CENTER";
@@ -268,22 +268,22 @@ async function createNavButton(
   }
 
   // Background: bg-secondary (color-surface-2)
-  var bgVar = getVariableByName("color-surface-2");
+  const bgVar = getVariableByName("color-surface-2");
   if (bgVar) {
     bindFillToVariable(button, bgVar.id);
   }
 
   // Border: ring-border
-  var borderVar = getVariableByName("color-border");
+  const borderVar = getVariableByName("color-border");
   if (borderVar) {
     bindStrokeToVariable(button, borderVar.id, 1);
   }
 
   // Create icon
-  var icon = createIconInstance(iconId, ICON_SIZE);
+  const icon = createIconInstance(iconId, ICON_SIZE);
   if (icon) {
     // Icon color: text-color-surface for enabled, text-color-disabled for disabled
-    var iconColorVar = disabled ? "text-color-disabled" : "text-color-surface";
+    const iconColorVar = disabled ? "text-color-disabled" : "text-color-surface";
     bindIconColor(icon, iconColorVar);
     button.appendChild(icon);
   }
@@ -295,7 +295,7 @@ async function createNavButton(
  * Create the page number input field
  */
 async function createPageInput(pageNumber: string): Promise<FrameNode> {
-  var input = figma.createFrame();
+  const input = figma.createFrame();
   input.name = "Page Input";
   input.layoutMode = "HORIZONTAL";
   input.primaryAxisAlignItems = "CENTER";
@@ -306,23 +306,23 @@ async function createPageInput(pageNumber: string): Promise<FrameNode> {
   input.cornerRadius = 0;
 
   // Background: bg-secondary (color-surface-2)
-  var bgVar = getVariableByName("color-surface-2");
+  const bgVar = getVariableByName("color-surface-2");
   if (bgVar) {
     bindFillToVariable(input, bgVar.id);
   }
 
   // Border: ring-border
-  var borderVar = getVariableByName("color-border");
+  const borderVar = getVariableByName("color-border");
   if (borderVar) {
     bindStrokeToVariable(input, borderVar.id, 1);
   }
 
   // Page number text - use centralized constants
-  var text = await createTextNode(pageNumber, FONT_SIZE.xs + 2, FALLBACK_VALUES.fontWeight.normal);
+  const text = await createTextNode(pageNumber, FONT_SIZE.xs + 2, FALLBACK_VALUES.fontWeight.normal);
   text.name = "Page Number";
   text.textAlignHorizontal = "CENTER";
 
-  var textColorVar = getVariableByName("text-color-surface");
+  const textColorVar = getVariableByName("text-color-surface");
   if (textColorVar) {
     bindTextColorToVariable(text, textColorVar.id);
   }
@@ -340,14 +340,14 @@ async function createShowingText(
   upper: number,
   total: number,
 ): Promise<TextNode> {
-  var text = await createTextNode(
+  const text = await createTextNode(
     "Showing " + lower + "-" + upper + " of " + total,
     FONT_SIZE.xs + 2, // 14px
     FALLBACK_VALUES.fontWeight.normal,
   );
   text.name = "Showing Text";
 
-  var labelVar = getVariableByName("text-color-label");
+  const labelVar = getVariableByName("text-color-label");
   if (labelVar) {
     bindTextColorToVariable(text, labelVar.id);
   }
@@ -362,7 +362,7 @@ async function createInputGroup(
   currentPage: number,
   maxPage: number,
 ): Promise<FrameNode> {
-  var group = figma.createFrame();
+  const group = figma.createFrame();
   group.name = "InputGroup";
   group.layoutMode = "HORIZONTAL";
   group.primaryAxisAlignItems = "MIN";
@@ -372,11 +372,11 @@ async function createInputGroup(
   group.itemSpacing = GAP;
   group.fills = [];
 
-  var isFirstPage = currentPage <= 1;
-  var isLastPage = currentPage >= maxPage;
+  const isFirstPage = currentPage <= 1;
+  const isLastPage = currentPage >= maxPage;
 
   // First page button
-  var firstBtn = await createNavButton(
+  const firstBtn = await createNavButton(
     "ph-caret-double-left",
     "First page",
     "first",
@@ -385,7 +385,7 @@ async function createInputGroup(
   group.appendChild(firstBtn);
 
   // Previous page button
-  var prevBtn = await createNavButton(
+  const prevBtn = await createNavButton(
     "ph-caret-left",
     "Previous page",
     "middle",
@@ -394,11 +394,11 @@ async function createInputGroup(
   group.appendChild(prevBtn);
 
   // Page input
-  var pageInput = await createPageInput(String(currentPage));
+  const pageInput = await createPageInput(String(currentPage));
   group.appendChild(pageInput);
 
   // Next page button
-  var nextBtn = await createNavButton(
+  const nextBtn = await createNavButton(
     "ph-caret-right",
     "Next page",
     "middle",
@@ -407,7 +407,7 @@ async function createInputGroup(
   group.appendChild(nextBtn);
 
   // Last page button
-  var lastBtn = await createNavButton(
+  const lastBtn = await createNavButton(
     "ph-caret-double-right",
     "Last page",
     "last",
@@ -427,7 +427,7 @@ async function createPaginationComponent(
   totalCount: number,
   variantLabel: string,
 ): Promise<ComponentNode> {
-  var component = figma.createComponent();
+  const component = figma.createComponent();
   component.name = variantLabel;
   component.description = "Pagination at page " + page;
 
@@ -442,16 +442,16 @@ async function createPaginationComponent(
   component.fills = [];
 
   // Calculate showing range
-  var lower = page * perPage - perPage + 1;
-  var upper = Math.min(page * perPage, totalCount);
-  var maxPage = Math.ceil(totalCount / perPage);
+  const lower = page * perPage - perPage + 1;
+  const upper = Math.min(page * perPage, totalCount);
+  const maxPage = Math.ceil(totalCount / perPage);
 
   // Create "Showing X-Y of Z" text
-  var showingText = await createShowingText(lower, upper, totalCount);
+  const showingText = await createShowingText(lower, upper, totalCount);
   component.appendChild(showingText);
 
   // Create InputGroup with navigation
-  var inputGroup = await createInputGroup(page, maxPage);
+  const inputGroup = await createInputGroup(page, maxPage);
   component.appendChild(inputGroup);
 
   return component;
@@ -472,7 +472,7 @@ export async function generatePaginationComponents(
   if (startY === undefined) startY = 100;
 
   // Find or create Components page
-  var componentsPage = figma.root.children.find(function (page) {
+  let componentsPage = figma.root.children.find(function (page) {
     return page.type === "PAGE" && page.name === "Components";
   }) as PageNode | undefined;
 
@@ -484,26 +484,26 @@ export async function generatePaginationComponents(
   figma.currentPage = componentsPage;
 
   // Page states to demonstrate
-  var pageStates = [
+  const pageStates = [
     { page: 1, label: "state=first" }, // First page (prev disabled)
     { page: 5, label: "state=middle" }, // Middle page (all enabled)
     { page: 10, label: "state=last" }, // Last page (next disabled)
   ];
 
-  var perPage = 10;
-  var totalCount = 100;
+  const perPage = 10;
+  const totalCount = 100;
 
-  var components: ComponentNode[] = [];
-  var rowLabels: { y: number; text: string }[] = [];
+  const components: ComponentNode[] = [];
+  const rowLabels: { y: number; text: string }[] = [];
 
   // Layout spacing - using centralized GRID_LAYOUT constants
-  var rowGap = GRID_LAYOUT.rowGap.standard; // 48px
-  var labelColumnWidth = GRID_LAYOUT.labelColumnWidth.medium; // 180px
-  var currentY = 0;
+  const rowGap = GRID_LAYOUT.rowGap.standard; // 48px
+  const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.medium; // 180px
+  let currentY = 0;
 
-  for (var i = 0; i < pageStates.length; i++) {
-    var state = pageStates[i];
-    var component = await createPaginationComponent(
+  for (let i = 0; i < pageStates.length; i++) {
+    const state = pageStates[i];
+    const component = await createPaginationComponent(
       state.page,
       perPage,
       totalCount,
@@ -522,24 +522,24 @@ export async function generatePaginationComponents(
 
   // Combine all variants into a single ComponentSet
   // @ts-ignore - combineAsVariants works at runtime
-  var componentSet = figma.combineAsVariants(components, componentsPage);
+  const componentSet = figma.combineAsVariants(components, componentsPage);
   componentSet.name = "Pagination";
   componentSet.description =
     "Pagination component showing page navigation at different states";
 
   // Calculate content dimensions
-  var contentWidth = componentSet.width + labelColumnWidth;
-  var contentHeight = componentSet.height;
+  const contentWidth = componentSet.width + labelColumnWidth;
+  const contentHeight = componentSet.height;
 
   // Create light mode section
-  var lightSection = createModeSection(componentsPage, "Pagination", "light");
+  const lightSection = createModeSection(componentsPage, "Pagination", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
   );
 
   // Create dark mode section
-  var darkSection = createModeSection(componentsPage, "Pagination", "dark");
+  const darkSection = createModeSection(componentsPage, "Pagination", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
@@ -551,29 +551,29 @@ export async function generatePaginationComponents(
   componentSet.y = SECTION_PADDING;
 
   // Add row labels to light section
-  for (var j = 0; j < rowLabels.length; j++) {
-    var label = rowLabels[j];
-    var labelNode = await createRowLabel(
+  for (let j = 0; j < rowLabels.length; j++) {
+    const label = rowLabels[j];
+    const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 10,
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.mdLg,
     );
     lightSection.frame.appendChild(labelNode);
   }
 
   // Create instances for dark section
-  for (var k = 0; k < components.length; k++) {
-    var comp = components[k];
-    var instance = comp.createInstance();
+  for (let k = 0; k < components.length; k++) {
+    const comp = components[k];
+    const instance = comp.createInstance();
     instance.x = comp.x + SECTION_PADDING + labelColumnWidth;
     instance.y = comp.y + SECTION_PADDING;
     darkSection.frame.appendChild(instance);
   }
 
   // Add row labels to dark section
-  for (var m = 0; m < rowLabels.length; m++) {
-    var darkLabel = rowLabels[m];
-    var darkLabelNode = await createRowLabel(
+  for (let m = 0; m < rowLabels.length; m++) {
+    const darkLabel = rowLabels[m];
+    const darkLabelNode = await createRowLabel(
       darkLabel.text,
       SECTION_PADDING,
       SECTION_PADDING + darkLabel.y + 10,
@@ -582,8 +582,8 @@ export async function generatePaginationComponents(
   }
 
   // Resize sections to fit content with padding
-  var totalWidth = contentWidth + SECTION_PADDING * 2;
-  var totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalWidth = contentWidth + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);

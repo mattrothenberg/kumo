@@ -43,29 +43,29 @@ import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 /**
  * Extract Input component from registry
  */
-var inputRegistry = registry.components.Input as any;
-var inputProps = inputRegistry.props;
-var inputStyling = inputRegistry.styling;
+const inputRegistry = registry.components.Input as any;
+const inputProps = inputRegistry.props;
+const inputStyling = inputRegistry.styling;
 
 /**
  * Size values from registry
  */
-var SIZE_VALUES = inputProps.size.values;
+const SIZE_VALUES = inputProps.size.values;
 
 /**
  * Variant values from registry
  */
-var VARIANT_VALUES = inputProps.variant.values;
+const VARIANT_VALUES = inputProps.variant.values;
 
 /**
  * State values
  */
-var STATE_VALUES = ["default", "focus", "disabled"];
+const STATE_VALUES = ["default", "focus", "disabled"];
 
 /**
  * WithLabel values - whether to show Field wrapper (label, description, error)
  */
-var WITH_LABEL_VALUES = [false, true];
+const WITH_LABEL_VALUES = [false, true];
 
 /**
  * Get size configuration from registry
@@ -73,14 +73,14 @@ var WITH_LABEL_VALUES = [false, true];
  * @returns Size dimensions including layout-specific width
  */
 function getSizeConfigFromRegistry(size: string) {
-  var sizeVariant = inputStyling.sizeVariants[size];
+  let sizeVariant = inputStyling.sizeVariants[size];
   if (!sizeVariant) {
     // Fallback to base if size not found
     sizeVariant = inputStyling.sizeVariants.base;
   }
 
   // Layout-specific widths (not in registry - generator specific)
-  var widthMap: Record<string, number> = {
+  const widthMap: Record<string, number> = {
     xs: 160,
     sm: 200,
     base: 280,
@@ -99,7 +99,7 @@ function getSizeConfigFromRegistry(size: string) {
 /**
  * Size configuration from registry
  */
-var SIZE_CONFIG: Record<
+const SIZE_CONFIG: Record<
   string,
   {
     height: number;
@@ -118,7 +118,7 @@ var SIZE_CONFIG: Record<
 /**
  * State-specific style overrides
  */
-var STATE_STYLES: Record<
+const STATE_STYLES: Record<
   string,
   {
     ringVariable?: string;
@@ -144,7 +144,7 @@ var STATE_STYLES: Record<
 /**
  * Variant-specific configuration
  */
-var VARIANT_CONFIG: Record<
+const VARIANT_CONFIG: Record<
   string,
   {
     ringVariable: string;
@@ -180,12 +180,12 @@ async function createInputComponent(
   state: string,
   withLabel: boolean,
 ): Promise<ComponentNode> {
-  var sizeConfig = SIZE_CONFIG[size] || SIZE_CONFIG["base"];
-  var variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
-  var stateStyle = STATE_STYLES[state] || STATE_STYLES["default"];
+  const sizeConfig = SIZE_CONFIG[size] || SIZE_CONFIG["base"];
+  const variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
+  const stateStyle = STATE_STYLES[state] || STATE_STYLES["default"];
 
   // Create component
-  var component = figma.createComponent();
+  const component = figma.createComponent();
   component.name =
     "size=" +
     size +
@@ -220,11 +220,11 @@ async function createInputComponent(
 
   // Create label (only if withLabel is true)
   if (withLabel && variantConfig.label) {
-    var labelText = await createTextNode(variantConfig.label, FONT_SIZE.xs, FALLBACK_VALUES.fontWeight.medium);
+    const labelText = await createTextNode(variantConfig.label, FONT_SIZE.xs, FALLBACK_VALUES.fontWeight.medium);
     labelText.name = "Label";
     labelText.textAutoResize = "WIDTH_AND_HEIGHT";
 
-    var labelVar = getVariableByName("text-color-label");
+    const labelVar = getVariableByName("text-color-label");
     if (labelVar) {
       bindTextColorToVariable(labelText, labelVar.id);
     }
@@ -233,7 +233,7 @@ async function createInputComponent(
   }
 
   // Create input frame
-  var inputFrame = figma.createFrame();
+  const inputFrame = figma.createFrame();
   inputFrame.name = "Input";
   inputFrame.layoutMode = "HORIZONTAL";
   inputFrame.primaryAxisAlignItems = "MIN";
@@ -249,27 +249,27 @@ async function createInputComponent(
   inputFrame.cornerRadius = sizeConfig.borderRadius;
 
   // Apply background fill (bg-secondary)
-  var bgVar = getVariableByName("color-secondary");
+  const bgVar = getVariableByName("color-secondary");
   if (bgVar) {
     bindFillToVariable(inputFrame, bgVar.id);
   }
 
   // Apply ring (stroke) - use variant ring in default state, state ring for focus
-  var ringVarName = variantConfig.ringVariable;
+  let ringVarName = variantConfig.ringVariable;
   if (state === "focus" && variant === "default") {
     ringVarName = "color-active";
   } else if (state === "focus" && variant === "error") {
     ringVarName = "color-error";
   }
-  var ringVar = getVariableByName(ringVarName);
+  const ringVar = getVariableByName(ringVarName);
   if (ringVar) {
     bindStrokeToVariable(inputFrame, ringVar.id, 1);
   }
 
   // Create placeholder text
-  var placeholderValue =
+  const placeholderValue =
     variant === "error" ? "invalid@example" : "you@example.com";
-  var placeholderText = await createTextNode(
+  const placeholderText = await createTextNode(
     placeholderValue,
     sizeConfig.fontSize,
     FALLBACK_VALUES.fontWeight.normal,
@@ -278,7 +278,7 @@ async function createInputComponent(
   placeholderText.textAutoResize = "WIDTH_AND_HEIGHT";
 
   // Apply text color (text-muted for placeholder, text-surface for value in error)
-  var textColorVar =
+  const textColorVar =
     variant === "error"
       ? getVariableByName("text-color-surface")
       : getVariableByName("text-color-muted");
@@ -291,11 +291,11 @@ async function createInputComponent(
 
   // Create description or error message (only if withLabel is true)
   if (withLabel && variantConfig.description && variant === "default") {
-    var descText = await createTextNode(variantConfig.description, FONT_SIZE.xs, FALLBACK_VALUES.fontWeight.normal);
+    const descText = await createTextNode(variantConfig.description, FONT_SIZE.xs, FALLBACK_VALUES.fontWeight.normal);
     descText.name = "Description";
     descText.textAutoResize = "WIDTH_AND_HEIGHT";
 
-    var descVar = getVariableByName("text-color-muted");
+    const descVar = getVariableByName("text-color-muted");
     if (descVar) {
       bindTextColorToVariable(descText, descVar.id);
     }
@@ -304,11 +304,11 @@ async function createInputComponent(
   }
 
   if (withLabel && variantConfig.errorMessage && variant === "error") {
-    var errorText = await createTextNode(variantConfig.errorMessage, FONT_SIZE.xs, FALLBACK_VALUES.fontWeight.normal);
+    const errorText = await createTextNode(variantConfig.errorMessage, FONT_SIZE.xs, FALLBACK_VALUES.fontWeight.normal);
     errorText.name = "Error";
     errorText.textAutoResize = "WIDTH_AND_HEIGHT";
 
-    var errorVar = getVariableByName("text-color-error");
+    const errorVar = getVariableByName("text-color-error");
     if (errorVar) {
       bindTextColorToVariable(errorText, errorVar.id);
     }
@@ -347,39 +347,39 @@ export async function generateInputComponents(
   figma.currentPage = page;
 
   // Generate all combinations
-  var components: ComponentNode[] = [];
+  const components: ComponentNode[] = [];
 
   // Track row labels: { y, text }
-  var rowLabels: { y: number; text: string }[] = [];
+  const rowLabels: { y: number; text: string }[] = [];
 
   // Track column headers: { x, text }
-  var columnHeaders: { x: number; text: string }[] = [];
+  let columnHeaders: { x: number; text: string }[] = [];
 
   // Layout spacing
-  var componentGapX = 24;
-  var componentGapY = GRID_LAYOUT.rowGap.medium;
-  var headerRowHeight = GRID_LAYOUT.headerRowHeight;
-  var labelColumnWidth = GRID_LAYOUT.labelColumnWidth.wide;
+  const componentGapX = 24;
+  const componentGapY = GRID_LAYOUT.rowGap.medium;
+  const headerRowHeight = GRID_LAYOUT.headerRowHeight;
+  const labelColumnWidth = GRID_LAYOUT.labelColumnWidth.wide;
 
   // Track layout by row (size × withLabel)
-  var rowComponents: Map<number, ComponentNode[]> = new Map();
+  const rowComponents: Map<number, ComponentNode[]> = new Map();
 
   // Generate components for each combination
   // Rows = size × withLabel, Columns = variant × state
-  var rowIndex = 0;
-  for (var si = 0; si < SIZE_VALUES.length; si++) {
-    var size = SIZE_VALUES[si];
+  let rowIndex = 0;
+  for (let si = 0; si < SIZE_VALUES.length; si++) {
+    const size = SIZE_VALUES[si];
 
-    for (var wli = 0; wli < WITH_LABEL_VALUES.length; wli++) {
-      var withLabel = WITH_LABEL_VALUES[wli];
+    for (let wli = 0; wli < WITH_LABEL_VALUES.length; wli++) {
+      const withLabel = WITH_LABEL_VALUES[wli];
       rowComponents.set(rowIndex, []);
 
-      for (var vi = 0; vi < VARIANT_VALUES.length; vi++) {
-        var variant = VARIANT_VALUES[vi];
+      for (let vi = 0; vi < VARIANT_VALUES.length; vi++) {
+        const variant = VARIANT_VALUES[vi];
 
-        for (var sti = 0; sti < STATE_VALUES.length; sti++) {
-          var state = STATE_VALUES[sti];
-          var component = await createInputComponent(
+        for (let sti = 0; sti < STATE_VALUES.length; sti++) {
+          const state = STATE_VALUES[sti];
+          const component = await createInputComponent(
             size,
             variant,
             state,
@@ -395,17 +395,17 @@ export async function generateInputComponents(
   }
 
   // First pass: calculate max width per column and max height per row
-  var columnWidths: number[] = [];
-  var rowHeights: number[] = [];
+  const columnWidths: number[] = [];
+  const rowHeights: number[] = [];
 
-  var numColumns = VARIANT_VALUES.length * STATE_VALUES.length;
-  var totalRows = SIZE_VALUES.length * WITH_LABEL_VALUES.length;
+  const numColumns = VARIANT_VALUES.length * STATE_VALUES.length;
+  const totalRows = SIZE_VALUES.length * WITH_LABEL_VALUES.length;
 
-  for (var colIdx = 0; colIdx < numColumns; colIdx++) {
-    var maxColWidth = 0;
-    for (var rowIdx = 0; rowIdx < totalRows; rowIdx++) {
-      var row = rowComponents.get(rowIdx) || [];
-      var comp = row[colIdx];
+  for (let colIdx = 0; colIdx < numColumns; colIdx++) {
+    let maxColWidth = 0;
+    for (let rowIdx = 0; rowIdx < totalRows; rowIdx++) {
+      const row = rowComponents.get(rowIdx) || [];
+      const comp = row[colIdx];
       if (comp && comp.width > maxColWidth) {
         maxColWidth = comp.width;
       }
@@ -413,11 +413,11 @@ export async function generateInputComponents(
     columnWidths.push(maxColWidth);
   }
 
-  for (var rowIdx = 0; rowIdx < totalRows; rowIdx++) {
-    var row = rowComponents.get(rowIdx) || [];
-    var maxRowHeight = 0;
-    for (var colIdx = 0; colIdx < row.length; colIdx++) {
-      var comp = row[colIdx];
+  for (let rowIdx = 0; rowIdx < totalRows; rowIdx++) {
+    const row = rowComponents.get(rowIdx) || [];
+    let maxRowHeight = 0;
+    for (let colIdx = 0; colIdx < row.length; colIdx++) {
+      const comp = row[colIdx];
       if (comp && comp.height > maxRowHeight) {
         maxRowHeight = comp.height;
       }
@@ -426,16 +426,16 @@ export async function generateInputComponents(
   }
 
   // Second pass: position components using consistent column widths
-  var yOffset = headerRowHeight;
+  let yOffset = headerRowHeight;
 
-  var currentRowIndex = 0;
-  for (var si2 = 0; si2 < SIZE_VALUES.length; si2++) {
-    var sizeValue = SIZE_VALUES[si2];
+  let currentRowIndex = 0;
+  for (let si2 = 0; si2 < SIZE_VALUES.length; si2++) {
+    const sizeValue = SIZE_VALUES[si2];
 
-    for (var wli2 = 0; wli2 < WITH_LABEL_VALUES.length; wli2++) {
-      var withLabelValue = WITH_LABEL_VALUES[wli2];
-      var row = rowComponents.get(currentRowIndex) || [];
-      var xOffset = labelColumnWidth;
+    for (let wli2 = 0; wli2 < WITH_LABEL_VALUES.length; wli2++) {
+      const withLabelValue = WITH_LABEL_VALUES[wli2];
+      const row = rowComponents.get(currentRowIndex) || [];
+      let xOffset = labelColumnWidth;
 
       // Record row label
       rowLabels.push({
@@ -443,17 +443,17 @@ export async function generateInputComponents(
         text: "size=" + sizeValue + ", withLabel=" + withLabelValue,
       });
 
-      for (var colIdx = 0; colIdx < row.length; colIdx++) {
-        var comp = row[colIdx];
+      for (let colIdx = 0; colIdx < row.length; colIdx++) {
+        const comp = row[colIdx];
         comp.x = xOffset;
         comp.y = yOffset;
 
         // Record column headers from first row
         if (currentRowIndex === 0) {
-          var variantIdx = Math.floor(colIdx / STATE_VALUES.length);
-          var stateIdx = colIdx % STATE_VALUES.length;
-          var variantVal = VARIANT_VALUES[variantIdx];
-          var stateVal = STATE_VALUES[stateIdx];
+          const variantIdx = Math.floor(colIdx / STATE_VALUES.length);
+          const stateIdx = colIdx % STATE_VALUES.length;
+          const variantVal = VARIANT_VALUES[variantIdx];
+          const stateVal = STATE_VALUES[stateIdx];
           columnHeaders.push({
             x: xOffset,
             text: "variant=" + variantVal + ", state=" + stateVal,
@@ -471,7 +471,7 @@ export async function generateInputComponents(
 
   // Combine all variants into a single ComponentSet
   // @ts-ignore - combineAsVariants works at runtime
-  var componentSet = figma.combineAsVariants(components, page);
+  const componentSet = figma.combineAsVariants(components, page);
   componentSet.name = "Input";
   componentSet.description =
     "Input component with size, variant, state, and withLabel properties. " +
@@ -479,18 +479,18 @@ export async function generateInputComponents(
   componentSet.layoutMode = "NONE";
 
   // Calculate content dimensions
-  var contentWidth = componentSet.width + labelColumnWidth;
-  var contentHeight = componentSet.height + headerRowHeight;
+  const contentWidth = componentSet.width + labelColumnWidth;
+  const contentHeight = componentSet.height + headerRowHeight;
 
   // Create light mode section
-  var lightSection = createModeSection(page, "Input", "light");
+  const lightSection = createModeSection(page, "Input", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
   );
 
   // Create dark mode section
-  var darkSection = createModeSection(page, "Input", "dark");
+  const darkSection = createModeSection(page, "Input", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
@@ -511,9 +511,9 @@ export async function generateInputComponents(
   );
 
   // Add row labels to light section
-  for (var li = 0; li < rowLabels.length; li++) {
-    var label = rowLabels[li];
-    var labelNode = await createRowLabel(
+  for (let li = 0; li < rowLabels.length; li++) {
+    const label = rowLabels[li];
+    const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
       SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md,
@@ -522,9 +522,9 @@ export async function generateInputComponents(
   }
 
   // Create instances for dark section
-  for (var k = 0; k < components.length; k++) {
-    var origComp = components[k];
-    var instance = origComp.createInstance();
+  for (let k = 0; k < components.length; k++) {
+    const origComp = components[k];
+    const instance = origComp.createInstance();
     instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
     instance.y = origComp.y + SECTION_PADDING + headerRowHeight;
     darkSection.frame.appendChild(instance);
@@ -540,9 +540,9 @@ export async function generateInputComponents(
   );
 
   // Add row labels to dark section
-  for (var di = 0; di < rowLabels.length; di++) {
-    var darkLabel = rowLabels[di];
-    var darkLabelNode = await createRowLabel(
+  for (let di = 0; di < rowLabels.length; di++) {
+    const darkLabel = rowLabels[di];
+    const darkLabelNode = await createRowLabel(
       darkLabel.text,
       SECTION_PADDING,
       SECTION_PADDING + darkLabel.y + GRID_LAYOUT.labelVerticalOffset.md,
@@ -551,8 +551,8 @@ export async function generateInputComponents(
   }
 
   // Resize sections to fit content with padding
-  var totalWidth = contentWidth + SECTION_PADDING * 2;
-  var totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalWidth = contentWidth + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
@@ -576,9 +576,9 @@ export async function generateInputComponents(
 /**
  * Exports for tests and backwards compatibility
  */
-export var INPUT_SIZE_VALUES = SIZE_VALUES;
-export var INPUT_VARIANT_VALUES = VARIANT_VALUES;
-export var INPUT_STATE_VALUES = STATE_VALUES;
+export const INPUT_SIZE_VALUES = SIZE_VALUES;
+export const INPUT_VARIANT_VALUES = VARIANT_VALUES;
+export const INPUT_STATE_VALUES = STATE_VALUES;
 
 /**
  * Testable export functions for input.test.ts

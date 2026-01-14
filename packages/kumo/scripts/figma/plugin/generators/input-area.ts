@@ -40,24 +40,24 @@ import registry from "../../../../ai/component-registry.json";
 /**
  * Extract Input component from registry (InputArea uses Input's inputVariants)
  */
-var inputRegistry = registry.components.Input as any;
-var inputProps = inputRegistry.props;
-var inputStyling = inputRegistry.styling;
+const inputRegistry = registry.components.Input as any;
+const inputProps = inputRegistry.props;
+const inputStyling = inputRegistry.styling;
 
 /**
  * Extract InputArea styling from registry (minHeight and width per size)
  */
-var inputAreaStyling = (registry.components.InputArea as any).styling;
+const inputAreaStyling = (registry.components.InputArea as any).styling;
 
 /**
  * Size values from Input registry
  */
-var SIZE_VALUES = inputProps.size.values;
+const SIZE_VALUES = inputProps.size.values;
 
 /**
  * Variant values from Input registry
  */
-var VARIANT_VALUES = inputProps.variant.values;
+const VARIANT_VALUES = inputProps.variant.values;
 
 /**
  * Get size configuration from registry (merging InputArea and Input styling)
@@ -69,7 +69,7 @@ var VARIANT_VALUES = inputProps.variant.values;
  */
 function getSizeConfigFromRegistry(size: string) {
   // Fallback values if registry data is missing
-  var FALLBACK_INPUT_AREA_CONFIG: Record<
+  const FALLBACK_INPUT_AREA_CONFIG: Record<
     string,
     { minHeight: number; width: number }
   > = {
@@ -79,20 +79,20 @@ function getSizeConfigFromRegistry(size: string) {
     lg: { minHeight: 100, width: 360 },
   };
 
-  var FALLBACK_INPUT_CONFIG = {
+  const FALLBACK_INPUT_CONFIG = {
     paddingX: themeData.tailwind.spacing.scale["3"], // px-3 = 12px
     fontSize: FONT_SIZE.lg, // 16px from theme-kumo.css
     borderRadius: BORDER_RADIUS.lg, // 8px
   };
 
   // Get InputArea-specific dimensions (minHeight, width) from registry
-  var inputAreaSizeData =
+  const inputAreaSizeData =
     inputAreaStyling?.sizeVariants?.[size] ||
     FALLBACK_INPUT_AREA_CONFIG[size] ||
     FALLBACK_INPUT_AREA_CONFIG.base;
 
   // Get Input dimensions (paddingX, fontSize, borderRadius) from registry
-  var inputSizeVariant =
+  const inputSizeVariant =
     inputStyling?.sizeVariants?.[size] || inputStyling?.sizeVariants?.base;
 
   return {
@@ -112,7 +112,7 @@ function getSizeConfigFromRegistry(size: string) {
 /**
  * Size configuration from registry (computed at generator init time)
  */
-var SIZE_CONFIG: Record<
+const SIZE_CONFIG: Record<
   string,
   {
     minHeight: number;
@@ -132,17 +132,17 @@ var SIZE_CONFIG: Record<
 /**
  * State values
  */
-var STATE_VALUES = ["default", "focus", "disabled"];
+const STATE_VALUES = ["default", "focus", "disabled"];
 
 /**
  * WithLabel values - whether to show Field wrapper (label, description, error)
  */
-var WITH_LABEL_VALUES = [false, true];
+const WITH_LABEL_VALUES = [false, true];
 
 /**
  * State-specific style overrides
  */
-var STATE_STYLES: Record<
+const STATE_STYLES: Record<
   string,
   {
     ringVariable?: string;
@@ -168,7 +168,7 @@ var STATE_STYLES: Record<
 /**
  * Variant-specific configuration
  */
-var VARIANT_CONFIG: Record<
+const VARIANT_CONFIG: Record<
   string,
   {
     ringVariable: string;
@@ -204,12 +204,12 @@ async function createInputAreaComponent(
   state: string,
   withLabel: boolean,
 ): Promise<ComponentNode> {
-  var sizeConfig = SIZE_CONFIG[size] || SIZE_CONFIG["base"];
-  var variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
-  var stateStyle = STATE_STYLES[state] || STATE_STYLES["default"];
+  const sizeConfig = SIZE_CONFIG[size] || SIZE_CONFIG["base"];
+  const variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
+  const stateStyle = STATE_STYLES[state] || STATE_STYLES["default"];
 
   // Create component
-  var component = figma.createComponent();
+  const component = figma.createComponent();
   component.name =
     "size=" +
     size +
@@ -244,11 +244,11 @@ async function createInputAreaComponent(
 
   // Create label (only if withLabel is true)
   if (withLabel && variantConfig.label) {
-    var labelText = await createTextNode(variantConfig.label, FONT_SIZE.base, 500); // 14px from theme-kumo.css
+    const labelText = await createTextNode(variantConfig.label, FONT_SIZE.base, 500); // 14px from theme-kumo.css
     labelText.name = "Label";
     labelText.textAutoResize = "WIDTH_AND_HEIGHT";
 
-    var labelVar = getVariableByName("text-color-label");
+    const labelVar = getVariableByName("text-color-label");
     if (labelVar) {
       bindTextColorToVariable(labelText, labelVar.id);
     }
@@ -257,7 +257,7 @@ async function createInputAreaComponent(
   }
 
   // Create textarea frame
-  var textareaFrame = figma.createFrame();
+  const textareaFrame = figma.createFrame();
   textareaFrame.name = "Textarea";
   textareaFrame.layoutMode = "HORIZONTAL";
   textareaFrame.primaryAxisAlignItems = "MIN";
@@ -273,29 +273,29 @@ async function createInputAreaComponent(
   textareaFrame.cornerRadius = sizeConfig.borderRadius;
 
   // Apply background fill (bg-secondary)
-  var bgVar = getVariableByName("color-secondary");
+  const bgVar = getVariableByName("color-secondary");
   if (bgVar) {
     bindFillToVariable(textareaFrame, bgVar.id);
   }
 
   // Apply ring (stroke) - use variant ring in default state, state ring for focus
-  var ringVarName = variantConfig.ringVariable;
+  let ringVarName = variantConfig.ringVariable;
   if (state === "focus" && variant === "default") {
     ringVarName = "color-active";
   } else if (state === "focus" && variant === "error") {
     ringVarName = "color-error";
   }
-  var ringVar = getVariableByName(ringVarName);
+  const ringVar = getVariableByName(ringVarName);
   if (ringVar) {
     bindStrokeToVariable(textareaFrame, ringVar.id, 1);
   }
 
   // Create placeholder text (multi-line for textarea)
-  var placeholderValue =
+  const placeholderValue =
     variant === "error"
       ? "Invalid content here..."
       : "Enter your message here...";
-  var placeholderText = await createTextNode(
+  const placeholderText = await createTextNode(
     placeholderValue,
     sizeConfig.fontSize,
     400,
@@ -304,7 +304,7 @@ async function createInputAreaComponent(
   placeholderText.textAutoResize = "WIDTH_AND_HEIGHT";
 
   // Apply text color (text-muted for placeholder, text-surface for value in error)
-  var textColorVar =
+  const textColorVar =
     variant === "error"
       ? getVariableByName("text-color-surface")
       : getVariableByName("text-color-muted");
@@ -317,11 +317,11 @@ async function createInputAreaComponent(
 
   // Create description or error message (only if withLabel is true)
   if (withLabel && variantConfig.description && variant === "default") {
-    var descText = await createTextNode(variantConfig.description, FONT_SIZE.xs, 400); // 12px from theme-kumo.css
+    const descText = await createTextNode(variantConfig.description, FONT_SIZE.xs, 400); // 12px from theme-kumo.css
     descText.name = "Description";
     descText.textAutoResize = "WIDTH_AND_HEIGHT";
 
-    var descVar = getVariableByName("text-color-muted");
+    const descVar = getVariableByName("text-color-muted");
     if (descVar) {
       bindTextColorToVariable(descText, descVar.id);
     }
@@ -330,11 +330,11 @@ async function createInputAreaComponent(
   }
 
   if (withLabel && variantConfig.errorMessage && variant === "error") {
-    var errorText = await createTextNode(variantConfig.errorMessage, FONT_SIZE.xs, 400); // 12px from theme-kumo.css
+    const errorText = await createTextNode(variantConfig.errorMessage, FONT_SIZE.xs, 400); // 12px from theme-kumo.css
     errorText.name = "Error";
     errorText.textAutoResize = "WIDTH_AND_HEIGHT";
 
-    var errorVar = getVariableByName("text-color-error");
+    const errorVar = getVariableByName("text-color-error");
     if (errorVar) {
       bindTextColorToVariable(errorText, errorVar.id);
     }
@@ -373,39 +373,39 @@ export async function generateInputAreaComponents(
   figma.currentPage = page;
 
   // Generate all combinations
-  var components: ComponentNode[] = [];
+  const components: ComponentNode[] = [];
 
   // Track row labels: { y, text }
-  var rowLabels: { y: number; text: string }[] = [];
+  const rowLabels: { y: number; text: string }[] = [];
 
   // Track column headers: { x, text }
-  var columnHeaders: { x: number; text: string }[] = [];
+  let columnHeaders: { x: number; text: string }[] = [];
 
   // Layout spacing
-  var componentGapX = 24;
-  var componentGapY = 40;
-  var headerRowHeight = 24;
-  var labelColumnWidth = 200; // Wider for size + withLabel labels
+  const componentGapX = 24;
+  const componentGapY = 40;
+  const headerRowHeight = 24;
+  const labelColumnWidth = 200; // Wider for size + withLabel labels
 
   // Track layout by row (size × withLabel)
-  var rowComponents: Map<number, ComponentNode[]> = new Map();
+  const rowComponents: Map<number, ComponentNode[]> = new Map();
 
   // Generate components for each combination
   // Rows = size × withLabel, Columns = variant × state
-  var rowIndex = 0;
-  for (var si = 0; si < SIZE_VALUES.length; si++) {
-    var size = SIZE_VALUES[si];
+  let rowIndex = 0;
+  for (let si = 0; si < SIZE_VALUES.length; si++) {
+    const size = SIZE_VALUES[si];
 
-    for (var wli = 0; wli < WITH_LABEL_VALUES.length; wli++) {
-      var withLabel = WITH_LABEL_VALUES[wli];
+    for (let wli = 0; wli < WITH_LABEL_VALUES.length; wli++) {
+      const withLabel = WITH_LABEL_VALUES[wli];
       rowComponents.set(rowIndex, []);
 
-      for (var vi = 0; vi < VARIANT_VALUES.length; vi++) {
-        var variant = VARIANT_VALUES[vi];
+      for (let vi = 0; vi < VARIANT_VALUES.length; vi++) {
+        const variant = VARIANT_VALUES[vi];
 
-        for (var sti = 0; sti < STATE_VALUES.length; sti++) {
-          var state = STATE_VALUES[sti];
-          var component = await createInputAreaComponent(
+        for (let sti = 0; sti < STATE_VALUES.length; sti++) {
+          const state = STATE_VALUES[sti];
+          const component = await createInputAreaComponent(
             size,
             variant,
             state,
@@ -421,17 +421,17 @@ export async function generateInputAreaComponents(
   }
 
   // First pass: calculate max width per column and max height per row
-  var columnWidths: number[] = [];
-  var rowHeights: number[] = [];
+  const columnWidths: number[] = [];
+  const rowHeights: number[] = [];
 
-  var numColumns = VARIANT_VALUES.length * STATE_VALUES.length;
-  var totalRows = SIZE_VALUES.length * WITH_LABEL_VALUES.length;
+  const numColumns = VARIANT_VALUES.length * STATE_VALUES.length;
+  const totalRows = SIZE_VALUES.length * WITH_LABEL_VALUES.length;
 
-  for (var colIdx = 0; colIdx < numColumns; colIdx++) {
-    var maxColWidth = 0;
-    for (var rowIdx = 0; rowIdx < totalRows; rowIdx++) {
-      var row = rowComponents.get(rowIdx) || [];
-      var comp = row[colIdx];
+  for (let colIdx = 0; colIdx < numColumns; colIdx++) {
+    let maxColWidth = 0;
+    for (let rowIdx = 0; rowIdx < totalRows; rowIdx++) {
+      const row = rowComponents.get(rowIdx) || [];
+      const comp = row[colIdx];
       if (comp && comp.width > maxColWidth) {
         maxColWidth = comp.width;
       }
@@ -439,11 +439,11 @@ export async function generateInputAreaComponents(
     columnWidths.push(maxColWidth);
   }
 
-  for (var rowIdx = 0; rowIdx < totalRows; rowIdx++) {
-    var row = rowComponents.get(rowIdx) || [];
-    var maxRowHeight = 0;
-    for (var colIdx = 0; colIdx < row.length; colIdx++) {
-      var comp = row[colIdx];
+  for (let rowIdx = 0; rowIdx < totalRows; rowIdx++) {
+    const row = rowComponents.get(rowIdx) || [];
+    let maxRowHeight = 0;
+    for (let colIdx = 0; colIdx < row.length; colIdx++) {
+      const comp = row[colIdx];
       if (comp && comp.height > maxRowHeight) {
         maxRowHeight = comp.height;
       }
@@ -452,16 +452,16 @@ export async function generateInputAreaComponents(
   }
 
   // Second pass: position components using consistent column widths
-  var yOffset = headerRowHeight;
+  let yOffset = headerRowHeight;
 
-  var currentRowIndex = 0;
-  for (var si2 = 0; si2 < SIZE_VALUES.length; si2++) {
-    var sizeValue = SIZE_VALUES[si2];
+  let currentRowIndex = 0;
+  for (let si2 = 0; si2 < SIZE_VALUES.length; si2++) {
+    const sizeValue = SIZE_VALUES[si2];
 
-    for (var wli2 = 0; wli2 < WITH_LABEL_VALUES.length; wli2++) {
-      var withLabelValue = WITH_LABEL_VALUES[wli2];
-      var row = rowComponents.get(currentRowIndex) || [];
-      var xOffset = labelColumnWidth;
+    for (let wli2 = 0; wli2 < WITH_LABEL_VALUES.length; wli2++) {
+      const withLabelValue = WITH_LABEL_VALUES[wli2];
+      const row = rowComponents.get(currentRowIndex) || [];
+      let xOffset = labelColumnWidth;
 
       // Record row label
       rowLabels.push({
@@ -469,17 +469,17 @@ export async function generateInputAreaComponents(
         text: "size=" + sizeValue + ", withLabel=" + withLabelValue,
       });
 
-      for (var colIdx = 0; colIdx < row.length; colIdx++) {
-        var comp = row[colIdx];
+      for (let colIdx = 0; colIdx < row.length; colIdx++) {
+        const comp = row[colIdx];
         comp.x = xOffset;
         comp.y = yOffset;
 
         // Record column headers from first row
         if (currentRowIndex === 0) {
-          var variantIdx = Math.floor(colIdx / STATE_VALUES.length);
-          var stateIdx = colIdx % STATE_VALUES.length;
-          var variantVal = VARIANT_VALUES[variantIdx];
-          var stateVal = STATE_VALUES[stateIdx];
+          const variantIdx = Math.floor(colIdx / STATE_VALUES.length);
+          const stateIdx = colIdx % STATE_VALUES.length;
+          const variantVal = VARIANT_VALUES[variantIdx];
+          const stateVal = STATE_VALUES[stateIdx];
           columnHeaders.push({
             x: xOffset,
             text: "variant=" + variantVal + ", state=" + stateVal,
@@ -497,7 +497,7 @@ export async function generateInputAreaComponents(
 
   // Combine all variants into a single ComponentSet
   // @ts-ignore - combineAsVariants works at runtime
-  var componentSet = figma.combineAsVariants(components, page);
+  const componentSet = figma.combineAsVariants(components, page);
   componentSet.name = "InputArea";
   componentSet.description =
     "InputArea (textarea) component with size, variant, state, and withLabel properties. " +
@@ -505,18 +505,18 @@ export async function generateInputAreaComponents(
   componentSet.layoutMode = "NONE";
 
   // Calculate content dimensions
-  var contentWidth = componentSet.width + labelColumnWidth;
-  var contentHeight = componentSet.height + headerRowHeight;
+  const contentWidth = componentSet.width + labelColumnWidth;
+  const contentHeight = componentSet.height + headerRowHeight;
 
   // Create light mode section
-  var lightSection = createModeSection(page, "InputArea", "light");
+  const lightSection = createModeSection(page, "InputArea", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
   );
 
   // Create dark mode section
-  var darkSection = createModeSection(page, "InputArea", "dark");
+  const darkSection = createModeSection(page, "InputArea", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
@@ -537,20 +537,20 @@ export async function generateInputAreaComponents(
   );
 
   // Add row labels to light section
-  for (var li = 0; li < rowLabels.length; li++) {
-    var label = rowLabels[li];
-    var labelNode = await createRowLabel(
+  for (let li = 0; li < rowLabels.length; li++) {
+    const label = rowLabels[li];
+    const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + 8,
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md,
     );
     lightSection.frame.appendChild(labelNode);
   }
 
   // Create instances for dark section
-  for (var k = 0; k < components.length; k++) {
-    var origComp = components[k];
-    var instance = origComp.createInstance();
+  for (let k = 0; k < components.length; k++) {
+    const origComp = components[k];
+    const instance = origComp.createInstance();
     instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
     instance.y = origComp.y + SECTION_PADDING + headerRowHeight;
     darkSection.frame.appendChild(instance);
@@ -566,9 +566,9 @@ export async function generateInputAreaComponents(
   );
 
   // Add row labels to dark section
-  for (var di = 0; di < rowLabels.length; di++) {
-    var darkLabel = rowLabels[di];
-    var darkLabelNode = await createRowLabel(
+  for (let di = 0; di < rowLabels.length; di++) {
+    const darkLabel = rowLabels[di];
+    const darkLabelNode = await createRowLabel(
       darkLabel.text,
       SECTION_PADDING,
       SECTION_PADDING + darkLabel.y + 8,
@@ -577,8 +577,8 @@ export async function generateInputAreaComponents(
   }
 
   // Resize sections to fit content with padding
-  var totalWidth = contentWidth + SECTION_PADDING * 2;
-  var totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalWidth = contentWidth + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
@@ -656,7 +656,7 @@ export function getInputAreaWithLabelConfig() {
  * @returns Size dimensions object
  */
 export function getInputAreaSizeDimensions(size: string) {
-  var sizeConfig = SIZE_CONFIG[size] || SIZE_CONFIG["base"];
+  const sizeConfig = SIZE_CONFIG[size] || SIZE_CONFIG["base"];
   return {
     size: size,
     minHeight: sizeConfig.minHeight,
@@ -675,11 +675,11 @@ export function getInputAreaSizeDimensions(size: string) {
  * @returns Ring variable name
  */
 export function getInputAreaRingVariable(variant: string, state: string) {
-  var variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
-  var stateStyle = STATE_STYLES[state] || STATE_STYLES["default"];
+  const variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
+  const stateStyle = STATE_STYLES[state] || STATE_STYLES["default"];
 
   // Determine ring variable based on variant and state
-  var ringVarName = variantConfig.ringVariable;
+  let ringVarName = variantConfig.ringVariable;
   if (state === "focus" && variant === "default") {
     ringVarName = "color-active";
   } else if (state === "focus" && variant === "error") {
@@ -703,7 +703,7 @@ export function getAllInputAreaVariantData() {
       };
     }),
     variants: VARIANT_VALUES.map(function (variant: string) {
-      var variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
+      const variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
       return {
         variant: variant,
         config: variantConfig,
@@ -727,6 +727,6 @@ export function getAllInputAreaVariantData() {
 /**
  * Exports for tests and backwards compatibility
  */
-export var INPUT_AREA_SIZE_VALUES = SIZE_VALUES;
-export var INPUT_AREA_VARIANT_VALUES = VARIANT_VALUES;
-export var INPUT_AREA_STATE_VALUES = STATE_VALUES;
+export const INPUT_AREA_SIZE_VALUES = SIZE_VALUES;
+export const INPUT_AREA_VARIANT_VALUES = VARIANT_VALUES;
+export const INPUT_AREA_STATE_VALUES = STATE_VALUES;
