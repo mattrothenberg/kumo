@@ -164,7 +164,7 @@ const RadioItem = forwardRef<HTMLButtonElement, RadioItemProps>(
     return (
       <label
         className={cn(
-          "relative inline-flex items-center gap-2",
+          "relative inline-flex items-center gap-2 group",
           // "start" (default): radio before label
           // "end": label before radio using flex-row-reverse
           controlPosition === "end" && "flex-row-reverse justify-end",
@@ -179,7 +179,7 @@ const RadioItem = forwardRef<HTMLButtonElement, RadioItemProps>(
           className={cn(
             "flex h-4 w-4 items-center justify-center rounded-full border-0 bg-surface ring",
             variant === "error" ? "ring-destructive" : "ring-border",
-            !disabled && "hover:ring-active focus-visible:ring-active",
+            !disabled && "group-hover:ring-active focus-visible:ring-active focus-visible:outline-offset-3",
             "data-[checked]:bg-surface-inverse",
           )}
         >
