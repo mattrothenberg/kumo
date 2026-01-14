@@ -222,23 +222,6 @@ export default function Example() {
           </div>
 
           <div>
-            <h3 className="mb-4 text-xl font-semibold">Required Field</h3>
-            <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
-              Use the <code>required</code> prop to show an asterisk (*)
-              indicating the field is required.
-            </p>
-            <ComponentExample
-              code={`<Input 
-  label="Email" 
-  required
-  placeholder="you@example.com"
-/>`}
-            >
-              <Input label="Email" required placeholder="you@example.com" />
-            </ComponentExample>
-          </div>
-
-          <div>
             <h3 className="mb-4 text-xl font-semibold">Optional Field</h3>
             <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
               Set{" "}
@@ -394,8 +377,8 @@ export default function Example() {
                 <td className="px-4 py-3 font-mono text-xs">boolean</td>
                 <td className="px-4 py-3 font-mono text-xs">-</td>
                 <td className="px-4 py-3 text-xs">
-                  When true: shows asterisk (*). When false: shows "(optional)".
-                  Also sets HTML required attribute.
+                  When false: shows "(optional)" text. Also sets HTML required
+                  attribute.
                 </td>
               </tr>
               <tr className="border-b border-neutral-200 dark:border-neutral-800">

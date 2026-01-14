@@ -35,21 +35,6 @@ export const WithLabel: Story = {
   ),
 };
 
-export const RequiredField: Story = {
-  render: () => (
-    <Select
-      label="Country"
-      hideLabel={false}
-      required
-      placeholder="Select a country"
-    >
-      <Select.Option value="us">United States</Select.Option>
-      <Select.Option value="uk">United Kingdom</Select.Option>
-      <Select.Option value="ca">Canada</Select.Option>
-    </Select>
-  ),
-};
-
 export const OptionalField: Story = {
   render: () => (
     <Select
@@ -80,12 +65,12 @@ export const WithLabelTooltip: Story = {
   ),
 };
 
-export const RequiredWithTooltip: Story = {
+export const OptionalWithTooltip: Story = {
   render: () => (
     <Select
       label="Plan"
       hideLabel={false}
-      required
+      required={false}
       labelTooltip="Choose the plan that best fits your needs. You can upgrade anytime."
       placeholder="Select a plan"
     >

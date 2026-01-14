@@ -23,7 +23,6 @@ export default function LabelDoc() {
         <ComponentExample
           code={`<div className="flex flex-col gap-4">
   <Label>Default Label</Label>
-  <Label required>Required Label</Label>
   <Label showOptional>Optional Label</Label>
   <Label tooltip="More information about this field">
     Label with Tooltip
@@ -32,7 +31,6 @@ export default function LabelDoc() {
         >
           <div className="flex flex-col gap-4">
             <Label>Default Label</Label>
-            <Label required>Required Label</Label>
             <Label showOptional>Optional Label</Label>
             <Label tooltip="More information about this field">
               Label with Tooltip
@@ -75,9 +73,6 @@ export default function LabelDoc() {
 export default function Example() {
   return (
     <>
-      {/* Required field with asterisk */}
-      <Input label="Email" required placeholder="you@example.com" />
-      
       {/* Optional field with "(optional)" text */}
       <Input label="Phone" required={false} placeholder="+1 555-0000" />
       
@@ -85,7 +80,6 @@ export default function Example() {
       <Input 
         label="API Key" 
         labelTooltip="Find this in your dashboard settings"
-        required 
       />
     </>
   );
@@ -103,7 +97,7 @@ export default function Example() {
 
 export default function Example() {
   return (
-    <Label required tooltip="This field is mandatory">
+    <Label tooltip="This field is mandatory">
       Username
     </Label>
   );
@@ -116,18 +110,6 @@ export default function Example() {
         <h2 className="mb-6 text-2xl font-bold">Examples</h2>
 
         <div className="space-y-8">
-          <div>
-            <h3 className="mb-4 text-xl font-semibold">Required Field</h3>
-            <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
-              Shows a red asterisk (*) to indicate the field is required.
-            </p>
-            <ComponentExample
-              code={`<Input label="Email" required placeholder="you@example.com" />`}
-            >
-              <Input label="Email" required placeholder="you@example.com" />
-            </ComponentExample>
-          </div>
-
           <div>
             <h3 className="mb-4 text-xl font-semibold">Optional Field</h3>
             <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
@@ -170,33 +152,6 @@ export default function Example() {
 
           <div>
             <h3 className="mb-4 text-xl font-semibold">
-              Required with Tooltip
-            </h3>
-            <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
-              Combine required indicator with tooltip for complete field
-              context.
-            </p>
-            <ComponentExample
-              code={`<Input 
-  label="Password" 
-  required
-  labelTooltip="Must be at least 8 characters with one uppercase letter"
-  type="password"
-  placeholder="Enter password" 
-/>`}
-            >
-              <Input
-                label="Password"
-                required
-                labelTooltip="Must be at least 8 characters with one uppercase letter"
-                type="password"
-                placeholder="Enter password"
-              />
-            </ComponentExample>
-          </div>
-
-          <div>
-            <h3 className="mb-4 text-xl font-semibold">
               ReactNode Label Content
             </h3>
             <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
@@ -208,8 +163,7 @@ export default function Example() {
     <span>
       I agree to the <strong>Terms of Service</strong>
     </span>
-  } 
-  required
+  }
 />`}
             >
               <Checkbox
@@ -218,7 +172,6 @@ export default function Example() {
                     I agree to the <strong>Terms of Service</strong>
                   </span>
                 }
-                required
               />
             </ComponentExample>
           </div>
@@ -232,10 +185,9 @@ export default function Example() {
             </p>
             <ComponentExample
               code={`<div className="flex flex-col gap-4 max-w-md">
-  <Input label="Full Name" required placeholder="John Doe" />
+  <Input label="Full Name" placeholder="John Doe" />
   <Input 
     label="Email" 
-    required 
     labelTooltip="We'll send your receipt here"
     placeholder="john@example.com" 
     type="email"
@@ -243,7 +195,6 @@ export default function Example() {
   <Input label="Company" required={false} placeholder="Acme Inc." />
   <Select 
     label="Country" 
-    required 
     hideLabel={false}
     placeholder="Select a country"
   >
@@ -254,10 +205,9 @@ export default function Example() {
 </div>`}
             >
               <div className="flex max-w-md flex-col gap-4">
-                <Input label="Full Name" required placeholder="John Doe" />
+                <Input label="Full Name" placeholder="John Doe" />
                 <Input
                   label="Email"
-                  required
                   labelTooltip="We'll send your receipt here"
                   placeholder="john@example.com"
                   type="email"
@@ -269,7 +219,6 @@ export default function Example() {
                 />
                 <Select
                   label="Country"
-                  required
                   hideLabel={false}
                   placeholder="Select a country"
                 >
@@ -289,18 +238,14 @@ export default function Example() {
             <ComponentExample
               code={`<div className="flex flex-col gap-3">
   <Label>Default</Label>
-  <Label required>Required</Label>
   <Label showOptional>Optional</Label>
-  <Label required tooltip="Important field">Required with Tooltip</Label>
+  <Label tooltip="Important field">With Tooltip</Label>
 </div>`}
             >
               <div className="flex flex-col gap-3">
                 <Label>Default</Label>
-                <Label required>Required</Label>
                 <Label showOptional>Optional</Label>
-                <Label required tooltip="Important field">
-                  Required with Tooltip
-                </Label>
+                <Label tooltip="Important field">With Tooltip</Label>
               </div>
             </ComponentExample>
           </div>
@@ -333,14 +278,6 @@ export default function Example() {
                 <td className="px-4 py-3 font-mono text-xs">ReactNode</td>
                 <td className="px-4 py-3 font-mono text-xs">-</td>
                 <td className="px-4 py-3 text-xs">Label content (required)</td>
-              </tr>
-              <tr className="border-b border-neutral-200 dark:border-neutral-800">
-                <td className="px-4 py-3 font-mono text-xs">required</td>
-                <td className="px-4 py-3 font-mono text-xs">boolean</td>
-                <td className="px-4 py-3 font-mono text-xs">false</td>
-                <td className="px-4 py-3 text-xs">
-                  Shows red asterisk (*) when true
-                </td>
               </tr>
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
                 <td className="px-4 py-3 font-mono text-xs">showOptional</td>
@@ -401,8 +338,8 @@ export default function Example() {
                 <td className="px-4 py-3 font-mono text-xs">boolean</td>
                 <td className="px-4 py-3 font-mono text-xs">-</td>
                 <td className="px-4 py-3 text-xs">
-                  When true: shows asterisk. When false: shows "(optional)".
-                  Also sets HTML required attribute.
+                  When false: shows "(optional)" text. Also sets HTML required
+                  attribute.
                 </td>
               </tr>
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
@@ -424,17 +361,17 @@ export default function Example() {
         <div className="space-y-4 text-sm">
           <div>
             <h3 className="mb-2 font-semibold">
-              When to Use Required Indicators
+              When to Use Optional Indicators
             </h3>
             <ul className="ml-4 list-disc space-y-1 text-neutral-600 dark:text-neutral-400">
-              <li>
-                Use asterisks (*) for required fields in forms with many fields
-              </li>
               <li>
                 Use "(optional)" for optional fields when most fields are
                 required
               </li>
-              <li>Be consistent within a form - don't mix approaches</li>
+              <li>Be consistent within a form</li>
+              <li>
+                Default fields (no indicator) are assumed required by users
+              </li>
             </ul>
           </div>
           <div>
@@ -450,7 +387,7 @@ export default function Example() {
             <h3 className="mb-2 font-semibold">Accessibility</h3>
             <ul className="ml-4 list-disc space-y-1 text-neutral-600 dark:text-neutral-400">
               <li>
-                Required indicators are purely visual - use the{" "}
+                Optional indicators are purely visual - use the{" "}
                 <code>required</code> attribute for validation
               </li>
               <li>

@@ -30,8 +30,6 @@ export function labelContentVariants() {
 export interface LabelProps extends KumoLabelVariantsProps {
   /** The label content - can be a string or any React node */
   children: ReactNode;
-  /** When true, shows a red asterisk (*) to indicate the field is required */
-  required?: boolean;
   /** When true (and required is false), shows gray "(optional)" text after the label */
   showOptional?: boolean;
   /** Tooltip content to display next to the label via an info icon */
@@ -51,17 +49,12 @@ export interface LabelProps extends KumoLabelVariantsProps {
  * Label component for form fields.
  *
  * Provides a standardized way to display labels with optional indicators:
- * - Required indicator: red asterisk (*) when `required={true}`
- * - Optional indicator: gray "(optional)" text when `showOptional={true}` and not required
+ * - Optional indicator: gray "(optional)" text when `showOptional={true}`
  * - Tooltip: info icon with hover tooltip for additional context
  *
  * @example
  * // Basic label
  * <Label>Email</Label>
- *
- * @example
- * // Required field
- * <Label required>Password</Label>
  *
  * @example
  * // Optional field with indicator
@@ -79,7 +72,6 @@ export interface LabelProps extends KumoLabelVariantsProps {
  */
 export function Label({
   children,
-  required = false,
   showOptional = false,
   tooltip,
   className,
@@ -88,8 +80,7 @@ export function Label({
   const content = (
     <>
       {children}
-      {required && <span className="text-destructive">*</span>}
-      {!required && showOptional && (
+      {showOptional && (
         <span className="font-normal text-muted">(optional)</span>
       )}
       {tooltip && (

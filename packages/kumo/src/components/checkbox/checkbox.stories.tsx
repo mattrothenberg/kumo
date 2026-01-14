@@ -94,13 +94,6 @@ export const LabelFirst: Story = {
   },
 };
 
-export const RequiredField: Story = {
-  args: {
-    label: "I agree to the terms and conditions",
-    required: true,
-  },
-};
-
 export const OptionalField: Story = {
   args: {
     label: "Subscribe to newsletter",
@@ -115,11 +108,11 @@ export const WithLabelTooltip: Story = {
   },
 };
 
-export const RequiredWithTooltip: Story = {
+export const OptionalWithTooltip: Story = {
   args: {
-    label: "I accept the privacy policy",
-    required: true,
-    labelTooltip: "You must accept our privacy policy to continue",
+    label: "Remember my preferences",
+    required: false,
+    labelTooltip: "We'll save your settings for next time",
   },
 };
 
@@ -132,7 +125,6 @@ export const ReactNodeLabel: Story = {
           <strong>Privacy Policy</strong>
         </span>
       }
-      required
     />
   ),
 };

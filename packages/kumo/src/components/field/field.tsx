@@ -65,9 +65,8 @@ export interface FieldProps extends KumoFieldVariantsProps {
   /** The label content - can be a string or any React node */
   label: ReactNode;
   /**
-   * When true, shows a red asterisk (*) to indicate the field is required.
    * When explicitly false, shows gray "(optional)" text after the label.
-   * When undefined, no indicator is shown.
+   * When true or undefined, no indicator is shown.
    */
   required?: boolean;
   /** Tooltip content to display next to the label via an info icon */
@@ -95,12 +94,7 @@ export function Field({
   return (
     <FieldBase.Root className={fieldVariants({ controlFirst })}>
       <FieldBase.Label className="text-base font-medium text-surface">
-        <Label
-          required={required}
-          showOptional={showOptional}
-          tooltip={labelTooltip}
-          asContent
-        >
+        <Label showOptional={showOptional} tooltip={labelTooltip} asContent>
           {label}
         </Label>
       </FieldBase.Label>

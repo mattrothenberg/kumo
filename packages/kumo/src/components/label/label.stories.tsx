@@ -16,10 +16,6 @@ export const Default: Story = {
   render: () => <Label>Email Address</Label>,
 };
 
-export const Required: Story = {
-  render: () => <Label required>Password</Label>,
-};
-
 export const Optional: Story = {
   render: () => <Label showOptional>Middle Name</Label>,
 };
@@ -28,14 +24,6 @@ export const WithTooltip: Story = {
   render: () => (
     <Label tooltip="We'll use this to send you important updates about your account">
       Email Address
-    </Label>
-  ),
-};
-
-export const RequiredWithTooltip: Story = {
-  render: () => (
-    <Label required tooltip="Your password must be at least 8 characters long">
-      Password
     </Label>
   ),
 };
@@ -62,12 +50,8 @@ export const AllVariations: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
       <Label>Default Label</Label>
-      <Label required>Required Label</Label>
       <Label showOptional>Optional Label</Label>
       <Label tooltip="More information">Label with Tooltip</Label>
-      <Label required tooltip="Required field info">
-        Required with Tooltip
-      </Label>
       <Label showOptional tooltip="Optional field info">
         Optional with Tooltip
       </Label>
@@ -76,12 +60,11 @@ export const AllVariations: Story = {
 };
 
 // Integration examples showing how the label props work with form components
-export const InputWithRequiredLabel: Story = {
-  name: "Input - Required",
+export const InputWithTooltip: Story = {
+  name: "Input - With Tooltip",
   render: () => (
     <Input
       label="Email Address"
-      required
       labelTooltip="We'll send account notifications here"
       placeholder="you@example.com"
     />
@@ -100,12 +83,11 @@ export const InputWithOptionalLabel: Story = {
   ),
 };
 
-export const SelectWithRequiredLabel: Story = {
-  name: "Select - Required",
+export const SelectWithTooltip: Story = {
+  name: "Select - With Tooltip",
   render: () => (
     <Select
       label="Country"
-      required
       hideLabel={false}
       labelTooltip="Select your country of residence"
       placeholder="Select a country"
@@ -118,13 +100,12 @@ export const SelectWithRequiredLabel: Story = {
 };
 
 export const FormExample: Story = {
-  name: "Form with Mixed Required/Optional",
+  name: "Form with Optional Fields",
   render: () => (
     <div className="flex max-w-md flex-col gap-4">
-      <Input label="Full Name" required placeholder="John Doe" />
+      <Input label="Full Name" placeholder="John Doe" />
       <Input
         label="Email"
-        required
         labelTooltip="We'll send your receipt here"
         placeholder="john@example.com"
         type="email"
