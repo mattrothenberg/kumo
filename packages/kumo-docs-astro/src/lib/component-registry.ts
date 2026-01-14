@@ -1,10 +1,15 @@
 /**
  * Utility to load and query component registry data for documentation.
- * Reads from the auto-generated component-registry.json in @cloudflare/kumo.
+ * Reads from the auto-generated component-registry.json in the kumo package.
+ *
+ * Note: We use a Vite alias instead of an npm export to keep the component
+ * registry internal (not published to npm). The alias is configured in
+ * astro.config.mjs to point to ../kumo/ai/component-registry.json
  */
 
-// Import the registry JSON directly - Astro/Vite will handle this at build time
-import registry from "@cloudflare/kumo/ai/component-registry.json";
+// Import the registry JSON via Vite alias (configured in astro.config.mjs)
+// @ts-expect-error - Vite alias, not a real npm package
+import registry from "@kumo-internal/component-registry";
 
 export interface PropSchema {
   type: string;

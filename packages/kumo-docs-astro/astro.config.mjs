@@ -56,6 +56,15 @@ export default defineConfig({
   integrations: [react(), pagefind()],
   vite: {
     plugins: [tailwindcss()],
+    resolve: {
+      alias: {
+        // Workspace-internal alias for component registry (not published to npm)
+        "@kumo-internal/component-registry": resolve(
+          __dirname,
+          "../kumo/ai/component-registry.json",
+        ),
+      },
+    },
     define: {
       __BUILD_VERSION__: JSON.stringify(buildInfo.version),
       __BUILD_COMMIT__: JSON.stringify(buildInfo.commitHash),
