@@ -60,13 +60,11 @@ export default function App() {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const toggleSidebar = () => setSidebarOpen((v) => !v);
-  
+
   const [componentsOpen, setComponentsOpen] = useState(true);
   const [blocksOpen, setBlocksOpen] = useState(true);
   const [layoutsOpen, setLayoutsOpen] = useState(true);
   const contentRef = React.useRef<HTMLDivElement>(null);
-
-  
 
   useEffect(() => {
     if (contentRef.current) {
@@ -77,8 +75,6 @@ export default function App() {
       });
     }
   }, [location.pathname]);
-
-  
 
   return (
     <div className="min-h-screen">
@@ -114,9 +110,7 @@ export default function App() {
 
       {/* Theme toggle: fixed in top right corner */}
       <div className="pointer-events-auto fixed top-0 right-2 z-50 flex h-[49px] items-center">
-        <ClientOnly>
-          {() => <ThemeToggle  />}
-        </ClientOnly>
+        <ClientOnly>{() => <ThemeToggle />}</ClientOnly>
       </div>
 
       {/* Sliding panel that opens to the right of the rail */}
@@ -432,6 +426,19 @@ export default function App() {
                   MenuBar
                 </Link>
               </li> */}
+              <li>
+                <Link
+                  to="/components/radio"
+                  prefetch="intent"
+                  className={cn(
+                    LI_STYLE,
+                    location.pathname === "/components/radio" &&
+                      LI_ACTIVE_STYLE,
+                  )}
+                >
+                  Radio
+                </Link>
+              </li>
               <li>
                 <Link
                   to="/components/select"

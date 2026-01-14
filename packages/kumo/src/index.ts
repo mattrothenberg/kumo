@@ -59,6 +59,17 @@ export {
   KUMO_SENSITIVE_INPUT_VARIANTS,
   KUMO_SENSITIVE_INPUT_DEFAULT_VARIANTS,
 } from "./components/sensitive-input";
+export {
+  Radio,
+  RadioGroup,
+  KUMO_RADIO_VARIANTS,
+  KUMO_RADIO_DEFAULT_VARIANTS,
+  type RadioGroupProps,
+  type RadioItemProps,
+  type RadioControlPosition,
+  type KumoRadioVariant,
+  type RadioVariant,
+} from "./components/radio";
 // PLOP_INJECT_EXPORT
 
 // Blocks
