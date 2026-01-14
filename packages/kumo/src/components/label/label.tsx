@@ -81,12 +81,12 @@ export function Label({
     <>
       {children}
       {showOptional && (
-        <span className="font-normal text-muted">(optional)</span>
+        <span className="font-normal text-label">(optional)</span>
       )}
       {tooltip && (
         <Tooltip content={tooltip}>
           <Info
-            className="size-4 cursor-help text-muted"
+            className="size-4 cursor-help text-label"
             aria-label="More information"
           />
         </Tooltip>
