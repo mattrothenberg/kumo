@@ -2458,16 +2458,13 @@
         "DropdownMenu",
         "Tooltip"
       ],
-      "Other": [
-        "Label",
-        "SensitiveInput"
-      ],
       "Navigation": [
         "MenuBar",
         "Pagination",
         "Tabs"
       ],
       "Other": [
+        "Label",
         "Radio",
         "SensitiveInput"
       ],

@@ -3089,7 +3089,6 @@ Tooltip component
 - **Action:** Button, ClipboardText
 - **Input:** Checkbox, Combobox, DateRangePicker, Field, Input, Select, Switch
 - **Overlay:** Dialog, DropdownMenu, Tooltip
-- **Other:** Label, SensitiveInput
+- **Other:** Label, Radio, SensitiveInput
 - **Navigation:** MenuBar, Pagination, Tabs
-- **Other:** Radio, SensitiveInput
 - **Layout:** Surface
