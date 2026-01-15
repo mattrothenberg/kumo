@@ -30,6 +30,10 @@ import { generateMenuBarComponents } from "./generators/menubar";
 import { generateMeterComponents } from "./generators/meter";
 
 import { generatePaginationComponents } from "./generators/pagination";
+import {
+  generateRadioComponents,
+  generateRadioGroupComponents,
+} from "./generators/radio";
 import { generateRefreshButtonComponents } from "./generators/refresh-button";
 import { generateSelectComponents } from "./generators/select";
 import { generateSensitiveInputComponents } from "./generators/sensitive-input";
@@ -290,6 +294,20 @@ figma.ui.onmessage = async (msg: { type: string }) => {
           name: "Pagination",
           execute: async (_page, y) => {
             const result = await generatePaginationComponents(y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "Radio",
+          execute: async (page, y) => {
+            const result = await generateRadioComponents(page, y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "Radio.Group",
+          execute: async (page, y) => {
+            const result = await generateRadioGroupComponents(page, y);
             return { nextY: result };
           },
         },

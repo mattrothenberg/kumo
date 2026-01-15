@@ -290,18 +290,13 @@ validate-colors-run:
       when: on_success
     - when: never
 
-# Figma sync validation runs when component registry or figma generators change
+# Figma sync validation - always runs on MRs to catch drift after rebases
+# (e.g., new component added to main but no Figma generator exists)
 validate-figma-sync-run:
   needs:
     - build-kumo-build
   rules:
     - if: $CI_MERGE_REQUEST_IID
-      changes:
-        paths:
-          - packages/kumo/ai/component-registry.json
-          - packages/figma/src/generators/**/*
-          - packages/figma/src/code.ts
-        compare_to: "refs/heads/main"
       when: on_success
     - if: '$CI_COMMIT_BRANCH == "main"'
       when: on_success
