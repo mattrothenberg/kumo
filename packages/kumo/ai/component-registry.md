@@ -2680,11 +2680,17 @@ Tabs component
 **Props:**
 
 - `tabs`: TabsItem[]
+  Array of tab items to render
 - `value`: string
+  Controlled value. When set, component becomes controlled.
 - `selectedValue`: string
+  Default selected value for uncontrolled mode. Ignored when `value` is set.
 - `className`: string
+  Additional class name for the root element
 - `listClassName`: string
+  Additional class name for the tab list element
 - `indicatorClassName`: string
+  Additional class name for the indicator element
 - `variant`: enum [default: segmented]
 - `onValueChange`: (value: string) => void
   Callback when active tab changes

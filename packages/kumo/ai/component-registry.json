@@ -2088,27 +2088,33 @@
       "props": {
         "tabs": {
           "type": "TabsItem[]",
-          "optional": true
+          "optional": true,
+          "description": "Array of tab items to render"
         },
         "value": {
           "type": "string",
-          "optional": true
+          "optional": true,
+          "description": "Controlled value. When set, component becomes controlled."
         },
         "selectedValue": {
           "type": "string",
-          "optional": true
+          "optional": true,
+          "description": "Default selected value for uncontrolled mode. Ignored when `value` is set."
         },
         "className": {
           "type": "string",
-          "optional": true
+          "optional": true,
+          "description": "Additional class name for the root element"
         },
         "listClassName": {
           "type": "string",
-          "optional": true
+          "optional": true,
+          "description": "Additional class name for the tab list element"
         },
         "indicatorClassName": {
           "type": "string",
-          "optional": true
+          "optional": true,
+          "description": "Additional class name for the indicator element"
         },
         "variant": {
           "type": "enum",

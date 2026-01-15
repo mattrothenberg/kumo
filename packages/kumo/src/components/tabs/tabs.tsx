@@ -15,13 +15,6 @@ export interface KumoTabsVariantsProps {
   variant?: (typeof KUMO_TABS_VARIANTS.variant)[number];
 }
 
-export function tabsVariants(_props: KumoTabsVariantsProps = {}) {
-  return cn(
-    // Base styles
-    "relative min-w-0 font-medium",
-  );
-}
-
 export type TabsItem = {
   value: string;
   label: ReactNode;
@@ -29,12 +22,19 @@ export type TabsItem = {
 };
 
 export type TabsProps = KumoTabsVariantsProps & {
+  /** Array of tab items to render */
   tabs?: TabsItem[];
+  /** Controlled value. When set, component becomes controlled. */
   value?: string;
+  /** Default selected value for uncontrolled mode. Ignored when `value` is set. */
   selectedValue?: string;
+  /** Callback fired when the active tab changes */
   onValueChange?: (value: string) => void;
+  /** Additional class name for the root element */
   className?: string;
+  /** Additional class name for the tab list element */
   listClassName?: string;
+  /** Additional class name for the indicator element */
   indicatorClassName?: string;
 };
 
