@@ -1596,6 +1596,92 @@
         "text-label"
       ]
     },
+    "Radio": {
+      "name": "Radio",
+      "description": "Radio component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Other",
+      "props": {
+        "legend": {
+          "type": "string",
+          "required": true,
+          "description": "Legend text for the group (required for accessibility)"
+        },
+        "children": {
+          "type": "ReactNode",
+          "optional": true,
+          "description": "Child Radio.Item components"
+        },
+        "orientation": {
+          "type": "enum",
+          "optional": true,
+          "description": "Layout direction of the radio items",
+          "values": [
+            "vertical",
+            "horizontal"
+          ]
+        },
+        "error": {
+          "type": "string",
+          "optional": true,
+          "description": "Error message for the group"
+        },
+        "description": {
+          "type": "ReactNode",
+          "optional": true,
+          "description": "Helper text for the group"
+        },
+        "value": {
+          "type": "string",
+          "optional": true,
+          "description": "Value of the radio that should be selected (controlled)"
+        },
+        "disabled": {
+          "type": "boolean",
+          "optional": true,
+          "description": "Whether all radios in the group are disabled"
+        },
+        "controlPosition": {
+          "type": "RadioControlPosition",
+          "optional": true,
+          "description": "Position of radio control relative to label: \"start\" (default) puts radio before label, \"end\" puts label before radio"
+        },
+        "name": {
+          "type": "string",
+          "optional": true,
+          "description": "Form submission name for the radio group"
+        },
+        "className": {
+          "type": "string",
+          "optional": true,
+          "description": "Additional CSS classes"
+        }
+      },
+      "examples": [
+        "<Radio.Group legend=\"Notification preference\" defaultValue=\"email\">\n      <Radio.Item label=\"Email\" value=\"email\" />\n      <Radio.Item label=\"SMS\" value=\"sms\" />\n      <Radio.Item label=\"Push notification\" value=\"push\" />\n    </Radio.Group>",
+        "<div className=\"flex flex-col gap-4\">\n      {Object.keys(KUMO_RADIO_VARIANTS.variant).map((variant) => (\n        <div\n          key={variant}\n          className=\"border border-dotted border-color bg-surface p-4\"\n        >\n          <div className=\"mb-2 font-sans text-sm leading-5 font-light tracking-wide text-muted uppercase\">\n            {variant}\n          </div>\n          <Radio.Group legend=\"Choose an option\" defaultValue=\"a\">\n            <Radio.Item\n              label=\"Option A\"\n              value=\"a\"\n              variant={variant as \"default\" | \"error\"}\n            />\n            <Radio.Item\n              label=\"Option B\"\n              value=\"b\"\n              variant={variant as \"default\" | \"error\"}\n            />\n          </Radio.Group>\n        </div>\n      ))}\n    </div>",
+        "<Radio.Group\n      legend=\"Size\"\n      orientation=\"horizontal\"\n      defaultValue=\"md\"\n      description=\"Choose the size that works best for your needs\"\n    >\n      <Radio.Item label=\"Small\" value=\"sm\" />\n      <Radio.Item label=\"Medium\" value=\"md\" />\n      <Radio.Item label=\"Large\" value=\"lg\" />\n      <Radio.Item label=\"Extra Large\" value=\"xl\" />\n    </Radio.Group>",
+        "<div className=\"flex flex-col gap-8\">\n      <Radio.Group\n        legend=\"Entirely disabled group\"\n        disabled\n        defaultValue=\"free\"\n      >\n        <Radio.Item label=\"Free\" value=\"free\" />\n        <Radio.Item label=\"Pro\" value=\"pro\" />\n        <Radio.Item label=\"Enterprise\" value=\"enterprise\" />\n      </Radio.Group>\n\n      <Radio.Group legend=\"Individual disabled items\" defaultValue=\"available\">\n        <Radio.Item label=\"Available option\" value=\"available\" />\n        <Radio.Item label=\"Unavailable option\" value=\"unavailable\" disabled />\n        <Radio.Item label=\"Another available\" value=\"another\" />\n      </Radio.Group>\n    </div>",
+        "<Radio.Group\n      legend=\"Payment method\"\n      error=\"Please select a payment method to continue\"\n    >\n      <Radio.Item label=\"Credit Card\" value=\"card\" />\n      <Radio.Item label=\"PayPal\" value=\"paypal\" />\n      <Radio.Item label=\"Bank Transfer\" value=\"bank\" />\n    </Radio.Group>",
+        "<Radio.Group\n      legend=\"Account type\"\n      description=\"Choose the account type that best fits your needs. You can change this later in settings.\"\n      defaultValue=\"personal\"\n    >\n      <Radio.Item label=\"Personal\" value=\"personal\" />\n      <Radio.Item label=\"Business\" value=\"business\" />\n      <Radio.Item label=\"Enterprise\" value=\"enterprise\" />\n    </Radio.Group>",
+        "<Radio.Group\n      legend=\"Subscription tier\"\n      description=\"Select a plan to get started\"\n      error=\"A subscription tier is required\"\n    >\n      <Radio.Item label=\"Starter\" value=\"starter\" />\n      <Radio.Item label=\"Professional\" value=\"professional\" />\n      <Radio.Item label=\"Enterprise\" value=\"enterprise\" />\n    </Radio.Group>",
+        "<Radio.Group\n      legend=\"Preferences\"\n      controlPosition=\"end\"\n      defaultValue=\"option1\"\n    >\n      <Radio.Item label=\"Label appears before radio\" value=\"option1\" />\n      <Radio.Item label=\"This layout may suit RTL languages\" value=\"option2\" />\n      <Radio.Item label=\"Or specific design requirements\" value=\"option3\" />\n    </Radio.Group>",
+        "<div className=\"flex flex-col gap-4\">\n        <Radio.Group\n          legend=\"Contact preference\"\n          description=\"Controlled state - selected value shown below\"\n          value={value}\n          onValueChange={setValue}\n        >\n          <Radio.Item label=\"Email\" value=\"email\" />\n          <Radio.Item label=\"Phone\" value=\"phone\" />\n          <Radio.Item label=\"Mail\" value=\"mail\" />\n        </Radio.Group>\n        <div className=\"rounded-md bg-surface-elevated p-4\">\n          <div className=\"mb-2 text-sm font-medium text-surface\">Selected:</div>\n          <code className=\"text-sm text-muted\">\"{value}\"</code>\n        </div>\n      </div>",
+        "<div className=\"flex flex-col gap-8\">\n      {/* English - Control at start: Radio → Label */}\n      <div>\n        <Radio.Group\n          legend=\"English (Radio → Label)\"\n          controlPosition=\"start\"\n          defaultValue=\"email\"\n        >\n          <Radio.Item label=\"Email notifications\" value=\"email\" />\n          <Radio.Item label=\"SMS notifications\" value=\"sms\" />\n          <Radio.Item label=\"Push notifications\" value=\"push\" />\n          <Radio.Item label=\"In-app notifications\" value=\"in-app\" disabled />\n        </Radio.Group>\n      </div>\n\n      {/* Spanish - Control at end: Label → Radio */}\n      <div>\n        <Radio.Group\n          legend=\"Español (Etiqueta → Radio)\"\n          controlPosition=\"end\"\n          defaultValue=\"email\"\n        >\n          <Radio.Item\n            label=\"Notificaciones por correo electrónico\"\n            value=\"email\"\n          />\n          <Radio.Item label=\"Notificaciones por SMS\" value=\"sms\" />\n          <Radio.Item label=\"Notificaciones push\" value=\"push\" />\n          <Radio.Item\n            label=\"Notificaciones en la aplicación\"\n            value=\"in-app\"\n            disabled\n          />\n        </Radio.Group>\n      </div>\n    </div>",
+        "<div className=\"flex flex-col gap-8\">\n      <Radio.Group\n        legend=\"Vertical (default)\"\n        orientation=\"vertical\"\n        defaultValue=\"a\"\n      >\n        <Radio.Item label=\"Option A\" value=\"a\" />\n        <Radio.Item label=\"Option B\" value=\"b\" />\n        <Radio.Item label=\"Option C\" value=\"c\" />\n      </Radio.Group>\n\n      <Radio.Group\n        legend=\"Horizontal\"\n        orientation=\"horizontal\"\n        defaultValue=\"a\"\n      >\n        <Radio.Item label=\"Option A\" value=\"a\" />\n        <Radio.Item label=\"Option B\" value=\"b\" />\n        <Radio.Item label=\"Option C\" value=\"c\" />\n      </Radio.Group>\n    </div>"
+      ],
+      "colors": [
+        "bg-surface",
+        "bg-surface-inverse",
+        "border-border",
+        "ring-active",
+        "ring-border",
+        "ring-destructive",
+        "text-error",
+        "text-muted",
+        "text-surface"
+      ]
+    },
     "Select": {
       "name": "Select",
       "description": "Select component",
@@ -2244,6 +2330,7 @@
         "Tabs"
       ],
       "Other": [
+        "Radio",
         "SensitiveInput"
       ],
       "Layout": [
@@ -2272,6 +2359,7 @@
       "Meter",
       "PageHeader",
       "Pagination",
+      "Radio",
       "Select",
       "SensitiveInput",
       "Surface",

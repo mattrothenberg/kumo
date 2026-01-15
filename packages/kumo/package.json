@@ -144,6 +144,10 @@
       "types": "./dist/src/layouts/resource-list/index.d.ts",
       "import": "./dist/layouts/resource-list.js"
     },
+    "./components/radio": {
+      "types": "./dist/src/components/radio/index.d.ts",
+      "import": "./dist/components/radio.js"
+    },
     "./utils": {
       "types": "./dist/src/utils/index.d.ts",
       "import": "./dist/utils.js"

@@ -17,6 +17,7 @@ export default [
   route("components/checkbox", "routes/components.checkbox.tsx"),
   route("components/select", "routes/components.select.tsx"),
   route("components/switch", "routes/components.switch.tsx"),
+  route("components/radio", "routes/components.radio.tsx"),
   route("components/dialog", "routes/components.dialog.tsx"),
   route("components/tooltip", "routes/components.tooltip.tsx"),
   route("components/dropdown", "routes/components.dropdown.tsx"),
