@@ -2101,6 +2101,11 @@
           "optional": true,
           "description": "Default selected value for uncontrolled mode. Ignored when `value` is set."
         },
+        "activateOnFocus": {
+          "type": "boolean",
+          "optional": true,
+          "description": "When true, tabs are activated immediately upon receiving focus via arrow keys. When false (default), tabs receive focus but require Enter/Space to activate. Set to true for better keyboard UX in most cases."
+        },
         "className": {
           "type": "string",
           "optional": true,
@@ -2141,6 +2146,7 @@
         "bg-primary",
         "bg-surface-elevated",
         "border-border",
+        "outline-active",
         "ring-color-2",
         "text-label",
         "text-surface"

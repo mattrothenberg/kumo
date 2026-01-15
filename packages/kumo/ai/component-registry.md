@@ -2685,6 +2685,8 @@ Tabs component
   Controlled value. When set, component becomes controlled.
 - `selectedValue`: string
   Default selected value for uncontrolled mode. Ignored when `value` is set.
+- `activateOnFocus`: boolean
+  When true, tabs are activated immediately upon receiving focus via arrow keys. When false (default), tabs receive focus but require Enter/Space to activate. Set to true for better keyboard UX in most cases.
 - `className`: string
   Additional class name for the root element
 - `listClassName`: string
@@ -2697,7 +2699,7 @@ Tabs component
 
 **Colors (kumo tokens used):**
 
-`bg-accent`, `bg-primary`, `bg-surface-elevated`, `border-border`, `ring-color-2`, `text-label`, `text-surface`
+`bg-accent`, `bg-primary`, `bg-surface-elevated`, `border-border`, `outline-active`, `ring-color-2`, `text-label`, `text-surface`
 
 **Examples:**
 

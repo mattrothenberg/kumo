@@ -30,6 +30,12 @@ export type TabsProps = KumoTabsVariantsProps & {
   selectedValue?: string;
   /** Callback fired when the active tab changes */
   onValueChange?: (value: string) => void;
+  /**
+   * When true, tabs are activated immediately upon receiving focus via arrow keys.
+   * When false (default), tabs receive focus but require Enter/Space to activate.
+   * Set to true for better keyboard UX in most cases.
+   */
+  activateOnFocus?: boolean;
   /** Additional class name for the root element */
   className?: string;
   /** Additional class name for the tab list element */
@@ -43,6 +49,7 @@ export function Tabs({
   value,
   selectedValue,
   onValueChange,
+  activateOnFocus,
   className,
   listClassName,
   indicatorClassName,
@@ -78,8 +85,9 @@ export function Tabs({
         <div className="absolute inset-x-0 top-1/2 -z-10 h-8.5 -translate-y-1/2 rounded-lg bg-accent" />
       )}
       <TabsPrimitive.List
+        activateOnFocus={activateOnFocus}
         className={cn(
-          "scrollbar-hide relative flex min-w-0 shrink items-stretch overflow-x-auto",
+          "scrollbar-hide relative flex min-w-0 shrink items-stretch",
           isSegmented && "h-8.5 rounded-lg bg-accent px-px",
           isUnderline && "h-9 gap-4 border-b border-border",
           listClassName,
@@ -90,7 +98,7 @@ export function Tabs({
             key={tab.value}
             value={tab.value}
             className={cn(
-              "relative z-10 flex cursor-pointer items-center bg-transparent text-base whitespace-nowrap transition-colors focus-visible:outline-none",
+              "relative z-10 flex cursor-pointer items-center rounded bg-transparent text-base whitespace-nowrap transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-active",
               isSegmented &&
                 "my-px rounded-lg px-2.5 text-label aria-selected:text-surface",
               isUnderline &&
