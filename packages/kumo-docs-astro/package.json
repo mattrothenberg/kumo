@@ -1,8 +1,8 @@
 {
-  "name": "kumo-docs-astro",
-  "type": "module",
-  "version": "0.0.1",
+  "name": "@cloudflare/kumo-docs-astro",
+  "version": "0.4.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -27,6 +27,7 @@
     "react": "catalog:",
     "react-dom": "catalog:",
     "tailwindcss": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "wrangler": "catalog:"
   }
 }
