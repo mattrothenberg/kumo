@@ -106,6 +106,10 @@ export default defineConfig(({ mode }) => {
             __dirname,
             "src/components/layer-card/index.ts",
           ),
+          "components/label": resolve(
+            __dirname,
+            "src/components/label/index.ts",
+          ),
           "components/loader": resolve(
             __dirname,
             "src/components/loader/index.ts",
