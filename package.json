@@ -22,6 +22,7 @@
     "publish:beta": "bash ci/versioning/publish-beta.sh",
     "deploy:storybook-preview": "bash ci/versioning/deploy-storybook-preview.sh",
     "deploy:kumo-docs-preview": "bash ci/versioning/deploy-kumo-docs-preview.sh",
+    "deploy:kumo-docs-astro-preview": "bash ci/versioning/deploy-kumo-docs-astro-preview.sh",
     "deploy:storybook-staging": "pnpm --filter @cloudflare/kumo build:storybook && pnpm --filter @cloudflare/kumo exec wrangler deploy --env staging",
     "deploy:kumo-docs-staging": "pnpm --filter @cloudflare/kumo-docs build && pnpm --filter @cloudflare/kumo-docs exec node scripts/prepare-staging-config.js && cd packages/kumo-docs/build/server && pnpm exec wrangler deploy",
     "ci:post-mr-report": "tsx ci/scripts/post-mr-report.ts",
