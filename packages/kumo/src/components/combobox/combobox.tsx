@@ -81,8 +81,8 @@ function Root<Value, Multiple extends boolean | undefined = false>({
     <ComboboxBase.Root {...props}>{children}</ComboboxBase.Root>
   );
 
-  // Render with Field wrapper if label and (description or error) are provided
-  if (label && (description || error)) {
+  // Render with Field wrapper if label, description, or error are provided
+  if (label) {
     return (
       <Field
         label={label}
@@ -204,7 +204,7 @@ function Empty(props: ComboboxBase.Empty.Props) {
     <ComboboxBase.Empty
       {...props}
       className={cn(
-        "px-4 py-2 text-[0.925rem] leading-4 text-muted-2 empty:m-0 empty:p-0",
+        "text-muted-2 px-4 py-2 text-[0.925rem] leading-4 empty:m-0 empty:p-0",
       )}
       children={props.children ?? "No labels found."}
     />

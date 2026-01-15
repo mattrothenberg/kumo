@@ -206,7 +206,6 @@ export const WithLabel: Story = {
         value={value}
         onValueChange={setValue}
         label="Country"
-        description="Select your country of residence"
       >
         <Combobox.TriggerInput placeholder="Select country" />
         <Combobox.Content>
