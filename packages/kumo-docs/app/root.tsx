@@ -377,6 +377,19 @@ export default function App() {
               </li>
               <li>
                 <Link
+                  to="/components/label"
+                  prefetch="intent"
+                  className={cn(
+                    LI_STYLE,
+                    location.pathname === "/components/label" &&
+                      LI_ACTIVE_STYLE,
+                  )}
+                >
+                  Label
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/components/sensitive-input"
                   prefetch="intent"
                   className={cn(

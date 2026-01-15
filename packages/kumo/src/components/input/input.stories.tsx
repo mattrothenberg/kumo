@@ -57,6 +57,74 @@ export const WithLabel: Story = {
   ),
 };
 
+export const OptionalField: Story = {
+  render: () => (
+    <Input
+      label="Phone Number"
+      required={false}
+      placeholder="+1 (555) 000-0000"
+      description="Optional fields show '(optional)' indicator"
+    />
+  ),
+};
+
+export const WithLabelTooltip: Story = {
+  render: () => (
+    <Input
+      label="API Key"
+      labelTooltip="Find this in your dashboard under Settings > API Keys"
+      placeholder="sk_live_..."
+    />
+  ),
+};
+
+export const WithTooltipAndOptional: Story = {
+  render: () => (
+    <Input
+      label="Backup Email"
+      required={false}
+      labelTooltip="Used for account recovery if you lose access to your primary email"
+      type="email"
+      placeholder="backup@example.com"
+    />
+  ),
+};
+
+export const ReactNodeLabel: Story = {
+  render: () => (
+    <Input
+      label={
+        <span>
+          Email for <strong>billing</strong>
+        </span>
+      }
+      placeholder="billing@company.com"
+      type="email"
+    />
+  ),
+};
+
+export const FormWithOptionalFields: Story = {
+  render: () => (
+    <div className="flex max-w-md flex-col gap-4">
+      <Input label="Full Name" placeholder="John Doe" />
+      <Input
+        label="Email"
+        labelTooltip="We'll send your receipt here"
+        placeholder="john@example.com"
+        type="email"
+      />
+      <Input label="Company" required={false} placeholder="Acme Inc." />
+      <Input
+        label="Notes"
+        required={false}
+        labelTooltip="Any additional information"
+        placeholder="Tell us more..."
+      />
+    </div>
+  ),
+};
+
 export const WithError: Story = {
   render: () => (
     <Input

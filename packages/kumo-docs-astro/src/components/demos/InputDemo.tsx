@@ -77,3 +77,38 @@ export function InputTypesDemo() {
     </div>
   );
 }
+
+export function InputOptionalFieldDemo() {
+  return (
+    <Input
+      label="Phone Number"
+      required={false}
+      placeholder="+1 (555) 000-0000"
+    />
+  );
+}
+
+export function InputLabelTooltipDemo() {
+  return (
+    <Input
+      label="API Key"
+      labelTooltip="Find this in your dashboard under Settings > API Keys"
+      placeholder="sk_live_..."
+    />
+  );
+}
+
+export function InputReactNodeLabelDemo() {
+  return (
+    <Input
+      label={
+        <span>
+          Email for <strong>billing</strong>
+        </span>
+      }
+      required
+      placeholder="billing@company.com"
+      type="email"
+    />
+  );
+}

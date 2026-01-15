@@ -69,7 +69,10 @@ export default function Example() {
             <ComponentExample
               code={`<SensitiveInput label="API Key" defaultValue="sk_live_abc123xyz789" />`}
             >
-              <SensitiveInput label="API Key" defaultValue="sk_live_abc123xyz789" />
+              <SensitiveInput
+                label="API Key"
+                defaultValue="sk_live_abc123xyz789"
+              />
             </ComponentExample>
           </div>
 
@@ -82,7 +85,10 @@ export default function Example() {
             <ComponentExample
               code={`<SensitiveInput label="Secret" placeholder="Enter your secret..." />`}
             >
-              <SensitiveInput label="Secret" placeholder="Enter your secret..." />
+              <SensitiveInput
+                label="Secret"
+                placeholder="Enter your secret..."
+              />
             </ComponentExample>
           </div>
 
@@ -94,7 +100,11 @@ export default function Example() {
             <ComponentExample
               code={`<SensitiveInput label="Read Only" defaultValue="view-only-secret" readOnly />`}
             >
-              <SensitiveInput label="Read Only" defaultValue="view-only-secret" readOnly />
+              <SensitiveInput
+                label="Read Only"
+                defaultValue="view-only-secret"
+                readOnly
+              />
             </ComponentExample>
           </div>
 
@@ -103,7 +113,11 @@ export default function Example() {
             <ComponentExample
               code={`<SensitiveInput label="Invalid" defaultValue="invalid-key" variant="error" />`}
             >
-              <SensitiveInput label="Invalid" defaultValue="invalid-key" variant="error" />
+              <SensitiveInput
+                label="Invalid"
+                defaultValue="invalid-key"
+                variant="error"
+              />
             </ComponentExample>
           </div>
 
@@ -112,7 +126,11 @@ export default function Example() {
             <ComponentExample
               code={`<SensitiveInput label="Disabled" defaultValue="cannot-edit" disabled />`}
             >
-              <SensitiveInput label="Disabled" defaultValue="cannot-edit" disabled />
+              <SensitiveInput
+                label="Disabled"
+                defaultValue="cannot-edit"
+                disabled
+              />
             </ComponentExample>
           </div>
 
@@ -158,6 +176,21 @@ export default function Example() {
               </tr>
             </thead>
             <tbody className="text-neutral-600 dark:text-neutral-400">
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs">label</td>
+                <td className="px-4 py-3 font-mono text-xs">ReactNode</td>
+                <td className="px-4 py-3 font-mono text-xs">-</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs">required</td>
+                <td className="px-4 py-3 font-mono text-xs">boolean</td>
+                <td className="px-4 py-3 font-mono text-xs">-</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs">labelTooltip</td>
+                <td className="px-4 py-3 font-mono text-xs">ReactNode</td>
+                <td className="px-4 py-3 font-mono text-xs">-</td>
+              </tr>
               <tr className="border-b border-border">
                 <td className="px-4 py-3 font-mono text-xs">value</td>
                 <td className="px-4 py-3 font-mono text-xs">string</td>

@@ -369,9 +369,14 @@
           "default": "default"
         },
         "label": {
-          "type": "string",
+          "type": "ReactNode",
           "optional": true,
-          "description": "Label text for the checkbox (enables built-in Field wrapper)"
+          "description": "Label content for the checkbox (enables built-in Field wrapper) - can be a string or any React node"
+        },
+        "labelTooltip": {
+          "type": "ReactNode",
+          "optional": true,
+          "description": "Tooltip content to display next to the label via an info icon"
         },
         "controlFirst": {
           "type": "boolean",
@@ -450,6 +455,10 @@
         "<div className=\"flex flex-col gap-4\">\n      {[false, true, \"indeterminate\"].map((state) => (\n        <Checkbox\n          key={String(state)}\n          label={`Disabled (${state === \"indeterminate\" ? \"indeterminate\" : state ? \"checked\" : \"unchecked\"})`}\n          checked={state === true}\n          indeterminate={state === \"indeterminate\"}\n          disabled\n        />\n      ))}\n    </div>",
         "<div className=\"flex flex-col gap-4\">\n      {[false, true].map((checked) => (\n        <Checkbox\n          key={String(checked)}\n          label={`Error (${checked ? \"checked\" : \"unchecked\"})`}\n          variant=\"error\"\n          checked={checked}\n        />\n      ))}\n    </div>",
         "<Checkbox label=\"Label first\" controlFirst={false} />",
+        "<Checkbox label=\"Subscribe to newsletter\" required={false} />",
+        "<Checkbox label=\"Enable two-factor authentication\" labelTooltip=\"Adds an extra layer of security to your account\" />",
+        "<Checkbox label=\"Remember my preferences\" required={false} labelTooltip=\"We'll save your settings for next time\" />",
+        "<Checkbox\n      label={\n        <span>\n          I agree to the <strong>Terms of Service</strong> and{\" \"}\n          <strong>Privacy Policy</strong>\n        </span>\n      }\n    />",
         "<Checkbox.Group legend=\"Choose your preferences\">\n      <Checkbox.Item label=\"Email notifications\" name=\"preferences\" />\n      <Checkbox.Item label=\"SMS notifications\" name=\"preferences\" />\n      <Checkbox.Item label=\"Push notifications\" name=\"preferences\" />\n    </Checkbox.Group>",
         "<Checkbox.Group\n      legend=\"Required preferences\"\n      error=\"You must select at least one notification method\"\n    >\n      <Checkbox.Item label=\"Email notifications\" name=\"preferences\" />\n      <Checkbox.Item label=\"SMS notifications\" name=\"preferences\" />\n      <Checkbox.Item label=\"Push notifications\" name=\"preferences\" />\n    </Checkbox.Group>",
         "<Checkbox.Group\n      legend=\"Notification settings\"\n      description=\"Choose how you want to be notified about important updates\"\n    >\n      <Checkbox.Item label=\"Email notifications\" value=\"email\" />\n      <Checkbox.Item label=\"SMS notifications\" value=\"sms\" />\n      <Checkbox.Item label=\"Push notifications\" value=\"push\" />\n    </Checkbox.Group>",
@@ -682,9 +691,19 @@
           "description": "Additional CSS classes"
         },
         "label": {
-          "type": "string",
+          "type": "ReactNode",
           "optional": true,
-          "description": "Label text for the combobox (enables Field wrapper)"
+          "description": "Label content for the combobox (enables Field wrapper) - can be a string or any React node"
+        },
+        "required": {
+          "type": "boolean",
+          "optional": true,
+          "description": "Whether the combobox is required"
+        },
+        "labelTooltip": {
+          "type": "ReactNode",
+          "optional": true,
+          "description": "Tooltip content to display next to the label via an info icon"
         },
         "description": {
           "type": "ReactNode",
@@ -713,7 +732,7 @@
         "<Combobox items={items} value={value} onValueChange={setValue}>\n        <Combobox.TriggerInput placeholder=\"Please select database\" />\n        <Combobox.Content>\n          <Combobox.Empty />\n          <Combobox.List>\n            {(item: (typeof items)[number]) => {\n              return (\n                <Combobox.Item key={item.value} value={item}>\n                  {item.label}\n                </Combobox.Item>\n              );\n            }}\n          </Combobox.List>\n        </Combobox.Content>\n      </Combobox>",
         "<div className=\"flex gap-2\">\n        <div>\n          <Combobox\n            value={value}\n            onValueChange={setValue}\n            items={botList}\n            isItemEqualToValue={(bot: BotType, selectedValue: BotType) =>\n              bot.value === selectedValue.value\n            }\n            multiple\n          >\n            <Combobox.TriggerMultipleWithInput\n              className=\"w-[400px]\"\n              placeholder={args.placeholder}\n              renderItem={(selected: BotType) => (\n                <Combobox.Chip key={selected.value}>\n                  {selected.label}\n                </Combobox.Chip>\n              )}\n              inputSide={args.inputSide}\n            />\n            <Combobox.Content\n              className=\"max-h-[200px] min-w-auto overflow-y-auto\"\n              side={args.inputSide === \"top\" ? \"top\" : \"bottom\"}\n            >\n              <Combobox.Empty />\n              <Combobox.List>\n                {(item: BotType) => (\n                  <Combobox.Item key={item.value} value={item}>\n                    <div className=\"flex gap-2\">\n                      <Text>{item.label}</Text>\n                      <Text variant=\"secondary\">{item.author}</Text>\n                    </div>\n                  </Combobox.Item>\n                )}\n              </Combobox.List>\n            </Combobox.Content>\n          </Combobox>\n        </div>\n        {/* Demonstrates that the multi-select combobox maintains consistent height with other Kumo components */}\n        <Button variant=\"primary\">Submit</Button>\n      </div>",
         "<Combobox\n        value={value}\n        onValueChange={setValue}\n        items={INITIAL_BOT_LIST}\n        isItemEqualToValue={(bot: BotType, selectedValue: BotType) =>\n          bot.value === selectedValue.value\n        }\n        multiple\n      >\n        <Combobox.TriggerMultipleWithInput\n          className=\"w-[400px]\"\n          placeholder=\"Select bot\"\n          value={value}\n          renderItem={(selected: BotType) => (\n            <Combobox.Chip key={selected.value}>{selected.label}</Combobox.Chip>\n          )}\n          inputSide=\"top\"\n        />\n        <Combobox.Content className=\"max-h-[200px] min-w-auto overflow-y-auto\">\n          <Combobox.Empty />\n          <Combobox.List>\n            {(item: BotType) => (\n              <Combobox.Item key={item.value} value={item}>\n                <div className=\"flex gap-2\">\n                  <Text>{item.label}</Text>\n                  <Text variant=\"secondary\">{item.author}</Text>\n                </div>\n              </Combobox.Item>\n            )}\n          </Combobox.List>\n        </Combobox.Content>\n      </Combobox>",
-        "<Combobox\n        items={items}\n        value={value}\n        onValueChange={setValue}\n        label=\"Country\"\n        description=\"Select your country of residence\"\n      >\n        <Combobox.TriggerInput placeholder=\"Select country\" />\n        <Combobox.Content>\n          <Combobox.Empty />\n          <Combobox.List>\n            {(item: (typeof items)[number]) => {\n              return (\n                <Combobox.Item key={item.value} value={item}>\n                  {item.label}\n                </Combobox.Item>\n              );\n            }}\n          </Combobox.List>\n        </Combobox.Content>\n      </Combobox>",
+        "<Combobox\n        items={items}\n        value={value}\n        onValueChange={setValue}\n        label=\"Country\"\n      >\n        <Combobox.TriggerInput placeholder=\"Select country\" />\n        <Combobox.Content>\n          <Combobox.Empty />\n          <Combobox.List>\n            {(item: (typeof items)[number]) => {\n              return (\n                <Combobox.Item key={item.value} value={item}>\n                  {item.label}\n                </Combobox.Item>\n              );\n            }}\n          </Combobox.List>\n        </Combobox.Content>\n      </Combobox>",
         "<Combobox\n        items={items}\n        value={value}\n        onValueChange={setValue}\n        label=\"Subscription Plan\"\n        description=\"Choose a plan that fits your needs\"\n        error={{ message: \"Please select a plan to continue\", match: true }}\n      >\n        <Combobox.TriggerInput placeholder=\"Select plan\" />\n        <Combobox.Content>\n          <Combobox.Empty />\n          <Combobox.List>\n            {(item: (typeof items)[number]) => {\n              return (\n                <Combobox.Item key={item.value} value={item}>\n                  {item.label}\n                </Combobox.Item>\n              );\n            }}\n          </Combobox.List>\n        </Combobox.Content>\n      </Combobox>",
         "<Combobox\n        value={value}\n        onValueChange={setValue}\n        items={botList}\n        isItemEqualToValue={(bot, selectedValue) =>\n          bot.value === selectedValue.value\n        }\n        multiple\n        label=\"Bot Management\"\n        description=\"Select which bots are allowed to crawl your site\"\n      >\n        <Combobox.TriggerMultipleWithInput\n          className=\"w-[400px]\"\n          placeholder=\"Select bots\"\n          renderItem={(selected: BotType) => (\n            <Combobox.Chip key={selected.value}>{selected.label}</Combobox.Chip>\n          )}\n          inputSide=\"right\"\n        />\n        <Combobox.Content className=\"max-h-[200px] min-w-auto overflow-y-auto\">\n          <Combobox.Empty />\n          <Combobox.List>\n            {(item: BotType) => (\n              <Combobox.Item key={item.value} value={item}>\n                <div className=\"flex gap-2\">\n                  <Text>{item.label}</Text>\n                  <Text variant=\"secondary\">{item.author}</Text>\n                </div>\n              </Combobox.Item>\n            )}\n          </Combobox.List>\n        </Combobox.Content>\n      </Combobox>"
       ],
@@ -1243,8 +1262,19 @@
           "optional": true
         },
         "label": {
-          "type": "string",
-          "required": true
+          "type": "ReactNode",
+          "optional": true,
+          "description": "The label content - can be a string or any React node"
+        },
+        "required": {
+          "type": "boolean",
+          "optional": true,
+          "description": "When explicitly false, shows gray \"(optional)\" text after the label. When true or undefined, no indicator is shown."
+        },
+        "labelTooltip": {
+          "type": "ReactNode",
+          "optional": true,
+          "description": "Tooltip content to display next to the label via an info icon"
         },
         "error": {
           "type": "object",
@@ -1269,9 +1299,14 @@
       "category": "Input",
       "props": {
         "label": {
-          "type": "string",
+          "type": "ReactNode",
           "optional": true,
-          "description": "Label text for the input (enables Field wrapper)"
+          "description": "Label content for the input (enables Field wrapper) - can be a string or any React node"
+        },
+        "labelTooltip": {
+          "type": "ReactNode",
+          "optional": true,
+          "description": "Tooltip content to display next to the label via an info icon"
         },
         "description": {
           "type": "ReactNode",
@@ -1316,6 +1351,11 @@
       },
       "examples": [
         "<Input\n      label=\"Email\"\n      placeholder=\"Enter your email\"\n      description=\"We'll never share your email with anyone else\"\n    />",
+        "<Input\n      label=\"Phone Number\"\n      required={false}\n      placeholder=\"+1 (555) 000-0000\"\n      description=\"Optional fields show '(optional)' indicator\"\n    />",
+        "<Input\n      label=\"API Key\"\n      labelTooltip=\"Find this in your dashboard under Settings > API Keys\"\n      placeholder=\"sk_live_...\"\n    />",
+        "<Input\n      label=\"Backup Email\"\n      required={false}\n      labelTooltip=\"Used for account recovery if you lose access to your primary email\"\n      type=\"email\"\n      placeholder=\"backup@example.com\"\n    />",
+        "<Input\n      label={\n        <span>\n          Email for <strong>billing</strong>\n        </span>\n      }\n      placeholder=\"billing@company.com\"\n      type=\"email\"\n    />",
+        "<div className=\"flex max-w-md flex-col gap-4\">\n      <Input label=\"Full Name\" placeholder=\"John Doe\" />\n      <Input\n        label=\"Email\"\n        labelTooltip=\"We'll send your receipt here\"\n        placeholder=\"john@example.com\"\n        type=\"email\"\n      />\n      <Input label=\"Company\" required={false} placeholder=\"Acme Inc.\" />\n      <Input\n        label=\"Notes\"\n        required={false}\n        labelTooltip=\"Any additional information\"\n        placeholder=\"Tell us more...\"\n      />\n    </div>",
         "<Input\n      label=\"Email\"\n      placeholder=\"Invalid input\"\n      defaultValue=\"error@example.com\"\n      variant=\"error\"\n      error=\"Please enter a valid email address\"\n    />",
         "<Input\n      label=\"Email\"\n      placeholder=\"Enter your email\"\n      defaultValue=\"not-an-email\"\n      variant=\"error\"\n      error={{\n        message: \"Please enter a valid email address\",\n        match: \"typeMismatch\",\n      }}\n    />",
         "<Input label=\"Disabled Field\" placeholder=\"Disabled input\" disabled />",
@@ -1329,6 +1369,52 @@
         "ring-border",
         "ring-destructive",
         "text-muted",
+        "text-surface"
+      ]
+    },
+    "Label": {
+      "name": "Label",
+      "description": "When true, only renders the inline content (indicators, tooltip) without the outer span with font styling. Useful when composed inside another label element that already provides the text styling. / asContent?: boolean; } /** Label component for form fields. Provides a standardized way to display labels with optional indicators: - Optional indicator: gray \"(optional)\" text when `showOptional={true}` - Tooltip: info icon with hover tooltip for additional context // Basic label <Label>Email</Label> // Optional field with indicator <Label showOptional>Middle Name</Label> // With tooltip <Label tooltip=\"We'll use this to send you updates\">Email</Label> // With ReactNode children <Label> <span>Custom label with <strong>bold</strong> text</span> </Label>",
+      "importPath": "@cloudflare/kumo",
+      "category": "Other",
+      "props": {
+        "children": {
+          "type": "ReactNode",
+          "optional": true,
+          "description": "The label content - can be a string or any React node"
+        },
+        "showOptional": {
+          "type": "boolean",
+          "optional": true,
+          "description": "When true (and required is false), shows gray \"(optional)\" text after the label"
+        },
+        "tooltip": {
+          "type": "ReactNode",
+          "optional": true,
+          "description": "Tooltip content to display next to the label via an info icon"
+        },
+        "className": {
+          "type": "string",
+          "optional": true,
+          "description": "Additional CSS classes"
+        },
+        "asContent": {
+          "type": "boolean",
+          "optional": true,
+          "description": "When true, only renders the inline content (indicators, tooltip) without the outer span with font styling. Useful when composed inside another label element that already provides the text styling."
+        }
+      },
+      "examples": [
+        "<Label>Email Address</Label>",
+        "<Label showOptional>Middle Name</Label>",
+        "<Label tooltip=\"We'll use this to send you important updates about your account\">\n      Email Address\n    </Label>",
+        "<Label showOptional tooltip=\"This helps us personalize your experience\">\n      Nickname\n    </Label>",
+        "<Label>\n      <span>\n        Accept the <strong>terms and conditions</strong>\n      </span>\n    </Label>",
+        "<div className=\"flex flex-col gap-4\">\n      <Label>Default Label</Label>\n      <Label showOptional>Optional Label</Label>\n      <Label tooltip=\"More information\">Label with Tooltip</Label>\n      <Label showOptional tooltip=\"Optional field info\">\n        Optional with Tooltip\n      </Label>\n    </div>",
+        "<div className=\"flex max-w-md flex-col gap-4\">\n      <Input label=\"Full Name\" placeholder=\"John Doe\" />\n      <Input\n        label=\"Email\"\n        labelTooltip=\"We'll send your receipt here\"\n        placeholder=\"john@example.com\"\n        type=\"email\"\n      />\n      <Input label=\"Company\" required={false} placeholder=\"Acme Inc.\" />\n      <Input\n        label=\"Notes\"\n        required={false}\n        labelTooltip=\"Any additional information you'd like to share\"\n        placeholder=\"Tell us more...\"\n      />\n    </div>"
+      ],
+      "colors": [
+        "text-label",
         "text-surface"
       ]
     },
@@ -1694,9 +1780,9 @@
           "description": "Additional CSS classes"
         },
         "label": {
-          "type": "string",
+          "type": "ReactNode",
           "optional": true,
-          "description": "Label text for the select (enables Field wrapper)"
+          "description": "Label content for the select (enables Field wrapper) - can be a string or any React node"
         },
         "hideLabel": {
           "type": "boolean",
@@ -1717,6 +1803,16 @@
           "type": "boolean",
           "optional": true,
           "description": "Whether the select is disabled"
+        },
+        "required": {
+          "type": "boolean",
+          "optional": true,
+          "description": "Whether the select is required"
+        },
+        "labelTooltip": {
+          "type": "ReactNode",
+          "optional": true,
+          "description": "Tooltip content to display next to the label via an info icon"
         },
         "value": {
           "type": "string",
@@ -1750,6 +1846,9 @@
       "examples": [
         "<Select defaultValue=\"1\" placeholder=\"Select an option\">\n      <Select.Option value=\"1\">Option 1</Select.Option>\n      <Select.Option value=\"2\">Option 2</Select.Option>\n      <Select.Option value=\"3\">Option 3</Select.Option>\n    </Select>",
         "<Select\n      label=\"Country\"\n      hideLabel={false}\n      placeholder=\"Select a country\"\n      description=\"Choose your country of residence\"\n    >\n      <Select.Option value=\"us\">United States</Select.Option>\n      <Select.Option value=\"uk\">United Kingdom</Select.Option>\n      <Select.Option value=\"ca\">Canada</Select.Option>\n      <Select.Option value=\"au\">Australia</Select.Option>\n    </Select>",
+        "<Select\n      label=\"Preferred Language\"\n      hideLabel={false}\n      required={false}\n      placeholder=\"Select a language\"\n    >\n      <Select.Option value=\"en\">English</Select.Option>\n      <Select.Option value=\"es\">Spanish</Select.Option>\n      <Select.Option value=\"fr\">French</Select.Option>\n    </Select>",
+        "<Select\n      label=\"Timezone\"\n      hideLabel={false}\n      labelTooltip=\"This will be used for scheduling and notifications\"\n      placeholder=\"Select your timezone\"\n    >\n      <Select.Option value=\"utc\">UTC</Select.Option>\n      <Select.Option value=\"est\">Eastern Time (EST)</Select.Option>\n      <Select.Option value=\"pst\">Pacific Time (PST)</Select.Option>\n    </Select>",
+        "<Select\n      label=\"Plan\"\n      hideLabel={false}\n      required={false}\n      labelTooltip=\"Choose the plan that best fits your needs. You can upgrade anytime.\"\n      placeholder=\"Select a plan\"\n    >\n      <Select.Option value=\"free\">Free</Select.Option>\n      <Select.Option value=\"pro\">Pro - $9/month</Select.Option>\n      <Select.Option value=\"enterprise\">Enterprise - Contact us</Select.Option>\n    </Select>",
         "<Select\n      label=\"Account Type\"\n      hideLabel={false}\n      placeholder=\"Select an account type\"\n      error=\"Please select an account type to continue\"\n    >\n      <Select.Option value=\"personal\">Personal</Select.Option>\n      <Select.Option value=\"business\">Business</Select.Option>\n      <Select.Option value=\"enterprise\">Enterprise</Select.Option>\n    </Select>",
         "<Select label=\"Language\" hideLabel={true} placeholder=\"Select language\">\n      <Select.Option value=\"en\">English</Select.Option>\n      <Select.Option value=\"es\">Spanish</Select.Option>\n      <Select.Option value=\"fr\">French</Select.Option>\n      <Select.Option value=\"de\">German</Select.Option>\n    </Select>",
         "<Select\n      label=\"Options\"\n      hideLabel={false}\n      placeholder=\"Loading options...\"\n      loading\n    >\n      <Select.Option value=\"1\">Option 1</Select.Option>\n      <Select.Option value=\"2\">Option 2</Select.Option>\n    </Select>",
@@ -1846,9 +1945,14 @@
           "default": "default"
         },
         "label": {
-          "type": "string",
+          "type": "ReactNode",
           "optional": true,
-          "description": "Label text for the input (enables Field wrapper and sets masked state label)"
+          "description": "Label content for the input (enables Field wrapper and sets masked state label) - can be a string or any React node"
+        },
+        "labelTooltip": {
+          "type": "ReactNode",
+          "optional": true,
+          "description": "Tooltip content to display next to the label via an info icon"
         },
         "description": {
           "type": "ReactNode",
@@ -1871,6 +1975,8 @@
         "<SensitiveInput\n      label=\"Disabled Secret\"\n      defaultValue=\"cannot-edit\"\n      disabled\n    />",
         "<SensitiveInput\n      label=\"Read-only Secret\"\n      defaultValue=\"view-only-secret-key\"\n      readOnly\n    />",
         "<SensitiveInput\n      label=\"Password\"\n      defaultValue=\"my-secret-value\"\n      description=\"Keep this password secure and don't share it\"\n    />",
+        "<SensitiveInput\n      label=\"Backup Password\"\n      required={false}\n      placeholder=\"Enter backup password\"\n    />",
+        "<SensitiveInput\n      label=\"Secret Key\"\n      labelTooltip=\"Find this in your dashboard under Settings > API Keys\"\n      defaultValue=\"sk_live_abc123xyz789\"\n    />",
         "<SensitiveInput\n      label=\"API Key\"\n      defaultValue=\"copyable-secret-key\"\n      onCopy={() => console.log(\"Value copied!\")}\n    />",
         "<SensitiveInput\n      defaultValue=\"sk_live_abc123xyz789\"\n      placeholder=\"Input without Field wrapper\"\n    />"
       ],
@@ -1932,9 +2038,19 @@
           "default": "default"
         },
         "label": {
-          "type": "string",
+          "type": "ReactNode",
           "optional": true,
-          "description": "Label text for the switch (Field wrapper is built-in). Optional when used standalone for visual-only purposes."
+          "description": "Label content for the switch (Field wrapper is built-in) - can be a string or any React node. Optional when used standalone for visual-only purposes."
+        },
+        "labelTooltip": {
+          "type": "ReactNode",
+          "optional": true,
+          "description": "Tooltip content to display next to the label via an info icon"
+        },
+        "required": {
+          "type": "boolean",
+          "optional": true,
+          "description": "Whether the switch is required. When explicitly false, shows \"(optional)\" text after the label."
         },
         "controlFirst": {
           "type": "boolean",
@@ -2018,6 +2134,10 @@
         "<div className=\"flex flex-col gap-4\">\n      {[false, true].map((checked) => (\n        <Switch\n          key={String(checked)}\n          label={`Disabled (${checked ? \"checked\" : \"unchecked\"})`}\n          checked={checked}\n          disabled\n        />\n      ))}\n    </div>",
         "<div className=\"flex flex-col gap-4\">\n      {[false, true].map((checked) => (\n        <Switch\n          key={String(checked)}\n          label={`Error (${checked ? \"checked\" : \"unchecked\"})`}\n          variant=\"error\"\n          checked={checked}\n        />\n      ))}\n    </div>",
         "<Switch label=\"Label first\" controlFirst={false} />",
+        "<Switch label=\"Enable dark mode\" required={false} />",
+        "<Switch label=\"Enable two-factor authentication\" labelTooltip=\"Adds an extra layer of security by requiring a code from your phone\" />",
+        "<Switch label=\"Save preferences\" required={false} labelTooltip=\"We'll remember your settings for next time\" />",
+        "<Switch\n      label={\n        <span>\n          Enable <strong>automatic updates</strong>\n        </span>\n      }\n    />",
         "<div className=\"flex flex-col gap-4\">\n        <Switch\n          label=\"Controlled switch\"\n          checked={checked}\n          onCheckedChange={setChecked}\n        />\n        <div className=\"rounded-md bg-surface-elevated p-4\">\n          <div className=\"mb-2 text-sm font-medium text-surface\">State:</div>\n          <code className=\"text-sm text-muted\">\n            {checked ? \"checked\" : \"unchecked\"}\n          </code>\n        </div>\n      </div>",
         "<Switch.Group legend=\"Privacy settings\">\n      <Switch.Item label=\"Email notifications\" />\n      <Switch.Item label=\"SMS notifications\" />\n      <Switch.Item label=\"Push notifications\" />\n    </Switch.Group>",
         "<Switch.Group\n      legend=\"Required settings\"\n      error=\"You must enable at least one notification method\"\n    >\n      <Switch.Item label=\"Email notifications\" />\n      <Switch.Item label=\"SMS notifications\" />\n      <Switch.Item label=\"Push notifications\" />\n    </Switch.Group>",
@@ -2324,14 +2444,15 @@
         "DropdownMenu",
         "Tooltip"
       ],
+      "Other": [
+        "Label",
+        "Radio",
+        "SensitiveInput"
+      ],
       "Navigation": [
         "MenuBar",
         "Pagination",
         "Tabs"
-      ],
-      "Other": [
-        "Radio",
-        "SensitiveInput"
       ],
       "Layout": [
         "Surface"
@@ -2353,6 +2474,7 @@
       "Empty",
       "Field",
       "Input",
+      "Label",
       "LayerCard",
       "Loader",
       "MenuBar",

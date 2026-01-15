@@ -93,6 +93,41 @@ export const LabelFirst: Story = {
   },
 };
 
+export const OptionalField: Story = {
+  args: {
+    label: "Enable dark mode",
+    required: false,
+  },
+};
+
+export const WithLabelTooltip: Story = {
+  args: {
+    label: "Enable two-factor authentication",
+    labelTooltip:
+      "Adds an extra layer of security by requiring a code from your phone",
+  },
+};
+
+export const OptionalWithTooltip: Story = {
+  args: {
+    label: "Save preferences",
+    required: false,
+    labelTooltip: "We'll remember your settings for next time",
+  },
+};
+
+export const ReactNodeLabel: Story = {
+  render: () => (
+    <Switch
+      label={
+        <span>
+          Enable <strong>automatic updates</strong>
+        </span>
+      }
+    />
+  ),
+};
+
 export const Controlled: Story = {
   render: () => {
     const [checked, setChecked] = React.useState(false);

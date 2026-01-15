@@ -233,10 +233,26 @@ export default function Example() {
             <tbody className="text-neutral-600 dark:text-neutral-400">
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
                 <td className="px-4 py-3 font-mono text-xs">label</td>
-                <td className="px-4 py-3 font-mono text-xs">string</td>
+                <td className="px-4 py-3 font-mono text-xs">ReactNode</td>
                 <td className="px-4 py-3 font-mono text-xs">-</td>
                 <td className="px-4 py-3 text-xs">
-                  Label text (required for accessibility)
+                  Label content (required for accessibility)
+                </td>
+              </tr>
+              <tr className="border-b border-neutral-200 dark:border-neutral-800">
+                <td className="px-4 py-3 font-mono text-xs">required</td>
+                <td className="px-4 py-3 font-mono text-xs">boolean</td>
+                <td className="px-4 py-3 font-mono text-xs">-</td>
+                <td className="px-4 py-3 text-xs">
+                  When false: shows "(optional)" text.
+                </td>
+              </tr>
+              <tr className="border-b border-neutral-200 dark:border-neutral-800">
+                <td className="px-4 py-3 font-mono text-xs">labelTooltip</td>
+                <td className="px-4 py-3 font-mono text-xs">ReactNode</td>
+                <td className="px-4 py-3 font-mono text-xs">-</td>
+                <td className="px-4 py-3 text-xs">
+                  Tooltip content shown via info icon next to label
                 </td>
               </tr>
               <tr className="border-b border-neutral-200 dark:border-neutral-800">

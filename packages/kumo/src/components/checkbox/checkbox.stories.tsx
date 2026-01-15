@@ -94,6 +94,41 @@ export const LabelFirst: Story = {
   },
 };
 
+export const OptionalField: Story = {
+  args: {
+    label: "Subscribe to newsletter",
+    required: false,
+  },
+};
+
+export const WithLabelTooltip: Story = {
+  args: {
+    label: "Enable two-factor authentication",
+    labelTooltip: "Adds an extra layer of security to your account",
+  },
+};
+
+export const OptionalWithTooltip: Story = {
+  args: {
+    label: "Remember my preferences",
+    required: false,
+    labelTooltip: "We'll save your settings for next time",
+  },
+};
+
+export const ReactNodeLabel: Story = {
+  render: () => (
+    <Checkbox
+      label={
+        <span>
+          I agree to the <strong>Terms of Service</strong> and{" "}
+          <strong>Privacy Policy</strong>
+        </span>
+      }
+    />
+  ),
+};
+
 export const Group: Story = {
   args: { label: "Checkbox" },
   render: () => (

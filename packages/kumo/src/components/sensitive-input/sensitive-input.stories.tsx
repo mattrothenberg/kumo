@@ -143,6 +143,26 @@ export const WithDescription: Story = {
   ),
 };
 
+export const OptionalField: Story = {
+  render: () => (
+    <SensitiveInput
+      label="Backup Password"
+      required={false}
+      placeholder="Enter backup password"
+    />
+  ),
+};
+
+export const WithLabelTooltip: Story = {
+  render: () => (
+    <SensitiveInput
+      label="Secret Key"
+      labelTooltip="Find this in your dashboard under Settings > API Keys"
+      defaultValue="sk_live_abc123xyz789"
+    />
+  ),
+};
+
 export const WithCopyCallback: Story = {
   parameters: {
     docs: {

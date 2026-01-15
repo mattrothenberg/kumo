@@ -32,10 +32,13 @@ type SelectPropsGeneric<
     multiple?: Multiple;
     renderValue?: (value: Multiple extends true ? T[] : T) => ReactNode;
     className?: string;
-    label?: string;
+    /** Label content for the select (enables Field wrapper) - can be a string or any React node */
+    label?: ReactNode;
     hideLabel?: boolean;
     placeholder?: string;
     loading?: boolean;
+    /** Tooltip content to display next to the label via an info icon */
+    labelTooltip?: ReactNode;
     /** Helper text displayed below the select */
     description?: ReactNode;
     /** Error message or validation error object */
@@ -45,15 +48,15 @@ type SelectPropsGeneric<
 /**
  * Props for the Select component.
  * @description A dropdown select component for choosing from a list of options.
- * @property {string} [label] - Label text for the select (enables Field wrapper)
+ * @property {ReactNode} [label] - Label content for the select (enables Field wrapper)
  * @property {ReactNode} [description] - Helper text displayed below the select
  * @property {string | { message: ReactNode, match: FieldErrorMatch }} [error] - Error message or validation error object
  */
 export interface SelectProps {
   /** Additional CSS classes */
   className?: string;
-  /** Label text for the select (enables Field wrapper) */
-  label?: string;
+  /** Label content for the select (enables Field wrapper) - can be a string or any React node */
+  label?: ReactNode;
   /** Whether to visually hide the label (still accessible to screen readers) */
   hideLabel?: boolean;
   /** Placeholder text when no value is selected */
@@ -62,6 +65,10 @@ export interface SelectProps {
   loading?: boolean;
   /** Whether the select is disabled */
   disabled?: boolean;
+  /** Whether the select is required */
+  required?: boolean;
+  /** Tooltip content to display next to the label via an info icon */
+  labelTooltip?: ReactNode;
   /** The currently selected value */
   value?: unknown;
   /** Default value for uncontrolled usage */
@@ -86,15 +93,18 @@ export function Select<T, Multiple extends boolean | undefined = false>({
   hideLabel = true,
   placeholder,
   loading,
+  labelTooltip,
   description,
   error,
+  required,
   ...props
-}: SelectPropsGeneric<T, Multiple>) {
+}: SelectPropsGeneric<T, Multiple> & { required?: boolean }) {
   const labelId = useId();
   const propLookup = props as Record<string, unknown>;
   const ariaLabel = propLookup["aria-label"] as string | undefined;
   const ariaLabelledby = propLookup["aria-labelledby"] as string | undefined;
-  const fallbackLabel = label ?? placeholder;
+  // For aria-label, use string label or placeholder (ReactNode labels can't be used for aria-label)
+  const fallbackLabel = typeof label === "string" ? label : placeholder;
 
   // Use Field wrapper when label is provided and not hidden
   const useFieldWrapper = label && !hideLabel;
@@ -185,6 +195,8 @@ export function Select<T, Multiple extends boolean | undefined = false>({
     return (
       <Field
         label={label}
+        required={required}
+        labelTooltip={labelTooltip}
         description={description}
         error={
           error

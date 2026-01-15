@@ -30,6 +30,7 @@ const componentItems: NavItem[] = [
   { label: "Dropdown", href: "/components/dropdown" },
   { label: "Collapsible", href: "/components/collapsible" },
   { label: "Input", href: "/components/input" },
+  { label: "Label", href: "/components/label" },
   { label: "Sensitive Input", href: "/components/sensitive-input" },
   { label: "Layer Card", href: "/components/layer-card" },
   { label: "Loader", href: "/components/loader" },
