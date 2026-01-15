@@ -49,7 +49,7 @@ Most frequently used tokens across Kumo components:
 | Category | Top Tokens |
 |----------|------------|
 | **Background** | `bg-surface`, `bg-secondary`, `bg-color-3`, `bg-color`, `bg-destructive` |
-| **Text** | `text-surface`, `text-muted`, `text-error`, `text-label`, `text-info` |
+| **Text** | `text-surface`, `text-muted`, `text-label`, `text-error`, `text-info` |
 | **Border/Ring** | `ring-border`, `ring-active`, `ring-destructive`, `ring-color` |
 
 ---
@@ -453,7 +453,7 @@ Props:
 ```
 
 ```tsx
-<Checkbox label="I agree to the terms and conditions" required={true} />
+<Checkbox label="Subscribe to newsletter" required={false} />
 ```
 
 ```tsx
@@ -461,7 +461,7 @@ Props:
 ```
 
 ```tsx
-<Checkbox label="I accept the privacy policy" required={true} labelTooltip="You must accept our privacy policy to continue" />
+<Checkbox label="Remember my preferences" required={false} labelTooltip="We'll save your settings for next time" />
 ```
 
 ```tsx
@@ -472,7 +472,6 @@ Props:
           <strong>Privacy Policy</strong>
         </span>
       }
-      required
     />
 ```
 
@@ -967,7 +966,6 @@ Usage:
         value={value}
         onValueChange={setValue}
         label="Country"
-        description="Select your country of residence"
       >
         <Combobox.TriggerInput placeholder="Select country" />
         <Combobox.Content>
@@ -1327,7 +1325,7 @@ Field component
 - `label`: ReactNode
   The label content - can be a string or any React node
 - `required`: boolean
-  When true, shows a red asterisk (*) to indicate the field is required. When explicitly false, shows gray "(optional)" text after the label. When undefined, no indicator is shown.
+  When explicitly false, shows gray "(optional)" text after the label. When true or undefined, no indicator is shown.
 - `labelTooltip`: ReactNode
   Tooltip content to display next to the label via an info icon
 - `error`: object
@@ -1399,11 +1397,11 @@ Input component
 
 ```tsx
 <Input
-      label="Password"
-      required
-      labelTooltip="Must be at least 8 characters with one uppercase letter and one number"
-      type="password"
-      placeholder="Enter password"
+      label="Backup Email"
+      required={false}
+      labelTooltip="Used for account recovery if you lose access to your primary email"
+      type="email"
+      placeholder="backup@example.com"
     />
 ```
 
@@ -1414,7 +1412,6 @@ Input component
           Email for <strong>billing</strong>
         </span>
       }
-      required
       placeholder="billing@company.com"
       type="email"
     />
@@ -1422,10 +1419,9 @@ Input component
 
 ```tsx
 <div className="flex max-w-md flex-col gap-4">
-      <Input label="Full Name" required placeholder="John Doe" />
+      <Input label="Full Name" placeholder="John Doe" />
       <Input
         label="Email"
-        required
         labelTooltip="We'll send your receipt here"
         placeholder="john@example.com"
         type="email"
@@ -1611,7 +1607,7 @@ function InputGroupExamplesRender() {
 
 ### Label
 
-When true, only renders the inline content (indicators, tooltip) without the outer span with font styling. Useful when composed inside another label element that already provides the text styling. / asContent?: boolean; } /** Label component for form fields. Provides a standardized way to display labels with optional indicators: - Required indicator: red asterisk (*) when `required={true}` - Optional indicator: gray "(optional)" text when `showOptional={true}` and not required - Tooltip: info icon with hover tooltip for additional context // Basic label <Label>Email</Label> // Required field <Label required>Password</Label> // Optional field with indicator <Label showOptional>Middle Name</Label> // With tooltip <Label tooltip="We'll use this to send you updates">Email</Label> // With ReactNode children <Label> <span>Custom label with <strong>bold</strong> text</span> </Label>
+When true, only renders the inline content (indicators, tooltip) without the outer span with font styling. Useful when composed inside another label element that already provides the text styling. / asContent?: boolean; } /** Label component for form fields. Provides a standardized way to display labels with optional indicators: - Optional indicator: gray "(optional)" text when `showOptional={true}` - Tooltip: info icon with hover tooltip for additional context // Basic label <Label>Email</Label> // Optional field with indicator <Label showOptional>Middle Name</Label> // With tooltip <Label tooltip="We'll use this to send you updates">Email</Label> // With ReactNode children <Label> <span>Custom label with <strong>bold</strong> text</span> </Label>
 
 **Import:** `import { Label } from "@cloudflare/kumo";`
 
@@ -1621,8 +1617,6 @@ When true, only renders the inline content (indicators, tooltip) without the out
 
 - `children`: ReactNode
   The label content - can be a string or any React node
-- `required`: boolean
-  When true, shows a red asterisk (*) to indicate the field is required
 - `showOptional`: boolean
   When true (and required is false), shows gray "(optional)" text after the label
 - `tooltip`: ReactNode
@@ -1634,7 +1628,7 @@ When true, only renders the inline content (indicators, tooltip) without the out
 
 **Colors (kumo tokens used):**
 
-`text-destructive`, `text-muted`, `text-surface`
+`text-label`, `text-surface`
 
 **Examples:**
 
@@ -1651,12 +1645,8 @@ When true, only renders the inline content (indicators, tooltip) without the out
 ```tsx
 <div className="flex flex-col gap-4">
       <Label>Default Label</Label>
-      <Label required>Required Label</Label>
       <Label showOptional>Optional Label</Label>
       <Label tooltip="More information">Label with Tooltip</Label>
-      <Label required tooltip="Required field info">
-        Required with Tooltip
-      </Label>
       <Label showOptional tooltip="Optional field info">
         Optional with Tooltip
       </Label>
@@ -1665,10 +1655,9 @@ When true, only renders the inline content (indicators, tooltip) without the out
 
 ```tsx
 <div className="flex max-w-md flex-col gap-4">
-      <Input label="Full Name" required placeholder="John Doe" />
+      <Input label="Full Name" placeholder="John Doe" />
       <Input
         label="Email"
-        required
         labelTooltip="We'll send your receipt here"
         placeholder="john@example.com"
         type="email"
@@ -2342,19 +2331,6 @@ Option sub-component
 
 ```tsx
 <Select
-      label="Country"
-      hideLabel={false}
-      required
-      placeholder="Select a country"
-    >
-      <Select.Option value="us">United States</Select.Option>
-      <Select.Option value="uk">United Kingdom</Select.Option>
-      <Select.Option value="ca">Canada</Select.Option>
-    </Select>
-```
-
-```tsx
-<Select
       label="Preferred Language"
       hideLabel={false}
       required={false}
@@ -2376,6 +2352,20 @@ Option sub-component
       <Select.Option value="utc">UTC</Select.Option>
       <Select.Option value="est">Eastern Time (EST)</Select.Option>
       <Select.Option value="pst">Pacific Time (PST)</Select.Option>
+    </Select>
+```
+
+```tsx
+<Select
+      label="Plan"
+      hideLabel={false}
+      required={false}
+      labelTooltip="Choose the plan that best fits your needs. You can upgrade anytime."
+      placeholder="Select a plan"
+    >
+      <Select.Option value="free">Free</Select.Option>
+      <Select.Option value="pro">Pro - $9/month</Select.Option>
+      <Select.Option value="enterprise">Enterprise - Contact us</Select.Option>
     </Select>
 ```
 
@@ -2558,15 +2548,6 @@ SensitiveInput component
 
 ```tsx
 <SensitiveInput
-      label="Production API Key"
-      required
-      labelTooltip="This key is required to deploy to production. Keep it secure!"
-      placeholder="sk_live_..."
-    />
-```
-
-```tsx
-<SensitiveInput
       label="API Key"
       defaultValue="copyable-secret-key"
       onCopy={() => console.log("Value copied!")}
@@ -2627,7 +2608,7 @@ Switch component
 - `labelTooltip`: ReactNode
   Tooltip content to display next to the label via an info icon
 - `required`: boolean
-  Whether the switch is required. When true, shows a red asterisk (*) on the label. When explicitly false, shows "(optional)" text after the label.
+  Whether the switch is required. When explicitly false, shows "(optional)" text after the label.
 - `controlFirst`: boolean
   When true (default), switch appears before label. When false, label appears before switch.
 - `size`: enum [default: base]
@@ -2727,7 +2708,7 @@ Props:
 ```
 
 ```tsx
-<Switch label="Enable notifications" required={true} />
+<Switch label="Enable dark mode" required={false} />
 ```
 
 ```tsx
@@ -2735,7 +2716,7 @@ Props:
 ```
 
 ```tsx
-<Switch label="Accept cookies" required={true} labelTooltip="Required for the website to function properly" />
+<Switch label="Save preferences" required={false} labelTooltip="We'll remember your settings for next time" />
 ```
 
 ```tsx
