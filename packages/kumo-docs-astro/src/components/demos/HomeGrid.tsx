@@ -55,6 +55,7 @@ const componentRoutes: Record<string, string> = {
   code: "/components/code",
   banner: "/components/banner",
   badge: "/components/badge",
+  tabs: "/components/tabs",
 };
 
 function ToastTriggerButton() {
