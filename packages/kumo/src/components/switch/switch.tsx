@@ -105,7 +105,7 @@ export type SwitchProps = Omit<
   /** Tooltip content to display next to the label via an info icon */
   labelTooltip?: ReactNode;
   /**
-   * Whether the switch is required. When true, shows a red asterisk (*) on the label.
+   * Whether the switch is required.
    * When explicitly false, shows "(optional)" text after the label.
    */
   required?: boolean;
