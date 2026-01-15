@@ -94,7 +94,7 @@ export function Tabs({
               isSegmented &&
                 "my-px rounded-lg px-2.5 text-label aria-selected:text-surface",
               isUnderline &&
-                "pb-2 font-medium text-muted aria-selected:font-medium aria-selected:text-surface dark:text-label",
+                "pb-2 text-label aria-selected:font-medium aria-selected:text-surface",
               tab.className,
             )}
           >

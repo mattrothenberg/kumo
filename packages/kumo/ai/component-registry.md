@@ -2691,7 +2691,7 @@ Tabs component
 
 **Colors (kumo tokens used):**
 
-`bg-accent`, `bg-primary`, `bg-surface-elevated`, `border-border`, `ring-color-2`, `text-label`, `text-muted`, `text-surface`
+`bg-accent`, `bg-primary`, `bg-surface-elevated`, `border-border`, `ring-color-2`, `text-label`, `text-surface`
 
 **Examples:**
 
