@@ -66,9 +66,9 @@ describe("parseTailwindClasses", () => {
 
     it("should parse border radius", () => {
       // Values match Tailwind v4 theme.css --radius-* definitions
-      expect(parseTailwindClasses("rounded-sm")).toEqual({ borderRadius: 4 });  // --radius-sm: 0.25rem = 4px
-      expect(parseTailwindClasses("rounded-md")).toEqual({ borderRadius: 6 });  // --radius-md: 0.375rem = 6px
-      expect(parseTailwindClasses("rounded-lg")).toEqual({ borderRadius: 8 });  // --radius-lg: 0.5rem = 8px
+      expect(parseTailwindClasses("rounded-sm")).toEqual({ borderRadius: 4 }); // --radius-sm: 0.25rem = 4px
+      expect(parseTailwindClasses("rounded-md")).toEqual({ borderRadius: 6 }); // --radius-md: 0.375rem = 6px
+      expect(parseTailwindClasses("rounded-lg")).toEqual({ borderRadius: 8 }); // --radius-lg: 0.5rem = 8px
       expect(parseTailwindClasses("rounded-xl")).toEqual({ borderRadius: 12 }); // --radius-xl: 0.75rem = 12px
       expect(parseTailwindClasses("rounded-2xl")).toEqual({ borderRadius: 16 }); // --radius-2xl: 1rem = 16px
       expect(parseTailwindClasses("rounded-3xl")).toEqual({ borderRadius: 24 }); // --radius-3xl: 1.5rem = 24px
@@ -794,7 +794,9 @@ describe("parseTailwindClasses", () => {
       });
 
       it("should handle multiple arbitrary values", () => {
-        const result = parseTailwindClasses("min-w-[200px] max-w-[800px] min-h-[100px] max-h-[600px]");
+        const result = parseTailwindClasses(
+          "min-w-[200px] max-w-[800px] min-h-[100px] max-h-[600px]",
+        );
         expect(result).toEqual({
           minWidth: 200,
           maxWidth: 800,

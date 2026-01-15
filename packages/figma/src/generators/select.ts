@@ -74,8 +74,6 @@ const selectStyling = {
   },
 };
 
-
-
 /**
  * Variant types (generator-specific display variants)
  * Note: These are presentation variants for Figma, not React component variants
@@ -282,7 +280,8 @@ async function createSelectComponent(
   caret.name = "Caret";
 
   // Apply icon color based on state
-  const iconColorToken = state === "disabled" ? "text-disabled" : "text-surface";
+  const iconColorToken =
+    state === "disabled" ? "text-disabled" : "text-surface";
   bindIconColor(caret, iconColorToken);
 
   trigger.appendChild(caret);
@@ -365,7 +364,9 @@ async function createSelectComponent(
 
       // Highlight second item (selected/hover state) - from selectStyling
       if (i === 1) {
-        const accentVar = getVariableByName(selectStyling.option.highlightBackground);
+        const accentVar = getVariableByName(
+          selectStyling.option.highlightBackground,
+        );
         if (accentVar) {
           bindFillToVariable(optionFrame, accentVar.id);
         }
@@ -627,7 +628,8 @@ export async function generateSelectComponents(
   lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.section.x =
+    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
   logComplete(

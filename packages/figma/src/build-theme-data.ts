@@ -45,7 +45,10 @@ function getTailwindThemeCssPath(): string {
 
   // Try monorepo root node_modules
   const monorepoRoot = join(__dirname, "../../..");
-  const rootDirectPath = join(monorepoRoot, "node_modules/tailwindcss/theme.css");
+  const rootDirectPath = join(
+    monorepoRoot,
+    "node_modules/tailwindcss/theme.css",
+  );
   try {
     readFileSync(rootDirectPath);
     return rootDirectPath;
@@ -58,14 +61,14 @@ function getTailwindThemeCssPath(): string {
     const pnpmBasePath = join(KUMO_PKG, "node_modules/.pnpm");
     const pnpmDirs = readdirSync(pnpmBasePath);
     const tailwindDir = pnpmDirs.find((d: string) =>
-      d.startsWith("tailwindcss@")
+      d.startsWith("tailwindcss@"),
     );
 
     if (tailwindDir) {
       return join(
         pnpmBasePath,
         tailwindDir,
-        "node_modules/tailwindcss/theme.css"
+        "node_modules/tailwindcss/theme.css",
       );
     }
   } catch {
@@ -77,21 +80,23 @@ function getTailwindThemeCssPath(): string {
     const pnpmBasePath = join(monorepoRoot, "node_modules/.pnpm");
     const pnpmDirs = readdirSync(pnpmBasePath);
     const tailwindDir = pnpmDirs.find((d: string) =>
-      d.startsWith("tailwindcss@")
+      d.startsWith("tailwindcss@"),
     );
 
     if (tailwindDir) {
       return join(
         pnpmBasePath,
         tailwindDir,
-        "node_modules/tailwindcss/theme.css"
+        "node_modules/tailwindcss/theme.css",
       );
     }
   } catch {
     // Final fallback failed
   }
 
-  throw new Error("Could not find tailwindcss/theme.css in kumo package or monorepo root");
+  throw new Error(
+    "Could not find tailwindcss/theme.css in kumo package or monorepo root",
+  );
 }
 
 /**
@@ -161,7 +166,21 @@ function parseTailwindBorderRadius(css: string): Record<string, number> {
  */
 function parseTailwindFontSizes(css: string): Record<string, number> {
   const sizes: Record<string, number> = {};
-  const names = ["xs", "sm", "base", "lg", "xl", "2xl", "3xl", "4xl", "5xl", "6xl", "7xl", "8xl", "9xl"];
+  const names = [
+    "xs",
+    "sm",
+    "base",
+    "lg",
+    "xl",
+    "2xl",
+    "3xl",
+    "4xl",
+    "5xl",
+    "6xl",
+    "7xl",
+    "8xl",
+    "9xl",
+  ];
 
   for (const name of names) {
     const pattern = new RegExp(`--text-${name}:\\s*([\\d.]+)rem`);
@@ -179,7 +198,17 @@ function parseTailwindFontSizes(css: string): Record<string, number> {
  */
 function parseTailwindFontWeights(css: string): Record<string, number> {
   const weights: Record<string, number> = {};
-  const names = ["thin", "extralight", "light", "normal", "medium", "semibold", "bold", "extrabold", "black"];
+  const names = [
+    "thin",
+    "extralight",
+    "light",
+    "normal",
+    "medium",
+    "semibold",
+    "bold",
+    "extrabold",
+    "black",
+  ];
 
   for (const name of names) {
     const pattern = new RegExp(`--font-weight-${name}:\\s*(\\d+)`);
@@ -195,8 +224,30 @@ function parseTailwindFontWeights(css: string): Record<string, number> {
 /**
  * Parse Tailwind v4 theme.css for shadow definitions
  */
-function parseTailwindShadows(css: string): Record<string, { layers: Array<{ offsetX: number; offsetY: number; blur: number; spread: number; opacity: number }> }> {
-  const shadows: Record<string, { layers: Array<{ offsetX: number; offsetY: number; blur: number; spread: number; opacity: number }> }> = {};
+function parseTailwindShadows(css: string): Record<
+  string,
+  {
+    layers: Array<{
+      offsetX: number;
+      offsetY: number;
+      blur: number;
+      spread: number;
+      opacity: number;
+    }>;
+  }
+> {
+  const shadows: Record<
+    string,
+    {
+      layers: Array<{
+        offsetX: number;
+        offsetY: number;
+        blur: number;
+        spread: number;
+        opacity: number;
+      }>;
+    }
+  > = {};
   const names = ["2xs", "xs", "sm", "md", "lg", "xl", "2xl"];
 
   for (const name of names) {
@@ -213,15 +264,29 @@ function parseTailwindShadows(css: string): Record<string, { layers: Array<{ off
 /**
  * Parse CSS shadow string into structured layers
  */
-function parseShadowString(shadowStr: string): { layers: Array<{ offsetX: number; offsetY: number; blur: number; spread: number; opacity: number }> } {
-  const layers: Array<{ offsetX: number; offsetY: number; blur: number; spread: number; opacity: number }> = [];
+function parseShadowString(shadowStr: string): {
+  layers: Array<{
+    offsetX: number;
+    offsetY: number;
+    blur: number;
+    spread: number;
+    opacity: number;
+  }>;
+} {
+  const layers: Array<{
+    offsetX: number;
+    offsetY: number;
+    blur: number;
+    spread: number;
+    opacity: number;
+  }> = [];
 
   // Split by comma for multi-layer shadows
   const layerStrings = shadowStr.split(/,\s*(?=\d)/);
 
   for (const layer of layerStrings) {
     const match = layer.match(
-      /(-?[\d.]+)(?:px)?\s+(-?[\d.]+)(?:px)?\s+(-?[\d.]+)(?:px)?(?:\s+(-?[\d.]+)(?:px)?)?\s+rgb\([^/]+\/\s*([\d.]+)\)/
+      /(-?[\d.]+)(?:px)?\s+(-?[\d.]+)(?:px)?\s+(-?[\d.]+)(?:px)?(?:\s+(-?[\d.]+)(?:px)?)?\s+rgb\([^/]+\/\s*([\d.]+)\)/,
     );
 
     if (match) {
@@ -243,10 +308,43 @@ function parseShadowString(shadowStr: string): { layers: Array<{ offsetX: number
  */
 function generateSpacingScale(baseUnitPx: number): Record<string, number> {
   const keys = [
-    "0", "px", "0.5", "1", "1.5", "2", "2.5", "3", "3.5", "4", "4.5", "5", "6",
+    "0",
+    "px",
+    "0.5",
+    "1",
+    "1.5",
+    "2",
+    "2.5",
+    "3",
+    "3.5",
+    "4",
+    "4.5",
+    "5",
+    "6",
     "6.5", // Kumo custom
-    "7", "8", "9", "10", "11", "12", "14", "16", "20", "24", "28", "32",
-    "36", "40", "44", "48", "52", "56", "60", "64", "72", "80", "96"
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "14",
+    "16",
+    "20",
+    "24",
+    "28",
+    "32",
+    "36",
+    "40",
+    "44",
+    "48",
+    "52",
+    "56",
+    "60",
+    "64",
+    "72",
+    "80",
+    "96",
   ];
 
   const scale: Record<string, number> = {};
@@ -273,7 +371,9 @@ function parseButtonCompactSizes(tsx: string): Record<string, number> {
 
   for (const name of sizeNames) {
     // Match: xs: { classes: "size-3.5" }
-    const pattern = new RegExp(`${name}:\\s*\\{\\s*classes:\\s*["']size-([\\d.]+)["']`);
+    const pattern = new RegExp(
+      `${name}:\\s*\\{\\s*classes:\\s*["']size-([\\d.]+)["']`,
+    );
     const match = tsx.match(pattern);
     if (match) {
       // Convert Tailwind size to pixels: size-X = X * 4
@@ -301,20 +401,28 @@ const tailwindFontWeights = parseTailwindFontWeights(tailwindThemeCss);
 const tailwindShadows = parseTailwindShadows(tailwindThemeCss);
 
 console.log(`   - Base spacing unit: ${tailwindSpacing.baseUnitPx}px`);
-console.log(`   - Border radii: ${Object.keys(tailwindBorderRadius).length} values`);
+console.log(
+  `   - Border radii: ${Object.keys(tailwindBorderRadius).length} values`,
+);
 console.log(`   - Font sizes: ${Object.keys(tailwindFontSizes).length} values`);
-console.log(`   - Font weights: ${Object.keys(tailwindFontWeights).length} values`);
+console.log(
+  `   - Font weights: ${Object.keys(tailwindFontWeights).length} values`,
+);
 console.log(`   - Shadows: ${Object.keys(tailwindShadows).length} values`);
 
 // Parse Kumo overrides
 console.log("\n🎨 Parsing Kumo theme-kumo.css overrides...");
 const kumoFontSizes = parseKumoFontSizes(themeKumoCss);
-console.log(`   - Font size overrides: xs=${kumoFontSizes.xs}px, sm=${kumoFontSizes.sm}px, base=${kumoFontSizes.base}px, lg=${kumoFontSizes.lg}px`);
+console.log(
+  `   - Font size overrides: xs=${kumoFontSizes.xs}px, sm=${kumoFontSizes.sm}px, base=${kumoFontSizes.base}px, lg=${kumoFontSizes.lg}px`,
+);
 
 // Parse button compact sizes
 console.log("\n🔘 Parsing button.tsx compact sizes...");
 const buttonCompactSizes = parseButtonCompactSizes(buttonTsx);
-console.log(`   - Compact sizes: xs=${buttonCompactSizes.xs}px, sm=${buttonCompactSizes.sm}px, base=${buttonCompactSizes.base}px, lg=${buttonCompactSizes.lg}px`);
+console.log(
+  `   - Compact sizes: xs=${buttonCompactSizes.xs}px, sm=${buttonCompactSizes.sm}px, base=${buttonCompactSizes.base}px, lg=${buttonCompactSizes.lg}px`,
+);
 
 // Generate full spacing scale
 const spacingScale = generateSpacingScale(tailwindSpacing.baseUnitPx);
@@ -355,34 +463,34 @@ const themeData = {
   computed: {
     // For shared.ts SPACING constant
     spacing: {
-      xs: spacingScale["1"],    // gap-1 = 4px
-      sm: spacingScale["1.5"],  // gap-1.5 = 6px
-      base: spacingScale["2"],  // gap-2 = 8px
-      lg: spacingScale["3"],    // gap-3 = 12px
+      xs: spacingScale["1"], // gap-1 = 4px
+      sm: spacingScale["1.5"], // gap-1.5 = 6px
+      base: spacingScale["2"], // gap-2 = 8px
+      lg: spacingScale["3"], // gap-3 = 12px
     },
 
     // For shared.ts BORDER_RADIUS constant (from Tailwind v4)
     borderRadius: {
-      xs: tailwindBorderRadius.xs,   // 2px
-      sm: tailwindBorderRadius.sm,   // 4px
-      md: tailwindBorderRadius.md,   // 6px
-      lg: tailwindBorderRadius.lg,   // 8px
-      xl: tailwindBorderRadius.xl,   // 12px
+      xs: tailwindBorderRadius.xs, // 2px
+      sm: tailwindBorderRadius.sm, // 4px
+      md: tailwindBorderRadius.md, // 6px
+      lg: tailwindBorderRadius.lg, // 8px
+      xl: tailwindBorderRadius.xl, // 12px
       full: 9999,
     },
 
     // For shared.ts FONT_SIZE constant (Kumo overrides)
     fontSize: {
-      xs: kumoFontSizes.xs,    // 12px
-      sm: kumoFontSizes.sm,    // 13px (Kumo override)
+      xs: kumoFontSizes.xs, // 12px
+      sm: kumoFontSizes.sm, // 13px (Kumo override)
       base: kumoFontSizes.base, // 14px (Kumo override)
-      lg: kumoFontSizes.lg,    // 16px (Kumo override)
+      lg: kumoFontSizes.lg, // 16px (Kumo override)
     },
 
     // For shared.ts FALLBACK_VALUES.fontWeight
     fontWeight: {
-      normal: tailwindFontWeights.normal,    // 400
-      medium: tailwindFontWeights.medium,    // 500
+      normal: tailwindFontWeights.normal, // 400
+      medium: tailwindFontWeights.medium, // 500
       semiBold: tailwindFontWeights.semibold, // 600
     },
 
@@ -408,7 +516,15 @@ writeFileSync(outputPath, JSON.stringify(themeData, null, 2));
 console.log(`\n✅ Wrote ${outputPath}`);
 console.log("\n📋 Summary:");
 console.log(`   - Spacing scale: ${Object.keys(spacingScale).length} values`);
-console.log(`   - Border radius: ${Object.keys(themeData.computed.borderRadius).length} values`);
-console.log(`   - Font sizes: ${Object.keys(themeData.computed.fontSize).length} values (Kumo overrides)`);
-console.log(`   - Font weights: ${Object.keys(themeData.computed.fontWeight).length} values`);
-console.log(`   - Button compact sizes: ${Object.keys(buttonCompactSizes).length} values`);
+console.log(
+  `   - Border radius: ${Object.keys(themeData.computed.borderRadius).length} values`,
+);
+console.log(
+  `   - Font sizes: ${Object.keys(themeData.computed.fontSize).length} values (Kumo overrides)`,
+);
+console.log(
+  `   - Font weights: ${Object.keys(themeData.computed.fontWeight).length} values`,
+);
+console.log(
+  `   - Button compact sizes: ${Object.keys(buttonCompactSizes).length} values`,
+);

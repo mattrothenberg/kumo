@@ -74,13 +74,19 @@ function getTabsConfigFromRegistry() {
   }
 
   return {
-    containerHeight: tabsStyling.container?.height ?? FALLBACK_TABS_CONFIG.containerHeight,
-    borderRadius: tabsStyling.container?.borderRadius ?? FALLBACK_TABS_CONFIG.borderRadius,
-    containerPadding: tabsStyling.container?.padding ?? FALLBACK_TABS_CONFIG.containerPadding,
-    tabVerticalMargin: tabsStyling.tab?.verticalMargin ?? FALLBACK_TABS_CONFIG.tabVerticalMargin,
-    tabHorizontalPadding: tabsStyling.tab?.paddingX ?? FALLBACK_TABS_CONFIG.tabHorizontalPadding,
+    containerHeight:
+      tabsStyling.container?.height ?? FALLBACK_TABS_CONFIG.containerHeight,
+    borderRadius:
+      tabsStyling.container?.borderRadius ?? FALLBACK_TABS_CONFIG.borderRadius,
+    containerPadding:
+      tabsStyling.container?.padding ?? FALLBACK_TABS_CONFIG.containerPadding,
+    tabVerticalMargin:
+      tabsStyling.tab?.verticalMargin ?? FALLBACK_TABS_CONFIG.tabVerticalMargin,
+    tabHorizontalPadding:
+      tabsStyling.tab?.paddingX ?? FALLBACK_TABS_CONFIG.tabHorizontalPadding,
     tabFontSize: tabsStyling.tab?.fontSize ?? FALLBACK_TABS_CONFIG.tabFontSize,
-    tabFontWeight: tabsStyling.tab?.fontWeight ?? FALLBACK_TABS_CONFIG.tabFontWeight,
+    tabFontWeight:
+      tabsStyling.tab?.fontWeight ?? FALLBACK_TABS_CONFIG.tabFontWeight,
   };
 }
 
@@ -471,7 +477,8 @@ export async function generateTabsComponents(
     lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
 
-    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+    darkSection.section.x =
+      lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
 
     logComplete(

@@ -4,11 +4,11 @@
  * Reports the deployed Storybook preview URL.
  */
 
-import type { CIContext, ReportItem, Reporter } from './types';
+import type { CIContext, ReportItem, Reporter } from "./types";
 
 export const storybookPreviewReporter: Reporter = {
-  id: 'storybook-preview',
-  name: 'Storybook Preview',
+  id: "storybook-preview",
+  name: "Storybook Preview",
 
   async collect(context: CIContext): Promise<ReportItem | null> {
     const { storybookPreviewUrl, shortSha } = context;
@@ -22,8 +22,8 @@ export const storybookPreviewReporter: Reporter = {
 This preview deployment (\`${shortSha}\`) contains the latest component changes from this MR.`;
 
     return {
-      id: 'storybook-preview',
-      title: '📖 Storybook Preview',
+      id: "storybook-preview",
+      title: "📖 Storybook Preview",
       priority: 20,
       content,
       success: true,

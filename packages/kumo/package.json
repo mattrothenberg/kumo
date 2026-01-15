@@ -369,7 +369,6 @@
     "test:exports": "vitest run --project=unit tests/imports/export-path-validation.test.ts",
     "validate:build": "vitest run --project=unit tests/imports/export-path-validation.test.ts",
     "validate:colors": "tsx scripts/color/validate-color-tokens.ts",
-
     "new:component": "plop component",
     "new:block": "plop block",
     "new:layout": "plop layout",

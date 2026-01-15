@@ -105,9 +105,15 @@ describe("RefreshButton Generator - Compact Size Configuration", () => {
   it("should have compact size mapping for all sizes", () => {
     expect(Object.keys(COMPACT_SIZE_MAP)).toHaveLength(4);
     for (const size of sizeProp.values) {
-      expect(COMPACT_SIZE_MAP[size as keyof typeof COMPACT_SIZE_MAP]).toBeDefined();
-      expect(typeof COMPACT_SIZE_MAP[size as keyof typeof COMPACT_SIZE_MAP]).toBe("number");
-      expect(COMPACT_SIZE_MAP[size as keyof typeof COMPACT_SIZE_MAP]).toBeGreaterThan(0);
+      expect(
+        COMPACT_SIZE_MAP[size as keyof typeof COMPACT_SIZE_MAP],
+      ).toBeDefined();
+      expect(
+        typeof COMPACT_SIZE_MAP[size as keyof typeof COMPACT_SIZE_MAP],
+      ).toBe("number");
+      expect(
+        COMPACT_SIZE_MAP[size as keyof typeof COMPACT_SIZE_MAP],
+      ).toBeGreaterThan(0);
     }
   });
 
@@ -146,13 +152,14 @@ describe("RefreshButton Generator - Icon Size Configuration", () => {
   it("should have icon sizes smaller than button sizes", () => {
     for (const size of sizeProp.values) {
       expect(REFRESH_ICON_SIZE[size]).toBeLessThan(
-        FALLBACK_VALUES.buttonCompactSize[size as keyof typeof FALLBACK_VALUES.buttonCompactSize]
+        FALLBACK_VALUES.buttonCompactSize[
+          size as keyof typeof FALLBACK_VALUES.buttonCompactSize
+        ],
       );
     }
   });
 
   it("should have increasing icon size values", () => {
-
     expect(Object.keys(REFRESH_ICON_SIZE)).toHaveLength(4);
     for (const size of sizeProp.values) {
       expect(REFRESH_ICON_SIZE[size]).toBeDefined();

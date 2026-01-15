@@ -2810,7 +2810,8 @@ async function generateRegistry(): Promise<GenerateRegistryResult> {
     components.InputArea = {
       name: "InputArea",
       type: "component",
-      description: "Multi-line textarea input with Input variants and InputArea-specific dimensions",
+      description:
+        "Multi-line textarea input with Input variants and InputArea-specific dimensions",
       importPath: "@cloudflare/kumo (synthetic - uses Input component)",
       category: "Input",
       props: {}, // Uses Input's props

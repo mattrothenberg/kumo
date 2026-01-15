@@ -78,8 +78,6 @@ function getBorderRadiusForSize(size: string): number {
     : BORDER_RADIUS.lg;
 }
 
-
-
 /**
  * Create a single refresh button component
  */
@@ -98,7 +96,10 @@ function createRefreshButtonComponent(
 
   // Get dimensions from compact size (square button)
   // Uses FALLBACK_VALUES.buttonCompactSize from shared.ts (generated from theme-data.json)
-  const buttonSize = FALLBACK_VALUES.buttonCompactSize[size as keyof typeof FALLBACK_VALUES.buttonCompactSize] || FALLBACK_VALUES.height.base;
+  const buttonSize =
+    FALLBACK_VALUES.buttonCompactSize[
+      size as keyof typeof FALLBACK_VALUES.buttonCompactSize
+    ] || FALLBACK_VALUES.height.base;
 
   // Configure auto-layout
   component.layoutMode = "HORIZONTAL";
@@ -277,7 +278,8 @@ export async function generateRefreshButtonComponents(
   lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.section.x =
+    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
   const totalComponents = sizes.length * loadingOptions.length;

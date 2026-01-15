@@ -89,7 +89,7 @@ describe("Figma Plugin Drift Detection", () => {
           `     import { generate${firstMissing}Components } from "./generators/${expectedFile}";\n` +
           `     { name: "${firstMissing}", execute: async (page, y) => { ... } }\n` +
           `  3. Or add to EXCLUDED_COMPONENTS in drift-detection.test.ts if intentional\n\n` +
-          `📖 See packages/figma/src/README.md for full instructions`
+          `📖 See packages/figma/src/README.md for full instructions`,
       );
     }
 
@@ -101,7 +101,7 @@ describe("Figma Plugin Drift Detection", () => {
 
     // Extract generator imports (matches kebab-case and single-word filenames)
     const importMatches = codeTs.matchAll(
-      /import\s+\{[^}]*generate\w+Components[^}]*\}\s+from\s+["']\.\/generators\/([\w-]+)["']/g
+      /import\s+\{[^}]*generate\w+Components[^}]*\}\s+from\s+["']\.\/generators\/([\w-]+)["']/g,
     );
 
     const registeredGenerators = new Set<string>();
@@ -115,12 +115,12 @@ describe("Figma Plugin Drift Detection", () => {
         (f: string) =>
           f.endsWith(".ts") &&
           !f.endsWith(".test.ts") &&
-          !UTILITY_FILES.has(f.replace(".ts", ""))
+          !UTILITY_FILES.has(f.replace(".ts", "")),
       )
       .map((f: string) => f.replace(".ts", ""));
 
     const unregistered = generatorFiles.filter(
-      (f: string) => !registeredGenerators.has(f)
+      (f: string) => !registeredGenerators.has(f),
     );
 
     if (unregistered.length > 0) {
@@ -134,7 +134,7 @@ describe("Figma Plugin Drift Detection", () => {
           `🔧 To fix, add to the GENERATORS array in code.ts:\n` +
           `  import { generate${componentName}Components } from "./generators/${firstUnreg}";\n` +
           `  { name: "${componentName}", execute: async (page, y) => { ... } }\n\n` +
-          `📖 See packages/figma/src/README.md for full instructions`
+          `📖 See packages/figma/src/README.md for full instructions`,
       );
     }
 
@@ -165,7 +165,7 @@ describe("Figma Plugin Drift Detection", () => {
 
         if (!hasTestExports) {
           warnings.push(
-            `${component} (${fileName}.ts): No testable exports found. Consider adding get*Config() or get*Data() functions for snapshot testing.`
+            `${component} (${fileName}.ts): No testable exports found. Consider adding get*Config() or get*Data() functions for snapshot testing.`,
           );
         }
       } catch {
@@ -176,7 +176,8 @@ describe("Figma Plugin Drift Detection", () => {
     // This is a warning, not a failure - testable exports are good practice but not required
     if (warnings.length > 0) {
       console.warn(
-        "\n⚠️  Generators without testable exports:\n  " + warnings.join("\n  ")
+        "\n⚠️  Generators without testable exports:\n  " +
+          warnings.join("\n  "),
       );
     }
 
@@ -194,7 +195,10 @@ describe("Figma Plugin Drift Detection", () => {
 describe("Figma Plugin - No Magic Numbers", () => {
   // Constants that must only be declared in shared.ts
   const CENTRALIZED_CONSTANTS = [
-    { name: "SECTION_PADDING", pattern: /(?:var|const|let)\s+SECTION_PADDING\s*=/ },
+    {
+      name: "SECTION_PADDING",
+      pattern: /(?:var|const|let)\s+SECTION_PADDING\s*=/,
+    },
     { name: "SECTION_GAP", pattern: /(?:var|const|let)\s+SECTION_GAP\s*=/ },
   ];
 
@@ -202,13 +206,12 @@ describe("Figma Plugin - No Magic Numbers", () => {
   const ALLOWED_DECLARATION_FILES = new Set(["shared.ts"]);
 
   it("should not redeclare SECTION_PADDING or SECTION_GAP in generators", () => {
-    const generatorFiles = readdirSync(__dirname)
-      .filter(
-        (f: string) =>
-          f.endsWith(".ts") &&
-          !f.endsWith(".test.ts") &&
-          !ALLOWED_DECLARATION_FILES.has(f)
-      );
+    const generatorFiles = readdirSync(__dirname).filter(
+      (f: string) =>
+        f.endsWith(".ts") &&
+        !f.endsWith(".test.ts") &&
+        !ALLOWED_DECLARATION_FILES.has(f),
+    );
 
     const violations: string[] = [];
 
@@ -218,7 +221,9 @@ describe("Figma Plugin - No Magic Numbers", () => {
 
       for (const constant of CENTRALIZED_CONSTANTS) {
         if (constant.pattern.test(content)) {
-          violations.push(`${file}: Redeclares ${constant.name} - import from shared.ts instead`);
+          violations.push(
+            `${file}: Redeclares ${constant.name} - import from shared.ts instead`,
+          );
         }
       }
     }
@@ -230,7 +235,7 @@ describe("Figma Plugin - No Magic Numbers", () => {
           `🔧 To fix:\n` +
           `  1. Remove the local declaration\n` +
           `  2. Add import: import { SECTION_PADDING, SECTION_GAP } from "./shared";\n\n` +
-          `📖 These constants must only be declared in shared.ts`
+          `📖 These constants must only be declared in shared.ts`,
       );
     }
 
@@ -238,13 +243,12 @@ describe("Figma Plugin - No Magic Numbers", () => {
   });
 
   it("should import SECTION_PADDING and SECTION_GAP from shared.ts when used", () => {
-    const generatorFiles = readdirSync(__dirname)
-      .filter(
-        (f: string) =>
-          f.endsWith(".ts") &&
-          !f.endsWith(".test.ts") &&
-          !ALLOWED_DECLARATION_FILES.has(f)
-      );
+    const generatorFiles = readdirSync(__dirname).filter(
+      (f: string) =>
+        f.endsWith(".ts") &&
+        !f.endsWith(".test.ts") &&
+        !ALLOWED_DECLARATION_FILES.has(f),
+    );
 
     const warnings: string[] = [];
 
@@ -258,13 +262,18 @@ describe("Figma Plugin - No Magic Numbers", () => {
 
       if (usesPadding || usesGap) {
         // Check if it imports from shared
-        const importsFromShared = /import\s+\{[^}]*(?:SECTION_PADDING|SECTION_GAP)[^}]*\}\s+from\s+["']\.\/shared["']/.test(content);
+        const importsFromShared =
+          /import\s+\{[^}]*(?:SECTION_PADDING|SECTION_GAP)[^}]*\}\s+from\s+["']\.\/shared["']/.test(
+            content,
+          );
 
         if (!importsFromShared) {
           const missing = [];
           if (usesPadding) missing.push("SECTION_PADDING");
           if (usesGap) missing.push("SECTION_GAP");
-          warnings.push(`${file}: Uses ${missing.join(", ")} but doesn't import from shared.ts`);
+          warnings.push(
+            `${file}: Uses ${missing.join(", ")} but doesn't import from shared.ts`,
+          );
         }
       }
     }
@@ -274,7 +283,7 @@ describe("Figma Plugin - No Magic Numbers", () => {
         `❌ Missing imports from shared.ts:\n` +
           `  - ${warnings.join("\n  - ")}\n\n` +
           `🔧 To fix, add import:\n` +
-          `  import { SECTION_PADDING, SECTION_GAP } from "./shared";\n`
+          `  import { SECTION_PADDING, SECTION_GAP } from "./shared";\n`,
       );
     }
 
@@ -289,7 +298,8 @@ describe("Figma Plugin - No Magic Numbers", () => {
 
     // Pattern to detect hardcoded DROP_SHADOW with inline numeric values
     // This catches: { type: "DROP_SHADOW", ... radius: 32 ... }
-    const hardcodedShadowPattern = /type:\s*["']DROP_SHADOW["'][^}]*(?:radius|blur):\s*\d+/;
+    const hardcodedShadowPattern =
+      /type:\s*["']DROP_SHADOW["'][^}]*(?:radius|blur):\s*\d+/;
 
     for (const file of shadowFiles) {
       const filePath = join(__dirname, file);
@@ -299,10 +309,15 @@ describe("Figma Plugin - No Magic Numbers", () => {
 
       // Check if file has hardcoded shadow values without importing SHADOWS
       const hasShadowEffect = hardcodedShadowPattern.test(content);
-      const importsShadows = /import\s+\{[^}]*SHADOWS[^}]*\}\s+from\s+["']\.\/shared["']/.test(content);
+      const importsShadows =
+        /import\s+\{[^}]*SHADOWS[^}]*\}\s+from\s+["']\.\/shared["']/.test(
+          content,
+        );
 
       if (hasShadowEffect && !importsShadows) {
-        violations.push(`${file}: Has hardcoded shadow effect - consider using SHADOWS from shared.ts`);
+        violations.push(
+          `${file}: Has hardcoded shadow effect - consider using SHADOWS from shared.ts`,
+        );
       }
     }
 
@@ -310,7 +325,7 @@ describe("Figma Plugin - No Magic Numbers", () => {
     if (violations.length > 0) {
       console.warn(
         `\n⚠️  Shadow centralization suggestions:\n  - ${violations.join("\n  - ")}\n` +
-          `  Consider importing SHADOWS from shared.ts for consistency.`
+          `  Consider importing SHADOWS from shared.ts for consistency.`,
       );
     }
 
@@ -343,17 +358,17 @@ describe("Figma Plugin - Registry Sync Validation", () => {
 
     // Expected widths from Dialog SIZE_CONFIG (derived from registry)
     const expectedWidths: Record<string, number> = {
-      sm: 288,   // min-w-72 = 72 * 4 = 288px
+      sm: 288, // min-w-72 = 72 * 4 = 288px
       base: 384, // min-w-96 = 96 * 4 = 384px
-      lg: 512,   // min-w-[32rem] = 32 * 16 = 512px
-      xl: 768,   // min-w-[48rem] = 48 * 16 = 768px
+      lg: 512, // min-w-[32rem] = 32 * 16 = 512px
+      xl: 768, // min-w-[48rem] = 48 * 16 = 768px
     };
 
     // Validate all sizes have classes
     for (const size of sizeProp.values) {
       expect(sizeProp.classes[size]).toBeDefined();
       const classes = sizeProp.classes[size];
-      
+
       // Check that classes contain min-w pattern
       const hasMinWidth = /min-w-/.test(classes);
       expect(hasMinWidth).toBe(true);
@@ -385,15 +400,17 @@ describe("Figma Plugin - Registry Sync Validation", () => {
 
     // Expected compact sizes from Button COMPACT_SIZE_MAP (derived from registry)
     const expectedSizes: Record<string, number> = {
-      xs: 14,   // size-3.5 = 3.5 * 4 = 14px
-      sm: 26,   // size-6.5 = 6.5 * 4 = 26px
+      xs: 14, // size-3.5 = 3.5 * 4 = 14px
+      sm: 26, // size-6.5 = 6.5 * 4 = 26px
       base: 36, // size-9 = 9 * 4 = 36px
-      lg: 40,   // size-10 = 10 * 4 = 40px
+      lg: 40, // size-10 = 10 * 4 = 40px
     };
 
     // Validate shape prop exists and has compact or square values
     expect(shapeProp.values).toBeDefined();
-    const hasCompactShape = shapeProp.values.includes("square") || shapeProp.values.includes("circle");
+    const hasCompactShape =
+      shapeProp.values.includes("square") ||
+      shapeProp.values.includes("circle");
     expect(hasCompactShape).toBe(true);
 
     // Validate compactSize mapping exists in registry (or validate via classes)
@@ -427,12 +444,18 @@ describe("Figma Plugin - Registry Sync Validation", () => {
     // dialog uses hardcoded object, subtle/xs use getShadowLayer()
     const hasDialogShadow = /dialog:\s*\{/.test(sharedContent);
     const hasSubtleShadow = /subtle:\s*getShadowLayer\(/.test(sharedContent);
-    
+
     expect(hasDialogShadow).toBe(true);
     expect(hasSubtleShadow).toBe(true);
 
     // Validate shadow properties are present
-    const shadowProperties = ["offsetX", "offsetY", "blur", "spread", "opacity"];
+    const shadowProperties = [
+      "offsetX",
+      "offsetY",
+      "blur",
+      "spread",
+      "opacity",
+    ];
     for (const prop of shadowProperties) {
       const hasProperty = new RegExp(prop + ":\\s*\\d+").test(sharedContent);
       expect(hasProperty).toBe(true);
@@ -442,10 +465,15 @@ describe("Figma Plugin - Registry Sync Validation", () => {
     const dialogPath = join(__dirname, "dialog.ts");
     if (existsSync(dialogPath)) {
       const dialogContent = readFileSync(dialogPath, "utf-8");
-      const importsShadows = /import\s+\{[^}]*SHADOWS[^}]*\}\s+from\s+["']\.\/shared["']/.test(dialogContent);
-      
+      const importsShadows =
+        /import\s+\{[^}]*SHADOWS[^}]*\}\s+from\s+["']\.\/shared["']/.test(
+          dialogContent,
+        );
+
       if (!importsShadows) {
-        console.warn("Dialog.ts should import SHADOWS from shared.ts for consistency");
+        console.warn(
+          "Dialog.ts should import SHADOWS from shared.ts for consistency",
+        );
       }
     }
 
@@ -453,10 +481,15 @@ describe("Figma Plugin - Registry Sync Validation", () => {
     const tabsPath = join(__dirname, "tabs.ts");
     if (existsSync(tabsPath)) {
       const tabsContent = readFileSync(tabsPath, "utf-8");
-      const importsShadows = /import\s+\{[^}]*SHADOWS[^}]*\}\s+from\s+["']\.\/shared["']/.test(tabsContent);
-      
+      const importsShadows =
+        /import\s+\{[^}]*SHADOWS[^}]*\}\s+from\s+["']\.\/shared["']/.test(
+          tabsContent,
+        );
+
       if (!importsShadows) {
-        console.warn("Tabs.ts should import SHADOWS from shared.ts for consistency");
+        console.warn(
+          "Tabs.ts should import SHADOWS from shared.ts for consistency",
+        );
       }
     }
 
@@ -475,7 +508,7 @@ describe("Figma Plugin - Registry Sync Validation", () => {
     // Validate all centralized constants exist in shared.ts
     const requiredConstants = [
       "SECTION_PADDING",
-      "SECTION_GAP", 
+      "SECTION_GAP",
       "SHADOWS",
       "GRID_LAYOUT",
       "FALLBACK_VALUES",
@@ -485,7 +518,9 @@ describe("Figma Plugin - Registry Sync Validation", () => {
     ];
 
     for (const constantName of requiredConstants) {
-      const hasConstant = new RegExp(`export\\s+const\\s+${constantName}\\s*=`).test(sharedContent);
+      const hasConstant = new RegExp(
+        `export\\s+const\\s+${constantName}\\s*=`,
+      ).test(sharedContent);
       expect(hasConstant).toBe(true);
     }
 
@@ -512,13 +547,10 @@ describe("Figma Plugin - Registry Sync Validation", () => {
  */
 describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
   it("should not have hardcoded section positioning (x = 100, y = 100, + 50)", () => {
-    const generatorFiles = readdirSync(__dirname)
-      .filter(
-        (f: string) =>
-          f.endsWith(".ts") &&
-          !f.endsWith(".test.ts") &&
-          f !== "shared.ts" // shared.ts declares the constants
-      );
+    const generatorFiles = readdirSync(__dirname).filter(
+      (f: string) =>
+        f.endsWith(".ts") && !f.endsWith(".test.ts") && f !== "shared.ts", // shared.ts declares the constants
+    );
 
     const violations: string[] = [];
 
@@ -527,7 +559,10 @@ describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
       const content = readFileSync(filePath, "utf-8");
 
       // Check if file imports SECTION_LAYOUT
-      const importsSectionLayout = /import\s+\{[^}]*SECTION_LAYOUT[^}]*\}\s+from\s+["']\.\/shared["']/.test(content);
+      const importsSectionLayout =
+        /import\s+\{[^}]*SECTION_LAYOUT[^}]*\}\s+from\s+["']\.\/shared["']/.test(
+          content,
+        );
 
       // Pattern to detect hardcoded section positioning:
       // - lightSection.x = 100 or darkSection.x = 100
@@ -537,12 +572,17 @@ describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
       const hasHardcodedY100 = /\.y\s*=\s*100\b/.test(content);
       const hasHardcodedPlus50 = /\+\s*50\b(?!\s*%)/.test(content); // Exclude 50% patterns
 
-      if ((hasHardcodedX100 || hasHardcodedY100 || hasHardcodedPlus50) && !importsSectionLayout) {
+      if (
+        (hasHardcodedX100 || hasHardcodedY100 || hasHardcodedPlus50) &&
+        !importsSectionLayout
+      ) {
         const issues = [];
         if (hasHardcodedX100) issues.push(".x = 100");
         if (hasHardcodedY100) issues.push(".y = 100");
         if (hasHardcodedPlus50) issues.push("+ 50");
-        violations.push(`${file}: Has hardcoded section positioning (${issues.join(", ")}) - use SECTION_LAYOUT from shared.ts`);
+        violations.push(
+          `${file}: Has hardcoded section positioning (${issues.join(", ")}) - use SECTION_LAYOUT from shared.ts`,
+        );
       }
     }
 
@@ -555,7 +595,7 @@ describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
           `  2. Replace:\n` +
           `     - .x = 100 → .x = SECTION_LAYOUT.startX\n` +
           `     - .y = 100 → .y = SECTION_LAYOUT.startY\n` +
-          `     - + 50 → + SECTION_LAYOUT.modeGap\n`
+          `     - + 50 → + SECTION_LAYOUT.modeGap\n`,
       );
     }
 
@@ -563,13 +603,10 @@ describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
   });
 
   it("should not have hardcoded opacity = 0.5 without OPACITY import", () => {
-    const generatorFiles = readdirSync(__dirname)
-      .filter(
-        (f: string) =>
-          f.endsWith(".ts") &&
-          !f.endsWith(".test.ts") &&
-          f !== "shared.ts"
-      );
+    const generatorFiles = readdirSync(__dirname).filter(
+      (f: string) =>
+        f.endsWith(".ts") && !f.endsWith(".test.ts") && f !== "shared.ts",
+    );
 
     const violations: string[] = [];
 
@@ -578,13 +615,18 @@ describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
       const content = readFileSync(filePath, "utf-8");
 
       // Check if file imports OPACITY
-      const importsOpacity = /import\s+\{[^}]*OPACITY[^}]*\}\s+from\s+["']\.\/shared["']/.test(content);
+      const importsOpacity =
+        /import\s+\{[^}]*OPACITY[^}]*\}\s+from\s+["']\.\/shared["']/.test(
+          content,
+        );
 
       // Pattern to detect hardcoded opacity = 0.5 or opacity: 0.5
       const hasHardcodedOpacity05 = /opacity\s*[:=]\s*0\.5\b/.test(content);
 
       if (hasHardcodedOpacity05 && !importsOpacity) {
-        violations.push(`${file}: Has hardcoded opacity = 0.5 - use OPACITY.disabled from shared.ts`);
+        violations.push(
+          `${file}: Has hardcoded opacity = 0.5 - use OPACITY.disabled from shared.ts`,
+        );
       }
     }
 
@@ -594,7 +636,7 @@ describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
           `  - ${violations.join("\n  - ")}\n\n` +
           `🔧 To fix:\n` +
           `  1. Import OPACITY from shared.ts\n` +
-          `  2. Replace: opacity = 0.5 → opacity = OPACITY.disabled\n`
+          `  2. Replace: opacity = 0.5 → opacity = OPACITY.disabled\n`,
       );
     }
 
@@ -602,13 +644,10 @@ describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
   });
 
   it("should not have hardcoded RGB color objects without COLORS import", () => {
-    const generatorFiles = readdirSync(__dirname)
-      .filter(
-        (f: string) =>
-          f.endsWith(".ts") &&
-          !f.endsWith(".test.ts") &&
-          f !== "shared.ts"
-      );
+    const generatorFiles = readdirSync(__dirname).filter(
+      (f: string) =>
+        f.endsWith(".ts") && !f.endsWith(".test.ts") && f !== "shared.ts",
+    );
 
     const violations: string[] = [];
 
@@ -617,14 +656,22 @@ describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
       const content = readFileSync(filePath, "utf-8");
 
       // Check if file imports COLORS
-      const importsColors = /import\s+\{[^}]*COLORS[^}]*\}\s+from\s+["']\.\/shared["']/.test(content);
+      const importsColors =
+        /import\s+\{[^}]*COLORS[^}]*\}\s+from\s+["']\.\/shared["']/.test(
+          content,
+        );
 
       // Pattern to detect hardcoded RGB objects like { r: 0.5, g: 0.5, b: 0.5 }
       // This catches placeholder gray colors commonly used
-      const hasHardcodedRGB = /\{\s*r:\s*0\.[0-9]+\s*,\s*g:\s*0\.[0-9]+\s*,\s*b:\s*0\.[0-9]+\s*\}/.test(content);
+      const hasHardcodedRGB =
+        /\{\s*r:\s*0\.[0-9]+\s*,\s*g:\s*0\.[0-9]+\s*,\s*b:\s*0\.[0-9]+\s*\}/.test(
+          content,
+        );
 
       if (hasHardcodedRGB && !importsColors) {
-        violations.push(`${file}: Has hardcoded RGB color object - use COLORS from shared.ts`);
+        violations.push(
+          `${file}: Has hardcoded RGB color object - use COLORS from shared.ts`,
+        );
       }
     }
 
@@ -641,7 +688,7 @@ describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
           `     - COLORS.borderGray for { r: 0.8, g: 0.8, b: 0.8 }\n` +
           `     - COLORS.lightGrayBg for { r: 0.95, g: 0.95, b: 0.95 }\n` +
           `     - COLORS.skeletonGray for { r: 0.9, g: 0.9, b: 0.9 }\n` +
-          `     - COLORS.fallbackPrimary for { r: 0.0, g: 0.5, b: 1.0 }\n`
+          `     - COLORS.fallbackPrimary for { r: 0.0, g: 0.5, b: 1.0 }\n`,
       );
     }
 
@@ -649,13 +696,10 @@ describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
   });
 
   it("should use GRID_LAYOUT.labelVerticalOffset for label positioning", () => {
-    const generatorFiles = readdirSync(__dirname)
-      .filter(
-        (f: string) =>
-          f.endsWith(".ts") &&
-          !f.endsWith(".test.ts") &&
-          f !== "shared.ts"
-      );
+    const generatorFiles = readdirSync(__dirname).filter(
+      (f: string) =>
+        f.endsWith(".ts") && !f.endsWith(".test.ts") && f !== "shared.ts",
+    );
 
     const warnings: string[] = [];
 
@@ -664,14 +708,20 @@ describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
       const content = readFileSync(filePath, "utf-8");
 
       // Check if file imports GRID_LAYOUT
-      const importsGridLayout = /import\s+\{[^}]*GRID_LAYOUT[^}]*\}\s+from\s+["']\.\/shared["']/.test(content);
+      const importsGridLayout =
+        /import\s+\{[^}]*GRID_LAYOUT[^}]*\}\s+from\s+["']\.\/shared["']/.test(
+          content,
+        );
 
       // Pattern to detect hardcoded label vertical offsets
       // Look for label.y = rowY + 4, label.y = rowY + 8, label.y = rowY + 12
-      const hasHardcodedLabelOffset = /label.*\.y\s*=\s*\w+\s*\+\s*(4|8|12)\b/.test(content);
+      const hasHardcodedLabelOffset =
+        /label.*\.y\s*=\s*\w+\s*\+\s*(4|8|12)\b/.test(content);
 
       if (hasHardcodedLabelOffset && !importsGridLayout) {
-        warnings.push(`${file}: May have hardcoded label vertical offset - consider using GRID_LAYOUT.labelVerticalOffset`);
+        warnings.push(
+          `${file}: May have hardcoded label vertical offset - consider using GRID_LAYOUT.labelVerticalOffset`,
+        );
       }
     }
 
@@ -682,7 +732,7 @@ describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
           `  Consider using GRID_LAYOUT.labelVerticalOffset:\n` +
           `  - .sm (4px) for compact components (badge, loader)\n` +
           `  - .md (8px) for standard components (input, checkbox)\n` +
-          `  - .lg (12px) for larger components (button, dialog)\n`
+          `  - .lg (12px) for larger components (button, dialog)\n`,
       );
     }
 
@@ -695,7 +745,9 @@ describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
     const sharedContent = readFileSync(sharedPath, "utf-8");
 
     // Validate DASH_PATTERN constant exists
-    const hasDashPattern = /export\s+const\s+DASH_PATTERN\s*=/.test(sharedContent);
+    const hasDashPattern = /export\s+const\s+DASH_PATTERN\s*=/.test(
+      sharedContent,
+    );
     expect(hasDashPattern).toBe(true);
 
     // Validate standard dash pattern is documented
@@ -730,7 +782,9 @@ describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
     expect(hasColorsSpinnerStroke).toBe(true);
 
     // Validate GRID_LAYOUT.labelVerticalOffset exists
-    const hasLabelVerticalOffset = /labelVerticalOffset:\s*\{/.test(sharedContent);
+    const hasLabelVerticalOffset = /labelVerticalOffset:\s*\{/.test(
+      sharedContent,
+    );
     const hasLabelOffsetSm = /sm:\s*4/.test(sharedContent);
     const hasLabelOffsetMd = /md:\s*8/.test(sharedContent);
     const hasLabelOffsetLg = /lg:\s*12/.test(sharedContent);
@@ -741,26 +795,35 @@ describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
   });
 
   it("should not have hardcoded COMPACT_SIZE_MAP definition in test files without using FALLBACK_VALUES", () => {
-    const testFiles = readdirSync(__dirname)
-      .filter((f: string) => f.endsWith(".test.ts"));
+    const testFiles = readdirSync(__dirname).filter((f: string) =>
+      f.endsWith(".test.ts"),
+    );
 
     const warnings: string[] = [];
 
     for (const file of testFiles) {
       if (file === "drift-detection.test.ts") continue; // Skip self
-      
+
       const filePath = join(__dirname, file);
       const content = readFileSync(filePath, "utf-8");
 
       // Check if file imports FALLBACK_VALUES
-      const importsFallbackValues = /import\s+\{[^}]*FALLBACK_VALUES[^}]*\}\s+from\s+["']\.\/shared["']/.test(content);
+      const importsFallbackValues =
+        /import\s+\{[^}]*FALLBACK_VALUES[^}]*\}\s+from\s+["']\.\/shared["']/.test(
+          content,
+        );
 
       // Check for explicit hardcoded COMPACT_SIZE_MAP definition: { xs: 14, sm: 26, base: 36, lg: 40 }
       // This is the most drift-prone pattern - explicit recreation of button compact sizes
-      const hasHardcodedCompactMap = /(?:const|let|var)\s+COMPACT_SIZE_MAP[^=]*=\s*\{[^}]*xs:\s*14[^}]*sm:\s*26/.test(content);
+      const hasHardcodedCompactMap =
+        /(?:const|let|var)\s+COMPACT_SIZE_MAP[^=]*=\s*\{[^}]*xs:\s*14[^}]*sm:\s*26/.test(
+          content,
+        );
 
       if (hasHardcodedCompactMap && !importsFallbackValues) {
-        warnings.push(`${file}: Has hardcoded COMPACT_SIZE_MAP definition - import FALLBACK_VALUES.buttonCompactSize from shared.ts`);
+        warnings.push(
+          `${file}: Has hardcoded COMPACT_SIZE_MAP definition - import FALLBACK_VALUES.buttonCompactSize from shared.ts`,
+        );
       }
     }
 
@@ -776,7 +839,7 @@ describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
           `     - FALLBACK_VALUES.buttonCompactSize.xs  (14px)\n` +
           `     - FALLBACK_VALUES.buttonCompactSize.sm  (26px)\n` +
           `     - FALLBACK_VALUES.buttonCompactSize.base (36px)\n` +
-          `     - FALLBACK_VALUES.buttonCompactSize.lg  (40px)\n`
+          `     - FALLBACK_VALUES.buttonCompactSize.lg  (40px)\n`,
       );
     }
 
@@ -784,25 +847,32 @@ describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
   });
 
   it("should not have hardcoded opacity 0.5 in test files without using OPACITY constant", () => {
-    const testFiles = readdirSync(__dirname)
-      .filter((f: string) => f.endsWith(".test.ts"));
+    const testFiles = readdirSync(__dirname).filter((f: string) =>
+      f.endsWith(".test.ts"),
+    );
 
     const warnings: string[] = [];
 
     for (const file of testFiles) {
       if (file === "drift-detection.test.ts") continue; // Skip self
-      
+
       const filePath = join(__dirname, file);
       const content = readFileSync(filePath, "utf-8");
 
       // Check if file imports OPACITY
-      const importsOpacity = /import\s+\{[^}]*OPACITY[^}]*\}\s+from\s+["']\.\/shared["']/.test(content);
+      const importsOpacity =
+        /import\s+\{[^}]*OPACITY[^}]*\}\s+from\s+["']\.\/shared["']/.test(
+          content,
+        );
 
       // Look for hardcoded opacity = 0.5 in assertions or data
-      const hasHardcodedOpacity = /(?:toBe|toEqual|opacity[:\s]*[=:])\s*0\.5\b/.test(content);
+      const hasHardcodedOpacity =
+        /(?:toBe|toEqual|opacity[:\s]*[=:])\s*0\.5\b/.test(content);
 
       if (hasHardcodedOpacity && !importsOpacity) {
-        warnings.push(`${file}: Has hardcoded opacity 0.5 - import OPACITY.disabled from shared.ts`);
+        warnings.push(
+          `${file}: Has hardcoded opacity 0.5 - import OPACITY.disabled from shared.ts`,
+        );
       }
     }
 
@@ -812,7 +882,7 @@ describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
           `  - ${warnings.join("\n  - ")}\n\n` +
           `🔧 To fix:\n` +
           `  1. Import OPACITY from shared.ts\n` +
-          `  2. Replace: opacity = 0.5 or toBe(0.5) → OPACITY.disabled\n`
+          `  2. Replace: opacity = 0.5 or toBe(0.5) → OPACITY.disabled\n`,
       );
     }
 
@@ -820,25 +890,31 @@ describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
   });
 
   it("should not have hardcoded BORDER_RADIUS.full (9999) in test files without importing BORDER_RADIUS", () => {
-    const testFiles = readdirSync(__dirname)
-      .filter((f: string) => f.endsWith(".test.ts"));
+    const testFiles = readdirSync(__dirname).filter((f: string) =>
+      f.endsWith(".test.ts"),
+    );
 
     const warnings: string[] = [];
 
     for (const file of testFiles) {
       if (file === "drift-detection.test.ts") continue; // Skip self
-      
+
       const filePath = join(__dirname, file);
       const content = readFileSync(filePath, "utf-8");
 
       // Check if file imports BORDER_RADIUS
-      const importsBorderRadius = /import\s+\{[^}]*BORDER_RADIUS[^}]*\}\s+from\s+["']\.\/shared["']/.test(content);
+      const importsBorderRadius =
+        /import\s+\{[^}]*BORDER_RADIUS[^}]*\}\s+from\s+["']\.\/shared["']/.test(
+          content,
+        );
 
       // Look for hardcoded 9999 (BORDER_RADIUS.full)
       const hasHardcoded9999 = /\b9999\b/.test(content);
 
       if (hasHardcoded9999 && !importsBorderRadius) {
-        warnings.push(`${file}: Has hardcoded 9999 (rounded-full) - import BORDER_RADIUS.full from shared.ts`);
+        warnings.push(
+          `${file}: Has hardcoded 9999 (rounded-full) - import BORDER_RADIUS.full from shared.ts`,
+        );
       }
     }
 
@@ -848,7 +924,7 @@ describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
           `  - ${warnings.join("\n  - ")}\n\n` +
           `🔧 To fix:\n` +
           `  1. Import BORDER_RADIUS from shared.ts\n` +
-          `  2. Replace: 9999 → BORDER_RADIUS.full\n`
+          `  2. Replace: 9999 → BORDER_RADIUS.full\n`,
       );
     }
 
@@ -865,7 +941,7 @@ describe("Figma Plugin - Phase 6 Magic Number Enforcement", () => {
 describe("Figma Plugin - Test File Assertions Enforcement", () => {
   it("should not have redundant hardcoded assertions alongside registry comparisons", () => {
     const testFiles = readdirSync(__dirname).filter(
-      (f: string) => f.endsWith(".test.ts") && f !== "drift-detection.test.ts"
+      (f: string) => f.endsWith(".test.ts") && f !== "drift-detection.test.ts",
     );
 
     const violations: string[] = [];
@@ -887,7 +963,7 @@ describe("Figma Plugin - Test File Assertions Enforcement", () => {
 
         // Check if current line is a hardcoded numeric toBe assertion
         const hardcodedMatch = currentLine.match(
-          /expect\(([^)]+)\)\.toBe\((\d+)\);/
+          /expect\(([^)]+)\)\.toBe\((\d+)\);/,
         );
         if (!hardcodedMatch) continue;
 
@@ -895,12 +971,12 @@ describe("Figma Plugin - Test File Assertions Enforcement", () => {
 
         // Check if next line compares same variable to registry/styling
         const registryPattern = new RegExp(
-          `expect\\(${variable.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\)\\.toBe\\([^)]*(?:Styling|registry|FALLBACK|FONT_SIZE|SPACING|OPACITY|BORDER_RADIUS)[^)]*\\)`
+          `expect\\(${variable.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\)\\.toBe\\([^)]*(?:Styling|registry|FALLBACK|FONT_SIZE|SPACING|OPACITY|BORDER_RADIUS)[^)]*\\)`,
         );
 
         if (registryPattern.test(nextLine)) {
           violations.push(
-            `${file}:${i + 1}: Redundant hardcoded assertion before registry comparison: ${currentLine.trim()}`
+            `${file}:${i + 1}: Redundant hardcoded assertion before registry comparison: ${currentLine.trim()}`,
           );
         }
       }
@@ -910,14 +986,16 @@ describe("Figma Plugin - Test File Assertions Enforcement", () => {
       console.warn(
         `\n⚠️  Found ${violations.length} redundant hardcoded assertions in test files:\n` +
           `  - ${violations.slice(0, 10).join("\n  - ")}` +
-          (violations.length > 10 ? `\n  ... and ${violations.length - 10} more` : "") +
+          (violations.length > 10
+            ? `\n  ... and ${violations.length - 10} more`
+            : "") +
           `\n\n` +
           `🔧 To fix, remove the hardcoded assertion and keep only the registry comparison:\n` +
           `   BEFORE:\n` +
           `     expect(config.height).toBe(34);  // ❌ Fragile\n` +
           `     expect(config.height).toBe(tabsStyling.container.height);  // ✅ Good\n` +
           `   AFTER:\n` +
-          `     expect(config.height).toBe(tabsStyling.container.height);  // ✅ Only this\n`
+          `     expect(config.height).toBe(tabsStyling.container.height);  // ✅ Only this\n`,
       );
     }
 
@@ -930,16 +1008,37 @@ describe("Figma Plugin - Test File Assertions Enforcement", () => {
     const FRAGILE_PATTERNS = [
       { pattern: /\.toBe\(34\)/, description: "Tabs container height (34)" },
       { pattern: /\.toBe\(36\)/, description: "Input/Button base height (36)" },
-      { pattern: /\.toBe\(16\)/, description: "Font size base (16) - use FONT_SIZE.base" },
-      { pattern: /\.toBe\(20\)/, description: "Font size lg (20) - use FONT_SIZE.lg" },
-      { pattern: /\.toBe\(12\)/, description: "Font size xs (12) - use FONT_SIZE.xs" },
-      { pattern: /\.toBe\(600\)/, description: "Font weight semiBold (600) - use FALLBACK_VALUES.fontWeight.semiBold" },
-      { pattern: /\.toBe\(500\)/, description: "Font weight medium (500) - use FALLBACK_VALUES.fontWeight.medium" },
-      { pattern: /\.toBe\(400\)/, description: "Font weight normal (400) - use FALLBACK_VALUES.fontWeight.normal" },
+      {
+        pattern: /\.toBe\(16\)/,
+        description: "Font size base (16) - use FONT_SIZE.base",
+      },
+      {
+        pattern: /\.toBe\(20\)/,
+        description: "Font size lg (20) - use FONT_SIZE.lg",
+      },
+      {
+        pattern: /\.toBe\(12\)/,
+        description: "Font size xs (12) - use FONT_SIZE.xs",
+      },
+      {
+        pattern: /\.toBe\(600\)/,
+        description:
+          "Font weight semiBold (600) - use FALLBACK_VALUES.fontWeight.semiBold",
+      },
+      {
+        pattern: /\.toBe\(500\)/,
+        description:
+          "Font weight medium (500) - use FALLBACK_VALUES.fontWeight.medium",
+      },
+      {
+        pattern: /\.toBe\(400\)/,
+        description:
+          "Font weight normal (400) - use FALLBACK_VALUES.fontWeight.normal",
+      },
     ];
 
     const testFiles = readdirSync(__dirname).filter(
-      (f: string) => f.endsWith(".test.ts") && f !== "drift-detection.test.ts"
+      (f: string) => f.endsWith(".test.ts") && f !== "drift-detection.test.ts",
     );
 
     const warnings: { file: string; line: number; pattern: string }[] = [];
@@ -952,14 +1051,18 @@ describe("Figma Plugin - Test File Assertions Enforcement", () => {
       // Skip files that properly import and use constants
       const importsConstants =
         /import\s+\{[^}]*(?:FONT_SIZE|FALLBACK_VALUES|SPACING|OPACITY)[^}]*\}\s+from\s+["']\.\/shared["']/.test(
-          content
+          content,
         );
 
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
 
         // Skip if the line also references registry/styling (proper pattern)
-        if (/(?:Styling|registry|FALLBACK|FONT_SIZE|SPACING|OPACITY|BORDER_RADIUS)/.test(line)) {
+        if (
+          /(?:Styling|registry|FALLBACK|FONT_SIZE|SPACING|OPACITY|BORDER_RADIUS)/.test(
+            line,
+          )
+        ) {
           continue;
         }
 
@@ -988,9 +1091,11 @@ describe("Figma Plugin - Test File Assertions Enforcement", () => {
             .slice(0, 15)
             .map((w) => `  - ${w.file}:${w.line}: ${w.pattern}`)
             .join("\n") +
-          (warnings.length > 15 ? `\n  ... and ${warnings.length - 15} more` : "") +
+          (warnings.length > 15
+            ? `\n  ... and ${warnings.length - 15} more`
+            : "") +
           `\n\n` +
-          `💡 Consider using registry values or shared constants instead.\n`
+          `💡 Consider using registry values or shared constants instead.\n`,
       );
     }
 
@@ -1029,12 +1134,12 @@ describe("Figma Plugin - Registry Styling Integration", () => {
       // or: (registry.components.ComponentName as any).styling
       const readsFromStyling = new RegExp(
         `registry\\.components\\.${component}[^;]*\\.styling`,
-        "s"
+        "s",
       ).test(content);
 
       if (!readsFromStyling) {
         violations.push(
-          `${file}: Does not read from registry.components.${component}.styling`
+          `${file}: Does not read from registry.components.${component}.styling`,
         );
       }
     }
@@ -1047,7 +1152,7 @@ describe("Figma Plugin - Registry Styling Integration", () => {
           `  1. Add COMPONENT_STYLING_METADATA entry in scripts/ai/component-registry.ts\n` +
           `  2. Run: pnpm --filter @cloudflare/kumo codegen:registry\n` +
           `  3. Update generator to read: (registry.components.X as any).styling\n` +
-          `  4. Use styling data instead of hardcoded CONFIG objects\n`
+          `  4. Use styling data instead of hardcoded CONFIG objects\n`,
       );
     }
 
@@ -1072,7 +1177,10 @@ describe("Figma Plugin - CSS Theme Sync Validation", () => {
   it("should have generated theme-data.json with correct Kumo font sizes", () => {
     // Read theme-kumo.css directly to verify generated values match
     // Path from packages/figma/src/generators to packages/kumo/src/styles
-    const themeCssPath = join(__dirname, "../../../kumo/src/styles/theme-kumo.css");
+    const themeCssPath = join(
+      __dirname,
+      "../../../kumo/src/styles/theme-kumo.css",
+    );
     const themeCss = readFileSync(themeCssPath, "utf-8");
 
     // Parse @theme block for typography
@@ -1105,12 +1213,17 @@ describe("Figma Plugin - CSS Theme Sync Validation", () => {
   it("should have generated theme-data.json with correct buttonCompactSize", () => {
     // Read button.tsx directly to verify generated values match
     // Path from packages/figma/src/generators to packages/kumo/src/components
-    const buttonPath = join(__dirname, "../../../kumo/src/components/button/button.tsx");
+    const buttonPath = join(
+      __dirname,
+      "../../../kumo/src/components/button/button.tsx",
+    );
     const buttonContent = readFileSync(buttonPath, "utf-8");
 
     // Extract compactSize mapping from KUMO_BUTTON_VARIANTS
     const extractSizeClass = (size: string): number | null => {
-      const match = buttonContent.match(new RegExp(`${size}:\\s*\\{\\s*classes:\\s*["']size-([\\d.]+)["']`));
+      const match = buttonContent.match(
+        new RegExp(`${size}:\\s*\\{\\s*classes:\\s*["']size-([\\d.]+)["']`),
+      );
       if (!match) return null;
       return parseFloat(match[1]) * 4;
     };
@@ -1118,14 +1231,16 @@ describe("Figma Plugin - CSS Theme Sync Validation", () => {
     // Verify theme-data.json matches button.tsx source
     expect(themeData.kumo.buttonCompactSize.xs).toBe(extractSizeClass("xs"));
     expect(themeData.kumo.buttonCompactSize.sm).toBe(extractSizeClass("sm"));
-    expect(themeData.kumo.buttonCompactSize.base).toBe(extractSizeClass("base"));
+    expect(themeData.kumo.buttonCompactSize.base).toBe(
+      extractSizeClass("base"),
+    );
     expect(themeData.kumo.buttonCompactSize.lg).toBe(extractSizeClass("lg"));
 
     // Verify expected values
-    expect(themeData.kumo.buttonCompactSize.xs).toBe(14);  // size-3.5 = 14px
-    expect(themeData.kumo.buttonCompactSize.sm).toBe(26);  // size-6.5 = 26px
+    expect(themeData.kumo.buttonCompactSize.xs).toBe(14); // size-3.5 = 14px
+    expect(themeData.kumo.buttonCompactSize.sm).toBe(26); // size-6.5 = 26px
     expect(themeData.kumo.buttonCompactSize.base).toBe(36); // size-9 = 36px
-    expect(themeData.kumo.buttonCompactSize.lg).toBe(40);  // size-10 = 40px
+    expect(themeData.kumo.buttonCompactSize.lg).toBe(40); // size-10 = 40px
   });
 
   it("should use generated values in shared.ts via import", () => {
@@ -1133,10 +1248,12 @@ describe("Figma Plugin - CSS Theme Sync Validation", () => {
     const sharedPath = join(__dirname, "shared.ts");
     const sharedContent = readFileSync(sharedPath, "utf-8");
 
-    expect(sharedContent).toContain('import themeData from "../generated/theme-data.json"');
-    expect(sharedContent).toContain('themeData.computed.fontSize');
-    expect(sharedContent).toContain('themeData.computed.spacing');
-    expect(sharedContent).toContain('themeData.computed.borderRadius');
+    expect(sharedContent).toContain(
+      'import themeData from "../generated/theme-data.json"',
+    );
+    expect(sharedContent).toContain("themeData.computed.fontSize");
+    expect(sharedContent).toContain("themeData.computed.spacing");
+    expect(sharedContent).toContain("themeData.computed.borderRadius");
   });
 
   it("should use generated values in tailwind-to-figma.ts via import", () => {
@@ -1144,10 +1261,12 @@ describe("Figma Plugin - CSS Theme Sync Validation", () => {
     const parserPath = join(__dirname, "../parsers/tailwind-to-figma.ts");
     const parserContent = readFileSync(parserPath, "utf-8");
 
-    expect(parserContent).toContain('import themeData from "../generated/theme-data.json"');
-    expect(parserContent).toContain('themeData.tailwind.spacing.scale');
-    expect(parserContent).toContain('themeData.kumo.fontSize');
-    expect(parserContent).toContain('themeData.tailwind.borderRadius');
+    expect(parserContent).toContain(
+      'import themeData from "../generated/theme-data.json"',
+    );
+    expect(parserContent).toContain("themeData.tailwind.spacing.scale");
+    expect(parserContent).toContain("themeData.kumo.fontSize");
+    expect(parserContent).toContain("themeData.tailwind.borderRadius");
   });
 });
 
@@ -1174,10 +1293,26 @@ describe("Figma Plugin - Tailwind v4 theme.css Sync Validation", () => {
     });
 
     it("should have generated spacing scale matching Tailwind defaults", () => {
-      const expectedScale = generateExpectedSpacingScale(theme.spacing.baseUnitPx);
+      const expectedScale = generateExpectedSpacingScale(
+        theme.spacing.baseUnitPx,
+      );
 
       // Verify generated theme-data.json matches expected scale
-      const keysToCheck = ["0", "1", "2", "3", "4", "5", "6", "8", "10", "12", "16", "20", "24"];
+      const keysToCheck = [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "8",
+        "10",
+        "12",
+        "16",
+        "20",
+        "24",
+      ];
 
       for (const key of keysToCheck) {
         expect(themeData.tailwind.spacing.scale[key]).toBe(expectedScale[key]);
@@ -1188,10 +1323,10 @@ describe("Figma Plugin - Tailwind v4 theme.css Sync Validation", () => {
       const baseUnit = theme.spacing.baseUnitPx;
 
       // Verify computed spacing values
-      expect(themeData.computed.spacing.xs).toBe(1 * baseUnit);    // gap-1 = 4px
-      expect(themeData.computed.spacing.sm).toBe(1.5 * baseUnit);  // gap-1.5 = 6px
-      expect(themeData.computed.spacing.base).toBe(2 * baseUnit);  // gap-2 = 8px
-      expect(themeData.computed.spacing.lg).toBe(3 * baseUnit);    // gap-3 = 12px
+      expect(themeData.computed.spacing.xs).toBe(1 * baseUnit); // gap-1 = 4px
+      expect(themeData.computed.spacing.sm).toBe(1.5 * baseUnit); // gap-1.5 = 6px
+      expect(themeData.computed.spacing.base).toBe(2 * baseUnit); // gap-2 = 8px
+      expect(themeData.computed.spacing.lg).toBe(3 * baseUnit); // gap-3 = 12px
     });
   });
 
@@ -1216,20 +1351,36 @@ describe("Figma Plugin - Tailwind v4 theme.css Sync Validation", () => {
     it("should have generated font weights matching Tailwind theme.css", () => {
       // Verify all font weights match Tailwind's defaults
       expect(themeData.tailwind.fontWeight.thin).toBe(theme.fontWeight.thin);
-      expect(themeData.tailwind.fontWeight.extralight).toBe(theme.fontWeight.extralight);
+      expect(themeData.tailwind.fontWeight.extralight).toBe(
+        theme.fontWeight.extralight,
+      );
       expect(themeData.tailwind.fontWeight.light).toBe(theme.fontWeight.light);
-      expect(themeData.tailwind.fontWeight.normal).toBe(theme.fontWeight.normal);
-      expect(themeData.tailwind.fontWeight.medium).toBe(theme.fontWeight.medium);
-      expect(themeData.tailwind.fontWeight.semibold).toBe(theme.fontWeight.semibold);
+      expect(themeData.tailwind.fontWeight.normal).toBe(
+        theme.fontWeight.normal,
+      );
+      expect(themeData.tailwind.fontWeight.medium).toBe(
+        theme.fontWeight.medium,
+      );
+      expect(themeData.tailwind.fontWeight.semibold).toBe(
+        theme.fontWeight.semibold,
+      );
       expect(themeData.tailwind.fontWeight.bold).toBe(theme.fontWeight.bold);
-      expect(themeData.tailwind.fontWeight.extrabold).toBe(theme.fontWeight.extrabold);
+      expect(themeData.tailwind.fontWeight.extrabold).toBe(
+        theme.fontWeight.extrabold,
+      );
       expect(themeData.tailwind.fontWeight.black).toBe(theme.fontWeight.black);
     });
 
     it("should have computed fontWeight values correct", () => {
-      expect(themeData.computed.fontWeight.normal).toBe(theme.fontWeight.normal);
-      expect(themeData.computed.fontWeight.medium).toBe(theme.fontWeight.medium);
-      expect(themeData.computed.fontWeight.semiBold).toBe(theme.fontWeight.semibold);
+      expect(themeData.computed.fontWeight.normal).toBe(
+        theme.fontWeight.normal,
+      );
+      expect(themeData.computed.fontWeight.medium).toBe(
+        theme.fontWeight.medium,
+      );
+      expect(themeData.computed.fontWeight.semiBold).toBe(
+        theme.fontWeight.semibold,
+      );
     });
   });
 
@@ -1244,12 +1395,17 @@ describe("Figma Plugin - Tailwind v4 theme.css Sync Validation", () => {
 
       // Verify SHADOWS.xs uses getShadowLayer() with themeData (dynamic approach)
       // Pattern: xs: getShadowLayer(themeData.tailwind.shadows.xs, { ... fallback ... })
-      const usesDynamicShadows = /xs:\s*getShadowLayer\(themeData\.tailwind\.shadows\.xs/.test(sharedContent);
+      const usesDynamicShadows =
+        /xs:\s*getShadowLayer\(themeData\.tailwind\.shadows\.xs/.test(
+          sharedContent,
+        );
       expect(usesDynamicShadows).toBe(true);
 
       // Verify the generated theme-data.json has correct shadow values
       // (themeData is already validated in CSS Theme Sync tests above)
-      expect(themeData.tailwind.shadows.xs.layers.length).toBeGreaterThanOrEqual(1);
+      expect(
+        themeData.tailwind.shadows.xs.layers.length,
+      ).toBeGreaterThanOrEqual(1);
 
       // For shadow-xs, Tailwind has: 0 1px 2px 0 rgb(0 0 0 / 0.05)
       // Validate generated values match Tailwind source
@@ -1287,10 +1443,10 @@ describe("Figma Plugin - Tailwind v4 theme.css Sync Validation", () => {
 
       // Document what Tailwind's defaults are (before Kumo overrides)
       // These are in pixels, converted from rem
-      expect(theme.fontSize.xs).toBe(12);   // 0.75rem
-      expect(theme.fontSize.sm).toBe(14);   // 0.875rem
+      expect(theme.fontSize.xs).toBe(12); // 0.75rem
+      expect(theme.fontSize.sm).toBe(14); // 0.875rem
       expect(theme.fontSize.base).toBe(16); // 1rem
-      expect(theme.fontSize.lg).toBe(18);   // 1.125rem
+      expect(theme.fontSize.lg).toBe(18); // 1.125rem
 
       // Kumo overrides these in theme-kumo.css:
       // --text-sm: 13px (not 14px)
@@ -1317,7 +1473,10 @@ describe("Figma Plugin - Phase 10 Registry Enforcement", () => {
     if (!tabsContent.includes("component-registry.json")) {
       violations.push("tabs.ts: Does not import component-registry.json");
     }
-    if (!tabsContent.includes("getTabsConfigFromRegistry") && !tabsContent.includes("tabsStyling")) {
+    if (
+      !tabsContent.includes("getTabsConfigFromRegistry") &&
+      !tabsContent.includes("tabsStyling")
+    ) {
       violations.push("tabs.ts: Does not read from registry styling");
     }
 
@@ -1328,7 +1487,10 @@ describe("Figma Plugin - Phase 10 Registry Enforcement", () => {
     if (!toastContent.includes("component-registry.json")) {
       violations.push("toast.ts: Does not import component-registry.json");
     }
-    if (!toastContent.includes("getToastConfigFromRegistry") && !toastContent.includes("toastStyling")) {
+    if (
+      !toastContent.includes("getToastConfigFromRegistry") &&
+      !toastContent.includes("toastStyling")
+    ) {
       violations.push("toast.ts: Does not read from registry styling");
     }
 
@@ -1345,13 +1507,12 @@ describe("Figma Plugin - Phase 10 Registry Enforcement", () => {
  */
 describe("Figma Plugin - Phase 11 Hardcoded Values Elimination", () => {
   it("should import themeData or use shared constants (FONT_SIZE, BORDER_RADIUS, FALLBACK_VALUES)", () => {
-    const generatorFiles = readdirSync(__dirname)
-      .filter(
-        (f: string) =>
-          f.endsWith(".ts") &&
-          !f.endsWith(".test.ts") &&
-          !UTILITY_FILES.has(f.replace(".ts", ""))
-      );
+    const generatorFiles = readdirSync(__dirname).filter(
+      (f: string) =>
+        f.endsWith(".ts") &&
+        !f.endsWith(".test.ts") &&
+        !UTILITY_FILES.has(f.replace(".ts", "")),
+    );
 
     const violations: string[] = [];
 
@@ -1360,41 +1521,77 @@ describe("Figma Plugin - Phase 11 Hardcoded Values Elimination", () => {
       const content = readFileSync(filePath, "utf-8");
 
       // Check if file imports themeData
-      const importsThemeData = /import\s+themeData\s+from\s+["']\.\.\/generated\/theme-data\.json["']/.test(content);
+      const importsThemeData =
+        /import\s+themeData\s+from\s+["']\.\.\/generated\/theme-data\.json["']/.test(
+          content,
+        );
 
       // Check if file imports shared constants
-      const importsFontSize = /import\s+\{[^}]*FONT_SIZE[^}]*\}\s+from\s+["']\.\/shared["']/.test(content);
-      const importsBorderRadius = /import\s+\{[^}]*BORDER_RADIUS[^}]*\}\s+from\s+["']\.\/shared["']/.test(content);
-      const importsFallbackValues = /import\s+\{[^}]*FALLBACK_VALUES[^}]*\}\s+from\s+["']\.\/shared["']/.test(content);
+      const importsFontSize =
+        /import\s+\{[^}]*FONT_SIZE[^}]*\}\s+from\s+["']\.\/shared["']/.test(
+          content,
+        );
+      const importsBorderRadius =
+        /import\s+\{[^}]*BORDER_RADIUS[^}]*\}\s+from\s+["']\.\/shared["']/.test(
+          content,
+        );
+      const importsFallbackValues =
+        /import\s+\{[^}]*FALLBACK_VALUES[^}]*\}\s+from\s+["']\.\/shared["']/.test(
+          content,
+        );
 
-      const hasImports = importsThemeData || importsFontSize || importsBorderRadius || importsFallbackValues;
+      const hasImports =
+        importsThemeData ||
+        importsFontSize ||
+        importsBorderRadius ||
+        importsFallbackValues;
 
       // Check if file has hardcoded fontSize values (12, 13, 14, 16, 18, 20, 24)
       // Pattern: fontSize: NUMBER or fontSize = NUMBER (not FONT_SIZE.* or themeData.*)
       // BUT: Allow fallback patterns like "fontSize = 12; // fallback" or lines with "logWarn"
-      const hasHardcodedFontSize = /fontSize[:\s]*=\s*(?:1[2-8]|20|24)\b(?!\s*\/\/)/.test(content) &&
-        !(/FONT_SIZE\./.test(content) || /themeData\.[^}]*fontSize/.test(content)) &&
+      const hasHardcodedFontSize =
+        /fontSize[:\s]*=\s*(?:1[2-8]|20|24)\b(?!\s*\/\/)/.test(content) &&
+        !(
+          /FONT_SIZE\./.test(content) ||
+          /themeData\.[^}]*fontSize/.test(content)
+        ) &&
         !/using fallback|logWarn/.test(content);
 
       // Check if file has hardcoded borderRadius/cornerRadius values (2, 4, 6, 8, 12, 9999)
       // Pattern: borderRadius: NUMBER or cornerRadius: NUMBER
-      const hasHardcodedBorderRadius = /(border|corner)Radius[:\s]*=?\s*(?:[2468]|12|9999)\b(?!\s*\/\/)/.test(content) &&
-        !(/BORDER_RADIUS\./.test(content) || /themeData\.[^}]*borderRadius/.test(content)) &&
+      const hasHardcodedBorderRadius =
+        /(border|corner)Radius[:\s]*=?\s*(?:[2468]|12|9999)\b(?!\s*\/\/)/.test(
+          content,
+        ) &&
+        !(
+          /BORDER_RADIUS\./.test(content) ||
+          /themeData\.[^}]*borderRadius/.test(content)
+        ) &&
         !/using fallback|logWarn/.test(content);
 
       // Check if file has hardcoded spacing/padding/gap values (4, 6, 8, 10, 12, 16, 20, 24)
       // Pattern: padding: NUMBER, gap: NUMBER, spacing: NUMBER (but not in object key position)
-      const hasHardcodedSpacing = /(padding|gap|spacing)[:\s]*=?\s*(?:[468]|1[026]|20|24)\b(?!\s*\/\/)/.test(content) &&
-        !(/themeData\.[^}]*spacing/.test(content) || /SPACING\./.test(content)) &&
+      const hasHardcodedSpacing =
+        /(padding|gap|spacing)[:\s]*=?\s*(?:[468]|1[026]|20|24)\b(?!\s*\/\/)/.test(
+          content,
+        ) &&
+        !(
+          /themeData\.[^}]*spacing/.test(content) || /SPACING\./.test(content)
+        ) &&
         !/using fallback|logWarn/.test(content);
 
-      if (!hasImports && (hasHardcodedFontSize || hasHardcodedBorderRadius || hasHardcodedSpacing)) {
+      if (
+        !hasImports &&
+        (hasHardcodedFontSize ||
+          hasHardcodedBorderRadius ||
+          hasHardcodedSpacing)
+      ) {
         const issues = [];
         if (hasHardcodedFontSize) issues.push("fontSize");
         if (hasHardcodedBorderRadius) issues.push("borderRadius");
         if (hasHardcodedSpacing) issues.push("spacing/padding/gap");
         violations.push(
-          `${file}: Has hardcoded ${issues.join(", ")} without importing themeData or shared constants`
+          `${file}: Has hardcoded ${issues.join(", ")} without importing themeData or shared constants`,
         );
       }
     }
@@ -1416,7 +1613,7 @@ describe("Figma Plugin - Phase 11 Hardcoded Values Elimination", () => {
           `     - borderRadius: 8 → BORDER_RADIUS.lg\n` +
           `     - padding: 8 → themeData.tailwind.spacing.scale['2']\n` +
           `     - padding: 16 → themeData.tailwind.spacing.scale['4']\n\n` +
-          `📖 See AGENTS.md for Phase 11 documentation`
+          `📖 See AGENTS.md for Phase 11 documentation`,
       );
     }
 
@@ -1424,13 +1621,12 @@ describe("Figma Plugin - Phase 11 Hardcoded Values Elimination", () => {
   });
 
   it("should not have undocumented hardcoded fontSize values in generator functions", () => {
-    const generatorFiles = readdirSync(__dirname)
-      .filter(
-        (f: string) =>
-          f.endsWith(".ts") &&
-          !f.endsWith(".test.ts") &&
-          !UTILITY_FILES.has(f.replace(".ts", ""))
-      );
+    const generatorFiles = readdirSync(__dirname).filter(
+      (f: string) =>
+        f.endsWith(".ts") &&
+        !f.endsWith(".test.ts") &&
+        !UTILITY_FILES.has(f.replace(".ts", "")),
+    );
 
     const warnings: string[] = [];
 
@@ -1444,16 +1640,23 @@ describe("Figma Plugin - Phase 11 Hardcoded Values Elimination", () => {
         const line = lines[i];
 
         // Skip lines that already use constants
-        if (/FONT_SIZE\./.test(line) || /themeData\.[^}]*fontSize/.test(line)) continue;
+        if (/FONT_SIZE\./.test(line) || /themeData\.[^}]*fontSize/.test(line))
+          continue;
 
         // Skip lines with FIGMA-SPECIFIC comments
-        if (lines[i - 1]?.includes("FIGMA-SPECIFIC") || line.includes("FIGMA-SPECIFIC")) continue;
+        if (
+          lines[i - 1]?.includes("FIGMA-SPECIFIC") ||
+          line.includes("FIGMA-SPECIFIC")
+        )
+          continue;
 
         // Detect hardcoded fontSize: NUMBER pattern
-        const hardcodedMatch = line.match(/fontSize[:\s]*=?\s*(1[2-8]|20|24)\b/);
+        const hardcodedMatch = line.match(
+          /fontSize[:\s]*=?\s*(1[2-8]|20|24)\b/,
+        );
         if (hardcodedMatch) {
           warnings.push(
-            `${file}:${i + 1}: Undocumented hardcoded fontSize: ${hardcodedMatch[1]} - use FONT_SIZE or add FIGMA-SPECIFIC comment`
+            `${file}:${i + 1}: Undocumented hardcoded fontSize: ${hardcodedMatch[1]} - use FONT_SIZE or add FIGMA-SPECIFIC comment`,
           );
         }
       }
@@ -1463,11 +1666,13 @@ describe("Figma Plugin - Phase 11 Hardcoded Values Elimination", () => {
       console.warn(
         `\n⚠️  Found ${warnings.length} undocumented hardcoded fontSize values:\n` +
           `  - ${warnings.slice(0, 10).join("\n  - ")}` +
-          (warnings.length > 10 ? `\n  ... and ${warnings.length - 10} more` : "") +
+          (warnings.length > 10
+            ? `\n  ... and ${warnings.length - 10} more`
+            : "") +
           `\n\n` +
           `💡 Either:\n` +
           `  1. Replace with FONT_SIZE.* constant from shared.ts\n` +
-          `  2. Or add comment: // FIGMA-SPECIFIC: Layout value for Figma canvas, not from CSS\n`
+          `  2. Or add comment: // FIGMA-SPECIFIC: Layout value for Figma canvas, not from CSS\n`,
       );
     }
 
@@ -1476,13 +1681,12 @@ describe("Figma Plugin - Phase 11 Hardcoded Values Elimination", () => {
   });
 
   it("should document all intentional hardcoded values with FIGMA-SPECIFIC comments", () => {
-    const generatorFiles = readdirSync(__dirname)
-      .filter(
-        (f: string) =>
-          f.endsWith(".ts") &&
-          !f.endsWith(".test.ts") &&
-          !UTILITY_FILES.has(f.replace(".ts", ""))
-      );
+    const generatorFiles = readdirSync(__dirname).filter(
+      (f: string) =>
+        f.endsWith(".ts") &&
+        !f.endsWith(".test.ts") &&
+        !UTILITY_FILES.has(f.replace(".ts", "")),
+    );
 
     const warnings: string[] = [];
 
@@ -1497,17 +1701,28 @@ describe("Figma Plugin - Phase 11 Hardcoded Values Elimination", () => {
         const line = lines[i];
 
         // Skip lines that are already documented
-        if (lines[i - 1]?.includes("FIGMA-SPECIFIC") || line.includes("FIGMA-SPECIFIC")) continue;
+        if (
+          lines[i - 1]?.includes("FIGMA-SPECIFIC") ||
+          line.includes("FIGMA-SPECIFIC")
+        )
+          continue;
 
         // Skip lines that use constants
-        if (/themeData\./.test(line) || /FONT_SIZE\./.test(line) || /BORDER_RADIUS\./.test(line)) continue;
+        if (
+          /themeData\./.test(line) ||
+          /FONT_SIZE\./.test(line) ||
+          /BORDER_RADIUS\./.test(line)
+        )
+          continue;
 
         // Detect suspicious layout-specific values
         // Pattern: width/height/minWidth = NUMBER (typically 70, 100, 200, 280, 320, 560)
-        const layoutMatch = line.match(/(min)?[Ww]idth[:\s]*=?\s*(70|100|200|280|320|560)\b/);
+        const layoutMatch = line.match(
+          /(min)?[Ww]idth[:\s]*=?\s*(70|100|200|280|320|560)\b/,
+        );
         if (layoutMatch) {
           warnings.push(
-            `${file}:${i + 1}: Undocumented layout value: ${layoutMatch[0]} - consider adding FIGMA-SPECIFIC comment`
+            `${file}:${i + 1}: Undocumented layout value: ${layoutMatch[0]} - consider adding FIGMA-SPECIFIC comment`,
           );
         }
       }
@@ -1517,11 +1732,13 @@ describe("Figma Plugin - Phase 11 Hardcoded Values Elimination", () => {
       console.warn(
         `\n⚠️  Found ${warnings.length} undocumented layout-specific values:\n` +
           `  - ${warnings.slice(0, 10).join("\n  - ")}` +
-          (warnings.length > 10 ? `\n  ... and ${warnings.length - 10} more` : "") +
+          (warnings.length > 10
+            ? `\n  ... and ${warnings.length - 10} more`
+            : "") +
           `\n\n` +
           `💡 Add comments to document intentional layout values:\n` +
           `  // FIGMA-SPECIFIC: Component width for Figma canvas display, not from CSS\n` +
-          `  const COMPONENT_WIDTH = 280;\n`
+          `  const COMPONENT_WIDTH = 280;\n`,
       );
     }
 

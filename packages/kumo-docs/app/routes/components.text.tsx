@@ -103,92 +103,64 @@ export default function TextDoc() {
   </div>
 </div>`}
         >
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 w-full">
-            <div className="flex flex-col gap-1 rounded-lg border border-border bg-surface p-4 justify-end">
+          <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div className="flex flex-col justify-end gap-1 rounded-lg border border-border bg-surface p-4">
               <Text variant="heading1">Heading 1</Text>
-              <p className="text-xs text-muted font-mono">
-                text-3xl (30px)
-              </p>
+              <p className="font-mono text-xs text-muted">text-3xl (30px)</p>
             </div>
-            <div className="flex flex-col gap-1 rounded-lg border border-border bg-surface p-4 justify-end">
+            <div className="flex flex-col justify-end gap-1 rounded-lg border border-border bg-surface p-4">
               <Text variant="heading2">Heading 2</Text>
-              <p className="text-xs text-muted font-mono">
-                text-2xl (24px)
-              </p>
+              <p className="font-mono text-xs text-muted">text-2xl (24px)</p>
             </div>
-            <div className="flex flex-col gap-1 rounded-lg border border-border bg-surface p-4 justify-end">
+            <div className="flex flex-col justify-end gap-1 rounded-lg border border-border bg-surface p-4">
               <Text variant="heading3">Heading 3</Text>
-              <p className="text-xs text-muted font-mono">
-                text-lg (16px)
-              </p>
+              <p className="font-mono text-xs text-muted">text-lg (16px)</p>
             </div>
-            <div className="flex flex-col gap-1 rounded-lg border border-border bg-surface p-4 justify-end">
+            <div className="flex flex-col justify-end gap-1 rounded-lg border border-border bg-surface p-4">
               <Text>Body</Text>
-              <p className="text-xs text-muted font-mono">
-                text-base (14px)
-              </p>
+              <p className="font-mono text-xs text-muted">text-base (14px)</p>
             </div>
-            <div className="flex flex-col gap-1 rounded-lg border border-border bg-surface p-4 justify-end">
+            <div className="flex flex-col justify-end gap-1 rounded-lg border border-border bg-surface p-4">
               <Text bold>Body bold</Text>
-              <p className="text-xs text-muted font-mono">
-                text-base (14px)
-              </p>
+              <p className="font-mono text-xs text-muted">text-base (14px)</p>
             </div>
-            <div className="flex flex-col gap-1 rounded-lg border border-border bg-surface p-4 justify-end">
+            <div className="flex flex-col justify-end gap-1 rounded-lg border border-border bg-surface p-4">
               <Text size="lg">Body lg</Text>
-              <p className="text-xs text-muted font-mono">
-                text-lg (16px)
-              </p>
+              <p className="font-mono text-xs text-muted">text-lg (16px)</p>
             </div>
-            <div className="flex flex-col gap-1 rounded-lg border border-border bg-surface p-4 justify-end">
+            <div className="flex flex-col justify-end gap-1 rounded-lg border border-border bg-surface p-4">
               <Text size="sm">Body sm</Text>
-              <p className="text-xs text-muted font-mono">
-                text-sm (13px)
-              </p>
+              <p className="font-mono text-xs text-muted">text-sm (13px)</p>
             </div>
-            <div className="flex flex-col gap-1 rounded-lg border border-border bg-surface p-4 justify-end">
+            <div className="flex flex-col justify-end gap-1 rounded-lg border border-border bg-surface p-4">
               <Text size="xs">Body xs</Text>
-              <p className="text-xs text-muted font-mono">
-                text-xs (12px)
-              </p>
+              <p className="font-mono text-xs text-muted">text-xs (12px)</p>
             </div>
-            <div className="flex flex-col gap-1 rounded-lg border border-border bg-surface p-4 justify-end">
+            <div className="flex flex-col justify-end gap-1 rounded-lg border border-border bg-surface p-4">
               <Text variant="secondary">Body secondary</Text>
-              <p className="text-xs text-muted font-mono">
-                text-base (14px)
-              </p>
+              <p className="font-mono text-xs text-muted">text-base (14px)</p>
             </div>
-            <div className="flex flex-col gap-1 rounded-lg border border-border bg-surface p-4 justify-end">
+            <div className="flex flex-col justify-end gap-1 rounded-lg border border-border bg-surface p-4">
               <Text variant="mono">Monospace</Text>
-              <p className="text-xs text-muted font-mono">
-                text-sm (13px)
-              </p>
+              <p className="font-mono text-xs text-muted">text-sm (13px)</p>
             </div>
-            <div className="flex flex-col gap-1 rounded-lg border border-border bg-surface p-4 justify-end">
+            <div className="flex flex-col justify-end gap-1 rounded-lg border border-border bg-surface p-4">
               <Text variant="mono" size="lg">
                 Monospace lg
               </Text>
-              <p className="text-xs text-muted font-mono">
-                text-base (14px)
-              </p>
+              <p className="font-mono text-xs text-muted">text-base (14px)</p>
             </div>
-            <div className="flex flex-col gap-1 rounded-lg border border-border bg-surface p-4 justify-end">
+            <div className="flex flex-col justify-end gap-1 rounded-lg border border-border bg-surface p-4">
               <Text variant="mono-secondary">Monospace secondary</Text>
-              <p className="text-xs text-muted font-mono">
-                text-sm (13px)
-              </p>
+              <p className="font-mono text-xs text-muted">text-sm (13px)</p>
             </div>
-            <div className="flex flex-col gap-1 rounded-lg border border-border bg-surface p-4 justify-end">
+            <div className="flex flex-col justify-end gap-1 rounded-lg border border-border bg-surface p-4">
               <Text variant="success">Success</Text>
-              <p className="text-xs text-muted font-mono">
-                text-base (14px)
-              </p>
+              <p className="font-mono text-xs text-muted">text-base (14px)</p>
             </div>
-            <div className="flex flex-col gap-1 rounded-lg border border-border bg-surface p-4 justify-end">
+            <div className="flex flex-col justify-end gap-1 rounded-lg border border-border bg-surface p-4">
               <Text variant="error">Error</Text>
-              <p className="text-xs text-muted font-mono">
-                text-base (14px)
-              </p>
+              <p className="font-mono text-xs text-muted">text-base (14px)</p>
             </div>
           </div>
         </ComponentExample>

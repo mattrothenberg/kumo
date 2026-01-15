@@ -48,7 +48,8 @@ import { getButtonIcon, bindIconColor } from "./icon-utils";
  */
 const dateRangePickerComponent = registry.components.DateRangePicker;
 const dateRangePickerProps = dateRangePickerComponent.props;
-const dateRangePickerStyling = (registry.components.DateRangePicker as any).styling;
+const dateRangePickerStyling = (registry.components.DateRangePicker as any)
+  .styling;
 const sizeProp = dateRangePickerProps.size as {
   values: string[];
   classes: Record<string, string>;
@@ -61,8 +62,6 @@ const variantProp = dateRangePickerProps.variant as {
   descriptions: Record<string, string>;
   default: string;
 };
-
-
 
 /**
  * Size values (from registry)
@@ -132,7 +131,7 @@ const FALLBACK_SIZE_CONFIG: Record<
  */
 function getSizeConfigFromRegistry() {
   if (!dateRangePickerStyling?.sizeVariants) return FALLBACK_SIZE_CONFIG;
-  
+
   const config: Record<string, any> = {};
   for (let i = 0; i < SIZE_VALUES.length; i++) {
     const size = SIZE_VALUES[i];
@@ -919,7 +918,8 @@ export async function generateDateRangePickerComponents(
   lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.section.x =
+    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
   logComplete(

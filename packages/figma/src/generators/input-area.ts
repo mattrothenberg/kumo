@@ -36,8 +36,6 @@ import themeData from "../generated/theme-data.json";
 import { logComplete } from "../logger";
 import registry from "../../../kumo/ai/component-registry.json";
 
-
-
 /**
  * Extract Input component from registry (InputArea uses Input's inputVariants)
  */
@@ -245,7 +243,11 @@ async function createInputAreaComponent(
 
   // Create label (only if withLabel is true)
   if (withLabel && variantConfig.label) {
-    const labelText = await createTextNode(variantConfig.label, FONT_SIZE.base, 500); // 14px from theme-kumo.css
+    const labelText = await createTextNode(
+      variantConfig.label,
+      FONT_SIZE.base,
+      500,
+    ); // 14px from theme-kumo.css
     labelText.name = "Label";
     labelText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -318,7 +320,11 @@ async function createInputAreaComponent(
 
   // Create description or error message (only if withLabel is true)
   if (withLabel && variantConfig.description && variant === "default") {
-    const descText = await createTextNode(variantConfig.description, FONT_SIZE.xs, 400); // 12px from theme-kumo.css
+    const descText = await createTextNode(
+      variantConfig.description,
+      FONT_SIZE.xs,
+      400,
+    ); // 12px from theme-kumo.css
     descText.name = "Description";
     descText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -331,7 +337,11 @@ async function createInputAreaComponent(
   }
 
   if (withLabel && variantConfig.errorMessage && variant === "error") {
-    const errorText = await createTextNode(variantConfig.errorMessage, FONT_SIZE.xs, 400); // 12px from theme-kumo.css
+    const errorText = await createTextNode(
+      variantConfig.errorMessage,
+      FONT_SIZE.xs,
+      400,
+    ); // 12px from theme-kumo.css
     errorText.name = "Error";
     errorText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -588,7 +598,8 @@ export async function generateInputAreaComponents(
   lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.section.x =
+    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
   logComplete(
@@ -704,7 +715,8 @@ export function getAllInputAreaVariantData() {
       };
     }),
     variants: VARIANT_VALUES.map(function (variant: string) {
-      const variantConfig = VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
+      const variantConfig =
+        VARIANT_CONFIG[variant] || VARIANT_CONFIG["default"];
       return {
         variant: variant,
         config: variantConfig,

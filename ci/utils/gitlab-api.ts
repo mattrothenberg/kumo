@@ -2,10 +2,10 @@
  * GitLab API utilities for merge request operations
  */
 
-import { Gitlab } from '@gitbeaker/rest';
+import { Gitlab } from "@gitbeaker/rest";
 
-export const GITLAB_HOST = 'https://gitlab.cfdata.org';
-export const GITLAB_KUMO_PATH = 'cloudflare/FE/kumo';
+export const GITLAB_HOST = "https://gitlab.cfdata.org";
+export const GITLAB_KUMO_PATH = "cloudflare/FE/kumo";
 
 /**
  * Interface for merge request creation parameters

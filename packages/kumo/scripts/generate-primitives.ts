@@ -19,7 +19,7 @@ const PRIMITIVES_FILE = join(PRIMITIVES_DIR, "index.ts");
 const PACKAGE_JSON = join(__dirname, "../package.json");
 const BASE_UI_PACKAGE = join(
   __dirname,
-  "../node_modules/@base-ui/react/package.json"
+  "../node_modules/@base-ui/react/package.json",
 );
 
 // Subpaths to exclude from re-export (internal/utility exports)
@@ -36,9 +36,7 @@ const EXCLUDED_EXPORTS = new Set([
 function main() {
   // Read base-ui package.json
   if (!existsSync(BASE_UI_PACKAGE)) {
-    console.error(
-      "❌ @base-ui/react not found. Run pnpm install first."
-    );
+    console.error("❌ @base-ui/react not found. Run pnpm install first.");
     process.exit(1);
   }
 

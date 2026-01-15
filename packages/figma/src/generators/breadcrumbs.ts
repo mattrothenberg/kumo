@@ -102,9 +102,19 @@ export function getAllBreadcrumbsData() {
         // Layout calculations
         layout: {
           // Fallbacks derived from Tailwind spacing scale
-          height: sizeData.parsed.height ?? (size === "sm" ? themeData.tailwind.spacing.scale["10"] : themeData.tailwind.spacing.scale["12"]),
-          gap: sizeData.parsed.gap ?? (size === "sm" ? themeData.tailwind.spacing.scale["0.5"] : themeData.tailwind.spacing.scale["1"]),
-          fontSize: sizeData.parsed.fontSize ?? (size === "sm" ? FONT_SIZE.base : FONT_SIZE.lg),
+          height:
+            sizeData.parsed.height ??
+            (size === "sm"
+              ? themeData.tailwind.spacing.scale["10"]
+              : themeData.tailwind.spacing.scale["12"]),
+          gap:
+            sizeData.parsed.gap ??
+            (size === "sm"
+              ? themeData.tailwind.spacing.scale["0.5"]
+              : themeData.tailwind.spacing.scale["1"]),
+          fontSize:
+            sizeData.parsed.fontSize ??
+            (size === "sm" ? FONT_SIZE.base : FONT_SIZE.lg),
           itemGap: themeData.tailwind.spacing.scale["1"], // gap-1 between icon and text within item
         },
       };
@@ -117,7 +127,9 @@ export function getAllBreadcrumbsData() {
 /**
  * Create a single Breadcrumbs component with the specified size
  */
-async function createBreadcrumbsComponent(size: string): Promise<ComponentNode> {
+async function createBreadcrumbsComponent(
+  size: string,
+): Promise<ComponentNode> {
   const classes = sizeProp.classes[size] || "";
   const description = sizeProp.descriptions[size] || "";
 
@@ -137,16 +149,25 @@ async function createBreadcrumbsComponent(size: string): Promise<ComponentNode> 
   component.counterAxisSizingMode = "FIXED";
 
   // Apply height from parsed styles with fallback (h-10=40px for sm, h-12=48px for base)
-  const height = sizeStyles.height ?? (size === "sm" ? themeData.tailwind.spacing.scale["10"] : themeData.tailwind.spacing.scale["12"]);
+  const height =
+    sizeStyles.height ??
+    (size === "sm"
+      ? themeData.tailwind.spacing.scale["10"]
+      : themeData.tailwind.spacing.scale["12"]);
   component.resize(component.width, height);
 
   // Apply gap between items (link, separator, link, separator, current)
   // gap-0.5=2px for sm, gap-1=4px for base
-  const gap = sizeStyles.gap ?? (size === "sm" ? themeData.tailwind.spacing.scale["0.5"] : themeData.tailwind.spacing.scale["1"]);
+  const gap =
+    sizeStyles.gap ??
+    (size === "sm"
+      ? themeData.tailwind.spacing.scale["0.5"]
+      : themeData.tailwind.spacing.scale["1"]);
   component.itemSpacing = gap;
 
   // Get font size for text elements (text-base=14px for sm, text-lg=16px for base)
-  const fontSize = sizeStyles.fontSize ?? (size === "sm" ? FONT_SIZE.base : FONT_SIZE.lg);
+  const fontSize =
+    sizeStyles.fontSize ?? (size === "sm" ? FONT_SIZE.base : FONT_SIZE.lg);
 
   // Get color variables
   const linkTextVar = getVariableByName("text-color-muted");
@@ -225,7 +246,9 @@ async function createBreadcrumbsComponent(size: string): Promise<ComponentNode> 
 /**
  * Create separator icon (caret-right chevron)
  */
-async function createSeparatorIcon(textVariableId?: string): Promise<FrameNode> {
+async function createSeparatorIcon(
+  textVariableId?: string,
+): Promise<FrameNode> {
   const separatorFrame = figma.createFrame();
   separatorFrame.name = "Separator";
   // Separator icon container - size-6 = 24px from Tailwind spacing scale
@@ -246,7 +269,7 @@ async function createSeparatorIcon(textVariableId?: string): Promise<FrameNode> 
   try {
     const svgNode = figma.createNodeFromSvg(svgString);
     svgNode.name = "chevron";
-    
+
     // Try to bind stroke color to variable on the path children
     if (textVariableId && "children" in svgNode) {
       for (const child of svgNode.children) {
@@ -255,8 +278,11 @@ async function createSeparatorIcon(textVariableId?: string): Promise<FrameNode> 
             const variable = figma.variables.getVariableById(textVariableId);
             if (variable) {
               // Use setBoundVariable with field name only (Figma plugin API)
-              (child as SceneNode & { setBoundVariable: (field: string, variable: Variable) => void })
-                .setBoundVariable("strokes", variable);
+              (
+                child as SceneNode & {
+                  setBoundVariable: (field: string, variable: Variable) => void;
+                }
+              ).setBoundVariable("strokes", variable);
             }
           } catch {
             // Keep the solid color fallback
@@ -286,7 +312,7 @@ async function createSeparatorIcon(textVariableId?: string): Promise<FrameNode> 
  * @returns The Y position after this section (for next section placement)
  */
 export async function generateBreadcrumbsComponents(
-  startY: number
+  startY: number,
 ): Promise<number> {
   if (startY === undefined) startY = 100;
 
@@ -343,18 +369,18 @@ export async function generateBreadcrumbsComponents(
   const lightSection = createModeSection(
     componentsPage,
     "Breadcrumbs",
-    "light"
+    "light",
   );
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
-    contentHeight + SECTION_PADDING * 2
+    contentHeight + SECTION_PADDING * 2,
   );
 
   // Create dark mode section
   const darkSection = createModeSection(componentsPage, "Breadcrumbs", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
-    contentHeight + SECTION_PADDING * 2
+    contentHeight + SECTION_PADDING * 2,
   );
 
   // Move ComponentSet into light section frame
@@ -367,7 +393,7 @@ export async function generateBreadcrumbsComponents(
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.mdLg // Center vertically with breadcrumbs
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.mdLg, // Center vertically with breadcrumbs
     );
     lightSection.frame.appendChild(labelNode);
   }
@@ -385,7 +411,7 @@ export async function generateBreadcrumbsComponents(
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.mdLg
+      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.mdLg,
     );
     darkSection.frame.appendChild(labelNode);
   }
@@ -401,11 +427,12 @@ export async function generateBreadcrumbsComponents(
   lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.section.x =
+    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
   logInfo(
-    `✅ Generated Breadcrumbs ComponentSet with ${sizes.length} sizes (light + dark)`
+    `✅ Generated Breadcrumbs ComponentSet with ${sizes.length} sizes (light + dark)`,
   );
 
   return startY + totalHeight + SECTION_GAP;

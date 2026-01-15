@@ -52,8 +52,6 @@ const sizeProp = dialogProps.size as {
   default: string;
 };
 
-
-
 /**
  * Size values from registry
  */
@@ -67,7 +65,7 @@ const SIZE_VALUES = sizeProp.values;
 function parseDialogWidth(size: string, fallbackWidth: number): number {
   const classes = sizeProp.classes[size];
   if (!classes) return fallbackWidth;
-  
+
   const parsed = parseTailwindClasses(classes);
   return parsed.minWidth !== undefined ? parsed.minWidth : fallbackWidth;
 }
@@ -186,8 +184,13 @@ async function createButton(
 
   // Create button label
   // For sm buttons, use Tailwind's text-sm (14px) rather than Kumo's 13px override
-  const fontSize = size === "sm" ? themeData.tailwind.fontSize.sm : FONT_SIZE.base; // 14px (sm) or 14px (base)
-  const buttonLabel = await createTextNode(label, fontSize, FALLBACK_VALUES.fontWeight.semiBold);
+  const fontSize =
+    size === "sm" ? themeData.tailwind.fontSize.sm : FONT_SIZE.base; // 14px (sm) or 14px (base)
+  const buttonLabel = await createTextNode(
+    label,
+    fontSize,
+    FALLBACK_VALUES.fontWeight.semiBold,
+  );
   buttonLabel.name = "Label";
   buttonLabel.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -477,7 +480,8 @@ export async function generateDialogComponents(
   lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.section.x =
+    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
   logComplete(
@@ -522,8 +526,15 @@ export function getBaseConfig() {
       opacity: 0.8,
     },
     header: {
-      title: { fontWeight: FALLBACK_VALUES.fontWeight.semiBold, color: "text-color-surface" },
-      closeIcon: { name: "ph-x", size: FALLBACK_VALUES.iconSize.base, color: "text-color-muted" },
+      title: {
+        fontWeight: FALLBACK_VALUES.fontWeight.semiBold,
+        color: "text-color-surface",
+      },
+      closeIcon: {
+        name: "ph-x",
+        size: FALLBACK_VALUES.iconSize.base,
+        color: "text-color-muted",
+      },
     },
     description: {
       fontWeight: FALLBACK_VALUES.fontWeight.normal,

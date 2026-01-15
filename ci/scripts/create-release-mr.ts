@@ -5,7 +5,7 @@
  * Used by release-production.sh to replace curl-based MR creation
  */
 
-import { createMergeRequest, GITLAB_KUMO_PATH } from '../utils/gitlab-api';
+import { createMergeRequest, GITLAB_KUMO_PATH } from "../utils/gitlab-api";
 
 interface CliArgs {
   sourceBranch: string;
@@ -20,24 +20,32 @@ function parseArgs(): CliArgs {
   const parsed: Partial<CliArgs> = {};
 
   for (const arg of args) {
-    if (arg.startsWith('--source-branch=')) {
-      parsed.sourceBranch = arg.split('=')[1];
-    } else if (arg.startsWith('--target-branch=')) {
-      parsed.targetBranch = arg.split('=')[1];
-    } else if (arg.startsWith('--package-name=')) {
-      parsed.packageName = arg.split('=')[1];
-    } else if (arg.startsWith('--version=')) {
-      parsed.version = arg.split('=')[1];
-    } else if (arg.startsWith('--token=')) {
-      parsed.token = arg.split('=')[1];
+    if (arg.startsWith("--source-branch=")) {
+      parsed.sourceBranch = arg.split("=")[1];
+    } else if (arg.startsWith("--target-branch=")) {
+      parsed.targetBranch = arg.split("=")[1];
+    } else if (arg.startsWith("--package-name=")) {
+      parsed.packageName = arg.split("=")[1];
+    } else if (arg.startsWith("--version=")) {
+      parsed.version = arg.split("=")[1];
+    } else if (arg.startsWith("--token=")) {
+      parsed.token = arg.split("=")[1];
     }
   }
 
   // Validate required arguments
-  const required: (keyof CliArgs)[] = ['sourceBranch', 'targetBranch', 'packageName', 'version', 'token'];
+  const required: (keyof CliArgs)[] = [
+    "sourceBranch",
+    "targetBranch",
+    "packageName",
+    "version",
+    "token",
+  ];
   for (const key of required) {
     if (!parsed[key]) {
-      console.error(`❌ Missing required argument: --${key.replace(/([A-Z])/g, '-$1').toLowerCase()}`);
+      console.error(
+        `❌ Missing required argument: --${key.replace(/([A-Z])/g, "-$1").toLowerCase()}`,
+      );
       process.exit(1);
     }
   }
@@ -45,7 +53,11 @@ function parseArgs(): CliArgs {
   return parsed as CliArgs;
 }
 
-function buildDescription(packageName: string, version: string, releaseBranch: string): string {
+function buildDescription(
+  packageName: string,
+  version: string,
+  releaseBranch: string,
+): string {
   return `## Production Release
 
 - **Package:** \`${packageName}\`
@@ -81,26 +93,29 @@ pnpm add ${packageName}@${version}
 async function main() {
   try {
     const args = parseArgs();
-    
-    console.log(`Creating merge request for ${args.packageName}@${args.version}...`);
-    
-    const result = await createMergeRequest(
-      GITLAB_KUMO_PATH,
-      args.token,
-      {
-        sourceBranch: args.sourceBranch,
-        targetBranch: args.targetBranch,
-        title: `chore: release ${args.packageName}@${args.version}`,
-        description: buildDescription(args.packageName, args.version, args.sourceBranch),
-        removeSourceBranch: true,
-        squash: true,
-      }
+
+    console.log(
+      `Creating merge request for ${args.packageName}@${args.version}...`,
     );
 
-    console.log(`✅ Merge request created: ${result.web_url} (MR !${result.iid})`);
-    
+    const result = await createMergeRequest(GITLAB_KUMO_PATH, args.token, {
+      sourceBranch: args.sourceBranch,
+      targetBranch: args.targetBranch,
+      title: `chore: release ${args.packageName}@${args.version}`,
+      description: buildDescription(
+        args.packageName,
+        args.version,
+        args.sourceBranch,
+      ),
+      removeSourceBranch: true,
+      squash: true,
+    });
+
+    console.log(
+      `✅ Merge request created: ${result.web_url} (MR !${result.iid})`,
+    );
   } catch (error) {
-    console.error('❌ Failed to create merge request:', error);
+    console.error("❌ Failed to create merge request:", error);
     process.exit(1);
   }
 }

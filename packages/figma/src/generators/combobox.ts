@@ -444,7 +444,8 @@ async function createComboboxComponent(
   }
 
   // Apply icon color based on state
-  const iconColorToken = state === "disabled" ? "text-disabled" : "text-surface";
+  const iconColorToken =
+    state === "disabled" ? "text-disabled" : "text-surface";
   bindIconColor(chevron, iconColorToken);
 
   trigger.appendChild(chevron);
@@ -801,7 +802,8 @@ export async function generateComboboxComponents(
   lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.section.x =
+    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
   logComplete(

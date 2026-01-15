@@ -57,7 +57,7 @@ describe("Meter Generator - Registry Validation", () => {
   it("should have expected colors in registry", () => {
     expect(Array.isArray(meterComponent.colors)).toBe(true);
     expect(meterComponent.colors.length).toBeGreaterThan(0);
-    
+
     // Verify key color tokens are present
     expect(meterComponent.colors).toContain("text-label");
     expect(meterComponent.colors).toContain("text-surface");
@@ -161,15 +161,15 @@ describe("Meter Generator - Color Bindings", () => {
 
   it("should use semantic color tokens", () => {
     const bindings = getMeterColorBindings();
-    
+
     // Label should use label text color
     expect(bindings.label).toContain("text");
     expect(bindings.label).toContain("label");
-    
+
     // Value should use surface text color
     expect(bindings.value).toContain("text");
     expect(bindings.value).toContain("surface");
-    
+
     // Indicator should use primary color
     expect(bindings.indicator).toContain("primary");
   });
@@ -199,10 +199,10 @@ describe("Meter Generator - Indicator Width Calculation", () => {
     const width25 = getMeterIndicatorWidth(25);
     const width50 = getMeterIndicatorWidth(50);
     const width75 = getMeterIndicatorWidth(75);
-    
+
     // 50% should be exactly 2x 25%
     expect(width50).toBe(width25 * 2);
-    
+
     // 75% should be exactly 3x 25%
     expect(width75).toBe(width25 * 3);
   });
@@ -231,7 +231,7 @@ describe("Meter Generator - Complete Variant Data", () => {
     const data = getAllMeterVariantData();
     expect(Array.isArray(data.fillLevels)).toBe(true);
     expect(data.fillLevels.length).toBeGreaterThan(0);
-    
+
     for (const level of data.fillLevels) {
       expect(typeof level.fillPercentage).toBe("number");
       expect(typeof level.indicatorWidth).toBe("number");

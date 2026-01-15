@@ -19,7 +19,7 @@ import { join } from "path";
  */
 export function getTailwindThemeCssPath(): string {
   const { readdirSync, existsSync } = require("fs");
-  
+
   // Possible locations to search
   const searchPaths = [
     // Local package node_modules
@@ -46,14 +46,14 @@ export function getTailwindThemeCssPath(): string {
       try {
         const pnpmDirs = readdirSync(pnpmBasePath);
         const tailwindDir = pnpmDirs.find((d: string) =>
-          d.startsWith("tailwindcss@")
+          d.startsWith("tailwindcss@"),
         );
 
         if (tailwindDir) {
           const pnpmThemePath = join(
             pnpmBasePath,
             tailwindDir,
-            "node_modules/tailwindcss/theme.css"
+            "node_modules/tailwindcss/theme.css",
           );
           try {
             readFileSync(pnpmThemePath);
@@ -70,7 +70,7 @@ export function getTailwindThemeCssPath(): string {
 
   throw new Error(
     "Could not find tailwindcss/theme.css in node_modules. " +
-      "Ensure tailwindcss is installed in kumo package or monorepo root."
+      "Ensure tailwindcss is installed in kumo package or monorepo root.",
   );
 }
 
@@ -298,7 +298,7 @@ function parseShadowString(shadowStr: string): ParsedShadow {
     // "0 1px 2px 0 rgb(0 0 0 / 0.05)"
     // "0 10px 15px -3px rgb(0 0 0 / 0.1)"
     const match = layer.match(
-      /(-?[\d.]+)(?:px)?\s+(-?[\d.]+)(?:px)?\s+(-?[\d.]+)(?:px)?(?:\s+(-?[\d.]+)(?:px)?)?\s+rgb\([^/]+\/\s*([\d.]+)\)/
+      /(-?[\d.]+)(?:px)?\s+(-?[\d.]+)(?:px)?\s+(-?[\d.]+)(?:px)?(?:\s+(-?[\d.]+)(?:px)?)?\s+rgb\([^/]+\/\s*([\d.]+)\)/,
     );
 
     if (match) {
@@ -370,7 +370,7 @@ export function parseTailwindTheme(): TailwindTheme {
  * This can be used to verify the hardcoded values in tailwind-to-figma.ts
  */
 export function generateExpectedSpacingScale(
-  baseUnitPx: number
+  baseUnitPx: number,
 ): Record<string, number> {
   // Standard Tailwind spacing keys
   const keys = [

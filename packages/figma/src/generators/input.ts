@@ -38,8 +38,6 @@ import { logComplete } from "../logger";
 import registry from "../../../kumo/ai/component-registry.json";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
 
-
-
 /**
  * Extract Input component from registry
  */
@@ -220,7 +218,11 @@ async function createInputComponent(
 
   // Create label (only if withLabel is true)
   if (withLabel && variantConfig.label) {
-    const labelText = await createTextNode(variantConfig.label, FONT_SIZE.xs, FALLBACK_VALUES.fontWeight.medium);
+    const labelText = await createTextNode(
+      variantConfig.label,
+      FONT_SIZE.xs,
+      FALLBACK_VALUES.fontWeight.medium,
+    );
     labelText.name = "Label";
     labelText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -291,7 +293,11 @@ async function createInputComponent(
 
   // Create description or error message (only if withLabel is true)
   if (withLabel && variantConfig.description && variant === "default") {
-    const descText = await createTextNode(variantConfig.description, FONT_SIZE.xs, FALLBACK_VALUES.fontWeight.normal);
+    const descText = await createTextNode(
+      variantConfig.description,
+      FONT_SIZE.xs,
+      FALLBACK_VALUES.fontWeight.normal,
+    );
     descText.name = "Description";
     descText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -304,7 +310,11 @@ async function createInputComponent(
   }
 
   if (withLabel && variantConfig.errorMessage && variant === "error") {
-    const errorText = await createTextNode(variantConfig.errorMessage, FONT_SIZE.xs, FALLBACK_VALUES.fontWeight.normal);
+    const errorText = await createTextNode(
+      variantConfig.errorMessage,
+      FONT_SIZE.xs,
+      FALLBACK_VALUES.fontWeight.normal,
+    );
     errorText.name = "Error";
     errorText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -561,7 +571,8 @@ export async function generateInputComponents(
   lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.section.x =
+    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
   logComplete(

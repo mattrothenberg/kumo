@@ -157,8 +157,6 @@ export function getClipboardTextSizeConfig() {
   };
 }
 
-
-
 /**
  * Create a single ClipboardText component with the specified size
  */
@@ -238,7 +236,10 @@ async function createClipboardTextComponent(
   textFrame.resize(100, sizeConfig.height);
 
   // Create text node with monospace font
-  const fontSize = textSizeStyles.fontSize || inputSizeStyles.fontSize || FALLBACK_VALUES.fontSize;
+  const fontSize =
+    textSizeStyles.fontSize ||
+    inputSizeStyles.fontSize ||
+    FALLBACK_VALUES.fontSize;
   const textNode = figma.createText();
 
   // Load monospace font
@@ -322,9 +323,7 @@ async function createClipboardTextComponent(
     iconPlaceholder.name = "Icon (placeholder)";
     iconPlaceholder.resize(iconSize, iconSize);
     iconPlaceholder.cornerRadius = 2;
-    iconPlaceholder.fills = [
-      { type: "SOLID", color: COLORS.placeholder },
-    ];
+    iconPlaceholder.fills = [{ type: "SOLID", color: COLORS.placeholder }];
     buttonFrame.appendChild(iconPlaceholder);
   }
 
@@ -466,7 +465,8 @@ export async function generateClipboardTextComponents(
   lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.section.x =
+    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
   logComplete(

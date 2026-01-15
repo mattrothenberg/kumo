@@ -39,8 +39,6 @@ import themeData from "../generated/theme-data.json";
  */
 const BASE_STYLES = "shadow-xs ring ring-border";
 
-
-
 /**
  * Create a single Surface component
  */
@@ -205,7 +203,8 @@ export async function generateSurfaceComponents(
   lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.section.x =
+    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
   logComplete(

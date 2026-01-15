@@ -61,8 +61,6 @@ import registry from "../../../kumo/ai/component-registry.json";
  */
 const dropdownComponent = registry.components.DropdownMenu;
 
-
-
 /**
  * Open state values
  */
@@ -108,7 +106,10 @@ async function createMenuItem(
   itemFrame.primaryAxisSizingMode = "FIXED";
   itemFrame.counterAxisSizingMode = "AUTO";
   itemFrame.layoutAlign = "STRETCH";
-  itemFrame.resize(DROPDOWN_WIDTH - themeData.tailwind.spacing.scale["3"], themeData.tailwind.spacing.scale["8"]); // width - 12px, height 32px
+  itemFrame.resize(
+    DROPDOWN_WIDTH - themeData.tailwind.spacing.scale["3"],
+    themeData.tailwind.spacing.scale["8"],
+  ); // width - 12px, height 32px
   itemFrame.itemSpacing = SPACING.base; // gap-2 = 8px
   itemFrame.paddingLeft = SPACING.base; // px-2 = 8px
   itemFrame.paddingRight = SPACING.base;
@@ -151,7 +152,11 @@ async function createMenuItem(
   }
 
   // Create label text
-  const labelText = await createTextNode(label, FONT_SIZE.base, FALLBACK_VALUES.fontWeight.normal);
+  const labelText = await createTextNode(
+    label,
+    FONT_SIZE.base,
+    FALLBACK_VALUES.fontWeight.normal,
+  );
   labelText.name = "Label";
   labelText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -168,7 +173,11 @@ async function createMenuItem(
 
   // Add shortcut if provided
   if (opts.shortcut) {
-    const shortcutText = await createTextNode(opts.shortcut, FONT_SIZE.xs, FALLBACK_VALUES.fontWeight.normal);
+    const shortcutText = await createTextNode(
+      opts.shortcut,
+      FONT_SIZE.xs,
+      FALLBACK_VALUES.fontWeight.normal,
+    );
     shortcutText.name = "Shortcut";
     shortcutText.textAutoResize = "WIDTH_AND_HEIGHT";
     shortcutText.opacity = OPACITY.shortcut;
@@ -199,7 +208,10 @@ async function createCheckboxItem(
   itemFrame.primaryAxisSizingMode = "FIXED";
   itemFrame.counterAxisSizingMode = "AUTO";
   itemFrame.layoutAlign = "STRETCH";
-  itemFrame.resize(DROPDOWN_WIDTH - themeData.tailwind.spacing.scale["3"], themeData.tailwind.spacing.scale["8"]); // width - 12px, height 32px
+  itemFrame.resize(
+    DROPDOWN_WIDTH - themeData.tailwind.spacing.scale["3"],
+    themeData.tailwind.spacing.scale["8"],
+  ); // width - 12px, height 32px
   itemFrame.itemSpacing = SPACING.base; // gap-2 = 8px
   itemFrame.paddingLeft = SPACING.base; // px-2 = 8px
   itemFrame.paddingRight = SPACING.base;
@@ -224,7 +236,10 @@ async function createCheckboxItem(
     // Fallback: create a simple checkbox indicator if component not found
     const checkboxFrame = figma.createFrame();
     checkboxFrame.name = "Checkbox";
-    checkboxFrame.resize(themeData.tailwind.spacing.scale["4"], themeData.tailwind.spacing.scale["4"]); // size-4 = 16px
+    checkboxFrame.resize(
+      themeData.tailwind.spacing.scale["4"],
+      themeData.tailwind.spacing.scale["4"],
+    ); // size-4 = 16px
     checkboxFrame.cornerRadius = BORDER_RADIUS.sm; // rounded = 4px
 
     if (checked) {
@@ -251,7 +266,11 @@ async function createCheckboxItem(
   }
 
   // Create label text
-  const labelText = await createTextNode(label, FONT_SIZE.base, FALLBACK_VALUES.fontWeight.normal);
+  const labelText = await createTextNode(
+    label,
+    FONT_SIZE.base,
+    FALLBACK_VALUES.fontWeight.normal,
+  );
   labelText.name = "Label";
   labelText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -309,14 +328,21 @@ async function createGroupLabel(label: string): Promise<FrameNode> {
   labelFrame.primaryAxisSizingMode = "FIXED";
   labelFrame.counterAxisSizingMode = "AUTO";
   labelFrame.layoutAlign = "STRETCH";
-  labelFrame.resize(DROPDOWN_WIDTH - themeData.tailwind.spacing.scale["3"], themeData.tailwind.spacing.scale["6"]); // width - 12px, height 24px
+  labelFrame.resize(
+    DROPDOWN_WIDTH - themeData.tailwind.spacing.scale["3"],
+    themeData.tailwind.spacing.scale["6"],
+  ); // width - 12px, height 24px
   labelFrame.paddingLeft = SPACING.base; // px-2 = 8px
   labelFrame.paddingRight = SPACING.base;
   labelFrame.paddingTop = themeData.tailwind.spacing.scale["1.5"]; // py-1.5 = 6px
   labelFrame.paddingBottom = themeData.tailwind.spacing.scale["0.5"]; // py-0.5 = 2px
   labelFrame.fills = [];
 
-  const labelText = await createTextNode(label, FONT_SIZE.base, FALLBACK_VALUES.fontWeight.semiBold);
+  const labelText = await createTextNode(
+    label,
+    FONT_SIZE.base,
+    FALLBACK_VALUES.fontWeight.semiBold,
+  );
   labelText.name = "Label";
   labelText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -360,7 +386,11 @@ async function createTriggerButton(label: string): Promise<FrameNode> {
   }
 
   // Create button text
-  const buttonText = await createTextNode(label, FONT_SIZE.base, FALLBACK_VALUES.fontWeight.medium);
+  const buttonText = await createTextNode(
+    label,
+    FONT_SIZE.base,
+    FALLBACK_VALUES.fontWeight.medium,
+  );
   buttonText.name = "Label";
   buttonText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -428,7 +458,9 @@ async function createDropdownPanel(variant: string): Promise<FrameNode> {
     panel.appendChild(downloadItem);
   } else if (variant === "withDanger") {
     const editItem2 = await createMenuItem("Edit", { icon: "ph-pencil" });
-    const duplicateItem = await createMenuItem("Duplicate", { icon: "ph-copy" });
+    const duplicateItem = await createMenuItem("Duplicate", {
+      icon: "ph-copy",
+    });
     const sep1 = createSeparator();
     const deleteItem = await createMenuItem("Delete", {
       icon: "ph-trash",
@@ -741,7 +773,8 @@ export async function generateDropdownComponents(
   lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.section.x =
+    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
   logComplete(

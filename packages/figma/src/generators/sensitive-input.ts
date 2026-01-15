@@ -36,8 +36,6 @@ import {
 import { getButtonIcon, bindIconColor } from "./icon-utils";
 import registry from "../../../kumo/ai/component-registry.json";
 
-
-
 /**
  * Extract Input component data from registry
  * SensitiveInput uses Input's size and variant configuration
@@ -93,9 +91,7 @@ const ICON_SIZES: Record<string, string> = {
 /**
  * Get size configuration from Input registry styling
  */
-function getSizeConfigFromRegistry(
-  size: string,
-): {
+function getSizeConfigFromRegistry(size: string): {
   height: number;
   paddingX: number;
   fontSize: number;
@@ -311,7 +307,11 @@ async function createSensitiveInputComponent(
   // Create content based on mode
   if (mode === "masked") {
     // Show masked dots
-    const maskedText = await createTextNode("●●●●●●●●", sizeConfig.fontSize, 400);
+    const maskedText = await createTextNode(
+      "●●●●●●●●",
+      sizeConfig.fontSize,
+      400,
+    );
     maskedText.name = "MaskedValue";
     maskedText.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -626,7 +626,8 @@ export async function generateSensitiveInputComponents(
   lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.section.x =
+    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
   logComplete(

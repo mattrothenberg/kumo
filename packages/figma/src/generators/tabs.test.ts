@@ -234,7 +234,9 @@ describe("Tabs Generator - All Variant Data Validation", () => {
   it("should include container config matching registry", () => {
     const allData = getAllVariantData();
     expect(allData.container.height).toBe(tabsStyling.container.height);
-    expect(allData.container.borderRadius).toBe(tabsStyling.container.borderRadius);
+    expect(allData.container.borderRadius).toBe(
+      tabsStyling.container.borderRadius,
+    );
     expect(allData.container.padding).toBe(tabsStyling.container.padding);
   });
 
@@ -249,7 +251,9 @@ describe("Tabs Generator - All Variant Data Validation", () => {
 
   it("should include indicator config matching registry", () => {
     const allData = getAllVariantData();
-    expect(allData.indicator.borderRadius).toBe(tabsStyling.indicator.borderRadius);
+    expect(allData.indicator.borderRadius).toBe(
+      tabsStyling.indicator.borderRadius,
+    );
   });
 });
 
@@ -257,9 +261,13 @@ describe("Tabs Generator - Structural Consistency", () => {
   it("should have consistent border radius across all elements", () => {
     const allData = getAllVariantData();
     // All border radii should match each other (derived from registry)
-    expect(allData.container.borderRadius).toBe(tabsStyling.container.borderRadius);
+    expect(allData.container.borderRadius).toBe(
+      tabsStyling.container.borderRadius,
+    );
     expect(allData.tab.borderRadius).toBe(tabsStyling.tab.borderRadius);
-    expect(allData.indicator.borderRadius).toBe(tabsStyling.indicator.borderRadius);
+    expect(allData.indicator.borderRadius).toBe(
+      tabsStyling.indicator.borderRadius,
+    );
   });
 
   it("should have matching padding between container and tab margins", () => {
@@ -275,7 +283,9 @@ describe("Tabs Generator - Structural Consistency", () => {
     const verticalMargin = allData.tab.verticalMargin;
     const expectedTabHeight = containerHeight - verticalMargin * 2;
     // Tab height is derived from container height minus margins
-    expect(expectedTabHeight).toBe(tabsStyling.container.height - tabsStyling.tab.verticalMargin * 2);
+    expect(expectedTabHeight).toBe(
+      tabsStyling.container.height - tabsStyling.tab.verticalMargin * 2,
+    );
   });
 
   it("should calculate indicator height correctly based on registry values", () => {
@@ -284,7 +294,9 @@ describe("Tabs Generator - Structural Consistency", () => {
     const verticalMargin = allData.tab.verticalMargin;
     const expectedIndicatorHeight = containerHeight - verticalMargin * 2;
     // Indicator should match tab height
-    expect(expectedIndicatorHeight).toBe(tabsStyling.container.height - tabsStyling.tab.verticalMargin * 2);
+    expect(expectedIndicatorHeight).toBe(
+      tabsStyling.container.height - tabsStyling.tab.verticalMargin * 2,
+    );
   });
 });
 
@@ -353,7 +365,8 @@ describe("Tabs Generator - Expected Figma Output", () => {
     };
 
     // Structural assertions - use registry values
-    const expectedButtonHeight = tabsStyling.container.height - tabsStyling.tab.verticalMargin * 2;
+    const expectedButtonHeight =
+      tabsStyling.container.height - tabsStyling.tab.verticalMargin * 2;
 
     expect(figmaProps.layoutMode).toBe("HORIZONTAL");
     expect(figmaProps.primaryAxisAlignItems).toBe("CENTER");
@@ -394,7 +407,8 @@ describe("Tabs Generator - Expected Figma Output", () => {
     };
 
     // Structural assertions - use registry values
-    const expectedIndicatorHeight = tabsStyling.container.height - tabsStyling.tab.verticalMargin * 2;
+    const expectedIndicatorHeight =
+      tabsStyling.container.height - tabsStyling.tab.verticalMargin * 2;
 
     expect(figmaProps.layoutPositioning).toBe("ABSOLUTE");
     expect(typeof figmaProps.height).toBe("number");
@@ -510,7 +524,8 @@ describe("Tabs Generator - Layout Calculations", () => {
     const tabConfig = getTabConfig();
 
     const tabHeight = containerConfig.height - tabConfig.verticalMargin * 2;
-    const expectedHeight = tabsStyling.container.height - tabsStyling.tab.verticalMargin * 2;
+    const expectedHeight =
+      tabsStyling.container.height - tabsStyling.tab.verticalMargin * 2;
     expect(tabHeight).toBe(expectedHeight);
   });
 
@@ -518,8 +533,10 @@ describe("Tabs Generator - Layout Calculations", () => {
     const containerConfig = getContainerConfig();
     const tabConfig = getTabConfig();
 
-    const indicatorHeight = containerConfig.height - tabConfig.verticalMargin * 2;
-    const expectedHeight = tabsStyling.container.height - tabsStyling.tab.verticalMargin * 2;
+    const indicatorHeight =
+      containerConfig.height - tabConfig.verticalMargin * 2;
+    const expectedHeight =
+      tabsStyling.container.height - tabsStyling.tab.verticalMargin * 2;
     expect(indicatorHeight).toBe(expectedHeight);
   });
 
@@ -534,7 +551,8 @@ describe("Tabs Generator - Layout Calculations", () => {
     const tabConfig = getTabConfig();
 
     const tabHeight = containerConfig.height - tabConfig.verticalMargin * 2;
-    const indicatorHeight = containerConfig.height - tabConfig.verticalMargin * 2;
+    const indicatorHeight =
+      containerConfig.height - tabConfig.verticalMargin * 2;
 
     expect(tabHeight).toBe(indicatorHeight);
   });

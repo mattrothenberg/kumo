@@ -41,8 +41,6 @@ import themeData from "../generated/theme-data.json";
 // Import registry as source of truth
 import registry from "../../../kumo/ai/component-registry.json";
 
-
-
 /**
  * Tooltip dimensions
  * FIGMA-SPECIFIC: Arrow dimensions are for Figma canvas rendering only,
@@ -59,7 +57,8 @@ const ARROW_HEIGHT = 10;
 const tooltipComponent = registry.components.Tooltip;
 
 // Tooltip popup styles from tooltip.tsx
-const TOOLTIP_BOX_STYLES = "rounded-md bg-black-icon px-2.5 py-1.5 text-sm text-white";
+const TOOLTIP_BOX_STYLES =
+  "rounded-md bg-black-icon px-2.5 py-1.5 text-sm text-white";
 // Use centralized values from shared.ts to prevent drift
 const TOOLTIP_TEXT_SIZE = FONT_SIZE.sm; // text-sm from theme-data.json
 const TOOLTIP_TEXT_WEIGHT = FALLBACK_VALUES.fontWeight.normal; // font-normal from theme-data.json
@@ -155,7 +154,11 @@ async function createTooltipComponent(): Promise<ComponentNode> {
 
   // Create tooltip text content
   // text-sm = 14px, normal weight = 400
-  const text = await createTextNode("Tooltip text", FONT_SIZE.sm, FALLBACK_VALUES.fontWeight.normal);
+  const text = await createTextNode(
+    "Tooltip text",
+    FONT_SIZE.sm,
+    FALLBACK_VALUES.fontWeight.normal,
+  );
   text.name = "Text";
   text.textAutoResize = "WIDTH_AND_HEIGHT";
 
@@ -263,7 +266,8 @@ export async function generateTooltipComponents(
   lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.section.x =
+    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
   logComplete("Generated Tooltip ComponentSet (light + dark)");
@@ -279,7 +283,7 @@ export async function generateTooltipComponents(
 
 /**
  * Get Tooltip configuration from registry
- * 
+ *
  * @returns Side variant configuration
  */
 export function getTooltipSideConfig() {
@@ -300,7 +304,7 @@ export function getTooltipSideConfig() {
 /**
  * Get Tooltip styling configuration from React component
  * Matches the actual Tooltip.Popup classes from tooltip.tsx
- * 
+ *
  * @returns Tooltip styling configuration
  */
 export function getTooltipStylingConfig() {
@@ -327,7 +331,7 @@ export function getTooltipStylingConfig() {
 
 /**
  * Get parsed styles for Tooltip box
- * 
+ *
  * @returns Parsed Tailwind styles
  */
 export function getTooltipParsedBoxStyles() {
@@ -336,7 +340,7 @@ export function getTooltipParsedBoxStyles() {
 
 /**
  * Get Tooltip box layout data
- * 
+ *
  * @returns Layout dimensions and styling
  */
 export function getTooltipBoxLayout() {
@@ -361,7 +365,7 @@ export function getTooltipBoxLayout() {
 
 /**
  * Get Tooltip arrow dimensions
- * 
+ *
  * @returns Arrow dimensions
  */
 export function getTooltipArrowDimensions() {
@@ -373,7 +377,7 @@ export function getTooltipArrowDimensions() {
 
 /**
  * Get complete Tooltip intermediate data
- * 
+ *
  * @returns All intermediate data for Tooltip component
  */
 export function getAllTooltipData() {

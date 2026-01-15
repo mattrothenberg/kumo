@@ -355,7 +355,9 @@ describe("Toast Generator - Testable Export Functions", () => {
     it("should include parsed description config", () => {
       const allData = getAllVariantData();
       expect(allData.description.fontSize).toBe(15); // Toast description uses 15px, not a standard FONT_SIZE
-      expect(allData.description.fontWeight).toBe(FALLBACK_VALUES.fontWeight.normal);
+      expect(allData.description.fontWeight).toBe(
+        FALLBACK_VALUES.fontWeight.normal,
+      );
       expect(allData.description.color).toBe("text-color-muted");
     });
 

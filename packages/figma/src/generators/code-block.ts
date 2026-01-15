@@ -48,8 +48,6 @@ const CODE_BLOCK_WRAPPER_STYLES =
   "min-w-0 rounded-md border border-color bg-surface";
 const CODE_INNER_PADDING = themeData.tailwind.spacing.scale["2.5"]; // p-2.5 = 10px
 
-
-
 /**
  * TESTABLE EXPORTS - Pure functions that return intermediate data
  * These functions compute data without calling Figma APIs, enabling snapshot tests.
@@ -169,7 +167,8 @@ async function createCodeBlockComponent(lang: string): Promise<ComponentNode> {
   component.paddingBottom = CODE_INNER_PADDING;
   component.primaryAxisSizingMode = "AUTO";
   component.counterAxisSizingMode = "AUTO";
-  component.cornerRadius = wrapperStyles.borderRadius || FALLBACK_VALUES.borderRadius.medium;
+  component.cornerRadius =
+    wrapperStyles.borderRadius || FALLBACK_VALUES.borderRadius.medium;
 
   // Apply background (bg-surface)
   if (wrapperStyles.fillVariable) {
@@ -208,7 +207,10 @@ async function createCodeBlockComponent(lang: string): Promise<ComponentNode> {
   }
 
   // Set line height - uses FALLBACK_VALUES.lineHeight.code (20px from code.tsx leading-[20px])
-  textNode.lineHeight = { value: FALLBACK_VALUES.lineHeight.code, unit: "PIXELS" };
+  textNode.lineHeight = {
+    value: FALLBACK_VALUES.lineHeight.code,
+    unit: "PIXELS",
+  };
 
   component.appendChild(textNode);
 
@@ -308,7 +310,8 @@ export async function generateCodeBlockComponents(
   lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.section.x =
+    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
   logComplete(

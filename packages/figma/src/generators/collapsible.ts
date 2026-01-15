@@ -47,7 +47,7 @@ const collapsibleColors = collapsibleComponent.colors as string[];
  * Base styles from collapsibleVariants() in collapsible.tsx
  * Reading from React component source:
  * "flex cursor-pointer items-center gap-1 text-sm text-info select-none"
- * 
+ *
  * NOTE: Collapsible has no variants (KUMO_COLLAPSIBLE_VARIANTS is empty).
  * The collapsibleVariants() function returns a fixed set of base styles.
  * Using actual class string from collapsible.tsx collapsibleVariants().
@@ -58,12 +58,10 @@ const TRIGGER_BASE_STYLES = "flex items-center gap-1 text-sm text-info";
  * Content panel styles from collapsible.tsx
  * From the inline className in the content div:
  * "my-2 space-y-4 border-l-2 border-color pl-4"
- * 
+ *
  * These classes are directly in the JSX, not in a variant function.
  */
 const CONTENT_PANEL_STYLES = "my-2 border-l-2 border-color pl-4";
-
-
 
 /**
  * Open state values
@@ -132,7 +130,7 @@ async function createCollapsibleComponent(
   component.layoutMode = "VERTICAL";
   component.primaryAxisSizingMode = "AUTO";
   component.counterAxisSizingMode = "AUTO";
-  component.itemSpacing = themeData.tailwind.spacing.scale['2']; // my-2 = 8px from Tailwind
+  component.itemSpacing = themeData.tailwind.spacing.scale["2"]; // my-2 = 8px from Tailwind
   component.fills = [];
 
   // Get state-specific styles
@@ -153,10 +151,10 @@ async function createCollapsibleComponent(
   trigger.counterAxisSizingMode = "AUTO";
   trigger.itemSpacing = triggerStyles.gap || FALLBACK_VALUES.gap.tight;
   trigger.fills = [];
-  trigger.paddingTop = themeData.tailwind.spacing.scale['1']; // p-1 = 4px from Tailwind
-  trigger.paddingBottom = themeData.tailwind.spacing.scale['1'];
-  trigger.paddingLeft = themeData.tailwind.spacing.scale['1'];
-  trigger.paddingRight = themeData.tailwind.spacing.scale['1'];
+  trigger.paddingTop = themeData.tailwind.spacing.scale["1"]; // p-1 = 4px from Tailwind
+  trigger.paddingBottom = themeData.tailwind.spacing.scale["1"];
+  trigger.paddingLeft = themeData.tailwind.spacing.scale["1"];
+  trigger.paddingRight = themeData.tailwind.spacing.scale["1"];
   trigger.cornerRadius = BORDER_RADIUS.sm;
 
   // Add focus ring if in focus state
@@ -176,7 +174,9 @@ async function createCollapsibleComponent(
   labelText.name = "Label";
 
   // Apply text color based on state
-  const textVar = getVariableByName(stateStyle.textVariable || "text-color-info");
+  const textVar = getVariableByName(
+    stateStyle.textVariable || "text-color-info",
+  );
   if (textVar) {
     bindTextColorToVariable(labelText, textVar.id);
   }
@@ -207,10 +207,11 @@ async function createCollapsibleComponent(
     contentPanel.layoutMode = "VERTICAL";
     contentPanel.primaryAxisSizingMode = "AUTO";
     contentPanel.counterAxisSizingMode = "AUTO";
-    contentPanel.itemSpacing = themeData.tailwind.spacing.scale['4']; // space-y-4 = 16px from Tailwind
-    contentPanel.paddingLeft = contentStyles.paddingX || FALLBACK_VALUES.padding.standard;
-    contentPanel.paddingTop = themeData.tailwind.spacing.scale['2']; // py-2 = 8px from Tailwind
-    contentPanel.paddingBottom = themeData.tailwind.spacing.scale['2'];
+    contentPanel.itemSpacing = themeData.tailwind.spacing.scale["4"]; // space-y-4 = 16px from Tailwind
+    contentPanel.paddingLeft =
+      contentStyles.paddingX || FALLBACK_VALUES.padding.standard;
+    contentPanel.paddingTop = themeData.tailwind.spacing.scale["2"]; // py-2 = 8px from Tailwind
+    contentPanel.paddingBottom = themeData.tailwind.spacing.scale["2"];
     contentPanel.fills = [];
 
     // Add left border (border-l-2 border-color)
@@ -389,7 +390,11 @@ export async function generateCollapsibleComponents(
   const contentHeight = componentSet.height + headerRowHeight;
 
   // Create light mode section
-  const lightSection = createModeSection(componentsPage, "Collapsible", "light");
+  const lightSection = createModeSection(
+    componentsPage,
+    "Collapsible",
+    "light",
+  );
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
     contentHeight + SECTION_PADDING * 2,
@@ -467,7 +472,8 @@ export async function generateCollapsibleComponents(
   lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.section.x =
+    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
   logComplete(

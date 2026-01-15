@@ -201,23 +201,25 @@ Patterns NOT supported (out of scope for Figma generators):
 
 ```typescript
 // Basic parsing
-parseTailwindClasses("h-9 px-3 rounded-lg bg-primary text-white")
+parseTailwindClasses("h-9 px-3 rounded-lg bg-primary text-white");
 // Returns: { height: 36, paddingX: 12, borderRadius: 8, fillVariable: "color-primary", textVariable: null, isWhiteText: true }
 
 // Arbitrary values
-parseTailwindClasses("w-[350px] h-[2.5rem] min-w-[32rem]")
+parseTailwindClasses("w-[350px] h-[2.5rem] min-w-[32rem]");
 // Returns: { width: 350, height: 40, minWidth: 512 }
 
 // Opacity modifiers
-parseTailwindClasses("bg-primary/70 text-surface/50")
+parseTailwindClasses("bg-primary/70 text-surface/50");
 // Returns: { fillVariable: "color-primary/70", fillOpacity: 0.7, textVariable: "text-color-surface/50", textOpacity: 0.5 }
 
 // State variants
-parseTailwindClasses("bg-primary hover:bg-secondary focus:ring-active")
+parseTailwindClasses("bg-primary hover:bg-secondary focus:ring-active");
 // Returns: { fillVariable: "color-primary", states: { hover: { fillVariable: "color-secondary" }, focus: { hasBorder: true, strokeVariable: "color-active" } } }
 
 // Combined (real-world example)
-parseTailwindClasses("h-9 px-3 py-1 gap-2 rounded-lg bg-secondary text-surface ring ring-border hover:bg-surface-2 focus:ring-active disabled:text-surface/70")
+parseTailwindClasses(
+  "h-9 px-3 py-1 gap-2 rounded-lg bg-secondary text-surface ring ring-border hover:bg-surface-2 focus:ring-active disabled:text-surface/70",
+);
 // Returns: { height: 36, paddingX: 12, paddingY: 4, gap: 8, borderRadius: 8, fillVariable: "color-secondary", textVariable: "text-color-surface", hasBorder: true, strokeVariable: "color-border", states: { hover: { fillVariable: "color-surface-2" }, focus: { hasBorder: true, strokeVariable: "color-active" }, disabled: { textVariable: "text-color-surface/70", textOpacity: 0.7 } } }
 ```
 

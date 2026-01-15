@@ -11,13 +11,17 @@
  * - PACKAGE_NAME: Package name (default: @cloudflare/kumo)
  */
 
-import { writeReportArtifact, npmReleaseReporter, buildContextFromEnv } from '../reporters';
+import {
+  writeReportArtifact,
+  npmReleaseReporter,
+  buildContextFromEnv,
+} from "../reporters";
 
 async function main() {
   const context = buildContextFromEnv();
 
   if (!context.packageVersion) {
-    console.error('❌ PACKAGE_VERSION environment variable is required');
+    console.error("❌ PACKAGE_VERSION environment variable is required");
     process.exit(1);
   }
 
@@ -25,13 +29,13 @@ async function main() {
 
   if (item) {
     writeReportArtifact(item);
-    console.log('✅ NPM release report artifact written');
+    console.log("✅ NPM release report artifact written");
   } else {
-    console.log('ℹ️  No report item generated');
+    console.log("ℹ️  No report item generated");
   }
 }
 
 main().catch((error) => {
-  console.error('❌ Failed to write NPM report:', error);
+  console.error("❌ Failed to write NPM report:", error);
   process.exit(1);
 });

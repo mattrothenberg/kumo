@@ -76,12 +76,21 @@ function getToastConfigFromRegistry() {
 
   return {
     width: toastStyling.container?.width ?? FALLBACK_TOAST_CONFIG.width,
-    titleFontSize: toastStyling.title?.fontSize ?? FALLBACK_TOAST_CONFIG.titleFontSize,
-    titleFontWeight: toastStyling.title?.fontWeight ?? FALLBACK_TOAST_CONFIG.titleFontWeight,
-    descriptionFontSize: toastStyling.description?.fontSize ?? FALLBACK_TOAST_CONFIG.descriptionFontSize,
-    descriptionFontWeight: toastStyling.description?.fontWeight ?? FALLBACK_TOAST_CONFIG.descriptionFontWeight,
-    closeButtonSize: toastStyling.closeButton?.size ?? FALLBACK_TOAST_CONFIG.closeButtonSize,
-    closeButtonIconSize: toastStyling.closeButton?.iconSize ?? FALLBACK_TOAST_CONFIG.closeButtonIconSize,
+    titleFontSize:
+      toastStyling.title?.fontSize ?? FALLBACK_TOAST_CONFIG.titleFontSize,
+    titleFontWeight:
+      toastStyling.title?.fontWeight ?? FALLBACK_TOAST_CONFIG.titleFontWeight,
+    descriptionFontSize:
+      toastStyling.description?.fontSize ??
+      FALLBACK_TOAST_CONFIG.descriptionFontSize,
+    descriptionFontWeight:
+      toastStyling.description?.fontWeight ??
+      FALLBACK_TOAST_CONFIG.descriptionFontWeight,
+    closeButtonSize:
+      toastStyling.closeButton?.size ?? FALLBACK_TOAST_CONFIG.closeButtonSize,
+    closeButtonIconSize:
+      toastStyling.closeButton?.iconSize ??
+      FALLBACK_TOAST_CONFIG.closeButtonIconSize,
   };
 }
 
@@ -147,7 +156,10 @@ async function createToastComponent(): Promise<ComponentNode> {
     {
       type: "DROP_SHADOW",
       color: { r: 0, g: 0, b: 0, a: SHADOWS.lg.secondary.opacity },
-      offset: { x: SHADOWS.lg.secondary.offsetX, y: SHADOWS.lg.secondary.offsetY },
+      offset: {
+        x: SHADOWS.lg.secondary.offsetX,
+        y: SHADOWS.lg.secondary.offsetY,
+      },
       radius: SHADOWS.lg.secondary.blur,
       spread: SHADOWS.lg.secondary.spread,
       visible: true,
@@ -170,7 +182,11 @@ async function createToastComponent(): Promise<ComponentNode> {
 
   // Create title text
   // text-[0.975rem] = ~15.6px, font-medium = 500
-  const title = await createTextNode("Toast created", TOAST_CONFIG.titleFontSize, TOAST_CONFIG.titleFontWeight);
+  const title = await createTextNode(
+    "Toast created",
+    TOAST_CONFIG.titleFontSize,
+    TOAST_CONFIG.titleFontWeight,
+  );
   title.name = "Title";
   title.textAutoResize = "WIDTH_AND_HEIGHT";
   title.layoutGrow = 1; // Take remaining space
@@ -190,7 +206,10 @@ async function createToastComponent(): Promise<ComponentNode> {
   closeButton.layoutMode = "HORIZONTAL";
   closeButton.primaryAxisAlignItems = "CENTER";
   closeButton.counterAxisAlignItems = "CENTER";
-  closeButton.resize(TOAST_CONFIG.closeButtonSize, TOAST_CONFIG.closeButtonSize);
+  closeButton.resize(
+    TOAST_CONFIG.closeButtonSize,
+    TOAST_CONFIG.closeButtonSize,
+  );
   closeButton.cornerRadius = BORDER_RADIUS.sm; // rounded = 4px
   closeButton.fills = []; // bg-transparent
 
@@ -312,7 +331,8 @@ export async function generateToastComponents(
   lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.section.x =
+    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
   logComplete("Generated Toast ComponentSet (light + dark)");

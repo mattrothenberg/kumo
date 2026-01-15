@@ -283,8 +283,7 @@ describe("Switch Generator - Complete Variant Data", () => {
   it("should have correct number of track color combinations", () => {
     const allData = getAllSwitchVariantData();
     // variants × checked states × disabled states
-    const expectedCombinations =
-      allData.variantConfig.values.length * 2 * 2;
+    const expectedCombinations = allData.variantConfig.values.length * 2 * 2;
     expect(allData.trackColors.length).toBe(expectedCombinations);
   });
 

@@ -30,8 +30,6 @@ import {
 } from "./shared";
 import { logComplete, logStart, logProgress } from "../logger";
 
-
-
 /**
  * Create a single Loader component using figma.createNodeFromSvg()
  *
@@ -87,9 +85,7 @@ async function createLoaderComponent(size: string): Promise<ComponentNode> {
     fallbackCircle.x = 2;
     fallbackCircle.y = 2;
     fallbackCircle.fills = [];
-    fallbackCircle.strokes = [
-      { type: "SOLID", color: COLORS.placeholder },
-    ];
+    fallbackCircle.strokes = [{ type: "SOLID", color: COLORS.placeholder }];
     fallbackCircle.strokeWeight = 2;
     component.appendChild(fallbackCircle);
   }
@@ -347,7 +343,8 @@ export async function generateLoaderComponents(
     lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
 
-    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+    darkSection.section.x =
+      lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
 
     logComplete(

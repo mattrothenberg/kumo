@@ -47,7 +47,7 @@ describe("Badge Generator - Registry Validation", () => {
   it("should have all expected variants in registry", () => {
     // Dynamic count check - resilient to adding/removing variants
     expect(variantProp.values.length).toBeGreaterThan(0);
-    
+
     // Required variants check - only check what MUST exist
     expect(variantProp.values).toContain("primary");
     expect(variantProp.values).toContain("secondary");
@@ -612,7 +612,7 @@ describe("Badge Generator - Snapshot Tests (Intermediate Data)", () => {
     expect(allData.baseStyles).toBeDefined();
     expect(allData.baseStyles.raw).toBeDefined();
     expect(allData.baseStyles.parsed).toBeDefined();
-    
+
     // Dynamic variant count alignment with registry
     expect(allData.variants.length).toBe(variantProp.values.length);
 

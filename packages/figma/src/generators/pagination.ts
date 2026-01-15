@@ -74,8 +74,6 @@ const ICON_SIZE = LAYOUT.iconSize;
 const GAP = 0; // InputGroup buttons are flush against each other (overridden from registry gap: 8)
 const BORDER_RADIUS = LAYOUT.borderRadius;
 
-
-
 /**
  * ============================================================================
  * TESTABLE EXPORTS - Pure functions for testing (no Figma API calls)
@@ -283,7 +281,9 @@ async function createNavButton(
   const icon = createIconInstance(iconId, ICON_SIZE);
   if (icon) {
     // Icon color: text-color-surface for enabled, text-color-disabled for disabled
-    const iconColorVar = disabled ? "text-color-disabled" : "text-color-surface";
+    const iconColorVar = disabled
+      ? "text-color-disabled"
+      : "text-color-surface";
     bindIconColor(icon, iconColorVar);
     button.appendChild(icon);
   }
@@ -318,7 +318,11 @@ async function createPageInput(pageNumber: string): Promise<FrameNode> {
   }
 
   // Page number text - use centralized constants
-  const text = await createTextNode(pageNumber, FONT_SIZE.xs + 2, FALLBACK_VALUES.fontWeight.normal);
+  const text = await createTextNode(
+    pageNumber,
+    FONT_SIZE.xs + 2,
+    FALLBACK_VALUES.fontWeight.normal,
+  );
   text.name = "Page Number";
   text.textAlignHorizontal = "CENTER";
 
@@ -592,7 +596,8 @@ export async function generatePaginationComponents(
   lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.section.x =
+    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
   logComplete(

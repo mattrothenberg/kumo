@@ -171,7 +171,9 @@ describe("Surface Generator - Base Styles Parsing", () => {
   it("should have stroke variable from ring border", () => {
     const parsed = getSurfaceParsedBaseStyles();
     // ring ring-border should parse to strokeVariable
-    expect(parsed.strokeVariable !== undefined || parsed.strokeWeight !== undefined).toBe(true);
+    expect(
+      parsed.strokeVariable !== undefined || parsed.strokeWeight !== undefined,
+    ).toBe(true);
   });
 });
 

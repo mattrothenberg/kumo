@@ -38,7 +38,7 @@ const layerCardStyling = (registry.components.LayerCard as any).styling;
 
 /**
  * LayerCard dimensions
- * 
+ *
  * Now reads from registry.components.LayerCard.styling
  * with fallback to hardcoded values for backward compatibility.
  */
@@ -69,25 +69,51 @@ const FALLBACK_LAYER_CARD_CONFIG = {
  */
 function getConfigFromRegistry() {
   if (!layerCardStyling) return FALLBACK_LAYER_CARD_CONFIG;
-  
+
   return {
-    width: layerCardStyling.container?.width || FALLBACK_LAYER_CARD_CONFIG.width,
-    borderRadius: layerCardStyling.container?.borderRadius || FALLBACK_LAYER_CARD_CONFIG.borderRadius,
+    width:
+      layerCardStyling.container?.width || FALLBACK_LAYER_CARD_CONFIG.width,
+    borderRadius:
+      layerCardStyling.container?.borderRadius ||
+      FALLBACK_LAYER_CARD_CONFIG.borderRadius,
     secondary: {
-      paddingX: layerCardStyling.secondary?.paddingX || FALLBACK_LAYER_CARD_CONFIG.secondary.paddingX,
-      paddingY: layerCardStyling.secondary?.paddingY || FALLBACK_LAYER_CARD_CONFIG.secondary.paddingY,
-      gap: layerCardStyling.secondary?.gap || FALLBACK_LAYER_CARD_CONFIG.secondary.gap,
-      fontSize: layerCardStyling.secondary?.fontSize || FALLBACK_LAYER_CARD_CONFIG.secondary.fontSize,
-      fontWeight: layerCardStyling.secondary?.fontWeight || FALLBACK_LAYER_CARD_CONFIG.secondary.fontWeight,
+      paddingX:
+        layerCardStyling.secondary?.paddingX ||
+        FALLBACK_LAYER_CARD_CONFIG.secondary.paddingX,
+      paddingY:
+        layerCardStyling.secondary?.paddingY ||
+        FALLBACK_LAYER_CARD_CONFIG.secondary.paddingY,
+      gap:
+        layerCardStyling.secondary?.gap ||
+        FALLBACK_LAYER_CARD_CONFIG.secondary.gap,
+      fontSize:
+        layerCardStyling.secondary?.fontSize ||
+        FALLBACK_LAYER_CARD_CONFIG.secondary.fontSize,
+      fontWeight:
+        layerCardStyling.secondary?.fontWeight ||
+        FALLBACK_LAYER_CARD_CONFIG.secondary.fontWeight,
     },
     primary: {
-      paddingX: layerCardStyling.primary?.paddingX || FALLBACK_LAYER_CARD_CONFIG.primary.paddingX,
-      paddingY: layerCardStyling.primary?.paddingY || FALLBACK_LAYER_CARD_CONFIG.primary.paddingY,
-      paddingRight: layerCardStyling.primary?.paddingRight || FALLBACK_LAYER_CARD_CONFIG.primary.paddingRight,
-      gap: layerCardStyling.primary?.gap || FALLBACK_LAYER_CARD_CONFIG.primary.gap,
-      fontSize: layerCardStyling.primary?.fontSize || FALLBACK_LAYER_CARD_CONFIG.primary.fontSize,
-      fontWeight: layerCardStyling.primary?.fontWeight || FALLBACK_LAYER_CARD_CONFIG.primary.fontWeight,
-      borderRadius: layerCardStyling.primary?.borderRadius || FALLBACK_LAYER_CARD_CONFIG.primary.borderRadius,
+      paddingX:
+        layerCardStyling.primary?.paddingX ||
+        FALLBACK_LAYER_CARD_CONFIG.primary.paddingX,
+      paddingY:
+        layerCardStyling.primary?.paddingY ||
+        FALLBACK_LAYER_CARD_CONFIG.primary.paddingY,
+      paddingRight:
+        layerCardStyling.primary?.paddingRight ||
+        FALLBACK_LAYER_CARD_CONFIG.primary.paddingRight,
+      gap:
+        layerCardStyling.primary?.gap || FALLBACK_LAYER_CARD_CONFIG.primary.gap,
+      fontSize:
+        layerCardStyling.primary?.fontSize ||
+        FALLBACK_LAYER_CARD_CONFIG.primary.fontSize,
+      fontWeight:
+        layerCardStyling.primary?.fontWeight ||
+        FALLBACK_LAYER_CARD_CONFIG.primary.fontWeight,
+      borderRadius:
+        layerCardStyling.primary?.borderRadius ||
+        FALLBACK_LAYER_CARD_CONFIG.primary.borderRadius,
     },
   };
 }
@@ -392,7 +418,8 @@ export async function generateLayerCardComponents(
     lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
 
-    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+    darkSection.section.x =
+      lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
 
     console.log("Generated LayerCard ComponentSet (light + dark)");
@@ -464,7 +491,8 @@ export function getLayerCardSubComponentConfig() {
   const layerCardComponent = registry.components.LayerCard;
   return {
     subComponents: layerCardComponent.subComponents || {},
-    hasSubComponents: Object.keys(layerCardComponent.subComponents || {}).length > 0,
+    hasSubComponents:
+      Object.keys(layerCardComponent.subComponents || {}).length > 0,
   };
 }
 

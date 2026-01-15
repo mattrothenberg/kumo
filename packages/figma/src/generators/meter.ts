@@ -51,8 +51,6 @@ const METER_WIDTH = 240; // FIGMA-SPECIFIC: Layout width for Figma canvas displa
 const METER_TRACK_HEIGHT = themeData.tailwind.spacing.scale["2"]; // h-2 = 8px from meter.tsx
 const METER_GAP = themeData.tailwind.spacing.scale["2"]; // gap-2 = 8px from meter.tsx
 
-
-
 /**
  * Fill levels to demonstrate: 0%, 25%, 50%, 75%, 100%
  */
@@ -91,7 +89,7 @@ export function getMeterDimensionsConfig() {
 /**
  * Get color bindings configuration
  * Returns the semantic tokens used for meter colors
- * 
+ *
  * Sources from meter.tsx:
  * - Label: text-label (text-xs text-label)
  * - Value: text-surface (text-sm font-medium text-surface)
@@ -440,7 +438,8 @@ export async function generateMeterComponents(startY: number): Promise<number> {
   lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.section.x =
+    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
   logComplete(

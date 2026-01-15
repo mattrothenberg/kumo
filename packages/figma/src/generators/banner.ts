@@ -160,13 +160,18 @@ async function createBannerComponent(variant: string): Promise<ComponentNode> {
   component.primaryAxisAlignItems = "CENTER";
   component.counterAxisAlignItems = "CENTER";
   component.itemSpacing = baseStyles.gap || FALLBACK_VALUES.gap.medium; // gap-2 = 8px
-  component.paddingLeft = baseStyles.paddingX || FALLBACK_VALUES.padding.standard; // px-4 = 16px
-  component.paddingRight = baseStyles.paddingX || FALLBACK_VALUES.padding.standard;
-  component.paddingTop = baseStyles.paddingY || FALLBACK_VALUES.padding.vertical; // py-1.5 = 6px
-  component.paddingBottom = baseStyles.paddingY || FALLBACK_VALUES.padding.vertical;
+  component.paddingLeft =
+    baseStyles.paddingX || FALLBACK_VALUES.padding.standard; // px-4 = 16px
+  component.paddingRight =
+    baseStyles.paddingX || FALLBACK_VALUES.padding.standard;
+  component.paddingTop =
+    baseStyles.paddingY || FALLBACK_VALUES.padding.vertical; // py-1.5 = 6px
+  component.paddingBottom =
+    baseStyles.paddingY || FALLBACK_VALUES.padding.vertical;
   component.primaryAxisSizingMode = "AUTO";
   component.counterAxisSizingMode = "AUTO";
-  component.cornerRadius = baseStyles.borderRadius || FALLBACK_VALUES.borderRadius.large; // rounded-lg = 8px
+  component.cornerRadius =
+    baseStyles.borderRadius || FALLBACK_VALUES.borderRadius.large; // rounded-lg = 8px
 
   // Apply fill from variant (bg-info/20, bg-alert/20, bg-error/20)
   // Opacity variants are stored as separate Figma variables (e.g., "color-info/20")
@@ -368,7 +373,8 @@ export async function generateBannerComponents(
   lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.section.x =
+    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
   logComplete(

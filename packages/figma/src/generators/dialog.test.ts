@@ -18,12 +18,7 @@ import {
   getAllVariantData,
   DIALOG_SIZE_VALUES,
 } from "./dialog";
-import {
-  FONT_SIZE,
-  FALLBACK_VALUES,
-  SPACING,
-  OPACITY,
-} from "./shared";
+import { FONT_SIZE, FALLBACK_VALUES, SPACING, OPACITY } from "./shared";
 
 // Import registry as source of truth
 import registry from "../../../kumo/ai/component-registry.json";
@@ -209,17 +204,23 @@ describe("Dialog Generator - Base Config Validation", () => {
   it("should have header config defined", () => {
     expect(baseConfig.header).toBeDefined();
     expect(baseConfig.header.title).toBeDefined();
-    expect(baseConfig.header.title.fontWeight).toBe(FALLBACK_VALUES.fontWeight.semiBold);
+    expect(baseConfig.header.title.fontWeight).toBe(
+      FALLBACK_VALUES.fontWeight.semiBold,
+    );
     expect(baseConfig.header.title.color).toBe("text-color-surface");
     expect(baseConfig.header.closeIcon).toBeDefined();
     expect(baseConfig.header.closeIcon.name).toBe("ph-x");
-    expect(baseConfig.header.closeIcon.size).toBe(FALLBACK_VALUES.iconSize.base);
+    expect(baseConfig.header.closeIcon.size).toBe(
+      FALLBACK_VALUES.iconSize.base,
+    );
     expect(baseConfig.header.closeIcon.color).toBe("text-color-muted");
   });
 
   it("should have description config defined", () => {
     expect(baseConfig.description).toBeDefined();
-    expect(baseConfig.description.fontWeight).toBe(FALLBACK_VALUES.fontWeight.normal);
+    expect(baseConfig.description.fontWeight).toBe(
+      FALLBACK_VALUES.fontWeight.normal,
+    );
     expect(baseConfig.description.color).toBe("text-color-muted");
   });
 
@@ -407,10 +408,14 @@ describe("Dialog Generator - Expected Figma Output", () => {
   it("should produce correct header properties", () => {
     const baseConfig = getBaseConfig();
 
-    expect(baseConfig.header.title.fontWeight).toBe(FALLBACK_VALUES.fontWeight.semiBold);
+    expect(baseConfig.header.title.fontWeight).toBe(
+      FALLBACK_VALUES.fontWeight.semiBold,
+    );
     expect(baseConfig.header.title.color).toBe("text-color-surface");
     expect(baseConfig.header.closeIcon.name).toBe("ph-x");
-    expect(baseConfig.header.closeIcon.size).toBe(FALLBACK_VALUES.iconSize.base);
+    expect(baseConfig.header.closeIcon.size).toBe(
+      FALLBACK_VALUES.iconSize.base,
+    );
     expect(baseConfig.header.closeIcon.color).toBe("text-color-muted");
   });
 

@@ -81,10 +81,16 @@ function getConfigFromRegistry() {
 
   return {
     height: menuBarStyling.container.height || FALLBACK_MENUBAR_CONFIG.height,
-    buttonWidth: menuBarStyling.button.width || FALLBACK_MENUBAR_CONFIG.buttonWidth,
-    iconSize: menuBarStyling.button.iconSize || FALLBACK_MENUBAR_CONFIG.iconSize,
-    borderRadius: menuBarStyling.container.borderRadius || FALLBACK_MENUBAR_CONFIG.borderRadius,
-    buttonBorderRadius: menuBarStyling.button.borderRadius || FALLBACK_MENUBAR_CONFIG.buttonBorderRadius,
+    buttonWidth:
+      menuBarStyling.button.width || FALLBACK_MENUBAR_CONFIG.buttonWidth,
+    iconSize:
+      menuBarStyling.button.iconSize || FALLBACK_MENUBAR_CONFIG.iconSize,
+    borderRadius:
+      menuBarStyling.container.borderRadius ||
+      FALLBACK_MENUBAR_CONFIG.borderRadius,
+    buttonBorderRadius:
+      menuBarStyling.button.borderRadius ||
+      FALLBACK_MENUBAR_CONFIG.buttonBorderRadius,
   };
 }
 
@@ -348,7 +354,8 @@ export async function generateMenuBarComponents(
     lightSection.section.x = SECTION_LAYOUT.startX;
     lightSection.section.y = startY;
 
-    darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+    darkSection.section.x =
+      lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
     darkSection.section.y = startY;
 
     console.log(

@@ -54,8 +54,6 @@ const sizeProp = buttonProps.size as {
   default: string;
 };
 
-
-
 /**
  * Create a single link button component
  */
@@ -83,8 +81,10 @@ async function createLinkButtonComponent(
   component.layoutMode = "HORIZONTAL";
   component.primaryAxisAlignItems = "CENTER";
   component.counterAxisAlignItems = "CENTER";
-  component.paddingLeft = sizeStyles.paddingX || FALLBACK_VALUES.padding.horizontal;
-  component.paddingRight = sizeStyles.paddingX || FALLBACK_VALUES.padding.horizontal;
+  component.paddingLeft =
+    sizeStyles.paddingX || FALLBACK_VALUES.padding.horizontal;
+  component.paddingRight =
+    sizeStyles.paddingX || FALLBACK_VALUES.padding.horizontal;
   component.paddingTop = 0;
   component.paddingBottom = 0;
   component.itemSpacing = sizeStyles.gap || FALLBACK_VALUES.gap.standard;
@@ -319,10 +319,12 @@ export async function generateLinkButtonComponents(
   lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.section.x =
+    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
-  const totalComponents = variants.length * sizes.length * hasIconOptions.length;
+  const totalComponents =
+    variants.length * sizes.length * hasIconOptions.length;
   logComplete(
     "✅ Generated LinkButton ComponentSet with " +
       totalComponents +
@@ -411,7 +413,9 @@ export function getLinkButtonLayoutData(
       height: sizeStyles.height || FALLBACK_VALUES.height.base,
       gap: sizeStyles.gap || FALLBACK_VALUES.gap.standard,
       cornerRadius:
-        sizeStyles.borderRadius !== undefined ? sizeStyles.borderRadius : FALLBACK_VALUES.borderRadius.large,
+        sizeStyles.borderRadius !== undefined
+          ? sizeStyles.borderRadius
+          : FALLBACK_VALUES.borderRadius.large,
       fontSize: sizeStyles.fontSize || FALLBACK_VALUES.fontSize,
     },
     fill: {

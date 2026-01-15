@@ -207,7 +207,7 @@ describe("Breadcrumbs Generator - Complete Data Structure", () => {
     if (smSize && baseSize) {
       expect(smSize.layout.height).toBeLessThan(baseSize.layout.height);
       expect(smSize.layout.fontSize).toBeLessThanOrEqual(
-        baseSize.layout.fontSize
+        baseSize.layout.fontSize,
       );
     }
   });

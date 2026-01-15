@@ -54,8 +54,6 @@ const sizeProp = textProps.size as {
   default: string;
 };
 
-
-
 /**
  * Base text class applied to all Text components (from text.tsx line 178)
  */
@@ -385,7 +383,8 @@ export async function generateTextComponents(
   lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.section.x =
+    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
   logComplete(

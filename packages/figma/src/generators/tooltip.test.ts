@@ -175,7 +175,7 @@ describe("Tooltip Generator - Box Layout", () => {
 
     // At least one should be defined
     expect(
-      layout.textVariable !== undefined || layout.isWhiteText === true
+      layout.textVariable !== undefined || layout.isWhiteText === true,
     ).toBe(true);
   });
 });

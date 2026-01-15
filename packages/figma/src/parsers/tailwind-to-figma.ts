@@ -169,14 +169,21 @@ export function parseTailwindClasses(classes: string): ParsedStyles {
   for (const cls of classList) {
     // Parse state variants (hover:, focus:, active:, disabled:, pressed:)
     // Pattern: state:class-name
-    const stateMatch = cls.match(/^(hover|focus|active|disabled|pressed):(.+)$/);
+    const stateMatch = cls.match(
+      /^(hover|focus|active|disabled|pressed):(.+)$/,
+    );
     if (stateMatch) {
-      const state = stateMatch[1] as "hover" | "focus" | "active" | "disabled" | "pressed";
+      const state = stateMatch[1] as
+        | "hover"
+        | "focus"
+        | "active"
+        | "disabled"
+        | "pressed";
       const stateClass = stateMatch[2];
-      
+
       // Parse the state class recursively
       const stateParsed = parseTailwindClasses(stateClass);
-      
+
       // Add to states object if anything was parsed
       if (Object.keys(stateParsed).length > 0) {
         if (!result.states) {
@@ -193,7 +200,9 @@ export function parseTailwindClasses(classes: string): ParsedStyles {
     }
 
     // Arbitrary value patterns: w-[350px], h-[2.5rem], min-w-[32rem], max-h-[100px]
-    const arbitraryMatch = cls.match(/^(w|h|min-w|min-h|max-w|max-h)-\[(\d+(?:\.\d+)?)(px|rem|em)?\]$/);
+    const arbitraryMatch = cls.match(
+      /^(w|h|min-w|min-h|max-w|max-h)-\[(\d+(?:\.\d+)?)(px|rem|em)?\]$/,
+    );
     if (arbitraryMatch) {
       const property = arbitraryMatch[1];
       const value = parseFloat(arbitraryMatch[2]);
@@ -351,7 +360,8 @@ export function parseTailwindClasses(classes: string): ParsedStyles {
         result.textOpacity = parseInt(opacityValue, 10) / 100;
         // Set variable (null for white)
         if (varName !== undefined) {
-          result.textVariable = varName !== null ? `${varName}/${opacityValue}` : null;
+          result.textVariable =
+            varName !== null ? `${varName}/${opacityValue}` : null;
         }
         // Check for white text flag
         if (baseClass === "text-white" || baseClass === "!text-white") {

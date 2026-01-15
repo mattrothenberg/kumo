@@ -58,10 +58,11 @@ const BUTTON_BASE_STYLES = "flex items-center font-medium";
 /**
  * Compact size mapping from button.tsx KUMO_BUTTON_VARIANTS.compactSize
  * Used for square and circle shapes
- * 
+ *
  * Derived from FALLBACK_VALUES.buttonCompactSize in shared.ts to prevent drift
  */
-const COMPACT_SIZE_MAP: Record<string, number> = FALLBACK_VALUES.buttonCompactSize;
+const COMPACT_SIZE_MAP: Record<string, number> =
+  FALLBACK_VALUES.buttonCompactSize;
 
 /**
  * State-specific style overrides (from button.ts STATE_STYLES)
@@ -313,7 +314,7 @@ describe("Button Generator - Registry Validation", () => {
   it("should have all expected variants in registry", () => {
     // Dynamic check - resilient to adding new variants
     expect(variantProp.values.length).toBeGreaterThan(0);
-    
+
     // Check required variants exist (not all variants)
     expect(variantProp.values).toContain("primary");
     expect(variantProp.values).toContain("secondary");
@@ -344,7 +345,7 @@ describe("Button Generator - Registry Validation", () => {
   it("should have all expected sizes in registry", () => {
     // Dynamic check - resilient to adding new sizes
     expect(sizeProp.values.length).toBeGreaterThan(0);
-    
+
     // Check required sizes exist (common pattern)
     expect(sizeProp.values).toContain("base");
   });
@@ -364,7 +365,7 @@ describe("Button Generator - Registry Validation", () => {
   it("should have all expected shapes in registry", () => {
     // Dynamic check - resilient to adding new shapes
     expect(shapeProp.values.length).toBeGreaterThan(0);
-    
+
     // Check required shapes exist
     expect(shapeProp.values).toContain("base");
   });

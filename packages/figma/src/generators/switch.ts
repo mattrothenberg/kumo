@@ -73,18 +73,21 @@ const sizeProp = switchProps.size as {
  * Size classes: h-5.5 w-8.5 (sm), h-6.5 w-10.5 (base), h-7.5 w-12.5 (lg)
  * Height includes the padding (p-1 = 4px = 2px * 2)
  * Thumb is "aspect-square h-full" (height of container minus padding)
- * 
+ *
  * NOTE: Parser doesn't support width property or fractional Tailwind classes,
  * so we parse dimensions manually using regex and 1 Tailwind unit = 4px conversion
  */
-function parseSwitchDimensions(size: string): { width: number; height: number } {
+function parseSwitchDimensions(size: string): {
+  width: number;
+  height: number;
+} {
   const sizeClasses = sizeProp.classes[size] || "";
-  
+
   // Parse fractional Tailwind classes manually
   // Classes format: "h-5.5 w-8.5" or "h-6.5 w-10.5" or "h-7.5 w-12.5"
   const heightMatch = sizeClasses.match(/h-(\d+(?:\.\d+)?)/);
   const widthMatch = sizeClasses.match(/w-(\d+(?:\.\d+)?)/);
-  
+
   if (heightMatch && widthMatch) {
     const heightUnits = parseFloat(heightMatch[1]);
     const widthUnits = parseFloat(widthMatch[1]);
@@ -93,7 +96,7 @@ function parseSwitchDimensions(size: string): { width: number; height: number } 
       height: heightUnits * 4,
     };
   }
-  
+
   // COMPONENT-SPECIFIC: Fallback dimensions for Switch component sizes
   // These values are derived from Tailwind fractional classes in switch.tsx:
   // sm: h-5.5 w-8.5 (5.5*4=22px, 8.5*4=34px)
@@ -104,11 +107,12 @@ function parseSwitchDimensions(size: string): { width: number; height: number } 
   // sizeProp.classes fails. The primary source is the registry classes which
   // are parsed dynamically. If you see drift here, update the registry or
   // check that parseSwitchDimensions regex is working correctly.
-  const fallbackDimensions: Record<string, { width: number; height: number }> = {
-    sm: { width: 34, height: 22 }, // h-5.5 w-8.5 = 5.5*4, 8.5*4
-    base: { width: 42, height: 26 }, // h-6.5 w-10.5 = 6.5*4, 10.5*4
-    lg: { width: 50, height: 30 }, // h-7.5 w-12.5 = 7.5*4, 12.5*4
-  };
+  const fallbackDimensions: Record<string, { width: number; height: number }> =
+    {
+      sm: { width: 34, height: 22 }, // h-5.5 w-8.5 = 5.5*4, 8.5*4
+      base: { width: 42, height: 26 }, // h-6.5 w-10.5 = 6.5*4, 10.5*4
+      lg: { width: 50, height: 30 }, // h-7.5 w-12.5 = 7.5*4, 12.5*4
+    };
   return fallbackDimensions[size] || fallbackDimensions.base;
 }
 
@@ -407,7 +411,11 @@ async function createSwitchGroupComponent(
   component.fills = [];
 
   // Legend: text-lg font-medium text-surface
-  const legend = await createTextNode("Notification settings", FONT_SIZE.lg, 500);
+  const legend = await createTextNode(
+    "Notification settings",
+    FONT_SIZE.lg,
+    500,
+  );
   const textVar = getVariableByName("text-color-surface");
   if (textVar) {
     bindTextColorToVariable(legend, textVar.id);
@@ -774,7 +782,8 @@ export async function generateSwitchComponents(
   lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.section.x =
+    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
   logInfo(
@@ -880,7 +889,8 @@ export async function generateSwitchGroupComponents(
   lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = lightSection.section.x + contentWidth + SECTION_LAYOUT.modeGap;
+  darkSection.section.x =
+    lightSection.section.x + contentWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
   logInfo(

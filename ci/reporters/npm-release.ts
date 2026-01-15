@@ -4,11 +4,11 @@
  * Reports the published npm package version with installation instructions.
  */
 
-import type { CIContext, ReportItem, Reporter } from './types';
+import type { CIContext, ReportItem, Reporter } from "./types";
 
 export const npmReleaseReporter: Reporter = {
-  id: 'npm-release',
-  name: 'NPM Release',
+  id: "npm-release",
+  name: "NPM Release",
 
   async collect(context: CIContext): Promise<ReportItem | null> {
     const { packageName, packageVersion } = context;
@@ -27,8 +27,8 @@ pnpm add ${packageName}@${packageVersion}
 **Testing:** You can now test this beta version in your projects before the final release.`;
 
     return {
-      id: 'npm-release',
-      title: '📦 NPM Package',
+      id: "npm-release",
+      title: "📦 NPM Package",
       priority: 10,
       content,
       success: true,

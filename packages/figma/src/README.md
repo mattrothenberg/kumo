@@ -300,7 +300,7 @@ export function getYourComponentConfig() {
 
 export async function generateYourComponentComponents(
   page: PageNode,
-  startY: number
+  startY: number,
 ): Promise<number> {
   // Implementation here
   return startY + 500 + SECTION_GAP;
@@ -349,8 +349,8 @@ Some components (like utility components or layout-only components) don't need F
 2. Add the component name to `EXCLUDED_COMPONENTS`:
    ```typescript
    const EXCLUDED_COMPONENTS = new Set([
-     "Container",  // Example: layout-only component
-     "YourComponent",  // Your excluded component
+     "Container", // Example: layout-only component
+     "YourComponent", // Your excluded component
    ]);
    ```
 
@@ -367,8 +367,8 @@ A: Add a mapping in `drift-detection.test.ts`:
 
 ```typescript
 const COMPONENT_NAME_MAPPING: Record<string, string> = {
-  "Switch.Group": "switch",  // Both in same file
-  "YourComponent": "special-name",  // Custom mapping
+  "Switch.Group": "switch", // Both in same file
+  YourComponent: "special-name", // Custom mapping
 };
 ```
 

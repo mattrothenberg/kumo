@@ -44,8 +44,6 @@ const langProp = codeProps.lang as unknown as {
   default: string;
 };
 
-
-
 /**
  * Get placeholder text based on lang variant
  */
@@ -241,7 +239,8 @@ export async function generateCodeComponents(
   lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.section.x =
+    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
   darkSection.section.y = startY;
 
   logComplete(

@@ -163,13 +163,13 @@ export function getButtonParsedShapeStyles(shape: string) {
  * Compact size mapping from button.tsx KUMO_BUTTON_VARIANTS.compactSize
  * Used for square and circle shapes.
  * Parses size-* Tailwind classes to derive pixel values.
- * 
+ *
  * Source: button.tsx KUMO_BUTTON_VARIANTS.compactSize
  * - xs: size-3.5 = 14px
  * - sm: size-6.5 = 26px
  * - base: size-9 = 36px
  * - lg: size-10 = 40px
- * 
+ *
  * Note: compactSize is not yet exported to component-registry.json,
  * so we use the class strings directly from the React component.
  */
@@ -190,8 +190,12 @@ export function getCompactSizeMap(): Record<string, number> {
       const parsed = parseTailwindClasses(classes);
       // Use parsed width if available, otherwise fallback to centralized constants
       // (this fallback should never trigger if parser is working correctly)
-      const fallbackSize = FALLBACK_VALUES.buttonCompactSize[size as keyof typeof FALLBACK_VALUES.buttonCompactSize];
-      result[size] = parsed.width ?? fallbackSize ?? FALLBACK_VALUES.height.base;
+      const fallbackSize =
+        FALLBACK_VALUES.buttonCompactSize[
+          size as keyof typeof FALLBACK_VALUES.buttonCompactSize
+        ];
+      result[size] =
+        parsed.width ?? fallbackSize ?? FALLBACK_VALUES.height.base;
     }
   }
 
@@ -365,7 +369,8 @@ async function createButtonComponent(
 
   if (isCompactShape) {
     // Square/circle: fixed size, no padding
-    const buttonSize = COMPACT_SIZE_MAP_LOCAL[size] || FALLBACK_VALUES.height.base;
+    const buttonSize =
+      COMPACT_SIZE_MAP_LOCAL[size] || FALLBACK_VALUES.height.base;
     component.primaryAxisSizingMode = "FIXED";
     component.counterAxisSizingMode = "FIXED";
     component.resize(buttonSize, buttonSize);
@@ -375,8 +380,10 @@ async function createButtonComponent(
     // Base shape: hug contents with padding
     component.primaryAxisSizingMode = "AUTO";
     component.counterAxisSizingMode = "FIXED";
-    component.paddingLeft = sizeStyles.paddingX || FALLBACK_VALUES.padding.horizontal;
-    component.paddingRight = sizeStyles.paddingX || FALLBACK_VALUES.padding.horizontal;
+    component.paddingLeft =
+      sizeStyles.paddingX || FALLBACK_VALUES.padding.horizontal;
+    component.paddingRight =
+      sizeStyles.paddingX || FALLBACK_VALUES.padding.horizontal;
     component.resize(100, sizeStyles.height || FALLBACK_VALUES.height.base);
   }
 
@@ -925,7 +932,8 @@ export async function generateButtonComponents(
   lightSection.section.x = SECTION_LAYOUT.startX;
   lightSection.section.y = startY;
 
-  darkSection.section.x = lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap; // Side by side with gap
+  darkSection.section.x =
+    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap; // Side by side with gap
   darkSection.section.y = startY;
 
   logInfo(
