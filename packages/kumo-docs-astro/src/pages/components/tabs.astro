@@ -6,6 +6,8 @@ import CodeBlock from "../../components/docs/CodeBlock.astro";
 import PropsTable from "../../components/docs/PropsTable.astro";
 import {
   TabsDefaultDemo,
+  TabsSegmentedDemo,
+  TabsUnderlineDemo,
   TabsControlledDemo,
   TabsManyDemo,
 } from "../../components/demos/TabsDemo";
@@ -20,7 +22,20 @@ import {
   <!-- Demo -->
   <ComponentSection>
     <ComponentExample
-      code={`<Tabs
+      code={`{/* Segmented (default) */}
+<Tabs
+  variant="segmented"
+  tabs={[
+    { value: "tab1", label: "Tab 1" },
+    { value: "tab2", label: "Tab 2" },
+    { value: "tab3", label: "Tab 3" },
+  ]}
+  selectedValue="tab1"
+/>
+
+{/* Underline */}
+<Tabs
+  variant="underline"
   tabs={[
     { value: "tab1", label: "Tab 1" },
     { value: "tab2", label: "Tab 2" },
@@ -64,11 +79,18 @@ export default function Example() {
   <ComponentSection>
     <h2 class="mb-6 text-2xl font-bold">Examples</h2>
 
-    <!-- Default -->
+    <!-- Variants -->
     <div class="mb-12">
-      <h3 class="mb-4 text-xl font-semibold">Default</h3>
-      <ComponentExample
-        code={`<Tabs
+      <h3 class="mb-4 text-xl font-semibold">Variants</h3>
+      <div class="space-y-8">
+        <div>
+          <h4 class="mb-3 text-base font-medium">Segmented (Default)</h4>
+          <p class="text-secondary mb-4">
+            A pill-shaped indicator slides between tabs on a subtle background.
+          </p>
+          <ComponentExample
+            code={`<Tabs
+  variant="segmented"
   tabs={[
     { value: "tab1", label: "Tab 1" },
     { value: "tab2", label: "Tab 2" },
@@ -76,9 +98,32 @@ export default function Example() {
   ]}
   selectedValue="tab1"
 />`}
-      >
-        <TabsDefaultDemo client:visible />
-      </ComponentExample>
+          >
+            <TabsSegmentedDemo client:visible />
+          </ComponentExample>
+        </div>
+
+        <div>
+          <h4 class="mb-3 text-base font-medium">Underline</h4>
+          <p class="text-secondary mb-4">
+            A bottom border with a primary-colored indicator. The active tab
+            has bolder text for emphasis.
+          </p>
+          <ComponentExample
+            code={`<Tabs
+  variant="underline"
+  tabs={[
+    { value: "tab1", label: "Tab 1" },
+    { value: "tab2", label: "Tab 2" },
+    { value: "tab3", label: "Tab 3" },
+  ]}
+  selectedValue="tab1"
+/>`}
+          >
+            <TabsUnderlineDemo client:visible />
+          </ComponentExample>
+        </div>
+      </div>
     </div>
 
     <!-- Controlled -->

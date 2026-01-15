@@ -15,7 +15,20 @@ export default function TabsDoc() {
       {/* Demo */}
       <ComponentSection>
         <ComponentExample
-          code={`<Tabs
+          code={`{/* Segmented (default) */}
+<Tabs
+  variant="segmented"
+  tabs={[
+    { value: "tab1", label: "Tab 1" },
+    { value: "tab2", label: "Tab 2" },
+    { value: "tab3", label: "Tab 3" },
+  ]}
+  selectedValue="tab1"
+/>
+
+{/* Underline */}
+<Tabs
+  variant="underline"
   tabs={[
     { value: "tab1", label: "Tab 1" },
     { value: "tab2", label: "Tab 2" },
@@ -24,14 +37,32 @@ export default function TabsDoc() {
   selectedValue="tab1"
 />`}
         >
-          <Tabs
-            tabs={[
-              { value: "tab1", label: "Tab 1" },
-              { value: "tab2", label: "Tab 2" },
-              { value: "tab3", label: "Tab 3" },
-            ]}
-            selectedValue="tab1"
-          />
+          <div className="flex flex-col gap-6">
+            <div>
+              <p className="mb-2 text-sm text-muted">Segmented (default)</p>
+              <Tabs
+                variant="segmented"
+                tabs={[
+                  { value: "tab1", label: "Tab 1" },
+                  { value: "tab2", label: "Tab 2" },
+                  { value: "tab3", label: "Tab 3" },
+                ]}
+                selectedValue="tab1"
+              />
+            </div>
+            <div>
+              <p className="mb-2 text-sm text-muted">Underline</p>
+              <Tabs
+                variant="underline"
+                tabs={[
+                  { value: "tab1", label: "Tab 1" },
+                  { value: "tab2", label: "Tab 2" },
+                  { value: "tab3", label: "Tab 3" },
+                ]}
+                selectedValue="tab1"
+              />
+            </div>
+          </div>
         </ComponentExample>
       </ComponentSection>
 
@@ -66,11 +97,21 @@ export default function Example() {
       <ComponentSection>
         <h2 className="mb-6 text-2xl font-bold">Examples</h2>
 
-        {/* Default */}
+        {/* Variants */}
         <div className="mb-12">
-          <h3 className="mb-4 text-xl font-semibold">Default</h3>
-          <ComponentExample
-            code={`<Tabs
+          <h3 className="mb-4 text-xl font-semibold">Variants</h3>
+          <div className="space-y-8">
+            <div>
+              <h4 className="mb-3 text-base font-medium">
+                Segmented (Default)
+              </h4>
+              <p className="mb-4 text-secondary">
+                A pill-shaped indicator slides between tabs on a subtle
+                background.
+              </p>
+              <ComponentExample
+                code={`<Tabs
+  variant="segmented"
   tabs={[
     { value: "tab1", label: "Tab 1" },
     { value: "tab2", label: "Tab 2" },
@@ -78,16 +119,48 @@ export default function Example() {
   ]}
   selectedValue="tab1"
 />`}
-          >
-            <Tabs
-              tabs={[
-                { value: "tab1", label: "Tab 1" },
-                { value: "tab2", label: "Tab 2" },
-                { value: "tab3", label: "Tab 3" },
-              ]}
-              selectedValue="tab1"
-            />
-          </ComponentExample>
+              >
+                <Tabs
+                  variant="segmented"
+                  tabs={[
+                    { value: "tab1", label: "Tab 1" },
+                    { value: "tab2", label: "Tab 2" },
+                    { value: "tab3", label: "Tab 3" },
+                  ]}
+                  selectedValue="tab1"
+                />
+              </ComponentExample>
+            </div>
+
+            <div>
+              <h4 className="mb-3 text-base font-medium">Underline</h4>
+              <p className="mb-4 text-secondary">
+                A bottom border with a primary-colored indicator. The active tab
+                has bolder text for emphasis.
+              </p>
+              <ComponentExample
+                code={`<Tabs
+  variant="underline"
+  tabs={[
+    { value: "tab1", label: "Tab 1" },
+    { value: "tab2", label: "Tab 2" },
+    { value: "tab3", label: "Tab 3" },
+  ]}
+  selectedValue="tab1"
+/>`}
+              >
+                <Tabs
+                  variant="underline"
+                  tabs={[
+                    { value: "tab1", label: "Tab 1" },
+                    { value: "tab2", label: "Tab 2" },
+                    { value: "tab3", label: "Tab 3" },
+                  ]}
+                  selectedValue="tab1"
+                />
+              </ComponentExample>
+            </div>
+          </div>
         </div>
 
         {/* Controlled */}
@@ -148,6 +221,13 @@ export default function Example() {
               </tr>
             </thead>
             <tbody className="text-neutral-600 dark:text-neutral-400">
+              <tr className="border-b border-neutral-200 dark:border-neutral-800">
+                <td className="px-4 py-3 font-mono text-xs">variant</td>
+                <td className="px-4 py-3 font-mono text-xs">
+                  "segmented" | "underline"
+                </td>
+                <td className="px-4 py-3 font-mono text-xs">"segmented"</td>
+              </tr>
               <tr className="border-b border-neutral-200 dark:border-neutral-800">
                 <td className="px-4 py-3 font-mono text-xs">tabs</td>
                 <td className="px-4 py-3 font-mono text-xs">TabsItem[]</td>

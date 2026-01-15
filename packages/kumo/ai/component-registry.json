@@ -713,7 +713,7 @@
         "<Combobox items={items} value={value} onValueChange={setValue}>\n        <Combobox.TriggerInput placeholder=\"Please select database\" />\n        <Combobox.Content>\n          <Combobox.Empty />\n          <Combobox.List>\n            {(item: (typeof items)[number]) => {\n              return (\n                <Combobox.Item key={item.value} value={item}>\n                  {item.label}\n                </Combobox.Item>\n              );\n            }}\n          </Combobox.List>\n        </Combobox.Content>\n      </Combobox>",
         "<div className=\"flex gap-2\">\n        <div>\n          <Combobox\n            value={value}\n            onValueChange={setValue}\n            items={botList}\n            isItemEqualToValue={(bot: BotType, selectedValue: BotType) =>\n              bot.value === selectedValue.value\n            }\n            multiple\n          >\n            <Combobox.TriggerMultipleWithInput\n              className=\"w-[400px]\"\n              placeholder={args.placeholder}\n              renderItem={(selected: BotType) => (\n                <Combobox.Chip key={selected.value}>\n                  {selected.label}\n                </Combobox.Chip>\n              )}\n              inputSide={args.inputSide}\n            />\n            <Combobox.Content\n              className=\"max-h-[200px] min-w-auto overflow-y-auto\"\n              side={args.inputSide === \"top\" ? \"top\" : \"bottom\"}\n            >\n              <Combobox.Empty />\n              <Combobox.List>\n                {(item: BotType) => (\n                  <Combobox.Item key={item.value} value={item}>\n                    <div className=\"flex gap-2\">\n                      <Text>{item.label}</Text>\n                      <Text variant=\"secondary\">{item.author}</Text>\n                    </div>\n                  </Combobox.Item>\n                )}\n              </Combobox.List>\n            </Combobox.Content>\n          </Combobox>\n        </div>\n        {/* Demonstrates that the multi-select combobox maintains consistent height with other Kumo components */}\n        <Button variant=\"primary\">Submit</Button>\n      </div>",
         "<Combobox\n        value={value}\n        onValueChange={setValue}\n        items={INITIAL_BOT_LIST}\n        isItemEqualToValue={(bot: BotType, selectedValue: BotType) =>\n          bot.value === selectedValue.value\n        }\n        multiple\n      >\n        <Combobox.TriggerMultipleWithInput\n          className=\"w-[400px]\"\n          placeholder=\"Select bot\"\n          value={value}\n          renderItem={(selected: BotType) => (\n            <Combobox.Chip key={selected.value}>{selected.label}</Combobox.Chip>\n          )}\n          inputSide=\"top\"\n        />\n        <Combobox.Content className=\"max-h-[200px] min-w-auto overflow-y-auto\">\n          <Combobox.Empty />\n          <Combobox.List>\n            {(item: BotType) => (\n              <Combobox.Item key={item.value} value={item}>\n                <div className=\"flex gap-2\">\n                  <Text>{item.label}</Text>\n                  <Text variant=\"secondary\">{item.author}</Text>\n                </div>\n              </Combobox.Item>\n            )}\n          </Combobox.List>\n        </Combobox.Content>\n      </Combobox>",
-        "<Combobox\n        items={items}\n        value={value}\n        onValueChange={setValue}\n        label=\"Country\"\n        description=\"Select your country of residence\"\n      >\n        <Combobox.TriggerInput placeholder=\"Select country\" />\n        <Combobox.Content>\n          <Combobox.Empty />\n          <Combobox.List>\n            {(item: (typeof items)[number]) => {\n              return (\n                <Combobox.Item key={item.value} value={item}>\n                  {item.label}\n                </Combobox.Item>\n              );\n            }}\n          </Combobox.List>\n        </Combobox.Content>\n      </Combobox>",
+        "<Combobox\n        items={items}\n        value={value}\n        onValueChange={setValue}\n        label=\"Country\"\n      >\n        <Combobox.TriggerInput placeholder=\"Select country\" />\n        <Combobox.Content>\n          <Combobox.Empty />\n          <Combobox.List>\n            {(item: (typeof items)[number]) => {\n              return (\n                <Combobox.Item key={item.value} value={item}>\n                  {item.label}\n                </Combobox.Item>\n              );\n            }}\n          </Combobox.List>\n        </Combobox.Content>\n      </Combobox>",
         "<Combobox\n        items={items}\n        value={value}\n        onValueChange={setValue}\n        label=\"Subscription Plan\"\n        description=\"Choose a plan that fits your needs\"\n        error={{ message: \"Please select a plan to continue\", match: true }}\n      >\n        <Combobox.TriggerInput placeholder=\"Select plan\" />\n        <Combobox.Content>\n          <Combobox.Empty />\n          <Combobox.List>\n            {(item: (typeof items)[number]) => {\n              return (\n                <Combobox.Item key={item.value} value={item}>\n                  {item.label}\n                </Combobox.Item>\n              );\n            }}\n          </Combobox.List>\n        </Combobox.Content>\n      </Combobox>",
         "<Combobox\n        value={value}\n        onValueChange={setValue}\n        items={botList}\n        isItemEqualToValue={(bot, selectedValue) =>\n          bot.value === selectedValue.value\n        }\n        multiple\n        label=\"Bot Management\"\n        description=\"Select which bots are allowed to crawl your site\"\n      >\n        <Combobox.TriggerMultipleWithInput\n          className=\"w-[400px]\"\n          placeholder=\"Select bots\"\n          renderItem={(selected: BotType) => (\n            <Combobox.Chip key={selected.value}>{selected.label}</Combobox.Chip>\n          )}\n          inputSide=\"right\"\n        />\n        <Combobox.Content className=\"max-h-[200px] min-w-auto overflow-y-auto\">\n          <Combobox.Empty />\n          <Combobox.List>\n            {(item: BotType) => (\n              <Combobox.Item key={item.value} value={item}>\n                <div className=\"flex gap-2\">\n                  <Text>{item.label}</Text>\n                  <Text variant=\"secondary\">{item.author}</Text>\n                </div>\n              </Combobox.Item>\n            )}\n          </Combobox.List>\n        </Combobox.Content>\n      </Combobox>"
       ],
@@ -2110,19 +2110,34 @@
           "type": "string",
           "optional": true
         },
+        "variant": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "segmented",
+            "underline"
+          ],
+          "default": "segmented"
+        },
         "onValueChange": {
           "type": "(value: string) => void",
           "description": "Callback when active tab changes"
         }
       },
       "examples": [
-        "<Tabs tabs={`[\n      { value: \"tab1\", label: \"Tab 1\" },\n      { value: \"tab2\", label: \"Tab 2\" },\n      { value: \"tab3\", label: \"Tab 3\" },\n    ]`} selectedValue=\"tab1\" />"
+        "<Tabs tabs=\"defaultTabs\" selectedValue=\"tab1\" />",
+        "<Tabs tabs=\"defaultTabs\" selectedValue=\"tab1\" variant=\"segmented\" />",
+        "<Tabs tabs=\"defaultTabs\" selectedValue=\"tab1\" variant=\"underline\" />",
+        "<Tabs tabs={`[\n      { value: \"overview\", label: \"Overview\" },\n      { value: \"analytics\", label: \"Analytics\" },\n      { value: \"reports\", label: \"Reports\" },\n      { value: \"notifications\", label: \"Notifications\" },\n      { value: \"settings\", label: \"Settings\" },\n      { value: \"billing\", label: \"Billing\" },\n    ]`} selectedValue=\"overview\" variant=\"underline\" />"
       ],
       "colors": [
         "bg-accent",
+        "bg-primary",
         "bg-surface-elevated",
+        "border-border",
         "ring-color-2",
         "text-label",
+        "text-muted",
         "text-surface"
       ]
     },

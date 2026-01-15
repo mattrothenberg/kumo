@@ -937,7 +937,6 @@ Usage:
         value={value}
         onValueChange={setValue}
         label="Country"
-        description="Select your country of residence"
       >
         <Combobox.TriggerInput placeholder="Select country" />
         <Combobox.Content>
@@ -2686,21 +2685,22 @@ Tabs component
 - `className`: string
 - `listClassName`: string
 - `indicatorClassName`: string
+- `variant`: enum [default: segmented]
 - `onValueChange`: (value: string) => void
   Callback when active tab changes
 
 **Colors (kumo tokens used):**
 
-`bg-accent`, `bg-surface-elevated`, `ring-color-2`, `text-label`, `text-surface`
+`bg-accent`, `bg-primary`, `bg-surface-elevated`, `border-border`, `ring-color-2`, `text-label`, `text-muted`, `text-surface`
 
 **Examples:**
 
 ```tsx
-<Tabs tabs={[
-      { value: "tab1", label: "Tab 1" },
-      { value: "tab2", label: "Tab 2" },
-      { value: "tab3", label: "Tab 3" },
-    ]} selectedValue="tab1" />
+<Tabs tabs="defaultTabs" selectedValue="tab1" />
+```
+
+```tsx
+<Tabs tabs="defaultTabs" selectedValue="tab1" variant="segmented" />
 ```
 
 

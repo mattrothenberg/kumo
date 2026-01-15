@@ -3,13 +3,17 @@ import { Tabs as TabsPrimitive } from "@base-ui/react/tabs";
 import { cn } from "../../utils/cn";
 
 export const KUMO_TABS_VARIANTS = {
-  // Tabs currently has no variant options but structure is ready for future additions
+  variant: ["segmented", "underline"],
 } as const;
 
-export const KUMO_TABS_DEFAULT_VARIANTS = {} as const;
+export const KUMO_TABS_DEFAULT_VARIANTS = {
+  variant: "segmented",
+} as const;
 
 // Derived types from KUMO_TABS_VARIANTS
-export interface KumoTabsVariantsProps {}
+export interface KumoTabsVariantsProps {
+  variant?: (typeof KUMO_TABS_VARIANTS.variant)[number];
+}
 
 export function tabsVariants(_props: KumoTabsVariantsProps = {}) {
   return cn(
@@ -42,6 +46,7 @@ export function Tabs({
   className,
   listClassName,
   indicatorClassName,
+  variant = KUMO_TABS_DEFAULT_VARIANTS.variant,
 }: TabsProps) {
   const items: TabsItem[] = tabs ?? [];
 
@@ -56,6 +61,9 @@ export function Tabs({
     defaultValue: isControlled ? undefined : (selectedValue ?? fallbackValue),
   };
 
+  const isSegmented = variant === "segmented";
+  const isUnderline = variant === "underline";
+
   return (
     <TabsPrimitive.Root
       {...rootProps}
@@ -65,10 +73,15 @@ export function Tabs({
         onValueChange?.(stringValue);
       }}
     >
-      <div className="absolute inset-x-0 top-1/2 -z-10 h-8.5 -translate-y-1/2 rounded-lg bg-accent" />
+      {/* Background element for segmented variant */}
+      {isSegmented && (
+        <div className="absolute inset-x-0 top-1/2 -z-10 h-8.5 -translate-y-1/2 rounded-lg bg-accent" />
+      )}
       <TabsPrimitive.List
         className={cn(
-          "scrollbar-hide relative flex h-8.5 min-w-0 shrink items-stretch overflow-x-auto rounded-lg bg-accent px-px",
+          "scrollbar-hide relative flex min-w-0 shrink items-stretch overflow-x-auto",
+          isSegmented && "h-8.5 rounded-lg bg-accent px-px",
+          isUnderline && "h-9 gap-4 border-b border-border",
           listClassName,
         )}
       >
@@ -77,8 +90,11 @@ export function Tabs({
             key={tab.value}
             value={tab.value}
             className={cn(
-              "relative z-10 my-px flex cursor-pointer items-center rounded-lg bg-transparent px-2.5 text-base whitespace-nowrap text-label transition-colors focus-visible:outline-none",
-              "data-selected:text-surface",
+              "relative z-10 flex cursor-pointer items-center bg-transparent text-base whitespace-nowrap transition-colors focus-visible:outline-none",
+              isSegmented &&
+                "my-px rounded-lg px-2.5 text-label aria-selected:text-surface",
+              isUnderline &&
+                "pb-2 font-medium text-muted aria-selected:font-medium aria-selected:text-surface dark:text-label",
               tab.className,
             )}
           >
@@ -87,9 +103,12 @@ export function Tabs({
         ))}
         <TabsPrimitive.Indicator
           className={cn(
-            "absolute z-0 rounded-lg bg-surface-elevated shadow-sm ring ring-color-2 transition-[left,width,transform] duration-200 ease-out",
+            "absolute z-0 transition-[left,width,transform] duration-200 ease-out",
             "data-[rendered=false]:scale-90 data-[rendered=false]:opacity-0",
-            "top-(--active-tab-top) left-(--active-tab-left) h-(--active-tab-height) w-(--active-tab-width)",
+            "left-(--active-tab-left) w-(--active-tab-width)",
+            isSegmented &&
+              "top-(--active-tab-top) h-(--active-tab-height) rounded-lg bg-surface-elevated shadow-sm ring ring-color-2",
+            isUnderline && "bottom-0 h-0.5 bg-primary",
             indicatorClassName,
           )}
         />

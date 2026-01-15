@@ -3,7 +3,53 @@ import { Tabs } from "@cloudflare/kumo";
 
 export function TabsDefaultDemo() {
   return (
+    <div className="flex flex-col gap-6">
+      <div>
+        <p className="mb-2 text-sm text-muted">Segmented (default)</p>
+        <Tabs
+          variant="segmented"
+          tabs={[
+            { value: "tab1", label: "Tab 1" },
+            { value: "tab2", label: "Tab 2" },
+            { value: "tab3", label: "Tab 3" },
+          ]}
+          selectedValue="tab1"
+        />
+      </div>
+      <div>
+        <p className="mb-2 text-sm text-muted">Underline</p>
+        <Tabs
+          variant="underline"
+          tabs={[
+            { value: "tab1", label: "Tab 1" },
+            { value: "tab2", label: "Tab 2" },
+            { value: "tab3", label: "Tab 3" },
+          ]}
+          selectedValue="tab1"
+        />
+      </div>
+    </div>
+  );
+}
+
+export function TabsSegmentedDemo() {
+  return (
     <Tabs
+      variant="segmented"
+      tabs={[
+        { value: "tab1", label: "Tab 1" },
+        { value: "tab2", label: "Tab 2" },
+        { value: "tab3", label: "Tab 3" },
+      ]}
+      selectedValue="tab1"
+    />
+  );
+}
+
+export function TabsUnderlineDemo() {
+  return (
+    <Tabs
+      variant="underline"
       tabs={[
         { value: "tab1", label: "Tab 1" },
         { value: "tab2", label: "Tab 2" },
