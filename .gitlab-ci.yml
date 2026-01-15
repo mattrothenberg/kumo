@@ -203,7 +203,7 @@ include:
 
   # Claude Code Review
   # DevTools docs -> https://gitlab.cfdata.org/cloudflare/ci/ai
-  - component: $CI_SERVER_FQDN/cloudflare/ci/ai/review@~latest
+  - component: $CI_SERVER_FQDN/cloudflare/ci/ai/opencode@~latest
 
 # ============= Job overrides for dependencies and additional configuration =============
 
