@@ -12,10 +12,12 @@ import {
   getVariableByName,
   createModeSection,
   createRowLabel,
+  
   setWhiteTextColor,
   bindTextColorToVariable,
   SECTION_PADDING,
   SECTION_GAP,
+  SECTION_TITLE,
   GRID_LAYOUT,
   SECTION_LAYOUT,
   DASH_PATTERN,
@@ -258,18 +260,6 @@ async function createBadgeComponent(variant: string): Promise<ComponentNode> {
 export async function generateBadgeComponents(startY: number): Promise<number> {
   if (startY === undefined) startY = 100;
 
-  // Find or create Components page
-  let componentsPage = figma.root.children.find(function (page) {
-    return page.type === "PAGE" && page.name === "Components";
-  }) as PageNode | undefined;
-
-  if (!componentsPage) {
-    componentsPage = figma.createPage();
-    componentsPage.name = "Components";
-  }
-
-  figma.currentPage = componentsPage;
-
   // Get variant keys from the registry
   const variants = variantProp.values;
   const components: ComponentNode[] = [];
@@ -299,7 +289,7 @@ export async function generateBadgeComponents(startY: number): Promise<number> {
   }
 
   // Combine all variants into a single ComponentSet
-  const componentSet = figma.combineAsVariants(components, componentsPage);
+  const componentSet = figma.combineAsVariants(components, figma.currentPage);
   componentSet.name = "Badge";
   componentSet.description = "Badge component with variant styles";
 
@@ -307,31 +297,39 @@ export async function generateBadgeComponents(startY: number): Promise<number> {
   const contentWidth = componentSet.width + labelColumnWidth;
   const contentHeight = componentSet.height;
 
+  // Content Y offset to make room for title inside frame
+  const contentYOffset = SECTION_TITLE.height;
+
   // Create light mode section
-  const lightSection = createModeSection(componentsPage, "Badge", "light");
+  const lightSection = createModeSection(figma.currentPage, "Badge", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
-    contentHeight + SECTION_PADDING * 2,
+    contentHeight + SECTION_PADDING * 2 + contentYOffset,
   );
 
   // Create dark mode section
-  const darkSection = createModeSection(componentsPage, "Badge", "dark");
+  const darkSection = createModeSection(figma.currentPage, "Badge", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
-    contentHeight + SECTION_PADDING * 2,
+    contentHeight + SECTION_PADDING * 2 + contentYOffset,
   );
+
+  // Add title inside each frame
 
   // Move ComponentSet into light section frame
   lightSection.frame.appendChild(componentSet);
   componentSet.x = SECTION_PADDING + labelColumnWidth;
-  componentSet.y = SECTION_PADDING;
+  componentSet.y = SECTION_PADDING + contentYOffset;
 
   // Add row labels to light section
   for (const label of rowLabels) {
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.sm, // Small offset to vertically center with badge
+      SECTION_PADDING +
+        contentYOffset +
+        label.y +
+        GRID_LAYOUT.labelVerticalOffset.sm, // Small offset to vertically center with badge
     );
     lightSection.frame.appendChild(labelNode);
   }
@@ -342,7 +340,7 @@ export async function generateBadgeComponents(startY: number): Promise<number> {
   for (const component of components) {
     const instance = component.createInstance();
     instance.x = component.x + SECTION_PADDING + labelColumnWidth;
-    instance.y = component.y + SECTION_PADDING;
+    instance.y = component.y + SECTION_PADDING + contentYOffset;
     darkSection.frame.appendChild(instance);
   }
 
@@ -351,25 +349,28 @@ export async function generateBadgeComponents(startY: number): Promise<number> {
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.sm,
+      SECTION_PADDING +
+        contentYOffset +
+        label.y +
+        GRID_LAYOUT.labelVerticalOffset.sm,
     );
     darkSection.frame.appendChild(labelNode);
   }
 
   // Resize sections to fit content with padding
   const totalWidth = contentWidth + SECTION_PADDING * 2;
-  const totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2 + contentYOffset;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
 
-  // Position sections side by side
-  lightSection.section.x = SECTION_LAYOUT.startX;
-  lightSection.section.y = startY;
+  // Position sections at startY (no title offset needed since title is inside)
+  lightSection.frame.x = SECTION_LAYOUT.startX;
+  lightSection.frame.y = startY;
 
-  darkSection.section.x =
-    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
-  darkSection.section.y = startY;
+  darkSection.frame.x =
+    lightSection.frame.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.frame.y = startY;
 
   logInfo(
     "✅ Generated Badge ComponentSet with " +

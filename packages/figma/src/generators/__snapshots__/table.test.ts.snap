@@ -96,21 +96,30 @@ exports[`Table Generator - Snapshot Tests (Intermediate Data) > should produce c
           "Type",
         ],
         "rows": [
-          [
-            "Resource 1",
-            "Active",
-            "File",
-          ],
-          [
-            "Resource 2",
-            "Pending",
-            "Folder",
-          ],
-          [
-            "Resource 3",
-            "Active",
-            "File",
-          ],
+          {
+            "cells": [
+              "Resource 1",
+              "Active",
+              "File",
+            ],
+            "checked": false,
+          },
+          {
+            "cells": [
+              "Resource 2",
+              "Pending",
+              "Folder",
+            ],
+            "checked": false,
+          },
+          {
+            "cells": [
+              "Resource 3",
+              "Active",
+              "File",
+            ],
+            "checked": false,
+          },
         ],
       },
       "selectedRowConfig": null,
@@ -142,21 +151,30 @@ exports[`Table Generator - Snapshot Tests (Intermediate Data) > should produce c
           "Type",
         ],
         "rows": [
-          [
-            "Resource 1",
-            "Active",
-            "File",
-          ],
-          [
-            "Resource 2",
-            "Pending",
-            "Folder",
-          ],
-          [
-            "Resource 3",
-            "Active",
-            "File",
-          ],
+          {
+            "cells": [
+              "Resource 1",
+              "Active",
+              "File",
+            ],
+            "checked": false,
+          },
+          {
+            "cells": [
+              "Resource 2",
+              "Pending",
+              "Folder",
+            ],
+            "checked": false,
+          },
+          {
+            "cells": [
+              "Resource 3",
+              "Active",
+              "File",
+            ],
+            "checked": false,
+          },
         ],
       },
       "selectedRowConfig": {
@@ -190,21 +208,30 @@ exports[`Table Generator - Snapshot Tests (Intermediate Data) > should produce c
           "Type",
         ],
         "rows": [
-          [
-            "Resource 1",
-            "Active",
-            "File",
-          ],
-          [
-            "Resource 2",
-            "Pending",
-            "Folder",
-          ],
-          [
-            "Resource 3",
-            "Active",
-            "File",
-          ],
+          {
+            "cells": [
+              "Resource 1",
+              "Active",
+              "File",
+            ],
+            "checked": false,
+          },
+          {
+            "cells": [
+              "Resource 2",
+              "Pending",
+              "Folder",
+            ],
+            "checked": false,
+          },
+          {
+            "cells": [
+              "Resource 3",
+              "Active",
+              "File",
+            ],
+            "checked": false,
+          },
         ],
       },
       "selectedRowConfig": null,
@@ -236,21 +263,30 @@ exports[`Table Generator - Snapshot Tests (Intermediate Data) > should produce c
           "Type",
         ],
         "rows": [
-          [
-            "Resource 1",
-            "Active",
-            "File",
-          ],
-          [
-            "Resource 2",
-            "Pending",
-            "Folder",
-          ],
-          [
-            "Resource 3",
-            "Active",
-            "File",
-          ],
+          {
+            "cells": [
+              "Resource 1",
+              "Active",
+              "File",
+            ],
+            "checked": false,
+          },
+          {
+            "cells": [
+              "Resource 2",
+              "Pending",
+              "Folder",
+            ],
+            "checked": false,
+          },
+          {
+            "cells": [
+              "Resource 3",
+              "Active",
+              "File",
+            ],
+            "checked": false,
+          },
         ],
       },
       "selectedRowConfig": {
@@ -294,21 +330,30 @@ exports[`Table Generator - Snapshot Tests (Intermediate Data) > should produce c
       "Type",
     ],
     "rows": [
-      [
-        "Resource 1",
-        "Active",
-        "File",
-      ],
-      [
-        "Resource 2",
-        "Pending",
-        "Folder",
-      ],
-      [
-        "Resource 3",
-        "Active",
-        "File",
-      ],
+      {
+        "cells": [
+          "Resource 1",
+          "Active",
+          "File",
+        ],
+        "checked": false,
+      },
+      {
+        "cells": [
+          "Resource 2",
+          "Pending",
+          "Folder",
+        ],
+        "checked": false,
+      },
+      {
+        "cells": [
+          "Resource 3",
+          "Active",
+          "File",
+        ],
+        "checked": false,
+      },
     ],
   },
   "selectedRowConfig": {
@@ -330,6 +375,19 @@ exports[`Table Generator - Snapshot Tests (Intermediate Data) > should produce c
   "borderVariable": "color-border",
   "borderWidth": 1,
   "padding": 12,
+}
+`;
+
+exports[`Table Generator - Snapshot Tests (Intermediate Data) > should produce consistent checkbox cell config 1`] = `
+{
+  "borderRadius": 4,
+  "borderVariable": "color-border",
+  "boxSize": 16,
+  "checkedBgVariable": "color-surface-inverse",
+  "iconColor": "text-white",
+  "iconName": "ph-check",
+  "iconSize": 12,
+  "uncheckedBgVariable": "color-surface",
 }
 `;
 
@@ -361,21 +419,30 @@ exports[`Table Generator - Snapshot Tests (Intermediate Data) > should produce c
       "Type",
     ],
     "rows": [
-      [
-        "Resource 1",
-        "Active",
-        "File",
-      ],
-      [
-        "Resource 2",
-        "Pending",
-        "Folder",
-      ],
-      [
-        "Resource 3",
-        "Active",
-        "File",
-      ],
+      {
+        "cells": [
+          "Resource 1",
+          "Active",
+          "File",
+        ],
+        "checked": false,
+      },
+      {
+        "cells": [
+          "Resource 2",
+          "Pending",
+          "Folder",
+        ],
+        "checked": false,
+      },
+      {
+        "cells": [
+          "Resource 3",
+          "Active",
+          "File",
+        ],
+        "checked": false,
+      },
     ],
   },
   "selectedRowConfig": null,
@@ -410,21 +477,30 @@ exports[`Table Generator - Snapshot Tests (Intermediate Data) > should produce c
       "Type",
     ],
     "rows": [
-      [
-        "Resource 1",
-        "Active",
-        "File",
-      ],
-      [
-        "Resource 2",
-        "Pending",
-        "Folder",
-      ],
-      [
-        "Resource 3",
-        "Active",
-        "File",
-      ],
+      {
+        "cells": [
+          "Resource 1",
+          "Active",
+          "File",
+        ],
+        "checked": false,
+      },
+      {
+        "cells": [
+          "Resource 2",
+          "Pending",
+          "Folder",
+        ],
+        "checked": false,
+      },
+      {
+        "cells": [
+          "Resource 3",
+          "Active",
+          "File",
+        ],
+        "checked": false,
+      },
     ],
   },
   "selectedRowConfig": {

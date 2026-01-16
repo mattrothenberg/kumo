@@ -18,6 +18,7 @@ import {
   getVariableByName,
   createModeSection,
   createRowLabel,
+  
   bindFillToVariable,
   bindStrokeToVariable,
   bindTextColorToVariable,
@@ -25,6 +26,7 @@ import {
   SECTION_PADDING,
   SECTION_GAP,
   SECTION_LAYOUT,
+  SECTION_TITLE,
   SHADOWS,
   FONT_SIZE,
   FALLBACK_VALUES,
@@ -197,15 +199,17 @@ export async function generateSurfaceComponents(
   const totalWidth = contentWidth + SECTION_PADDING * 2;
   const totalHeight = contentHeight + SECTION_PADDING * 2;
 
-  lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-  darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+  lightSection.frame.resize(totalWidth, totalHeight);
+  darkSection.frame.resize(totalWidth, totalHeight);
 
-  lightSection.section.x = SECTION_LAYOUT.startX;
-  lightSection.section.y = startY;
+  // Add title inside each frame
 
-  darkSection.section.x =
-    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
-  darkSection.section.y = startY;
+  lightSection.frame.x = SECTION_LAYOUT.startX;
+  lightSection.frame.y = startY;
+
+  darkSection.frame.x =
+    lightSection.frame.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.frame.y = startY;
 
   logComplete(
     "Generated Surface ComponentSet with " +

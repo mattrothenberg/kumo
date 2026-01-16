@@ -24,9 +24,11 @@ import {
   createModeSection,
   createRowLabel,
   bindTextColorToVariable,
+  
   SECTION_PADDING,
   SECTION_GAP,
   SECTION_LAYOUT,
+  SECTION_TITLE,
   FONT_SIZE,
   FALLBACK_VALUES,
   GRID_LAYOUT,
@@ -178,24 +180,29 @@ export async function generateCodeComponents(
   const contentWidth = componentSet.width + labelColumnWidth;
   const contentHeight = componentSet.height;
 
+  // Content Y offset to make room for title inside frame
+  const contentYOffset = SECTION_TITLE.height;
+
   // Create light mode section
   const lightSection = createModeSection(page, "Code", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
-    contentHeight + SECTION_PADDING * 2,
+    contentHeight + SECTION_PADDING * 2 + contentYOffset,
   );
 
   // Create dark mode section
   const darkSection = createModeSection(page, "Code", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
-    contentHeight + SECTION_PADDING * 2,
+    contentHeight + SECTION_PADDING * 2 + contentYOffset,
   );
+
+  // Add title inside each frame
 
   // Move ComponentSet into light section frame
   lightSection.frame.appendChild(componentSet);
   componentSet.x = SECTION_PADDING + labelColumnWidth;
-  componentSet.y = SECTION_PADDING;
+  componentSet.y = SECTION_PADDING + contentYOffset;
 
   // Add row labels to light section
   for (let li = 0; li < rowLabels.length; li++) {
@@ -203,7 +210,10 @@ export async function generateCodeComponents(
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md, // +8 to vertically center with text
+      SECTION_PADDING +
+        contentYOffset +
+        label.y +
+        GRID_LAYOUT.labelVerticalOffset.md, // +8 to vertically center with text
     );
     lightSection.frame.appendChild(labelNode);
   }
@@ -213,7 +223,7 @@ export async function generateCodeComponents(
     const comp = components[ci];
     const instance = comp.createInstance();
     instance.x = comp.x + SECTION_PADDING + labelColumnWidth;
-    instance.y = comp.y + SECTION_PADDING;
+    instance.y = comp.y + SECTION_PADDING + contentYOffset;
     darkSection.frame.appendChild(instance);
   }
 
@@ -223,25 +233,25 @@ export async function generateCodeComponents(
     const darkLabelNode = await createRowLabel(
       darkLabel.text,
       SECTION_PADDING,
-      SECTION_PADDING + darkLabel.y + 8,
+      SECTION_PADDING + contentYOffset + darkLabel.y + 8,
     );
     darkSection.frame.appendChild(darkLabelNode);
   }
 
   // Resize sections to fit content with padding
   const totalWidth = contentWidth + SECTION_PADDING * 2;
-  const totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2 + contentYOffset;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
 
-  // Position sections side by side
-  lightSection.section.x = SECTION_LAYOUT.startX;
-  lightSection.section.y = startY;
+  // Position sections at startY (no title offset needed since title is inside)
+  lightSection.frame.x = SECTION_LAYOUT.startX;
+  lightSection.frame.y = startY;
 
-  darkSection.section.x =
-    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
-  darkSection.section.y = startY;
+  darkSection.frame.x =
+    lightSection.frame.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.frame.y = startY;
 
   logComplete(
     "Generated Code ComponentSet with " +

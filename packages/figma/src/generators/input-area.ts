@@ -21,6 +21,7 @@ import {
   createModeSection,
   createRowLabel,
   createColumnHeaders,
+  
   bindFillToVariable,
   bindStrokeToVariable,
   bindTextColorToVariable,
@@ -28,6 +29,7 @@ import {
   SECTION_PADDING,
   SECTION_GAP,
   SECTION_LAYOUT,
+  SECTION_TITLE,
   OPACITY,
   FONT_SIZE,
   GRID_LAYOUT,
@@ -519,31 +521,36 @@ export async function generateInputAreaComponents(
   const contentWidth = componentSet.width + labelColumnWidth;
   const contentHeight = componentSet.height + headerRowHeight;
 
+  // Add contentYOffset for title space inside frame
+  const contentYOffset = SECTION_TITLE.height;
+
   // Create light mode section
   const lightSection = createModeSection(page, "InputArea", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
-    contentHeight + SECTION_PADDING * 2,
+    contentHeight + SECTION_PADDING * 2 + contentYOffset,
   );
 
   // Create dark mode section
   const darkSection = createModeSection(page, "InputArea", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
-    contentHeight + SECTION_PADDING * 2,
+    contentHeight + SECTION_PADDING * 2 + contentYOffset,
   );
 
   // Move ComponentSet into light section frame
   lightSection.frame.appendChild(componentSet);
   componentSet.x = SECTION_PADDING + labelColumnWidth;
-  componentSet.y = SECTION_PADDING + headerRowHeight;
+  componentSet.y = SECTION_PADDING + headerRowHeight + contentYOffset;
+
+  // Add section titles inside frames
 
   // Add column headers to light section
   await createColumnHeaders(
     columnHeaders.map(function (h) {
       return { x: h.x + SECTION_PADDING, text: h.text };
     }),
-    SECTION_PADDING,
+    SECTION_PADDING + contentYOffset,
     lightSection.frame,
   );
 
@@ -553,7 +560,10 @@ export async function generateInputAreaComponents(
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md,
+      SECTION_PADDING +
+        contentYOffset +
+        label.y +
+        GRID_LAYOUT.labelVerticalOffset.md,
     );
     lightSection.frame.appendChild(labelNode);
   }
@@ -563,7 +573,8 @@ export async function generateInputAreaComponents(
     const origComp = components[k];
     const instance = origComp.createInstance();
     instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
-    instance.y = origComp.y + SECTION_PADDING + headerRowHeight;
+    instance.y =
+      origComp.y + SECTION_PADDING + headerRowHeight + contentYOffset;
     darkSection.frame.appendChild(instance);
   }
 
@@ -572,7 +583,7 @@ export async function generateInputAreaComponents(
     columnHeaders.map(function (h) {
       return { x: h.x + SECTION_PADDING, text: h.text };
     }),
-    SECTION_PADDING,
+    SECTION_PADDING + contentYOffset,
     darkSection.frame,
   );
 
@@ -582,25 +593,28 @@ export async function generateInputAreaComponents(
     const darkLabelNode = await createRowLabel(
       darkLabel.text,
       SECTION_PADDING,
-      SECTION_PADDING + darkLabel.y + 8,
+      SECTION_PADDING +
+        contentYOffset +
+        darkLabel.y +
+        GRID_LAYOUT.labelVerticalOffset.md,
     );
     darkSection.frame.appendChild(darkLabelNode);
   }
 
   // Resize sections to fit content with padding
   const totalWidth = contentWidth + SECTION_PADDING * 2;
-  const totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2 + contentYOffset;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
 
   // Position sections side by side
-  lightSection.section.x = SECTION_LAYOUT.startX;
-  lightSection.section.y = startY;
+  lightSection.frame.x = SECTION_LAYOUT.startX;
+  lightSection.frame.y = startY;
 
-  darkSection.section.x =
-    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
-  darkSection.section.y = startY;
+  darkSection.frame.x =
+    lightSection.frame.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.frame.y = startY;
 
   logComplete(
     "Generated InputArea ComponentSet with " +

@@ -24,6 +24,7 @@ import { generateEmptyComponents } from "./generators/empty";
 import { generateInputComponents } from "./generators/input";
 import { generateInputAreaComponents } from "./generators/input-area";
 import { generateLayerCardComponents } from "./generators/layer-card";
+import { generateLabelComponents } from "./generators/label";
 import { generateLoaderComponents } from "./generators/loader";
 import { generateLinkButtonComponents } from "./generators/link-button";
 import { generateMenuBarComponents } from "./generators/menubar";
@@ -42,57 +43,72 @@ import {
   generateSwitchComponents,
   generateSwitchGroupComponents,
 } from "./generators/switch";
+import { generateTableComponents } from "./generators/table";
 import { generateTabsComponents } from "./generators/tabs";
 import { generateTextComponents } from "./generators/text";
 import { generateToastComponents } from "./generators/toast";
 import { generateTooltipComponents } from "./generators/tooltip";
 import { generateIconLibrary } from "./generators/icon-library";
+import { SECTION_LAYOUT } from "./generators/shared";
 import { logInfo, logError } from "./logger";
 
 figma.showUI(__html__, { width: 320, height: 220 });
 
 /**
- * Find or create the Components page
+ * Page name for the UI kit (icons + components on same page)
  */
-function getOrCreateComponentsPage(): PageNode {
-  // Find existing Components page (case-insensitive, trimmed)
-  let componentsPage = figma.root.children.find(
-    (page) =>
-      page.type === "PAGE" && page.name.trim().toLowerCase() === "components",
-  ) as PageNode | undefined;
-
-  if (componentsPage) {
-    logInfo("✅ Found existing Components page");
-  } else {
-    logInfo("📄 Creating new Components page");
-    componentsPage = figma.createPage();
-    componentsPage.name = "Components";
-  }
-
-  return componentsPage;
-}
+const UI_KIT_PAGE_NAME = "ui kit";
 
 /**
- * Purge existing generated content before regenerating
- * Deletes all children in Components page
+ * Destructive sync: ensures only the UI Kit page exists.
+ * - Creates UI Kit page if it doesn't exist
+ * - Removes ALL other pages
+ * - Purges all content from UI Kit page
+ *
+ * @returns The clean UI Kit page ready for generation
  */
-function purgeExistingContent(): void {
-  // Find and delete Components page sections (case-insensitive)
-  const componentsPage = figma.root.children.find(
+function destructiveSyncPages(): PageNode {
+  logInfo("🔄 Starting destructive sync...");
+
+  // Step 1: Find or create UI Kit page
+  let uiKitPage = figma.root.children.find(
     (page) =>
-      page.type === "PAGE" && page.name.trim().toLowerCase() === "components",
+      page.type === "PAGE" &&
+      page.name.trim().toLowerCase() === UI_KIT_PAGE_NAME,
   ) as PageNode | undefined;
 
-  if (componentsPage) {
-    // Remove all children (sections, component sets, etc.)
-    const children = [...componentsPage.children];
-    logInfo(`🗑️ Purging ${children.length} items from Components page`);
+  if (!uiKitPage) {
+    logInfo("📄 Creating UI Kit page");
+    uiKitPage = figma.createPage();
+    uiKitPage.name = UI_KIT_PAGE_NAME;
+  } else {
+    logInfo("✅ Found existing UI Kit page");
+  }
+
+  // Step 2: Remove ALL other pages (Figma requires at least one page, so we keep uiKitPage)
+  const pagesToRemove = figma.root.children.filter(
+    (page) => page.type === "PAGE" && page.id !== uiKitPage!.id,
+  );
+
+  if (pagesToRemove.length > 0) {
+    logInfo(`🗑️ Removing ${pagesToRemove.length} other page(s)...`);
+    for (const page of pagesToRemove) {
+      logInfo(`   - Removing page: "${page.name}"`);
+      page.remove();
+    }
+  }
+
+  // Step 3: Purge all content from UI Kit page
+  const children = [...uiKitPage.children];
+  if (children.length > 0) {
+    logInfo(`🗑️ Purging ${children.length} items from UI Kit page`);
     for (const node of children) {
       node.remove();
     }
   }
 
-  logInfo("✅ Purged existing generated content");
+  logInfo("✅ Destructive sync complete - single clean page ready");
+  return uiKitPage;
 }
 
 /**
@@ -117,12 +133,9 @@ figma.ui.onmessage = async (msg: { type: string }) => {
     try {
       figma.notify("Starting Kumo UI Kit generation...");
 
-      // Step 1: Purge existing content (destructive sync)
-      purgeExistingContent();
-
-      // Step 2: Get or create Components page
-      const componentsPage = getOrCreateComponentsPage();
-      figma.currentPage = componentsPage;
+      // Destructive sync: remove all other pages, purge UI Kit page content
+      const uiKitPage = destructiveSyncPages();
+      figma.currentPage = uiKitPage;
 
       // Track Y position for sequential section placement
       let nextY = START_Y;
@@ -138,8 +151,12 @@ figma.ui.onmessage = async (msg: { type: string }) => {
         {
           name: "Icon Library",
           priority: true, // Must run first - other generators depend on icons
-          execute: async () => {
-            await generateIconLibrary();
+          execute: async (page, y) => {
+            const result = await generateIconLibrary(page, y);
+            // Set the X position for component sections (right of icons)
+            SECTION_LAYOUT.startX = result.componentsStartX;
+            // Icons don't advance Y - components start at same Y level, just offset X
+            return { nextY: y };
           },
         },
         {
@@ -255,6 +272,13 @@ figma.ui.onmessage = async (msg: { type: string }) => {
           },
         },
         {
+          name: "Label",
+          execute: async (page, y) => {
+            const result = await generateLabelComponents(page, y);
+            return { nextY: result };
+          },
+        },
+        {
           name: "LayerCard",
           execute: async (page, y) => {
             const result = await generateLayerCardComponents(page, y);
@@ -354,6 +378,13 @@ figma.ui.onmessage = async (msg: { type: string }) => {
           },
         },
         {
+          name: "Table",
+          execute: async (page, y) => {
+            const result = await generateTableComponents(page, y);
+            return { nextY: result };
+          },
+        },
+        {
           name: "Tabs",
           execute: async (page, y) => {
             const result = await generateTabsComponents(page, y);
@@ -404,7 +435,7 @@ figma.ui.onmessage = async (msg: { type: string }) => {
           `Generating ${generator.name} (${componentIndex}/${TOTAL_COMPONENTS})...`,
         );
 
-        const result = await generator.execute(componentsPage, nextY);
+        const result = await generator.execute(uiKitPage, nextY);
 
         // Update nextY if generator returns a new position
         if (result && result.nextY !== undefined) {

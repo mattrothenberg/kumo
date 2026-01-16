@@ -22,8 +22,10 @@ import {
   bindStrokeToVariable,
   createTextNode,
   bindTextColorToVariable,
+  
   SECTION_PADDING,
   SECTION_GAP,
+  SECTION_TITLE,
   SHADOWS,
   GRID_LAYOUT,
   SECTION_LAYOUT,
@@ -470,16 +472,18 @@ export async function generateTabsComponents(
     const totalWidth = contentWidth + SECTION_PADDING * 2;
     const totalHeight = contentHeight + SECTION_PADDING * 2;
 
-    lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-    darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+    lightSection.frame.resize(totalWidth, totalHeight);
+    darkSection.frame.resize(totalWidth, totalHeight);
+
+    // Add title inside each frame
 
     // Position sections side by side
-    lightSection.section.x = SECTION_LAYOUT.startX;
-    lightSection.section.y = startY;
+    lightSection.frame.x = SECTION_LAYOUT.startX;
+    lightSection.frame.y = startY;
 
-    darkSection.section.x =
-      lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
-    darkSection.section.y = startY;
+    darkSection.frame.x =
+      lightSection.frame.x + totalWidth + SECTION_LAYOUT.modeGap;
+    darkSection.frame.y = startY;
 
     logComplete(
       "Generated Tabs ComponentSet with " +

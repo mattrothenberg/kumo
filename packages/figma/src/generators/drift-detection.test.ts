@@ -520,8 +520,9 @@ describe("Figma Plugin - Registry Sync Validation", () => {
     ];
 
     for (const constantName of requiredConstants) {
+      // Match both `export const X =` and `export const X: Type =`
       const hasConstant = new RegExp(
-        `export\\s+const\\s+${constantName}\\s*=`,
+        `export\\s+const\\s+${constantName}\\s*[=:]`,
       ).test(sharedContent);
       expect(hasConstant).toBe(true);
     }

@@ -18,11 +18,13 @@ import {
   createModeSection,
   createRowLabel,
   bindTextColorToVariable,
+  
   SECTION_PADDING,
   SECTION_GAP,
   FALLBACK_VALUES,
   GRID_LAYOUT,
   SECTION_LAYOUT,
+  SECTION_TITLE,
 } from "./shared";
 // Note: Line height for code uses FALLBACK_VALUES.lineHeight.code (20px)
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
@@ -257,28 +259,36 @@ export async function generateCodeBlockComponents(
   const contentWidth = componentSet.width + labelColumnWidth;
   const contentHeight = componentSet.height;
 
+  // Content Y offset to make room for title inside frame
+  const contentYOffset = SECTION_TITLE.height;
+
   const lightSection = createModeSection(page, "CodeBlock", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
-    contentHeight + SECTION_PADDING * 2,
+    contentHeight + SECTION_PADDING * 2 + contentYOffset,
   );
 
   const darkSection = createModeSection(page, "CodeBlock", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
-    contentHeight + SECTION_PADDING * 2,
+    contentHeight + SECTION_PADDING * 2 + contentYOffset,
   );
+
+  // Add title inside each frame
 
   lightSection.frame.appendChild(componentSet);
   componentSet.x = SECTION_PADDING + labelColumnWidth;
-  componentSet.y = SECTION_PADDING;
+  componentSet.y = SECTION_PADDING + contentYOffset;
 
   for (let li = 0; li < rowLabels.length; li++) {
     const label = rowLabels[li];
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md,
+      SECTION_PADDING +
+        contentYOffset +
+        label.y +
+        GRID_LAYOUT.labelVerticalOffset.md,
     );
     lightSection.frame.appendChild(labelNode);
   }
@@ -287,7 +297,7 @@ export async function generateCodeBlockComponents(
     const comp = components[ci];
     const instance = comp.createInstance();
     instance.x = comp.x + SECTION_PADDING + labelColumnWidth;
-    instance.y = comp.y + SECTION_PADDING;
+    instance.y = comp.y + SECTION_PADDING + contentYOffset;
     darkSection.frame.appendChild(instance);
   }
 
@@ -296,23 +306,24 @@ export async function generateCodeBlockComponents(
     const darkLabelNode = await createRowLabel(
       darkLabel.text,
       SECTION_PADDING,
-      SECTION_PADDING + darkLabel.y + 8,
+      SECTION_PADDING + contentYOffset + darkLabel.y + 8,
     );
     darkSection.frame.appendChild(darkLabelNode);
   }
 
   const totalWidth = contentWidth + SECTION_PADDING * 2;
-  const totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2 + contentYOffset;
 
-  lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-  darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+  lightSection.frame.resize(totalWidth, totalHeight);
+  darkSection.frame.resize(totalWidth, totalHeight);
 
-  lightSection.section.x = SECTION_LAYOUT.startX;
-  lightSection.section.y = startY;
+  // Position sections at startY (no title offset needed since title is inside)
+  lightSection.frame.x = SECTION_LAYOUT.startX;
+  lightSection.frame.y = startY;
 
-  darkSection.section.x =
-    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
-  darkSection.section.y = startY;
+  darkSection.frame.x =
+    lightSection.frame.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.frame.y = startY;
 
   logComplete(
     "Generated CodeBlock ComponentSet with " +

@@ -23,11 +23,13 @@ import {
   createModeSection,
   createRowLabel,
   bindTextColorToVariable,
+  
   SECTION_PADDING,
   SECTION_GAP,
   GRID_LAYOUT,
   FALLBACK_VALUES,
   SECTION_LAYOUT,
+  SECTION_TITLE,
   COLORS,
 } from "./shared";
 import { createIconInstance, bindIconColor } from "./icon-utils";
@@ -346,18 +348,6 @@ export async function generateClipboardTextComponents(
 ): Promise<number> {
   if (startY === undefined) startY = 100;
 
-  // Find or create Components page
-  let componentsPage = figma.root.children.find(function (page) {
-    return page.type === "PAGE" && page.name === "Components";
-  }) as PageNode | undefined;
-
-  if (!componentsPage) {
-    componentsPage = figma.createPage();
-    componentsPage.name = "Components";
-  }
-
-  figma.currentPage = componentsPage;
-
   // Get size keys from the registry
   const sizes = sizeProp.values;
   const components: ComponentNode[] = [];
@@ -388,7 +378,7 @@ export async function generateClipboardTextComponents(
 
   // Combine all variants into a single ComponentSet
   // @ts-ignore - combineAsVariants works at runtime
-  const componentSet = figma.combineAsVariants(components, componentsPage);
+  const componentSet = figma.combineAsVariants(components, figma.currentPage);
   componentSet.name = "ClipboardText";
   componentSet.description =
     "ClipboardText component for displaying and copying text";
@@ -397,39 +387,47 @@ export async function generateClipboardTextComponents(
   const contentWidth = componentSet.width + labelColumnWidth;
   const contentHeight = componentSet.height;
 
+  // Content Y offset to make room for title inside frame
+  const contentYOffset = SECTION_TITLE.height;
+
   // Create light mode section
   const lightSection = createModeSection(
-    componentsPage,
+    figma.currentPage,
     "ClipboardText",
     "light",
   );
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
-    contentHeight + SECTION_PADDING * 2,
+    contentHeight + SECTION_PADDING * 2 + contentYOffset,
   );
 
   // Create dark mode section
   const darkSection = createModeSection(
-    componentsPage,
+    figma.currentPage,
     "ClipboardText",
     "dark",
   );
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
-    contentHeight + SECTION_PADDING * 2,
+    contentHeight + SECTION_PADDING * 2 + contentYOffset,
   );
+
+  // Add title inside each frame
 
   // Move ComponentSet into light section frame
   lightSection.frame.appendChild(componentSet);
   componentSet.x = SECTION_PADDING + labelColumnWidth;
-  componentSet.y = SECTION_PADDING;
+  componentSet.y = SECTION_PADDING + contentYOffset;
 
   // Add row labels to light section
   for (const label of rowLabels) {
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md, // +8 to vertically center
+      SECTION_PADDING +
+        contentYOffset +
+        label.y +
+        GRID_LAYOUT.labelVerticalOffset.md, // +8 to vertically center
     );
     lightSection.frame.appendChild(labelNode);
   }
@@ -440,7 +438,7 @@ export async function generateClipboardTextComponents(
   for (const component of components) {
     const instance = component.createInstance();
     instance.x = component.x + SECTION_PADDING + labelColumnWidth;
-    instance.y = component.y + SECTION_PADDING;
+    instance.y = component.y + SECTION_PADDING + contentYOffset;
     darkSection.frame.appendChild(instance);
   }
 
@@ -449,25 +447,28 @@ export async function generateClipboardTextComponents(
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md,
+      SECTION_PADDING +
+        contentYOffset +
+        label.y +
+        GRID_LAYOUT.labelVerticalOffset.md,
     );
     darkSection.frame.appendChild(labelNode);
   }
 
   // Resize sections to fit content with padding
   const totalWidth = contentWidth + SECTION_PADDING * 2;
-  const totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2 + contentYOffset;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
 
-  // Position sections side by side
-  lightSection.section.x = SECTION_LAYOUT.startX;
-  lightSection.section.y = startY;
+  // Position sections at startY (no title offset needed since title is inside)
+  lightSection.frame.x = SECTION_LAYOUT.startX;
+  lightSection.frame.y = startY;
 
-  darkSection.section.x =
-    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
-  darkSection.section.y = startY;
+  darkSection.frame.x =
+    lightSection.frame.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.frame.y = startY;
 
   logComplete(
     "Generated ClipboardText ComponentSet with " +

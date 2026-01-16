@@ -1,7 +1,7 @@
 /**
  * Icon Library Generator
  *
- * Generates an "Icon Library" page in Figma with all icons from sprite.svg.
+ * Generates icons on the UI Kit page in Figma from sprite.svg.
  * Creates Figma components for each icon using figma.createNodeFromSvg().
  *
  * Features:
@@ -43,8 +43,6 @@ export type IconData = {
  * Configuration for icon library generation
  */
 export type IconLibraryConfig = {
-  /** Name of the page to create (default: "Icon Library") */
-  pageName?: string;
   /** Number of icons per row in grid (default: 20) */
   iconsPerRow?: number;
   /** Spacing between icons in pixels (default: 48) */
@@ -61,7 +59,6 @@ export type IconLibraryConfig = {
  * Default configuration
  */
 const DEFAULT_CONFIG: Required<IconLibraryConfig> = {
-  pageName: "Icon Library",
   iconsPerRow: 20,
   iconSpacing: 48,
   defaultIconSize: 24,
@@ -235,62 +232,40 @@ async function createSizeExamplesFrame(
 }
 
 /**
- * Generate Icon Library page with all icons from sprite.svg
+ * Gap between Icons section and adjacent component sections
+ */
+const ICON_GRID_MARGIN = 200;
+
+/**
+ * Result from icon library generation
+ */
+export type IconLibraryResult = {
+  /** X position where component sections should start (right of icons) */
+  componentsStartX: number;
+};
+
+/**
+ * Generate Icon Library section on the UI Kit page
  *
  * Creates:
- * 1. "Icon Library" page (separate from components page)
+ * 1. "Icons" container frame on the provided page (positioned on the left)
  * 2. Figma component for each icon using createNodeFromSvg()
  * 3. Grid layout (20 per row, 48px spacing)
  * 4. "Size Examples" frame showing 16px, 20px, 24px variants
  *
+ * @param page - The page to add icons to
+ * @param startY - Y position to start placing icons
  * @param config - Optional configuration
- * @returns Promise that resolves when generation is complete
+ * @returns Object with componentsStartX for positioning adjacent sections
  *
  * @example
- * await generateIconLibrary();
- *
- * @example
- * await generateIconLibrary({
- *   pageName: "Icons",
- *   iconsPerRow: 25,
- *   iconSpacing: 40,
- * });
+ * const { componentsStartX } = await generateIconLibrary(page, 100);
  */
-/**
- * Count existing icon components on the Icon Library page
- */
-function countExistingIcons(pageName: string): number {
-  const iconPage = figma.root.children.find(
-    (page) => page.type === "PAGE" && page.name === pageName,
-  ) as PageNode | undefined;
-
-  if (!iconPage) {
-    return 0;
-  }
-
-  // Find the Icons container frame
-  const iconsFrame = iconPage.children.find(
-    (node) => node.type === "FRAME" && node.name === "Icons",
-  ) as FrameNode | undefined;
-
-  if (!iconsFrame) {
-    return 0;
-  }
-
-  // Count components (icons are named "Icon/...")
-  let count = 0;
-  for (const child of iconsFrame.children) {
-    if (child.type === "COMPONENT" && child.name.startsWith("Icon/")) {
-      count++;
-    }
-  }
-
-  return count;
-}
-
 export async function generateIconLibrary(
+  page: PageNode,
+  startY: number,
   config?: IconLibraryConfig,
-): Promise<void> {
+): Promise<IconLibraryResult> {
   const finalConfig = { ...DEFAULT_CONFIG, ...config };
 
   // Get icons from pre-generated JSON (built by build-icon-data.ts)
@@ -298,43 +273,8 @@ export async function generateIconLibrary(
   const icons: IconData[] = iconData;
   console.log(`✅ Found ${icons.length} icons in sprite`);
 
-  // Check if we can skip regeneration
-  const existingCount = countExistingIcons(finalConfig.pageName);
-  if (existingCount === icons.length) {
-    console.log(
-      `⏭️ Skipping Icon Library generation - ${existingCount} icons already exist`,
-    );
-    figma.notify(`Icon Library up to date (${existingCount} icons)`, {
-      timeout: 2000,
-    });
-    return;
-  }
-
-  console.log(
-    `🔄 Regenerating Icon Library: ${existingCount} existing → ${icons.length} icons`,
-  );
-
-  // Create or find "Icon Library" page
-  let iconPage = figma.root.children.find(
-    (page) => page.type === "PAGE" && page.name === finalConfig.pageName,
-  ) as PageNode | undefined;
-
-  if (!iconPage) {
-    iconPage = figma.createPage();
-    iconPage.name = finalConfig.pageName;
-    console.log(`✅ Created page: ${finalConfig.pageName}`);
-  } else {
-    console.log(`✅ Found existing page: ${finalConfig.pageName}`);
-  }
-
-  // Switch to icon page
-  figma.currentPage = iconPage;
-
-  // Clear existing content on the page
-  const existingChildren = [...iconPage.children];
-  for (const child of existingChildren) {
-    child.remove();
-  }
+  // Switch to the provided page
+  figma.currentPage = page;
 
   // Create main container frame with white background
   const containerFrame = figma.createFrame();
@@ -359,13 +299,13 @@ export async function generateIconLibrary(
     400; // padding + space for size examples
 
   containerFrame.resize(gridWidth, gridHeight);
-  containerFrame.x = 0;
-  containerFrame.y = 0;
+  containerFrame.x = SECTION_LAYOUT.startX;
+  containerFrame.y = startY;
 
   // Add container to page
-  iconPage.appendChild(containerFrame);
+  page.appendChild(containerFrame);
 
-  // Create size examples frame first (at top)
+  // Create size examples frame first (at top of container)
   if (finalConfig.showSizeExamples && icons.length > 0) {
     console.log("🎨 Creating size examples...");
     const sampleIcon =
@@ -374,28 +314,29 @@ export async function generateIconLibrary(
       sampleIcon,
       finalConfig.sizeExampleDimensions,
     );
-    sizeExamplesFrame.x = SECTION_LAYOUT.startX;
-    sizeExamplesFrame.y = SECTION_LAYOUT.startY;
+    // Position relative to container (not absolute canvas coords)
+    sizeExamplesFrame.x = 100; // Padding from container left edge
+    sizeExamplesFrame.y = 100; // Padding from container top edge
     containerFrame.appendChild(sizeExamplesFrame);
     console.log("✅ Size examples created");
   }
 
-  // Calculate starting Y position (after size examples)
-  const startY = finalConfig.showSizeExamples ? 300 : 100;
+  // Calculate starting Y position within container (after size examples)
+  const iconStartY = finalConfig.showSizeExamples ? 300 : 100;
 
   // Generate icon components in grid layout
   console.log(`🎨 Generating ${icons.length} icon components...`);
   const components: ComponentNode[] = [];
   let currentX = 100;
-  let currentY = startY;
+  let currentY = iconStartY;
   let iconsInCurrentRow = 0;
 
   for (let i = 0; i < icons.length; i++) {
-    const iconData = icons[i];
+    const iconDataItem = icons[i];
 
     try {
       const component = await createIconComponent(
-        iconData,
+        iconDataItem,
         finalConfig.defaultIconSize,
       );
 
@@ -423,12 +364,15 @@ export async function generateIconLibrary(
         console.log(`  Generated ${i + 1}/${icons.length} icons...`);
       }
     } catch (error) {
-      console.error(`❌ Failed to create icon ${iconData.id}:`, error);
+      console.error(`❌ Failed to create icon ${iconDataItem.id}:`, error);
     }
   }
 
   console.log(`✅ Generated ${components.length} icon components`);
-  figma.notify(
-    `✅ Icon Library generated: ${components.length} icons on "${finalConfig.pageName}" page`,
-  );
+  figma.notify(`✅ Icon Library generated: ${components.length} icons`);
+
+  // Return X position where component sections should start (right of icons container)
+  return {
+    componentsStartX: SECTION_LAYOUT.startX + gridWidth + ICON_GRID_MARGIN,
+  };
 }

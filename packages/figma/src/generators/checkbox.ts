@@ -28,6 +28,7 @@ import {
   createRowLabel,
   createColumnHeaders,
   bindTextColorToVariable,
+  
   BORDER_RADIUS,
   FONT_SIZE,
   SECTION_PADDING,
@@ -35,6 +36,7 @@ import {
   GRID_LAYOUT,
   FALLBACK_VALUES,
   SECTION_LAYOUT,
+  SECTION_TITLE,
   OPACITY,
   SPACING,
 } from "./shared";
@@ -499,24 +501,29 @@ export async function generateCheckboxComponents(
   const contentWidth = componentSet.width + labelColumnWidth;
   const contentHeight = componentSet.height + headerRowHeight;
 
+  // Content Y offset to make room for title inside frame
+  const contentYOffset = SECTION_TITLE.height;
+
   // Create light mode section
   const lightSection = createModeSection(page, "Checkbox", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
-    contentHeight + SECTION_PADDING * 2,
+    contentHeight + SECTION_PADDING * 2 + contentYOffset,
   );
 
   // Create dark mode section
   const darkSection = createModeSection(page, "Checkbox", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
-    contentHeight + SECTION_PADDING * 2,
+    contentHeight + SECTION_PADDING * 2 + contentYOffset,
   );
+
+  // Add title inside each frame
 
   // Move ComponentSet into light section frame
   lightSection.frame.appendChild(componentSet);
   componentSet.x = SECTION_PADDING + labelColumnWidth;
-  componentSet.y = SECTION_PADDING + headerRowHeight;
+  componentSet.y = SECTION_PADDING + headerRowHeight + contentYOffset;
 
   // Build column headers with stored original positions
   let columnHeaders: { x: number; text: string }[] = [];
@@ -528,7 +535,11 @@ export async function generateCheckboxComponents(
   }
 
   // Add column headers to light section
-  await createColumnHeaders(columnHeaders, SECTION_PADDING, lightSection.frame);
+  await createColumnHeaders(
+    columnHeaders,
+    SECTION_PADDING + contentYOffset,
+    lightSection.frame,
+  );
 
   // Add row labels to light section
   for (let li = 0; li < rowLabels.length; li++) {
@@ -536,7 +547,10 @@ export async function generateCheckboxComponents(
     const labelNode = await createRowLabel(
       labelData.text,
       SECTION_PADDING,
-      SECTION_PADDING + labelData.y + GRID_LAYOUT.labelVerticalOffset.sm, // Small offset to vertically center with checkbox
+      SECTION_PADDING +
+        contentYOffset +
+        labelData.y +
+        GRID_LAYOUT.labelVerticalOffset.sm, // Small offset to vertically center with checkbox
     );
     lightSection.frame.appendChild(labelNode);
   }
@@ -548,12 +562,16 @@ export async function generateCheckboxComponents(
     const comp = components[ci];
     const instance = comp.createInstance();
     instance.x = comp.x + SECTION_PADDING + labelColumnWidth;
-    instance.y = comp.y + SECTION_PADDING + headerRowHeight;
+    instance.y = comp.y + SECTION_PADDING + headerRowHeight + contentYOffset;
     darkSection.frame.appendChild(instance);
   }
 
   // Add column headers to dark section
-  await createColumnHeaders(columnHeaders, SECTION_PADDING, darkSection.frame);
+  await createColumnHeaders(
+    columnHeaders,
+    SECTION_PADDING + contentYOffset,
+    darkSection.frame,
+  );
 
   // Add row labels to dark section
   for (let dli = 0; dli < rowLabels.length; dli++) {
@@ -561,25 +579,28 @@ export async function generateCheckboxComponents(
     const darkLabelNode = await createRowLabel(
       darkLabelData.text,
       SECTION_PADDING,
-      SECTION_PADDING + darkLabelData.y + GRID_LAYOUT.labelVerticalOffset.sm,
+      SECTION_PADDING +
+        contentYOffset +
+        darkLabelData.y +
+        GRID_LAYOUT.labelVerticalOffset.sm,
     );
     darkSection.frame.appendChild(darkLabelNode);
   }
 
   // Resize sections to fit content with padding
   const totalWidth = contentWidth + SECTION_PADDING * 2;
-  const totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2 + contentYOffset;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
 
-  // Position sections side by side
-  lightSection.section.x = SECTION_LAYOUT.startX;
-  lightSection.section.y = startY;
+  // Position sections at startY (no title offset needed since title is inside)
+  lightSection.frame.x = SECTION_LAYOUT.startX;
+  lightSection.frame.y = startY;
 
-  darkSection.section.x =
-    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
-  darkSection.section.y = startY;
+  darkSection.frame.x =
+    lightSection.frame.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.frame.y = startY;
 
   logInfo(
     "✅ Generated Checkbox ComponentSet with " +

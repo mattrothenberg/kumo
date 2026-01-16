@@ -38,6 +38,7 @@ Kumo provides extensive automated tooling (`packages/kumo/scripts/`):
 - 30+ generators (Button, Dialog, Tabs, Toast, etc.)
 - Parses Tailwind → Figma auto-layout, binds semantic tokens to variables
 - Icon library generation, loader variants, opacity modifiers
+- **IMPORTANT:** After modifying any generator in `packages/figma/src/generators/`, you must rebuild the plugin with `pnpm --filter @cloudflare/figma-plugin build` before testing in Figma
 
 **3. Figma Token Sync** (`packages/kumo/scripts/figma/`) - CSS → Figma Variables API
 

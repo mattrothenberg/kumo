@@ -61,16 +61,22 @@ export const FONT_SIZE = {
 } as const;
 
 /**
- * Section positioning constants for Figma canvas layout
+ * Section positioning for Figma canvas layout
+ * Note: startX is mutable so it can be updated after icon generation
+ * to position component sections to the right of the icons.
  */
-export const SECTION_LAYOUT = {
-  /** X position for section start */
+export const SECTION_LAYOUT: {
+  startX: number;
+  readonly startY: 100;
+  readonly modeGap: 50;
+} = {
+  /** X position for section start (mutable - updated after icon generation) */
   startX: 100,
   /** Y position for section start */
   startY: 100,
   /** Gap between light/dark mode sections */
   modeGap: 50,
-} as const;
+};
 
 /**
  * Opacity values for component states
@@ -117,7 +123,22 @@ export const DASH_PATTERN = {
  * Layout constants for component display sections
  */
 export const SECTION_PADDING = 48;
-export const SECTION_GAP = 160;
+export const SECTION_GAP = 80;
+
+/**
+ * Section title configuration
+ * Used for titles displayed inside section frames
+ */
+export const SECTION_TITLE = {
+  /** Font size for section titles */
+  fontSize: 24,
+  /** Font weight for section titles (Semi Bold) */
+  fontWeight: 600,
+  /** Gap between title and content below */
+  gap: 16,
+  /** Height of the title area (fontSize + gap) - used for content offset */
+  height: 40, // 24px font + 16px gap
+} as const;
 
 /**
  * Shadow layer type for single-layer shadows
@@ -644,6 +665,56 @@ export async function createRowLabel(
 }
 
 /**
+ * Create a section title inside a frame
+ *
+ * @param text - Title text (e.g., "Button", "Badge")
+ * @param frame - Frame to append the title to
+ * @returns Text node styled as a section title
+ *
+ * @example
+ * const title = await createSectionTitle("Button", lightSection.frame);
+ */
+export async function createSectionTitle(
+  text: string,
+  frame: FrameNode,
+): Promise<TextNode> {
+  const textNode = figma.createText();
+
+  await figma.loadFontAsync({ family: "Inter", style: "Semi Bold" });
+
+  textNode.characters = text;
+  textNode.fontSize = SECTION_TITLE.fontSize;
+  textNode.fontName = { family: "Inter", style: "Semi Bold" };
+
+  // Use surface text color for titles
+  const surfaceVar = getVariableByName("text-color-surface");
+  if (surfaceVar) {
+    let fill: SolidPaint = {
+      type: "SOLID",
+      color: { r: 0, g: 0, b: 0 },
+    };
+    fill = figma.variables.setBoundVariableForPaint(fill, "color", surfaceVar);
+    textNode.fills = [fill];
+  } else {
+    // Fallback to black
+    textNode.fills = [
+      {
+        type: "SOLID",
+        color: { r: 0, g: 0, b: 0 },
+      },
+    ];
+  }
+
+  // Position at top-left with padding
+  textNode.x = SECTION_PADDING;
+  textNode.y = SECTION_PADDING;
+
+  frame.appendChild(textNode);
+
+  return textNode;
+}
+
+/**
  * Create column headers for component grids (e.g., size=xs, size=sm, etc.)
  *
  * @param headers - Array of { x, text } for each column header
@@ -803,38 +874,36 @@ function getKumoColorsModes(): {
 }
 
 /**
- * Result from creating a mode section - contains both section and inner frame
+ * Result from creating a mode section - contains the frame
  */
 export type ModeSectionResult = {
-  /** The outer section node */
-  section: SectionNode;
-  /** The inner frame with variable-bound background */
+  /** The frame with variable-bound background (for backwards compatibility, same as frame) */
+  section: FrameNode;
+  /** The frame with variable-bound background */
   frame: FrameNode;
 };
 
 /**
- * Create a section with an inner frame that has bg-surface variable fill and explicit color mode
+ * Create a frame with bg-surface variable fill and explicit color mode
  *
- * The section provides organization, while the inner frame provides:
+ * The frame provides:
  * - Variable-bound background (bg-surface)
  * - Explicit color mode (light/dark)
+ * - Plain styling without borders
  *
- * @param page - Page to create section on
- * @param sectionName - Section name
+ * @param page - Page to create frame on
+ * @param sectionName - Section name (used for frame name)
  * @param mode - Color mode ("light" or "dark")
- * @returns Object with section and inner frame
+ * @returns Object with frame (section property is alias for backwards compatibility)
  */
 export function createModeSection(
   page: PageNode | DocumentNode,
   sectionName: string,
   mode: ColorMode,
 ): ModeSectionResult {
-  const section = figma.createSection();
-  section.name = `${sectionName} (${mode})`;
-
-  // Create inner frame for variable binding
+  // Create frame directly (no Section wrapper)
   const frame = figma.createFrame();
-  frame.name = "Content";
+  frame.name = `${sectionName} (${mode})`;
   frame.layoutMode = "NONE"; // Components will be positioned manually
 
   // Get the surface variable for background
@@ -869,20 +938,109 @@ export function createModeSection(
     frame.setExplicitVariableModeForCollection(modesInfo.collection, modeId);
   }
 
-  // Add frame to section
-  section.appendChild(frame);
-
-  // Position frame at origin within section
-  frame.x = 0;
-  frame.y = 0;
-
-  // Section has no fill (transparent)
-  section.fills = [];
-
   // @ts-expect-error - Figma types are overly strict for appendChild
-  page.appendChild(section);
+  page.appendChild(frame);
 
-  return { section, frame };
+  // Return frame as both section and frame for backwards compatibility
+  return { section: frame, frame };
+}
+
+/**
+ * Result from creating a component section pair with title
+ */
+export type ComponentSectionPairResult = {
+  /** The light mode section */
+  lightSection: ModeSectionResult;
+  /** The dark mode section */
+  darkSection: ModeSectionResult;
+  /** The section title text node (inside light section) */
+  title: TextNode;
+  /** The Y position after all elements (for next section placement) */
+  nextY: number;
+};
+
+/**
+ * Create a pair of light/dark mode frames with a title inside each
+ *
+ * This helper creates a uniform layout for component sections:
+ * - Light mode frame with title text inside at the top
+ * - Dark mode frame with title text inside at the top
+ * - Both frames positioned side by side
+ *
+ * @param page - Page to create frames on
+ * @param componentName - Component name for title and frame names
+ * @param startY - Y position to start
+ * @param sectionWidth - Width of each frame
+ * @param sectionHeight - Height of each frame
+ * @returns Object with both sections, title, and next Y position
+ *
+ * @example
+ * const { lightSection, darkSection, title, nextY } = await createComponentSectionPair(
+ *   page,
+ *   "Button",
+ *   100,
+ *   800,
+ *   600
+ * );
+ */
+export async function createComponentSectionPair(
+  page: PageNode,
+  componentName: string,
+  startY: number,
+  sectionWidth: number,
+  sectionHeight: number,
+): Promise<ComponentSectionPairResult> {
+  // Create light mode section
+  const lightSection = createModeSection(page, componentName, "light");
+  lightSection.frame.resize(sectionWidth, sectionHeight);
+  lightSection.frame.x = SECTION_LAYOUT.startX;
+  lightSection.frame.y = startY;
+
+  // Create dark mode section (positioned to the right)
+  const darkSection = createModeSection(page, componentName, "dark");
+  darkSection.frame.resize(sectionWidth, sectionHeight);
+  darkSection.frame.x =
+    lightSection.frame.x + sectionWidth + SECTION_LAYOUT.modeGap;
+  darkSection.frame.y = startY;
+
+  // Add title text inside the light section frame
+  const title = await createTextNode(
+    componentName,
+    SECTION_TITLE.fontSize,
+    600,
+  );
+  title.x = SECTION_PADDING;
+  title.y = SECTION_PADDING;
+
+  // Bind title color to text-color-surface variable
+  const surfaceTextVar = getVariableByName("text-color-surface");
+  if (surfaceTextVar) {
+    bindTextColorToVariable(title, surfaceTextVar.id);
+  }
+  lightSection.frame.appendChild(title);
+
+  // Add title text inside the dark section frame too
+  const darkTitle = await createTextNode(
+    componentName,
+    SECTION_TITLE.fontSize,
+    600,
+  );
+  darkTitle.x = SECTION_PADDING;
+  darkTitle.y = SECTION_PADDING;
+  if (surfaceTextVar) {
+    bindTextColorToVariable(darkTitle, surfaceTextVar.id);
+  }
+  darkSection.frame.appendChild(darkTitle);
+
+  // Calculate next Y position
+  const nextY = startY + sectionHeight + SECTION_GAP;
+
+  return {
+    lightSection,
+    darkSection,
+    title,
+    nextY,
+  };
 }
 
 /**
@@ -968,17 +1126,8 @@ export function applyCornerRadius(
 export function findComponentSet(
   componentSetName: string,
 ): ComponentSetNode | undefined {
-  // Find the Components page
-  let componentsPage = figma.root.children.find(function (page) {
-    return (
-      page.type === "PAGE" && page.name.trim().toLowerCase() === "components"
-    );
-  }) as PageNode | undefined;
-
-  if (!componentsPage) {
-    console.warn("Components page not found");
-    return undefined;
-  }
+  // Use the current page (should be "ui kit" page set by code.ts)
+  const currentPage = figma.currentPage;
 
   // Search recursively for the ComponentSet (it may be inside sections/frames)
   function findInNode(node: SceneNode): ComponentSetNode | undefined {
@@ -996,8 +1145,8 @@ export function findComponentSet(
     return undefined;
   }
 
-  for (let i = 0; i < componentsPage.children.length; i++) {
-    const found = findInNode(componentsPage.children[i]);
+  for (let i = 0; i < currentPage.children.length; i++) {
+    const found = findInNode(currentPage.children[i]);
     if (found) return found;
   }
 

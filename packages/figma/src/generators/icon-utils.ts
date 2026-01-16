@@ -1,7 +1,7 @@
 /**
  * Icon Utilities for Component Generators
  *
- * Provides functions to find and use icon components from the Icon Library page.
+ * Provides functions to find and use icon components from the UI Kit page.
  * Icons are created by icon-library.ts with names like "Icon/ph-check", "Icon/cf-workers-outline".
  */
 
@@ -14,23 +14,40 @@ import {
 } from "./shared";
 
 /**
- * Ensure the Icon Library page exists
+ * Page name for the UI kit (must match code.ts)
+ */
+const UI_KIT_PAGE_NAME = "ui kit";
+
+/**
+ * Ensure the Icons container exists on the UI Kit page
  * Call this at the start of generators that depend on icons
  *
- * @throws Error if Icon Library page is not found
+ * @throws Error if Icons container is not found
  *
  * @example
  * // At the start of a generator that uses icons:
  * ensureIconLibraryExists();
  */
 export function ensureIconLibraryExists(): void {
-  const iconLibraryPage = figma.root.children.find(
-    (page) => page.type === "PAGE" && page.name === "Icon Library",
+  const uiKitPage = figma.root.children.find(
+    (page) =>
+      page.type === "PAGE" &&
+      page.name.trim().toLowerCase() === UI_KIT_PAGE_NAME,
+  ) as PageNode | undefined;
+
+  if (!uiKitPage) {
+    throw new Error(
+      "UI Kit page not found. Ensure Icon Library generator runs before other generators.",
+    );
+  }
+
+  const iconsFrame = uiKitPage.children.find(
+    (node) => node.type === "FRAME" && node.name === "Icons",
   );
 
-  if (!iconLibraryPage) {
+  if (!iconsFrame) {
     throw new Error(
-      "Icon Library must be generated first. Ensure Icon Library generator runs before other generators.",
+      "Icons container not found. Ensure Icon Library generator runs before other generators.",
     );
   }
 }
@@ -69,29 +86,32 @@ export const DEFAULT_ICONS = {
 };
 
 /**
- * Find an icon component by name from the Icon Library page
+ * Find an icon component by name from the UI Kit page
  *
  * @param iconId - Icon ID without "Icon/" prefix (e.g., "ph-check", "cf-workers-outline")
  * @returns ComponentNode if found, undefined otherwise
  */
 export function findIconComponent(iconId: string): ComponentNode | undefined {
-  // Find the Icon Library page
-  const iconLibraryPage = figma.root.children.find(function (page) {
-    return page.type === "PAGE" && page.name === "Icon Library";
+  // Find the UI Kit page (case-insensitive)
+  const uiKitPage = figma.root.children.find(function (page) {
+    return (
+      page.type === "PAGE" &&
+      page.name.trim().toLowerCase() === UI_KIT_PAGE_NAME
+    );
   }) as PageNode | undefined;
 
-  if (!iconLibraryPage) {
-    console.warn("Icon Library page not found. Run icon generation first.");
+  if (!uiKitPage) {
+    console.warn("UI Kit page not found. Run icon generation first.");
     return undefined;
   }
 
   // Find the Icons container frame
-  const iconsFrame = iconLibraryPage.children.find(function (node) {
+  const iconsFrame = uiKitPage.children.find(function (node) {
     return node.type === "FRAME" && node.name === "Icons";
   }) as FrameNode | undefined;
 
   if (!iconsFrame) {
-    console.warn("Icons frame not found in Icon Library page.");
+    console.warn("Icons frame not found in UI Kit page.");
     return undefined;
   }
 

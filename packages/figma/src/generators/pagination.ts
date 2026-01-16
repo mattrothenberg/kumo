@@ -18,9 +18,11 @@ import {
   createRowLabel,
   bindTextColorToVariable,
   bindStrokeToVariable,
+  
   SECTION_PADDING,
   SECTION_GAP,
   SECTION_LAYOUT,
+  SECTION_TITLE,
   GRID_LAYOUT,
   FONT_SIZE,
   FALLBACK_VALUES,
@@ -475,18 +477,6 @@ export async function generatePaginationComponents(
 ): Promise<number> {
   if (startY === undefined) startY = 100;
 
-  // Find or create Components page
-  let componentsPage = figma.root.children.find(function (page) {
-    return page.type === "PAGE" && page.name === "Components";
-  }) as PageNode | undefined;
-
-  if (!componentsPage) {
-    componentsPage = figma.createPage();
-    componentsPage.name = "Components";
-  }
-
-  figma.currentPage = componentsPage;
-
   // Page states to demonstrate
   const pageStates = [
     { page: 1, label: "state=first" }, // First page (prev disabled)
@@ -526,7 +516,7 @@ export async function generatePaginationComponents(
 
   // Combine all variants into a single ComponentSet
   // @ts-ignore - combineAsVariants works at runtime
-  const componentSet = figma.combineAsVariants(components, componentsPage);
+  const componentSet = figma.combineAsVariants(components, figma.currentPage);
   componentSet.name = "Pagination";
   componentSet.description =
     "Pagination component showing page navigation at different states";
@@ -535,24 +525,37 @@ export async function generatePaginationComponents(
   const contentWidth = componentSet.width + labelColumnWidth;
   const contentHeight = componentSet.height;
 
+  // Content Y offset to make room for title inside frame
+  const contentYOffset = SECTION_TITLE.height;
+
   // Create light mode section
-  const lightSection = createModeSection(componentsPage, "Pagination", "light");
+  const lightSection = createModeSection(
+    figma.currentPage,
+    "Pagination",
+    "light",
+  );
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
-    contentHeight + SECTION_PADDING * 2,
+    contentHeight + SECTION_PADDING * 2 + contentYOffset,
   );
 
   // Create dark mode section
-  const darkSection = createModeSection(componentsPage, "Pagination", "dark");
+  const darkSection = createModeSection(
+    figma.currentPage,
+    "Pagination",
+    "dark",
+  );
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
-    contentHeight + SECTION_PADDING * 2,
+    contentHeight + SECTION_PADDING * 2 + contentYOffset,
   );
+
+  // Add title inside each frame
 
   // Move ComponentSet into light section frame
   lightSection.frame.appendChild(componentSet);
   componentSet.x = SECTION_PADDING + labelColumnWidth;
-  componentSet.y = SECTION_PADDING;
+  componentSet.y = SECTION_PADDING + contentYOffset;
 
   // Add row labels to light section
   for (let j = 0; j < rowLabels.length; j++) {
@@ -560,7 +563,7 @@ export async function generatePaginationComponents(
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.mdLg,
+      SECTION_PADDING + contentYOffset + label.y + 10,
     );
     lightSection.frame.appendChild(labelNode);
   }
@@ -570,35 +573,35 @@ export async function generatePaginationComponents(
     const comp = components[k];
     const instance = comp.createInstance();
     instance.x = comp.x + SECTION_PADDING + labelColumnWidth;
-    instance.y = comp.y + SECTION_PADDING;
+    instance.y = comp.y + SECTION_PADDING + contentYOffset;
     darkSection.frame.appendChild(instance);
   }
 
   // Add row labels to dark section
-  for (let m = 0; m < rowLabels.length; m++) {
-    const darkLabel = rowLabels[m];
+  for (let l = 0; l < rowLabels.length; l++) {
+    const darkLabel = rowLabels[l];
     const darkLabelNode = await createRowLabel(
       darkLabel.text,
       SECTION_PADDING,
-      SECTION_PADDING + darkLabel.y + 10,
+      SECTION_PADDING + contentYOffset + darkLabel.y + 10,
     );
     darkSection.frame.appendChild(darkLabelNode);
   }
 
   // Resize sections to fit content with padding
   const totalWidth = contentWidth + SECTION_PADDING * 2;
-  const totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2 + contentYOffset;
 
-  lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-  darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+  lightSection.frame.resize(totalWidth, totalHeight);
+  darkSection.frame.resize(totalWidth, totalHeight);
 
-  // Position sections side by side
-  lightSection.section.x = SECTION_LAYOUT.startX;
-  lightSection.section.y = startY;
+  // Position sections at startY (title is inside frame)
+  lightSection.frame.x = SECTION_LAYOUT.startX;
+  lightSection.frame.y = startY;
 
-  darkSection.section.x =
-    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
-  darkSection.section.y = startY;
+  darkSection.frame.x =
+    lightSection.frame.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.frame.y = startY;
 
   logComplete(
     "✅ Generated Pagination ComponentSet with " +

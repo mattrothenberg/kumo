@@ -18,12 +18,14 @@ import {
   getVariableByName,
   createModeSection,
   createRowLabel,
+  
   FONT_SIZE,
   SECTION_PADDING,
   SECTION_GAP,
   GRID_LAYOUT,
   FALLBACK_VALUES,
   SECTION_LAYOUT,
+  SECTION_TITLE,
   SPACING,
 } from "./shared";
 import { createIconInstance, bindIconColor } from "./icon-utils";
@@ -307,31 +309,39 @@ export async function generateLabelComponents(
   const contentWidth = componentSet.width + labelColumnWidth;
   const contentHeight = componentSet.height;
 
+  // Add contentYOffset for title space inside frame
+  const contentYOffset = SECTION_TITLE.height;
+
   // Create light mode section
   const lightSection = createModeSection(page, "Label", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
-    contentHeight + SECTION_PADDING * 2,
+    contentHeight + SECTION_PADDING * 2 + contentYOffset,
   );
 
   // Create dark mode section
   const darkSection = createModeSection(page, "Label", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
-    contentHeight + SECTION_PADDING * 2,
+    contentHeight + SECTION_PADDING * 2 + contentYOffset,
   );
 
   // Move ComponentSet into light section frame
   lightSection.frame.appendChild(componentSet);
   componentSet.x = SECTION_PADDING + labelColumnWidth;
-  componentSet.y = SECTION_PADDING;
+  componentSet.y = SECTION_PADDING + contentYOffset;
+
+  // Add section titles inside frames
 
   // Add row labels to light section
   for (const label of rowLabels) {
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.sm,
+      SECTION_PADDING +
+        contentYOffset +
+        label.y +
+        GRID_LAYOUT.labelVerticalOffset.sm,
     );
     lightSection.frame.appendChild(labelNode);
   }
@@ -340,7 +350,7 @@ export async function generateLabelComponents(
   for (const component of components) {
     const instance = component.createInstance();
     instance.x = component.x + SECTION_PADDING + labelColumnWidth;
-    instance.y = component.y + SECTION_PADDING;
+    instance.y = component.y + SECTION_PADDING + contentYOffset;
     darkSection.frame.appendChild(instance);
   }
 
@@ -349,25 +359,28 @@ export async function generateLabelComponents(
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.sm,
+      SECTION_PADDING +
+        contentYOffset +
+        label.y +
+        GRID_LAYOUT.labelVerticalOffset.sm,
     );
     darkSection.frame.appendChild(labelNode);
   }
 
   // Resize sections to fit content with padding
   const totalWidth = contentWidth + SECTION_PADDING * 2;
-  const totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2 + contentYOffset;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
 
   // Position sections side by side
-  lightSection.section.x = SECTION_LAYOUT.startX;
-  lightSection.section.y = startY;
+  lightSection.frame.x = SECTION_LAYOUT.startX;
+  lightSection.frame.y = startY;
 
-  darkSection.section.x =
-    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
-  darkSection.section.y = startY;
+  darkSection.frame.x =
+    lightSection.frame.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.frame.y = startY;
 
   logInfo(
     "✅ Generated Label ComponentSet with " +

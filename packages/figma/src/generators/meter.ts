@@ -20,8 +20,10 @@ import {
   createModeSection,
   createRowLabel,
   bindTextColorToVariable,
+  
   SECTION_PADDING,
   SECTION_GAP,
+  SECTION_TITLE,
   GRID_LAYOUT,
   SECTION_LAYOUT,
   COLORS,
@@ -324,18 +326,6 @@ async function createMeterComponent(
 export async function generateMeterComponents(startY: number): Promise<number> {
   if (startY === undefined) startY = 100;
 
-  // Find or create Components page
-  let componentsPage = figma.root.children.find(function (page) {
-    return page.type === "PAGE" && page.name === "Components";
-  }) as PageNode | undefined;
-
-  if (!componentsPage) {
-    componentsPage = figma.createPage();
-    componentsPage.name = "Components";
-  }
-
-  figma.currentPage = componentsPage;
-
   // Fill levels to demonstrate: 0%, 25%, 50%, 75%, 100%
   const fillLevels = FILL_LEVELS;
   const components: ComponentNode[] = [];
@@ -366,7 +356,7 @@ export async function generateMeterComponents(startY: number): Promise<number> {
 
   // Combine all variants into a single ComponentSet
   // @ts-ignore - combineAsVariants works at runtime
-  const componentSet = figma.combineAsVariants(components, componentsPage);
+  const componentSet = figma.combineAsVariants(components, figma.currentPage);
   componentSet.name = "Meter";
   componentSet.description =
     "Meter component showing progress at different fill levels";
@@ -375,24 +365,29 @@ export async function generateMeterComponents(startY: number): Promise<number> {
   const contentWidth = componentSet.width + labelColumnWidth;
   const contentHeight = componentSet.height;
 
+  // Add contentYOffset for title space inside frame
+  const contentYOffset = SECTION_TITLE.height;
+
   // Create light mode section
-  const lightSection = createModeSection(componentsPage, "Meter", "light");
+  const lightSection = createModeSection(figma.currentPage, "Meter", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
-    contentHeight + SECTION_PADDING * 2,
+    contentHeight + SECTION_PADDING * 2 + contentYOffset,
   );
 
   // Create dark mode section
-  const darkSection = createModeSection(componentsPage, "Meter", "dark");
+  const darkSection = createModeSection(figma.currentPage, "Meter", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
-    contentHeight + SECTION_PADDING * 2,
+    contentHeight + SECTION_PADDING * 2 + contentYOffset,
   );
 
   // Move ComponentSet into light section frame
   lightSection.frame.appendChild(componentSet);
   componentSet.x = SECTION_PADDING + labelColumnWidth;
-  componentSet.y = SECTION_PADDING;
+  componentSet.y = SECTION_PADDING + contentYOffset;
+
+  // Add section titles inside frames
 
   // Add row labels to light section
   for (let j = 0; j < rowLabels.length; j++) {
@@ -400,7 +395,10 @@ export async function generateMeterComponents(startY: number): Promise<number> {
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md, // vertically center with meter
+      SECTION_PADDING +
+        contentYOffset +
+        label.y +
+        GRID_LAYOUT.labelVerticalOffset.md, // vertically center with meter
     );
     lightSection.frame.appendChild(labelNode);
   }
@@ -412,7 +410,7 @@ export async function generateMeterComponents(startY: number): Promise<number> {
     const component = components[k];
     const instance = component.createInstance();
     instance.x = component.x + SECTION_PADDING + labelColumnWidth;
-    instance.y = component.y + SECTION_PADDING;
+    instance.y = component.y + SECTION_PADDING + contentYOffset;
     darkSection.frame.appendChild(instance);
   }
 
@@ -422,25 +420,28 @@ export async function generateMeterComponents(startY: number): Promise<number> {
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md,
+      SECTION_PADDING +
+        contentYOffset +
+        label.y +
+        GRID_LAYOUT.labelVerticalOffset.md,
     );
     darkSection.frame.appendChild(labelNode);
   }
 
   // Resize sections to fit content with padding
   const totalWidth = contentWidth + SECTION_PADDING * 2;
-  const totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2 + contentYOffset;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
 
   // Position sections side by side
-  lightSection.section.x = SECTION_LAYOUT.startX;
-  lightSection.section.y = startY;
+  lightSection.frame.x = SECTION_LAYOUT.startX;
+  lightSection.frame.y = startY;
 
-  darkSection.section.x =
-    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
-  darkSection.section.y = startY;
+  darkSection.frame.x =
+    lightSection.frame.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.frame.y = startY;
 
   logComplete(
     "✅ Generated Meter ComponentSet with " +

@@ -27,12 +27,14 @@ import {
   createColumnHeaders,
   setWhiteTextColor,
   bindTextColorToVariable,
+  
   BORDER_RADIUS,
   SECTION_PADDING,
   SECTION_GAP,
   GRID_LAYOUT,
   FALLBACK_VALUES,
   SECTION_LAYOUT,
+  SECTION_TITLE,
   OPACITY,
 } from "./shared";
 import { parseTailwindClasses } from "../parsers/tailwind-to-figma";
@@ -829,31 +831,36 @@ export async function generateButtonComponents(
   const contentWidth = componentSet.width + labelColumnWidth;
   const contentHeight = componentSet.height + headerRowHeight;
 
+  // Content Y offset to make room for title inside frame
+  const contentYOffset = SECTION_TITLE.height;
+
   // Create light mode section
   const lightSection = createModeSection(page, "Button", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
-    contentHeight + SECTION_PADDING * 2,
+    contentHeight + SECTION_PADDING * 2 + contentYOffset,
   );
 
   // Create dark mode section
   const darkSection = createModeSection(page, "Button", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
-    contentHeight + SECTION_PADDING * 2,
+    contentHeight + SECTION_PADDING * 2 + contentYOffset,
   );
+
+  // Add title inside each frame
 
   // Move ComponentSet into light section frame
   lightSection.frame.appendChild(componentSet);
   componentSet.x = SECTION_PADDING + labelColumnWidth;
-  componentSet.y = SECTION_PADDING + headerRowHeight;
+  componentSet.y = SECTION_PADDING + headerRowHeight + contentYOffset;
 
   // Add column headers to light section (variant state headers)
   await createColumnHeaders(
     columnHeaders.map(function (h) {
       return { x: h.x + SECTION_PADDING, text: h.text };
     }),
-    SECTION_PADDING,
+    SECTION_PADDING + contentYOffset,
     lightSection.frame,
   );
 
@@ -863,7 +870,7 @@ export async function generateButtonComponents(
       shapeColumnHeaderPositions.map(function (h) {
         return { x: h.x + SECTION_PADDING, text: h.text };
       }),
-      SECTION_PADDING + shapeHeaderY,
+      SECTION_PADDING + contentYOffset + shapeHeaderY,
       lightSection.frame,
     );
   }
@@ -874,7 +881,10 @@ export async function generateButtonComponents(
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.lg, // Large offset to vertically center with button
+      SECTION_PADDING +
+        contentYOffset +
+        label.y +
+        GRID_LAYOUT.labelVerticalOffset.lg, // Large offset to vertically center with button
     );
     lightSection.frame.appendChild(labelNode);
   }
@@ -886,7 +896,8 @@ export async function generateButtonComponents(
     const origComp = components[k];
     const instance = origComp.createInstance();
     instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
-    instance.y = origComp.y + SECTION_PADDING + headerRowHeight;
+    instance.y =
+      origComp.y + SECTION_PADDING + headerRowHeight + contentYOffset;
     darkSection.frame.appendChild(instance);
   }
 
@@ -895,7 +906,7 @@ export async function generateButtonComponents(
     columnHeaders.map(function (h) {
       return { x: h.x + SECTION_PADDING, text: h.text };
     }),
-    SECTION_PADDING,
+    SECTION_PADDING + contentYOffset,
     darkSection.frame,
   );
 
@@ -905,7 +916,7 @@ export async function generateButtonComponents(
       shapeColumnHeaderPositions.map(function (h) {
         return { x: h.x + SECTION_PADDING, text: h.text };
       }),
-      SECTION_PADDING + shapeHeaderY,
+      SECTION_PADDING + contentYOffset + shapeHeaderY,
       darkSection.frame,
     );
   }
@@ -916,25 +927,28 @@ export async function generateButtonComponents(
     const darkLabelNode = await createRowLabel(
       darkLabel.text,
       SECTION_PADDING,
-      SECTION_PADDING + darkLabel.y + GRID_LAYOUT.labelVerticalOffset.lg,
+      SECTION_PADDING +
+        contentYOffset +
+        darkLabel.y +
+        GRID_LAYOUT.labelVerticalOffset.lg,
     );
     darkSection.frame.appendChild(darkLabelNode);
   }
 
   // Resize sections to fit content
   const totalWidth = contentWidth + SECTION_PADDING * 2;
-  const totalHeight = contentHeight + SECTION_PADDING * 2;
+  const totalHeight = contentHeight + SECTION_PADDING * 2 + contentYOffset;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
 
-  // Position sections
-  lightSection.section.x = SECTION_LAYOUT.startX;
-  lightSection.section.y = startY;
+  // Position sections at startY (no title offset needed since title is inside)
+  lightSection.frame.x = SECTION_LAYOUT.startX;
+  lightSection.frame.y = startY;
 
-  darkSection.section.x =
-    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap; // Side by side with gap
-  darkSection.section.y = startY;
+  darkSection.frame.x =
+    lightSection.frame.x + totalWidth + SECTION_LAYOUT.modeGap; // Side by side with gap
+  darkSection.frame.y = startY;
 
   logInfo(
     "✅ Generated Button ComponentSet with " +

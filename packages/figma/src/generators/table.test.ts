@@ -20,13 +20,14 @@ import {
   getTableHeaderConfig,
   getTableBodyCellConfig,
   getTableSelectedRowConfig,
+  getTableCheckboxCellConfig,
   getTableCompleteConfig,
   getAllTableVariantData,
   TABLE_CONFIGS_EXPORT,
   TABLE_LAYOUT_VALUES,
   TABLE_VARIANT_VALUES,
 } from "./table";
-import { FONT_SIZE, FALLBACK_VALUES } from "./shared";
+import { FONT_SIZE, FALLBACK_VALUES, BORDER_RADIUS } from "./shared";
 import themeData from "../generated/theme-data.json";
 
 // Import registry as source of truth
@@ -177,6 +178,22 @@ describe("Table Generator - Selected Row Config", () => {
   });
 });
 
+describe("Table Generator - Checkbox Cell Config", () => {
+  it("should return valid checkbox cell config", () => {
+    const config = getTableCheckboxCellConfig();
+
+    // Checkbox box is 16px (h-4 w-4)
+    expect(config.boxSize).toBe(themeData.tailwind.spacing.scale["4"]);
+    expect(config.borderRadius).toBe(BORDER_RADIUS.sm); // rounded-sm
+    expect(config.uncheckedBgVariable).toBe("color-surface");
+    expect(config.checkedBgVariable).toBe("color-surface-inverse");
+    expect(config.borderVariable).toBe("color-border");
+    expect(config.iconName).toBe("ph-check");
+    expect(config.iconSize).toBe(FONT_SIZE.xs);
+    expect(config.iconColor).toBe("text-surface-inverse");
+  });
+});
+
 describe("Table Generator - Complete Config", () => {
   it("should return config for auto layout without selection", () => {
     const config = getTableCompleteConfig({
@@ -306,6 +323,11 @@ describe("Table Generator - Snapshot Tests (Intermediate Data)", () => {
 
   it("should produce consistent selected row config", () => {
     const config = getTableSelectedRowConfig();
+    expect(config).toMatchSnapshot();
+  });
+
+  it("should produce consistent checkbox cell config", () => {
+    const config = getTableCheckboxCellConfig();
     expect(config).toMatchSnapshot();
   });
 

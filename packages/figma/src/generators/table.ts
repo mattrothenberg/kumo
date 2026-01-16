@@ -29,8 +29,11 @@ import {
   GRID_LAYOUT,
   FALLBACK_VALUES,
   SECTION_LAYOUT,
+  SECTION_TITLE,
   SPACING,
+  BORDER_RADIUS,
 } from "./shared";
+import { createIconInstance, bindIconColor } from "./icon-utils";
 import themeData from "../generated/theme-data.json";
 import { logInfo } from "../logger";
 
@@ -67,6 +70,11 @@ const tableComponent = (registry.components as Record<string, unknown>)
 const CELL_PADDING = themeData.tailwind.spacing.scale["3"];
 
 /**
+ * Checkbox box size (h-4 w-4 = 16px)
+ */
+const CHECKBOX_SIZE = themeData.tailwind.spacing.scale["4"];
+
+/**
  * Table configuration for static preview
  */
 type TableConfig = {
@@ -75,15 +83,23 @@ type TableConfig = {
 };
 
 /**
+ * Row data with checkbox state
+ */
+type RowData = {
+  cells: string[];
+  checked: boolean;
+};
+
+/**
  * Sample data for the table preview
  */
 const SAMPLE_DATA = {
   headers: ["Name", "Status", "Type"],
   rows: [
-    ["Resource 1", "Active", "File"],
-    ["Resource 2", "Pending", "Folder"],
-    ["Resource 3", "Active", "File"],
-  ],
+    { cells: ["Resource 1", "Active", "File"], checked: false },
+    { cells: ["Resource 2", "Pending", "Folder"], checked: false },
+    { cells: ["Resource 3", "Active", "File"], checked: false },
+  ] as RowData[],
 };
 
 /**
@@ -183,6 +199,22 @@ export function getTableSelectedRowConfig() {
 }
 
 /**
+ * Get checkbox cell styling configuration
+ */
+export function getTableCheckboxCellConfig() {
+  return {
+    boxSize: CHECKBOX_SIZE, // 16px
+    borderRadius: BORDER_RADIUS.sm, // 2px (rounded-sm)
+    uncheckedBgVariable: "color-surface",
+    checkedBgVariable: "color-surface-inverse",
+    borderVariable: "color-border",
+    iconName: "ph-check" as const,
+    iconSize: 12, // Small icon inside 16px box
+    iconColor: "text-surface-inverse",
+  };
+}
+
+/**
  * Get complete Table configuration
  */
 export function getTableCompleteConfig(config: TableConfig) {
@@ -248,6 +280,115 @@ function getRowLabelText(config: TableConfig): string {
 // ============================================================================
 // FIGMA GENERATION FUNCTIONS (use Figma APIs)
 // ============================================================================
+
+/**
+ * Create a checkbox box for table cells
+ */
+function createTableCheckboxBox(checked: boolean): FrameNode {
+  const checkboxConfig = getTableCheckboxCellConfig();
+
+  const box = figma.createFrame();
+  box.name = "Checkbox Box";
+  box.resize(checkboxConfig.boxSize, checkboxConfig.boxSize);
+
+  // Auto-layout for centering icon
+  box.layoutMode = "HORIZONTAL";
+  box.primaryAxisAlignItems = "CENTER";
+  box.counterAxisAlignItems = "CENTER";
+  box.primaryAxisSizingMode = "FIXED";
+  box.counterAxisSizingMode = "FIXED";
+
+  // Border radius
+  box.cornerRadius = checkboxConfig.borderRadius;
+
+  // Background fill based on checked state
+  const bgVariable = checked
+    ? checkboxConfig.checkedBgVariable
+    : checkboxConfig.uncheckedBgVariable;
+  const bgVar = getVariableByName(bgVariable);
+  if (bgVar) {
+    bindFillToVariable(box, bgVar.id);
+  }
+
+  // Border
+  const borderVar = getVariableByName(checkboxConfig.borderVariable);
+  if (borderVar) {
+    bindStrokeToVariable(box, borderVar.id, 1);
+  }
+
+  // Add check icon if checked
+  if (checked) {
+    const iconInstance = createIconInstance(
+      checkboxConfig.iconName,
+      checkboxConfig.iconSize,
+    );
+    if (iconInstance) {
+      bindIconColor(iconInstance, checkboxConfig.iconColor);
+      box.appendChild(iconInstance);
+    }
+  }
+
+  return box;
+}
+
+/**
+ * Create a checkbox cell for table header or body
+ */
+async function createTableCheckboxCell(
+  isHeader: boolean,
+  isSelected: boolean,
+  checked: boolean,
+  width: number,
+): Promise<FrameNode> {
+  const cellConfig = getTableCellConfig();
+  const headerConfig = getTableHeaderConfig();
+  const selectedRowConfig = getTableSelectedRowConfig();
+
+  const cell = figma.createFrame();
+  cell.name = isHeader ? "Check Head" : "Check Cell";
+  cell.resize(width, isHeader ? 44 : 48);
+
+  // Configure as horizontal auto-layout, centered
+  cell.layoutMode = "HORIZONTAL";
+  cell.primaryAxisAlignItems = "CENTER";
+  cell.counterAxisAlignItems = "CENTER";
+  cell.paddingLeft = cellConfig.padding;
+  cell.paddingRight = cellConfig.padding;
+  cell.paddingTop = cellConfig.padding;
+  cell.paddingBottom = cellConfig.padding;
+
+  // Apply background
+  if (isHeader) {
+    const bgVar = getVariableByName(headerConfig.bgVariable);
+    if (bgVar) {
+      bindFillToVariable(cell, bgVar.id);
+    }
+  } else if (isSelected) {
+    const bgVar = getVariableByName(selectedRowConfig.bgVariable);
+    if (bgVar) {
+      bindFillToVariable(cell, bgVar.id);
+    }
+  } else {
+    cell.fills = [];
+  }
+
+  // Apply bottom border
+  const borderVar = getVariableByName(cellConfig.borderVariable);
+  if (borderVar) {
+    bindStrokeToVariable(cell, borderVar.id, cellConfig.borderWidth);
+    cell.strokesIncludedInLayout = true;
+    cell.strokeTopWeight = 0;
+    cell.strokeLeftWeight = 0;
+    cell.strokeRightWeight = 0;
+    cell.strokeBottomWeight = cellConfig.borderWidth;
+  }
+
+  // Create checkbox box
+  const checkboxBox = createTableCheckboxBox(checked);
+  cell.appendChild(checkboxBox);
+
+  return cell;
+}
 
 /**
  * Create a table cell (for header or body)
@@ -326,16 +467,16 @@ async function createTableCell(
 }
 
 /**
- * Create a table row
+ * Create a table header row with checkbox
  */
-async function createTableRow(
-  cells: string[],
-  isHeader: boolean,
-  isSelected: boolean,
+async function createTableHeaderRow(
+  headers: string[],
   columnWidths: number[],
+  checkboxWidth: number,
+  checkboxChecked: boolean,
 ): Promise<FrameNode> {
   const row = figma.createFrame();
-  row.name = isHeader ? "Header Row" : "Body Row";
+  row.name = "Header Row";
 
   // Configure as horizontal auto-layout
   row.layoutMode = "HORIZONTAL";
@@ -346,10 +487,64 @@ async function createTableRow(
   row.itemSpacing = 0;
   row.fills = [];
 
-  for (let i = 0; i < cells.length; i++) {
+  // Add checkbox cell first
+  const checkboxCell = await createTableCheckboxCell(
+    true, // isHeader
+    false, // isSelected (header never selected)
+    checkboxChecked,
+    checkboxWidth,
+  );
+  row.appendChild(checkboxCell);
+
+  // Add text cells
+  for (let i = 0; i < headers.length; i++) {
     const cell = await createTableCell(
-      cells[i],
-      isHeader,
+      headers[i],
+      true, // isHeader
+      false, // isSelected
+      columnWidths[i],
+    );
+    row.appendChild(cell);
+  }
+
+  return row;
+}
+
+/**
+ * Create a table body row with checkbox
+ */
+async function createTableBodyRow(
+  rowData: RowData,
+  isSelected: boolean,
+  columnWidths: number[],
+  checkboxWidth: number,
+): Promise<FrameNode> {
+  const row = figma.createFrame();
+  row.name = "Body Row";
+
+  // Configure as horizontal auto-layout
+  row.layoutMode = "HORIZONTAL";
+  row.primaryAxisAlignItems = "MIN";
+  row.counterAxisAlignItems = "MIN";
+  row.primaryAxisSizingMode = "AUTO";
+  row.counterAxisSizingMode = "AUTO";
+  row.itemSpacing = 0;
+  row.fills = [];
+
+  // Add checkbox cell first
+  const checkboxCell = await createTableCheckboxCell(
+    false, // isHeader
+    isSelected,
+    rowData.checked,
+    checkboxWidth,
+  );
+  row.appendChild(checkboxCell);
+
+  // Add text cells
+  for (let i = 0; i < rowData.cells.length; i++) {
+    const cell = await createTableCell(
+      rowData.cells[i],
+      false, // isHeader
       isSelected,
       columnWidths[i],
     );
@@ -381,29 +576,55 @@ async function createTableComponent(
   component.itemSpacing = 0;
   component.fills = [];
 
-  // Column widths based on layout
+  // Add outer border (matches LayerCard.Primary: ring ring-color rounded-lg)
+  component.cornerRadius = BORDER_RADIUS.lg;
+  component.clipsContent = true; // Clip content to rounded corners
+  const outerBorderVar = getVariableByName("color-border");
+  if (outerBorderVar) {
+    bindStrokeToVariable(
+      component,
+      outerBorderVar.id,
+      FALLBACK_VALUES.strokeWeight,
+    );
+  }
+
+  // Checkbox column width (w-12 = 48px in Storybook, but we use smaller for compact display)
+  const checkboxWidth = 40;
+
+  // Column widths based on layout (excluding checkbox column)
   const columnWidths =
     config.layout === "fixed"
       ? [100, 100, 100] // Equal widths for fixed layout
       : [120, 80, 80]; // Variable widths for auto layout
 
-  // Create header row
-  const headerRow = await createTableRow(
+  // Determine if any row is checked (for header checkbox state)
+  // When hasSelectedRow is true, the second row (index 1) is selected and checked
+  const hasCheckedRow = config.hasSelectedRow;
+
+  // Create header row with checkbox
+  const headerRow = await createTableHeaderRow(
     sampleData.headers,
-    true,
-    false,
     columnWidths,
+    checkboxWidth,
+    false, // Header checkbox unchecked (not "select all" in this preview)
   );
   component.appendChild(headerRow);
 
-  // Create body rows
+  // Create body rows with checkboxes
   for (let i = 0; i < sampleData.rows.length; i++) {
     const isSelected = config.hasSelectedRow && i === 1; // Second row is selected
-    const bodyRow = await createTableRow(
-      sampleData.rows[i],
-      false,
+
+    // Create row data with checkbox state matching selection
+    const rowData: RowData = {
+      cells: sampleData.rows[i].cells,
+      checked: isSelected, // Checkbox checked when row is selected
+    };
+
+    const bodyRow = await createTableBodyRow(
+      rowData,
       isSelected,
       columnWidths,
+      checkboxWidth,
     );
 
     // Remove bottom border from last row
@@ -527,16 +748,18 @@ export async function generateTableComponents(
   const totalWidth = contentWidth + SECTION_PADDING * 2;
   const totalHeight = contentHeight + SECTION_PADDING * 2;
 
-  lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
-  darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
+  lightSection.frame.resize(totalWidth, totalHeight);
+  darkSection.frame.resize(totalWidth, totalHeight);
+
+  // Add title inside each frame
 
   // Position sections side by side
-  lightSection.section.x = SECTION_LAYOUT.startX;
-  lightSection.section.y = startY;
+  lightSection.frame.x = SECTION_LAYOUT.startX;
+  lightSection.frame.y = startY;
 
-  darkSection.section.x =
-    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
-  darkSection.section.y = startY;
+  darkSection.frame.x =
+    lightSection.frame.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.frame.y = startY;
 
   logInfo(
     "✅ Generated Table ComponentSet with " +

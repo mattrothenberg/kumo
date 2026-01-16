@@ -32,10 +32,12 @@ import {
   createColumnHeaders,
   bindFillToVariable,
   bindTextColorToVariable,
+  
   BORDER_RADIUS,
   SECTION_PADDING,
   SECTION_GAP,
   SECTION_LAYOUT,
+  SECTION_TITLE,
   FONT_SIZE,
   FALLBACK_VALUES,
   GRID_LAYOUT,
@@ -810,31 +812,36 @@ export async function generateDateRangePickerComponents(
   const contentWidth = componentSet.width + labelColumnWidth;
   const contentHeight = componentSet.height + headerRowHeight;
 
+  // Content Y offset to make room for title inside frame (defined later for totalHeight calculation)
+  const contentYOffsetLocal = SECTION_TITLE.height;
+
   // Create light mode section
   const lightSection = createModeSection(page, "DateRangePicker", "light");
   lightSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
-    contentHeight + SECTION_PADDING * 2,
+    contentHeight + SECTION_PADDING * 2 + contentYOffsetLocal,
   );
 
   // Create dark mode section
   const darkSection = createModeSection(page, "DateRangePicker", "dark");
   darkSection.frame.resize(
     contentWidth + SECTION_PADDING * 2,
-    contentHeight + SECTION_PADDING * 2,
+    contentHeight + SECTION_PADDING * 2 + contentYOffsetLocal,
   );
+
+  // Add title inside each frame (done later in main function)
 
   // Move ComponentSet into light section
   lightSection.frame.appendChild(componentSet);
   componentSet.x = SECTION_PADDING + labelColumnWidth;
-  componentSet.y = SECTION_PADDING + headerRowHeight;
+  componentSet.y = SECTION_PADDING + headerRowHeight + contentYOffsetLocal;
 
   // Add column headers to light section
   await createColumnHeaders(
     columnHeaders.map(function (h) {
       return { x: h.x + SECTION_PADDING, text: h.text };
     }),
-    SECTION_PADDING,
+    SECTION_PADDING + contentYOffsetLocal,
     lightSection.frame,
   );
 
@@ -844,7 +851,10 @@ export async function generateDateRangePickerComponents(
     const labelNode = await createRowLabel(
       label.text,
       SECTION_PADDING,
-      SECTION_PADDING + label.y + GRID_LAYOUT.labelVerticalOffset.md,
+      SECTION_PADDING +
+        contentYOffsetLocal +
+        label.y +
+        GRID_LAYOUT.labelVerticalOffset.md,
     );
     lightSection.frame.appendChild(labelNode);
   }
@@ -861,7 +871,7 @@ export async function generateDateRangePickerComponents(
     bindTextColorToVariable(noteText, mutedVar.id);
   }
   noteText.x = SECTION_PADDING;
-  noteText.y = SECTION_PADDING + yOffset + 16;
+  noteText.y = SECTION_PADDING + contentYOffsetLocal + yOffset + 16;
   lightSection.frame.appendChild(noteText);
 
   // Create instances for dark section
@@ -869,7 +879,8 @@ export async function generateDateRangePickerComponents(
     const origComp = components[k];
     const instance = origComp.createInstance();
     instance.x = origComp.x + SECTION_PADDING + labelColumnWidth;
-    instance.y = origComp.y + SECTION_PADDING + headerRowHeight;
+    instance.y =
+      origComp.y + SECTION_PADDING + headerRowHeight + contentYOffsetLocal;
     darkSection.frame.appendChild(instance);
   }
 
@@ -878,7 +889,7 @@ export async function generateDateRangePickerComponents(
     columnHeaders.map(function (h) {
       return { x: h.x + SECTION_PADDING, text: h.text };
     }),
-    SECTION_PADDING,
+    SECTION_PADDING + contentYOffsetLocal,
     darkSection.frame,
   );
 
@@ -888,7 +899,7 @@ export async function generateDateRangePickerComponents(
     const darkLabelNode = await createRowLabel(
       darkLabel.text,
       SECTION_PADDING,
-      SECTION_PADDING + darkLabel.y + 8,
+      SECTION_PADDING + contentYOffsetLocal + darkLabel.y + 8,
     );
     darkSection.frame.appendChild(darkLabelNode);
   }
@@ -904,23 +915,28 @@ export async function generateDateRangePickerComponents(
     bindTextColorToVariable(darkNoteText, mutedVar.id);
   }
   darkNoteText.x = SECTION_PADDING;
-  darkNoteText.y = SECTION_PADDING + yOffset + 16;
+  darkNoteText.y = SECTION_PADDING + contentYOffsetLocal + yOffset + 16;
   darkSection.frame.appendChild(darkNoteText);
 
-  // Resize sections (add extra height for note)
+  // Content Y offset to make room for title inside frame
+  const contentYOffset = SECTION_TITLE.height;
+
+  // Resize sections (add extra height for note and title)
   const totalWidth = contentWidth + SECTION_PADDING * 2;
-  const totalHeight = contentHeight + SECTION_PADDING * 2 + 40;
+  const totalHeight = contentHeight + SECTION_PADDING * 2 + 40 + contentYOffset;
 
   lightSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
   darkSection.section.resizeWithoutConstraints(totalWidth, totalHeight);
 
-  // Position sections side by side
-  lightSection.section.x = SECTION_LAYOUT.startX;
-  lightSection.section.y = startY;
+  // Add title inside each frame
 
-  darkSection.section.x =
-    lightSection.section.x + totalWidth + SECTION_LAYOUT.modeGap;
-  darkSection.section.y = startY;
+  // Position sections at startY (no title offset needed since title is inside)
+  lightSection.frame.x = SECTION_LAYOUT.startX;
+  lightSection.frame.y = startY;
+
+  darkSection.frame.x =
+    lightSection.frame.x + totalWidth + SECTION_LAYOUT.modeGap;
+  darkSection.frame.y = startY;
 
   logComplete(
     "✅ Generated DateRangePicker ComponentSet with " +
