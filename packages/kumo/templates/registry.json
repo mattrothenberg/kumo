@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": "0.1.0",
+  "templates": {
+    "layouts/centered-page-layout": {
+      "name": "centered-page-layout",
+      "category": "layouts",
+      "title": "Centered Page Layout",
+      "description": "Single-column centered page layout with header and LayerCard content. Max-width container (max-w-4xl) for focused, readable content.",
+      "targetPath": "src/pages/my-page",
+      "files": ["centered-page-layout.tsx"],
+      "dependencies": {
+        "@cloudflare/kumo": "^0.4.0"
+      },
+      "tags": ["layout", "page", "centered", "single-column", "header", "card"],
+      "kumoComponents": ["Text", "Button", "LayerCard"],
+      "designPatterns": [
+        "max-w-4xl centered container",
+        "heading1 for page title",
+        "Text variant='secondary' size='lg' for page description",
+        "Text variant='body' bold for card titles",
+        "Text variant='secondary' size='sm' for metadata",
+        "LayerCard.Primary and LayerCard.Secondary structure",
+        "responsive design (hidden md:block)",
+        "semantic tokens (bg-surface, text-surface)"
+      ]
+    },
+    "pages/active-sessions": {
+      "name": "active-sessions",
+      "category": "pages",
+      "title": "Active Sessions Page",
+      "description": "Complete page implementation for managing active devices and sessions. Shows device type, browser, IP address, login time, and location with ability to revoke sessions.",
+      "targetPath": "src/pages/active-sessions",
+      "files": ["active-sessions.tsx", "active-sessions-mocks.ts"],
+      "dependencies": {
+        "@cloudflare/kumo": "^0.4.0",
+        "@phosphor-icons/react": "^2.0.0"
+      },
+      "tags": [
+        "page",
+        "profile",
+        "security",
+        "sessions",
+        "authentication",
+        "devices"
+      ],
+      "kumoComponents": ["Text", "Button", "LayerCard", "Badge"],
+      "designPatterns": [
+        "uses layouts/centered-page-layout pattern",
+        "heading1 for page title",
+        "Text variant='body' bold for emphasized text",
+        "Text variant='secondary' size='sm' for metadata",
+        "aria-hidden on decorative icons",
+        "responsive design (hidden md:block)",
+        "middot separators for inline metadata",
+        "Phosphor icons with proper sizing"
+      ]
+    }
+  }
+}

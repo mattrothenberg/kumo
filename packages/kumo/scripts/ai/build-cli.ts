@@ -22,6 +22,14 @@ const cliFiles = [
   { src: "scripts/ai/cli.ts", dest: "dist/cli/cli.js" },
   { src: "scripts/ai/commands/ls.ts", dest: "dist/cli/commands/ls.js" },
   { src: "scripts/ai/commands/doc.ts", dest: "dist/cli/commands/doc.js" },
+  {
+    src: "scripts/ai/commands/add-template.ts",
+    dest: "dist/cli/commands/add-template.js",
+  },
+  {
+    src: "scripts/ai/commands/list-templates.ts",
+    dest: "dist/cli/commands/list-templates.js",
+  },
 ];
 
 console.log("Building Kumo CLI...");

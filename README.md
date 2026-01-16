@@ -45,11 +45,13 @@ npm install -g pnpm
 This repository uses [Lefthook](https://github.com/evilmartians/lefthook) to enforce changeset validation before pushing. Hooks are automatically installed when you run `pnpm install`.
 
 **What the pre-push hook does:**
+
 - Validates that changes to `packages/kumo/` include a changeset
 - Prevents pushing without proper version documentation
 - Provides clear instructions if validation fails
 
 **Skip mechanisms:**
+
 ```bash
 # Skip all hooks
 git push --no-verify
@@ -70,6 +72,7 @@ If you're using a Git GUI client (Tower, SourceTree, GitKraken, VS Code) and hoo
    - `/opt/homebrew/bin` or `/usr/local/bin`
 
 2. **Missing origin/main**: If you get an error about missing `origin/main`, fetch it:
+
    ```bash
    git fetch origin main
    ```
@@ -82,7 +85,6 @@ If you're using a Git GUI client (Tower, SourceTree, GitKraken, VS Code) and hoo
 ### NPM Registry Configuration
 
 Follow the steps at [Getting started with the private NPM registry](https://wiki.cfdata.org/display/FE/Getting+started+with+the+private+NPM+registry) to configure your `NPM_TOKEN`.
-
 
 To install `@cloudflare` scoped packages, you need to configure NPM to use the Cloudflare private registry. Add the following to either your user-level NPM configuration (`~/.npmrc`) or your consuming project's `.npmrc`:
 
@@ -115,6 +117,119 @@ pnpm dev
 Your application runs at `http://localhost:5173`.
 
 **Note:** The docs site requires the component library to be built at least once. After that, you can use the watch build for development (see [Development Scenarios](#development-scenarios) below).
+
+## CLI Tools
+
+Kumo provides a CLI for accessing component documentation and scaffolding templates directly from Storybook.
+
+### Component Registry
+
+Query component documentation from the command line:
+
+```bash
+# List all components with categories
+npx @cloudflare/kumo ls
+
+# Get detailed documentation for a specific component
+npx @cloudflare/kumo doc Button
+
+# Get documentation for all components
+npx @cloudflare/kumo docs
+```
+
+The component registry is automatically generated from Kumo's source code and includes props, variants, examples, and usage patterns.
+
+### Template System
+
+Scaffold pages and layouts from Kumo Storybook examples. Templates are copied as source code that you own and customize, similar to shadcn/ui.
+
+```bash
+# List available templates
+npx @cloudflare/kumo templates
+
+# List templates by category
+npx @cloudflare/kumo templates layouts
+npx @cloudflare/kumo templates pages
+
+# Add a template to your project
+npx @cloudflare/kumo add layouts/centered-page-layout
+npx @cloudflare/kumo add pages/active-sessions
+```
+
+**Why templates?**
+
+- 🚀 **Rapid scaffolding** - Start new pages in seconds
+- 🎨 **Design consistency** - All templates use Kumo's design system
+- 📝 **Full ownership** - Code is copied, not installed as a dependency
+- 🤖 **AI training data** - Storybook pages serve as reference implementations
+- 🔄 **Battle-tested** - Templates come from production Storybook implementations
+
+#### Available Templates
+
+**Layouts:**
+
+- `layouts/centered-page-layout` - Single-column centered layout with header and LayerCards
+
+**Pages:**
+
+- `pages/active-sessions` - Complete device/session management page with mock data
+
+#### Using Templates
+
+```bash
+# 1. Browse available templates
+npx @cloudflare/kumo templates
+
+# 2. Add a template
+npx @cloudflare/kumo add pages/active-sessions
+
+# 3. Files are copied to your project
+# ✓ src/pages/active-sessions/active-sessions.tsx
+# ✓ src/pages/active-sessions/active-sessions-mocks.ts
+
+# 4. Install dependencies (if needed)
+pnpm add @cloudflare/kumo @phosphor-icons/react
+
+# 5. Customize the template
+# - Replace mock data with real API calls
+# - Modify styling and behavior
+# - Remove unused features
+```
+
+#### Templates vs Components
+
+**Kumo Components** (npm package):
+
+- Installed as dependencies
+- Centrally maintained and updated
+- Stable APIs
+- Use for: buttons, inputs, cards, common patterns
+
+**Kumo Templates** (copy-paste code):
+
+- Copied as source code you own
+- Full customization freedom
+- No version lock-in
+- Use for: complete pages, complex workflows, rapid prototyping
+
+**Best practice:** Use both! Start with a template for page structure, then use Kumo components within it.
+
+#### The Storybook → Production Workflow
+
+Templates enable a powerful development workflow:
+
+1. **Build in Storybook** - Create pages in isolation with mock data
+2. **Test & Refine** - Iterate quickly without app dependencies
+3. **Export as Template** - Make it available for reuse
+4. **Import to Production** - `npx @cloudflare/kumo add pages/my-page`
+5. **Connect & Ship** - Wire up real APIs and deploy
+
+This workflow provides:
+
+- ⚡ Faster iteration (no app rebuilds)
+- 🎯 Focused development (no distractions)
+- 📚 Living documentation (Storybook stays current)
+- 🤖 AI training data (examples for coding agents)
 
 ### Working with Workspaces
 

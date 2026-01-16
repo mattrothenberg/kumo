@@ -320,6 +320,8 @@
   "files": [
     "dist",
     "ai",
+    "templates",
+    "scripts",
     "README.md",
     "LICENSE",
     "CHANGELOG.md"
