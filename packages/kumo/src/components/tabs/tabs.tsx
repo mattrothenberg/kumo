@@ -3,19 +3,16 @@ import { Tabs as TabsPrimitive } from "@base-ui/react/tabs";
 import { cn } from "../../utils/cn";
 
 export const KUMO_TABS_VARIANTS = {
-  // Tabs currently has no variant options but structure is ready for future additions
+  variant: ["segmented", "underline"],
 } as const;
 
-export const KUMO_TABS_DEFAULT_VARIANTS = {} as const;
+export const KUMO_TABS_DEFAULT_VARIANTS = {
+  variant: "segmented",
+} as const;
 
 // Derived types from KUMO_TABS_VARIANTS
-export interface KumoTabsVariantsProps {}
-
-export function tabsVariants(_props: KumoTabsVariantsProps = {}) {
-  return cn(
-    // Base styles
-    "relative min-w-0 font-medium",
-  );
+export interface KumoTabsVariantsProps {
+  variant?: (typeof KUMO_TABS_VARIANTS.variant)[number];
 }
 
 export type TabsItem = {
@@ -25,12 +22,25 @@ export type TabsItem = {
 };
 
 export type TabsProps = KumoTabsVariantsProps & {
+  /** Array of tab items to render */
   tabs?: TabsItem[];
+  /** Controlled value. When set, component becomes controlled. */
   value?: string;
+  /** Default selected value for uncontrolled mode. Ignored when `value` is set. */
   selectedValue?: string;
+  /** Callback fired when the active tab changes */
   onValueChange?: (value: string) => void;
+  /**
+   * When true, tabs are activated immediately upon receiving focus via arrow keys.
+   * When false (default), tabs receive focus but require Enter/Space to activate.
+   * Set to true for better keyboard UX in most cases.
+   */
+  activateOnFocus?: boolean;
+  /** Additional class name for the root element */
   className?: string;
+  /** Additional class name for the tab list element */
   listClassName?: string;
+  /** Additional class name for the indicator element */
   indicatorClassName?: string;
 };
 
@@ -39,9 +49,11 @@ export function Tabs({
   value,
   selectedValue,
   onValueChange,
+  activateOnFocus,
   className,
   listClassName,
   indicatorClassName,
+  variant = KUMO_TABS_DEFAULT_VARIANTS.variant,
 }: TabsProps) {
   const items: TabsItem[] = tabs ?? [];
 
@@ -56,6 +68,9 @@ export function Tabs({
     defaultValue: isControlled ? undefined : (selectedValue ?? fallbackValue),
   };
 
+  const isSegmented = variant === "segmented";
+  const isUnderline = variant === "underline";
+
   return (
     <TabsPrimitive.Root
       {...rootProps}
@@ -65,10 +80,16 @@ export function Tabs({
         onValueChange?.(stringValue);
       }}
     >
-      <div className="absolute inset-x-0 top-1/2 -z-10 h-8.5 -translate-y-1/2 rounded-lg bg-accent" />
+      {/* Background element for segmented variant */}
+      {isSegmented && (
+        <div className="absolute inset-x-0 top-1/2 -z-10 h-8.5 -translate-y-1/2 rounded-lg bg-accent" />
+      )}
       <TabsPrimitive.List
+        activateOnFocus={activateOnFocus}
         className={cn(
-          "scrollbar-hide relative flex h-8.5 min-w-0 shrink items-stretch overflow-x-auto rounded-lg bg-accent px-px",
+          "scrollbar-hide relative flex min-w-0 shrink items-stretch",
+          isSegmented && "h-8.5 rounded-lg bg-accent px-px",
+          isUnderline && "h-7 pb-2 gap-4 border-b border-border",
           listClassName,
         )}
       >
@@ -77,8 +98,11 @@ export function Tabs({
             key={tab.value}
             value={tab.value}
             className={cn(
-              "relative z-10 my-px flex cursor-pointer items-center rounded-lg bg-transparent px-2.5 text-base whitespace-nowrap text-label transition-colors focus-visible:outline-none",
-              "data-selected:text-surface",
+              "relative z-10 flex cursor-pointer items-center rounded bg-transparent text-base whitespace-nowrap hover:border-accent focus-visible:ring-active focus-visible:outline-offset-3 focus-visible:rounded-none",
+              isSegmented &&
+                "my-px rounded-lg px-2.5 text-label aria-selected:text-surface",
+              isUnderline &&
+                "mb-2 text-label aria-selected:font-medium aria-selected:text-surface hover:text-muted",
               tab.className,
             )}
           >
@@ -87,9 +111,12 @@ export function Tabs({
         ))}
         <TabsPrimitive.Indicator
           className={cn(
-            "absolute z-0 rounded-lg bg-surface-elevated shadow-sm ring ring-color-2 transition-[left,width,transform] duration-200 ease-out",
+            "absolute z-0 transition-[left,width,transform] duration-200 ease-out",
             "data-[rendered=false]:scale-90 data-[rendered=false]:opacity-0",
-            "top-(--active-tab-top) left-(--active-tab-left) h-(--active-tab-height) w-(--active-tab-width)",
+            "left-(--active-tab-left) w-(--active-tab-width)",
+            isSegmented &&
+              "top-(--active-tab-top) h-(--active-tab-height) rounded-lg bg-surface-elevated shadow-sm ring ring-color-2",
+            isUnderline && "bottom-0 h-0.5 bg-primary",
             indicatorClassName,
           )}
         />

@@ -2208,27 +2208,47 @@
       "props": {
         "tabs": {
           "type": "TabsItem[]",
-          "optional": true
+          "optional": true,
+          "description": "Array of tab items to render"
         },
         "value": {
           "type": "string",
-          "optional": true
+          "optional": true,
+          "description": "Controlled value. When set, component becomes controlled."
         },
         "selectedValue": {
           "type": "string",
-          "optional": true
+          "optional": true,
+          "description": "Default selected value for uncontrolled mode. Ignored when `value` is set."
+        },
+        "activateOnFocus": {
+          "type": "boolean",
+          "optional": true,
+          "description": "When true, tabs are activated immediately upon receiving focus via arrow keys. When false (default), tabs receive focus but require Enter/Space to activate. Set to true for better keyboard UX in most cases."
         },
         "className": {
           "type": "string",
-          "optional": true
+          "optional": true,
+          "description": "Additional class name for the root element"
         },
         "listClassName": {
           "type": "string",
-          "optional": true
+          "optional": true,
+          "description": "Additional class name for the tab list element"
         },
         "indicatorClassName": {
           "type": "string",
-          "optional": true
+          "optional": true,
+          "description": "Additional class name for the indicator element"
+        },
+        "variant": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "segmented",
+            "underline"
+          ],
+          "default": "segmented"
         },
         "onValueChange": {
           "type": "(value: string) => void",
@@ -2236,11 +2256,17 @@
         }
       },
       "examples": [
-        "<Tabs tabs={`[\n      { value: \"tab1\", label: \"Tab 1\" },\n      { value: \"tab2\", label: \"Tab 2\" },\n      { value: \"tab3\", label: \"Tab 3\" },\n    ]`} selectedValue=\"tab1\" />"
+        "<Tabs tabs=\"defaultTabs\" selectedValue=\"tab1\" />",
+        "<Tabs tabs=\"defaultTabs\" selectedValue=\"tab1\" variant=\"segmented\" />",
+        "<Tabs tabs=\"defaultTabs\" selectedValue=\"tab1\" variant=\"underline\" />",
+        "<Tabs tabs={`[\n      { value: \"overview\", label: \"Overview\" },\n      { value: \"analytics\", label: \"Analytics\" },\n      { value: \"reports\", label: \"Reports\" },\n      { value: \"notifications\", label: \"Notifications\" },\n      { value: \"settings\", label: \"Settings\" },\n      { value: \"billing\", label: \"Billing\" },\n    ]`} selectedValue=\"overview\" variant=\"underline\" />"
       ],
       "colors": [
         "bg-accent",
+        "bg-primary",
         "bg-surface-elevated",
+        "border-border",
+        "outline-active",
         "ring-color-2",
         "text-label",
         "text-surface"

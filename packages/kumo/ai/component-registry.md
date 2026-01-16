@@ -2932,26 +2932,35 @@ Tabs component
 **Props:**
 
 - `tabs`: TabsItem[]
+  Array of tab items to render
 - `value`: string
+  Controlled value. When set, component becomes controlled.
 - `selectedValue`: string
+  Default selected value for uncontrolled mode. Ignored when `value` is set.
+- `activateOnFocus`: boolean
+  When true, tabs are activated immediately upon receiving focus via arrow keys. When false (default), tabs receive focus but require Enter/Space to activate. Set to true for better keyboard UX in most cases.
 - `className`: string
+  Additional class name for the root element
 - `listClassName`: string
+  Additional class name for the tab list element
 - `indicatorClassName`: string
+  Additional class name for the indicator element
+- `variant`: enum [default: segmented]
 - `onValueChange`: (value: string) => void
   Callback when active tab changes
 
 **Colors (kumo tokens used):**
 
-`bg-accent`, `bg-surface-elevated`, `ring-color-2`, `text-label`, `text-surface`
+`bg-accent`, `bg-primary`, `bg-surface-elevated`, `border-border`, `outline-active`, `ring-color-2`, `text-label`, `text-surface`
 
 **Examples:**
 
 ```tsx
-<Tabs tabs={[
-      { value: "tab1", label: "Tab 1" },
-      { value: "tab2", label: "Tab 2" },
-      { value: "tab3", label: "Tab 3" },
-    ]} selectedValue="tab1" />
+<Tabs tabs="defaultTabs" selectedValue="tab1" />
+```
+
+```tsx
+<Tabs tabs="defaultTabs" selectedValue="tab1" variant="segmented" />
 ```
 
 
