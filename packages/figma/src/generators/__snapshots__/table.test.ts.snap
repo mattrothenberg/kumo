@@ -384,7 +384,7 @@ exports[`Table Generator - Snapshot Tests (Intermediate Data) > should produce c
   "borderVariable": "color-border",
   "boxSize": 16,
   "checkedBgVariable": "color-surface-inverse",
-  "iconColor": "text-white",
+  "iconColor": "text-surface-inverse",
   "iconName": "ph-check",
   "iconSize": 12,
   "uncheckedBgVariable": "color-surface",

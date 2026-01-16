@@ -11,7 +11,13 @@
         "variant": {
           "type": "enum",
           "optional": true,
-          "values": ["primary", "secondary", "destructive", "outline", "beta"],
+          "values": [
+            "primary",
+            "secondary",
+            "destructive",
+            "outline",
+            "beta"
+          ],
           "descriptions": {
             "primary": "Default high-emphasis badge for important labels",
             "secondary": "Subtle badge for secondary information",
@@ -74,7 +80,11 @@
         "variant": {
           "type": "enum",
           "optional": true,
-          "values": ["default", "alert", "error"],
+          "values": [
+            "default",
+            "alert",
+            "error"
+          ],
           "descriptions": {
             "default": "Informational banner for general messages",
             "alert": "Warning banner for cautionary messages",
@@ -123,7 +133,10 @@
         "size": {
           "type": "enum",
           "optional": true,
-          "values": ["sm", "base"],
+          "values": [
+            "sm",
+            "base"
+          ],
           "descriptions": {
             "sm": "Compact breadcrumbs for dense UIs",
             "base": "Default breadcrumbs size"
@@ -152,7 +165,11 @@
         "<Breadcrumbs>\n      <Breadcrumbs.Current>Home</Breadcrumbs.Current>\n    </Breadcrumbs>",
         "<Breadcrumbs>\n      <Breadcrumbs.Link href=\"/\">Home</Breadcrumbs.Link>\n      <Breadcrumbs.Separator />\n      <Breadcrumbs.Link href=\"/projects\">Projects</Breadcrumbs.Link>\n      <Breadcrumbs.Separator />\n      <Breadcrumbs.Current>Current Project</Breadcrumbs.Current>\n      <Breadcrumbs.Clipboard text=\"https://example.com/projects/current-project\" />\n    </Breadcrumbs>"
       ],
-      "colors": ["text-disabled", "text-green", "text-muted"],
+      "colors": [
+        "text-disabled",
+        "text-green",
+        "text-muted"
+      ],
       "subComponents": {
         "Link": {
           "name": "Link",
@@ -225,7 +242,11 @@
         "shape": {
           "type": "enum",
           "optional": true,
-          "values": ["base", "square", "circle"],
+          "values": [
+            "base",
+            "square",
+            "circle"
+          ],
           "descriptions": {
             "base": "Default rectangular button shape",
             "square": "Square button for icon-only actions",
@@ -240,7 +261,12 @@
         "size": {
           "type": "enum",
           "optional": true,
-          "values": ["xs", "sm", "base", "lg"],
+          "values": [
+            "xs",
+            "sm",
+            "base",
+            "lg"
+          ],
           "descriptions": {
             "xs": "Extra small button for compact UIs",
             "sm": "Small button for secondary actions",
@@ -466,17 +492,29 @@
         "unselectable": {
           "type": "enum",
           "optional": true,
-          "values": ["on", "off"]
+          "values": [
+            "on",
+            "off"
+          ]
         },
         "popover": {
           "type": "enum",
           "optional": true,
-          "values": ["", "auto", "manual", "hint"]
+          "values": [
+            "",
+            "auto",
+            "manual",
+            "hint"
+          ]
         },
         "popoverTargetAction": {
           "type": "enum",
           "optional": true,
-          "values": ["toggle", "show", "hide"]
+          "values": [
+            "toggle",
+            "show",
+            "hide"
+          ]
         },
         "popoverTarget": {
           "type": "string",
@@ -525,7 +563,11 @@
         "type": {
           "type": "enum",
           "optional": true,
-          "values": ["submit", "reset", "button"]
+          "values": [
+            "submit",
+            "reset",
+            "button"
+          ]
         },
         "value": {
           "type": "string | string[] | number",
@@ -583,7 +625,10 @@
           "type": "enum",
           "optional": true,
           "description": "Visual variant: \"default\" or \"error\" for validation failures (visual only, no error text)",
-          "values": ["default", "error"],
+          "values": [
+            "default",
+            "error"
+          ],
           "descriptions": {
             "default": "Default checkbox appearance",
             "error": "Error state for validation failures"
@@ -831,17 +876,29 @@
         "unselectable": {
           "type": "enum",
           "optional": true,
-          "values": ["on", "off"]
+          "values": [
+            "on",
+            "off"
+          ]
         },
         "popover": {
           "type": "enum",
           "optional": true,
-          "values": ["", "auto", "manual", "hint"]
+          "values": [
+            "",
+            "auto",
+            "manual",
+            "hint"
+          ]
         },
         "popoverTargetAction": {
           "type": "enum",
           "optional": true,
-          "values": ["toggle", "show", "hide"]
+          "values": [
+            "toggle",
+            "show",
+            "hide"
+          ]
         },
         "popoverTarget": {
           "type": "string",
@@ -979,14 +1036,32 @@
       "styling": {
         "dimensions": "h-4 w-4",
         "borderRadius": "rounded-sm",
-        "baseTokens": ["bg-surface", "ring-border"],
+        "baseTokens": [
+          "bg-surface",
+          "ring-border"
+        ],
         "states": {
-          "checked": ["bg-surface-inverse", "text-surface-inverse"],
-          "indeterminate": ["bg-surface-inverse", "text-surface-inverse"],
-          "error": ["ring-error"],
-          "hover": ["ring-active"],
-          "focus": ["ring-active"],
-          "disabled": ["opacity-50", "cursor-not-allowed"]
+          "checked": [
+            "bg-surface-inverse",
+            "text-surface-inverse"
+          ],
+          "indeterminate": [
+            "bg-surface-inverse",
+            "text-surface-inverse"
+          ],
+          "error": [
+            "ring-error"
+          ],
+          "hover": [
+            "ring-active"
+          ],
+          "focus": [
+            "ring-active"
+          ],
+          "disabled": [
+            "opacity-50",
+            "cursor-not-allowed"
+          ]
         },
         "icons": [
           {
@@ -1012,7 +1087,11 @@
         "size": {
           "type": "enum",
           "optional": true,
-          "values": ["sm", "base", "lg"],
+          "values": [
+            "sm",
+            "base",
+            "lg"
+          ],
           "descriptions": {
             "sm": "Small clipboard text for compact UIs",
             "base": "Default clipboard text size",
@@ -1044,7 +1123,10 @@
         "<ClipboardText text=\"This is a much longer text that demonstrates how the clipboard text component handles overflow with extended content\" />",
         "<ClipboardText text=\"npx create-cloudflare@latest my-app --template kumo\" size=\"base\" />"
       ],
-      "colors": ["bg-surface", "border-color"],
+      "colors": [
+        "bg-surface",
+        "border-color"
+      ],
       "styling": {
         "baseTokens": [
           "bg-surface",
@@ -1053,9 +1135,18 @@
           "border-color"
         ],
         "states": {
-          "input": ["bg-secondary", "text-surface", "ring-border"],
-          "text": ["bg-surface", "font-mono"],
-          "button": ["border-color"]
+          "input": [
+            "bg-secondary",
+            "text-surface",
+            "ring-border"
+          ],
+          "text": [
+            "bg-surface",
+            "font-mono"
+          ],
+          "button": [
+            "border-color"
+          ]
         },
         "inputStyles": {
           "base": "bg-secondary text-surface ring ring-border",
@@ -1125,7 +1216,13 @@
         "lang": {
           "type": "enum",
           "optional": true,
-          "values": ["ts", "tsx", "jsonc", "bash", "css"],
+          "values": [
+            "ts",
+            "tsx",
+            "jsonc",
+            "bash",
+            "css"
+          ],
           "descriptions": {
             "ts": "TypeScript code",
             "tsx": "TypeScript JSX code",
@@ -1161,7 +1258,11 @@
         "<Code lang=\"bash\" code=\"npm install @cloudflare/kumo\" />",
         "<CodeBlock\n      lang=\"tsx\"\n      code={`<Button variant=\"primary\">\n  Click me\n</Button>`}\n    />"
       ],
-      "colors": ["bg-surface", "border-color", "text-label"],
+      "colors": [
+        "bg-surface",
+        "border-color",
+        "text-label"
+      ],
       "subComponents": {
         "Block": {
           "name": "Block",
@@ -1179,7 +1280,9 @@
         }
       },
       "styling": {
-        "baseTokens": ["text-label"],
+        "baseTokens": [
+          "text-label"
+        ],
         "dimensions": "m-0 w-auto p-0",
         "borderRadius": "rounded-none",
         "states": {
@@ -1234,7 +1337,10 @@
       "examples": [
         "<Collapsible label=\"Click to expand\" open={open} onOpenChange={setOpen}>\n        <Text>\n          This is the collapsible content that can be shown or hidden.\n        </Text>\n      </Collapsible>"
       ],
-      "colors": ["border-color", "text-info"]
+      "colors": [
+        "border-color",
+        "text-info"
+      ]
     },
     "Combobox": {
       "name": "Combobox",
@@ -1246,7 +1352,10 @@
         "inputSide": {
           "type": "enum",
           "optional": true,
-          "values": ["right", "top"],
+          "values": [
+            "right",
+            "top"
+          ],
           "descriptions": {
             "right": "Input positioned inline to the right of chips",
             "top": "Input positioned above chips"
@@ -1443,7 +1552,11 @@
         "size": {
           "type": "enum",
           "optional": true,
-          "values": ["sm", "base", "lg"],
+          "values": [
+            "sm",
+            "base",
+            "lg"
+          ],
           "descriptions": {
             "sm": "Compact calendar for tight spaces",
             "base": "Default calendar size",
@@ -1459,7 +1572,10 @@
         "variant": {
           "type": "enum",
           "optional": true,
-          "values": ["default", "subtle"],
+          "values": [
+            "default",
+            "subtle"
+          ],
           "descriptions": {
             "default": "Default calendar appearance",
             "subtle": "Subtle calendar with minimal background"
@@ -1571,7 +1687,12 @@
         "size": {
           "type": "enum",
           "optional": true,
-          "values": ["base", "sm", "lg", "xl"],
+          "values": [
+            "base",
+            "sm",
+            "lg",
+            "xl"
+          ],
           "descriptions": {
             "base": "Default dialog width",
             "sm": "Small dialog for simple confirmations",
@@ -1594,7 +1715,11 @@
         "<div className=\"flex flex-wrap gap-4\">\n      <Dialog.Root>\n        <Dialog.Trigger render={<Button>Small (sm)</Button>} />\n        <Dialog className=\"p-6\" size=\"sm\">\n          <div className=\"mb-4 flex items-center justify-between\">\n            <Dialog.Title className=\"text-lg font-semibold\">\n              Small Dialog\n            </Dialog.Title>\n            <Dialog.Close\n              render={\n                <button className=\"text-muted transition-colors hover:text-surface\">\n                  <Icon glyph=\"ph-x\" size=\"sm\" />\n                </button>\n              }\n            />\n          </div>\n          <Dialog.Description className=\"mb-4 text-muted\">\n            This is a small dialog for simple confirmations.\n          </Dialog.Description>\n          <div className=\"flex justify-end gap-2\">\n            <Dialog.Close\n              render={<Button variant=\"secondary\">Cancel</Button>}\n            />\n            <Button variant=\"primary\">Confirm</Button>\n          </div>\n        </Dialog>\n      </Dialog.Root>\n\n      <Dialog.Root>\n        <Dialog.Trigger render={<Button>Base (default)</Button>} />\n        <Dialog className=\"p-6\" size=\"base\">\n          <div className=\"mb-4 flex items-center justify-between\">\n            <Dialog.Title className=\"text-xl font-semibold\">\n              Base Dialog\n            </Dialog.Title>\n            <Dialog.Close\n              render={\n                <button className=\"text-muted transition-colors hover:text-surface\">\n                  <Icon glyph=\"ph-x\" size=\"sm\" />\n                </button>\n              }\n            />\n          </div>\n          <Dialog.Description className=\"mb-4 text-muted\">\n            This is the default dialog size for most use cases.\n          </Dialog.Description>\n          <div className=\"flex justify-end gap-3\">\n            <Dialog.Close\n              render={<Button variant=\"secondary\">Cancel</Button>}\n            />\n            <Button variant=\"primary\">Confirm</Button>\n          </div>\n        </Dialog>\n      </Dialog.Root>\n\n      <Dialog.Root>\n        <Dialog.Trigger render={<Button>Large (lg)</Button>} />\n        <Dialog className=\"p-6\" size=\"lg\">\n          <div className=\"mb-4 flex items-center justify-between\">\n            <Dialog.Title className=\"text-xl font-semibold\">\n              Large Dialog\n            </Dialog.Title>\n            <Dialog.Close\n              render={\n                <button className=\"text-muted transition-colors hover:text-surface\">\n                  <Icon glyph=\"ph-x\" size=\"sm\" />\n                </button>\n              }\n            />\n          </div>\n          <Dialog.Description className=\"mb-4 text-muted\">\n            This is a large dialog for complex content that needs more space.\n          </Dialog.Description>\n          <div className=\"flex justify-end gap-3\">\n            <Dialog.Close\n              render={<Button variant=\"secondary\">Cancel</Button>}\n            />\n            <Button variant=\"primary\">Confirm</Button>\n          </div>\n        </Dialog>\n      </Dialog.Root>\n\n      <Dialog.Root>\n        <Dialog.Trigger render={<Button>Extra Large (xl)</Button>} />\n        <Dialog className=\"p-6\" size=\"xl\">\n          <div className=\"mb-4 flex items-center justify-between\">\n            <Dialog.Title className=\"text-xl font-semibold\">\n              Extra Large Dialog\n            </Dialog.Title>\n            <Dialog.Close\n              render={\n                <button className=\"text-muted transition-colors hover:text-surface\">\n                  <Icon glyph=\"ph-x\" size=\"sm\" />\n                </button>\n              }\n            />\n          </div>\n          <Dialog.Description className=\"mb-4 text-muted\">\n            This is an extra large dialog for detailed views and complex forms.\n          </Dialog.Description>\n          <div className=\"flex justify-end gap-3\">\n            <Dialog.Close\n              render={<Button variant=\"secondary\">Cancel</Button>}\n            />\n            <Button variant=\"primary\">Confirm</Button>\n          </div>\n        </Dialog>\n      </Dialog.Root>\n    </div>",
         "<Dialog.Root>\n      <Dialog.Trigger render={<Button>Edit Profile</Button>} />\n      <Dialog className=\"p-6\" size=\"base\">\n        <div className=\"mb-4 flex items-center justify-between\">\n          <Dialog.Title className=\"text-xl font-semibold\">\n            Edit Profile\n          </Dialog.Title>\n          <Dialog.Close\n            render={\n              <button className=\"text-muted transition-colors hover:text-surface\">\n                <Icon glyph=\"ph-x\" size=\"sm\" />\n              </button>\n            }\n          />\n        </div>\n        <Dialog.Description className=\"mb-4 text-muted\">\n          Update your profile information below.\n        </Dialog.Description>\n        <form className=\"space-y-4\">\n          <div>\n            <label htmlFor=\"name\" className=\"mb-1 block text-sm font-medium\">\n              Name\n            </label>\n            <input\n              id=\"name\"\n              type=\"text\"\n              aria-label=\"Name\"\n              className=\"w-full rounded-lg bg-secondary px-3 py-2 ring ring-border focus:ring-active\"\n              placeholder=\"Enter your name\"\n            />\n          </div>\n          <div>\n            <label htmlFor=\"email\" className=\"mb-1 block text-sm font-medium\">\n              Email\n            </label>\n            <input\n              id=\"email\"\n              type=\"email\"\n              aria-label=\"Email\"\n              className=\"w-full rounded-lg bg-secondary px-3 py-2 ring ring-border focus:ring-active\"\n              placeholder=\"Enter your email\"\n            />\n          </div>\n          <div className=\"flex justify-end gap-3 pt-2\">\n            <Dialog.Close\n              render={<Button variant=\"secondary\">Cancel</Button>}\n            />\n            <Button variant=\"primary\">Save Changes</Button>\n          </div>\n        </form>\n      </Dialog>\n    </Dialog.Root>"
       ],
-      "colors": ["bg-color-3", "bg-surface", "text-surface"],
+      "colors": [
+        "bg-color-3",
+        "bg-surface",
+        "text-surface"
+      ],
       "subComponents": {
         "Root": {
           "name": "Root",
@@ -1757,8 +1882,15 @@
           }
         },
         "states": {
-          "base": ["bg-surface", "text-surface", "shadow-m"],
-          "backdrop": ["bg-color-3", "opacity-80"]
+          "base": [
+            "bg-surface",
+            "text-surface",
+            "shadow-m"
+          ],
+          "backdrop": [
+            "bg-color-3",
+            "opacity-80"
+          ]
         }
       }
     },
@@ -1772,7 +1904,10 @@
         "variant": {
           "type": "enum",
           "optional": true,
-          "values": ["default", "danger"],
+          "values": [
+            "default",
+            "danger"
+          ],
           "descriptions": {
             "default": "Default dropdown item appearance",
             "danger": "Destructive action item"
@@ -1873,7 +2008,11 @@
         "size": {
           "type": "enum",
           "optional": true,
-          "values": ["sm", "base", "lg"],
+          "values": [
+            "sm",
+            "base",
+            "lg"
+          ],
           "descriptions": {
             "sm": "Compact empty state for smaller containers",
             "base": "Default empty state size",
@@ -1975,7 +2114,11 @@
         }
       },
       "examples": [],
-      "colors": ["text-error", "text-muted", "text-surface"]
+      "colors": [
+        "text-error",
+        "text-muted",
+        "text-surface"
+      ]
     },
     "Icon": {
       "name": "Icon",
@@ -1997,7 +2140,13 @@
         "size": {
           "type": "enum",
           "optional": true,
-          "values": ["xs", "sm", "base", "lg", "xl"],
+          "values": [
+            "xs",
+            "sm",
+            "base",
+            "lg",
+            "xl"
+          ],
           "descriptions": {
             "xs": "12px - small UI elements",
             "sm": "16px - standard inline icons",
@@ -2074,10 +2223,13 @@
           "type": "string",
           "optional": true
         },
-        "crossOrigin": {
-          "type": "enum",
-          "optional": true,
-          "values": ["anonymous", "use-credentials", ""]
+        "width": {
+          "type": "number | string",
+          "optional": true
+        },
+        "role": {
+          "type": "React.AriaRole",
+          "optional": true
         },
         "accentHeight": {
           "type": "number | string",
@@ -2086,12 +2238,18 @@
         "accumulate": {
           "type": "enum",
           "optional": true,
-          "values": ["none", "sum"]
+          "values": [
+            "none",
+            "sum"
+          ]
         },
         "additive": {
           "type": "enum",
           "optional": true,
-          "values": ["replace", "sum"]
+          "values": [
+            "replace",
+            "sum"
+          ]
         },
         "alignmentBaseline": {
           "type": "enum",
@@ -2115,7 +2273,10 @@
         "allowReorder": {
           "type": "enum",
           "optional": true,
-          "values": ["no", "yes"]
+          "values": [
+            "no",
+            "yes"
+          ]
         },
         "alphabetic": {
           "type": "number | string",
@@ -2128,7 +2289,12 @@
         "arabicForm": {
           "type": "enum",
           "optional": true,
-          "values": ["initial", "medial", "terminal", "isolated"]
+          "values": [
+            "initial",
+            "medial",
+            "terminal",
+            "isolated"
+          ]
         },
         "ascent": {
           "type": "number | string",
@@ -2209,7 +2375,12 @@
         "colorInterpolationFilters": {
           "type": "enum",
           "optional": true,
-          "values": ["auto", "sRGB", "linearRGB", "inherit"]
+          "values": [
+            "auto",
+            "sRGB",
+            "linearRGB",
+            "inherit"
+          ]
         },
         "colorProfile": {
           "type": "number | string",
@@ -2333,7 +2504,11 @@
         "fillRule": {
           "type": "enum",
           "optional": true,
-          "values": ["nonzero", "evenodd", "inherit"]
+          "values": [
+            "nonzero",
+            "evenodd",
+            "inherit"
+          ]
         },
         "filter": {
           "type": "string",
@@ -2834,12 +3009,22 @@
         "strokeLinecap": {
           "type": "enum",
           "optional": true,
-          "values": ["butt", "round", "square", "inherit"]
+          "values": [
+            "butt",
+            "round",
+            "square",
+            "inherit"
+          ]
         },
         "strokeLinejoin": {
           "type": "enum",
           "optional": true,
-          "values": ["miter", "round", "bevel", "inherit"]
+          "values": [
+            "miter",
+            "round",
+            "bevel",
+            "inherit"
+          ]
         },
         "strokeMiterlimit": {
           "type": "number | string",
@@ -2876,7 +3061,12 @@
         "textAnchor": {
           "type": "enum",
           "optional": true,
-          "values": ["start", "middle", "end", "inherit"]
+          "values": [
+            "start",
+            "middle",
+            "end",
+            "inherit"
+          ]
         },
         "textDecoration": {
           "type": "number | string",
@@ -3097,8 +3287,11 @@
         "<Icon glyph=\"ph-check\" title={Success} />",
         "<div className=\"flex gap-4\">\n      <Icon glyph=\"ph-check\" className=\"text-green\" size=\"lg\" />\n      <Icon glyph=\"ph-warning\" className=\"text-alert\" size=\"lg\" />\n      <Icon glyph=\"ph-x\" className=\"text-error\" size=\"lg\" />\n      <Icon glyph=\"ph-info\" className=\"text-info\" size=\"lg\" />\n      <Icon glyph=\"ph-check\" className=\"text-brand\" size=\"lg\" />\n      <Icon glyph=\"ph-gear\" className=\"text-label\" size=\"lg\" />\n      <Icon\n        glyph=\"cf-cloudflare-workers-outline\"\n        className=\"text-green\"\n        size=\"lg\"\n      />\n      <Icon\n        glyph=\"cf-security-shield-protection-1-outline\"\n        className=\"text-alert\"\n        size=\"lg\"\n      />\n      <Icon\n        glyph=\"cf-cloudflare-pages-outline\"\n        className=\"text-error\"\n        size=\"lg\"\n      />\n      <Icon\n        glyph=\"cf-cloudflare-zero-trust-outline\"\n        className=\"text-info\"\n        size=\"lg\"\n      />\n      <Icon glyph=\"cf-r2-outline\" className=\"text-brand\" size=\"lg\" />\n      <Icon glyph=\"cf-d1-outline\" className=\"text-label\" size=\"lg\" />\n    </div>"
       ],
-
-      "colors": ["text-brand", "text-error", "text-green"]
+      "colors": [
+        "text-brand",
+        "text-error",
+        "text-green"
+      ]
     },
     "Input": {
       "name": "Input",
@@ -3130,7 +3323,12 @@
         "size": {
           "type": "enum",
           "optional": true,
-          "values": ["xs", "sm", "base", "lg"],
+          "values": [
+            "xs",
+            "sm",
+            "base",
+            "lg"
+          ],
           "descriptions": {
             "xs": "Extra small input for compact UIs",
             "sm": "Small input for secondary fields",
@@ -3148,7 +3346,10 @@
         "variant": {
           "type": "enum",
           "optional": true,
-          "values": ["default", "error"],
+          "values": [
+            "default",
+            "error"
+          ],
           "descriptions": {
             "default": "Default input appearance",
             "error": "Error state for validation failures"
@@ -3169,6 +3370,7 @@
         }
       },
       "examples": [
+        "<Input placeholder=\"Enter text...\" />",
         "<Input\n      label=\"Email\"\n      placeholder=\"Enter your email\"\n      description=\"We'll never share your email with anyone else\"\n    />",
         "<Input\n      label=\"Phone Number\"\n      required={false}\n      placeholder=\"+1 (555) 000-0000\"\n      description=\"Optional fields show '(optional)' indicator\"\n    />",
         "<Input\n      label=\"API Key\"\n      labelTooltip=\"Find this in your dashboard under Settings > API Keys\"\n      placeholder=\"sk_live_...\"\n    />",
@@ -3179,8 +3381,7 @@
         "<Input\n      label=\"Email\"\n      placeholder=\"Enter your email\"\n      defaultValue=\"not-an-email\"\n      variant=\"error\"\n      error={{\n        message: \"Please enter a valid email address\",\n        match: \"typeMismatch\",\n      }}\n    />",
         "<Input label=\"Disabled Field\" placeholder=\"Disabled input\" disabled />",
         "function InputGroupExamplesRender() {\n    const [username, setUsername] = React.useState(\"\");\n    const [status, setStatus] = React.useState<\n      \"idle\" | \"checking\" | \"available\" | \"taken\" | \"error\"\n    >(\"idle\");\n\n    const checkAvailability = () => {\n      if (!username) {\n        setStatus(\"error\");\n        return;\n      }\n      setStatus(\"checking\");\n      // Simulate API call\n      setTimeout(() => {\n        setStatus(username.length > 3 ? \"available\" : \"taken\");\n      }, 800);\n    };\n\n    const statusText = {\n      idle: \"\",\n      checking: \"Checking...\",\n      available: \"✓ Available\",\n      taken: \"✗ Taken\",\n      error: \"Please enter a username\",\n    };\n\n    return (\n      <div className=\"space-y-6\">\n        {/* Prefix label - common for URLs, usernames, currencies */}\n        <div className=\"space-y-1\">\n          <p className=\"text-center text-sm text-muted\">Prefix label</p>\n          <InputGroup>\n            <InputGroup.Label>https://</InputGroup.Label>\n            <InputGroup.Input placeholder=\"example.com\" />\n          </InputGroup>\n        </div>\n\n        {/* Prefix label with suffix description - common for currency inputs */}\n        <div className=\"space-y-1\">\n          <p className=\"text-center text-sm text-muted\">\n            Label with description\n          </p>\n          <InputGroup>\n            <InputGroup.Label>$</InputGroup.Label>\n            <InputGroup.Input placeholder=\"0.00\" type=\"number\" />\n            <InputGroup.Description>USD</InputGroup.Description>\n          </InputGroup>\n        </div>\n\n        {/* With action button - interactive example */}\n        <div className=\"space-y-1\">\n          <p className=\"text-center text-sm text-muted\">\n            With action button (4+ chars = available, fewer = taken)\n          </p>\n          <InputGroup>\n            <InputGroup.Label>@</InputGroup.Label>\n            <InputGroup.Input\n              placeholder=\"username\"\n              value={username}\n              onChange={(e) => {\n                setUsername(e.target.value);\n                setStatus(\"idle\");\n              }}\n              onKeyDown={(e) => {\n                if (e.key === \"Enter\") {\n                  checkAvailability();\n                }\n              }}\n            />\n            <InputGroup.Button onClick={checkAvailability}>\n              {status === \"checking\" ? \"Checking...\" : \"Check\"}\n            </InputGroup.Button>\n          </InputGroup>\n          <p\n            aria-live=\"polite\"\n            className={`text-sm ${status === \"available\" ? \"text-info\" : status === \"error\" || status === \"taken\" ? \"text-error\" : \"text-muted\"}`}\n          >\n            {statusText[status]}\n          </p>\n        </div>\n\n        {/* With multiple inputs - used for  */}\n        <div className=\"space-y-1\">\n          <p className=\"text-center text-sm text-muted\">\n            A group of multiple inputs using individualFocus\n          </p>\n          <InputGroup focusMode={\"individual\"}>\n            <InputGroup.Button onClick={checkAvailability}>\n              <CaretDoubleLeftIcon size={16} />\n            </InputGroup.Button>\n            <InputGroup.Button onClick={checkAvailability}>\n              <CaretLeftIcon size={16} />\n            </InputGroup.Button>\n            <InputGroup.Input placeholder=\"page\" value={0} />\n            <InputGroup.Button onClick={checkAvailability}>\n              <CaretRightIcon size={16} />\n            </InputGroup.Button>\n            <InputGroup.Button onClick={checkAvailability}>\n              <CaretDoubleRightIcon size={16} />\n            </InputGroup.Button>\n          </InputGroup>\n        </div>\n      </div>\n    );\n  }",
-        "<div className=\"space-y-4\">\n      <div className=\"space-y-1\">\n        <p className=\"text-center text-sm text-muted\">Size: xs</p>\n        <InputGroup size=\"xs\">\n          <InputGroup.Label>@</InputGroup.Label>\n          <InputGroup.Input placeholder=\"username\" />\n          <InputGroup.Button>Submit</InputGroup.Button>\n        </InputGroup>\n      </div>\n\n      <div className=\"space-y-1\">\n        <p className=\"text-center text-sm text-muted\">Size: sm</p>\n        <InputGroup size=\"sm\">\n          <InputGroup.Label>@</InputGroup.Label>\n          <InputGroup.Input placeholder=\"username\" />\n          <InputGroup.Button>Submit</InputGroup.Button>\n        </InputGroup>\n      </div>\n\n      <div className=\"space-y-1\">\n        <p className=\"text-center text-sm text-muted\">Size: base (default)</p>\n        <InputGroup size=\"base\">\n          <InputGroup.Label>@</InputGroup.Label>\n          <InputGroup.Input placeholder=\"username\" />\n          <InputGroup.Button>Submit</InputGroup.Button>\n        </InputGroup>\n      </div>\n\n      <div className=\"space-y-1\">\n        <p className=\"text-center text-sm text-muted\">Size: lg</p>\n        <InputGroup size=\"lg\">\n          <InputGroup.Label>@</InputGroup.Label>\n          <InputGroup.Input placeholder=\"username\" />\n          <InputGroup.Button>Submit</InputGroup.Button>\n        </InputGroup>\n      </div>\n    </div>",
-        "<Input placeholder=\"Input without Field wrapper\" />"
+        "<div className=\"space-y-4\">\n      <div className=\"space-y-1\">\n        <p className=\"text-center text-sm text-muted\">Size: xs</p>\n        <InputGroup size=\"xs\">\n          <InputGroup.Label>@</InputGroup.Label>\n          <InputGroup.Input placeholder=\"username\" />\n          <InputGroup.Button>Submit</InputGroup.Button>\n        </InputGroup>\n      </div>\n\n      <div className=\"space-y-1\">\n        <p className=\"text-center text-sm text-muted\">Size: sm</p>\n        <InputGroup size=\"sm\">\n          <InputGroup.Label>@</InputGroup.Label>\n          <InputGroup.Input placeholder=\"username\" />\n          <InputGroup.Button>Submit</InputGroup.Button>\n        </InputGroup>\n      </div>\n\n      <div className=\"space-y-1\">\n        <p className=\"text-center text-sm text-muted\">Size: base (default)</p>\n        <InputGroup size=\"base\">\n          <InputGroup.Label>@</InputGroup.Label>\n          <InputGroup.Input placeholder=\"username\" />\n          <InputGroup.Button>Submit</InputGroup.Button>\n        </InputGroup>\n      </div>\n\n      <div className=\"space-y-1\">\n        <p className=\"text-center text-sm text-muted\">Size: lg</p>\n        <InputGroup size=\"lg\">\n          <InputGroup.Label>@</InputGroup.Label>\n          <InputGroup.Input placeholder=\"username\" />\n          <InputGroup.Button>Submit</InputGroup.Button>\n        </InputGroup>\n      </div>\n    </div>"
       ],
       "colors": [
         "bg-secondary",
@@ -3236,15 +3437,27 @@
           }
         },
         "states": {
-          "base": ["bg-secondary", "text-surface", "ring-border"],
-          "focus": ["ring-active"],
-          "error": ["ring-error"],
-          "disabled": ["opacity-50", "text-muted"]
+          "base": [
+            "bg-secondary",
+            "text-surface",
+            "ring-border"
+          ],
+          "focus": [
+            "ring-active"
+          ],
+          "error": [
+            "ring-error"
+          ],
+          "disabled": [
+            "opacity-50",
+            "text-muted"
+          ]
         }
       }
     },
     "Label": {
       "name": "Label",
+      "type": "component",
       "description": "When true, only renders the inline content (indicators, tooltip) without the outer span with font styling. Useful when composed inside another label element that already provides the text styling. / asContent?: boolean; } /** Label component for form fields. Provides a standardized way to display labels with optional indicators: - Optional indicator: gray \"(optional)\" text when `showOptional={true}` - Tooltip: info icon with hover tooltip for additional context // Basic label <Label>Email</Label> // Optional field with indicator <Label showOptional>Middle Name</Label> // With tooltip <Label tooltip=\"We'll use this to send you updates\">Email</Label> // With ReactNode children <Label> <span>Custom label with <strong>bold</strong> text</span> </Label>",
       "importPath": "@cloudflare/kumo",
       "category": "Other",
@@ -3284,7 +3497,10 @@
         "<div className=\"flex flex-col gap-4\">\n      <Label>Default Label</Label>\n      <Label showOptional>Optional Label</Label>\n      <Label tooltip=\"More information\">Label with Tooltip</Label>\n      <Label showOptional tooltip=\"Optional field info\">\n        Optional with Tooltip\n      </Label>\n    </div>",
         "<div className=\"flex max-w-md flex-col gap-4\">\n      <Input label=\"Full Name\" placeholder=\"John Doe\" />\n      <Input\n        label=\"Email\"\n        labelTooltip=\"We'll send your receipt here\"\n        placeholder=\"john@example.com\"\n        type=\"email\"\n      />\n      <Input label=\"Company\" required={false} placeholder=\"Acme Inc.\" />\n      <Input\n        label=\"Notes\"\n        required={false}\n        labelTooltip=\"Any additional information you'd like to share\"\n        placeholder=\"Tell us more...\"\n      />\n    </div>"
       ],
-      "colors": ["text-label", "text-surface"]
+      "colors": [
+        "text-label",
+        "text-surface"
+      ]
     },
     "LayerCard": {
       "name": "LayerCard",
@@ -3361,7 +3577,11 @@
         "size": {
           "type": "enum",
           "optional": true,
-          "values": ["sm", "base", "lg"],
+          "values": [
+            "sm",
+            "base",
+            "lg"
+          ],
           "descriptions": {
             "sm": "Small loader for inline use",
             "base": "Default loader size",
@@ -3403,7 +3623,11 @@
         }
       },
       "examples": [],
-      "colors": ["bg-color", "bg-surface", "border-color"],
+      "colors": [
+        "bg-color",
+        "bg-surface",
+        "border-color"
+      ],
       "styling": {
         "container": {
           "height": 32,
@@ -3462,7 +3686,11 @@
         "<Meter label={Progress} value={50} max={100} />",
         "<div className=\"flex w-64 flex-col gap-4\">\n      <Meter label=\"Low\" value={25} max={100} />\n      <Meter label=\"Medium\" value={50} max={100} />\n      <Meter label=\"High\" value={75} max={100} />\n      <Meter label=\"Complete\" value={100} max={100} />\n    </div>"
       ],
-      "colors": ["bg-color", "text-label", "text-surface"]
+      "colors": [
+        "bg-color",
+        "text-label",
+        "text-surface"
+      ]
     },
     "PageHeader": {
       "name": "PageHeader",
@@ -3474,7 +3702,11 @@
         "spacing": {
           "type": "enum",
           "optional": true,
-          "values": ["compact", "base", "relaxed"],
+          "values": [
+            "compact",
+            "base",
+            "relaxed"
+          ],
           "descriptions": {
             "compact": "Compact spacing between header elements",
             "base": "Default spacing between header elements",
@@ -3527,7 +3759,11 @@
         "<PageHeader\n      breadcrumbs={\n        <Breadcrumbs>\n          <Breadcrumbs.Link href=\"/\">Home</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Link href=\"/products\">Products</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Current>Page title</Breadcrumbs.Current>\n        </Breadcrumbs>\n      }\n      title=\"Page title\"\n      description=\"Action-led, value-oriented description of what this page does. Optional second sentence with use cases or prerequisites.\"\n    />",
         "<PageHeader\n      breadcrumbs={\n        <Breadcrumbs>\n          <Breadcrumbs.Link href=\"/\">Home</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Link href=\"/products\">Products</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Current>Page title</Breadcrumbs.Current>\n        </Breadcrumbs>\n      }\n      title=\"Page title\"\n      description=\"Action-led, value-oriented description of what this page does. Optional second sentence with use cases or prerequisites.\"\n      tabs={[\n        { label: \"Overview\", value: \"overview\" },\n        { label: \"Analytics\", value: \"analytics\" },\n        { label: \"Settings\", value: \"settings\" },\n      ]}\n      defaultTab=\"overview\"\n    >\n      <Button variant=\"outline\" size=\"sm\">\n        Export\n      </Button>\n      <Button variant=\"primary\" size=\"sm\">\n        <PlusIcon size={16} />\n        New Item\n      </Button>\n    </PageHeader>"
       ],
-      "colors": ["border-color", "text-muted", "text-surface"]
+      "colors": [
+        "border-color",
+        "text-muted",
+        "text-surface"
+      ]
     },
     "Pagination": {
       "name": "Pagination",
@@ -3539,7 +3775,10 @@
         "controls": {
           "type": "enum",
           "optional": true,
-          "values": ["full", "simple"],
+          "values": [
+            "full",
+            "simple"
+          ],
           "descriptions": {
             "full": "Full pagination controls with first, previous, page input, next, and last buttons",
             "simple": "Simple pagination controls with only previous and next buttons"
@@ -3569,7 +3808,9 @@
         "<Pagination page={5} perPage={10} totalCount={100} setPage=\"() => {}\" />",
         "<Pagination page={5} perPage={10} totalCount={100} setPage=\"() => {}\" controls=\"simple\" />"
       ],
-      "colors": ["text-label"],
+      "colors": [
+        "text-label"
+      ],
       "styling": {
         "layout": {
           "height": 36,
@@ -3580,6 +3821,101 @@
           "borderRadius": 6
         }
       }
+    },
+    "Radio": {
+      "name": "Radio",
+      "type": "component",
+      "description": "Radio component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Other",
+      "props": {
+        "legend": {
+          "type": "string",
+          "required": true,
+          "description": "Legend text for the group (required for accessibility)"
+        },
+        "children": {
+          "type": "ReactNode",
+          "optional": true,
+          "description": "Child Radio.Item components"
+        },
+        "orientation": {
+          "type": "enum",
+          "optional": true,
+          "description": "Layout direction of the radio items",
+          "values": [
+            "vertical",
+            "horizontal"
+          ]
+        },
+        "error": {
+          "type": "string",
+          "optional": true,
+          "description": "Error message for the group"
+        },
+        "description": {
+          "type": "ReactNode",
+          "optional": true,
+          "description": "Helper text for the group"
+        },
+        "defaultValue": {
+          "type": "string",
+          "optional": true,
+          "description": "Value of the radio that should be initially selected (uncontrolled)"
+        },
+        "value": {
+          "type": "string",
+          "optional": true,
+          "description": "Value of the radio that should be selected (controlled)"
+        },
+        "disabled": {
+          "type": "boolean",
+          "optional": true,
+          "description": "Whether all radios in the group are disabled"
+        },
+        "controlPosition": {
+          "type": "enum",
+          "optional": true,
+          "description": "Position of radio control relative to label: \"start\" (default) puts radio before label, \"end\" puts label before radio",
+          "values": [
+            "start",
+            "end"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "optional": true,
+          "description": "Form submission name for the radio group"
+        },
+        "className": {
+          "type": "string",
+          "optional": true,
+          "description": "Additional CSS classes"
+        }
+      },
+      "examples": [
+        "<Radio.Group legend=\"Notification preference\" defaultValue=\"email\">\n      <Radio.Item label=\"Email\" value=\"email\" />\n      <Radio.Item label=\"SMS\" value=\"sms\" />\n      <Radio.Item label=\"Push notification\" value=\"push\" />\n    </Radio.Group>",
+        "<div className=\"flex flex-col gap-4\">\n      {Object.keys(KUMO_RADIO_VARIANTS.variant).map((variant) => (\n        <div\n          key={variant}\n          className=\"border border-dotted border-color bg-surface p-4\"\n        >\n          <div className=\"mb-2 font-sans text-sm leading-5 font-light tracking-wide text-muted uppercase\">\n            {variant}\n          </div>\n          <Radio.Group legend=\"Choose an option\" defaultValue=\"a\">\n            <Radio.Item\n              label=\"Option A\"\n              value=\"a\"\n              variant={variant as \"default\" | \"error\"}\n            />\n            <Radio.Item\n              label=\"Option B\"\n              value=\"b\"\n              variant={variant as \"default\" | \"error\"}\n            />\n          </Radio.Group>\n        </div>\n      ))}\n    </div>",
+        "<Radio.Group\n      legend=\"Size\"\n      orientation=\"horizontal\"\n      defaultValue=\"md\"\n      description=\"Choose the size that works best for your needs\"\n    >\n      <Radio.Item label=\"Small\" value=\"sm\" />\n      <Radio.Item label=\"Medium\" value=\"md\" />\n      <Radio.Item label=\"Large\" value=\"lg\" />\n      <Radio.Item label=\"Extra Large\" value=\"xl\" />\n    </Radio.Group>",
+        "<div className=\"flex flex-col gap-8\">\n      <Radio.Group\n        legend=\"Entirely disabled group\"\n        disabled\n        defaultValue=\"free\"\n      >\n        <Radio.Item label=\"Free\" value=\"free\" />\n        <Radio.Item label=\"Pro\" value=\"pro\" />\n        <Radio.Item label=\"Enterprise\" value=\"enterprise\" />\n      </Radio.Group>\n\n      <Radio.Group legend=\"Individual disabled items\" defaultValue=\"available\">\n        <Radio.Item label=\"Available option\" value=\"available\" />\n        <Radio.Item label=\"Unavailable option\" value=\"unavailable\" disabled />\n        <Radio.Item label=\"Another available\" value=\"another\" />\n      </Radio.Group>\n    </div>",
+        "<Radio.Group\n      legend=\"Payment method\"\n      error=\"Please select a payment method to continue\"\n    >\n      <Radio.Item label=\"Credit Card\" value=\"card\" />\n      <Radio.Item label=\"PayPal\" value=\"paypal\" />\n      <Radio.Item label=\"Bank Transfer\" value=\"bank\" />\n    </Radio.Group>",
+        "<Radio.Group\n      legend=\"Account type\"\n      description=\"Choose the account type that best fits your needs. You can change this later in settings.\"\n      defaultValue=\"personal\"\n    >\n      <Radio.Item label=\"Personal\" value=\"personal\" />\n      <Radio.Item label=\"Business\" value=\"business\" />\n      <Radio.Item label=\"Enterprise\" value=\"enterprise\" />\n    </Radio.Group>",
+        "<Radio.Group\n      legend=\"Subscription tier\"\n      description=\"Select a plan to get started\"\n      error=\"A subscription tier is required\"\n    >\n      <Radio.Item label=\"Starter\" value=\"starter\" />\n      <Radio.Item label=\"Professional\" value=\"professional\" />\n      <Radio.Item label=\"Enterprise\" value=\"enterprise\" />\n    </Radio.Group>",
+        "<Radio.Group\n      legend=\"Preferences\"\n      controlPosition=\"end\"\n      defaultValue=\"option1\"\n    >\n      <Radio.Item label=\"Label appears before radio\" value=\"option1\" />\n      <Radio.Item label=\"This layout may suit RTL languages\" value=\"option2\" />\n      <Radio.Item label=\"Or specific design requirements\" value=\"option3\" />\n    </Radio.Group>",
+        "<div className=\"flex flex-col gap-4\">\n        <Radio.Group\n          legend=\"Contact preference\"\n          description=\"Controlled state - selected value shown below\"\n          value={value}\n          onValueChange={setValue}\n        >\n          <Radio.Item label=\"Email\" value=\"email\" />\n          <Radio.Item label=\"Phone\" value=\"phone\" />\n          <Radio.Item label=\"Mail\" value=\"mail\" />\n        </Radio.Group>\n        <div className=\"rounded-md bg-surface-elevated p-4\">\n          <div className=\"mb-2 text-sm font-medium text-surface\">Selected:</div>\n          <code className=\"text-sm text-muted\">\"{value}\"</code>\n        </div>\n      </div>",
+        "<div className=\"flex flex-col gap-8\">\n      {/* English - Control at start: Radio → Label */}\n      <div>\n        <Radio.Group\n          legend=\"English (Radio → Label)\"\n          controlPosition=\"start\"\n          defaultValue=\"email\"\n        >\n          <Radio.Item label=\"Email notifications\" value=\"email\" />\n          <Radio.Item label=\"SMS notifications\" value=\"sms\" />\n          <Radio.Item label=\"Push notifications\" value=\"push\" />\n          <Radio.Item label=\"In-app notifications\" value=\"in-app\" disabled />\n        </Radio.Group>\n      </div>\n\n      {/* Spanish - Control at end: Label → Radio */}\n      <div>\n        <Radio.Group\n          legend=\"Español (Etiqueta → Radio)\"\n          controlPosition=\"end\"\n          defaultValue=\"email\"\n        >\n          <Radio.Item\n            label=\"Notificaciones por correo electrónico\"\n            value=\"email\"\n          />\n          <Radio.Item label=\"Notificaciones por SMS\" value=\"sms\" />\n          <Radio.Item label=\"Notificaciones push\" value=\"push\" />\n          <Radio.Item\n            label=\"Notificaciones en la aplicación\"\n            value=\"in-app\"\n            disabled\n          />\n        </Radio.Group>\n      </div>\n    </div>",
+        "<div className=\"flex flex-col gap-8\">\n      <Radio.Group\n        legend=\"Vertical (default)\"\n        orientation=\"vertical\"\n        defaultValue=\"a\"\n      >\n        <Radio.Item label=\"Option A\" value=\"a\" />\n        <Radio.Item label=\"Option B\" value=\"b\" />\n        <Radio.Item label=\"Option C\" value=\"c\" />\n      </Radio.Group>\n\n      <Radio.Group\n        legend=\"Horizontal\"\n        orientation=\"horizontal\"\n        defaultValue=\"a\"\n      >\n        <Radio.Item label=\"Option A\" value=\"a\" />\n        <Radio.Item label=\"Option B\" value=\"b\" />\n        <Radio.Item label=\"Option C\" value=\"c\" />\n      </Radio.Group>\n    </div>"
+      ],
+      "colors": [
+        "bg-surface",
+        "bg-surface-inverse",
+        "border-border",
+        "ring-active",
+        "ring-border",
+        "text-error",
+        "text-muted",
+        "text-surface"
+      ]
     },
     "Select": {
       "name": "Select",
@@ -3909,17 +4245,29 @@
         "unselectable": {
           "type": "enum",
           "optional": true,
-          "values": ["on", "off"]
+          "values": [
+            "on",
+            "off"
+          ]
         },
         "popover": {
           "type": "enum",
           "optional": true,
-          "values": ["", "auto", "manual", "hint"]
+          "values": [
+            "",
+            "auto",
+            "manual",
+            "hint"
+          ]
         },
         "popoverTargetAction": {
           "type": "enum",
           "optional": true,
-          "values": ["toggle", "show", "hide"]
+          "values": [
+            "toggle",
+            "show",
+            "hide"
+          ]
         },
         "popoverTarget": {
           "type": "string",
@@ -3983,14 +4331,22 @@
           "type": "enum",
           "optional": true,
           "description": "Size variant",
-          "values": ["xs", "sm", "base", "lg"],
+          "values": [
+            "xs",
+            "sm",
+            "base",
+            "lg"
+          ],
           "default": "base"
         },
         "variant": {
           "type": "enum",
           "optional": true,
           "description": "Style variant",
-          "values": ["default", "error"],
+          "values": [
+            "default",
+            "error"
+          ],
           "default": "default"
         },
         "label": {
@@ -4053,7 +4409,10 @@
           "type": "enum",
           "optional": true,
           "description": "Surface color variant",
-          "values": ["primary", "secondary"],
+          "values": [
+            "primary",
+            "secondary"
+          ],
           "descriptions": {
             "primary": "Primary surface color",
             "secondary": "Secondary surface color"
@@ -4071,8 +4430,13 @@
           "description": "Child elements"
         }
       },
-      "examples": ["<Surface  />"],
-      "colors": ["ring-border"]
+      "examples": [
+        "<Surface  />"
+      ],
+      "colors": [
+        "bg-surface",
+        "ring-border"
+      ]
     },
     "Switch": {
       "name": "Switch",
@@ -4085,7 +4449,10 @@
           "type": "enum",
           "optional": true,
           "description": "Visual variant: \"default\" or \"error\" for validation failures (visual only, no error text)",
-          "values": ["default", "error"],
+          "values": [
+            "default",
+            "error"
+          ],
           "descriptions": {
             "default": "Default switch appearance",
             "error": "Error state for validation failures"
@@ -4118,7 +4485,11 @@
         "size": {
           "type": "enum",
           "optional": true,
-          "values": ["sm", "base", "lg"],
+          "values": [
+            "sm",
+            "base",
+            "lg"
+          ],
           "descriptions": {
             "sm": "Small switch for compact UIs",
             "base": "Default switch size",
@@ -4150,7 +4521,11 @@
         "type": {
           "type": "enum",
           "optional": true,
-          "values": ["submit", "reset", "button"]
+          "values": [
+            "submit",
+            "reset",
+            "button"
+          ]
         },
         "value": {
           "type": "string | string[] | number",
@@ -4308,17 +4683,29 @@
         "unselectable": {
           "type": "enum",
           "optional": true,
-          "values": ["on", "off"]
+          "values": [
+            "on",
+            "off"
+          ]
         },
         "popover": {
           "type": "enum",
           "optional": true,
-          "values": ["", "auto", "manual", "hint"]
+          "values": [
+            "",
+            "auto",
+            "manual",
+            "hint"
+          ]
         },
         "popoverTargetAction": {
           "type": "enum",
           "optional": true,
-          "values": ["toggle", "show", "hide"]
+          "values": [
+            "toggle",
+            "show",
+            "hide"
+          ]
         },
         "popoverTarget": {
           "type": "string",
@@ -4445,13 +4832,17 @@
     },
     "Table": {
       "name": "Table",
+      "type": "component",
       "description": "Table component",
       "importPath": "@cloudflare/kumo",
       "category": "Other",
       "props": {
         "layout": {
           "type": "enum",
-          "values": ["auto", "fixed"],
+          "values": [
+            "auto",
+            "fixed"
+          ],
           "default": "auto",
           "descriptions": {
             "auto": "Auto table layout - columns resize based on content",
@@ -4460,7 +4851,10 @@
         },
         "variant": {
           "type": "enum",
-          "values": ["default", "selected"],
+          "values": [
+            "default",
+            "selected"
+          ],
           "default": "default",
           "descriptions": {
             "default": "Default row variant",
@@ -4577,7 +4971,10 @@
         "variant": {
           "type": "enum",
           "optional": true,
-          "values": ["segmented", "underline"],
+          "values": [
+            "segmented",
+            "underline"
+          ],
           "default": "segmented"
         },
         "onValueChange": {
@@ -4677,7 +5074,12 @@
           "type": "enum",
           "optional": true,
           "description": "Text size (only applies to body/secondary/success/error variants)",
-          "values": ["xs", "sm", "base", "lg"],
+          "values": [
+            "xs",
+            "sm",
+            "base",
+            "lg"
+          ],
           "descriptions": {
             "xs": "Extra small text",
             "sm": "Small text",
@@ -4724,7 +5126,12 @@
         "<Text size=\"lg\">Sample text</Text>",
         "<Text bold={true}>Bold text</Text>"
       ],
-      "colors": ["text-error", "text-info", "text-muted", "text-surface"]
+      "colors": [
+        "text-error",
+        "text-info",
+        "text-muted",
+        "text-surface"
+      ]
     },
     "Toasty": {
       "name": "Toasty",
@@ -4788,7 +5195,11 @@
         "align": {
           "type": "enum",
           "optional": true,
-          "values": ["start", "center", "end"]
+          "values": [
+            "start",
+            "center",
+            "end"
+          ]
         },
         "asChild": {
           "type": "boolean",
@@ -4806,7 +5217,12 @@
         "side": {
           "type": "enum",
           "optional": true,
-          "values": ["top", "bottom", "left", "right"],
+          "values": [
+            "top",
+            "bottom",
+            "left",
+            "right"
+          ],
           "descriptions": {
             "top": "Tooltip appears above the trigger",
             "bottom": "Tooltip appears below the trigger",
@@ -4819,7 +5235,11 @@
       "examples": [
         "<Tooltip content=\"This is a tooltip\" asChild>\n      <Button>Hover me</Button>\n    </Tooltip>"
       ],
-      "colors": ["bg-black-icon", "fill-black-icon", "fill-icon-path"]
+      "colors": [
+        "bg-black-icon",
+        "fill-black-icon",
+        "fill-icon-path"
+      ]
     },
     "InputArea": {
       "name": "InputArea",
@@ -4854,10 +5274,28 @@
   },
   "search": {
     "byCategory": {
-      "Display": ["Badge", "Code", "Collapsible", "LayerCard", "Meter", "Text"],
-      "Feedback": ["Banner", "Loader", "Toasty"],
-      "Block": ["Breadcrumbs", "Empty", "PageHeader"],
-      "Action": ["Button", "ClipboardText"],
+      "Display": [
+        "Badge",
+        "Code",
+        "Collapsible",
+        "LayerCard",
+        "Meter",
+        "Text"
+      ],
+      "Feedback": [
+        "Banner",
+        "Loader",
+        "Toasty"
+      ],
+      "Block": [
+        "Breadcrumbs",
+        "Empty",
+        "PageHeader"
+      ],
+      "Action": [
+        "Button",
+        "ClipboardText"
+      ],
       "Input": [
         "Checkbox",
         "Combobox",
@@ -4867,10 +5305,26 @@
         "Select",
         "Switch"
       ],
-      "Overlay": ["Dialog", "DropdownMenu", "Tooltip"],
-      "Other": ["Icon", "Label", "Radio", "SensitiveInput", "Table"],
-      "Navigation": ["MenuBar", "Pagination", "Tabs"],
-      "Layout": ["Surface"]
+      "Overlay": [
+        "Dialog",
+        "DropdownMenu",
+        "Tooltip"
+      ],
+      "Other": [
+        "Icon",
+        "Label",
+        "Radio",
+        "SensitiveInput",
+        "Table"
+      ],
+      "Navigation": [
+        "MenuBar",
+        "Pagination",
+        "Tabs"
+      ],
+      "Layout": [
+        "Surface"
+      ]
     },
     "byName": [
       "Badge",
@@ -4896,6 +5350,7 @@
       "Meter",
       "PageHeader",
       "Pagination",
+      "Radio",
       "Select",
       "SensitiveInput",
       "Surface",
