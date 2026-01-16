@@ -2583,7 +2583,7 @@ Surface component
 
 **Colors (kumo tokens used):**
 
-`ring-border`
+`bg-surface`, `ring-border`
 
 **Examples:**
 
@@ -3019,7 +3019,7 @@ Tabs component
 
 **Colors (kumo tokens used):**
 
-`bg-accent`, `bg-primary`, `bg-surface-elevated`, `border-border`, `outline-active`, `ring-color-2`, `text-label`, `text-surface`
+`bg-accent`, `bg-primary`, `bg-surface-elevated`, `border-accent`, `border-border`, `ring-active`, `ring-color-2`, `text-label`, `text-muted`, `text-surface`
 
 **Examples:**
 

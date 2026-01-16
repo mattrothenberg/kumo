@@ -1,5 +1,83 @@
 # @cloudflare/kumo
 
+## 0.5.0
+
+### Minor Changes
+
+- ee744b3: feat(PageHeader): add optional title and description props
+  - Adds `title?: string` and `description?: string` props to PageHeader block
+  - Title renders as semantic h1 for Section 508 and WCAG 2.4.2 (Level A) compliance: "Web pages have titles that describe topic or purpose"
+  - Description uses max-w-prose (65ch) for optimal readability per industry standards
+  - Styling matches Stratus Workers & Pages implementation
+  - Includes comprehensive Storybook examples (WithTitle, WithTitleAndDescription, CompleteExample)
+
+  ## Why This Feature Matters
+
+  **Without this feature**, pages using only PageHeader would lack a semantic page title (h1), requiring developers to manually add titles elsewhere. This creates:
+  - ❌ Risk of Section 508 and WCAG 2.4.2 violations
+  - ❌ Compliance risk for FedRAMP High authorization (requires Section 508 conformance)
+  - ❌ Inconsistent title placement across pages
+  - ❌ Additional implementation burden on every page
+
+  **With this feature**, PageHeader provides a standardized way to include accessible page titles that:
+  - ✅ Render as semantic h1 elements (required by Section 508 and WCAG 2.4.2)
+  - ✅ Visually differentiate from breadcrumbs
+  - ✅ Work correctly with screen readers and assistive technology
+  - ✅ Maintain consistency across the dashboard
+  - ✅ Support FedRAMP High compliance requirements
+
+  ### Important: Breadcrumbs Are Not Page Titles
+
+  Breadcrumbs serve navigation purposes and cannot replace semantic page titles. Both should coexist:
+  - **Page title (h1)**: Primary orientation, required for accessibility
+  - **Breadcrumb trail**: Secondary navigation showing site hierarchy
+  - **Visual differentiation**: Size, weight, and placement distinguish the two
+
+  ### References
+  - [Section 508 Standards](https://www.access-board.gov/ict/) - Requires WCAG 2.0 Level A and AA conformance
+  - [WCAG 2.4.2: Page Titled](https://www.w3.org/WAI/WCAG21/Understanding/page-titled.html) - Level A requirement
+
+- b4a817f: Add table component
+  - Introduce new Table component with row variants and styling options
+  - Add Table documentation and examples to `kumo-docs`
+
+- 0e5cf84: lighter red in light mode
+- 6c94137: Add Label component with standardized label features for form fields
+  - New Label component with support for ReactNode children, optional indicator, and tooltip
+  - Enhanced form components (Input, Select, Checkbox, Switch, SensitiveInput, Combobox) with:
+    - `label` prop now accepts ReactNode (not just strings)
+    - `required={false}` shows "(optional)" text
+    - `labelTooltip` prop for info icon with hover tooltip
+  - Updated Field component to use Label internally
+  - Added Label documentation page to kumo-docs
+
+- 742dc89: Add Radio component for single-selection from a set of options
+  - New `Radio.Group` and `Radio.Item` compound components built on Base UI primitives
+  - Supports vertical and horizontal orientations
+  - Includes error, description, and disabled states
+  - `controlPosition` prop for label placement ("start" or "end")
+  - Full accessibility support with semantic HTML and keyboard navigation
+  - Documentation added to both kumo-docs and kumo-docs-astro sites
+
+- 872ef11: Add Storybook preview deployments and MR reporter system
+  - Storybook previews deploy to Cloudflare Workers on MR commits
+  - Staging deployment to `storybook.staging.kumo-ui.com` on merge to main
+  - Consolidated MR comments with beta npm version and preview URL
+
+- 9537114: Add variant prop to Tabs component with 'segmented' (default) and 'underline' options
+
+### Patch Changes
+
+- 7c2e8dd: Fix label not appearing in Combobox unless a description or error given.
+- 5bdfae9: fix bug where delete user external links were being treated as internal navigation and appending urls to domain
+- d598621: Fix Base UI nativeButton warning in Switch component by adding nativeButton prop to BaseSwitch.Root
+- e613876: Update deployment configs to enable preview urls
+- d9add6b: added a next / previous form of pagination
+- 356d1e6: Modernize Active Sessions page with updated Kumo design patterns
+- 5b256bd: - Align border color with sidebar
+  - Center arrow icon in select component
+- d998518: Add `bg-surface` as default background for Surface component
+
 ## 0.4.0
 
 ### Minor Changes
