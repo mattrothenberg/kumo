@@ -1,21 +1,27 @@
 import type { ReactNode } from "react";
 import { cn } from "../../utils/cn";
 
+/**
+ * Base styles applied to all banner variants.
+ * Used by bannerVariants() and consumed by Figma plugin for component generation.
+ */
+export const KUMO_BANNER_BASE_STYLES =
+  "flex w-full items-center gap-2 rounded-lg border px-4 py-1.5 text-base";
+
 export const KUMO_BANNER_VARIANTS = {
   variant: {
     default: {
-      classes:
-        "bg-info-surface border-info-border text-info selection:bg-info-selection",
+      classes: "bg-info/20 border-info text-info selection:bg-info-selection",
       description: "Informational banner for general messages",
     },
     alert: {
       classes:
-        "bg-alert-surface border-alert-border text-alert selection:bg-alert-selection",
+        "bg-alert/20 border-alert text-alert selection:bg-alert-selection",
       description: "Warning banner for cautionary messages",
     },
     error: {
       classes:
-        "bg-error-surface border-error-border text-error selection:bg-error-selection",
+        "bg-error/20 border-error text-error selection:bg-error-selection",
       description: "Error banner for critical issues",
     },
   },
@@ -36,8 +42,8 @@ export function bannerVariants({
   variant = KUMO_BANNER_DEFAULT_VARIANTS.variant,
 }: KumoBannerVariantsProps = {}) {
   return cn(
-    // Base styles
-    "flex w-full items-center gap-2 rounded-lg border px-4 py-1.5 text-base",
+    // Base styles (exported as KUMO_BANNER_BASE_STYLES for Figma plugin)
+    KUMO_BANNER_BASE_STYLES,
     // Apply variant styles from KUMO_BANNER_VARIANTS
     KUMO_BANNER_VARIANTS.variant[variant].classes,
   );

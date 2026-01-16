@@ -1,0 +1,158 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`PageHeader Generator - Snapshots > should produce consistent base styles 1`] = `{}`;
+
+exports[`PageHeader Generator - Snapshots > should produce consistent color bindings 1`] = `
+{
+  "border": "color-border",
+  "descriptionText": "text-color-muted",
+  "titleText": "text-color-surface",
+}
+`;
+
+exports[`PageHeader Generator - Snapshots > should produce consistent complete data 1`] = `
+{
+  "baseStyles": {
+    "parsed": {},
+    "raw": "flex flex-col",
+  },
+  "colorBindings": {
+    "border": "color-border",
+    "descriptionText": "text-color-muted",
+    "titleText": "text-color-surface",
+  },
+  "layoutConfig": {
+    "breadcrumbs": {
+      "borderBottom": true,
+      "paddingY": 12,
+    },
+    "description": {
+      "fontSize": 16,
+      "fontWeight": 400,
+      "maxWidth": 672,
+    },
+    "tabsSection": {
+      "actionGap": 8,
+      "borderBottom": true,
+      "paddingBottom": 12,
+      "paddingLeft": 12,
+      "paddingTop": 4,
+    },
+    "title": {
+      "fontFamily": "heading",
+      "fontSize": 30,
+      "fontWeight": 600,
+    },
+    "titleSection": {
+      "gap": 8,
+      "paddingLeft": 12,
+      "paddingY": 12,
+    },
+  },
+  "spacingConfig": {
+    "classes": {
+      "base": "gap-2",
+      "compact": "gap-1",
+      "relaxed": "gap-4",
+    },
+    "default": "base",
+    "descriptions": {
+      "base": "Default spacing between header elements",
+      "compact": "Compact spacing between header elements",
+      "relaxed": "Relaxed spacing for more prominent headers",
+    },
+    "values": [
+      "compact",
+      "base",
+      "relaxed",
+    ],
+  },
+  "spacings": [
+    {
+      "classes": "gap-1",
+      "description": "Compact spacing between header elements",
+      "layout": {
+        "gap": 4,
+      },
+      "parsed": {
+        "gap": 4,
+      },
+      "spacing": "compact",
+    },
+    {
+      "classes": "gap-2",
+      "description": "Default spacing between header elements",
+      "layout": {
+        "gap": 8,
+      },
+      "parsed": {
+        "gap": 8,
+      },
+      "spacing": "base",
+    },
+    {
+      "classes": "gap-4",
+      "description": "Relaxed spacing for more prominent headers",
+      "layout": {
+        "gap": 16,
+      },
+      "parsed": {
+        "gap": 16,
+      },
+      "spacing": "relaxed",
+    },
+  ],
+}
+`;
+
+exports[`PageHeader Generator - Snapshots > should produce consistent layout config 1`] = `
+{
+  "breadcrumbs": {
+    "borderBottom": true,
+    "paddingY": 12,
+  },
+  "description": {
+    "fontSize": 16,
+    "fontWeight": 400,
+    "maxWidth": 672,
+  },
+  "tabsSection": {
+    "actionGap": 8,
+    "borderBottom": true,
+    "paddingBottom": 12,
+    "paddingLeft": 12,
+    "paddingTop": 4,
+  },
+  "title": {
+    "fontFamily": "heading",
+    "fontSize": 30,
+    "fontWeight": 600,
+  },
+  "titleSection": {
+    "gap": 8,
+    "paddingLeft": 12,
+    "paddingY": 12,
+  },
+}
+`;
+
+exports[`PageHeader Generator - Snapshots > should produce consistent spacing config 1`] = `
+{
+  "classes": {
+    "base": "gap-2",
+    "compact": "gap-1",
+    "relaxed": "gap-4",
+  },
+  "default": "base",
+  "descriptions": {
+    "base": "Default spacing between header elements",
+    "compact": "Compact spacing between header elements",
+    "relaxed": "Relaxed spacing for more prominent headers",
+  },
+  "values": [
+    "compact",
+    "base",
+    "relaxed",
+  ],
+}
+`;

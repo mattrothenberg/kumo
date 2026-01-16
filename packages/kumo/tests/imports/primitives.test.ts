@@ -17,7 +17,10 @@ try {
   baseUiPackagePath = require.resolve("@base-ui/react/package.json");
 } catch {
   // Fallback to relative path if require.resolve fails
-  baseUiPackagePath = join(__dirname, "../../../../node_modules/@base-ui/react/package.json");
+  baseUiPackagePath = join(
+    __dirname,
+    "../../../../node_modules/@base-ui/react/package.json",
+  );
 }
 
 // Exports excluded by generate-primitives.ts
@@ -53,7 +56,7 @@ describe("Primitives Export", () => {
 
     it("should be importable", async () => {
       await expect(
-        import("../../src/primitives/index.ts")
+        import("../../src/primitives/index.ts"),
       ).resolves.toBeDefined();
     });
   });
@@ -64,7 +67,9 @@ describe("Primitives Export", () => {
     });
 
     it("should export all base-ui primitives from kumo", async () => {
-      const baseUiPackage = JSON.parse(readFileSync(baseUiPackagePath, "utf-8"));
+      const baseUiPackage = JSON.parse(
+        readFileSync(baseUiPackagePath, "utf-8"),
+      );
       const baseUiExports = Object.keys(baseUiPackage.exports || {})
         .filter((key) => key.startsWith("./") && !EXCLUDED_EXPORTS.has(key))
         .map((key) => key.replace("./", ""));
@@ -90,7 +95,9 @@ describe("Primitives Export", () => {
       }
 
       if (missingExports.length > 0) {
-        console.error("\n❌ Base-ui primitives missing from @cloudflare/kumo/primitives:");
+        console.error(
+          "\n❌ Base-ui primitives missing from @cloudflare/kumo/primitives:",
+        );
         missingExports.forEach((name) => {
           console.error(`   - ${name}`);
         });
@@ -100,7 +107,9 @@ describe("Primitives Export", () => {
     });
 
     it("should re-export all non-excluded base-ui exports", () => {
-      const baseUiPackage = JSON.parse(readFileSync(baseUiPackagePath, "utf-8"));
+      const baseUiPackage = JSON.parse(
+        readFileSync(baseUiPackagePath, "utf-8"),
+      );
       const baseUiExports = Object.keys(baseUiPackage.exports || {})
         .filter((key) => key.startsWith("./") && !EXCLUDED_EXPORTS.has(key))
         .map((key) => key.replace("./", ""));
@@ -127,11 +136,13 @@ describe("Primitives Export", () => {
     });
 
     it("should not have stale exports (exports removed from base-ui)", () => {
-      const baseUiPackage = JSON.parse(readFileSync(baseUiPackagePath, "utf-8"));
+      const baseUiPackage = JSON.parse(
+        readFileSync(baseUiPackagePath, "utf-8"),
+      );
       const baseUiExports = new Set(
         Object.keys(baseUiPackage.exports || {})
           .filter((key) => key.startsWith("./"))
-          .map((key) => key.replace("./", ""))
+          .map((key) => key.replace("./", "")),
       );
 
       const primitivesSource = readFileSync(primitivesSourcePath, "utf-8");
@@ -145,11 +156,13 @@ describe("Primitives Export", () => {
       }
 
       const staleExports = primitivesExports.filter(
-        (exp) => !baseUiExports.has(exp)
+        (exp) => !baseUiExports.has(exp),
       );
 
       if (staleExports.length > 0) {
-        console.error("\n❌ Stale exports in primitives (no longer in base-ui):");
+        console.error(
+          "\n❌ Stale exports in primitives (no longer in base-ui):",
+        );
         console.error("   Run `pnpm build:primitives` to regenerate");
         staleExports.forEach((name) => {
           console.error(`   - ${name}`);
@@ -180,7 +193,9 @@ describe("Primitives Export", () => {
 
   describe("Granular exports", () => {
     it("should have individual primitive source files", () => {
-      const baseUiPackage = JSON.parse(readFileSync(baseUiPackagePath, "utf-8"));
+      const baseUiPackage = JSON.parse(
+        readFileSync(baseUiPackagePath, "utf-8"),
+      );
       const baseUiExports = Object.keys(baseUiPackage.exports || {})
         .filter((key) => key.startsWith("./") && !EXCLUDED_EXPORTS.has(key))
         .map((key) => key.replace("./", ""));
@@ -189,7 +204,7 @@ describe("Primitives Export", () => {
       for (const exportName of baseUiExports) {
         const primitiveFilePath = join(
           __dirname,
-          `../../src/primitives/${exportName}.ts`
+          `../../src/primitives/${exportName}.ts`,
         );
         if (!existsSync(primitiveFilePath)) {
           missingFiles.push(exportName);
@@ -208,7 +223,9 @@ describe("Primitives Export", () => {
     });
 
     it("should have granular exports in package.json for each primitive", () => {
-      const baseUiPackage = JSON.parse(readFileSync(baseUiPackagePath, "utf-8"));
+      const baseUiPackage = JSON.parse(
+        readFileSync(baseUiPackagePath, "utf-8"),
+      );
       const baseUiExports = Object.keys(baseUiPackage.exports || {})
         .filter((key) => key.startsWith("./") && !EXCLUDED_EXPORTS.has(key))
         .map((key) => key.replace("./", ""));
@@ -233,7 +250,9 @@ describe("Primitives Export", () => {
     });
 
     it("should have correct format for granular exports", () => {
-      const baseUiPackage = JSON.parse(readFileSync(baseUiPackagePath, "utf-8"));
+      const baseUiPackage = JSON.parse(
+        readFileSync(baseUiPackagePath, "utf-8"),
+      );
       const baseUiExports = Object.keys(baseUiPackage.exports || {})
         .filter((key) => key.startsWith("./") && !EXCLUDED_EXPORTS.has(key))
         .map((key) => key.replace("./", ""));
@@ -248,9 +267,12 @@ describe("Primitives Export", () => {
         const expectedTypes = `./dist/src/primitives/${exportName}.d.ts`;
         const expectedImport = `./dist/primitives/${exportName}.js`;
 
-        if (exportValue.types !== expectedTypes || exportValue.import !== expectedImport) {
+        if (
+          exportValue.types !== expectedTypes ||
+          exportValue.import !== expectedImport
+        ) {
           invalidExports.push(
-            `${exportName}: expected types="${expectedTypes}", import="${expectedImport}"`
+            `${exportName}: expected types="${expectedTypes}", import="${expectedImport}"`,
           );
         }
       }
@@ -272,19 +294,21 @@ describe("Primitives Export", () => {
       for (const primitiveName of testPrimitives) {
         const primitiveFilePath = join(
           __dirname,
-          `../../src/primitives/${primitiveName}.ts`
+          `../../src/primitives/${primitiveName}.ts`,
         );
 
         if (existsSync(primitiveFilePath)) {
           await expect(
-            import(`../../src/primitives/${primitiveName}.ts`)
+            import(`../../src/primitives/${primitiveName}.ts`),
           ).resolves.toBeDefined();
         }
       }
     });
 
     it("should have individual primitive files re-export from base-ui", () => {
-      const baseUiPackage = JSON.parse(readFileSync(baseUiPackagePath, "utf-8"));
+      const baseUiPackage = JSON.parse(
+        readFileSync(baseUiPackagePath, "utf-8"),
+      );
       const baseUiExports = Object.keys(baseUiPackage.exports || {})
         .filter((key) => key.startsWith("./") && !EXCLUDED_EXPORTS.has(key))
         .map((key) => key.replace("./", ""));
@@ -293,7 +317,7 @@ describe("Primitives Export", () => {
       for (const exportName of baseUiExports) {
         const primitiveFilePath = join(
           __dirname,
-          `../../src/primitives/${exportName}.ts`
+          `../../src/primitives/${exportName}.ts`,
         );
 
         if (existsSync(primitiveFilePath)) {
@@ -301,9 +325,7 @@ describe("Primitives Export", () => {
           const expectedExport = `export * from "@base-ui/react/${exportName}";`;
 
           if (!content.includes(expectedExport)) {
-            invalidFiles.push(
-              `${exportName}.ts: missing "${expectedExport}"`
-            );
+            invalidFiles.push(`${exportName}.ts: missing "${expectedExport}"`);
           }
         }
       }

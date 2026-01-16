@@ -79,6 +79,18 @@ export {
   type KumoRadioVariant,
   type RadioVariant,
 } from "./components/radio";
+export {
+  Icon,
+  iconVariants,
+  KUMO_ICON_VARIANTS,
+  KUMO_ICON_DEFAULT_VARIANTS,
+  type IconProps,
+  type IconGlyph,
+  type PhosphorIcon,
+  type BrandIcon,
+  type KumoIconSize,
+  type KumoIconVariantsProps,
+} from "./components/icon";
 // PLOP_INJECT_EXPORT
 
 // Blocks

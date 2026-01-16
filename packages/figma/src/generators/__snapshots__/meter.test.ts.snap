@@ -1,0 +1,170 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Meter Generator - Snapshot Tests (Intermediate Data) > should produce consistent color bindings 1`] = `
+{
+  "description": "Semantic color tokens bound to meter elements",
+  "indicator": "color-primary",
+  "label": "text-color-label",
+  "registryColors": [
+    "bg-color",
+    "text-label",
+    "text-surface",
+  ],
+  "track": "color-color-4",
+  "value": "text-color-surface",
+}
+`;
+
+exports[`Meter Generator - Snapshot Tests (Intermediate Data) > should produce consistent dimensions config 1`] = `
+{
+  "description": "Meter base layout dimensions",
+  "gap": 8,
+  "meterWidth": 240,
+  "trackHeight": 8,
+}
+`;
+
+exports[`Meter Generator - Snapshot Tests (Intermediate Data) > should produce consistent fill level config 1`] = `
+{
+  "description": "Fill levels to demonstrate meter progress states",
+  "fillLevels": [
+    0,
+    25,
+    50,
+    75,
+    100,
+  ],
+}
+`;
+
+exports[`Meter Generator - Snapshot Tests (Intermediate Data) > should produce consistent indicator widths for all fill levels 1`] = `
+[
+  {
+    "fillPercentage": 0,
+    "indicatorWidth": 0,
+  },
+  {
+    "fillPercentage": 25,
+    "indicatorWidth": 60,
+  },
+  {
+    "fillPercentage": 50,
+    "indicatorWidth": 120,
+  },
+  {
+    "fillPercentage": 75,
+    "indicatorWidth": 180,
+  },
+  {
+    "fillPercentage": 100,
+    "indicatorWidth": 240,
+  },
+]
+`;
+
+exports[`Meter Generator - Snapshot Tests (Intermediate Data) > should produce consistent intermediate data for all fill levels (golden path) 1`] = `
+{
+  "colorBindings": {
+    "description": "Semantic color tokens bound to meter elements",
+    "indicator": "color-primary",
+    "label": "text-color-label",
+    "registryColors": [
+      "bg-color",
+      "text-label",
+      "text-surface",
+    ],
+    "track": "color-color-4",
+    "value": "text-color-surface",
+  },
+  "dimensions": {
+    "description": "Meter base layout dimensions",
+    "gap": 8,
+    "meterWidth": 240,
+    "trackHeight": 8,
+  },
+  "fillLevels": [
+    {
+      "fillPercentage": 0,
+      "indicatorWidth": 0,
+      "label": "Progress",
+      "valueText": "0%",
+    },
+    {
+      "fillPercentage": 25,
+      "indicatorWidth": 60,
+      "label": "Progress",
+      "valueText": "25%",
+    },
+    {
+      "fillPercentage": 50,
+      "indicatorWidth": 120,
+      "label": "Progress",
+      "valueText": "50%",
+    },
+    {
+      "fillPercentage": 75,
+      "indicatorWidth": 180,
+      "label": "Progress",
+      "valueText": "75%",
+    },
+    {
+      "fillPercentage": 100,
+      "indicatorWidth": 240,
+      "label": "Progress",
+      "valueText": "100%",
+    },
+  ],
+  "layout": {
+    "headerRowAlign": "SPACE_BETWEEN",
+    "headerRowMode": "HORIZONTAL",
+    "indicatorCornerRadius": 9999,
+    "labelFontSize": 12,
+    "labelFontWeight": 400,
+    "trackCornerRadius": 9999,
+    "valueFontSize": 13,
+    "valueFontWeight": 500,
+  },
+  "registry": {
+    "category": "Display",
+    "colors": [
+      "bg-color",
+      "text-label",
+      "text-surface",
+    ],
+    "description": "Meter component",
+    "name": "Meter",
+    "props": {
+      "label": {
+        "required": true,
+        "type": "string",
+      },
+      "max": {
+        "description": "Maximum value of the meter (default: 100)",
+        "type": "number",
+      },
+      "min": {
+        "description": "Minimum value of the meter (default: 0)",
+        "type": "number",
+      },
+      "value": {
+        "description": "Current value of the meter",
+        "type": "number",
+      },
+    },
+  },
+  "typography": {
+    "label": {
+      "colorToken": "text-color-label",
+      "fontSize": 12,
+      "fontWeight": 400,
+      "source": "text-xs text-label",
+    },
+    "value": {
+      "colorToken": "text-color-surface",
+      "fontSize": 13,
+      "fontWeight": 500,
+      "source": "text-sm font-medium text-surface tabular-nums",
+    },
+  },
+}
+`;

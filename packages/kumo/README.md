@@ -16,6 +16,18 @@ Kumo requires the following peer dependencies:
 pnpm add react react-dom @phosphor-icons/react
 ```
 
+## Component Documentation
+
+Kumo includes a built-in CLI for quick component reference:
+
+```bash
+npx @cloudflare/kumo ls         # List all components
+npx @cloudflare/kumo doc Button # Get component documentation
+npx @cloudflare/kumo docs       # Get all component docs
+```
+
+The CLI reads from `ai/component-registry.json` (generated from TypeScript types + Storybook examples).
+
 ## Usage
 
 ### Import Components
@@ -51,6 +63,7 @@ import "@cloudflare/kumo/styles/standalone";
 This imports a fully compiled CSS file with all Tailwind utilities and Kumo styles pre-compiled. No Tailwind configuration needed!
 
 **What's included in standalone:**
+
 - All Tailwind utility classes used by Kumo components
 - Kumo component styles
 - Dark mode support (via `data-mode="dark"` attribute)
@@ -94,6 +107,7 @@ git commit -m "chore: update primitives for base-ui@x.x.x"
 ```
 
 The `build:primitives` script:
+
 - Generates individual primitive files in `src/primitives/*.ts`
 - Updates barrel export in `src/primitives/index.ts`
 - Updates `package.json` with granular export paths
@@ -109,6 +123,7 @@ pnpm validate:build
 ```
 
 This validates:
+
 - All primitive JS files exist in `dist/primitives/`
 - All type definitions exist in `dist/src/primitives/`
 - Base UI is bundled (not externalized)
@@ -116,6 +131,8 @@ This validates:
 - Source maps are present
 
 ## Development
+
+**For comprehensive documentation including dynamic code analysis features (Figma plugin, token sync, custom linters, icon system, color analysis), see [AGENTS.md](../../AGENTS.md).**
 
 ### Creating New Components
 

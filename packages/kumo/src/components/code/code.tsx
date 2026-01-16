@@ -30,6 +30,54 @@ export const KUMO_CODE_DEFAULT_VARIANTS = {
   lang: "ts",
 } as const;
 
+/**
+ * Styling metadata for Code component (for AI/Figma plugin consumption)
+ */
+export const KUMO_CODE_STYLING = {
+  /** Base semantic tokens used */
+  baseTokens: ["text-label"],
+  /** Typography and layout */
+  typography: {
+    fontFamily: "font-mono",
+    fontSize: "text-sm",
+    lineHeight: "leading-[20px]",
+  },
+  /** Container dimensions */
+  dimensions: {
+    margin: "m-0",
+    padding: "p-0",
+    width: "w-auto",
+  },
+  /** Border and background */
+  appearance: {
+    borderRadius: "rounded-none",
+    border: "border-none",
+    background: "bg-transparent",
+  },
+} as const;
+
+/**
+ * Styling metadata for CodeBlock component (for AI/Figma plugin consumption)
+ */
+export const KUMO_CODEBLOCK_STYLING = {
+  /** Base semantic tokens used */
+  baseTokens: ["bg-surface", "border-color"],
+  /** Container styling */
+  container: {
+    minWidth: "min-w-0",
+    borderRadius: "rounded-md",
+    border: "border border-color",
+    background: "bg-surface",
+  },
+  /** Inner code element padding */
+  innerPadding: "[&>pre]:p-2.5",
+  /** Parsed dimensions */
+  dimensions: {
+    borderRadius: 6, // md = 6px
+    padding: 10, // p-2.5 = 10px
+  },
+} as const;
+
 // Derived types from KUMO_CODE_VARIANTS
 export type KumoCodeLang = keyof typeof KUMO_CODE_VARIANTS.lang;
 
@@ -72,9 +120,18 @@ export interface CodeProps extends KumoCodeVariantsProps {
 }
 
 /**
- * Simple code component without syntax highlighting
+ * Simple code component without syntax highlighting.
+ *
+ * Renders code in a monospace font with customizable language metadata.
+ * For a bordered container version, use `Code.Block` or `CodeBlock`.
+ *
+ * **Styling:**
+ * - Typography: `font-mono text-sm leading-[20px]`
+ * - Colors: `text-label` with `bg-transparent`
+ * - No borders or padding (use CodeBlock for styled container)
+ * - Supports all semantic tokens via className prop
  */
-export function Code({
+function CodeComponent({
   code,
   lang = KUMO_CODE_DEFAULT_VARIANTS.lang,
   className,
@@ -87,6 +144,8 @@ export function Code({
   );
 }
 
+CodeComponent.displayName = "Code";
+
 export interface CodeBlockProps {
   /** The code content to display */
   code: string;
@@ -94,10 +153,31 @@ export interface CodeBlockProps {
   lang?: CodeLang;
 }
 
-export function CodeBlock({ code, lang }: CodeBlockProps) {
+/**
+ * Code block with border and background container.
+ *
+ * A styled wrapper around Code that adds a bordered container with surface background.
+ * Useful for displaying code snippets with visual separation from surrounding content.
+ *
+ * **Styling:**
+ * - Container: `min-w-0 rounded-md border border-color bg-surface`
+ * - Inner padding: `p-2.5` (10px)
+ * - Uses semantic tokens: `bg-surface`, `border-color`
+ */
+function CodeBlockComponent({ code, lang }: CodeBlockProps) {
   return (
     <div className="min-w-0 rounded-md border border-color bg-surface [&>pre]:p-2.5!">
-      <Code lang={lang} code={code} />
+      <CodeComponent lang={lang} code={code} />
     </div>
   );
 }
+
+CodeBlockComponent.displayName = "CodeBlock";
+
+// Export Code with Block sub-component (for registry detection)
+export const Code = Object.assign(CodeComponent, {
+  Block: CodeBlockComponent,
+});
+
+// Backward-compatible standalone export
+export const CodeBlock = CodeBlockComponent;

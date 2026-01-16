@@ -1,0 +1,1999 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent complete button variant data 1`] = `
+{
+  "baseStyles": {
+    "parsed": {
+      "fontWeight": 500,
+    },
+    "raw": "flex items-center font-medium",
+  },
+  "compactSizeMap": {
+    "base": 36,
+    "lg": 40,
+    "sm": 26,
+    "xs": 14,
+  },
+  "shapes": [
+    {
+      "classes": "",
+      "description": "Default rectangular button shape",
+      "parsed": {},
+      "shape": "base",
+    },
+    {
+      "classes": "items-center justify-center p-0",
+      "description": "Square button for icon-only actions",
+      "parsed": {},
+      "shape": "square",
+    },
+    {
+      "classes": "items-center justify-center p-0 rounded-full",
+      "description": "Circular button for icon-only actions",
+      "parsed": {
+        "borderRadius": 9999,
+      },
+      "shape": "circle",
+    },
+  ],
+  "sizes": [
+    {
+      "classes": "h-5 gap-1 rounded-sm px-1.5 text-xs",
+      "description": "Extra small button for compact UIs",
+      "parsed": {
+        "borderRadius": 4,
+        "fontSize": 12,
+        "gap": 4,
+        "height": 20,
+        "paddingX": 6,
+      },
+      "size": "xs",
+    },
+    {
+      "classes": "h-6.5 gap-1 rounded-md px-2 text-xs",
+      "description": "Small button for secondary actions",
+      "parsed": {
+        "borderRadius": 6,
+        "fontSize": 12,
+        "gap": 4,
+        "height": 26,
+        "paddingX": 8,
+      },
+      "size": "sm",
+    },
+    {
+      "classes": "h-9 gap-1.5 rounded-lg px-3 text-base",
+      "description": "Default button size",
+      "parsed": {
+        "borderRadius": 8,
+        "fontSize": 14,
+        "gap": 6,
+        "height": 36,
+        "paddingX": 12,
+      },
+      "size": "base",
+    },
+    {
+      "classes": "h-10 gap-2 rounded-lg px-4 text-base",
+      "description": "Large button for primary CTAs",
+      "parsed": {
+        "borderRadius": 8,
+        "fontSize": 14,
+        "gap": 8,
+        "height": 40,
+        "paddingX": 16,
+      },
+      "size": "lg",
+    },
+  ],
+  "stateStyles": {
+    "destructive": {
+      "focus": {
+        "addRing": true,
+      },
+      "hover": {
+        "fillVariable": "color-error/70",
+      },
+      "pressed": {
+        "fillVariable": "color-error/70",
+      },
+    },
+    "ghost": {
+      "focus": {
+        "addRing": true,
+      },
+      "hover": {
+        "fillVariable": "color-accent",
+      },
+      "pressed": {
+        "fillVariable": "color-accent",
+      },
+    },
+    "outline": {
+      "focus": {
+        "addRing": true,
+      },
+      "hover": {
+        "fillVariable": "color-subtle",
+      },
+      "pressed": {
+        "fillVariable": "color-subtle",
+      },
+    },
+    "primary": {
+      "focus": {
+        "addRing": true,
+      },
+      "hover": {
+        "fillVariable": "color-primary/70",
+      },
+      "pressed": {
+        "fillVariable": "color-primary/70",
+      },
+    },
+    "secondary": {
+      "focus": {
+        "addRing": true,
+      },
+      "hover": {
+        "fillVariable": "color-subtle",
+        "strokeVariable": "color-subtle",
+      },
+      "pressed": {
+        "fillVariable": "color-subtle",
+      },
+    },
+    "secondary-destructive": {
+      "focus": {
+        "addRing": true,
+      },
+      "hover": {
+        "fillVariable": "color-subtle",
+        "strokeVariable": "color-subtle",
+      },
+      "pressed": {
+        "fillVariable": "color-subtle",
+      },
+    },
+  },
+  "variants": [
+    {
+      "classes": "bg-primary !text-white hover:bg-primary/70 disabled:bg-primary/50",
+      "description": "High-emphasis button for primary actions",
+      "parsed": {
+        "fillVariable": "color-primary",
+        "isWhiteText": true,
+        "states": {
+          "disabled": {
+            "fillOpacity": 0.5,
+            "fillVariable": "color-primary/50",
+          },
+          "hover": {
+            "fillOpacity": 0.7,
+            "fillVariable": "color-primary/70",
+          },
+        },
+        "textVariable": null,
+      },
+      "variant": "primary",
+    },
+    {
+      "classes": "bg-secondary !text-surface ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-surface/70 ring-border data-[state=open]:bg-subtle",
+      "description": "Default button style for most actions",
+      "parsed": {
+        "fillVariable": "color-secondary",
+        "hasBorder": true,
+        "states": {
+          "disabled": {
+            "textOpacity": 0.7,
+            "textVariable": "text-color-surface/70",
+          },
+        },
+        "strokeVariable": "color-border",
+        "textVariable": "text-color-surface",
+      },
+      "variant": "secondary",
+    },
+    {
+      "classes": "text-surface hover:bg-accent shadow-none bg-inherit",
+      "description": "Minimal button with no background",
+      "parsed": {
+        "fillVariable": null,
+        "states": {
+          "hover": {
+            "fillVariable": "color-accent",
+          },
+        },
+        "textVariable": "text-color-surface",
+      },
+      "variant": "ghost",
+    },
+    {
+      "classes": "bg-error !text-white hover:bg-error/70",
+      "description": "Danger button for destructive actions like delete",
+      "parsed": {
+        "fillVariable": "color-error",
+        "isWhiteText": true,
+        "states": {
+          "hover": {
+            "fillOpacity": 0.7,
+            "fillVariable": "color-error/70",
+          },
+        },
+        "textVariable": null,
+      },
+      "variant": "destructive",
+    },
+    {
+      "classes": "bg-secondary !text-error ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-error/70 ring-border data-[state=open]:bg-subtle",
+      "description": "Secondary button with destructive text for less prominent dangerous actions",
+      "parsed": {
+        "fillVariable": "color-secondary",
+        "hasBorder": true,
+        "states": {
+          "disabled": {
+            "textOpacity": 0.7,
+            "textVariable": "text-color-error/70",
+          },
+        },
+        "strokeVariable": "color-border",
+        "textVariable": "text-color-error",
+      },
+      "variant": "secondary-destructive",
+    },
+    {
+      "classes": "bg-surface text-surface ring ring-border",
+      "description": "Bordered button with transparent background",
+      "parsed": {
+        "fillVariable": "color-surface",
+        "hasBorder": true,
+        "strokeVariable": "color-border",
+        "textVariable": "text-color-surface",
+      },
+      "variant": "outline",
+    },
+  ],
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent config for circle button (base size) 1`] = `
+{
+  "baseStyles": {
+    "parsed": {
+      "fontWeight": 500,
+    },
+    "raw": "flex items-center font-medium",
+  },
+  "disabled": false,
+  "fill": {
+    "fillVariable": "color-secondary",
+  },
+  "layout": {
+    "cornerRadius": 9999,
+    "counterAxisAlignItems": "CENTER",
+    "counterAxisSizingMode": "FIXED",
+    "height": 36,
+    "itemSpacing": 6,
+    "layoutMode": "HORIZONTAL",
+    "paddingBottom": 0,
+    "paddingLeft": 0,
+    "paddingRight": 0,
+    "paddingTop": 0,
+    "primaryAxisAlignItems": "CENTER",
+    "primaryAxisSizingMode": "FIXED",
+    "width": 36,
+  },
+  "loading": false,
+  "opacity": 1,
+  "shape": "circle",
+  "shapeData": {
+    "classes": "items-center justify-center p-0 rounded-full",
+    "description": "Circular button for icon-only actions",
+    "parsed": {
+      "borderRadius": 9999,
+    },
+    "shape": "circle",
+  },
+  "size": "base",
+  "sizeData": {
+    "classes": "h-9 gap-1.5 rounded-lg px-3 text-base",
+    "description": "Default button size",
+    "parsed": {
+      "borderRadius": 8,
+      "fontSize": 14,
+      "gap": 6,
+      "height": 36,
+      "paddingX": 12,
+    },
+    "size": "base",
+  },
+  "state": "default",
+  "stateOverrides": null,
+  "stroke": {
+    "hasBorder": true,
+    "strokeVariable": "color-border",
+    "strokeWeight": 1,
+  },
+  "text": {
+    "fontSize": 14,
+    "fontWeight": 500,
+    "isWhiteText": false,
+    "textVariable": "text-color-surface",
+  },
+  "variant": "secondary",
+  "variantData": {
+    "classes": "bg-secondary !text-surface ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-surface/70 ring-border data-[state=open]:bg-subtle",
+    "description": "Default button style for most actions",
+    "parsed": {
+      "fillVariable": "color-secondary",
+      "hasBorder": true,
+      "states": {
+        "disabled": {
+          "textOpacity": 0.7,
+          "textVariable": "text-color-surface/70",
+        },
+      },
+      "strokeVariable": "color-border",
+      "textVariable": "text-color-surface",
+    },
+    "variant": "secondary",
+  },
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent config for destructive button (default state) 1`] = `
+{
+  "baseStyles": {
+    "parsed": {
+      "fontWeight": 500,
+    },
+    "raw": "flex items-center font-medium",
+  },
+  "disabled": false,
+  "fill": {
+    "fillVariable": "color-error",
+  },
+  "layout": {
+    "cornerRadius": 8,
+    "counterAxisAlignItems": "CENTER",
+    "counterAxisSizingMode": "FIXED",
+    "height": 36,
+    "itemSpacing": 6,
+    "layoutMode": "HORIZONTAL",
+    "paddingBottom": 0,
+    "paddingLeft": 12,
+    "paddingRight": 12,
+    "paddingTop": 0,
+    "primaryAxisAlignItems": "CENTER",
+    "primaryAxisSizingMode": "AUTO",
+  },
+  "loading": false,
+  "opacity": 1,
+  "shape": "base",
+  "shapeData": {
+    "classes": "",
+    "description": "Default rectangular button shape",
+    "parsed": {},
+    "shape": "base",
+  },
+  "size": "base",
+  "sizeData": {
+    "classes": "h-9 gap-1.5 rounded-lg px-3 text-base",
+    "description": "Default button size",
+    "parsed": {
+      "borderRadius": 8,
+      "fontSize": 14,
+      "gap": 6,
+      "height": 36,
+      "paddingX": 12,
+    },
+    "size": "base",
+  },
+  "state": "default",
+  "stateOverrides": null,
+  "stroke": {
+    "hasBorder": false,
+    "strokeVariable": null,
+    "strokeWeight": 1,
+  },
+  "text": {
+    "fontSize": 14,
+    "fontWeight": 500,
+    "isWhiteText": true,
+    "textVariable": null,
+  },
+  "variant": "destructive",
+  "variantData": {
+    "classes": "bg-error !text-white hover:bg-error/70",
+    "description": "Danger button for destructive actions like delete",
+    "parsed": {
+      "fillVariable": "color-error",
+      "isWhiteText": true,
+      "states": {
+        "hover": {
+          "fillOpacity": 0.7,
+          "fillVariable": "color-error/70",
+        },
+      },
+      "textVariable": null,
+    },
+    "variant": "destructive",
+  },
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent config for ghost button (default state) 1`] = `
+{
+  "baseStyles": {
+    "parsed": {
+      "fontWeight": 500,
+    },
+    "raw": "flex items-center font-medium",
+  },
+  "disabled": false,
+  "fill": {
+    "fillVariable": null,
+  },
+  "layout": {
+    "cornerRadius": 8,
+    "counterAxisAlignItems": "CENTER",
+    "counterAxisSizingMode": "FIXED",
+    "height": 36,
+    "itemSpacing": 6,
+    "layoutMode": "HORIZONTAL",
+    "paddingBottom": 0,
+    "paddingLeft": 12,
+    "paddingRight": 12,
+    "paddingTop": 0,
+    "primaryAxisAlignItems": "CENTER",
+    "primaryAxisSizingMode": "AUTO",
+  },
+  "loading": false,
+  "opacity": 1,
+  "shape": "base",
+  "shapeData": {
+    "classes": "",
+    "description": "Default rectangular button shape",
+    "parsed": {},
+    "shape": "base",
+  },
+  "size": "base",
+  "sizeData": {
+    "classes": "h-9 gap-1.5 rounded-lg px-3 text-base",
+    "description": "Default button size",
+    "parsed": {
+      "borderRadius": 8,
+      "fontSize": 14,
+      "gap": 6,
+      "height": 36,
+      "paddingX": 12,
+    },
+    "size": "base",
+  },
+  "state": "default",
+  "stateOverrides": null,
+  "stroke": {
+    "hasBorder": false,
+    "strokeVariable": null,
+    "strokeWeight": 1,
+  },
+  "text": {
+    "fontSize": 14,
+    "fontWeight": 500,
+    "isWhiteText": false,
+    "textVariable": "text-color-surface",
+  },
+  "variant": "ghost",
+  "variantData": {
+    "classes": "text-surface hover:bg-accent shadow-none bg-inherit",
+    "description": "Minimal button with no background",
+    "parsed": {
+      "fillVariable": null,
+      "states": {
+        "hover": {
+          "fillVariable": "color-accent",
+        },
+      },
+      "textVariable": "text-color-surface",
+    },
+    "variant": "ghost",
+  },
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent config for lg size button 1`] = `
+{
+  "baseStyles": {
+    "parsed": {
+      "fontWeight": 500,
+    },
+    "raw": "flex items-center font-medium",
+  },
+  "disabled": false,
+  "fill": {
+    "fillVariable": "color-secondary",
+  },
+  "layout": {
+    "cornerRadius": 8,
+    "counterAxisAlignItems": "CENTER",
+    "counterAxisSizingMode": "FIXED",
+    "height": 40,
+    "itemSpacing": 8,
+    "layoutMode": "HORIZONTAL",
+    "paddingBottom": 0,
+    "paddingLeft": 16,
+    "paddingRight": 16,
+    "paddingTop": 0,
+    "primaryAxisAlignItems": "CENTER",
+    "primaryAxisSizingMode": "AUTO",
+  },
+  "loading": false,
+  "opacity": 1,
+  "shape": "base",
+  "shapeData": {
+    "classes": "",
+    "description": "Default rectangular button shape",
+    "parsed": {},
+    "shape": "base",
+  },
+  "size": "lg",
+  "sizeData": {
+    "classes": "h-10 gap-2 rounded-lg px-4 text-base",
+    "description": "Large button for primary CTAs",
+    "parsed": {
+      "borderRadius": 8,
+      "fontSize": 14,
+      "gap": 8,
+      "height": 40,
+      "paddingX": 16,
+    },
+    "size": "lg",
+  },
+  "state": "default",
+  "stateOverrides": null,
+  "stroke": {
+    "hasBorder": true,
+    "strokeVariable": "color-border",
+    "strokeWeight": 1,
+  },
+  "text": {
+    "fontSize": 14,
+    "fontWeight": 500,
+    "isWhiteText": false,
+    "textVariable": "text-color-surface",
+  },
+  "variant": "secondary",
+  "variantData": {
+    "classes": "bg-secondary !text-surface ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-surface/70 ring-border data-[state=open]:bg-subtle",
+    "description": "Default button style for most actions",
+    "parsed": {
+      "fillVariable": "color-secondary",
+      "hasBorder": true,
+      "states": {
+        "disabled": {
+          "textOpacity": 0.7,
+          "textVariable": "text-color-surface/70",
+        },
+      },
+      "strokeVariable": "color-border",
+      "textVariable": "text-color-surface",
+    },
+    "variant": "secondary",
+  },
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent config for outline button (default state) 1`] = `
+{
+  "baseStyles": {
+    "parsed": {
+      "fontWeight": 500,
+    },
+    "raw": "flex items-center font-medium",
+  },
+  "disabled": false,
+  "fill": {
+    "fillVariable": "color-surface",
+  },
+  "layout": {
+    "cornerRadius": 8,
+    "counterAxisAlignItems": "CENTER",
+    "counterAxisSizingMode": "FIXED",
+    "height": 36,
+    "itemSpacing": 6,
+    "layoutMode": "HORIZONTAL",
+    "paddingBottom": 0,
+    "paddingLeft": 12,
+    "paddingRight": 12,
+    "paddingTop": 0,
+    "primaryAxisAlignItems": "CENTER",
+    "primaryAxisSizingMode": "AUTO",
+  },
+  "loading": false,
+  "opacity": 1,
+  "shape": "base",
+  "shapeData": {
+    "classes": "",
+    "description": "Default rectangular button shape",
+    "parsed": {},
+    "shape": "base",
+  },
+  "size": "base",
+  "sizeData": {
+    "classes": "h-9 gap-1.5 rounded-lg px-3 text-base",
+    "description": "Default button size",
+    "parsed": {
+      "borderRadius": 8,
+      "fontSize": 14,
+      "gap": 6,
+      "height": 36,
+      "paddingX": 12,
+    },
+    "size": "base",
+  },
+  "state": "default",
+  "stateOverrides": null,
+  "stroke": {
+    "hasBorder": true,
+    "strokeVariable": "color-border",
+    "strokeWeight": 1,
+  },
+  "text": {
+    "fontSize": 14,
+    "fontWeight": 500,
+    "isWhiteText": false,
+    "textVariable": "text-color-surface",
+  },
+  "variant": "outline",
+  "variantData": {
+    "classes": "bg-surface text-surface ring ring-border",
+    "description": "Bordered button with transparent background",
+    "parsed": {
+      "fillVariable": "color-surface",
+      "hasBorder": true,
+      "strokeVariable": "color-border",
+      "textVariable": "text-color-surface",
+    },
+    "variant": "outline",
+  },
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent config for primary button (default state) 1`] = `
+{
+  "baseStyles": {
+    "parsed": {
+      "fontWeight": 500,
+    },
+    "raw": "flex items-center font-medium",
+  },
+  "disabled": false,
+  "fill": {
+    "fillVariable": "color-primary",
+  },
+  "layout": {
+    "cornerRadius": 8,
+    "counterAxisAlignItems": "CENTER",
+    "counterAxisSizingMode": "FIXED",
+    "height": 36,
+    "itemSpacing": 6,
+    "layoutMode": "HORIZONTAL",
+    "paddingBottom": 0,
+    "paddingLeft": 12,
+    "paddingRight": 12,
+    "paddingTop": 0,
+    "primaryAxisAlignItems": "CENTER",
+    "primaryAxisSizingMode": "AUTO",
+  },
+  "loading": false,
+  "opacity": 1,
+  "shape": "base",
+  "shapeData": {
+    "classes": "",
+    "description": "Default rectangular button shape",
+    "parsed": {},
+    "shape": "base",
+  },
+  "size": "base",
+  "sizeData": {
+    "classes": "h-9 gap-1.5 rounded-lg px-3 text-base",
+    "description": "Default button size",
+    "parsed": {
+      "borderRadius": 8,
+      "fontSize": 14,
+      "gap": 6,
+      "height": 36,
+      "paddingX": 12,
+    },
+    "size": "base",
+  },
+  "state": "default",
+  "stateOverrides": null,
+  "stroke": {
+    "hasBorder": false,
+    "strokeVariable": null,
+    "strokeWeight": 1,
+  },
+  "text": {
+    "fontSize": 14,
+    "fontWeight": 500,
+    "isWhiteText": true,
+    "textVariable": null,
+  },
+  "variant": "primary",
+  "variantData": {
+    "classes": "bg-primary !text-white hover:bg-primary/70 disabled:bg-primary/50",
+    "description": "High-emphasis button for primary actions",
+    "parsed": {
+      "fillVariable": "color-primary",
+      "isWhiteText": true,
+      "states": {
+        "disabled": {
+          "fillOpacity": 0.5,
+          "fillVariable": "color-primary/50",
+        },
+        "hover": {
+          "fillOpacity": 0.7,
+          "fillVariable": "color-primary/70",
+        },
+      },
+      "textVariable": null,
+    },
+    "variant": "primary",
+  },
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent config for primary button (disabled) 1`] = `
+{
+  "baseStyles": {
+    "parsed": {
+      "fontWeight": 500,
+    },
+    "raw": "flex items-center font-medium",
+  },
+  "disabled": true,
+  "fill": {
+    "fillVariable": "color-primary",
+  },
+  "layout": {
+    "cornerRadius": 8,
+    "counterAxisAlignItems": "CENTER",
+    "counterAxisSizingMode": "FIXED",
+    "height": 36,
+    "itemSpacing": 6,
+    "layoutMode": "HORIZONTAL",
+    "paddingBottom": 0,
+    "paddingLeft": 12,
+    "paddingRight": 12,
+    "paddingTop": 0,
+    "primaryAxisAlignItems": "CENTER",
+    "primaryAxisSizingMode": "AUTO",
+  },
+  "loading": false,
+  "opacity": 0.5,
+  "shape": "base",
+  "shapeData": {
+    "classes": "",
+    "description": "Default rectangular button shape",
+    "parsed": {},
+    "shape": "base",
+  },
+  "size": "base",
+  "sizeData": {
+    "classes": "h-9 gap-1.5 rounded-lg px-3 text-base",
+    "description": "Default button size",
+    "parsed": {
+      "borderRadius": 8,
+      "fontSize": 14,
+      "gap": 6,
+      "height": 36,
+      "paddingX": 12,
+    },
+    "size": "base",
+  },
+  "state": "default",
+  "stateOverrides": null,
+  "stroke": {
+    "hasBorder": false,
+    "strokeVariable": null,
+    "strokeWeight": 1,
+  },
+  "text": {
+    "fontSize": 14,
+    "fontWeight": 500,
+    "isWhiteText": true,
+    "textVariable": null,
+  },
+  "variant": "primary",
+  "variantData": {
+    "classes": "bg-primary !text-white hover:bg-primary/70 disabled:bg-primary/50",
+    "description": "High-emphasis button for primary actions",
+    "parsed": {
+      "fillVariable": "color-primary",
+      "isWhiteText": true,
+      "states": {
+        "disabled": {
+          "fillOpacity": 0.5,
+          "fillVariable": "color-primary/50",
+        },
+        "hover": {
+          "fillOpacity": 0.7,
+          "fillVariable": "color-primary/70",
+        },
+      },
+      "textVariable": null,
+    },
+    "variant": "primary",
+  },
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent config for primary button (focus state) 1`] = `
+{
+  "baseStyles": {
+    "parsed": {
+      "fontWeight": 500,
+    },
+    "raw": "flex items-center font-medium",
+  },
+  "disabled": false,
+  "fill": {
+    "fillVariable": "color-primary",
+  },
+  "layout": {
+    "cornerRadius": 8,
+    "counterAxisAlignItems": "CENTER",
+    "counterAxisSizingMode": "FIXED",
+    "height": 36,
+    "itemSpacing": 6,
+    "layoutMode": "HORIZONTAL",
+    "paddingBottom": 0,
+    "paddingLeft": 12,
+    "paddingRight": 12,
+    "paddingTop": 0,
+    "primaryAxisAlignItems": "CENTER",
+    "primaryAxisSizingMode": "AUTO",
+  },
+  "loading": false,
+  "opacity": 1,
+  "shape": "base",
+  "shapeData": {
+    "classes": "",
+    "description": "Default rectangular button shape",
+    "parsed": {},
+    "shape": "base",
+  },
+  "size": "base",
+  "sizeData": {
+    "classes": "h-9 gap-1.5 rounded-lg px-3 text-base",
+    "description": "Default button size",
+    "parsed": {
+      "borderRadius": 8,
+      "fontSize": 14,
+      "gap": 6,
+      "height": 36,
+      "paddingX": 12,
+    },
+    "size": "base",
+  },
+  "state": "focus",
+  "stateOverrides": {
+    "addRing": true,
+  },
+  "stroke": {
+    "hasBorder": false,
+    "strokeVariable": null,
+    "strokeWeight": 1,
+  },
+  "text": {
+    "fontSize": 14,
+    "fontWeight": 500,
+    "isWhiteText": true,
+    "textVariable": null,
+  },
+  "variant": "primary",
+  "variantData": {
+    "classes": "bg-primary !text-white hover:bg-primary/70 disabled:bg-primary/50",
+    "description": "High-emphasis button for primary actions",
+    "parsed": {
+      "fillVariable": "color-primary",
+      "isWhiteText": true,
+      "states": {
+        "disabled": {
+          "fillOpacity": 0.5,
+          "fillVariable": "color-primary/50",
+        },
+        "hover": {
+          "fillOpacity": 0.7,
+          "fillVariable": "color-primary/70",
+        },
+      },
+      "textVariable": null,
+    },
+    "variant": "primary",
+  },
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent config for primary button (hover state) 1`] = `
+{
+  "baseStyles": {
+    "parsed": {
+      "fontWeight": 500,
+    },
+    "raw": "flex items-center font-medium",
+  },
+  "disabled": false,
+  "fill": {
+    "fillVariable": "color-primary",
+  },
+  "layout": {
+    "cornerRadius": 8,
+    "counterAxisAlignItems": "CENTER",
+    "counterAxisSizingMode": "FIXED",
+    "height": 36,
+    "itemSpacing": 6,
+    "layoutMode": "HORIZONTAL",
+    "paddingBottom": 0,
+    "paddingLeft": 12,
+    "paddingRight": 12,
+    "paddingTop": 0,
+    "primaryAxisAlignItems": "CENTER",
+    "primaryAxisSizingMode": "AUTO",
+  },
+  "loading": false,
+  "opacity": 1,
+  "shape": "base",
+  "shapeData": {
+    "classes": "",
+    "description": "Default rectangular button shape",
+    "parsed": {},
+    "shape": "base",
+  },
+  "size": "base",
+  "sizeData": {
+    "classes": "h-9 gap-1.5 rounded-lg px-3 text-base",
+    "description": "Default button size",
+    "parsed": {
+      "borderRadius": 8,
+      "fontSize": 14,
+      "gap": 6,
+      "height": 36,
+      "paddingX": 12,
+    },
+    "size": "base",
+  },
+  "state": "hover",
+  "stateOverrides": {
+    "fillVariable": "color-primary/70",
+  },
+  "stroke": {
+    "hasBorder": false,
+    "strokeVariable": null,
+    "strokeWeight": 1,
+  },
+  "text": {
+    "fontSize": 14,
+    "fontWeight": 500,
+    "isWhiteText": true,
+    "textVariable": null,
+  },
+  "variant": "primary",
+  "variantData": {
+    "classes": "bg-primary !text-white hover:bg-primary/70 disabled:bg-primary/50",
+    "description": "High-emphasis button for primary actions",
+    "parsed": {
+      "fillVariable": "color-primary",
+      "isWhiteText": true,
+      "states": {
+        "disabled": {
+          "fillOpacity": 0.5,
+          "fillVariable": "color-primary/50",
+        },
+        "hover": {
+          "fillOpacity": 0.7,
+          "fillVariable": "color-primary/70",
+        },
+      },
+      "textVariable": null,
+    },
+    "variant": "primary",
+  },
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent config for primary button (loading) 1`] = `
+{
+  "baseStyles": {
+    "parsed": {
+      "fontWeight": 500,
+    },
+    "raw": "flex items-center font-medium",
+  },
+  "disabled": false,
+  "fill": {
+    "fillVariable": "color-primary",
+  },
+  "layout": {
+    "cornerRadius": 8,
+    "counterAxisAlignItems": "CENTER",
+    "counterAxisSizingMode": "FIXED",
+    "height": 36,
+    "itemSpacing": 6,
+    "layoutMode": "HORIZONTAL",
+    "paddingBottom": 0,
+    "paddingLeft": 12,
+    "paddingRight": 12,
+    "paddingTop": 0,
+    "primaryAxisAlignItems": "CENTER",
+    "primaryAxisSizingMode": "AUTO",
+  },
+  "loading": true,
+  "opacity": 1,
+  "shape": "base",
+  "shapeData": {
+    "classes": "",
+    "description": "Default rectangular button shape",
+    "parsed": {},
+    "shape": "base",
+  },
+  "size": "base",
+  "sizeData": {
+    "classes": "h-9 gap-1.5 rounded-lg px-3 text-base",
+    "description": "Default button size",
+    "parsed": {
+      "borderRadius": 8,
+      "fontSize": 14,
+      "gap": 6,
+      "height": 36,
+      "paddingX": 12,
+    },
+    "size": "base",
+  },
+  "state": "default",
+  "stateOverrides": null,
+  "stroke": {
+    "hasBorder": false,
+    "strokeVariable": null,
+    "strokeWeight": 1,
+  },
+  "text": {
+    "fontSize": 14,
+    "fontWeight": 500,
+    "isWhiteText": true,
+    "textVariable": null,
+  },
+  "variant": "primary",
+  "variantData": {
+    "classes": "bg-primary !text-white hover:bg-primary/70 disabled:bg-primary/50",
+    "description": "High-emphasis button for primary actions",
+    "parsed": {
+      "fillVariable": "color-primary",
+      "isWhiteText": true,
+      "states": {
+        "disabled": {
+          "fillOpacity": 0.5,
+          "fillVariable": "color-primary/50",
+        },
+        "hover": {
+          "fillOpacity": 0.7,
+          "fillVariable": "color-primary/70",
+        },
+      },
+      "textVariable": null,
+    },
+    "variant": "primary",
+  },
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent config for primary button (pressed state) 1`] = `
+{
+  "baseStyles": {
+    "parsed": {
+      "fontWeight": 500,
+    },
+    "raw": "flex items-center font-medium",
+  },
+  "disabled": false,
+  "fill": {
+    "fillVariable": "color-primary",
+  },
+  "layout": {
+    "cornerRadius": 8,
+    "counterAxisAlignItems": "CENTER",
+    "counterAxisSizingMode": "FIXED",
+    "height": 36,
+    "itemSpacing": 6,
+    "layoutMode": "HORIZONTAL",
+    "paddingBottom": 0,
+    "paddingLeft": 12,
+    "paddingRight": 12,
+    "paddingTop": 0,
+    "primaryAxisAlignItems": "CENTER",
+    "primaryAxisSizingMode": "AUTO",
+  },
+  "loading": false,
+  "opacity": 1,
+  "shape": "base",
+  "shapeData": {
+    "classes": "",
+    "description": "Default rectangular button shape",
+    "parsed": {},
+    "shape": "base",
+  },
+  "size": "base",
+  "sizeData": {
+    "classes": "h-9 gap-1.5 rounded-lg px-3 text-base",
+    "description": "Default button size",
+    "parsed": {
+      "borderRadius": 8,
+      "fontSize": 14,
+      "gap": 6,
+      "height": 36,
+      "paddingX": 12,
+    },
+    "size": "base",
+  },
+  "state": "pressed",
+  "stateOverrides": {
+    "fillVariable": "color-primary/70",
+  },
+  "stroke": {
+    "hasBorder": false,
+    "strokeVariable": null,
+    "strokeWeight": 1,
+  },
+  "text": {
+    "fontSize": 14,
+    "fontWeight": 500,
+    "isWhiteText": true,
+    "textVariable": null,
+  },
+  "variant": "primary",
+  "variantData": {
+    "classes": "bg-primary !text-white hover:bg-primary/70 disabled:bg-primary/50",
+    "description": "High-emphasis button for primary actions",
+    "parsed": {
+      "fillVariable": "color-primary",
+      "isWhiteText": true,
+      "states": {
+        "disabled": {
+          "fillOpacity": 0.5,
+          "fillVariable": "color-primary/50",
+        },
+        "hover": {
+          "fillOpacity": 0.7,
+          "fillVariable": "color-primary/70",
+        },
+      },
+      "textVariable": null,
+    },
+    "variant": "primary",
+  },
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent config for secondary button (default state) 1`] = `
+{
+  "baseStyles": {
+    "parsed": {
+      "fontWeight": 500,
+    },
+    "raw": "flex items-center font-medium",
+  },
+  "disabled": false,
+  "fill": {
+    "fillVariable": "color-secondary",
+  },
+  "layout": {
+    "cornerRadius": 8,
+    "counterAxisAlignItems": "CENTER",
+    "counterAxisSizingMode": "FIXED",
+    "height": 36,
+    "itemSpacing": 6,
+    "layoutMode": "HORIZONTAL",
+    "paddingBottom": 0,
+    "paddingLeft": 12,
+    "paddingRight": 12,
+    "paddingTop": 0,
+    "primaryAxisAlignItems": "CENTER",
+    "primaryAxisSizingMode": "AUTO",
+  },
+  "loading": false,
+  "opacity": 1,
+  "shape": "base",
+  "shapeData": {
+    "classes": "",
+    "description": "Default rectangular button shape",
+    "parsed": {},
+    "shape": "base",
+  },
+  "size": "base",
+  "sizeData": {
+    "classes": "h-9 gap-1.5 rounded-lg px-3 text-base",
+    "description": "Default button size",
+    "parsed": {
+      "borderRadius": 8,
+      "fontSize": 14,
+      "gap": 6,
+      "height": 36,
+      "paddingX": 12,
+    },
+    "size": "base",
+  },
+  "state": "default",
+  "stateOverrides": null,
+  "stroke": {
+    "hasBorder": true,
+    "strokeVariable": "color-border",
+    "strokeWeight": 1,
+  },
+  "text": {
+    "fontSize": 14,
+    "fontWeight": 500,
+    "isWhiteText": false,
+    "textVariable": "text-color-surface",
+  },
+  "variant": "secondary",
+  "variantData": {
+    "classes": "bg-secondary !text-surface ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-surface/70 ring-border data-[state=open]:bg-subtle",
+    "description": "Default button style for most actions",
+    "parsed": {
+      "fillVariable": "color-secondary",
+      "hasBorder": true,
+      "states": {
+        "disabled": {
+          "textOpacity": 0.7,
+          "textVariable": "text-color-surface/70",
+        },
+      },
+      "strokeVariable": "color-border",
+      "textVariable": "text-color-surface",
+    },
+    "variant": "secondary",
+  },
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent config for secondary-destructive button (default state) 1`] = `
+{
+  "baseStyles": {
+    "parsed": {
+      "fontWeight": 500,
+    },
+    "raw": "flex items-center font-medium",
+  },
+  "disabled": false,
+  "fill": {
+    "fillVariable": "color-secondary",
+  },
+  "layout": {
+    "cornerRadius": 8,
+    "counterAxisAlignItems": "CENTER",
+    "counterAxisSizingMode": "FIXED",
+    "height": 36,
+    "itemSpacing": 6,
+    "layoutMode": "HORIZONTAL",
+    "paddingBottom": 0,
+    "paddingLeft": 12,
+    "paddingRight": 12,
+    "paddingTop": 0,
+    "primaryAxisAlignItems": "CENTER",
+    "primaryAxisSizingMode": "AUTO",
+  },
+  "loading": false,
+  "opacity": 1,
+  "shape": "base",
+  "shapeData": {
+    "classes": "",
+    "description": "Default rectangular button shape",
+    "parsed": {},
+    "shape": "base",
+  },
+  "size": "base",
+  "sizeData": {
+    "classes": "h-9 gap-1.5 rounded-lg px-3 text-base",
+    "description": "Default button size",
+    "parsed": {
+      "borderRadius": 8,
+      "fontSize": 14,
+      "gap": 6,
+      "height": 36,
+      "paddingX": 12,
+    },
+    "size": "base",
+  },
+  "state": "default",
+  "stateOverrides": null,
+  "stroke": {
+    "hasBorder": true,
+    "strokeVariable": "color-border",
+    "strokeWeight": 1,
+  },
+  "text": {
+    "fontSize": 14,
+    "fontWeight": 500,
+    "isWhiteText": false,
+    "textVariable": "text-color-error",
+  },
+  "variant": "secondary-destructive",
+  "variantData": {
+    "classes": "bg-secondary !text-error ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-error/70 ring-border data-[state=open]:bg-subtle",
+    "description": "Secondary button with destructive text for less prominent dangerous actions",
+    "parsed": {
+      "fillVariable": "color-secondary",
+      "hasBorder": true,
+      "states": {
+        "disabled": {
+          "textOpacity": 0.7,
+          "textVariable": "text-color-error/70",
+        },
+      },
+      "strokeVariable": "color-border",
+      "textVariable": "text-color-error",
+    },
+    "variant": "secondary-destructive",
+  },
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent config for square button (base size) 1`] = `
+{
+  "baseStyles": {
+    "parsed": {
+      "fontWeight": 500,
+    },
+    "raw": "flex items-center font-medium",
+  },
+  "disabled": false,
+  "fill": {
+    "fillVariable": "color-secondary",
+  },
+  "layout": {
+    "cornerRadius": 8,
+    "counterAxisAlignItems": "CENTER",
+    "counterAxisSizingMode": "FIXED",
+    "height": 36,
+    "itemSpacing": 6,
+    "layoutMode": "HORIZONTAL",
+    "paddingBottom": 0,
+    "paddingLeft": 0,
+    "paddingRight": 0,
+    "paddingTop": 0,
+    "primaryAxisAlignItems": "CENTER",
+    "primaryAxisSizingMode": "FIXED",
+    "width": 36,
+  },
+  "loading": false,
+  "opacity": 1,
+  "shape": "square",
+  "shapeData": {
+    "classes": "items-center justify-center p-0",
+    "description": "Square button for icon-only actions",
+    "parsed": {},
+    "shape": "square",
+  },
+  "size": "base",
+  "sizeData": {
+    "classes": "h-9 gap-1.5 rounded-lg px-3 text-base",
+    "description": "Default button size",
+    "parsed": {
+      "borderRadius": 8,
+      "fontSize": 14,
+      "gap": 6,
+      "height": 36,
+      "paddingX": 12,
+    },
+    "size": "base",
+  },
+  "state": "default",
+  "stateOverrides": null,
+  "stroke": {
+    "hasBorder": true,
+    "strokeVariable": "color-border",
+    "strokeWeight": 1,
+  },
+  "text": {
+    "fontSize": 14,
+    "fontWeight": 500,
+    "isWhiteText": false,
+    "textVariable": "text-color-surface",
+  },
+  "variant": "secondary",
+  "variantData": {
+    "classes": "bg-secondary !text-surface ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-surface/70 ring-border data-[state=open]:bg-subtle",
+    "description": "Default button style for most actions",
+    "parsed": {
+      "fillVariable": "color-secondary",
+      "hasBorder": true,
+      "states": {
+        "disabled": {
+          "textOpacity": 0.7,
+          "textVariable": "text-color-surface/70",
+        },
+      },
+      "strokeVariable": "color-border",
+      "textVariable": "text-color-surface",
+    },
+    "variant": "secondary",
+  },
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent config for xs size button 1`] = `
+{
+  "baseStyles": {
+    "parsed": {
+      "fontWeight": 500,
+    },
+    "raw": "flex items-center font-medium",
+  },
+  "disabled": false,
+  "fill": {
+    "fillVariable": "color-secondary",
+  },
+  "layout": {
+    "cornerRadius": 4,
+    "counterAxisAlignItems": "CENTER",
+    "counterAxisSizingMode": "FIXED",
+    "height": 20,
+    "itemSpacing": 4,
+    "layoutMode": "HORIZONTAL",
+    "paddingBottom": 0,
+    "paddingLeft": 6,
+    "paddingRight": 6,
+    "paddingTop": 0,
+    "primaryAxisAlignItems": "CENTER",
+    "primaryAxisSizingMode": "AUTO",
+  },
+  "loading": false,
+  "opacity": 1,
+  "shape": "base",
+  "shapeData": {
+    "classes": "",
+    "description": "Default rectangular button shape",
+    "parsed": {},
+    "shape": "base",
+  },
+  "size": "xs",
+  "sizeData": {
+    "classes": "h-5 gap-1 rounded-sm px-1.5 text-xs",
+    "description": "Extra small button for compact UIs",
+    "parsed": {
+      "borderRadius": 4,
+      "fontSize": 12,
+      "gap": 4,
+      "height": 20,
+      "paddingX": 6,
+    },
+    "size": "xs",
+  },
+  "state": "default",
+  "stateOverrides": null,
+  "stroke": {
+    "hasBorder": true,
+    "strokeVariable": "color-border",
+    "strokeWeight": 1,
+  },
+  "text": {
+    "fontSize": 12,
+    "fontWeight": 500,
+    "isWhiteText": false,
+    "textVariable": "text-color-surface",
+  },
+  "variant": "secondary",
+  "variantData": {
+    "classes": "bg-secondary !text-surface ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-surface/70 ring-border data-[state=open]:bg-subtle",
+    "description": "Default button style for most actions",
+    "parsed": {
+      "fillVariable": "color-secondary",
+      "hasBorder": true,
+      "states": {
+        "disabled": {
+          "textOpacity": 0.7,
+          "textVariable": "text-color-surface/70",
+        },
+      },
+      "strokeVariable": "color-border",
+      "textVariable": "text-color-surface",
+    },
+    "variant": "secondary",
+  },
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent intermediate data for all variants (golden path) 1`] = `
+{
+  "baseStyles": {
+    "parsed": {
+      "fontWeight": 500,
+    },
+    "raw": "flex items-center font-medium",
+  },
+  "compactSizeMap": {
+    "base": 36,
+    "lg": 40,
+    "sm": 26,
+    "xs": 14,
+  },
+  "shapes": [
+    {
+      "classes": "",
+      "description": "Default rectangular button shape",
+      "parsed": {},
+      "shape": "base",
+    },
+    {
+      "classes": "items-center justify-center p-0",
+      "description": "Square button for icon-only actions",
+      "parsed": {},
+      "shape": "square",
+    },
+    {
+      "classes": "items-center justify-center p-0 rounded-full",
+      "description": "Circular button for icon-only actions",
+      "parsed": {
+        "borderRadius": 9999,
+      },
+      "shape": "circle",
+    },
+  ],
+  "sizes": [
+    {
+      "classes": "h-5 gap-1 rounded-sm px-1.5 text-xs",
+      "description": "Extra small button for compact UIs",
+      "parsed": {
+        "borderRadius": 4,
+        "fontSize": 12,
+        "gap": 4,
+        "height": 20,
+        "paddingX": 6,
+      },
+      "size": "xs",
+    },
+    {
+      "classes": "h-6.5 gap-1 rounded-md px-2 text-xs",
+      "description": "Small button for secondary actions",
+      "parsed": {
+        "borderRadius": 6,
+        "fontSize": 12,
+        "gap": 4,
+        "height": 26,
+        "paddingX": 8,
+      },
+      "size": "sm",
+    },
+    {
+      "classes": "h-9 gap-1.5 rounded-lg px-3 text-base",
+      "description": "Default button size",
+      "parsed": {
+        "borderRadius": 8,
+        "fontSize": 14,
+        "gap": 6,
+        "height": 36,
+        "paddingX": 12,
+      },
+      "size": "base",
+    },
+    {
+      "classes": "h-10 gap-2 rounded-lg px-4 text-base",
+      "description": "Large button for primary CTAs",
+      "parsed": {
+        "borderRadius": 8,
+        "fontSize": 14,
+        "gap": 8,
+        "height": 40,
+        "paddingX": 16,
+      },
+      "size": "lg",
+    },
+  ],
+  "stateStyles": {
+    "destructive": {
+      "focus": {
+        "addRing": true,
+      },
+      "hover": {
+        "fillVariable": "color-error/70",
+      },
+      "pressed": {
+        "fillVariable": "color-error/70",
+      },
+    },
+    "ghost": {
+      "focus": {
+        "addRing": true,
+      },
+      "hover": {
+        "fillVariable": "color-accent",
+      },
+      "pressed": {
+        "fillVariable": "color-accent",
+      },
+    },
+    "outline": {
+      "focus": {
+        "addRing": true,
+      },
+      "hover": {
+        "fillVariable": "color-subtle",
+      },
+      "pressed": {
+        "fillVariable": "color-subtle",
+      },
+    },
+    "primary": {
+      "focus": {
+        "addRing": true,
+      },
+      "hover": {
+        "fillVariable": "color-primary/70",
+      },
+      "pressed": {
+        "fillVariable": "color-primary/70",
+      },
+    },
+    "secondary": {
+      "focus": {
+        "addRing": true,
+      },
+      "hover": {
+        "fillVariable": "color-subtle",
+        "strokeVariable": "color-subtle",
+      },
+      "pressed": {
+        "fillVariable": "color-subtle",
+      },
+    },
+    "secondary-destructive": {
+      "focus": {
+        "addRing": true,
+      },
+      "hover": {
+        "fillVariable": "color-subtle",
+        "strokeVariable": "color-subtle",
+      },
+      "pressed": {
+        "fillVariable": "color-subtle",
+      },
+    },
+  },
+  "variants": [
+    {
+      "classes": "bg-primary !text-white hover:bg-primary/70 disabled:bg-primary/50",
+      "description": "High-emphasis button for primary actions",
+      "parsed": {
+        "fillVariable": "color-primary",
+        "isWhiteText": true,
+        "states": {
+          "disabled": {
+            "fillOpacity": 0.5,
+            "fillVariable": "color-primary/50",
+          },
+          "hover": {
+            "fillOpacity": 0.7,
+            "fillVariable": "color-primary/70",
+          },
+        },
+        "textVariable": null,
+      },
+      "variant": "primary",
+    },
+    {
+      "classes": "bg-secondary !text-surface ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-surface/70 ring-border data-[state=open]:bg-subtle",
+      "description": "Default button style for most actions",
+      "parsed": {
+        "fillVariable": "color-secondary",
+        "hasBorder": true,
+        "states": {
+          "disabled": {
+            "textOpacity": 0.7,
+            "textVariable": "text-color-surface/70",
+          },
+        },
+        "strokeVariable": "color-border",
+        "textVariable": "text-color-surface",
+      },
+      "variant": "secondary",
+    },
+    {
+      "classes": "text-surface hover:bg-accent shadow-none bg-inherit",
+      "description": "Minimal button with no background",
+      "parsed": {
+        "fillVariable": null,
+        "states": {
+          "hover": {
+            "fillVariable": "color-accent",
+          },
+        },
+        "textVariable": "text-color-surface",
+      },
+      "variant": "ghost",
+    },
+    {
+      "classes": "bg-error !text-white hover:bg-error/70",
+      "description": "Danger button for destructive actions like delete",
+      "parsed": {
+        "fillVariable": "color-error",
+        "isWhiteText": true,
+        "states": {
+          "hover": {
+            "fillOpacity": 0.7,
+            "fillVariable": "color-error/70",
+          },
+        },
+        "textVariable": null,
+      },
+      "variant": "destructive",
+    },
+    {
+      "classes": "bg-secondary !text-error ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-error/70 ring-border data-[state=open]:bg-subtle",
+      "description": "Secondary button with destructive text for less prominent dangerous actions",
+      "parsed": {
+        "fillVariable": "color-secondary",
+        "hasBorder": true,
+        "states": {
+          "disabled": {
+            "textOpacity": 0.7,
+            "textVariable": "text-color-error/70",
+          },
+        },
+        "strokeVariable": "color-border",
+        "textVariable": "text-color-error",
+      },
+      "variant": "secondary-destructive",
+    },
+    {
+      "classes": "bg-surface text-surface ring ring-border",
+      "description": "Bordered button with transparent background",
+      "parsed": {
+        "fillVariable": "color-surface",
+        "hasBorder": true,
+        "strokeVariable": "color-border",
+        "textVariable": "text-color-surface",
+      },
+      "variant": "outline",
+    },
+  ],
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed base styles 1`] = `
+{
+  "parsed": {
+    "fontWeight": 500,
+  },
+  "raw": "flex items-center font-medium",
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for base shape 1`] = `
+{
+  "classes": "",
+  "description": "Default rectangular button shape",
+  "parsed": {},
+  "shape": "base",
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for base size 1`] = `
+{
+  "classes": "h-9 gap-1.5 rounded-lg px-3 text-base",
+  "description": "Default button size",
+  "parsed": {
+    "borderRadius": 8,
+    "fontSize": 14,
+    "gap": 6,
+    "height": 36,
+    "paddingX": 12,
+  },
+  "size": "base",
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for circle shape 1`] = `
+{
+  "classes": "items-center justify-center p-0 rounded-full",
+  "description": "Circular button for icon-only actions",
+  "parsed": {
+    "borderRadius": 9999,
+  },
+  "shape": "circle",
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for destructive variant 1`] = `
+{
+  "classes": "bg-error !text-white hover:bg-error/70",
+  "description": "Danger button for destructive actions like delete",
+  "parsed": {
+    "fillVariable": "color-error",
+    "isWhiteText": true,
+    "states": {
+      "hover": {
+        "fillOpacity": 0.7,
+        "fillVariable": "color-error/70",
+      },
+    },
+    "textVariable": null,
+  },
+  "variant": "destructive",
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for ghost variant 1`] = `
+{
+  "classes": "text-surface hover:bg-accent shadow-none bg-inherit",
+  "description": "Minimal button with no background",
+  "parsed": {
+    "fillVariable": null,
+    "states": {
+      "hover": {
+        "fillVariable": "color-accent",
+      },
+    },
+    "textVariable": "text-color-surface",
+  },
+  "variant": "ghost",
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for lg size 1`] = `
+{
+  "classes": "h-10 gap-2 rounded-lg px-4 text-base",
+  "description": "Large button for primary CTAs",
+  "parsed": {
+    "borderRadius": 8,
+    "fontSize": 14,
+    "gap": 8,
+    "height": 40,
+    "paddingX": 16,
+  },
+  "size": "lg",
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for outline variant 1`] = `
+{
+  "classes": "bg-surface text-surface ring ring-border",
+  "description": "Bordered button with transparent background",
+  "parsed": {
+    "fillVariable": "color-surface",
+    "hasBorder": true,
+    "strokeVariable": "color-border",
+    "textVariable": "text-color-surface",
+  },
+  "variant": "outline",
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for primary variant 1`] = `
+{
+  "classes": "bg-primary !text-white hover:bg-primary/70 disabled:bg-primary/50",
+  "description": "High-emphasis button for primary actions",
+  "parsed": {
+    "fillVariable": "color-primary",
+    "isWhiteText": true,
+    "states": {
+      "disabled": {
+        "fillOpacity": 0.5,
+        "fillVariable": "color-primary/50",
+      },
+      "hover": {
+        "fillOpacity": 0.7,
+        "fillVariable": "color-primary/70",
+      },
+    },
+    "textVariable": null,
+  },
+  "variant": "primary",
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for secondary variant 1`] = `
+{
+  "classes": "bg-secondary !text-surface ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-surface/70 ring-border data-[state=open]:bg-subtle",
+  "description": "Default button style for most actions",
+  "parsed": {
+    "fillVariable": "color-secondary",
+    "hasBorder": true,
+    "states": {
+      "disabled": {
+        "textOpacity": 0.7,
+        "textVariable": "text-color-surface/70",
+      },
+    },
+    "strokeVariable": "color-border",
+    "textVariable": "text-color-surface",
+  },
+  "variant": "secondary",
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for secondary-destructive variant 1`] = `
+{
+  "classes": "bg-secondary !text-error ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-error/70 ring-border data-[state=open]:bg-subtle",
+  "description": "Secondary button with destructive text for less prominent dangerous actions",
+  "parsed": {
+    "fillVariable": "color-secondary",
+    "hasBorder": true,
+    "states": {
+      "disabled": {
+        "textOpacity": 0.7,
+        "textVariable": "text-color-error/70",
+      },
+    },
+    "strokeVariable": "color-border",
+    "textVariable": "text-color-error",
+  },
+  "variant": "secondary-destructive",
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for sm size 1`] = `
+{
+  "classes": "h-6.5 gap-1 rounded-md px-2 text-xs",
+  "description": "Small button for secondary actions",
+  "parsed": {
+    "borderRadius": 6,
+    "fontSize": 12,
+    "gap": 4,
+    "height": 26,
+    "paddingX": 8,
+  },
+  "size": "sm",
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for square shape 1`] = `
+{
+  "classes": "items-center justify-center p-0",
+  "description": "Square button for icon-only actions",
+  "parsed": {},
+  "shape": "square",
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for xs size 1`] = `
+{
+  "classes": "h-5 gap-1 rounded-sm px-1.5 text-xs",
+  "description": "Extra small button for compact UIs",
+  "parsed": {
+    "borderRadius": 4,
+    "fontSize": 12,
+    "gap": 4,
+    "height": 20,
+    "paddingX": 6,
+  },
+  "size": "xs",
+}
+`;
+
+exports[`Button Generator - Snapshot Tests (Intermediate Data) > should produce consistent variant config from registry 1`] = `
+{
+  "defaultShape": "base",
+  "defaultSize": "base",
+  "defaultVariant": "secondary",
+  "shapes": [
+    "base",
+    "square",
+    "circle",
+  ],
+  "sizes": [
+    "xs",
+    "sm",
+    "base",
+    "lg",
+  ],
+  "variants": [
+    "primary",
+    "secondary",
+    "ghost",
+    "destructive",
+    "secondary-destructive",
+    "outline",
+  ],
+}
+`;

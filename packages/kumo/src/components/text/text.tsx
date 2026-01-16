@@ -73,6 +73,46 @@ export const KUMO_TEXT_DEFAULT_VARIANTS = {
   size: "base",
 } as const;
 
+/**
+ * KUMO_TEXT_STYLING - Typography metadata for Figma generator
+ *
+ * This export provides structured styling information extracted from text.tsx
+ * for use by the Figma plugin generator. It documents font sizes, weights,
+ * colors, and font families used across all Text variants.
+ *
+ * Source of truth chain:
+ * text.tsx (this file) → component-registry.json → text.ts (Figma generator)
+ */
+export const KUMO_TEXT_STYLING = {
+  fontSizes: {
+    xs: 12,
+    sm: 14,
+    base: 16,
+    lg: 18,
+    xl: 20,
+    "2xl": 24,
+    "3xl": 30,
+  },
+  fontWeights: {
+    normal: 400,
+    medium: 500,
+    semibold: 600,
+  },
+  baseColor: "text-surface",
+  variantColors: {
+    body: "text-surface",
+    secondary: "text-muted",
+    success: "text-info",
+    error: "text-error",
+    mono: "text-surface",
+    "mono-secondary": "text-muted",
+  },
+  fontFamilies: {
+    default: "sans-serif",
+    mono: "monospace",
+  },
+} as const;
+
 // Derived types from KUMO_TEXT_VARIANTS
 export type KumoTextVariant = keyof typeof KUMO_TEXT_VARIANTS.variant;
 export type KumoTextSize = keyof typeof KUMO_TEXT_VARIANTS.size;

@@ -1,0 +1,135 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`SensitiveInput Generator - Snapshot Tests (Configuration) > should produce consistent Input size configuration from registry 1`] = `
+{
+  "classes": {
+    "base": "h-9 gap-1.5 rounded-lg px-3 text-base",
+    "lg": "h-10 gap-2 rounded-lg px-4 text-base",
+    "sm": "h-6.5 gap-1 rounded-md px-2 text-xs",
+    "xs": "h-5 gap-1 rounded-sm px-1.5 text-xs",
+  },
+  "default": "base",
+  "descriptions": {
+    "base": "Default input size",
+    "lg": "Large input for prominent fields",
+    "sm": "Small input for secondary fields",
+    "xs": "Extra small input for compact UIs",
+  },
+  "values": [
+    "xs",
+    "sm",
+    "base",
+    "lg",
+  ],
+}
+`;
+
+exports[`SensitiveInput Generator - Snapshot Tests (Configuration) > should produce consistent Input variant configuration from registry 1`] = `
+{
+  "classes": {
+    "default": "focus:ring-active",
+    "error": "!ring-error focus:ring-error",
+  },
+  "default": "default",
+  "descriptions": {
+    "default": "Default input appearance",
+    "error": "Error state for validation failures",
+  },
+  "values": [
+    "default",
+    "error",
+  ],
+}
+`;
+
+exports[`SensitiveInput Generator - Snapshot Tests (Configuration) > should produce consistent complete configuration (golden path) 1`] = `
+{
+  "modes": {
+    "values": [
+      "masked",
+      "revealed",
+    ],
+  },
+  "sizes": {
+    "registryClasses": {
+      "base": "h-9 gap-1.5 rounded-lg px-3 text-base",
+      "lg": "h-10 gap-2 rounded-lg px-4 text-base",
+      "sm": "h-6.5 gap-1 rounded-md px-2 text-xs",
+      "xs": "h-5 gap-1 rounded-sm px-1.5 text-xs",
+    },
+    "registryDefault": "base",
+    "registryDescriptions": {
+      "base": "Default input size",
+      "lg": "Large input for prominent fields",
+      "sm": "Small input for secondary fields",
+      "xs": "Extra small input for compact UIs",
+    },
+    "values": [
+      "xs",
+      "sm",
+      "base",
+      "lg",
+    ],
+  },
+  "states": {
+    "values": [
+      "default",
+      "focus",
+      "disabled",
+    ],
+  },
+  "totalCombinations": 96,
+  "variants": {
+    "registryClasses": {
+      "default": "focus:ring-active",
+      "error": "!ring-error focus:ring-error",
+    },
+    "registryDefault": "default",
+    "registryDescriptions": {
+      "default": "Default input appearance",
+      "error": "Error state for validation failures",
+    },
+    "values": [
+      "default",
+      "error",
+    ],
+  },
+  "withLabel": {
+    "values": [
+      false,
+      true,
+    ],
+  },
+}
+`;
+
+exports[`SensitiveInput Generator - Snapshot Tests (Configuration) > should produce consistent mode values 1`] = `
+[
+  "masked",
+  "revealed",
+]
+`;
+
+exports[`SensitiveInput Generator - Snapshot Tests (Configuration) > should produce consistent size values 1`] = `
+[
+  "xs",
+  "sm",
+  "base",
+  "lg",
+]
+`;
+
+exports[`SensitiveInput Generator - Snapshot Tests (Configuration) > should produce consistent state values 1`] = `
+[
+  "default",
+  "focus",
+  "disabled",
+]
+`;
+
+exports[`SensitiveInput Generator - Snapshot Tests (Configuration) > should produce consistent variant values 1`] = `
+[
+  "default",
+  "error",
+]
+`;

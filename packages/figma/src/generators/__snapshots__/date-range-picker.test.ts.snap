@@ -1,0 +1,494 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`DateRangePicker Generator - Snapshot Tests (Intermediate Data) > should produce consistent background for default variant 1`] = `
+{
+  "bgVariable": "color-calendar",
+  "variant": "default",
+}
+`;
+
+exports[`DateRangePicker Generator - Snapshot Tests (Intermediate Data) > should produce consistent background for subtle variant 1`] = `
+{
+  "bgVariable": "color-surface",
+  "variant": "subtle",
+}
+`;
+
+exports[`DateRangePicker Generator - Snapshot Tests (Intermediate Data) > should produce consistent day labels from generator 1`] = `
+[
+  "Su",
+  "Mo",
+  "Tu",
+  "We",
+  "Th",
+  "Fr",
+  "Sa",
+]
+`;
+
+exports[`DateRangePicker Generator - Snapshot Tests (Intermediate Data) > should produce consistent dimensions for base size 1`] = `
+{
+  "calendarWidth": 196,
+  "cellHeight": 26,
+  "cellWidth": 28,
+  "gap": 10,
+  "iconSize": 16,
+  "padding": 16,
+  "size": "base",
+  "textSize": 14,
+}
+`;
+
+exports[`DateRangePicker Generator - Snapshot Tests (Intermediate Data) > should produce consistent dimensions for lg size 1`] = `
+{
+  "calendarWidth": 252,
+  "cellHeight": 32,
+  "cellWidth": 36,
+  "gap": 12,
+  "iconSize": 18,
+  "padding": 20,
+  "size": "lg",
+  "textSize": 16,
+}
+`;
+
+exports[`DateRangePicker Generator - Snapshot Tests (Intermediate Data) > should produce consistent dimensions for sm size 1`] = `
+{
+  "calendarWidth": 168,
+  "cellHeight": 22,
+  "cellWidth": 24,
+  "gap": 8,
+  "iconSize": 14,
+  "padding": 12,
+  "size": "sm",
+  "textSize": 12,
+}
+`;
+
+exports[`DateRangePicker Generator - Snapshot Tests (Intermediate Data) > should produce consistent intermediate data for all variants (golden path) 1`] = `
+{
+  "dayLabels": [
+    "Su",
+    "Mo",
+    "Tu",
+    "We",
+    "Th",
+    "Fr",
+    "Sa",
+  ],
+  "monthConfig": {
+    "December": {
+      "daysInMonth": 31,
+      "prevMonthDays": 30,
+      "startDay": 1,
+    },
+    "January": {
+      "daysInMonth": 31,
+      "prevMonthDays": 31,
+      "startDay": 4,
+    },
+  },
+  "selectedConfig": {
+    "values": [
+      false,
+      true,
+    ],
+  },
+  "sizeConfig": {
+    "config": {
+      "base": {
+        "calendarWidth": 196,
+        "cellHeight": 26,
+        "cellWidth": 28,
+        "gap": 10,
+        "iconSize": 16,
+        "padding": 16,
+        "textSize": 14,
+      },
+      "lg": {
+        "calendarWidth": 252,
+        "cellHeight": 32,
+        "cellWidth": 36,
+        "gap": 12,
+        "iconSize": 18,
+        "padding": 20,
+        "textSize": 16,
+      },
+      "sm": {
+        "calendarWidth": 168,
+        "cellHeight": 22,
+        "cellWidth": 24,
+        "gap": 8,
+        "iconSize": 14,
+        "padding": 12,
+        "textSize": 12,
+      },
+    },
+    "registryClasses": {
+      "base": "p-4 gap-2.5",
+      "lg": "p-5 gap-3",
+      "sm": "p-3 gap-2",
+    },
+    "registryDescriptions": {
+      "base": "Default calendar size",
+      "lg": "Large calendar for prominent date selection",
+      "sm": "Compact calendar for tight spaces",
+    },
+    "values": [
+      "sm",
+      "base",
+      "lg",
+    ],
+  },
+  "variantConfig": {
+    "config": {
+      "default": {
+        "bgVariable": "color-calendar",
+      },
+      "subtle": {
+        "bgVariable": "color-surface",
+      },
+    },
+    "registryClasses": {
+      "default": "bg-calendar",
+      "subtle": "bg-surface",
+    },
+    "registryDescriptions": {
+      "default": "Default calendar appearance",
+      "subtle": "Subtle calendar with minimal background",
+    },
+    "values": [
+      "default",
+      "subtle",
+    ],
+  },
+  "variants": [
+    {
+      "selected": false,
+      "size": "sm",
+      "sizeConfig": {
+        "calendarWidth": 168,
+        "cellHeight": 22,
+        "cellWidth": 24,
+        "gap": 8,
+        "iconSize": 14,
+        "padding": 12,
+        "size": "sm",
+        "textSize": 12,
+      },
+      "variant": "default",
+      "variantConfig": {
+        "bgVariable": "color-calendar",
+        "variant": "default",
+      },
+    },
+    {
+      "selected": true,
+      "size": "sm",
+      "sizeConfig": {
+        "calendarWidth": 168,
+        "cellHeight": 22,
+        "cellWidth": 24,
+        "gap": 8,
+        "iconSize": 14,
+        "padding": 12,
+        "size": "sm",
+        "textSize": 12,
+      },
+      "variant": "default",
+      "variantConfig": {
+        "bgVariable": "color-calendar",
+        "variant": "default",
+      },
+    },
+    {
+      "selected": false,
+      "size": "sm",
+      "sizeConfig": {
+        "calendarWidth": 168,
+        "cellHeight": 22,
+        "cellWidth": 24,
+        "gap": 8,
+        "iconSize": 14,
+        "padding": 12,
+        "size": "sm",
+        "textSize": 12,
+      },
+      "variant": "subtle",
+      "variantConfig": {
+        "bgVariable": "color-surface",
+        "variant": "subtle",
+      },
+    },
+    {
+      "selected": true,
+      "size": "sm",
+      "sizeConfig": {
+        "calendarWidth": 168,
+        "cellHeight": 22,
+        "cellWidth": 24,
+        "gap": 8,
+        "iconSize": 14,
+        "padding": 12,
+        "size": "sm",
+        "textSize": 12,
+      },
+      "variant": "subtle",
+      "variantConfig": {
+        "bgVariable": "color-surface",
+        "variant": "subtle",
+      },
+    },
+    {
+      "selected": false,
+      "size": "base",
+      "sizeConfig": {
+        "calendarWidth": 196,
+        "cellHeight": 26,
+        "cellWidth": 28,
+        "gap": 10,
+        "iconSize": 16,
+        "padding": 16,
+        "size": "base",
+        "textSize": 14,
+      },
+      "variant": "default",
+      "variantConfig": {
+        "bgVariable": "color-calendar",
+        "variant": "default",
+      },
+    },
+    {
+      "selected": true,
+      "size": "base",
+      "sizeConfig": {
+        "calendarWidth": 196,
+        "cellHeight": 26,
+        "cellWidth": 28,
+        "gap": 10,
+        "iconSize": 16,
+        "padding": 16,
+        "size": "base",
+        "textSize": 14,
+      },
+      "variant": "default",
+      "variantConfig": {
+        "bgVariable": "color-calendar",
+        "variant": "default",
+      },
+    },
+    {
+      "selected": false,
+      "size": "base",
+      "sizeConfig": {
+        "calendarWidth": 196,
+        "cellHeight": 26,
+        "cellWidth": 28,
+        "gap": 10,
+        "iconSize": 16,
+        "padding": 16,
+        "size": "base",
+        "textSize": 14,
+      },
+      "variant": "subtle",
+      "variantConfig": {
+        "bgVariable": "color-surface",
+        "variant": "subtle",
+      },
+    },
+    {
+      "selected": true,
+      "size": "base",
+      "sizeConfig": {
+        "calendarWidth": 196,
+        "cellHeight": 26,
+        "cellWidth": 28,
+        "gap": 10,
+        "iconSize": 16,
+        "padding": 16,
+        "size": "base",
+        "textSize": 14,
+      },
+      "variant": "subtle",
+      "variantConfig": {
+        "bgVariable": "color-surface",
+        "variant": "subtle",
+      },
+    },
+    {
+      "selected": false,
+      "size": "lg",
+      "sizeConfig": {
+        "calendarWidth": 252,
+        "cellHeight": 32,
+        "cellWidth": 36,
+        "gap": 12,
+        "iconSize": 18,
+        "padding": 20,
+        "size": "lg",
+        "textSize": 16,
+      },
+      "variant": "default",
+      "variantConfig": {
+        "bgVariable": "color-calendar",
+        "variant": "default",
+      },
+    },
+    {
+      "selected": true,
+      "size": "lg",
+      "sizeConfig": {
+        "calendarWidth": 252,
+        "cellHeight": 32,
+        "cellWidth": 36,
+        "gap": 12,
+        "iconSize": 18,
+        "padding": 20,
+        "size": "lg",
+        "textSize": 16,
+      },
+      "variant": "default",
+      "variantConfig": {
+        "bgVariable": "color-calendar",
+        "variant": "default",
+      },
+    },
+    {
+      "selected": false,
+      "size": "lg",
+      "sizeConfig": {
+        "calendarWidth": 252,
+        "cellHeight": 32,
+        "cellWidth": 36,
+        "gap": 12,
+        "iconSize": 18,
+        "padding": 20,
+        "size": "lg",
+        "textSize": 16,
+      },
+      "variant": "subtle",
+      "variantConfig": {
+        "bgVariable": "color-surface",
+        "variant": "subtle",
+      },
+    },
+    {
+      "selected": true,
+      "size": "lg",
+      "sizeConfig": {
+        "calendarWidth": 252,
+        "cellHeight": 32,
+        "cellWidth": 36,
+        "gap": 12,
+        "iconSize": 18,
+        "padding": 20,
+        "size": "lg",
+        "textSize": 16,
+      },
+      "variant": "subtle",
+      "variantConfig": {
+        "bgVariable": "color-surface",
+        "variant": "subtle",
+      },
+    },
+  ],
+}
+`;
+
+exports[`DateRangePicker Generator - Snapshot Tests (Intermediate Data) > should produce consistent month configuration from generator 1`] = `
+{
+  "December": {
+    "daysInMonth": 31,
+    "prevMonthDays": 30,
+    "startDay": 1,
+  },
+  "January": {
+    "daysInMonth": 31,
+    "prevMonthDays": 31,
+    "startDay": 4,
+  },
+}
+`;
+
+exports[`DateRangePicker Generator - Snapshot Tests (Intermediate Data) > should produce consistent selected state configuration from generator 1`] = `
+{
+  "values": [
+    false,
+    true,
+  ],
+}
+`;
+
+exports[`DateRangePicker Generator - Snapshot Tests (Intermediate Data) > should produce consistent size configuration from generator 1`] = `
+{
+  "config": {
+    "base": {
+      "calendarWidth": 196,
+      "cellHeight": 26,
+      "cellWidth": 28,
+      "gap": 10,
+      "iconSize": 16,
+      "padding": 16,
+      "textSize": 14,
+    },
+    "lg": {
+      "calendarWidth": 252,
+      "cellHeight": 32,
+      "cellWidth": 36,
+      "gap": 12,
+      "iconSize": 18,
+      "padding": 20,
+      "textSize": 16,
+    },
+    "sm": {
+      "calendarWidth": 168,
+      "cellHeight": 22,
+      "cellWidth": 24,
+      "gap": 8,
+      "iconSize": 14,
+      "padding": 12,
+      "textSize": 12,
+    },
+  },
+  "registryClasses": {
+    "base": "p-4 gap-2.5",
+    "lg": "p-5 gap-3",
+    "sm": "p-3 gap-2",
+  },
+  "registryDescriptions": {
+    "base": "Default calendar size",
+    "lg": "Large calendar for prominent date selection",
+    "sm": "Compact calendar for tight spaces",
+  },
+  "values": [
+    "sm",
+    "base",
+    "lg",
+  ],
+}
+`;
+
+exports[`DateRangePicker Generator - Snapshot Tests (Intermediate Data) > should produce consistent variant configuration from generator 1`] = `
+{
+  "config": {
+    "default": {
+      "bgVariable": "color-calendar",
+    },
+    "subtle": {
+      "bgVariable": "color-surface",
+    },
+  },
+  "registryClasses": {
+    "default": "bg-calendar",
+    "subtle": "bg-surface",
+  },
+  "registryDescriptions": {
+    "default": "Default calendar appearance",
+    "subtle": "Subtle calendar with minimal background",
+  },
+  "values": [
+    "default",
+    "subtle",
+  ],
+}
+`;

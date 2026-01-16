@@ -16,11 +16,12 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-function DefaultMenuBar() {
+function DefaultMenuBar({ className }: { className?: string }) {
   const [active, setActive] = useState<string>("home");
 
   return (
     <MenuBar
+      className={className}
       isActive={active}
       optionIds
       options={[
@@ -63,4 +64,20 @@ export const Default: Story = {
     options: [],
   },
   render: () => <DefaultMenuBar />,
+};
+
+export const FitContent: Story = {
+  args: {
+    isActive: "home",
+    options: [],
+  },
+  render: () => <DefaultMenuBar className="w-fit" />,
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Use `className="w-fit"` to constrain the menubar width to its content instead of stretching to fill the container.',
+      },
+    },
+  },
 };

@@ -70,7 +70,7 @@ export function dateRangePickerVariants({
 }: KumoDateRangePickerVariantsProps = {}) {
   return cn(
     // Base styles
-    "flex flex-col rounded-xl select-none",
+    "flex w-fit flex-col rounded-xl select-none",
     // Apply variant and size styles
     KUMO_DATE_RANGE_PICKER_VARIANTS.variant[variant].classes,
     KUMO_DATE_RANGE_PICKER_VARIANTS.size[size].classes,

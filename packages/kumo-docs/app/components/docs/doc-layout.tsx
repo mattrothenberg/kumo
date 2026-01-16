@@ -68,7 +68,7 @@ export function DocLayout({
         // Show sticky title when page header is not visible
         setShowStickyTitle(!entry.isIntersecting);
       },
-      { threshold: 0, rootMargin: `-${STICKY_HEADER_HEIGHT}px 0px 0px 0px` }
+      { threshold: 0, rootMargin: `-${STICKY_HEADER_HEIGHT}px 0px 0px 0px` },
     );
 
     observer.observe(pageHeader);
@@ -81,8 +81,8 @@ export function DocLayout({
       {!sidebarOpen && (
         <div
           className={cn(
-            "pointer-events-none fixed top-0 left-12 z-50 flex h-[49px] items-center font-medium select-none transition-opacity duration-200",
-            showStickyTitle ? "opacity-100" : "opacity-0"
+            "pointer-events-none fixed top-0 left-12 z-50 flex h-[49px] items-center font-medium transition-opacity duration-200 select-none",
+            showStickyTitle ? "opacity-100" : "opacity-0",
           )}
           style={{ paddingLeft: "4.25rem" }} // Position after "Kumo" text (px-4 + "Kumo" width)
         >
@@ -140,7 +140,7 @@ export function DocLayout({
               "flex items-center gap-2 transition-opacity duration-200",
               showStickyTitle && sidebarOpen
                 ? "opacity-100"
-                : "opacity-0 pointer-events-none"
+                : "pointer-events-none opacity-0",
             )}
           >
             <span className="text-lg font-semibold text-surface">{title}</span>

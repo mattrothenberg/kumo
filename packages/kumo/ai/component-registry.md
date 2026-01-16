@@ -2,77 +2,144 @@
 
 > Auto-generated component metadata for AI/agent consumption.
 
+## Kumo Color System
 
-## Styling Guide
+**Critical Rule:** Only use Kumo semantic tokens. Never use raw Tailwind colors like `bg-gray-500` or `text-blue-600`.
 
-**Important:** Only use Kumo semantic tokens. Never use raw Tailwind colors like `bg-gray-500` or `text-blue-600`.
+### Quick Reference (Most Used)
 
-### Quick Reference
+| Purpose | Token | Usage |
+|---------|-------|-------|
+| Main page/card background | `bg-surface` | 11 components |
+| Secondary/default button background | `bg-secondary` | 7 components |
+| Error state background | `bg-error` | 4 components |
+| Selected/active state background | `bg-accent` | 4 components |
+| Primary text on surfaces | `text-surface` | 21 components |
+| Placeholder text and disabled states | `text-muted` | 14 components |
+| Form labels and secondary headings | `text-label` | 10 components |
+| Error messages and validation | `text-error` | 9 components |
+| Border/divider color | `border-color` | 10 components |
+| Default border color | `ring-border` | 10 components |
 
-| Purpose | Token | Example Use |
-|---------|-------|-------------|
-| **Page/card background** | `bg-surface` | Main content areas |
-| **Elevated surface** | `bg-surface-elevated` | Modals, dropdowns |
-| **Interactive element** | `bg-secondary` | Buttons, inputs |
-| **Hover state** | `bg-subtle` | Hover backgrounds |
-| **Selected/active** | `bg-accent` | Active tabs, selections |
-| **Primary text** | `text-surface` | Body text, headings |
-| **Secondary text** | `text-secondary` | Descriptions, hints |
-| **Muted text** | `text-muted` | Placeholders, disabled |
-| **Card border** | `border-color` | Dividers, outlines |
-| **Focus ring** | `ring-active` | Keyboard focus |
-| **Error state** | `text-error` + `ring-destructive` | Validation errors |
+### Dark Mode & Theming
 
-### State Colors
+Kumo uses CSS custom properties with `light-dark()` for automatic dark mode support.
 
-| State | Background | Text | Border/Ring |
-|-------|------------|------|-------------|
-| **Error** | `bg-error-surface` | `text-error` | `ring-destructive` |
-| **Warning** | `bg-alert-surface` | `text-alert` | `ring-alert-border` |
-| **Success** | — | `text-info` | — |
-
-### Surface Hierarchy
-
-Use layered surfaces for visual depth:
-```
-bg-surface → bg-surface-elevated → bg-surface-secondary
+**Mode Control (`data-mode`):**
+```html
+<html data-mode="light">  <!-- Light mode -->
+<html data-mode="dark">   <!-- Dark mode -->
 ```
 
-### Dark Mode
+**Theme Variants (`data-theme`):**
+- Default theme (no `data-theme` attribute needed)
 
-All semantic tokens automatically adapt to dark mode. No manual `dark:` prefixes needed.
+**Never use `dark:` variants** - semantic tokens handle dark mode automatically.
 
-### Token Usage in Components
+### Surface Tokens (Backgrounds)
 
-Most frequently used tokens across Kumo components:
+| Token | Purpose | Tailwind Classes |
+|-------|---------|------------------|
+| `surface` | Main page/card background | `bg-surface` |
+| `surface-2` | Secondary surface layer | `bg-surface-2` |
+| `surface-3` | Tertiary surface layer | `bg-surface-3` |
+| `layer-card-primary` | Primary card layer background | `bg-layer-card-primary` |
+| `surface-elevated` | Elevated surfaces (modals, dropdowns) | `bg-surface-elevated` |
+| `surface-secondary` | Secondary background areas | `bg-surface-secondary` |
+| `secondary` | Secondary/default button background | `bg-secondary` |
+| `surface-inverse` | Inverse background (dark on light) | `bg-surface-inverse` |
+| `primary` | Primary action background | `bg-primary` |
 
-| Category | Top Tokens |
-|----------|------------|
-| **Background** | `bg-surface`, `bg-secondary`, `bg-accent`, `bg-color-3`, `bg-color` |
-| **Text** | `text-surface`, `text-muted`, `text-label`, `text-error`, `text-info` |
-| **Border/Ring** | `ring-border`, `ring-active`, `ring-destructive`, `ring-color` |
+### Text Tokens
 
----
+| Token | Purpose | Tailwind Class |
+|-------|---------|----------------|
+| `surface` | Primary text on surfaces | `text-surface` |
+| `surface-inverse` | Text on inverse/dark surfaces | `text-surface-inverse` |
+| `label` | Form labels and secondary headings | `text-label` |
+| `muted` | Placeholder text and disabled states | `text-muted` |
+| `disabled` | Disabled text | `text-disabled` |
+| `brand` | Brand-colored text (Cloudflare orange) | `text-brand` |
+| `green` | Success indicators | `text-green` |
+| `info` | Informational text and links | `text-info` |
+| `error` | Error messages and validation | `text-error` |
+| `alert` | Warning messages | `text-alert` |
 
-### All Semantic Tokens (Reference)
+### State Tokens (Error, Warning, Info)
 
-> Use the Quick Reference table above for common cases. This section lists all available tokens.
+| Token | Purpose | Background | Text | Selection |
+|-------|---------|------------|------|-----------|
+| info | Info state background | `bg-info` | `text-info` | `bg-info-selection` |
+| alert | Warning state background | `bg-alert` | `text-alert` | `bg-alert-selection` |
+| error | Error state background | `bg-error` | `text-error` | `bg-error-selection` |
 
-**Text:** `text-alert`, `text-brand`, `text-disabled`, `text-error`, `text-green`, `text-info`, `text-label`, `text-muted`, and 2 more
+### Interactive Tokens (Hover, Focus, Active)
 
-**Background:** `bg-accent`, `bg-active`, `bg-alert-border`, `bg-alert-selection`, `bg-alert-surface`, `bg-black-icon`, `bg-border`, `bg-calendar`, and 27 more
+| Token | Purpose | Usage |
+|-------|---------|-------|
+| `active` | Active/focus ring color | `bg-active`, `ring-active` (1 uses) |
+| `muted` | Muted/disabled background | `bg-muted`, `ring-muted` (1 uses) |
+| `subtle` | Subtle hover background | `bg-subtle`, `ring-subtle` (1 uses) |
+| `accent` | Selected/active state background | `bg-accent`, `ring-accent` (4 uses) |
+| `hover` | Hover state background | `bg-hover`, `ring-hover` (2 uses) |
+| `toast-button-hover` | Toast notification styling | `bg-toast-button-hover`, `ring-toast-button-hover` (1 uses) |
+| `hover-selected` | Hover on selected items | `bg-hover-selected`, `ring-hover-selected` (1 uses) |
 
-**Border:** `border-alert-border`, `border-border`, `border-color`, `border-error-border`, `border-hover`, `border-hover-border`, `border-hover-selected`, `border-info-border`, `border-subtle`, `border-toast-button-hover`
+### Border & Ring Tokens
 
-**Ring:** `ring-active`, `ring-alert-border`, `ring-border`, `ring-color`, `ring-destructive`, `ring-error-border`, `ring-hover-border`, `ring-info-border`
+| Token | Purpose | Border | Ring |
+|-------|---------|--------|------|
+| `color` | Border/divider color | `border-color` | `ring-color` |
+| `color-2` | Border/divider color | `border-color-2` | `ring-color-2` |
+| `color-3` | Border/divider color | `border-color-3` | `ring-color-3` |
+| `color-4` | Border/divider color | `border-color-4` | `ring-color-4` |
+| `hover-border` | Hover state border | `border-hover-border` | `ring-hover-border` |
+| `border` | Default border color | `border-border` | `ring-border` |
+| `border-2` | Secondary border color | `border-border-2` | `ring-border-2` |
 
-**Fill:** `fill-active`, `fill-black-icon`, `fill-icon-path`
+### Usage Patterns
+
+**Most common color combinations in Kumo components:**
+
+```tsx
+// Card/container pattern
+<div className="bg-surface border border-border rounded-lg">
+
+// Button patterns
+<button className="bg-primary text-white">Primary</button>
+<button className="bg-secondary text-surface ring ring-border">Secondary</button>
+
+// Form input pattern
+<input className="bg-secondary text-surface ring ring-border focus:ring-active" />
+
+// Error state pattern
+<div className="bg-error/20 border-error text-error">Error message</div>
+
+// Hover state pattern
+<div className="bg-surface hover:bg-subtle">Hoverable item</div>
+```
+
+### Component-Specific Tokens
+
+These tokens are used by specific components:
+
+| Token | Purpose | Component |
+|-------|---------|-----------|
+| `black-icon` | Icon styling | Black |
+| `icon-path` | Icon styling | Icon |
+| `calendar` | Calendar component styling | Calendar |
+| `calendar-day-range-selected-endpoints` | Calendar component styling | Calendar |
+| `calendar-day-range-selected` | Calendar component styling | Calendar |
+| `calendar-day-range-selected-out-of-range` | Calendar component styling | Calendar |
+| `toast` | Toast notification styling | Toast |
 
 ---
 
 ### Badge
 
 Badge component
+
+**Type:** component
 
 **Import:** `import { Badge } from "@cloudflare/kumo";`
 
@@ -91,7 +158,7 @@ Badge component
 
 **Colors (kumo tokens used):**
 
-`bg-color`, `bg-destructive`, `bg-surface-inverse`, `border-color`, `border-primary`, `text-info`, `text-surface`, `text-surface-inverse`
+`bg-color`, `bg-error`, `bg-surface-inverse`, `border-color`, `border-primary`, `text-info`, `text-surface`, `text-surface-inverse`
 
 **Examples:**
 
@@ -105,6 +172,8 @@ Badge component
 ### Banner
 
 Banner component
+
+**Type:** component
 
 **Import:** `import { Banner } from "@cloudflare/kumo";`
 
@@ -122,7 +191,7 @@ Banner component
 
 **Colors (kumo tokens used):**
 
-`bg-alert-selection`, `bg-alert-surface`, `bg-error-selection`, `bg-error-surface`, `bg-info-selection`, `bg-info-surface`, `border-alert-border`, `border-error-border`, `border-info-border`, `text-alert`, `text-error`, `text-info`
+`bg-alert`, `bg-alert-selection`, `bg-error`, `bg-error-selection`, `bg-info`, `bg-info-selection`, `border-alert`, `border-error`, `border-info`, `text-alert`, `text-error`, `text-info`
 
 **Examples:**
 
@@ -136,6 +205,8 @@ Banner component
 ### Breadcrumbs
 
 Breadcrumbs component
+
+**Type:** block
 
 **Import:** `import { Breadcrumbs } from "@cloudflare/kumo";`
 
@@ -263,6 +334,8 @@ Props:
 
 Button component
 
+**Type:** component
+
 **Import:** `import { Button } from "@cloudflare/kumo";`
 
 **Category:** Action
@@ -287,12 +360,73 @@ Button component
   - `"secondary"`: Default button style for most actions
   - `"ghost"`: Minimal button with no background
   - `"destructive"`: Danger button for destructive actions like delete
+  - `"secondary-destructive"`: Secondary button with destructive text for less prominent dangerous actions
   - `"outline"`: Bordered button with transparent background
+
+  **State Classes:**
+  - `"primary"`:
+    - `hover`: `hover:bg-primary/70`
+    - `disabled`: `disabled:bg-primary/50`
+  - `"secondary"`:
+    - `not-disabled`: `not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle`
+    - `disabled`: `disabled:bg-secondary/50 disabled:!text-surface/70`
+    - `data-state`: `data-[state=open]:bg-subtle`
+  - `"ghost"`:
+    - `hover`: `hover:bg-accent`
+  - `"destructive"`:
+    - `hover`: `hover:bg-error/70`
+  - `"secondary-destructive"`:
+    - `not-disabled`: `not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle`
+    - `disabled`: `disabled:bg-secondary/50 disabled:!text-error/70`
+    - `data-state`: `data-[state=open]:bg-subtle`
 - `onChange`: React.FormEventHandler<HTMLButtonElement>
 - `onSubmit`: React.FormEventHandler<HTMLButtonElement>
 - `onClick`: React.MouseEventHandler<HTMLButtonElement>
+- `defaultChecked`: boolean
+- `defaultValue`: string | number | string[]
+- `suppressContentEditableWarning`: boolean
+- `suppressHydrationWarning`: boolean
+- `contextMenu`: string
+- `enterKeyHint`: enum
 - `id`: string
+- `lang`: string
+- `nonce`: string
+- `slot`: string
 - `title`: string
+- `radioGroup`: string
+- `role`: React.AriaRole
+- `about`: string
+- `content`: string
+- `datatype`: string
+- `inlist`: unknown
+- `prefix`: string
+- `property`: string
+- `rel`: string
+- `resource`: string
+- `rev`: string
+- `typeof`: string
+- `vocab`: string
+- `autoCorrect`: string
+- `autoSave`: string
+- `color`: string
+- `itemProp`: string
+- `itemScope`: boolean
+- `itemType`: string
+- `itemID`: string
+- `itemRef`: string
+- `results`: number
+- `security`: string
+- `unselectable`: enum
+- `popover`: enum
+- `popoverTargetAction`: enum
+- `popoverTarget`: string
+- `inert`: boolean
+- `inputMode`: enum
+  Hints at the type of data that might be entered by the user while editing the element or its contents
+- `is`: string
+  Specify that a standard HTML element should behave like a defined custom built-in element
+- `exportparts`: string
+- `part`: string
 - `disabled`: boolean
 - `name`: string
 - `type`: enum
@@ -300,7 +434,7 @@ Button component
 
 **Colors (kumo tokens used):**
 
-`bg-accent`, `bg-destructive`, `bg-primary`, `bg-secondary`, `bg-subtle`, `bg-surface`, `border-subtle`, `ring-active`, `ring-border`, `text-error`, `text-muted`, `text-surface`
+`bg-accent`, `bg-error`, `bg-primary`, `bg-secondary`, `bg-subtle`, `bg-surface`, `border-subtle`, `ring-active`, `ring-border`, `text-error`, `text-muted`, `text-surface`
 
 **Examples:**
 
@@ -335,6 +469,8 @@ Button component
 
 Checkbox component
 
+**Type:** component
+
 **Import:** `import { Checkbox } from "@cloudflare/kumo";`
 
 **Category:** Input
@@ -344,6 +480,11 @@ Checkbox component
 - `variant`: enum [default: default]
   - `"default"`: Default checkbox appearance
   - `"error"`: Error state for validation failures
+
+  **State Classes:**
+  - `"default"`:
+    - `focus`: `[&:focus-within>span]:ring-active`
+    - `hover`: `[&:hover>span]:ring-active`
 - `label`: ReactNode
   Label content for the checkbox (enables built-in Field wrapper) - can be a string or any React node
 - `labelTooltip`: ReactNode
@@ -353,6 +494,10 @@ Checkbox component
 - `checked`: boolean
 - `indeterminate`: boolean
 - `disabled`: boolean
+- `alt`: string
+- `autoComplete`: React.HTMLInputAutoCompleteAttribute
+- `height`: number | string
+- `list`: string
 - `name`: string
 - `placeholder`: string
 - `readOnly`: boolean
@@ -360,16 +505,78 @@ Checkbox component
 - `size`: number
 - `type`: React.HTMLInputTypeAttribute
 - `value`: string | string[] | number
+- `width`: number | string
 - `onChange`: React.ChangeEventHandler<HTMLInputElement>
+- `defaultChecked`: boolean
+- `defaultValue`: string | number | string[]
+- `suppressContentEditableWarning`: boolean
+- `suppressHydrationWarning`: boolean
 - `className`: string
+- `contextMenu`: string
+- `enterKeyHint`: enum
 - `id`: string
+- `lang`: string
+- `nonce`: string
+- `slot`: string
 - `title`: string
+- `radioGroup`: string
+- `role`: React.AriaRole
+- `about`: string
+- `content`: string
+- `datatype`: string
+- `inlist`: unknown
+- `prefix`: string
+- `property`: string
+- `rel`: string
+- `resource`: string
+- `rev`: string
+- `typeof`: string
+- `vocab`: string
+- `autoCorrect`: string
+- `autoSave`: string
+- `color`: string
+- `itemProp`: string
+- `itemScope`: boolean
+- `itemType`: string
+- `itemID`: string
+- `itemRef`: string
+- `results`: number
+- `security`: string
+- `unselectable`: enum
+- `popover`: enum
+- `popoverTargetAction`: enum
+- `popoverTarget`: string
+- `inert`: boolean
+- `inputMode`: enum
+  Hints at the type of data that might be entered by the user while editing the element or its contents
+- `is`: string
+  Specify that a standard HTML element should behave like a defined custom built-in element
+- `exportparts`: string
+- `part`: string
 - `onSubmit`: React.FormEventHandler<HTMLInputElement>
 - `onClick`: React.MouseEventHandler<HTMLInputElement>
+- `onValueChange`: (checked: boolean) => void
+  Callback when checkbox value changes
 
 **Colors (kumo tokens used):**
 
-`bg-surface`, `bg-surface-inverse`, `border-border`, `ring-active`, `ring-border`, `ring-destructive`, `text-error`, `text-muted`, `text-surface`, `text-surface-inverse`
+`bg-surface`, `bg-surface-inverse`, `border-border`, `ring-active`, `ring-border`, `ring-error`, `text-error`, `text-muted`, `text-surface`, `text-surface-inverse`
+
+**Styling:**
+
+- **Dimensions:** `h-4 w-4`
+- **Border Radius:** `rounded-sm`
+- **Base Tokens:** `bg-surface`, `ring-border`
+- **States:**
+  - `checked`: `bg-surface-inverse`, `text-surface-inverse`
+  - `indeterminate`: `bg-surface-inverse`, `text-surface-inverse`
+  - `error`: `ring-error`
+  - `hover`: `ring-active`
+  - `focus`: `ring-active`
+  - `disabled`: `opacity-50`, `cursor-not-allowed`
+- **Icons:**
+  - `ph-check` (checked) size 12
+  - `ph-minus` (indeterminate) size 12
 
 **Sub-Components:**
 
@@ -388,6 +595,7 @@ Props:
 - `children`: ReactNode (required)
 - `error`: string
 - `description`: ReactNode
+- `defaultValue`: string[]
 - `value`: string[]
 - `allValues`: string[]
 - `disabled`: boolean
@@ -707,6 +915,8 @@ Props:
 
 ClipboardText component
 
+**Type:** component
+
 **Import:** `import { ClipboardText } from "@cloudflare/kumo";`
 
 **Category:** Action
@@ -726,6 +936,52 @@ ClipboardText component
 
 `bg-surface`, `border-color`
 
+**Styling:**
+
+- **Base Tokens:** `bg-surface`, `text-surface`, `ring-border`, `border-color`
+- **States:**
+  - `input`: `bg-secondary`, `text-surface`, `ring-border`
+  - `text`: `bg-surface`, `font-mono`
+  - `button`: `border-color`
+- **Icons:**
+  - `ph-clipboard` (default) size 16
+  - `ph-check` (copied) size 16
+- **Input Styles:**
+  - Base: `bg-secondary text-surface ring ring-border`
+  - Sizes:
+    - `xs`: `h-5 gap-1 rounded-sm px-1.5 text-xs`
+    - `sm`: `h-6.5 gap-1 rounded-md px-2 text-xs`
+    - `base`: `h-9 gap-1.5 rounded-lg px-3 text-base`
+    - `lg`: `h-10 gap-2 rounded-lg px-4 text-base`
+- **Size Variants:**
+  - `sm`:
+    - Height: 26px
+    - Classes: `text-xs`
+    - Button Size: `sm`
+    - Dimensions:
+      - paddingX: 8
+      - gap: 1
+      - borderRadius: 6
+      - fontSize: 12
+  - `base`:
+    - Height: 36px
+    - Classes: `text-sm`
+    - Button Size: `base`
+    - Dimensions:
+      - paddingX: 12
+      - gap: 6
+      - borderRadius: 8
+      - fontSize: 14
+  - `lg`:
+    - Height: 40px
+    - Classes: `text-sm`
+    - Button Size: `lg`
+    - Dimensions:
+      - paddingX: 16
+      - gap: 8
+      - borderRadius: 8
+      - fontSize: 14
+
 **Examples:**
 
 ```tsx
@@ -741,7 +997,9 @@ ClipboardText component
 
 ### Code
 
-Simple code component without syntax highlighting
+Code component
+
+**Type:** component
 
 **Import:** `import { Code } from "@cloudflare/kumo";`
 
@@ -749,18 +1007,44 @@ Simple code component without syntax highlighting
 
 **Props:**
 
+- `lang`: enum [default: ts]
+  - `"ts"`: TypeScript code
+  - `"tsx"`: TypeScript JSX code
+  - `"jsonc"`: JSON with comments
+  - `"bash"`: Shell/Bash commands
+  - `"css"`: CSS styles
 - `code`: string (required)
   The code content to display
 - `values`: Record<string, { value: string; highlight?: boolean }>
   Template values for interpolation
 - `className`: string
   Additional CSS classes
-- `lang`: 'ts' | 'tsx' | 'jsonc' | 'bash' | 'css'
-  Language for syntax highlighting
 
 **Colors (kumo tokens used):**
 
 `bg-surface`, `border-color`, `text-label`
+
+**Styling:**
+
+- **Dimensions:** `m-0 w-auto p-0`
+- **Border Radius:** `rounded-none`
+- **Base Tokens:** `text-label`
+- **States:**
+  - `base`: `bg-transparent`, `border-none`, `font-mono`, `text-sm`, `leading-[20px]`
+  - `code_block_container`: `min-w-0`, `rounded-md`, `border`, `border-color`, `bg-surface`
+
+**Sub-Components:**
+
+This is a compound component. Use these sub-components:
+
+#### Code.Block
+
+Block sub-component
+
+Props:
+- `code`: string (required)
+- `lang`: CodeLang
+
 
 **Examples:**
 
@@ -782,7 +1066,9 @@ Simple code component without syntax highlighting
 
 ### Collapsible
 
-Collapsible component
+Collapsible component for showing/hiding content. Features: - Animated chevron indicator (rotates 180° when open) - Accessible with aria-expanded and aria-controls - Content panel with left border accent ```tsx const [open, setOpen] = useState(false); <Collapsible label="Show details" open={open} onOpenChange={setOpen}> <Text>Hidden content revealed when expanded.</Text> </Collapsible> ``` ```tsx const [activeIndex, setActiveIndex] = useState<number | null>(null); {items.map((item, i) => ( <Collapsible key={i} label={item.title} open={activeIndex === i} onOpenChange={(open) => setActiveIndex(open ? i : null)} > {item.content} </Collapsible> ))} ```
+
+**Type:** component
 
 **Import:** `import { Collapsible } from "@cloudflare/kumo";`
 
@@ -792,8 +1078,11 @@ Collapsible component
 
 - `children`: ReactNode
 - `label`: string (required)
+  Text label displayed in the trigger button
 - `open`: boolean
+  Whether the collapsible content is visible
 - `className`: string
+  Additional CSS classes for the content panel
 - `onOpenChange`: (open: boolean) => void
   Callback when collapsed state changes
 
@@ -817,6 +1106,8 @@ Collapsible component
 ### Combobox
 
 Combobox component
+
+**Type:** component
 
 **Import:** `import { Combobox } from "@cloudflare/kumo";`
 
@@ -1015,6 +1306,8 @@ Usage:
 
 DateRangePicker component
 
+**Type:** component
+
 **Import:** `import { DateRangePicker } from "@cloudflare/kumo";`
 
 **Category:** Input
@@ -1041,6 +1334,40 @@ DateRangePicker component
 
 `bg-calendar`, `bg-calendar-day-range-selected`, `bg-calendar-day-range-selected-endpoints`, `bg-calendar-day-range-selected-out-of-range`, `bg-hover`, `bg-surface`, `text-label`, `text-muted`, `text-surface`, `text-surface-inverse`
 
+**Styling:**
+
+- **Size Variants:**
+  - `sm`:
+    - Classes: `p-3 gap-2`
+    - Dimensions:
+      - calendarWidth: 168
+      - cellHeight: 22
+      - cellWidth: 24
+      - textSize: 12
+      - iconSize: 14
+      - padding: 12
+      - gap: 8
+  - `base`:
+    - Classes: `p-4 gap-2.5`
+    - Dimensions:
+      - calendarWidth: 196
+      - cellHeight: 26
+      - cellWidth: 28
+      - textSize: 14
+      - iconSize: 16
+      - padding: 16
+      - gap: 10
+  - `lg`:
+    - Classes: `p-5 gap-3`
+    - Dimensions:
+      - calendarWidth: 252
+      - cellHeight: 32
+      - cellWidth: 36
+      - textSize: 16
+      - iconSize: 18
+      - padding: 20
+      - gap: 12
+
 **Examples:**
 
 ```tsx
@@ -1062,6 +1389,8 @@ DateRangePicker component
 
 Dialog component
 
+**Type:** component
+
 **Import:** `import { Dialog } from "@cloudflare/kumo";`
 
 **Category:** Overlay
@@ -1079,6 +1408,42 @@ Dialog component
 **Colors (kumo tokens used):**
 
 `bg-color-3`, `bg-surface`, `text-surface`
+
+**Styling:**
+
+- **Base Tokens:** `bg-surface`, `text-surface`, `border-border`, `shadow-m`
+- **States:**
+  - `base`: `bg-surface`, `text-surface`, `shadow-m`
+  - `backdrop`: `bg-color-3`, `opacity-80`
+- **Size Variants:**
+  - `sm`:
+    - Classes: `min-w-72`
+    - Dimensions:
+      - paddingX: 16
+      - paddingY: 16
+      - gap: 8
+      - borderRadius: 12
+  - `base`:
+    - Classes: `min-w-96`
+    - Dimensions:
+      - paddingX: 24
+      - paddingY: 24
+      - gap: 16
+      - borderRadius: 12
+  - `lg`:
+    - Classes: `min-w-[32rem]`
+    - Dimensions:
+      - paddingX: 24
+      - paddingY: 24
+      - gap: 16
+      - borderRadius: 12
+  - `xl`:
+    - Classes: `min-w-[48rem]`
+    - Dimensions:
+      - paddingX: 24
+      - paddingY: 24
+      - gap: 16
+      - borderRadius: 12
 
 **Sub-Components:**
 
@@ -1168,14 +1533,237 @@ Usage:
 ```tsx
 <Dialog.Root>
       <Dialog.Trigger render={<Button>Open Dialog</Button>} />
-      <Dialog className="p-6">
+      <Dialog className="p-6" size={args.size}>
         <Dialog.Title className="mb-2 text-xl font-semibold">
           Dialog Title
         </Dialog.Title>
-        <Dialog.Description className="mb-4">
+        <Dialog.Description className="mb-4 text-muted">
           This is a dialog description with some content.
         </Dialog.Description>
         <Dialog.Close render={<Button>Close</Button>} />
+      </Dialog>
+    </Dialog.Root>
+```
+
+```tsx
+<Dialog.Root>
+      <Dialog.Trigger render={<Button>Open Dialog</Button>} />
+      <Dialog className="p-6" size={args.size}>
+        <div className="mb-4 flex items-center justify-between">
+          <Dialog.Title className="text-xl font-semibold">
+            Dialog Title
+          </Dialog.Title>
+          <Dialog.Close
+            render={
+              <button className="text-muted transition-colors hover:text-surface">
+                <Icon glyph="ph-x" size="sm" />
+              </button>
+            }
+          />
+        </div>
+        <Dialog.Description className="mb-4 text-muted">
+          This is a dialog description with some content explaining the purpose
+          of this dialog.
+        </Dialog.Description>
+        <div className="flex justify-end gap-3">
+          <Dialog.Close render={<Button variant="secondary">Cancel</Button>} />
+          <Button variant="primary">Confirm</Button>
+        </div>
+      </Dialog>
+    </Dialog.Root>
+```
+
+```tsx
+<Dialog.Root>
+      <Dialog.Trigger render={<Button variant="destructive">Delete</Button>} />
+      <Dialog className="p-6" size="sm">
+        <div className="mb-4 flex items-center justify-between">
+          <Dialog.Title className="text-lg font-semibold">
+            Delete Item
+          </Dialog.Title>
+          <Dialog.Close
+            render={
+              <button className="text-muted transition-colors hover:text-surface">
+                <Icon glyph="ph-x" size="sm" />
+              </button>
+            }
+          />
+        </div>
+        <Dialog.Description className="mb-4 text-muted">
+          Are you sure you want to delete this item? This action cannot be
+          undone.
+        </Dialog.Description>
+        <div className="flex justify-end gap-3">
+          <Dialog.Close render={<Button variant="secondary">Cancel</Button>} />
+          <Button variant="destructive">Delete</Button>
+        </div>
+      </Dialog>
+    </Dialog.Root>
+```
+
+```tsx
+<div className="flex flex-wrap gap-4">
+      <Dialog.Root>
+        <Dialog.Trigger render={<Button>Small (sm)</Button>} />
+        <Dialog className="p-6" size="sm">
+          <div className="mb-4 flex items-center justify-between">
+            <Dialog.Title className="text-lg font-semibold">
+              Small Dialog
+            </Dialog.Title>
+            <Dialog.Close
+              render={
+                <button className="text-muted transition-colors hover:text-surface">
+                  <Icon glyph="ph-x" size="sm" />
+                </button>
+              }
+            />
+          </div>
+          <Dialog.Description className="mb-4 text-muted">
+            This is a small dialog for simple confirmations.
+          </Dialog.Description>
+          <div className="flex justify-end gap-2">
+            <Dialog.Close
+              render={<Button variant="secondary">Cancel</Button>}
+            />
+            <Button variant="primary">Confirm</Button>
+          </div>
+        </Dialog>
+      </Dialog.Root>
+
+      <Dialog.Root>
+        <Dialog.Trigger render={<Button>Base (default)</Button>} />
+        <Dialog className="p-6" size="base">
+          <div className="mb-4 flex items-center justify-between">
+            <Dialog.Title className="text-xl font-semibold">
+              Base Dialog
+            </Dialog.Title>
+            <Dialog.Close
+              render={
+                <button className="text-muted transition-colors hover:text-surface">
+                  <Icon glyph="ph-x" size="sm" />
+                </button>
+              }
+            />
+          </div>
+          <Dialog.Description className="mb-4 text-muted">
+            This is the default dialog size for most use cases.
+          </Dialog.Description>
+          <div className="flex justify-end gap-3">
+            <Dialog.Close
+              render={<Button variant="secondary">Cancel</Button>}
+            />
+            <Button variant="primary">Confirm</Button>
+          </div>
+        </Dialog>
+      </Dialog.Root>
+
+      <Dialog.Root>
+        <Dialog.Trigger render={<Button>Large (lg)</Button>} />
+        <Dialog className="p-6" size="lg">
+          <div className="mb-4 flex items-center justify-between">
+            <Dialog.Title className="text-xl font-semibold">
+              Large Dialog
+            </Dialog.Title>
+            <Dialog.Close
+              render={
+                <button className="text-muted transition-colors hover:text-surface">
+                  <Icon glyph="ph-x" size="sm" />
+                </button>
+              }
+            />
+          </div>
+          <Dialog.Description className="mb-4 text-muted">
+            This is a large dialog for complex content that needs more space.
+          </Dialog.Description>
+          <div className="flex justify-end gap-3">
+            <Dialog.Close
+              render={<Button variant="secondary">Cancel</Button>}
+            />
+            <Button variant="primary">Confirm</Button>
+          </div>
+        </Dialog>
+      </Dialog.Root>
+
+      <Dialog.Root>
+        <Dialog.Trigger render={<Button>Extra Large (xl)</Button>} />
+        <Dialog className="p-6" size="xl">
+          <div className="mb-4 flex items-center justify-between">
+            <Dialog.Title className="text-xl font-semibold">
+              Extra Large Dialog
+            </Dialog.Title>
+            <Dialog.Close
+              render={
+                <button className="text-muted transition-colors hover:text-surface">
+                  <Icon glyph="ph-x" size="sm" />
+                </button>
+              }
+            />
+          </div>
+          <Dialog.Description className="mb-4 text-muted">
+            This is an extra large dialog for detailed views and complex forms.
+          </Dialog.Description>
+          <div className="flex justify-end gap-3">
+            <Dialog.Close
+              render={<Button variant="secondary">Cancel</Button>}
+            />
+            <Button variant="primary">Confirm</Button>
+          </div>
+        </Dialog>
+      </Dialog.Root>
+    </div>
+```
+
+```tsx
+<Dialog.Root>
+      <Dialog.Trigger render={<Button>Edit Profile</Button>} />
+      <Dialog className="p-6" size="base">
+        <div className="mb-4 flex items-center justify-between">
+          <Dialog.Title className="text-xl font-semibold">
+            Edit Profile
+          </Dialog.Title>
+          <Dialog.Close
+            render={
+              <button className="text-muted transition-colors hover:text-surface">
+                <Icon glyph="ph-x" size="sm" />
+              </button>
+            }
+          />
+        </div>
+        <Dialog.Description className="mb-4 text-muted">
+          Update your profile information below.
+        </Dialog.Description>
+        <form className="space-y-4">
+          <div>
+            <label htmlFor="name" className="mb-1 block text-sm font-medium">
+              Name
+            </label>
+            <input
+              id="name"
+              type="text"
+              aria-label="Name"
+              className="w-full rounded-lg bg-secondary px-3 py-2 ring ring-border focus:ring-active"
+              placeholder="Enter your name"
+            />
+          </div>
+          <div>
+            <label htmlFor="email" className="mb-1 block text-sm font-medium">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              aria-label="Email"
+              className="w-full rounded-lg bg-secondary px-3 py-2 ring ring-border focus:ring-active"
+              placeholder="Enter your email"
+            />
+          </div>
+          <div className="flex justify-end gap-3 pt-2">
+            <Dialog.Close
+              render={<Button variant="secondary">Cancel</Button>}
+            />
+            <Button variant="primary">Save Changes</Button>
+          </div>
+        </form>
       </Dialog>
     </Dialog.Root>
 ```
@@ -1186,6 +1774,8 @@ Usage:
 ### DropdownMenu
 
 DropdownMenu component
+
+**Type:** component
 
 **Import:** `import { DropdownMenu } from "@cloudflare/kumo";`
 
@@ -1199,7 +1789,7 @@ DropdownMenu component
 
 **Colors (kumo tokens used):**
 
-`bg-accent`, `bg-color-3`, `bg-destructive-2`, `bg-muted`, `bg-secondary`, `ring-border`, `text-error`, `text-surface`
+`bg-accent`, `bg-color-3`, `bg-error-selection`, `bg-muted`, `bg-secondary`, `ring-border`, `text-error`, `text-surface`
 
 **Sub-Components:**
 
@@ -1260,6 +1850,8 @@ Group sub-component (wraps DropdownMenuPrimitive)
 
 Empty component
 
+**Type:** block
+
 **Import:** `import { Empty } from "@cloudflare/kumo";`
 
 **Category:** Block
@@ -1313,6 +1905,8 @@ Empty component
 
 Field component
 
+**Type:** component
+
 **Import:** `import { Field } from "@cloudflare/kumo";`
 
 **Category:** Input
@@ -1337,9 +1931,354 @@ Field component
 
 ---
 
+### Icon
+
+Icon component variants configuration / export const KUMO_ICON_VARIANTS = { size: { xs: { classes: "size-3", description: "12px - small UI elements", }, sm: { classes: "size-4", description: "16px - standard inline icons", }, base: { classes: "size-5", description: "20px - default size", }, lg: { classes: "size-6", description: "24px - prominent icons", }, xl: { classes: "size-8", description: "32px - hero sections", }, }, } as const; /** Default variant values for Icon component / export const KUMO_ICON_DEFAULT_VARIANTS = { size: "base", } as const; /** Generate className string for icon variants / export function iconVariants({ size = KUMO_ICON_DEFAULT_VARIANTS.size, }: KumoIconVariantsProps = {}) { return cn( // Base styles - no default color, inherits currentColor from parent // This matches Phosphor icon behavior "inline-block shrink-0 fill-current", // Apply size variant KUMO_ICON_VARIANTS.size[size].classes, ); } /** Icon component using SVG sprite with <use> pattern Color is inherited from parent's text color (currentColor), matching Phosphor icon behavior. Override with text-* classes when needed. ```tsx // Basic usage - inherits color from parent <Icon glyph="ph-check" /> // With explicit color and size <Icon glyph="ph-arrow-right" className="text-brand" size="lg" /> // Accessible icon with title <Icon glyph="cf-cloudflare-workers-outline" title="Cloudflare Workers" /> // Error state <Icon glyph="ph-warning" className="text-error" /> // Success state <Icon glyph="ph-check" className="text-green" /> ```
+
+**Type:** component
+
+**Import:** `import { Icon } from "@cloudflare/kumo";`
+
+**Category:** Other
+
+**Props:**
+
+- `glyph`: IconGlyph (required)
+  Icon glyph identifier (e.g., "ph-check", "cf-workers")
+- `title`: string
+  Accessible title for the icon (makes it non-decorative)
+- `size`: enum [default: base]
+  - `"xs"`: 12px - small UI elements
+  - `"sm"`: 16px - standard inline icons
+  - `"base"`: 20px - default size
+  - `"lg"`: 24px - prominent icons
+  - `"xl"`: 32px - hero sections
+- `children`: ReactNode
+- `onChange`: React.FormEventHandler<SVGSVGElement>
+- `onSubmit`: React.FormEventHandler<SVGSVGElement>
+- `onClick`: React.MouseEventHandler<SVGSVGElement>
+- `suppressHydrationWarning`: boolean
+- `className`: string
+- `color`: string
+- `height`: number | string
+- `id`: string
+- `lang`: string
+- `media`: string
+- `method`: string
+- `name`: string
+- `target`: string
+- `type`: string
+- `width`: number | string
+- `role`: React.AriaRole
+- `accentHeight`: number | string
+- `accumulate`: enum
+- `additive`: enum
+- `alignmentBaseline`: enum
+- `allowReorder`: enum
+- `alphabetic`: number | string
+- `amplitude`: number | string
+- `arabicForm`: enum
+- `ascent`: number | string
+- `attributeName`: string
+- `attributeType`: string
+- `autoReverse`: Booleanish
+- `azimuth`: number | string
+- `baseFrequency`: number | string
+- `baselineShift`: number | string
+- `baseProfile`: number | string
+- `bbox`: number | string
+- `begin`: number | string
+- `bias`: number | string
+- `by`: number | string
+- `calcMode`: number | string
+- `capHeight`: number | string
+- `clip`: number | string
+- `clipPath`: string
+- `clipPathUnits`: number | string
+- `clipRule`: number | string
+- `colorInterpolation`: number | string
+- `colorInterpolationFilters`: enum
+- `colorProfile`: number | string
+- `colorRendering`: number | string
+- `contentScriptType`: number | string
+- `contentStyleType`: number | string
+- `cursor`: number | string
+- `cx`: number | string
+- `cy`: number | string
+- `d`: string
+- `decelerate`: number | string
+- `descent`: number | string
+- `diffuseConstant`: number | string
+- `direction`: number | string
+- `display`: number | string
+- `divisor`: number | string
+- `dominantBaseline`: enum
+- `dur`: number | string
+- `dx`: number | string
+- `dy`: number | string
+- `edgeMode`: number | string
+- `elevation`: number | string
+- `enableBackground`: number | string
+- `end`: number | string
+- `exponent`: number | string
+- `externalResourcesRequired`: Booleanish
+- `fill`: string
+- `fillOpacity`: number | string
+- `fillRule`: enum
+- `filter`: string
+- `filterRes`: number | string
+- `filterUnits`: number | string
+- `floodColor`: number | string
+- `floodOpacity`: number | string
+- `focusable`: Booleanish | string
+- `fontFamily`: string
+- `fontSize`: number | string
+- `fontSizeAdjust`: number | string
+- `fontStretch`: number | string
+- `fontStyle`: number | string
+- `fontVariant`: number | string
+- `fontWeight`: number | string
+- `format`: number | string
+- `fr`: number | string
+- `from`: number | string
+- `fx`: number | string
+- `fy`: number | string
+- `g1`: number | string
+- `g2`: number | string
+- `glyphName`: number | string
+- `glyphOrientationHorizontal`: number | string
+- `glyphOrientationVertical`: number | string
+- `glyphRef`: number | string
+- `gradientTransform`: string
+- `gradientUnits`: string
+- `hanging`: number | string
+- `horizAdvX`: number | string
+- `horizOriginX`: number | string
+- `href`: string
+- `ideographic`: number | string
+- `imageRendering`: number | string
+- `in2`: number | string
+- `in`: string
+- `intercept`: number | string
+- `k1`: number | string
+- `k2`: number | string
+- `k3`: number | string
+- `k4`: number | string
+- `k`: number | string
+- `kernelMatrix`: number | string
+- `kernelUnitLength`: number | string
+- `kerning`: number | string
+- `keyPoints`: number | string
+- `keySplines`: number | string
+- `keyTimes`: number | string
+- `lengthAdjust`: number | string
+- `letterSpacing`: number | string
+- `lightingColor`: number | string
+- `limitingConeAngle`: number | string
+- `local`: number | string
+- `markerEnd`: string
+- `markerHeight`: number | string
+- `markerMid`: string
+- `markerStart`: string
+- `markerUnits`: number | string
+- `markerWidth`: number | string
+- `mask`: string
+- `maskContentUnits`: number | string
+- `maskUnits`: number | string
+- `mathematical`: number | string
+- `mode`: number | string
+- `numOctaves`: number | string
+- `offset`: number | string
+- `opacity`: number | string
+- `operator`: number | string
+- `order`: number | string
+- `orient`: number | string
+- `orientation`: number | string
+- `origin`: number | string
+- `overflow`: number | string
+- `overlinePosition`: number | string
+- `overlineThickness`: number | string
+- `paintOrder`: number | string
+- `panose1`: number | string
+- `path`: string
+- `pathLength`: number | string
+- `patternContentUnits`: string
+- `patternTransform`: number | string
+- `patternUnits`: string
+- `pointerEvents`: number | string
+- `points`: string
+- `pointsAtX`: number | string
+- `pointsAtY`: number | string
+- `pointsAtZ`: number | string
+- `preserveAlpha`: Booleanish
+- `preserveAspectRatio`: string
+- `primitiveUnits`: number | string
+- `r`: number | string
+- `radius`: number | string
+- `refX`: number | string
+- `refY`: number | string
+- `renderingIntent`: number | string
+- `repeatCount`: number | string
+- `repeatDur`: number | string
+- `requiredExtensions`: number | string
+- `requiredFeatures`: number | string
+- `restart`: number | string
+- `result`: string
+- `rotate`: number | string
+- `rx`: number | string
+- `ry`: number | string
+- `scale`: number | string
+- `seed`: number | string
+- `shapeRendering`: number | string
+- `slope`: number | string
+- `spacing`: number | string
+- `specularConstant`: number | string
+- `specularExponent`: number | string
+- `speed`: number | string
+- `spreadMethod`: string
+- `startOffset`: number | string
+- `stdDeviation`: number | string
+- `stemh`: number | string
+- `stemv`: number | string
+- `stitchTiles`: number | string
+- `stopColor`: string
+- `stopOpacity`: number | string
+- `strikethroughPosition`: number | string
+- `strikethroughThickness`: number | string
+- `string`: number | string
+- `stroke`: string
+- `strokeDasharray`: string | number
+- `strokeDashoffset`: string | number
+- `strokeLinecap`: enum
+- `strokeLinejoin`: enum
+- `strokeMiterlimit`: number | string
+- `strokeOpacity`: number | string
+- `strokeWidth`: number | string
+- `surfaceScale`: number | string
+- `systemLanguage`: number | string
+- `tableValues`: number | string
+- `targetX`: number | string
+- `targetY`: number | string
+- `textAnchor`: enum
+- `textDecoration`: number | string
+- `textLength`: number | string
+- `textRendering`: number | string
+- `to`: number | string
+- `transform`: string
+- `u1`: number | string
+- `u2`: number | string
+- `underlinePosition`: number | string
+- `underlineThickness`: number | string
+- `unicode`: number | string
+- `unicodeBidi`: number | string
+- `unicodeRange`: number | string
+- `unitsPerEm`: number | string
+- `vAlphabetic`: number | string
+- `values`: string
+- `vectorEffect`: number | string
+- `version`: string
+- `vertAdvY`: number | string
+- `vertOriginX`: number | string
+- `vertOriginY`: number | string
+- `vHanging`: number | string
+- `vIdeographic`: number | string
+- `viewBox`: string
+- `viewTarget`: number | string
+- `visibility`: number | string
+- `vMathematical`: number | string
+- `widths`: number | string
+- `wordSpacing`: number | string
+- `writingMode`: number | string
+- `x1`: number | string
+- `x2`: number | string
+- `x`: number | string
+- `xChannelSelector`: string
+- `xHeight`: number | string
+- `xlinkActuate`: string
+- `xlinkArcrole`: string
+- `xlinkHref`: string
+- `xlinkRole`: string
+- `xlinkShow`: string
+- `xlinkTitle`: string
+- `xlinkType`: string
+- `xmlBase`: string
+- `xmlLang`: string
+- `xmlns`: string
+- `xmlnsXlink`: string
+- `xmlSpace`: string
+- `y1`: number | string
+- `y2`: number | string
+- `y`: number | string
+- `yChannelSelector`: string
+- `z`: number | string
+- `zoomAndPan`: string
+
+**Colors (kumo tokens used):**
+
+`text-brand`, `text-error`, `text-green`
+
+**Examples:**
+
+```tsx
+<Icon size="xs" glyph="ph-check" />
+```
+
+```tsx
+<div className="grid grid-cols-8 gap-4">
+      {ALL_ICON_GLYPHS.map((glyph) => (
+        <div key={glyph} className="flex flex-col items-center gap-2">
+          <Icon glyph={glyph} size="lg" />
+          <span className="text-xs text-muted">{glyph}</span>
+        </div>
+      ))}
+    </div>
+```
+
+```tsx
+<Icon glyph="ph-check" title={Success} />
+```
+
+```tsx
+<div className="flex gap-4">
+      <Icon glyph="ph-check" className="text-green" size="lg" />
+      <Icon glyph="ph-warning" className="text-alert" size="lg" />
+      <Icon glyph="ph-x" className="text-error" size="lg" />
+      <Icon glyph="ph-info" className="text-info" size="lg" />
+      <Icon glyph="ph-check" className="text-brand" size="lg" />
+      <Icon glyph="ph-gear" className="text-label" size="lg" />
+      <Icon
+        glyph="cf-cloudflare-workers-outline"
+        className="text-green"
+        size="lg"
+      />
+      <Icon
+        glyph="cf-security-shield-protection-1-outline"
+        className="text-alert"
+        size="lg"
+      />
+      <Icon
+        glyph="cf-cloudflare-pages-outline"
+        className="text-error"
+        size="lg"
+      />
+      <Icon
+        glyph="cf-cloudflare-zero-trust-outline"
+        className="text-info"
+        size="lg"
+      />
+      <Icon glyph="cf-r2-outline" className="text-brand" size="lg" />
+      <Icon glyph="cf-d1-outline" className="text-label" size="lg" />
+    </div>
+```
+
+
+---
+
 ### Input
 
 Input component
+
+**Type:** component
 
 **Import:** `import { Input } from "@cloudflare/kumo";`
 
@@ -1364,11 +2303,59 @@ Input component
   - `"default"`: Default input appearance
   - `"error"`: Error state for validation failures
 
+  **State Classes:**
+  - `"default"`:
+    - `focus`: `focus:ring-active`
+  - `"error"`:
+    - `focus`: `focus:ring-error`
+
 **Colors (kumo tokens used):**
 
-`bg-secondary`, `ring-active`, `ring-border`, `ring-destructive`, `text-muted`, `text-surface`
+`bg-secondary`, `ring-active`, `ring-border`, `ring-error`, `text-muted`, `text-surface`
+
+**Styling:**
+
+- **Base Tokens:** `bg-secondary`, `text-surface`, `text-muted`, `ring-border`
+- **States:**
+  - `base`: `bg-secondary`, `text-surface`, `ring-border`
+  - `focus`: `ring-active`
+  - `error`: `ring-error`
+  - `disabled`: `opacity-50`, `text-muted`
+- **Size Variants:**
+  - `xs`:
+    - Height: 20px
+    - Classes: `h-5 gap-1 rounded-sm px-1.5 text-xs`
+    - Dimensions:
+      - paddingX: 6
+      - fontSize: 12
+      - borderRadius: 2
+  - `sm`:
+    - Height: 26px
+    - Classes: `h-6.5 gap-1 rounded-md px-2 text-xs`
+    - Dimensions:
+      - paddingX: 8
+      - fontSize: 12
+      - borderRadius: 6
+  - `base`:
+    - Height: 36px
+    - Classes: `h-9 gap-1.5 rounded-lg px-3 text-base`
+    - Dimensions:
+      - paddingX: 12
+      - fontSize: 16
+      - borderRadius: 8
+  - `lg`:
+    - Height: 40px
+    - Classes: `h-10 gap-2 rounded-lg px-4 text-base`
+    - Dimensions:
+      - paddingX: 16
+      - fontSize: 16
+      - borderRadius: 8
 
 **Examples:**
+
+```tsx
+<Input placeholder="Enter text..." />
+```
 
 ```tsx
 <Input
@@ -1598,16 +2585,14 @@ function InputGroupExamplesRender() {
     </div>
 ```
 
-```tsx
-<Input placeholder="Input without Field wrapper" />
-```
-
 
 ---
 
 ### Label
 
 When true, only renders the inline content (indicators, tooltip) without the outer span with font styling. Useful when composed inside another label element that already provides the text styling. / asContent?: boolean; } /** Label component for form fields. Provides a standardized way to display labels with optional indicators: - Optional indicator: gray "(optional)" text when `showOptional={true}` - Tooltip: info icon with hover tooltip for additional context // Basic label <Label>Email</Label> // Optional field with indicator <Label showOptional>Middle Name</Label> // With tooltip <Label tooltip="We'll use this to send you updates">Email</Label> // With ReactNode children <Label> <span>Custom label with <strong>bold</strong> text</span> </Label>
+
+**Type:** component
 
 **Import:** `import { Label } from "@cloudflare/kumo";`
 
@@ -1679,6 +2664,8 @@ When true, only renders the inline content (indicators, tooltip) without the out
 
 LayerCard component
 
+**Type:** component
+
 **Import:** `import { LayerCard } from "@cloudflare/kumo";`
 
 **Category:** Display
@@ -1691,6 +2678,9 @@ LayerCard component
 **Colors (kumo tokens used):**
 
 `bg-layer-card-primary`, `bg-surface-2`, `ring-border`, `ring-color`, `text-label`
+
+**Styling:**
+
 
 **Sub-Components:**
 
@@ -1729,6 +2719,8 @@ Secondary sub-component
 
 Loader component
 
+**Type:** component
+
 **Import:** `import { Loader } from "@cloudflare/kumo";`
 
 **Category:** Feedback
@@ -1754,6 +2746,8 @@ Loader component
 
 MenuBar component
 
+**Type:** component
+
 **Import:** `import { MenuBar } from "@cloudflare/kumo";`
 
 **Category:** Navigation
@@ -1769,11 +2763,16 @@ MenuBar component
 
 `bg-color`, `bg-surface`, `border-color`
 
+**Styling:**
+
+
 ---
 
 ### Meter
 
 Meter component
+
+**Type:** component
 
 **Import:** `import { Meter } from "@cloudflare/kumo";`
 
@@ -1818,6 +2817,8 @@ Meter component
 ### PageHeader
 
 PageHeader component
+
+**Type:** block
 
 **Import:** `import { PageHeader } from "@cloudflare/kumo";`
 
@@ -1983,6 +2984,8 @@ PageHeader component
 
 Pagination component
 
+**Type:** component
+
 **Import:** `import { Pagination } from "@cloudflare/kumo";`
 
 **Category:** Navigation
@@ -2002,6 +3005,9 @@ Pagination component
 
 `text-label`
 
+**Styling:**
+
+
 **Examples:**
 
 ```tsx
@@ -2019,6 +3025,8 @@ Pagination component
 
 Radio component
 
+**Type:** component
+
 **Import:** `import { Radio } from "@cloudflare/kumo";`
 
 **Category:** Other
@@ -2035,11 +3043,13 @@ Radio component
   Error message for the group
 - `description`: ReactNode
   Helper text for the group
+- `defaultValue`: string
+  Value of the radio that should be initially selected (uncontrolled)
 - `value`: string
   Value of the radio that should be selected (controlled)
 - `disabled`: boolean
   Whether all radios in the group are disabled
-- `controlPosition`: RadioControlPosition
+- `controlPosition`: enum
   Position of radio control relative to label: "start" (default) puts radio before label, "end" puts label before radio
 - `name`: string
   Form submission name for the radio group
@@ -2048,7 +3058,7 @@ Radio component
 
 **Colors (kumo tokens used):**
 
-`bg-surface`, `bg-surface-inverse`, `border-border`, `ring-active`, `ring-border`, `ring-destructive`, `text-error`, `text-muted`, `text-surface`
+`bg-surface`, `bg-surface-inverse`, `border-border`, `ring-active`, `ring-border`, `text-error`, `text-muted`, `text-surface`
 
 **Examples:**
 
@@ -2257,6 +3267,8 @@ Radio component
 
 Select component
 
+**Type:** component
+
 **Import:** `import { Select } from "@cloudflare/kumo";`
 
 **Category:** Input
@@ -2281,6 +3293,8 @@ Select component
   Tooltip content to display next to the label via an info icon
 - `value`: string
   The currently selected value
+- `defaultValue`: string
+  Initial value for uncontrolled mode
 - `children`: ReactNode
   Child elements (Select.Option components)
 - `description`: ReactNode
@@ -2289,12 +3303,13 @@ Select component
   Error message or validation error object
 - `onValueChange`: (value: string) => void
   Callback when selection changes
-- `defaultValue`: string
-  Initial value for uncontrolled mode
 
 **Colors (kumo tokens used):**
 
 `bg-color-3`, `bg-secondary`, `ring-active`, `ring-border`, `text-surface`
+
+**Styling:**
+
 
 **Sub-Components:**
 
@@ -2423,30 +3438,81 @@ Option sub-component
 
 SensitiveInput component
 
+**Type:** component
+
 **Import:** `import { SensitiveInput } from "@cloudflare/kumo";`
 
 **Category:** Other
 
 **Props:**
 
+- `alt`: string
+- `autoComplete`: React.HTMLInputAutoCompleteAttribute
 - `checked`: boolean
 - `disabled`: boolean
+- `height`: number | string
+- `list`: string
 - `name`: string
 - `placeholder`: string
 - `readOnly`: boolean
 - `required`: boolean
+- `width`: number | string
 - `onChange`: React.ChangeEventHandler<HTMLInputElement>
+- `defaultChecked`: boolean
+- `suppressContentEditableWarning`: boolean
+- `suppressHydrationWarning`: boolean
 - `className`: string
+- `contextMenu`: string
+- `enterKeyHint`: enum
 - `id`: string
+- `lang`: string
+- `nonce`: string
+- `slot`: string
 - `title`: string
+- `radioGroup`: string
+- `role`: React.AriaRole
+- `about`: string
+- `content`: string
+- `datatype`: string
+- `inlist`: unknown
+- `prefix`: string
+- `property`: string
+- `rel`: string
+- `resource`: string
+- `rev`: string
+- `typeof`: string
+- `vocab`: string
+- `autoCorrect`: string
+- `autoSave`: string
+- `color`: string
+- `itemProp`: string
+- `itemScope`: boolean
+- `itemType`: string
+- `itemID`: string
+- `itemRef`: string
+- `results`: number
+- `security`: string
+- `unselectable`: enum
+- `popover`: enum
+- `popoverTargetAction`: enum
+- `popoverTarget`: string
+- `inert`: boolean
+- `inputMode`: enum
+  Hints at the type of data that might be entered by the user while editing the element or its contents
+- `is`: string
+  Specify that a standard HTML element should behave like a defined custom built-in element
+- `exportparts`: string
+- `part`: string
 - `children`: ReactNode
 - `onSubmit`: React.FormEventHandler<HTMLInputElement>
 - `onClick`: React.MouseEventHandler<HTMLInputElement>
 - `value`: string
   Controlled value
-- `size`: KumoInputSize [default: base]
+- `defaultValue`: string
+  Uncontrolled default value
+- `size`: enum [default: base]
   Size variant
-- `variant`: KumoInputVariant [default: default]
+- `variant`: enum [default: default]
   Style variant
 - `label`: ReactNode
   Label content for the input (enables Field wrapper and sets masked state label) - can be a string or any React node
@@ -2568,6 +3634,8 @@ SensitiveInput component
 
 Surface component
 
+**Type:** component
+
 **Import:** `import { Surface } from "@cloudflare/kumo";`
 
 **Category:** Layout
@@ -2576,6 +3644,9 @@ Surface component
 
 - `as`: React.ElementType
   The element type to render as (default: "div")
+- `color`: enum [default: primary]
+  - `"primary"`: Primary surface color
+  - `"secondary"`: Secondary surface color
 - `className`: string
   Additional CSS classes
 - `children`: ReactNode
@@ -2593,6 +3664,8 @@ Surface component
 ### Switch
 
 Switch component
+
+**Type:** component
 
 **Import:** `import { Switch } from "@cloudflare/kumo";`
 
@@ -2621,9 +3694,52 @@ Switch component
 - `name`: string
 - `type`: enum
 - `value`: string | string[] | number
+- `defaultChecked`: boolean
+- `defaultValue`: string | number | string[]
+- `suppressContentEditableWarning`: boolean
+- `suppressHydrationWarning`: boolean
 - `className`: string
+- `contextMenu`: string
+- `enterKeyHint`: enum
 - `id`: string
+- `lang`: string
+- `nonce`: string
+- `slot`: string
 - `title`: string
+- `radioGroup`: string
+- `role`: React.AriaRole
+- `about`: string
+- `content`: string
+- `datatype`: string
+- `inlist`: unknown
+- `prefix`: string
+- `property`: string
+- `rel`: string
+- `resource`: string
+- `rev`: string
+- `typeof`: string
+- `vocab`: string
+- `autoCorrect`: string
+- `autoSave`: string
+- `color`: string
+- `itemProp`: string
+- `itemScope`: boolean
+- `itemType`: string
+- `itemID`: string
+- `itemRef`: string
+- `results`: number
+- `security`: string
+- `unselectable`: enum
+- `popover`: enum
+- `popoverTargetAction`: enum
+- `popoverTarget`: string
+- `inert`: boolean
+- `inputMode`: enum
+  Hints at the type of data that might be entered by the user while editing the element or its contents
+- `is`: string
+  Specify that a standard HTML element should behave like a defined custom built-in element
+- `exportparts`: string
+- `part`: string
 - `onChange`: React.FormEventHandler<HTMLButtonElement>
 - `onSubmit`: React.FormEventHandler<HTMLButtonElement>
 - `onClick`: (event: React.MouseEvent) => void
@@ -2631,7 +3747,7 @@ Switch component
 
 **Colors (kumo tokens used):**
 
-`bg-destructive`, `bg-hover`, `bg-hover-selected`, `bg-selected`, `bg-surface-3`, `border-border`, `ring-destructive`, `text-error`, `text-muted`, `text-surface`
+`bg-error`, `bg-hover`, `bg-hover-selected`, `bg-primary`, `bg-surface-3`, `border-border`, `ring-error`, `text-error`, `text-muted`, `text-surface`
 
 **Sub-Components:**
 
@@ -2925,6 +4041,8 @@ Props:
 
 Table component
 
+**Type:** component
+
 **Import:** `import { Table } from "@cloudflare/kumo";`
 
 **Category:** Other
@@ -2993,6 +4111,8 @@ ResizeHandle sub-component
 
 Tabs component
 
+**Type:** component
+
 **Import:** `import { Tabs } from "@cloudflare/kumo";`
 
 **Category:** Navigation
@@ -3021,6 +4141,9 @@ Tabs component
 
 `bg-accent`, `bg-primary`, `bg-surface-elevated`, `border-accent`, `border-border`, `ring-active`, `ring-color-2`, `text-label`, `text-muted`, `text-surface`
 
+**Styling:**
+
+
 **Examples:**
 
 ```tsx
@@ -3038,6 +4161,8 @@ Tabs component
 
 Text component
 
+**Type:** component
+
 **Import:** `import { Text } from "@cloudflare/kumo";`
 
 **Category:** Display
@@ -3053,6 +4178,7 @@ Text component
   - `"success"`: Success state text
   - `"error"`: Error state text
   - `"mono"`: Monospace text for code
+  - `"mono-secondary"`: Muted monospace text
 - `size`: enum [default: base]
   - `"xs"`: Extra small text
   - `"sm"`: Small text
@@ -3090,6 +4216,8 @@ Text component
 
 Toasty component
 
+**Type:** component
+
 **Import:** `import { Toasty } from "@cloudflare/kumo";`
 
 **Category:** Feedback
@@ -3102,11 +4230,16 @@ Toasty component
 
 `bg-toast`, `bg-toast-button-hover`, `border-color`, `text-label`, `text-muted`, `text-surface`
 
+**Styling:**
+
+
 ---
 
 ### Tooltip
 
 Tooltip component
+
+**Type:** component
 
 **Import:** `import { Tooltip } from "@cloudflare/kumo";`
 
@@ -3114,16 +4247,16 @@ Tooltip component
 
 **Props:**
 
-- `align`: TooltipAlign
+- `align`: enum
 - `asChild`: boolean
 - `className`: string
+- `content`: ReactNode
+  Content to display in the tooltip
 - `side`: enum [default: top]
   - `"top"`: Tooltip appears above the trigger
   - `"bottom"`: Tooltip appears below the trigger
   - `"left"`: Tooltip appears to the left of the trigger
   - `"right"`: Tooltip appears to the right of the trigger
-- `content`: ReactNode (required)
-  Content to display in the tooltip
 
 **Colors (kumo tokens used):**
 
@@ -3138,6 +4271,29 @@ Tooltip component
 ```
 
 
+---
+
+### InputArea
+
+Multi-line textarea input with Input variants and InputArea-specific dimensions
+
+**Type:** component
+
+**Import:** `import { InputArea } from "@cloudflare/kumo (synthetic - uses Input component)";`
+
+**Category:** Input
+
+**Props:**
+
+
+**Styling:**
+
+- **Size Variants:**
+  - `xs`:
+  - `sm`:
+  - `base`:
+  - `lg`:
+
 ## Quick Reference
 
 **Components by Category:**
@@ -3147,6 +4303,6 @@ Tooltip component
 - **Action:** Button, ClipboardText
 - **Input:** Checkbox, Combobox, DateRangePicker, Field, Input, Select, Switch
 - **Overlay:** Dialog, DropdownMenu, Tooltip
-- **Other:** Label, Radio, SensitiveInput, Table
+- **Other:** Icon, Label, Radio, SensitiveInput, Table
 - **Navigation:** MenuBar, Pagination, Tabs
 - **Layout:** Surface

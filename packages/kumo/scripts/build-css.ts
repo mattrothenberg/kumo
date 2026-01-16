@@ -15,7 +15,12 @@ if (!existsSync(distDir)) {
 }
 
 // Copy CSS files for Tailwind users (raw CSS with Tailwind directives)
-const cssFiles: string[] = ["kumo.css", "kumo-binding.css", "kumo-theme.css"];
+const cssFiles: string[] = [
+  "kumo.css",
+  "kumo-binding.css",
+  "theme-kumo.css",
+  "theme-fedramp.css",
+];
 
 cssFiles.forEach((file) => {
   const srcPath = join(srcDir, file);

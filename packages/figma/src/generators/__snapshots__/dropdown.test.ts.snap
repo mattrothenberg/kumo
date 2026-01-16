@@ -1,0 +1,187 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Dropdown Generator - Snapshot Tests (Intermediate Data) > should produce consistent intermediate data for all variants (golden path) 1`] = `
+{
+  "config": {
+    "descriptions": {
+      "default": "Basic dropdown with simple menu items",
+      "withCheckbox": "Dropdown with checkbox menu items",
+      "withDanger": "Dropdown with destructive action item",
+      "withGroups": "Dropdown with grouped menu sections",
+      "withIcons": "Dropdown with icons for each menu item",
+      "withShortcuts": "Dropdown with keyboard shortcuts",
+    },
+    "openValues": [
+      false,
+      true,
+    ],
+    "variantValues": [
+      "default",
+      "withIcons",
+      "withDanger",
+      "withGroups",
+      "withCheckbox",
+      "withShortcuts",
+    ],
+  },
+  "menuItems": {
+    "withShortcut": {
+      "alignment": "SPACE_BETWEEN",
+      "cornerRadius": 6,
+      "height": 32,
+      "itemSpacing": 8,
+      "mode": "HORIZONTAL",
+      "paddingX": 8,
+      "paddingY": 6,
+      "width": 188,
+    },
+    "withoutShortcut": {
+      "alignment": "MIN",
+      "cornerRadius": 6,
+      "height": 32,
+      "itemSpacing": 8,
+      "mode": "HORIZONTAL",
+      "paddingX": 8,
+      "paddingY": 6,
+      "width": 188,
+    },
+  },
+  "panelDimensions": {
+    "cornerRadius": 8,
+    "itemHeight": 32,
+    "itemSpacing": 2,
+    "padding": 6,
+    "width": 200,
+  },
+  "registryData": {
+    "colors": [
+      "bg-accent",
+      "bg-color-3",
+      "bg-error-selection",
+      "bg-muted",
+      "bg-secondary",
+      "ring-border",
+      "text-error",
+      "text-surface",
+    ],
+    "component": "DropdownMenu",
+    "description": "DropdownMenu component",
+    "note": "Generator uses Figma-specific display variants (withIcons, withDanger, etc.) for demonstration purposes",
+    "reactVariants": [
+      "default",
+      "danger",
+    ],
+  },
+  "variants": [
+    {
+      "description": "Basic dropdown with simple menu items",
+      "openStates": [
+        false,
+        true,
+      ],
+      "variant": "default",
+    },
+    {
+      "description": "Dropdown with icons for each menu item",
+      "openStates": [
+        false,
+        true,
+      ],
+      "variant": "withIcons",
+    },
+    {
+      "description": "Dropdown with destructive action item",
+      "openStates": [
+        false,
+        true,
+      ],
+      "variant": "withDanger",
+    },
+    {
+      "description": "Dropdown with grouped menu sections",
+      "openStates": [
+        false,
+        true,
+      ],
+      "variant": "withGroups",
+    },
+    {
+      "description": "Dropdown with checkbox menu items",
+      "openStates": [
+        false,
+        true,
+      ],
+      "variant": "withCheckbox",
+    },
+    {
+      "description": "Dropdown with keyboard shortcuts",
+      "openStates": [
+        false,
+        true,
+      ],
+      "variant": "withShortcuts",
+    },
+  ],
+}
+`;
+
+exports[`Dropdown Generator - Snapshot Tests (Intermediate Data) > should produce consistent menu item layout (with shortcut) 1`] = `
+{
+  "alignment": "SPACE_BETWEEN",
+  "cornerRadius": 6,
+  "height": 32,
+  "itemSpacing": 8,
+  "mode": "HORIZONTAL",
+  "paddingX": 8,
+  "paddingY": 6,
+  "width": 188,
+}
+`;
+
+exports[`Dropdown Generator - Snapshot Tests (Intermediate Data) > should produce consistent menu item layout (without shortcut) 1`] = `
+{
+  "alignment": "MIN",
+  "cornerRadius": 6,
+  "height": 32,
+  "itemSpacing": 8,
+  "mode": "HORIZONTAL",
+  "paddingX": 8,
+  "paddingY": 6,
+  "width": 188,
+}
+`;
+
+exports[`Dropdown Generator - Snapshot Tests (Intermediate Data) > should produce consistent panel dimensions 1`] = `
+{
+  "cornerRadius": 8,
+  "itemHeight": 32,
+  "itemSpacing": 2,
+  "padding": 6,
+  "width": 200,
+}
+`;
+
+exports[`Dropdown Generator - Snapshot Tests (Intermediate Data) > should produce consistent variant config 1`] = `
+{
+  "descriptions": {
+    "default": "Basic dropdown with simple menu items",
+    "withCheckbox": "Dropdown with checkbox menu items",
+    "withDanger": "Dropdown with destructive action item",
+    "withGroups": "Dropdown with grouped menu sections",
+    "withIcons": "Dropdown with icons for each menu item",
+    "withShortcuts": "Dropdown with keyboard shortcuts",
+  },
+  "openValues": [
+    false,
+    true,
+  ],
+  "variantValues": [
+    "default",
+    "withIcons",
+    "withDanger",
+    "withGroups",
+    "withCheckbox",
+    "withShortcuts",
+  ],
+}
+`;

@@ -1,0 +1,182 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`RefreshButton Generator - Snapshot Tests (Intermediate Data) > should produce consistent compact size map 1`] = `
+{
+  "base": 36,
+  "lg": 40,
+  "sm": 26,
+  "xs": 14,
+}
+`;
+
+exports[`RefreshButton Generator - Snapshot Tests (Intermediate Data) > should produce consistent icon size map 1`] = `
+{
+  "base": 18,
+  "lg": 20,
+  "sm": 16,
+  "xs": 12,
+}
+`;
+
+exports[`RefreshButton Generator - Snapshot Tests (Intermediate Data) > should produce consistent intermediate data for all variants (golden path) 1`] = `
+{
+  "loadingStates": [
+    false,
+    true,
+  ],
+  "sizes": [
+    {
+      "classes": "h-5 gap-1 rounded-sm px-1.5 text-xs",
+      "compactSize": 14,
+      "iconSize": 12,
+      "parsed": {
+        "borderRadius": 4,
+        "fontSize": 12,
+        "gap": 4,
+        "height": 20,
+        "paddingX": 6,
+      },
+      "size": "xs",
+    },
+    {
+      "classes": "h-6.5 gap-1 rounded-md px-2 text-xs",
+      "compactSize": 26,
+      "iconSize": 16,
+      "parsed": {
+        "borderRadius": 6,
+        "fontSize": 12,
+        "gap": 4,
+        "height": 26,
+        "paddingX": 8,
+      },
+      "size": "sm",
+    },
+    {
+      "classes": "h-9 gap-1.5 rounded-lg px-3 text-base",
+      "compactSize": 36,
+      "iconSize": 18,
+      "parsed": {
+        "borderRadius": 8,
+        "fontSize": 14,
+        "gap": 6,
+        "height": 36,
+        "paddingX": 12,
+      },
+      "size": "base",
+    },
+    {
+      "classes": "h-10 gap-2 rounded-lg px-4 text-base",
+      "compactSize": 40,
+      "iconSize": 20,
+      "parsed": {
+        "borderRadius": 8,
+        "fontSize": 14,
+        "gap": 8,
+        "height": 40,
+        "paddingX": 16,
+      },
+      "size": "lg",
+    },
+  ],
+  "totalCombinations": 8,
+  "variant": {
+    "classes": "bg-secondary !text-surface ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-surface/70 ring-border data-[state=open]:bg-subtle",
+    "name": "secondary",
+    "parsed": {
+      "fillVariable": "color-secondary",
+      "hasBorder": true,
+      "states": {
+        "disabled": {
+          "textOpacity": 0.7,
+          "textVariable": "text-color-surface/70",
+        },
+      },
+      "strokeVariable": "color-border",
+      "textVariable": "text-color-surface",
+    },
+  },
+}
+`;
+
+exports[`RefreshButton Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed secondary variant styles 1`] = `
+{
+  "fillVariable": "color-secondary",
+  "hasBorder": true,
+  "states": {
+    "disabled": {
+      "textOpacity": 0.7,
+      "textVariable": "text-color-surface/70",
+    },
+  },
+  "strokeVariable": "color-border",
+  "textVariable": "text-color-surface",
+}
+`;
+
+exports[`RefreshButton Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed size styles for all sizes 1`] = `
+[
+  {
+    "classes": "h-5 gap-1 rounded-sm px-1.5 text-xs",
+    "parsed": {
+      "borderRadius": 4,
+      "fontSize": 12,
+      "gap": 4,
+      "height": 20,
+      "paddingX": 6,
+    },
+    "size": "xs",
+  },
+  {
+    "classes": "h-6.5 gap-1 rounded-md px-2 text-xs",
+    "parsed": {
+      "borderRadius": 6,
+      "fontSize": 12,
+      "gap": 4,
+      "height": 26,
+      "paddingX": 8,
+    },
+    "size": "sm",
+  },
+  {
+    "classes": "h-9 gap-1.5 rounded-lg px-3 text-base",
+    "parsed": {
+      "borderRadius": 8,
+      "fontSize": 14,
+      "gap": 6,
+      "height": 36,
+      "paddingX": 12,
+    },
+    "size": "base",
+  },
+  {
+    "classes": "h-10 gap-2 rounded-lg px-4 text-base",
+    "parsed": {
+      "borderRadius": 8,
+      "fontSize": 14,
+      "gap": 8,
+      "height": 40,
+      "paddingX": 16,
+    },
+    "size": "lg",
+  },
+]
+`;
+
+exports[`RefreshButton Generator - Snapshot Tests (Intermediate Data) > should produce consistent size configuration 1`] = `
+{
+  "default": "base",
+  "values": [
+    "xs",
+    "sm",
+    "base",
+    "lg",
+  ],
+}
+`;
+
+exports[`RefreshButton Generator - Snapshot Tests (Intermediate Data) > should produce consistent variant configuration 1`] = `
+{
+  "classes": "bg-secondary !text-surface ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-surface/70 ring-border data-[state=open]:bg-subtle",
+  "default": "secondary",
+}
+`;

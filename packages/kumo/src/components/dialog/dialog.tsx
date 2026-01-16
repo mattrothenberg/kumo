@@ -28,6 +28,65 @@ export const KUMO_DIALOG_DEFAULT_VARIANTS = {
   size: "base",
 } as const;
 
+export const KUMO_DIALOG_STYLING = {
+  dimensions: {
+    sm: {
+      width: 350,
+      titleSize: 20,
+      descSize: 16,
+      padding: 16,
+      gap: 8,
+      buttonSize: "sm",
+    },
+    base: {
+      width: 384,
+      titleSize: 20,
+      descSize: 16,
+      padding: 24,
+      gap: 16,
+      buttonSize: "base",
+    },
+    lg: {
+      width: 512,
+      titleSize: 20,
+      descSize: 16,
+      padding: 24,
+      gap: 16,
+      buttonSize: "base",
+    },
+    xl: {
+      width: 768,
+      titleSize: 20,
+      descSize: 16,
+      padding: 24,
+      gap: 16,
+      buttonSize: "base",
+    },
+  },
+  baseTokens: {
+    background: "color-surface",
+    text: "text-color-surface",
+    borderRadius: 12,
+    shadow: "shadow-m",
+  },
+  backdrop: {
+    background: "color-color-3",
+    opacity: 0.8,
+  },
+  header: {
+    title: { fontWeight: 600, color: "text-color-surface" },
+    closeIcon: { name: "ph-x", size: 20, color: "text-color-muted" },
+  },
+  description: {
+    fontWeight: 400,
+    color: "text-color-muted",
+  },
+  buttons: {
+    primary: { background: "color-primary", text: "white" },
+    secondary: { ring: "color-border", text: "text-color-surface" },
+  },
+} as const;
+
 // Derived types from KUMO_DIALOG_VARIANTS
 export type KumoDialogSize = keyof typeof KUMO_DIALOG_VARIANTS.size;
 

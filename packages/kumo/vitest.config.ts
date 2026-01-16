@@ -38,6 +38,11 @@ export default defineConfig({
         test: {
           name: "unit",
           environment: "happy-dom",
+          include: [
+            "src/**/*.{test,spec}.{ts,tsx}",
+            "scripts/**/*.{test,spec}.ts",
+            "tests/**/*.{test,spec}.ts",
+          ],
           setupFiles: ["./tests/setup.ts"],
           globals: true,
         },
@@ -60,6 +65,8 @@ export default defineConfig({
             name: "chromium",
           },
           setupFiles: ["./.storybook/vitest.setup.ts"],
+          // Exclude stories that depend on build artifacts
+          exclude: ["**/design-tokens/**"],
         },
       },
     ],

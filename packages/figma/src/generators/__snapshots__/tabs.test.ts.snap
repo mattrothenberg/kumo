@@ -1,0 +1,76 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Tabs Generator - Snapshot Tests (Intermediate Data) > should produce consistent container config from registry 1`] = `
+{
+  "borderRadius": 8,
+  "height": 34,
+  "padding": 1,
+}
+`;
+
+exports[`Tabs Generator - Snapshot Tests (Intermediate Data) > should produce consistent indicator config from registry 1`] = `
+{
+  "borderRadius": 8,
+}
+`;
+
+exports[`Tabs Generator - Snapshot Tests (Intermediate Data) > should produce consistent intermediate data for all variants (golden path) 1`] = `
+{
+  "config": {
+    "borderRadius": 8,
+    "containerHeight": 34,
+    "containerPadding": 1,
+    "tabFontSize": 16,
+    "tabFontWeight": 500,
+    "tabHorizontalPadding": 10,
+    "tabVerticalMargin": 1,
+  },
+  "container": {
+    "borderRadius": 8,
+    "height": 34,
+    "padding": 1,
+  },
+  "defaultTabs": [
+    "Tab 1",
+    "Tab 2",
+    "Tab 3",
+  ],
+  "indicator": {
+    "borderRadius": 8,
+  },
+  "tab": {
+    "borderRadius": 8,
+    "fontSize": 16,
+    "fontWeight": 500,
+    "paddingX": 10,
+    "verticalMargin": 1,
+  },
+  "variants": [
+    {
+      "index": 0,
+      "isActive": false,
+      "value": "Tab 1",
+    },
+    {
+      "index": 1,
+      "isActive": false,
+      "value": "Tab 2",
+    },
+    {
+      "index": 2,
+      "isActive": false,
+      "value": "Tab 3",
+    },
+  ],
+}
+`;
+
+exports[`Tabs Generator - Snapshot Tests (Intermediate Data) > should produce consistent tab config from registry 1`] = `
+{
+  "borderRadius": 8,
+  "fontSize": 16,
+  "fontWeight": 500,
+  "paddingX": 10,
+  "verticalMargin": 1,
+}
+`;

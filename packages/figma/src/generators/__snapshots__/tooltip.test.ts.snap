@@ -1,0 +1,116 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Tooltip Generator - Snapshot Tests (Intermediate Data) > should produce consistent arrow dimensions 1`] = `
+{
+  "height": 10,
+  "width": 20,
+}
+`;
+
+exports[`Tooltip Generator - Snapshot Tests (Intermediate Data) > should produce consistent box layout 1`] = `
+{
+  "borderRadius": 6,
+  "fillVariable": undefined,
+  "fontSize": 13,
+  "fontWeight": 400,
+  "isWhiteText": true,
+  "paddingX": 10,
+  "paddingY": 6,
+  "textVariable": null,
+}
+`;
+
+exports[`Tooltip Generator - Snapshot Tests (Intermediate Data) > should produce consistent complete tooltip data (golden path) 1`] = `
+{
+  "arrowDimensions": {
+    "height": 10,
+    "width": 20,
+  },
+  "boxLayout": {
+    "borderRadius": 6,
+    "fillVariable": undefined,
+    "fontSize": 13,
+    "fontWeight": 400,
+    "isWhiteText": true,
+    "paddingX": 10,
+    "paddingY": 6,
+    "textVariable": null,
+  },
+  "boxStyles": {
+    "parsed": {
+      "borderRadius": 6,
+      "fontSize": 13,
+      "isWhiteText": true,
+      "paddingX": 10,
+      "paddingY": 6,
+      "textVariable": null,
+    },
+    "raw": "rounded-md bg-black-icon px-2.5 py-1.5 text-sm text-white",
+  },
+  "sideConfig": {
+    "default": "top",
+    "descriptions": {
+      "bottom": "Tooltip appears below the trigger",
+      "left": "Tooltip appears to the left of the trigger",
+      "right": "Tooltip appears to the right of the trigger",
+      "top": "Tooltip appears above the trigger",
+    },
+    "values": [
+      "top",
+      "bottom",
+      "left",
+      "right",
+    ],
+  },
+  "stylingConfig": {
+    "arrow": {
+      "fill": "fill-black-icon",
+      "height": 10,
+      "path": "fill-icon-path",
+      "width": 20,
+    },
+    "popup": {
+      "background": "bg-black-icon",
+      "borderRadius": "rounded-md",
+      "fontSize": "text-sm",
+      "paddingX": "px-2.5",
+      "paddingY": "py-1.5",
+      "shadow": "shadow-lg shadow-icon-path",
+      "text": "text-white",
+    },
+  },
+  "text": {
+    "fontSize": 13,
+    "fontWeight": 400,
+  },
+}
+`;
+
+exports[`Tooltip Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed box styles 1`] = `
+{
+  "borderRadius": 6,
+  "fontSize": 13,
+  "isWhiteText": true,
+  "paddingX": 10,
+  "paddingY": 6,
+  "textVariable": null,
+}
+`;
+
+exports[`Tooltip Generator - Snapshot Tests (Intermediate Data) > should produce consistent side config from registry 1`] = `
+{
+  "default": "top",
+  "descriptions": {
+    "bottom": "Tooltip appears below the trigger",
+    "left": "Tooltip appears to the left of the trigger",
+    "right": "Tooltip appears to the right of the trigger",
+    "top": "Tooltip appears above the trigger",
+  },
+  "values": [
+    "top",
+    "bottom",
+    "left",
+    "right",
+  ],
+}
+`;

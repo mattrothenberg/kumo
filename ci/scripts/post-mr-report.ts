@@ -20,16 +20,16 @@
  * Report artifacts are read from: ci/reports/*.json
  */
 
-import { readReportArtifacts, buildContextFromEnv } from '../reporters';
-import { buildMarkdownComment, postMRComment } from '../utils/mr-reporter';
+import { readReportArtifacts, buildContextFromEnv } from "../reporters";
+import { buildMarkdownComment, postMRComment } from "../utils/mr-reporter";
 
 async function main() {
-  console.log('📋 Collecting report artifacts from upstream jobs...');
+  console.log("📋 Collecting report artifacts from upstream jobs...");
 
   const context = buildContextFromEnv();
 
   if (!context.mrIid) {
-    console.log('ℹ️  Not in MR context, skipping report');
+    console.log("ℹ️  Not in MR context, skipping report");
     return;
   }
 
@@ -43,7 +43,7 @@ async function main() {
   }
 
   if (items.length === 0) {
-    console.log('ℹ️  No report artifacts found, skipping comment');
+    console.log("ℹ️  No report artifacts found, skipping comment");
     return;
   }
 
@@ -57,10 +57,10 @@ async function main() {
   const comment = buildMarkdownComment(items, failures);
   await postMRComment(context, comment);
 
-  console.log('🎉 MR report posted successfully');
+  console.log("🎉 MR report posted successfully");
 }
 
 main().catch((error) => {
-  console.error('❌ Failed to post MR report:', error);
+  console.error("❌ Failed to post MR report:", error);
   process.exit(1);
 });

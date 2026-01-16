@@ -15,12 +15,64 @@ import { Button } from "@cloudflare/kumo";
 **CRITICAL:** Only use semantic tokens (`bg-surface`, `text-surface`). Never raw Tailwind colors (`bg-blue-500`).
 
 ```bash
-pnpm build:ai-metadata  # Generate component-registry.{json,md}
+pnpm --filter @cloudflare/kumo codegen:registry  # Generate component-registry.{json,md}
 ```
 
 ## Repository Overview
 
 `Kumo` is Cloudflare's component library for building modern web applications. It is a `pnpm` monorepo containing a React component library and its documentation site. The library provides accessible, design-system-compliant UI components built on [Base UI](https://base-ui.com/).
+
+## Dynamic Code Analysis Features
+
+Kumo provides extensive automated tooling (`packages/kumo/scripts/`):
+
+**1. Component Registry + CLI** (`scripts/ai/`) - AI-readable metadata & CLI
+
+- Auto-generates `ai/component-registry.{json,md}` from TypeScript types + Storybook
+- Includes: props, variants, examples, semantic tokens, sub-components
+- **Exported CLI:** `npx @cloudflare/kumo {ls|doc|docs}` - Quick component reference
+
+**2. Figma Plugin** (`packages/figma/`) - React → Figma components
+
+- Separate package: `@cloudflare/figma-plugin`
+- 30+ generators (Button, Dialog, Tabs, Toast, etc.)
+- Parses Tailwind → Figma auto-layout, binds semantic tokens to variables
+- Icon library generation, loader variants, opacity modifiers
+- **IMPORTANT:** After modifying any generator in `packages/figma/src/generators/`, you must rebuild the plugin with `pnpm --filter @cloudflare/figma-plugin build` before testing in Figma
+
+**3. Figma Token Sync** (`packages/kumo/scripts/figma/`) - CSS → Figma Variables API
+
+- Syncs semantic tokens (`kumo-binding.css`) to Figma
+- Parses `light-dark()`, converts colors (oklch/hex → Figma RGB)
+
+**4. Custom Lint Rules** (`scripts/linting/`) - Design system enforcement
+
+- `no-primitive-colors`: Blocks `bg-blue-500`, enforces semantic tokens
+- `no-tailwind-dark-variant`: Prevents `dark:` (auto via tokens)
+
+**5. Icon System** (`scripts/icon/`) - SVG sprite + type generation
+
+- CLI: `pnpm add:icon` (auto-normalizes viewBox, currentColor, SVGO)
+- Generates sprite.svg + TypeScript types for `<Icon name="..." />`
+
+**6. Color Analysis** (`scripts/color/`) - Token extraction & usage stats
+
+- Analyzes semantic token usage, generates color docs for Storybook
+
+**7. Primitives Generator** (`scripts/generate-primitives.ts`) - Base UI exports
+
+- Auto-generates tree-shakeable primitive exports, updates package.json
+
+**Key Commands:**
+
+```bash
+pnpm --filter @cloudflare/kumo codegen:registry  # Component registry
+pnpm --filter @cloudflare/kumo codegen           # All codegen (primitives + registry)
+npx @cloudflare/kumo doc                         # CLI docs (works in any project)
+pnpm --filter @cloudflare/figma-plugin build     # Build Figma plugin
+pnpm --filter @cloudflare/kumo icons:add         # Add icon with normalization
+pnpm lint                                        # Custom rules + oxlint
+```
 
 ## Project Structure
 
@@ -140,61 +192,33 @@ grep "bg-surface" component-registry.md
 
 The color system is defined in `packages/kumo/src/styles/kumo-binding.css`. Colors automatically adapt to light/dark mode via CSS `light-dark()` function.
 
-**Full reference:** See `component-registry.md` lines 1-72 for complete styling guide with tables and examples.
+**Full token reference:** See `packages/kumo/ai/component-registry.md` - the "Kumo Color System" section contains all available tokens with usage counts, organized by category (surfaces, text, state, interactive, borders).
 
-### Core Tokens
-
-**Backgrounds:**
-
-- `bg-surface` - Main background (pages, cards)
-- `bg-surface-2` - Secondary surface
-- `bg-surface-elevated` - Elevated surfaces (modals, dropdowns, popovers, cards)
-- `bg-secondary` - Secondary elements / Interactive elements (buttons, inputs)
-- `bg-accent` - Accent backgrounds / Selected/active state (tabs, selections)
-- `bg-primary` - Primary action backgrounds
-- `bg-destructive` - Destructive action backgrounds
-- `bg-subtle` - Subtle backgrounds / Hover state backgrounds
-- `bg-color` - Border-like backgrounds
-
-**Text:**
-
-- `text-surface` - Primary text (body, headings)
-- `text-secondary` - Secondary text (descriptions, hints)
-- `text-muted` - Muted/placeholder text (placeholders, disabled)
-- `text-white` - Always white text
-- `text-label` - Label text
-- `text-destructive` - Error/destructive text
-- `text-info` - Success text
-- `text-error` - Error text (validation messages)
-
-**Borders:**
-
-- `border-border` - Default borders (cards, dividers)
-- `border-color` - Alternative borders
-- `ring-border` - Ring borders
-- `ring-active` - Active/focus rings (keyboard navigation)
-- `ring-destructive` - Error state rings
-
-### Example Usage
+### Key Patterns
 
 ```tsx
 // ✅ CORRECT - Using Kumo semantic tokens
-<button className="bg-primary text-white hover:bg-primary/70">
-  Submit
-</button>
+<div className="bg-surface border border-border rounded-lg">        // Card
+<button className="bg-primary text-white">Primary</button>          // Primary button
+<button className="bg-secondary text-surface ring ring-border">    // Secondary button
+<input className="bg-secondary text-surface ring ring-border" />   // Form input
+<div className="bg-error/20 border-error text-error">Error</div>   // Error state
 
-<div className="bg-surface border border-border text-surface">
-  Content
-</div>
+// ❌ WRONG - Raw Tailwind colors break theming
+<button className="bg-blue-500 text-white">Submit</button>
+<div className="bg-white dark:bg-gray-900">Content</div>
+```
 
-// ❌ WRONG - Using raw Tailwind colors
-<button className="bg-blue-500 text-white hover:bg-blue-600">
-  Submit
-</button>
+### Dark Mode
 
-<div className="bg-white dark:bg-gray-900 border border-gray-200">
-  Content
-</div>
+**NEVER use Tailwind's `dark:` variant**. Semantic tokens handle dark mode automatically via `light-dark()`.
+
+```tsx
+// ❌ WRONG
+<div className="bg-white dark:bg-black" />
+
+// ✅ CORRECT
+<div className="bg-surface text-surface" />
 ```
 
 ### Dark Mode
@@ -216,7 +240,7 @@ All semantic tokens use `light-dark()` internally. **Never use `dark:` variant.*
 Use layered surfaces for visual depth:
 
 ```
-bg-surface → bg-surface-elevated → bg-surface-2
+bg-surface → bg-surface-2 → bg-surface-3
 ```
 
 ### Mode & Theme System
@@ -441,7 +465,7 @@ All components must:
 
 4. **Regenerate the component registry:**
    ```bash
-   pnpm build:ai-metadata
+   pnpm --filter @cloudflare/kumo codegen:registry
    ```
 
 ### What Gets Scaffolded
@@ -494,7 +518,7 @@ pnpm --filter @cloudflare/kumo lint       # oxlint with:
 
 # Build
 pnpm --filter @cloudflare/kumo build      # Full build with CSS
-pnpm build:ai-metadata                    # Regenerate component-registry
+pnpm --filter @cloudflare/kumo codegen:registry  # Regenerate component-registry
 
 # Storybook
 pnpm storybook                            # Dev server (http://localhost:6006)
@@ -517,6 +541,81 @@ pnpm --filter @cloudflare/kumo lint
 2. **`no-tailwind-dark-variant`** (`scripts/linting/no-tailwind-dark-variant.js`)
    - Disallows `dark:` variant in class names
    - Dark mode is handled automatically by Kumo tokens
+
+3. **`enforce-variant-standard`** (`scripts/linting/enforce-variant-standard.js`)
+   - Enforces the KUMO\_\*\_VARIANTS naming convention for component exports
+   - Only applies to files matching `src/components/{name}/{name}.tsx`
+   - Extracts component name from path (e.g., `button.tsx` → `BUTTON`, `clipboard-text.tsx` → `CLIPBOARD_TEXT`)
+
+   **Required Exports:**
+   - `KUMO_{COMPONENT}_VARIANTS` - Variant configuration object
+   - `KUMO_{COMPONENT}_DEFAULT_VARIANTS` - Default variant values
+
+   **Optional Exports:**
+   - `KUMO_{COMPONENT}_BASE_STYLES` - Base styles (must have `KUMO_` prefix if present)
+
+   **Examples:**
+
+   ```tsx
+   // ✅ CORRECT - Valid exports in button.tsx
+   export const KUMO_BUTTON_VARIANTS = {
+     variant: ["primary", "secondary", "ghost", "destructive"],
+     size: ["xs", "sm", "base", "lg"],
+   };
+
+   export const KUMO_BUTTON_DEFAULT_VARIANTS = {
+     variant: "secondary",
+     size: "base",
+   };
+
+   // Optional base styles
+   export const KUMO_BUTTON_BASE_STYLES = "flex items-center font-medium";
+   ```
+
+   ```tsx
+   // ✅ CORRECT - Valid exports in clipboard-text.tsx (kebab-case → UPPER_SNAKE_CASE)
+   export const KUMO_CLIPBOARD_TEXT_VARIANTS = {
+     /* ... */
+   };
+   export const KUMO_CLIPBOARD_TEXT_DEFAULT_VARIANTS = {
+     /* ... */
+   };
+   ```
+
+   ```tsx
+   // ❌ WRONG - Missing KUMO_ prefix
+   export const BUTTON_VARIANTS = {
+     /* ... */
+   };
+   export const BUTTON_DEFAULT_VARIANTS = {
+     /* ... */
+   };
+   ```
+
+   ```tsx
+   // ❌ WRONG - Wrong component name
+   // In button.tsx:
+   export const KUMO_INPUT_VARIANTS = {
+     /* ... */
+   };
+   export const KUMO_INPUT_DEFAULT_VARIANTS = {
+     /* ... */
+   };
+   ```
+
+   ```tsx
+   // ❌ WRONG - BASE_STYLES without KUMO_ prefix
+   export const BUTTON_BASE_STYLES = "..."; // Should be KUMO_BUTTON_BASE_STYLES
+   ```
+
+   ```tsx
+   // ❌ WRONG - Missing required exports
+   // In button.tsx - missing KUMO_BUTTON_DEFAULT_VARIANTS
+   export const KUMO_BUTTON_VARIANTS = {
+     /* ... */
+   };
+   // Error: Component must export KUMO_BUTTON_DEFAULT_VARIANTS
+   ```
 
 ### Testing (`vitest`)
 
@@ -554,6 +653,115 @@ export const Primary: Story = {
 };
 ```
 
+## Icon System
+
+Kumo uses an SVG sprite system for icons, combining Phosphor icons and Cloudflare brand icons.
+
+### Philosophy: Code as Source of Truth
+
+**Icons live in the codebase, not in Figma.** This ensures:
+
+1. **Version control** - Icons are tracked in git with full history
+2. **Type safety** - TypeScript types are auto-generated from the sprite
+3. **Consistency** - One source of truth for both code and design
+4. **Review process** - Icon changes go through PR review like any code change
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        ICON WORKFLOW                            │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   Designer provides SVG                                         │
+│            ↓                                                    │
+│   pnpm add:icon icon.svg --name cf-feature-outline              │
+│            ↓                                                    │
+│   Icon normalized + added to src/assets/icons/brand/            │
+│            ↓                                                    │
+│   pnpm build:icons → sprite.svg + TypeScript types              │
+│            ↓                                                    │
+│   Commit + PR review                                            │
+│            ↓                                                    │
+│   Figma plugin syncs icons to Figma (Icon Library page)         │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Using Icons
+
+```tsx
+import { Icon } from "@cloudflare/kumo";
+
+// Phosphor icons (ph-* prefix)
+<Icon name="ph-check" />
+<Icon name="ph-arrow-right" size="lg" />
+
+// Cloudflare brand icons (cf-* prefix)
+<Icon name="cf-workers-outline" />
+<Icon name="cf-pages-solid" className="text-active" />
+```
+
+### Adding Icons (REQUIRED: Use the CLI)
+
+**Always use the CLI to add icons.** This ensures proper normalization and prevents issues.
+
+```bash
+# Add single icon
+pnpm add:icon path/to/icon.svg
+
+# Add with custom name
+pnpm add:icon icon.svg --name cf-my-feature-outline
+
+# Add all SVGs from folder
+pnpm add:icon path/to/folder/
+
+# Preview without writing
+pnpm add:icon icon.svg --dry-run
+```
+
+**DO NOT** manually drop SVGs into the icons folder without running the CLI - they won't be normalized.
+
+### Naming Conventions
+
+- **`cf-*`** - Cloudflare brand icons (e.g., `cf-workers-outline`, `cf-pages-solid`)
+- **`ph-*`** - Custom Phosphor-style icons (rare, most come from `@phosphor-icons/core`)
+- **Variants** - Use `-outline` or `-solid` suffix for consistency
+
+### Normalization
+
+The CLI automatically normalizes icons:
+
+- viewBox preserved (required for scaling)
+- Hardcoded fills converted to `currentColor` (enables `text-*` color classes)
+- Width/height attributes removed (use CSS sizing)
+- Inline styles stripped
+- SVGO optimization applied
+
+### Figma Sync
+
+The Figma plugin generates an **Icon Library** page with all icons from the codebase:
+
+```bash
+# Build and run the Figma plugin
+pnpm --filter @cloudflare/figma-plugin build
+# Then run in Figma: Plugins > Development > Kumo UI Kit Generator
+```
+
+The Icon Library page includes:
+
+- All icons as Figma components (`Icon/ph-check`, `Icon/cf-workers-outline`)
+- Grid layout with 20 icons per row
+- Size examples (16px, 20px, 24px)
+- Fill color bound to semantic token (`text-color-surface`)
+
+**Designers should use icons from the Icon Library page**, not import their own SVGs. This keeps design and code in sync.
+
+### Build Commands
+
+```bash
+pnpm add:icon       # Add new icons with normalization (REQUIRED)
+pnpm build:icons    # Rebuild sprite + types after adding icons
+```
+
 ## Changesets & Version Management
 
 Kumo uses [Changesets](https://github.com/changesets/changesets) for version management with automated validation and releases.
@@ -561,12 +769,14 @@ Kumo uses [Changesets](https://github.com/changesets/changesets) for version man
 ### ⚠️ IMPORTANT: AI Agents - Do NOT Version or Publish
 
 **AI agents should NEVER run these commands:**
+
 - ❌ `pnpm version` - Versions packages (human-only)
 - ❌ `pnpm release` - Publishes to npm (human-only)
 - ❌ `pnpm publish:beta` - Publishes beta versions (CI-only)
 - ❌ `pnpm release:production` - Production release script (human-only)
 
 **AI agents SHOULD:**
+
 - ✅ Create changesets: `pnpm changeset`
 - ✅ Validate changesets exist
 - ✅ Build and test: `pnpm build`, `pnpm test`
@@ -604,11 +814,13 @@ LEFTHOOK_EXCLUDE=validate-changeset git push
 ```
 
 **What it validates:**
+
 - Detects changes to `packages/kumo/` via `git merge-base origin/main HEAD`
 - Ensures a **new** changeset exists targeting `@cloudflare/kumo`
 - Blocks push with clear instructions if validation fails
 
 **Troubleshooting:**
+
 - **Missing origin/main**: Run `git fetch origin main`
 - **GUI clients (Tower, SourceTree)**: Configure PATH in client settings
 - **Hook not installed**: Run `pnpm lefthook install`
@@ -620,12 +832,14 @@ Beta versions are automatically published for merge requests:
 **Format:** `{version}-beta.{commit-hash}` (e.g., `0.1.0-beta.a1b2c3d`)
 
 **Process:**
+
 1. Create MR with changeset
 2. CI validates changeset exists
 3. CI publishes beta version with `beta` tag
 4. MR receives comment with installation instructions
 
 **Install beta:**
+
 ```bash
 pnpm add @cloudflare/kumo@0.1.0-beta.a1b2c3d
 ```
@@ -652,11 +866,77 @@ git push --follow-tags
 ```
 
 **What happens:**
+
 - Updates `package.json` version
 - Generates/updates `CHANGELOG.md`
 - Removes consumed changeset files
 - Publishes to npm registry
 - Creates git tags
+
+## Figma Token Sync
+
+Kumo provides scripts to sync semantic color tokens from CSS to Figma design variables, ensuring design tokens stay in sync between code and design.
+
+### Purpose
+
+The Figma sync script automates synchronization of Kumo's semantic color tokens (defined in `packages/kumo/src/styles/theme-kumo.css`) to Figma variables:
+
+1. Parses CSS tokens from `theme-kumo.css`
+2. Extracts light and dark mode values from `light-dark()` functions
+3. Resolves color values (oklch, hex, rgb) to Figma RGB format
+4. Pushes tokens to Figma via the Variables API
+
+This enables:
+
+- Designers to use semantic tokens in Figma
+- Automatic updates when tokens change in code
+- Single source of truth for color values
+
+### Environment Setup
+
+1. **Get a Figma personal access token:**
+   - Go to [Figma Settings > Personal Access Tokens](https://www.figma.com/developers/api#authentication)
+   - Create a new token with a descriptive name (e.g., "Kumo Token Sync")
+   - Copy the token (you won't see it again)
+
+2. **Copy `.env.example` to `.env`:**
+
+   ```bash
+   cp packages/kumo/scripts/figma/.env.example packages/kumo/scripts/figma/.env
+   ```
+
+3. **Add your token to `.env`:**
+   ```bash
+   FIGMA_TOKEN=your-token-here
+   FIGMA_FILE_KEY=sKKZc6pC6W1TtzWBLxDGSU
+   FIGMA_COLLECTION_NAME=kumo-semantic-tokens
+   ```
+
+### Running the Sync
+
+```bash
+# With environment variable
+FIGMA_TOKEN="your-token" npx tsx packages/kumo/scripts/figma/sync-tokens-to-figma.ts
+
+# Or load from .env
+source packages/kumo/scripts/figma/.env
+npx tsx packages/kumo/scripts/figma/sync-tokens-to-figma.ts
+```
+
+### Security Warning
+
+**⚠️ NEVER commit your Figma token to the repository.**
+
+- `.env` is gitignored by default
+- Always use environment variables for tokens
+- Rotate tokens if accidentally exposed
+
+### Future Support
+
+- **FedRAMP Theme**: Will support syncing `theme-fedramp.css` to a separate collection
+- **Custom Themes**: Support for syncing additional theme variants
+
+For detailed documentation, see `packages/kumo/scripts/figma/README.md`.
 
 ## Code Review Guidelines
 
@@ -715,12 +995,12 @@ When working with this codebase as an AI agent:
 2. **Verify semantic tokens** - Ensure no raw Tailwind colors exist
 3. **Run linting** - Custom rules will catch color and dark mode violations
 4. **Update stories** - Ensure Storybook examples reflect changes
-5. **Regenerate registry** - Run `pnpm build:ai-metadata` after changes
+5. **Regenerate registry** - Run `pnpm --filter @cloudflare/kumo codegen:registry` after changes
 
 ## Important Notes
 
 - The component registry (`packages/kumo/ai/component-registry.{json,md}`) is the source of truth for component APIs
-- Always regenerate the registry (`pnpm build:ai-metadata`) after modifying component props or variants
+- Always regenerate the registry (`pnpm --filter @cloudflare/kumo codegen:registry`) after modifying component props or variants
 - Custom lint rules enforce semantic token usage and prevent `dark:` variants
 
 ### Common Mistakes to Avoid

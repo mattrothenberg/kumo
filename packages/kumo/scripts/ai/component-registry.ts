@@ -10,6 +10,11 @@
  *
  * Run: pnpm build:ai-metadata
  * Output: ai/component-registry.json (committed to git)
+ *
+ * Performance optimizations:
+ * - Hash-based caching: Skip regeneration for unchanged components
+ * - Parallel processing: Process components concurrently (8 at a time)
+ * - Skip inherited props by default: Opt-in with --inherited-props flag
  */
 
 import {
@@ -22,6 +27,7 @@ import {
 } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createHash } from "node:crypto";
 import * as tsj from "ts-json-schema-generator";
 import * as ts from "typescript";
 import type { Definition } from "ts-json-schema-generator";
@@ -32,6 +38,122 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const componentsDir = join(__dirname, "../../src/components");
 const blocksDir = join(__dirname, "../../src/blocks");
 const rootDir = join(__dirname, "../..");
+const cacheDir = join(__dirname, "../../.cache");
+const cachePath = join(cacheDir, "component-registry-cache.json");
+
+// =============================================================================
+// Cache version - INCREMENT THIS when you change:
+// - ADDITIONAL_COMPONENT_PROPS (manual prop overrides)
+// - COMPONENT_STYLING_METADATA (Figma styling data)
+// - Parser logic, filtering rules, or output format
+//
+// The cache only hashes individual component files (button.tsx, button.stories.tsx).
+// Changes to shared code in THIS file won't invalidate cache without a version bump.
+// Or use: pnpm codegen:registry --no-cache
+// =============================================================================
+const CACHE_VERSION = 4;
+
+// =============================================================================
+// CLI flags
+// =============================================================================
+interface CLIFlags {
+  includeInheritedProps: boolean;
+  noCache: boolean;
+  verbose: boolean;
+}
+
+function parseCLIFlags(): CLIFlags {
+  const args = process.argv.slice(2);
+  return {
+    includeInheritedProps: args.includes("--inherited-props"),
+    noCache: args.includes("--no-cache"),
+    verbose: args.includes("--verbose"),
+  };
+}
+
+const CLI_FLAGS = parseCLIFlags();
+
+// =============================================================================
+// Hash-based caching
+// =============================================================================
+interface CacheEntry {
+  componentName: string;
+  sourceHash: string;
+  storyHash: string;
+  cacheVersion: number;
+  generatedAt: number;
+  metadata: ComponentSchema;
+}
+
+interface CacheFile {
+  version: number;
+  entries: Record<string, CacheEntry>;
+}
+
+function hashFileContent(filePath: string): string {
+  try {
+    const content = readFileSync(filePath, "utf-8");
+    return createHash("sha256").update(content).digest("hex");
+  } catch {
+    return "";
+  }
+}
+
+function loadCache(): CacheFile {
+  try {
+    if (!existsSync(cachePath)) {
+      return { version: CACHE_VERSION, entries: {} };
+    }
+    const cacheData = JSON.parse(readFileSync(cachePath, "utf-8"));
+    // Invalidate cache if version mismatch
+    if (cacheData.version !== CACHE_VERSION) {
+      console.log("Cache version mismatch, invalidating...");
+      return { version: CACHE_VERSION, entries: {} };
+    }
+    return cacheData;
+  } catch {
+    return { version: CACHE_VERSION, entries: {} };
+  }
+}
+
+function saveCache(cache: CacheFile): void {
+  mkdirSync(cacheDir, { recursive: true });
+  writeFileSync(cachePath, JSON.stringify(cache, null, 2));
+}
+
+function getCachedComponent(
+  componentName: string,
+  sourceHash: string,
+  storyHash: string,
+  cache: CacheFile,
+): ComponentSchema | null {
+  if (CLI_FLAGS.noCache) {
+    return null;
+  }
+
+  const entry = cache.entries[componentName];
+  if (!entry) {
+    return null;
+  }
+
+  // Check if hashes match
+  if (
+    entry.sourceHash === sourceHash &&
+    entry.storyHash === storyHash &&
+    entry.cacheVersion === CACHE_VERSION
+  ) {
+    return entry.metadata;
+  }
+
+  return null;
+}
+
+/**
+ * Component type based on source directory.
+ * - component: Base UI primitives (button, input, dialog)
+ * - block: Composite components (breadcrumbs, page-header, empty)
+ */
+export type ComponentType = "component" | "block";
 
 // =============================================================================
 // Component configuration - maps component to its props type and metadata
@@ -58,8 +180,10 @@ interface ComponentConfig {
   sourceFile: string;
   /** Directory name (kebab-case) */
   dirName: string;
-  /** Base source directory (components or blocks) */
+  /** Base source directory (components, blocks, layouts, or pages) */
   sourceDir: string;
+  /** Component type based on source directory */
+  type: ComponentType;
   description: string;
   category: string;
   /**
@@ -71,6 +195,11 @@ interface ComponentConfig {
   // biome-ignore lint/suspicious/noExplicitAny: Variants have varying shapes
   variants: Record<string, Record<string, any>>;
   defaults: Record<string, string>;
+  /**
+   * Base Tailwind classes applied to all variants.
+   * Extracted from KUMO_*_BASE_STYLES constant if present.
+   */
+  baseStyles?: string;
   /** Sub-components for compound component patterns (e.g., Dialog.Root, Dialog.Trigger) */
   subComponents?: SubComponentConfig[];
 }
@@ -342,19 +471,53 @@ function discoverDirs(sourceDir: string): string[] {
 }
 
 /**
- * Discover all component directories in src/components/
- * Returns array of directory names (kebab-case)
+ * Extract state-specific classes from a class string.
+ * Identifies hover:*, focus:*, active:*, disabled:*, not-disabled:* prefixes.
+ * Also handles complex selectors like [&:hover>span], [&:focus-within>span].
  */
-function discoverComponentDirs(): string[] {
-  return discoverDirs(componentsDir);
-}
+function extractStateClasses(classString: string): Record<string, string> {
+  const states: Record<string, string> = {};
 
-/**
- * Discover all block directories in src/blocks/
- * Returns array of directory names (kebab-case)
- */
-function discoverBlockDirs(): string[] {
-  return discoverDirs(blocksDir);
+  // Split by whitespace to process each class individually
+  const classes = classString.split(/\s+/);
+
+  for (const cls of classes) {
+    if (!cls) continue;
+
+    // Check for hover states
+    if (cls.startsWith("hover:") || cls.match(/^\[&:hover[^\]]*\]:/)) {
+      states.hover = states.hover ? `${states.hover} ${cls}` : cls;
+    }
+    // Check for focus states (focus, focus-visible, focus-within)
+    else if (
+      cls.match(/^(focus|focus-visible|focus-within):/) ||
+      cls.match(/^\[&:focus(-visible|-within)?[^\]]*\]:/)
+    ) {
+      states.focus = states.focus ? `${states.focus} ${cls}` : cls;
+    }
+    // Check for active state
+    else if (cls.startsWith("active:")) {
+      states.active = states.active ? `${states.active} ${cls}` : cls;
+    }
+    // Check for disabled state
+    else if (cls.startsWith("disabled:")) {
+      states.disabled = states.disabled ? `${states.disabled} ${cls}` : cls;
+    }
+    // Check for not-disabled state
+    else if (cls.startsWith("not-disabled:")) {
+      states["not-disabled"] = states["not-disabled"]
+        ? `${states["not-disabled"]} ${cls}`
+        : cls;
+    }
+    // Check for data-state
+    else if (cls.match(/^data-\[state=[^\]]+\]:/)) {
+      states["data-state"] = states["data-state"]
+        ? `${states["data-state"]} ${cls}`
+        : cls;
+    }
+  }
+
+  return states;
 }
 
 /**
@@ -383,6 +546,30 @@ function extractBalancedBraces(
 }
 
 /**
+ * Extract KUMO_*_BASE_STYLES from a component file.
+ * Returns the base styles string or null if not found.
+ */
+function extractBaseStylesFromFile(filePath: string): string | null {
+  try {
+    const content = readFileSync(filePath, "utf-8");
+
+    // Match: export const KUMO_*_BASE_STYLES = "..." or '...' or `...`
+    // Handles multi-line strings with template literals
+    const baseStylesMatch = content.match(
+      /export\s+const\s+KUMO_\w+_BASE_STYLES\s*=\s*["'`]([^"'`]+)["'`]/,
+    );
+
+    if (baseStylesMatch) {
+      return baseStylesMatch[1].trim();
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Extract KUMO_*_VARIANTS and KUMO_*_DEFAULT_VARIANTS from a component file.
  * Uses regex parsing to avoid import issues with JSX/React dependencies.
  */
@@ -390,6 +577,7 @@ function extractVariantsFromFile(filePath: string): {
   // biome-ignore lint/suspicious/noExplicitAny: Variants have varying shapes
   variants: Record<string, Record<string, any>>;
   defaults: Record<string, string>;
+  baseStyles: string | null;
 } | null {
   try {
     const content = readFileSync(filePath, "utf-8");
@@ -425,8 +613,11 @@ function extractVariantsFromFile(filePath: string): {
     const variants = parseVariantsObject(variantsBlock);
     const defaults = parseDefaultsObject(defaultsBlock);
 
+    // Extract base styles if present
+    const baseStyles = extractBaseStylesFromFile(filePath);
+
     // Return even if variants is empty - component still has props to document
-    return { variants, defaults };
+    return { variants, defaults, baseStyles };
   } catch {
     return null;
   }
@@ -463,11 +654,13 @@ function parseVariantsObject(
     // Now parse the variant values within this block
     // biome-ignore lint/suspicious/noExplicitAny: Variants have varying shapes
     const variants: Record<string, any> = {};
-    const variantPropPattern = /^\s*(\w+)\s*:\s*\{/gm;
+    // Match variant names including quoted keys like "secondary-destructive"
+    const variantPropPattern = /^\s*(?:"([^"]+)"|'([^']+)'|(\w+))\s*:\s*\{/gm;
     let variantMatch: RegExpExecArray | null;
 
     while ((variantMatch = variantPropPattern.exec(propBlock)) !== null) {
-      const variantName = variantMatch[1];
+      // Capture group 1 = double-quoted, 2 = single-quoted, 3 = unquoted
+      const variantName = variantMatch[1] || variantMatch[2] || variantMatch[3];
 
       // Skip nested properties
       if (["classes", "description"].includes(variantName)) continue;
@@ -482,8 +675,18 @@ function parseVariantsObject(
       const descMatch = variantBlock.match(
         /description\s*:\s*["']([^"']*)["']/,
       );
+      // Extract classes if present (for Figma plugin consumption)
+      const classesMatch = variantBlock.match(/classes\s*:\s*["']([^"']*)["']/);
+
+      // Extract state classes from the classes string
+      const stateClasses = classesMatch
+        ? extractStateClasses(classesMatch[1])
+        : {};
+
       variants[variantName] = {
         description: descMatch ? descMatch[1] : undefined,
+        ...(classesMatch && { classes: classesMatch[1] }),
+        ...(Object.keys(stateClasses).length > 0 && { stateClasses }),
       };
     }
 
@@ -874,7 +1077,7 @@ function extractPropsFromInterface(
  */
 async function discoverFromDir(
   sourceDir: string,
-  type: "component" | "block",
+  type: ComponentType,
 ): Promise<ComponentConfig[]> {
   const dirs = discoverDirs(sourceDir);
   const configs: ComponentConfig[] = [];
@@ -904,8 +1107,9 @@ async function discoverFromDir(
     }
 
     // Extract variants from file (may be empty for components without variant props)
+    // Layouts and pages may not have KUMO_*_VARIANTS exports
     const variantsData = extractVariantsFromFile(mainFile);
-    if (!variantsData) {
+    if (!variantsData && (type === "component" || type === "block")) {
       console.warn(
         `Warning: Could not find KUMO_*_VARIANTS exports in ${dirName}, skipping...`,
       );
@@ -922,7 +1126,9 @@ async function discoverFromDir(
     // Detect sub-components for compound component patterns
     const subComponents = detectSubComponents(mainFile);
 
-    console.log(`  ${dirName} → ${componentName} (props: ${propsType})`);
+    console.log(
+      `  ${dirName} → ${componentName} (props: ${propsType}, type: ${type})`,
+    );
     if (subComponents.length > 0) {
       console.log(
         `    → Found ${subComponents.length} sub-components: ${subComponents.map((s) => s.name).join(", ")}`,
@@ -935,10 +1141,12 @@ async function discoverFromDir(
       sourceFile: `${dirName}/${dirName}.tsx`,
       dirName,
       sourceDir,
+      type,
       description,
       category,
-      variants: variantsData.variants,
-      defaults: variantsData.defaults,
+      variants: variantsData?.variants ?? {},
+      defaults: variantsData?.defaults ?? {},
+      ...(variantsData?.baseStyles && { baseStyles: variantsData.baseStyles }),
       ...(subComponents.length > 0 && { subComponents }),
     });
   }
@@ -975,6 +1183,10 @@ interface PropSchema {
   description?: string;
   values?: readonly string[];
   descriptions?: Record<string, string>;
+  /** Tailwind classes for each variant value (for Figma plugin) */
+  classes?: Record<string, string>;
+  /** State-specific classes extracted from variant classes */
+  stateClasses?: Record<string, Record<string, string>>;
 }
 
 interface SubComponentSchema {
@@ -993,14 +1205,63 @@ interface SubComponentSchema {
 
 interface ComponentSchema {
   name: string;
+  /** Component type: "component" (base UI primitive) or "block" (composite component) */
+  type: ComponentType;
   description: string;
   importPath: string;
   category: string;
   props: Record<string, PropSchema>;
   examples: readonly string[];
   colors: string[];
+  /**
+   * Base Tailwind classes applied to all variants.
+   * Useful for Figma plugin to parse layout, spacing, typography.
+   */
+  baseStyles?: string;
   /** Sub-components for compound component patterns */
   subComponents?: Record<string, SubComponentSchema>;
+  /** Component-specific styling metadata (dimensions, states, icons, etc.) */
+  styling?: {
+    /** Fixed dimensions (e.g., "h-4 w-4" for checkbox) */
+    dimensions?: string;
+    /** Border radius classes */
+    borderRadius?: string;
+    /** Base state styling tokens */
+    baseTokens?: string[];
+    /** State-specific styling (checked, hover, disabled, etc.) */
+    states?: Record<string, string[]>;
+    /** Icon information */
+    icons?: {
+      name: string;
+      state?: string;
+      size?: string | number;
+    }[];
+    /** Size-specific metadata for components with complex size mappings */
+    sizeVariants?: Record<
+      string,
+      {
+        /** Container height in pixels */
+        height?: number;
+        /** Tailwind classes for this size */
+        classes?: string;
+        /** Button size mapping (for compound components) */
+        buttonSize?: string;
+        /** Parsed dimensions */
+        dimensions?: {
+          paddingX?: number;
+          paddingY?: number;
+          gap?: number;
+          borderRadius?: number;
+          fontSize?: number;
+        };
+      }
+    >;
+    /** Input variant styling (for components that use inputVariants) */
+    inputStyles?: {
+      base?: string;
+      sizes?: Record<string, string>;
+    };
+  };
 }
 
 interface ComponentRegistry {
@@ -1018,11 +1279,11 @@ interface ComponentRegistry {
 // =============================================================================
 
 /**
- * Parse kumo-theme.css to extract semantic color names from --color-* and --text-color-* variables.
+ * Parse theme-kumo.css to extract semantic color names from --color-* and --text-color-* variables.
  * Excludes raw palette colors (e.g., --color-red-650, --color-neutral-50) which have numeric suffixes.
  */
 function parseSemanticColorNames(): string[] {
-  const themePath = join(__dirname, "../../src/styles/kumo-theme.css");
+  const themePath = join(__dirname, "../../src/styles/theme-kumo.css");
   const content = readFileSync(themePath, "utf-8");
 
   const colorNames = new Set<string>();
@@ -1041,7 +1302,6 @@ function parseSemanticColorNames(): string[] {
   return [...colorNames].sort();
 }
 
-// Semantic color names derived from kumo-theme.css (--color-* and --text-color-*)
 const SEMANTIC_COLOR_NAMES = parseSemanticColorNames();
 
 // Utility prefixes that use color tokens
@@ -1122,6 +1382,22 @@ function jsonSchemaTypeToString(def: Definition): string {
   return "unknown";
 }
 
+/**
+ * Resolve a $ref to its actual definition.
+ * Returns the resolved definition or the original if no $ref.
+ */
+function resolveRef(
+  def: Definition,
+  allDefinitions?: Record<string, Definition>,
+): Definition {
+  if (!def.$ref || !allDefinitions) {
+    return def;
+  }
+  const refName = decodeURIComponent(def.$ref.split("/").pop() || "");
+  const resolved = allDefinitions[refName];
+  return resolved || def;
+}
+
 function convertToPropSchema(
   propName: string,
   def: Definition,
@@ -1129,7 +1405,11 @@ function convertToPropSchema(
   // biome-ignore lint/suspicious/noExplicitAny: Variants have varying shapes
   variants?: Record<string, Record<string, any>>,
   defaults?: Record<string, string>,
+  allDefinitions?: Record<string, Definition>,
 ): PropSchema {
+  // Resolve $ref to get the actual definition (for enum detection)
+  const resolvedDef = resolveRef(def, allDefinitions);
+
   const prop: PropSchema = {
     type: jsonSchemaTypeToString(def),
   };
@@ -1144,25 +1424,46 @@ function convertToPropSchema(
     prop.description = def.description;
   }
 
-  // Handle enums - either from JSON schema or from variants
+  // Handle enums - check both original def and resolved def (for $ref cases)
   if (def.enum) {
     prop.values = def.enum as string[];
+    prop.type = "enum";
+  } else if (resolvedDef.enum) {
+    // Enum found via $ref resolution (e.g., KumoCodeLang)
+    prop.values = resolvedDef.enum as string[];
+    prop.type = "enum";
   }
 
-  // Enrich with variant descriptions if this prop is a variant
+  // Enrich with variant descriptions and classes if this prop is a variant
   if (variants && propName in variants) {
     const variantDef = variants[propName];
     prop.values = Object.keys(variantDef);
     prop.type = "enum";
 
     const descriptions: Record<string, string> = {};
+    const classes: Record<string, string> = {};
+    const stateClassesMap: Record<string, Record<string, string>> = {};
+
     for (const [key, val] of Object.entries(variantDef)) {
       if (val.description) {
         descriptions[key] = val.description;
       }
+      if (val.classes) {
+        classes[key] = val.classes;
+      }
+      if (val.stateClasses) {
+        stateClassesMap[key] = val.stateClasses;
+      }
     }
+
     if (Object.keys(descriptions).length > 0) {
       prop.descriptions = descriptions;
+    }
+    if (Object.keys(classes).length > 0) {
+      prop.classes = classes;
+    }
+    if (Object.keys(stateClassesMap).length > 0) {
+      prop.stateClasses = stateClassesMap;
     }
   }
 
@@ -1217,6 +1518,7 @@ const KEEP_PROPS = new Set([
   "title", // Common component prop, even though HTMLAttributes has title for tooltips
   "label", // Common form field prop
   "href", // Common link prop for navigation components
+  "lang", // Code component uses lang for syntax highlighting (not HTML lang attribute)
   "onClick", // Common event handler to keep
   "onChange", // Common event handler to keep
   "onSubmit", // Common event handler to keep
@@ -1237,7 +1539,10 @@ const REACT_HTML_INTERFACES = [
 ];
 
 /**
- * Derive inherited HTML props from React's type definitions using the TypeScript compiler.
+ * OPTIMIZATION: Derive inherited HTML props from React's type definitions.
+ * This is EXPENSIVE (~15s / 47% of total time) and NOT NEEDED for most use cases.
+ * Only enabled with --inherited-props CLI flag.
+ *
  * Extracts property names from HTMLAttributes, InputHTMLAttributes, ButtonHTMLAttributes, etc.
  * These are filtered out to keep component docs focused on component-specific props.
  */
@@ -1324,10 +1629,60 @@ function deriveInheritedHtmlProps(): Set<string> {
   return inheritedProps;
 }
 
+/**
+ * Minimal static list of common HTML props to skip (when --inherited-props is not set).
+ * This replaces the expensive deriveInheritedHtmlProps() by default.
+ */
+const MINIMAL_SKIP_PROPS = new Set([
+  // Common HTML attributes we don't want to document
+  "accessKey",
+  "autoCapitalize",
+  "autoFocus",
+  "contentEditable",
+  "dir",
+  "draggable",
+  "hidden",
+  "spellCheck",
+  "tabIndex",
+  "translate",
+  // Form-specific attributes
+  "autocomplete",
+  "autofocus",
+  "form",
+  "formAction",
+  "formEncType",
+  "formMethod",
+  "formNoValidate",
+  "formTarget",
+  "max",
+  "maxLength",
+  "min",
+  "minLength",
+  "multiple",
+  "pattern",
+  "step",
+  // Media attributes
+  "accept",
+  "capture",
+  "crossOrigin",
+  "loop",
+  "muted",
+  "preload",
+  "poster",
+  "src",
+  "srcSet",
+]);
+
 // Lazily computed inherited HTML props (derived from React types at runtime)
+// Only computed if --inherited-props flag is set
 let _inheritedHtmlProps: Set<string> | null = null;
 
 function getInheritedHtmlProps(): Set<string> {
+  if (!CLI_FLAGS.includeInheritedProps) {
+    // Use minimal static list instead of expensive derivation
+    return MINIMAL_SKIP_PROPS;
+  }
+
   if (!_inheritedHtmlProps) {
     _inheritedHtmlProps = deriveInheritedHtmlProps();
   }
@@ -1444,6 +1799,7 @@ function generatePropsFromType(
         allRequired.includes(propName),
         config.variants,
         config.defaults,
+        schema.definitions as Record<string, Definition>,
       );
     }
 
@@ -1656,12 +2012,7 @@ const ADDITIONAL_COMPONENT_PROPS: Record<string, Record<string, PropSchema>> = {
       description: "Callback when switch is clicked",
     },
   },
-  Code: {
-    lang: {
-      type: "'ts' | 'tsx' | 'jsonc' | 'bash' | 'css'",
-      description: "Language for syntax highlighting",
-    },
-  },
+  // Code.lang is now handled by KUMO_CODE_VARIANTS - no manual override needed
   Combobox: {
     onValueChange: {
       type: "(value: T | T[]) => void",
@@ -1708,6 +2059,12 @@ const ADDITIONAL_COMPONENT_PROPS: Record<string, Record<string, PropSchema>> = {
       description: "Callback when collapsed state changes",
     },
   },
+  Checkbox: {
+    onValueChange: {
+      type: "(checked: boolean) => void",
+      description: "Callback when checkbox value changes",
+    },
+  },
 };
 
 /**
@@ -1725,6 +2082,390 @@ const PROP_TYPE_OVERRIDES: Record<string, Record<string, string>> = {
   Select: {
     value: "string",
   },
+};
+
+/**
+ * Component-specific styling metadata for AI/Figma plugin consumption.
+ * Documents dimensions, states, icons, and color tokens used in components.
+ */
+const COMPONENT_STYLING_METADATA: Record<string, ComponentSchema["styling"]> = {
+  Checkbox: {
+    dimensions: "h-4 w-4",
+    borderRadius: "rounded-sm",
+    baseTokens: ["bg-surface", "ring-border"],
+    states: {
+      checked: ["bg-surface-inverse", "text-surface-inverse"],
+      indeterminate: ["bg-surface-inverse", "text-surface-inverse"],
+      error: ["ring-error"],
+      hover: ["ring-active"],
+      focus: ["ring-active"],
+      disabled: ["opacity-50", "cursor-not-allowed"],
+    },
+    icons: [
+      {
+        name: "ph-check",
+        state: "checked",
+        size: 12,
+      },
+      {
+        name: "ph-minus",
+        state: "indeterminate",
+        size: 12,
+      },
+    ],
+  },
+  ClipboardText: {
+    baseTokens: ["bg-surface", "text-surface", "ring-border", "border-color"],
+    states: {
+      input: ["bg-secondary", "text-surface", "ring-border"],
+      text: ["bg-surface", "font-mono"],
+      button: ["border-color"],
+    },
+    inputStyles: {
+      base: "bg-secondary text-surface ring ring-border",
+      sizes: {
+        xs: "h-5 gap-1 rounded-sm px-1.5 text-xs",
+        sm: "h-6.5 gap-1 rounded-md px-2 text-xs",
+        base: "h-9 gap-1.5 rounded-lg px-3 text-base",
+        lg: "h-10 gap-2 rounded-lg px-4 text-base",
+      },
+    },
+    sizeVariants: {
+      sm: {
+        height: 26,
+        classes: "text-xs",
+        buttonSize: "sm",
+        dimensions: {
+          paddingX: 8,
+          gap: 1,
+          borderRadius: 6,
+          fontSize: 12,
+        },
+      },
+      base: {
+        height: 36,
+        classes: "text-sm",
+        buttonSize: "base",
+        dimensions: {
+          paddingX: 12,
+          gap: 6,
+          borderRadius: 8,
+          fontSize: 14,
+        },
+      },
+      lg: {
+        height: 40,
+        classes: "text-sm",
+        buttonSize: "lg",
+        dimensions: {
+          paddingX: 16,
+          gap: 8,
+          borderRadius: 8,
+          fontSize: 14,
+        },
+      },
+    },
+    icons: [
+      {
+        name: "ph-clipboard",
+        state: "default",
+        size: 16,
+      },
+      {
+        name: "ph-check",
+        state: "copied",
+        size: 16,
+      },
+    ],
+  },
+  Code: {
+    baseTokens: ["text-label"],
+    dimensions: "m-0 w-auto p-0",
+    borderRadius: "rounded-none",
+    states: {
+      base: [
+        "bg-transparent",
+        "border-none",
+        "font-mono",
+        "text-sm",
+        "leading-[20px]",
+      ],
+      code_block_container: [
+        "min-w-0",
+        "rounded-md",
+        "border",
+        "border-color",
+        "bg-surface",
+      ],
+    },
+  },
+  Input: {
+    baseTokens: ["bg-secondary", "text-surface", "text-muted", "ring-border"],
+    sizeVariants: {
+      xs: {
+        height: 20,
+        classes: "h-5 gap-1 rounded-sm px-1.5 text-xs",
+        dimensions: {
+          paddingX: 6,
+          fontSize: 12,
+          borderRadius: 2,
+        },
+      },
+      sm: {
+        height: 26,
+        classes: "h-6.5 gap-1 rounded-md px-2 text-xs",
+        dimensions: {
+          paddingX: 8,
+          fontSize: 12,
+          borderRadius: 6,
+        },
+      },
+      base: {
+        height: 36,
+        classes: "h-9 gap-1.5 rounded-lg px-3 text-base",
+        dimensions: {
+          paddingX: 12,
+          fontSize: 16,
+          borderRadius: 8,
+        },
+      },
+      lg: {
+        height: 40,
+        classes: "h-10 gap-2 rounded-lg px-4 text-base",
+        dimensions: {
+          paddingX: 16,
+          fontSize: 16,
+          borderRadius: 8,
+        },
+      },
+    },
+    states: {
+      base: ["bg-secondary", "text-surface", "ring-border"],
+      focus: ["ring-active"],
+      error: ["ring-error"],
+      disabled: ["opacity-50", "text-muted"],
+    },
+  } as any,
+  Tabs: {
+    container: {
+      height: 34,
+      borderRadius: 8,
+      background: "color-accent",
+      padding: 1,
+    },
+    tab: {
+      paddingX: 10,
+      verticalMargin: 1,
+      fontSize: 16,
+      fontWeight: 500,
+      borderRadius: 8,
+      activeColor: "text-color-surface",
+      inactiveColor: "text-color-label",
+    },
+    indicator: {
+      background: "color-surface-elevated",
+      ring: "color-color-2",
+      borderRadius: 8,
+      shadow: "shadow-sm",
+    },
+  } as any,
+  Dialog: {
+    baseTokens: ["bg-surface", "text-surface", "border-border", "shadow-m"],
+    sizeVariants: {
+      sm: {
+        height: 0, // Dialog height is auto (content-driven)
+        classes: "min-w-72",
+        dimensions: {
+          paddingX: 16,
+          paddingY: 16,
+          gap: 8,
+          borderRadius: 12,
+        },
+      },
+      base: {
+        height: 0,
+        classes: "min-w-96",
+        dimensions: {
+          paddingX: 24,
+          paddingY: 24,
+          gap: 16,
+          borderRadius: 12,
+        },
+      },
+      lg: {
+        height: 0,
+        classes: "min-w-[32rem]",
+        dimensions: {
+          paddingX: 24,
+          paddingY: 24,
+          gap: 16,
+          borderRadius: 12,
+        },
+      },
+      xl: {
+        height: 0,
+        classes: "min-w-[48rem]",
+        dimensions: {
+          paddingX: 24,
+          paddingY: 24,
+          gap: 16,
+          borderRadius: 12,
+        },
+      },
+    },
+    states: {
+      base: ["bg-surface", "text-surface", "shadow-m"],
+      backdrop: ["bg-color-3", "opacity-80"],
+    },
+  } as any,
+  Toasty: {
+    container: {
+      width: 300,
+      padding: 16,
+      borderRadius: 8,
+      background: "color-toast",
+      border: "color-color",
+      shadow: "shadow-lg",
+      gap: 4,
+    },
+    title: {
+      fontSize: 16,
+      fontWeight: 500,
+      color: "text-color-surface",
+    },
+    description: {
+      fontSize: 15,
+      fontWeight: 400,
+      color: "text-color-muted",
+    },
+    closeButton: {
+      size: 20,
+      iconSize: 16,
+      iconName: "ph-x",
+      iconColor: "text-color-muted",
+      hoverBackground: "color-toast-button-hover",
+      hoverColor: "text-color-label",
+      borderRadius: 4,
+    },
+  } as any,
+  DateRangePicker: {
+    sizeVariants: {
+      sm: {
+        height: 0,
+        classes: "p-3 gap-2",
+        dimensions: {
+          calendarWidth: 168,
+          cellHeight: 22,
+          cellWidth: 24,
+          textSize: 12,
+          iconSize: 14,
+          padding: 12,
+          gap: 8,
+        },
+      },
+      base: {
+        height: 0,
+        classes: "p-4 gap-2.5",
+        dimensions: {
+          calendarWidth: 196,
+          cellHeight: 26,
+          cellWidth: 28,
+          textSize: 14,
+          iconSize: 16,
+          padding: 16,
+          gap: 10,
+        },
+      },
+      lg: {
+        height: 0,
+        classes: "p-5 gap-3",
+        dimensions: {
+          calendarWidth: 252,
+          cellHeight: 32,
+          cellWidth: 36,
+          textSize: 16,
+          iconSize: 18,
+          padding: 20,
+          gap: 12,
+        },
+      },
+    },
+  } as any,
+  Pagination: {
+    layout: {
+      height: 36,
+      buttonSize: 36,
+      inputWidth: 50,
+      iconSize: 16,
+      gap: 8,
+      borderRadius: 6,
+    },
+  } as any,
+  InputArea: {
+    sizeVariants: {
+      xs: { minHeight: 60, width: 200 },
+      sm: { minHeight: 72, width: 240 },
+      base: { minHeight: 88, width: 320 },
+      lg: { minHeight: 100, width: 360 },
+    },
+  } as any,
+  LayerCard: {
+    container: {
+      width: 280,
+      borderRadius: 8,
+    },
+    secondary: {
+      paddingX: 8,
+      paddingY: 8,
+      gap: 8,
+      fontSize: 16,
+      fontWeight: 500,
+    },
+    primary: {
+      paddingX: 16,
+      paddingY: 16,
+      paddingRight: 12,
+      gap: 8,
+      fontSize: 16,
+      fontWeight: 400,
+      borderRadius: 8,
+    },
+  } as any,
+  MenuBar: {
+    container: {
+      height: 32,
+      borderRadius: 8,
+      padding: 2,
+      gap: 2,
+    },
+    button: {
+      width: 36,
+      borderRadius: 6,
+      iconSize: 18,
+    },
+  } as any,
+  Select: {
+    trigger: {
+      height: 36, // h-9
+      paddingX: 12, // px-3
+      paddingY: 0,
+      borderRadius: 8, // rounded-lg
+      fontSize: 16, // text-base
+      fontWeight: 400, // font-normal
+    },
+    popup: {
+      width: 280,
+      borderRadius: 8, // rounded-lg
+      padding: 6, // p-1.5
+    },
+    option: {
+      paddingX: 8, // px-2
+      paddingY: 6, // py-1.5
+      borderRadius: 4, // rounded
+      fontSize: 16, // text-base
+      fontWeight: 400,
+    },
+  } as any,
 };
 
 /**
@@ -1767,6 +2508,225 @@ function generatePropsFromVariantsOnly(
 }
 
 // =============================================================================
+// Process individual component (extracted for parallel processing)
+// =============================================================================
+
+interface ProcessComponentInput {
+  config: ComponentConfig;
+  variantConstants: Map<string, string[]>;
+  storyExamples: Map<string, { aiExamples: string[] }>;
+  cache: CacheFile;
+}
+
+interface ProcessComponentResult {
+  name: string;
+  category: string;
+  schema: ComponentSchema;
+  colors: string[];
+  cached: boolean;
+  cacheEntry: CacheEntry;
+}
+
+async function processComponent(
+  input: ProcessComponentInput,
+): Promise<ProcessComponentResult> {
+  const { config, cache } = input;
+  const sourcePath = join(config.sourceDir, getSourceFile(config));
+  const storyPath = join(
+    config.sourceDir,
+    config.dirName,
+    `${config.dirName}.stories.tsx`,
+  );
+
+  // Compute hashes for cache checking
+  const sourceHash = hashFileContent(sourcePath);
+  const storyHash = hashFileContent(storyPath);
+
+  // Check cache
+  const cachedMetadata = getCachedComponent(
+    config.name,
+    sourceHash,
+    storyHash,
+    cache,
+  );
+
+  if (cachedMetadata) {
+    if (CLI_FLAGS.verbose) {
+      console.log(`  ✓ ${config.name} (cached)`);
+    } else {
+      console.log(`✓ ${config.name} (cached)`);
+    }
+    const colors = extractSemanticColors(sourcePath);
+    return {
+      name: config.name,
+      category: config.category,
+      schema: cachedMetadata,
+      colors,
+      cached: true,
+      cacheEntry: {
+        componentName: config.name,
+        sourceHash,
+        storyHash,
+        cacheVersion: CACHE_VERSION,
+        generatedAt: cache.entries[config.name]?.generatedAt || Date.now(),
+        metadata: cachedMetadata,
+      },
+    };
+  }
+
+  // Not cached, regenerate
+  if (CLI_FLAGS.verbose) {
+    console.log(`  → ${config.name} (regenerating)`);
+  } else {
+    console.log(`→ ${config.name} (regenerating)`);
+  }
+
+  const props = generatePropsFromType(config);
+
+  // Inject additional props for components with important inherited props
+  const additionalProps = ADDITIONAL_COMPONENT_PROPS[config.name];
+  if (additionalProps) {
+    for (const [propName, propSchema] of Object.entries(additionalProps)) {
+      if (!props[propName]) {
+        props[propName] = propSchema;
+      } else {
+        if (propSchema.type) {
+          props[propName].type = propSchema.type;
+        }
+        if (propSchema.description) {
+          props[propName].description = propSchema.description;
+        }
+      }
+    }
+  }
+
+  // Apply type overrides
+  const typeOverrides = PROP_TYPE_OVERRIDES[config.name];
+  if (typeOverrides) {
+    for (const [propName, newType] of Object.entries(typeOverrides)) {
+      if (props[propName]) {
+        props[propName].type = newType;
+      }
+    }
+  }
+
+  const colors = extractSemanticColors(sourcePath);
+
+  // Determine examples
+  let examples: readonly string[];
+  if (config.examples !== undefined) {
+    examples = config.examples;
+  } else {
+    const extracted = input.storyExamples.get(config.name);
+    examples = extracted?.aiExamples ?? [];
+    if (examples.length > 0 && CLI_FLAGS.verbose) {
+      console.log(
+        `    → Auto-extracted ${examples.length} examples from stories`,
+      );
+    }
+  }
+
+  // Process sub-components
+  let subComponentSchemas: Record<string, SubComponentSchema> | undefined;
+  if (config.subComponents && config.subComponents.length > 0) {
+    subComponentSchemas = {};
+
+    for (const subComp of config.subComponents) {
+      let subProps = extractSubComponentProps(sourcePath, subComp);
+      let description = subComp.description;
+      let usageExamples: string[] | undefined;
+      let renderElement: string | undefined;
+
+      if (subComp.isPassThrough && subComp.baseComponent) {
+        const passthroughDoc =
+          PASSTHROUGH_COMPONENT_DOCS[subComp.baseComponent];
+        if (passthroughDoc) {
+          description = passthroughDoc.description;
+          subProps = passthroughDoc.props;
+          usageExamples = passthroughDoc.usageExamples;
+          renderElement = passthroughDoc.renderElement;
+        }
+      }
+
+      subComponentSchemas[subComp.name] = {
+        name: subComp.name,
+        description,
+        props: subProps,
+        ...(subComp.isPassThrough && { isPassThrough: true }),
+        ...(subComp.baseComponent && { baseComponent: subComp.baseComponent }),
+        ...(usageExamples && { usageExamples }),
+        ...(renderElement && { renderElement }),
+      };
+    }
+
+    if (CLI_FLAGS.verbose && Object.keys(subComponentSchemas).length > 0) {
+      console.log(
+        `    → Processed ${Object.keys(subComponentSchemas).length} sub-components`,
+      );
+    }
+  }
+
+  // Get styling metadata
+  const stylingMetadata = COMPONENT_STYLING_METADATA[config.name];
+
+  const schema: ComponentSchema = {
+    name: config.name,
+    type: config.type,
+    description: config.description,
+    importPath: "@cloudflare/kumo",
+    category: config.category,
+    props,
+    examples,
+    colors,
+    ...(config.baseStyles && { baseStyles: config.baseStyles }),
+    ...(subComponentSchemas && { subComponents: subComponentSchemas }),
+    ...(stylingMetadata && { styling: stylingMetadata }),
+  };
+
+  return {
+    name: config.name,
+    category: config.category,
+    schema,
+    colors,
+    cached: false,
+    cacheEntry: {
+      componentName: config.name,
+      sourceHash,
+      storyHash,
+      cacheVersion: CACHE_VERSION,
+      generatedAt: Date.now(),
+      metadata: schema,
+    },
+  };
+}
+
+// =============================================================================
+// Parallel processing with batching
+// =============================================================================
+
+async function processComponentsInParallel(
+  configs: ComponentConfig[],
+  variantConstants: Map<string, string[]>,
+  storyExamples: Map<string, { aiExamples: string[] }>,
+  cache: CacheFile,
+): Promise<ProcessComponentResult[]> {
+  const BATCH_SIZE = 8; // Process 8 components concurrently
+  const results: ProcessComponentResult[] = [];
+
+  for (let i = 0; i < configs.length; i += BATCH_SIZE) {
+    const batch = configs.slice(i, i + BATCH_SIZE);
+    const batchResults = await Promise.all(
+      batch.map((config) =>
+        processComponent({ config, variantConstants, storyExamples, cache }),
+      ),
+    );
+    results.push(...batchResults);
+  }
+
+  return results;
+}
+
+// =============================================================================
 // Generate the registry
 // =============================================================================
 
@@ -1776,23 +2736,23 @@ interface GenerateRegistryResult {
 }
 
 async function generateRegistry(): Promise<GenerateRegistryResult> {
+  const startTime = Date.now();
+
   // Auto-discover components from filesystem
   const COMPONENTS = await discoverComponents();
-  console.log(`Discovered ${COMPONENTS.length} components`);
+  console.log(`\nDiscovered ${COMPONENTS.length} components`);
 
-  const components: Record<string, ComponentSchema> = {};
-  const byCategory: Record<string, string[]> = {};
-  const componentColors = new Map<string, string[]>();
+  // Load cache
+  const cache = loadCache();
+  if (!CLI_FLAGS.noCache) {
+    const cachedCount = Object.keys(cache.entries).length;
+    console.log(`Loaded cache with ${cachedCount} entries`);
+  }
 
   // Build variant constants map for propTester parsing
-  // Maps "KUMO_*_VARIANTS.propName" to their variant keys
-  // e.g., "KUMO_BUTTON_VARIANTS.variant" -> ["primary", "secondary", ...]
-  // e.g., "KUMO_BUTTON_VARIANTS.size" -> ["xs", "sm", "base", "lg"]
   const variantConstants = new Map<string, string[]>();
   for (const config of COMPONENTS) {
-    // Derive the constant name from the component name
     const constName = `KUMO_${toScreamingSnakeCase(config.name)}_VARIANTS`;
-    // Map each variant prop (variant, size, shape, etc.)
     for (const [propName, propVariants] of Object.entries(config.variants)) {
       if (typeof propVariants === "object" && propVariants !== null) {
         variantConstants.set(
@@ -1804,124 +2764,75 @@ async function generateRegistry(): Promise<GenerateRegistryResult> {
   }
 
   // Extract examples from all story files
+  console.log("\nExtracting examples from stories...");
   const storyExamples = extractAllExamples(variantConstants);
 
-  for (const config of COMPONENTS) {
-    console.log(`Processing ${config.name}...`);
+  // Process components in parallel
+  console.log("\nProcessing components...");
+  const results = await processComponentsInParallel(
+    COMPONENTS,
+    variantConstants,
+    storyExamples,
+    cache,
+  );
 
-    const props = generatePropsFromType(config);
+  // Sort results by name for deterministic output
+  results.sort((a, b) => a.name.localeCompare(b.name));
 
-    // Inject additional props for components with important inherited props
-    const additionalProps = ADDITIONAL_COMPONENT_PROPS[config.name];
-    if (additionalProps) {
-      for (const [propName, propSchema] of Object.entries(additionalProps)) {
-        if (!props[propName]) {
-          // Add new prop
-          props[propName] = propSchema;
-        } else {
-          // Merge with existing prop (override type and description if provided)
-          if (propSchema.type) {
-            props[propName].type = propSchema.type;
-          }
-          if (propSchema.description) {
-            props[propName].description = propSchema.description;
-          }
-        }
-      }
+  // Build registry from results
+  const components: Record<string, ComponentSchema> = {};
+  const byCategory: Record<string, string[]> = {};
+  const componentColors = new Map<string, string[]>();
+  const newCache: CacheFile = {
+    version: CACHE_VERSION,
+    entries: {},
+  };
+
+  for (const result of results) {
+    components[result.name] = result.schema;
+    componentColors.set(result.name, result.colors);
+
+    if (!byCategory[result.category]) {
+      byCategory[result.category] = [];
     }
+    byCategory[result.category].push(result.name);
 
-    // Apply type overrides for props with opaque types
-    const typeOverrides = PROP_TYPE_OVERRIDES[config.name];
-    if (typeOverrides) {
-      for (const [propName, newType] of Object.entries(typeOverrides)) {
-        if (props[propName]) {
-          props[propName].type = newType;
-        }
-      }
-    }
-
-    const colors = extractSemanticColors(
-      join(config.sourceDir, getSourceFile(config)),
-    );
-
-    // Determine examples: use manual if provided, otherwise auto-extract from stories
-    let examples: readonly string[];
-    if (config.examples !== undefined) {
-      // Manual examples provided (could be empty array for explicit "no examples")
-      examples = config.examples;
-    } else {
-      // Auto-extract from stories
-      const extracted = storyExamples.get(config.name);
-      examples = extracted?.aiExamples ?? [];
-      if (examples.length > 0) {
-        console.log(
-          `  → Auto-extracted ${examples.length} examples from stories`,
-        );
-      }
-    }
-
-    // Process sub-components for compound component patterns
-    let subComponentSchemas: Record<string, SubComponentSchema> | undefined;
-    if (config.subComponents && config.subComponents.length > 0) {
-      subComponentSchemas = {};
-      const sourcePath = join(config.sourceDir, getSourceFile(config));
-
-      for (const subComp of config.subComponents) {
-        let subProps = extractSubComponentProps(sourcePath, subComp);
-        let description = subComp.description;
-        let usageExamples: string[] | undefined;
-        let renderElement: string | undefined;
-
-        // For pass-through components, use documentation from PASSTHROUGH_COMPONENT_DOCS
-        if (subComp.isPassThrough && subComp.baseComponent) {
-          const passthroughDoc =
-            PASSTHROUGH_COMPONENT_DOCS[subComp.baseComponent];
-          if (passthroughDoc) {
-            // Use pass-through documentation
-            description = passthroughDoc.description;
-            subProps = passthroughDoc.props;
-            usageExamples = passthroughDoc.usageExamples;
-            renderElement = passthroughDoc.renderElement;
-          }
-        }
-
-        subComponentSchemas[subComp.name] = {
-          name: subComp.name,
-          description,
-          props: subProps,
-          ...(subComp.isPassThrough && { isPassThrough: true }),
-          ...(subComp.baseComponent && {
-            baseComponent: subComp.baseComponent,
-          }),
-          ...(usageExamples && { usageExamples }),
-          ...(renderElement && { renderElement }),
-        };
-      }
-
-      console.log(
-        `  → Processed ${Object.keys(subComponentSchemas).length} sub-components`,
-      );
-    }
-
-    // Store colors for style guide generation
-    componentColors.set(config.name, colors);
-
-    components[config.name] = {
-      name: config.name,
-      description: config.description,
-      importPath: "@cloudflare/kumo",
-      category: config.category,
-      props,
-      examples,
-      colors,
-      ...(subComponentSchemas && { subComponents: subComponentSchemas }),
-    };
-
-    if (!byCategory[config.category]) {
-      byCategory[config.category] = [];
-    }
-    byCategory[config.category].push(config.name);
+    // Store in new cache
+    newCache.entries[result.name] = result.cacheEntry;
   }
+
+  // Save updated cache
+  saveCache(newCache);
+
+  // Add InputArea as a synthetic component (uses Input's variants but has its own dimensions)
+  // InputArea doesn't exist as a separate component file but needs registry metadata for Figma plugin
+  if (COMPONENT_STYLING_METADATA.InputArea) {
+    components.InputArea = {
+      name: "InputArea",
+      type: "component",
+      description:
+        "Multi-line textarea input with Input variants and InputArea-specific dimensions",
+      importPath: "@cloudflare/kumo (synthetic - uses Input component)",
+      category: "Input",
+      props: {}, // Uses Input's props
+      styling: COMPONENT_STYLING_METADATA.InputArea,
+      examples: [],
+      colors: [],
+    };
+    // Add to Input category
+    if (!byCategory.Input) {
+      byCategory.Input = [];
+    }
+    // Don't add to byName search (it's a synthetic entry for Figma plugin only)
+  }
+
+  const elapsed = ((Date.now() - startTime) / 1000).toFixed(2);
+  const cached = results.filter((r) => r.cached).length;
+  const regenerated = results.length - cached;
+
+  console.log(
+    `\n✓ Completed in ${elapsed}s (${cached} cached, ${regenerated} regenerated)`,
+  );
 
   return {
     registry: {
@@ -1929,7 +2840,7 @@ async function generateRegistry(): Promise<GenerateRegistryResult> {
       components,
       search: {
         byCategory,
-        byName: COMPONENTS.map((c) => c.name),
+        byName: results.map((r) => r.name),
       },
     },
     componentColors,
@@ -2095,6 +3006,7 @@ ${styleGuide}`;
     context += `---\n\n`;
     context += `### ${name}\n\n`;
     context += `${comp.description}\n\n`;
+    context += `**Type:** ${comp.type}\n\n`;
     context += `**Import:** \`import { ${name} } from "${comp.importPath}";\`\n\n`;
     context += `**Category:** ${comp.category}\n\n`;
 
@@ -2114,11 +3026,96 @@ ${styleGuide}`;
       } else if (prop.description) {
         context += `  ${prop.description}\n`;
       }
+
+      // Document state classes for variant props
+      if (prop.stateClasses && Object.keys(prop.stateClasses).length > 0) {
+        context += `\n  **State Classes:**\n`;
+        for (const [variantValue, states] of Object.entries(
+          prop.stateClasses,
+        )) {
+          context += `  - \`"${variantValue}"\`:\n`;
+          for (const [stateName, stateClass] of Object.entries(states)) {
+            context += `    - \`${stateName}\`: \`${stateClass}\`\n`;
+          }
+        }
+      }
     }
 
     if (comp.colors.length > 0) {
       context += `\n**Colors (kumo tokens used):**\n\n`;
       context += `\`${comp.colors.join("`, `")}\`\n`;
+    }
+
+    // Document styling metadata (dimensions, states, icons)
+    if (comp.styling) {
+      context += `\n**Styling:**\n\n`;
+
+      if (comp.styling.dimensions) {
+        context += `- **Dimensions:** \`${comp.styling.dimensions}\`\n`;
+      }
+      if (comp.styling.borderRadius) {
+        context += `- **Border Radius:** \`${comp.styling.borderRadius}\`\n`;
+      }
+      if (comp.styling.baseTokens && comp.styling.baseTokens.length > 0) {
+        context += `- **Base Tokens:** \`${comp.styling.baseTokens.join("`, `")}\`\n`;
+      }
+      if (comp.styling.states && Object.keys(comp.styling.states).length > 0) {
+        context += `- **States:**\n`;
+        for (const [stateName, tokens] of Object.entries(comp.styling.states)) {
+          context += `  - \`${stateName}\`: \`${tokens.join("`, `")}\`\n`;
+        }
+      }
+      if (comp.styling.icons && comp.styling.icons.length > 0) {
+        context += `- **Icons:**\n`;
+        for (const icon of comp.styling.icons) {
+          const stateInfo = icon.state ? ` (${icon.state})` : "";
+          const sizeInfo = icon.size ? ` size ${icon.size}` : "";
+          context += `  - \`${icon.name}\`${stateInfo}${sizeInfo}\n`;
+        }
+      }
+      if (comp.styling.inputStyles) {
+        context += `- **Input Styles:**\n`;
+        if (comp.styling.inputStyles.base) {
+          context += `  - Base: \`${comp.styling.inputStyles.base}\`\n`;
+        }
+        if (
+          comp.styling.inputStyles.sizes &&
+          Object.keys(comp.styling.inputStyles.sizes).length > 0
+        ) {
+          context += `  - Sizes:\n`;
+          for (const [sizeName, classes] of Object.entries(
+            comp.styling.inputStyles.sizes,
+          )) {
+            context += `    - \`${sizeName}\`: \`${classes}\`\n`;
+          }
+        }
+      }
+      if (
+        comp.styling.sizeVariants &&
+        Object.keys(comp.styling.sizeVariants).length > 0
+      ) {
+        context += `- **Size Variants:**\n`;
+        for (const [sizeName, sizeData] of Object.entries(
+          comp.styling.sizeVariants,
+        )) {
+          context += `  - \`${sizeName}\`:\n`;
+          if (sizeData.height) {
+            context += `    - Height: ${sizeData.height}px\n`;
+          }
+          if (sizeData.classes) {
+            context += `    - Classes: \`${sizeData.classes}\`\n`;
+          }
+          if (sizeData.buttonSize) {
+            context += `    - Button Size: \`${sizeData.buttonSize}\`\n`;
+          }
+          if (sizeData.dimensions) {
+            context += `    - Dimensions:\n`;
+            for (const [key, value] of Object.entries(sizeData.dimensions)) {
+              context += `      - ${key}: ${value}\n`;
+            }
+          }
+        }
+      }
     }
 
     // Document sub-components for compound component patterns
@@ -2197,7 +3194,50 @@ ${styleGuide}`;
 // Main
 // =============================================================================
 
+function printHelp() {
+  console.log(`
+Kumo Component Registry Generator
+
+Usage:
+  pnpm build:ai-metadata [options]
+
+Options:
+  --inherited-props    Include inherited HTML props (SLOW: adds ~15s)
+                       Default: false (uses minimal static skip list)
+  --no-cache           Force full regeneration, ignore cache
+                       Default: false (uses hash-based cache)
+  --verbose            Show detailed timing and processing info
+                       Default: false
+  --help               Show this help message
+
+Examples:
+  pnpm build:ai-metadata                    # Fast build with cache
+  pnpm build:ai-metadata --no-cache         # Full rebuild
+  pnpm build:ai-metadata --inherited-props  # Include all HTML props
+  pnpm build:ai-metadata --verbose          # Show detailed logs
+
+Performance:
+  - Hash-based caching: Skips unchanged components (~1s incremental)
+  - Parallel processing: Processes 8 components concurrently
+  - Skip inherited props: Saves ~15s (47% of total time)
+  
+Target: <10s cold build, <1s incremental build
+`);
+}
+
 async function main() {
+  // Handle --help flag
+  if (process.argv.includes("--help") || process.argv.includes("-h")) {
+    printHelp();
+    return;
+  }
+
+  console.log("Kumo Component Registry Generator");
+  console.log("==================================");
+  console.log(
+    `Flags: ${CLI_FLAGS.includeInheritedProps ? "inherited-props" : "skip-inherited"} | ${CLI_FLAGS.noCache ? "no-cache" : "cache"} | ${CLI_FLAGS.verbose ? "verbose" : "quiet"}`,
+  );
+
   const { registry, componentColors } = await generateRegistry();
   const aiContext = generateAIContext(registry, componentColors);
 
@@ -2208,7 +3248,7 @@ async function main() {
   // Write JSON registry
   const jsonPath = join(outputDir, "component-registry.json");
   writeFileSync(jsonPath, JSON.stringify(registry, null, 2));
-  console.log(`✓ Generated ${jsonPath}`);
+  console.log(`\n✓ Generated ${jsonPath}`);
 
   // Write markdown context for LLMs
   const mdPath = join(outputDir, "component-registry.md");
@@ -2216,10 +3256,10 @@ async function main() {
   console.log(`✓ Generated ${mdPath}`);
 
   // Also output to stdout for piping
-  console.log("\n--- Generated Registry Summary ---");
-  console.log(`Components: ${registry.search.byName.join(", ")}`);
+  console.log("\n--- Registry Summary ---");
+  console.log(`Components: ${registry.search.byName.length}`);
   console.log(
-    `Categories: ${Object.keys(registry.search.byCategory).join(", ")}`,
+    `Categories: ${Object.keys(registry.search.byCategory).length} (${Object.keys(registry.search.byCategory).join(", ")})`,
   );
 }
 

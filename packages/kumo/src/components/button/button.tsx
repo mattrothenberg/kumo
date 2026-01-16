@@ -59,7 +59,7 @@ export const KUMO_BUTTON_VARIANTS = {
       description: "Minimal button with no background",
     },
     destructive: {
-      classes: "bg-destructive !text-white hover:bg-destructive/70",
+      classes: "bg-error !text-white hover:bg-error/70",
       description: "Danger button for destructive actions like delete",
     },
     "secondary-destructive": {

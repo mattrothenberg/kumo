@@ -1,0 +1,315 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Banner Generator - Snapshot Tests (Intermediate Data) > should produce consistent complete banner variant data 1`] = `
+{
+  "baseStyles": {
+    "parsed": {
+      "borderRadius": 8,
+      "fontSize": 14,
+      "gap": 8,
+      "hasBorder": true,
+      "paddingX": 16,
+      "paddingY": 6,
+      "strokeWeight": 1,
+    },
+    "raw": "flex w-full items-center gap-2 rounded-lg border px-4 py-1.5 text-base",
+  },
+  "variants": [
+    {
+      "classes": "bg-info/20 border-info text-info selection:bg-info-selection",
+      "description": "Informational banner for general messages",
+      "icon": {
+        "iconId": "ph-info",
+        "iconSize": 16,
+      },
+      "layout": {
+        "cornerRadius": 8,
+        "counterAxisAlignItems": "CENTER",
+        "counterAxisSizingMode": "AUTO",
+        "itemSpacing": 8,
+        "layoutMode": "HORIZONTAL",
+        "paddingBottom": 6,
+        "paddingLeft": 16,
+        "paddingRight": 16,
+        "paddingTop": 6,
+        "primaryAxisAlignItems": "CENTER",
+        "primaryAxisSizingMode": "AUTO",
+      },
+      "parsed": {
+        "fillOpacity": 0.2,
+        "fillVariable": "color-info/20",
+        "hasBorder": true,
+        "strokeVariable": "color-info",
+        "textVariable": "text-color-info",
+      },
+      "text": {
+        "fontSize": 14,
+        "fontWeight": 400,
+      },
+      "variant": "default",
+    },
+    {
+      "classes": "bg-alert/20 border-alert text-alert selection:bg-alert-selection",
+      "description": "Warning banner for cautionary messages",
+      "icon": {
+        "iconId": "ph-warning",
+        "iconSize": 16,
+      },
+      "layout": {
+        "cornerRadius": 8,
+        "counterAxisAlignItems": "CENTER",
+        "counterAxisSizingMode": "AUTO",
+        "itemSpacing": 8,
+        "layoutMode": "HORIZONTAL",
+        "paddingBottom": 6,
+        "paddingLeft": 16,
+        "paddingRight": 16,
+        "paddingTop": 6,
+        "primaryAxisAlignItems": "CENTER",
+        "primaryAxisSizingMode": "AUTO",
+      },
+      "parsed": {
+        "fillOpacity": 0.2,
+        "fillVariable": "color-alert/20",
+        "hasBorder": true,
+        "strokeVariable": "color-alert",
+        "textVariable": "text-color-alert",
+      },
+      "text": {
+        "fontSize": 14,
+        "fontWeight": 400,
+      },
+      "variant": "alert",
+    },
+    {
+      "classes": "bg-error/20 border-error text-error selection:bg-error-selection",
+      "description": "Error banner for critical issues",
+      "icon": {
+        "iconId": "ph-warning",
+        "iconSize": 16,
+      },
+      "layout": {
+        "cornerRadius": 8,
+        "counterAxisAlignItems": "CENTER",
+        "counterAxisSizingMode": "AUTO",
+        "itemSpacing": 8,
+        "layoutMode": "HORIZONTAL",
+        "paddingBottom": 6,
+        "paddingLeft": 16,
+        "paddingRight": 16,
+        "paddingTop": 6,
+        "primaryAxisAlignItems": "CENTER",
+        "primaryAxisSizingMode": "AUTO",
+      },
+      "parsed": {
+        "fillOpacity": 0.2,
+        "fillVariable": "color-error/20",
+        "hasBorder": true,
+        "strokeVariable": "color-error",
+        "textVariable": "text-color-error",
+      },
+      "text": {
+        "fontSize": 14,
+        "fontWeight": 400,
+      },
+      "variant": "error",
+    },
+  ],
+}
+`;
+
+exports[`Banner Generator - Snapshot Tests (Intermediate Data) > should produce consistent intermediate data for all variants (golden path) 1`] = `
+{
+  "baseStyles": {
+    "parsed": {
+      "borderRadius": 8,
+      "fontSize": 14,
+      "gap": 8,
+      "hasBorder": true,
+      "paddingX": 16,
+      "paddingY": 6,
+      "strokeWeight": 1,
+    },
+    "raw": "flex w-full items-center gap-2 rounded-lg border px-4 py-1.5 text-base",
+  },
+  "variants": [
+    {
+      "classes": "bg-info/20 border-info text-info selection:bg-info-selection",
+      "description": "Informational banner for general messages",
+      "icon": {
+        "iconId": "ph-info",
+        "iconSize": 16,
+      },
+      "layout": {
+        "cornerRadius": 8,
+        "counterAxisAlignItems": "CENTER",
+        "counterAxisSizingMode": "AUTO",
+        "itemSpacing": 8,
+        "layoutMode": "HORIZONTAL",
+        "paddingBottom": 6,
+        "paddingLeft": 16,
+        "paddingRight": 16,
+        "paddingTop": 6,
+        "primaryAxisAlignItems": "CENTER",
+        "primaryAxisSizingMode": "AUTO",
+      },
+      "parsed": {
+        "fillOpacity": 0.2,
+        "fillVariable": "color-info/20",
+        "hasBorder": true,
+        "strokeVariable": "color-info",
+        "textVariable": "text-color-info",
+      },
+      "text": {
+        "fontSize": 14,
+        "fontWeight": 400,
+      },
+      "variant": "default",
+    },
+    {
+      "classes": "bg-alert/20 border-alert text-alert selection:bg-alert-selection",
+      "description": "Warning banner for cautionary messages",
+      "icon": {
+        "iconId": "ph-warning",
+        "iconSize": 16,
+      },
+      "layout": {
+        "cornerRadius": 8,
+        "counterAxisAlignItems": "CENTER",
+        "counterAxisSizingMode": "AUTO",
+        "itemSpacing": 8,
+        "layoutMode": "HORIZONTAL",
+        "paddingBottom": 6,
+        "paddingLeft": 16,
+        "paddingRight": 16,
+        "paddingTop": 6,
+        "primaryAxisAlignItems": "CENTER",
+        "primaryAxisSizingMode": "AUTO",
+      },
+      "parsed": {
+        "fillOpacity": 0.2,
+        "fillVariable": "color-alert/20",
+        "hasBorder": true,
+        "strokeVariable": "color-alert",
+        "textVariable": "text-color-alert",
+      },
+      "text": {
+        "fontSize": 14,
+        "fontWeight": 400,
+      },
+      "variant": "alert",
+    },
+    {
+      "classes": "bg-error/20 border-error text-error selection:bg-error-selection",
+      "description": "Error banner for critical issues",
+      "icon": {
+        "iconId": "ph-warning",
+        "iconSize": 16,
+      },
+      "layout": {
+        "cornerRadius": 8,
+        "counterAxisAlignItems": "CENTER",
+        "counterAxisSizingMode": "AUTO",
+        "itemSpacing": 8,
+        "layoutMode": "HORIZONTAL",
+        "paddingBottom": 6,
+        "paddingLeft": 16,
+        "paddingRight": 16,
+        "paddingTop": 6,
+        "primaryAxisAlignItems": "CENTER",
+        "primaryAxisSizingMode": "AUTO",
+      },
+      "parsed": {
+        "fillOpacity": 0.2,
+        "fillVariable": "color-error/20",
+        "hasBorder": true,
+        "strokeVariable": "color-error",
+        "textVariable": "text-color-error",
+      },
+      "text": {
+        "fontSize": 14,
+        "fontWeight": 400,
+      },
+      "variant": "error",
+    },
+  ],
+}
+`;
+
+exports[`Banner Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed base styles 1`] = `
+{
+  "borderRadius": 8,
+  "fontSize": 14,
+  "gap": 8,
+  "hasBorder": true,
+  "paddingX": 16,
+  "paddingY": 6,
+  "strokeWeight": 1,
+}
+`;
+
+exports[`Banner Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for alert variant 1`] = `
+{
+  "classes": "bg-alert/20 border-alert text-alert selection:bg-alert-selection",
+  "description": "Warning banner for cautionary messages",
+  "parsed": {
+    "fillOpacity": 0.2,
+    "fillVariable": "color-alert/20",
+    "hasBorder": true,
+    "strokeVariable": "color-alert",
+    "textVariable": "text-color-alert",
+  },
+  "variant": "alert",
+}
+`;
+
+exports[`Banner Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for default variant 1`] = `
+{
+  "classes": "bg-info/20 border-info text-info selection:bg-info-selection",
+  "description": "Informational banner for general messages",
+  "parsed": {
+    "fillOpacity": 0.2,
+    "fillVariable": "color-info/20",
+    "hasBorder": true,
+    "strokeVariable": "color-info",
+    "textVariable": "text-color-info",
+  },
+  "variant": "default",
+}
+`;
+
+exports[`Banner Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed styles for error variant 1`] = `
+{
+  "classes": "bg-error/20 border-error text-error selection:bg-error-selection",
+  "description": "Error banner for critical issues",
+  "parsed": {
+    "fillOpacity": 0.2,
+    "fillVariable": "color-error/20",
+    "hasBorder": true,
+    "strokeVariable": "color-error",
+    "textVariable": "text-color-error",
+  },
+  "variant": "error",
+}
+`;
+
+exports[`Banner Generator - Snapshot Tests (Intermediate Data) > should produce consistent variant config from registry 1`] = `
+{
+  "classes": {
+    "alert": "bg-alert/20 border-alert text-alert selection:bg-alert-selection",
+    "default": "bg-info/20 border-info text-info selection:bg-info-selection",
+    "error": "bg-error/20 border-error text-error selection:bg-error-selection",
+  },
+  "default": "default",
+  "descriptions": {
+    "alert": "Warning banner for cautionary messages",
+    "default": "Informational banner for general messages",
+    "error": "Error banner for critical issues",
+  },
+  "values": [
+    "default",
+    "alert",
+    "error",
+  ],
+}
+`;

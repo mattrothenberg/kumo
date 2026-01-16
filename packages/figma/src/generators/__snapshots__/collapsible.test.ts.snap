@@ -1,0 +1,386 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should produce consistent interaction state config 1`] = `
+{
+  "styles": {
+    "default": {
+      "textVariable": "text-color-info",
+    },
+    "disabled": {
+      "opacity": 0.5,
+      "textVariable": "text-color-disabled",
+    },
+    "focus": {
+      "addRing": true,
+      "textVariable": "text-color-info",
+    },
+    "hover": {
+      "textVariable": "text-color-info",
+    },
+  },
+  "values": [
+    "default",
+    "hover",
+    "focus",
+    "disabled",
+  ],
+}
+`;
+
+exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should produce consistent intermediate data for all variants (golden path) 1`] = `
+{
+  "contentStyles": {
+    "parsed": {
+      "hasBorder": true,
+      "strokeVariable": "color-color",
+    },
+    "raw": "my-2 border-l-2 border-color pl-4",
+  },
+  "interactionStates": [
+    "default",
+    "hover",
+    "focus",
+    "disabled",
+  ],
+  "openStates": [
+    false,
+    true,
+  ],
+  "registry": {
+    "colors": [
+      "border-color",
+      "text-info",
+    ],
+    "component": "Collapsible",
+  },
+  "stateStyles": {
+    "default": {
+      "textVariable": "text-color-info",
+    },
+    "disabled": {
+      "opacity": 0.5,
+      "textVariable": "text-color-disabled",
+    },
+    "focus": {
+      "addRing": true,
+      "textVariable": "text-color-info",
+    },
+    "hover": {
+      "textVariable": "text-color-info",
+    },
+  },
+  "triggerStyles": {
+    "colors": [
+      "border-color",
+      "text-info",
+    ],
+    "parsed": {
+      "fontSize": 13,
+      "gap": 4,
+      "textVariable": "text-color-info",
+    },
+    "raw": "flex items-center gap-1 text-sm text-info",
+  },
+  "variants": [
+    {
+      "chevron": {
+        "iconColorToken": "text-info",
+        "iconName": "ph-caret-down",
+        "rotation": 0,
+      },
+      "content": null,
+      "opacity": undefined,
+      "open": false,
+      "state": "default",
+      "trigger": {
+        "addRing": false,
+        "borderRadius": 4,
+        "fontSize": 13,
+        "fontWeight": 400,
+        "gap": 4,
+        "textVariable": "text-color-info",
+      },
+    },
+    {
+      "chevron": {
+        "iconColorToken": "text-info",
+        "iconName": "ph-caret-down",
+        "rotation": 0,
+      },
+      "content": null,
+      "opacity": undefined,
+      "open": false,
+      "state": "hover",
+      "trigger": {
+        "addRing": false,
+        "borderRadius": 4,
+        "fontSize": 13,
+        "fontWeight": 400,
+        "gap": 4,
+        "textVariable": "text-color-info",
+      },
+    },
+    {
+      "chevron": {
+        "iconColorToken": "text-info",
+        "iconName": "ph-caret-down",
+        "rotation": 0,
+      },
+      "content": null,
+      "opacity": undefined,
+      "open": false,
+      "state": "focus",
+      "trigger": {
+        "addRing": true,
+        "borderRadius": 4,
+        "fontSize": 13,
+        "fontWeight": 400,
+        "gap": 4,
+        "textVariable": "text-color-info",
+      },
+    },
+    {
+      "chevron": {
+        "iconColorToken": "text-disabled",
+        "iconName": "ph-caret-down",
+        "rotation": 0,
+      },
+      "content": null,
+      "opacity": 0.5,
+      "open": false,
+      "state": "disabled",
+      "trigger": {
+        "addRing": false,
+        "borderRadius": 4,
+        "fontSize": 13,
+        "fontWeight": 400,
+        "gap": 4,
+        "textVariable": "text-color-disabled",
+      },
+    },
+    {
+      "chevron": {
+        "iconColorToken": "text-info",
+        "iconName": "ph-caret-down",
+        "rotation": 180,
+      },
+      "content": {
+        "borderVariable": "color-border",
+        "borderWeight": 2,
+        "itemSpacing": 16,
+        "paddingBottom": 8,
+        "paddingTop": 8,
+        "paddingX": 16,
+      },
+      "opacity": undefined,
+      "open": true,
+      "state": "default",
+      "trigger": {
+        "addRing": false,
+        "borderRadius": 4,
+        "fontSize": 13,
+        "fontWeight": 400,
+        "gap": 4,
+        "textVariable": "text-color-info",
+      },
+    },
+    {
+      "chevron": {
+        "iconColorToken": "text-info",
+        "iconName": "ph-caret-down",
+        "rotation": 180,
+      },
+      "content": {
+        "borderVariable": "color-border",
+        "borderWeight": 2,
+        "itemSpacing": 16,
+        "paddingBottom": 8,
+        "paddingTop": 8,
+        "paddingX": 16,
+      },
+      "opacity": undefined,
+      "open": true,
+      "state": "hover",
+      "trigger": {
+        "addRing": false,
+        "borderRadius": 4,
+        "fontSize": 13,
+        "fontWeight": 400,
+        "gap": 4,
+        "textVariable": "text-color-info",
+      },
+    },
+    {
+      "chevron": {
+        "iconColorToken": "text-info",
+        "iconName": "ph-caret-down",
+        "rotation": 180,
+      },
+      "content": {
+        "borderVariable": "color-border",
+        "borderWeight": 2,
+        "itemSpacing": 16,
+        "paddingBottom": 8,
+        "paddingTop": 8,
+        "paddingX": 16,
+      },
+      "opacity": undefined,
+      "open": true,
+      "state": "focus",
+      "trigger": {
+        "addRing": true,
+        "borderRadius": 4,
+        "fontSize": 13,
+        "fontWeight": 400,
+        "gap": 4,
+        "textVariable": "text-color-info",
+      },
+    },
+    {
+      "chevron": {
+        "iconColorToken": "text-disabled",
+        "iconName": "ph-caret-down",
+        "rotation": 180,
+      },
+      "content": {
+        "borderVariable": "color-border",
+        "borderWeight": 2,
+        "itemSpacing": 16,
+        "paddingBottom": 8,
+        "paddingTop": 8,
+        "paddingX": 16,
+      },
+      "opacity": 0.5,
+      "open": true,
+      "state": "disabled",
+      "trigger": {
+        "addRing": false,
+        "borderRadius": 4,
+        "fontSize": 13,
+        "fontWeight": 400,
+        "gap": 4,
+        "textVariable": "text-color-disabled",
+      },
+    },
+  ],
+}
+`;
+
+exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should produce consistent layout data for collapsed + default 1`] = `
+{
+  "chevron": {
+    "iconColorToken": "text-info",
+    "iconName": "ph-caret-down",
+    "rotation": 0,
+  },
+  "content": null,
+  "opacity": undefined,
+  "open": false,
+  "state": "default",
+  "trigger": {
+    "addRing": false,
+    "borderRadius": 4,
+    "fontSize": 13,
+    "fontWeight": 400,
+    "gap": 4,
+    "textVariable": "text-color-info",
+  },
+}
+`;
+
+exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should produce consistent layout data for collapsed + disabled 1`] = `
+{
+  "chevron": {
+    "iconColorToken": "text-disabled",
+    "iconName": "ph-caret-down",
+    "rotation": 0,
+  },
+  "content": null,
+  "opacity": 0.5,
+  "open": false,
+  "state": "disabled",
+  "trigger": {
+    "addRing": false,
+    "borderRadius": 4,
+    "fontSize": 13,
+    "fontWeight": 400,
+    "gap": 4,
+    "textVariable": "text-color-disabled",
+  },
+}
+`;
+
+exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should produce consistent layout data for collapsed + focus 1`] = `
+{
+  "chevron": {
+    "iconColorToken": "text-info",
+    "iconName": "ph-caret-down",
+    "rotation": 0,
+  },
+  "content": null,
+  "opacity": undefined,
+  "open": false,
+  "state": "focus",
+  "trigger": {
+    "addRing": true,
+    "borderRadius": 4,
+    "fontSize": 13,
+    "fontWeight": 400,
+    "gap": 4,
+    "textVariable": "text-color-info",
+  },
+}
+`;
+
+exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should produce consistent layout data for expanded + default 1`] = `
+{
+  "chevron": {
+    "iconColorToken": "text-info",
+    "iconName": "ph-caret-down",
+    "rotation": 180,
+  },
+  "content": {
+    "borderVariable": "color-border",
+    "borderWeight": 2,
+    "itemSpacing": 16,
+    "paddingBottom": 8,
+    "paddingTop": 8,
+    "paddingX": 16,
+  },
+  "opacity": undefined,
+  "open": true,
+  "state": "default",
+  "trigger": {
+    "addRing": false,
+    "borderRadius": 4,
+    "fontSize": 13,
+    "fontWeight": 400,
+    "gap": 4,
+    "textVariable": "text-color-info",
+  },
+}
+`;
+
+exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should produce consistent open state config 1`] = `
+{
+  "values": [
+    false,
+    true,
+  ],
+}
+`;
+
+exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed content styles 1`] = `
+{
+  "hasBorder": true,
+  "strokeVariable": "color-color",
+}
+`;
+
+exports[`Collapsible Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed trigger styles 1`] = `
+{
+  "fontSize": 13,
+  "gap": 4,
+  "textVariable": "text-color-info",
+}
+`;

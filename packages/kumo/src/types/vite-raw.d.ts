@@ -9,3 +9,9 @@ declare module "../../dist/ai/component-registry.md?raw" {
   const content: string;
   export default content;
 }
+
+// Type declaration for SVG sprite asset
+declare module "*.svg" {
+  const content: string;
+  export default content;
+}

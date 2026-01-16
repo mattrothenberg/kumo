@@ -9,23 +9,39 @@ export default function Installation() {
       description="Get started with Kumo by installing the package and importing components."
     >
       <ComponentSection>
-        <h2 className="text-2xl font-bold mb-4">NPM Registry Configuration</h2>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
+        <h2 className="mb-4 text-2xl font-bold">NPM Registry Configuration</h2>
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
           Follow the steps at{" "}
           <a
             href="https://wiki.cfdata.org/display/FE/Getting+started+with+the+private+NPM+registry"
-            className="text-blue-600 dark:text-blue-400 hover:underline"
+            className="text-blue-600 hover:underline dark:text-blue-400"
           >
             Getting started with the private NPM registry
           </a>{" "}
-          to configure your local environment with a <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">NPM_TOKEN</code>.
+          to configure your local environment with a{" "}
+          <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+            NPM_TOKEN
+          </code>
+          .
         </p>
 
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4">
-          To install <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">@cloudflare</code> scoped packages, 
-          you need to configure NPM to use the Cloudflare private registry.<br />
-          Add the following to either your user-level NPM configuration (<code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">~/.npmrc</code>) 
-          or your consuming project's <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 rounded">.npmrc</code> file:
+        <p className="mb-4 text-neutral-600 dark:text-neutral-400">
+          To install{" "}
+          <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+            @cloudflare
+          </code>{" "}
+          scoped packages, you need to configure NPM to use the Cloudflare
+          private registry.
+          <br />
+          Add the following to either your user-level NPM configuration (
+          <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+            ~/.npmrc
+          </code>
+          ) or your consuming project's{" "}
+          <code className="rounded bg-neutral-100 px-1 py-0.5 text-sm dark:bg-neutral-800">
+            .npmrc
+          </code>{" "}
+          file:
         </p>
         <CodeBlock
           lang="bash"
@@ -66,7 +82,8 @@ export default function Installation() {
             Peer Dependencies
           </p>
           <p className="mb-3 text-sm text-neutral-600 dark:text-neutral-400">
-            Kumo requires the following peer dependencies. Most React projects will already have these installed:
+            Kumo requires the following peer dependencies. Most React projects
+            will already have these installed:
           </p>
           <CodeBlock
             lang="bash"
@@ -113,15 +130,16 @@ import { Input } from "@cloudflare/kumo/components/input";`}
           Kumo is built on top of{" "}
           <a
             href="https://base-ui.com"
-            className="text-blue-600 dark:text-blue-400 hover:underline"
+            className="text-blue-600 hover:underline dark:text-blue-400"
             target="_blank"
             rel="noopener noreferrer"
           >
             Base UI
           </a>
-          , a library of unstyled, accessible React components. For advanced use cases
-          where you need access to the underlying primitives, Kumo re-exports all 37 Base UI
-          components with both barrel and granular imports:
+          , a library of unstyled, accessible React components. For advanced use
+          cases where you need access to the underlying primitives, Kumo
+          re-exports all 37 Base UI components with both barrel and granular
+          imports:
         </p>
         <div className="space-y-4">
           <div>
@@ -146,8 +164,8 @@ import { Slider } from "@cloudflare/kumo/primitives/slider";
 import { Accordion } from "@cloudflare/kumo/primitives/accordion";`}
             />
             <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-500">
-              Granular imports result in smaller bundle sizes by only including the
-              primitives you actually use.
+              Granular imports result in smaller bundle sizes by only including
+              the primitives you actually use.
             </p>
           </div>
         </div>
@@ -157,20 +175,37 @@ import { Accordion } from "@cloudflare/kumo/primitives/accordion";`}
               <strong>Available Primitives (37 total):</strong>
             </p>
             <ul className="mt-2 space-y-1 text-sm text-blue-700 dark:text-blue-300">
-              <li><strong>Layout:</strong> Accordion, Collapsible, Separator, ScrollArea, Toolbar</li>
-              <li><strong>Overlays:</strong> AlertDialog, Dialog, Popover, PreviewCard, Tooltip, Toast</li>
-              <li><strong>Menus:</strong> Menu, Menubar, ContextMenu, NavigationMenu</li>
-              <li><strong>Form Controls:</strong> Autocomplete, Button, Checkbox, CheckboxGroup, Combobox, Input, NumberField, Radio, RadioGroup, Select, Slider, Switch, Toggle, ToggleGroup</li>
-              <li><strong>Form Structure:</strong> Field, Fieldset, Form</li>
-              <li><strong>Display:</strong> Avatar, Meter, Progress, Tabs</li>
+              <li>
+                <strong>Layout:</strong> Accordion, Collapsible, Separator,
+                ScrollArea, Toolbar
+              </li>
+              <li>
+                <strong>Overlays:</strong> AlertDialog, Dialog, Popover,
+                PreviewCard, Tooltip, Toast
+              </li>
+              <li>
+                <strong>Menus:</strong> Menu, Menubar, ContextMenu,
+                NavigationMenu
+              </li>
+              <li>
+                <strong>Form Controls:</strong> Autocomplete, Button, Checkbox,
+                CheckboxGroup, Combobox, Input, NumberField, Radio, RadioGroup,
+                Select, Slider, Switch, Toggle, ToggleGroup
+              </li>
+              <li>
+                <strong>Form Structure:</strong> Field, Fieldset, Form
+              </li>
+              <li>
+                <strong>Display:</strong> Avatar, Meter, Progress, Tabs
+              </li>
             </ul>
           </div>
           <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-950">
             <p className="text-sm text-amber-800 dark:text-amber-200">
-              <strong>Note:</strong> Prefer using styled Kumo components when available.
-              Primitives are intended for building custom components that aren't yet
-              available in Kumo, or for cases requiring fine-grained control over styling
-              and behavior.
+              <strong>Note:</strong> Prefer using styled Kumo components when
+              available. Primitives are intended for building custom components
+              that aren't yet available in Kumo, or for cases requiring
+              fine-grained control over styling and behavior.
             </p>
           </div>
         </div>

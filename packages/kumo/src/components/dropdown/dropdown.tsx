@@ -17,7 +17,7 @@ export const KUMO_DROPDOWN_VARIANTS = {
     },
     danger: {
       classes:
-        "text-error data-highlighted:bg-destructive-2 data-highlighted:text-error",
+        "text-error data-highlighted:bg-error-selection data-highlighted:text-error",
       description: "Destructive action item",
     },
   },
@@ -151,7 +151,7 @@ const DropdownMenuItem = React.forwardRef<
       const styles = cn(
         "flex items-center",
         variant === "danger" &&
-          "text-error data-highlighted:bg-destructive-2 data-highlighted:text-error",
+          "text-error data-highlighted:bg-error-selection data-highlighted:text-error",
       );
       if (isExternal) {
         return (
@@ -188,18 +188,24 @@ const DropdownMenuItem = React.forwardRef<
       );
     }, [href, IconComponent, children, selected, variant, LinkComponent]);
 
+    // When href is provided, content already contains children via innerContent
+    // When render prop is provided, caller controls children rendering
+    // Only pass children directly when neither href nor render is used
+    const useRenderProp = href || render;
+
     return (
       <DropdownMenuPrimitive.Item
         ref={ref}
         className={cn(
           "relative flex cursor-default items-center rounded-md px-2 py-1.5 text-base outline-hidden select-none focus:text-surface data-disabled:pointer-events-none data-disabled:opacity-50 data-highlighted:bg-color-3",
           inset && "pl-8",
+          dropdownVariants({ variant }),
           className,
         )}
         render={href ? content : render}
         {...props}
       >
-        {children}
+        {useRenderProp ? undefined : children}
       </DropdownMenuPrimitive.Item>
     );
   },

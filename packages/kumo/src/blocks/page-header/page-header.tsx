@@ -73,9 +73,7 @@ export function PageHeader({
             </h1>
           )}
           {description && (
-            <p className="text-base text-muted max-w-prose">
-              {description}
-            </p>
+            <p className="max-w-prose text-base text-muted">{description}</p>
           )}
         </div>
       )}

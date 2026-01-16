@@ -114,27 +114,48 @@ function useCurrentTheme(): string {
 
 /**
  * Get effective colors for the current theme.
- * For KUMO theme, returns KUMO colors directly.
- * For other themes, returns KUMO colors with theme-specific overrides applied.
+ *
+ * Returns:
+ * - All semantic tokens (base kumo tokens)
+ * - All global tokens (always shown - these are explicit opt-in classes like bg-fedramp-surface)
+ * - Semantic overrides applied when theme !== "kumo"
  */
 function getColorsForTheme(theme: string, display: DisplayMode): KumoColor[] {
-  const kumoColors_ = kumoColors.filter(
-    (c) => c.theme === "kumo" && matchesDisplay(c.name, display),
+  // Get base semantic tokens
+  const semanticTokens = kumoColors.filter(
+    (c) =>
+      c.tokenType === "semantic" &&
+      c.theme === "kumo" &&
+      matchesDisplay(c.name, display),
   );
 
+  // Get ALL global tokens (they're always available as explicit Tailwind classes)
+  const globalTokens = kumoColors.filter(
+    (c) => c.tokenType === "global" && matchesDisplay(c.name, display),
+  );
+
+  // For kumo theme, just return semantic + global tokens
   if (theme === "kumo") {
-    return kumoColors_;
+    return [...semanticTokens, ...globalTokens];
   }
 
-  const themeOverrides = kumoColors.filter(
-    (c) => c.theme === theme && matchesDisplay(c.name, display),
+  // For other themes, apply semantic overrides
+  const overrideTokens = kumoColors.filter(
+    (c) =>
+      c.tokenType === "override" &&
+      c.theme === theme &&
+      matchesDisplay(c.name, display),
   );
 
   // Create a map of overrides for quick lookup
-  const overrideMap = new Map(themeOverrides.map((c) => [c.name, c]));
+  const overrideMap = new Map(overrideTokens.map((c) => [c.name, c]));
 
-  // Replace KUMO colors with overrides where they exist
-  return kumoColors_.map((base) => overrideMap.get(base.name) ?? base);
+  // Replace semantic tokens with overrides where they exist
+  const effectiveSemanticTokens = semanticTokens.map(
+    (base) => overrideMap.get(base.name) ?? base,
+  );
+
+  return [...effectiveSemanticTokens, ...globalTokens];
 }
 
 export const TailwindColorTokens: FC<TailwindColorTokensProps> = ({
@@ -142,10 +163,19 @@ export const TailwindColorTokens: FC<TailwindColorTokensProps> = ({
 }) => {
   const currentTheme = useCurrentTheme();
   const filtered = getColorsForTheme(currentTheme, display);
-  const themeOverrideCount =
+
+  // Count semantic tokens and global tokens separately
+  const semanticCount = filtered.filter(
+    (c) => c.tokenType === "semantic",
+  ).length;
+  const globalCount = filtered.filter((c) => c.tokenType === "global").length;
+  const overrideCount =
     currentTheme !== "kumo"
       ? kumoColors.filter(
-          (c) => c.theme === currentTheme && matchesDisplay(c.name, display),
+          (c) =>
+            c.tokenType === "override" &&
+            c.theme === currentTheme &&
+            matchesDisplay(c.name, display),
         ).length
       : 0;
 
@@ -157,20 +187,17 @@ export const TailwindColorTokens: FC<TailwindColorTokensProps> = ({
         </h1>
       </div>
       <div className="text-sm text-surface">
-        Displaying {filtered.length} tokens for <code>{display}</code>
-        {currentTheme !== "kumo" && (
+        Displaying {filtered.length} tokens ({semanticCount} semantic
+        {globalCount > 0 && `, ${globalCount} global`})
+        {overrideCount > 0 && (
           <span className="ml-1">
-            ({themeOverrideCount} overridden by{" "}
-            <code className="rounded bg-primary p-1">{currentTheme}</code>)
+            — {overrideCount} overridden by{" "}
+            <code className="rounded bg-primary p-1">{currentTheme}</code>
           </span>
         )}
       </div>
       <div className="text-xs leading-relaxed text-surface">
-        <p>
-          <span className="font-mono">--text-color-*</span> tokens map to
-          Tailwind text utilities, and other tokens can be used with background,
-          border, ring, outline, and fill utilities.
-        </p>
+        <p className="font-medium">Tailwind Usage:</p>
         <ul className="mt-1 list-disc space-y-0.5 pl-4">
           <li>
             Text colors:
@@ -179,17 +206,27 @@ export const TailwindColorTokens: FC<TailwindColorTokensProps> = ({
           </li>
           <li>
             Backgrounds:
-            <span className="font-mono"> bg-surface</span>
+            <span className="font-mono"> bg-surface</span>,
+            <span className="font-mono"> bg-fedramp-surface</span>
           </li>
           <li>
             Borders & rings:
             <span className="font-mono"> border-subtle</span>,
             <span className="font-mono"> ring-border</span>
           </li>
+        </ul>
+
+        <p className="mt-3 font-medium">Theme Types:</p>
+        <ul className="mt-1 list-disc space-y-1 pl-4">
           <li>
-            Outline & fill:
-            <span className="font-mono"> outline-active</span>,
-            <span className="font-mono"> fill-primary</span>
+            <strong>Global tokens</strong> (e.g.,{" "}
+            <span className="font-mono">bg-fedramp-surface</span>) — Explicit
+            opt-in, use anywhere
+          </li>
+          <li>
+            <strong>Semantic overrides</strong> (via{" "}
+            <span className="font-mono">data-theme</span>) — Cascading, all
+            children inherit theme colors
           </li>
         </ul>
       </div>
@@ -198,13 +235,22 @@ export const TailwindColorTokens: FC<TailwindColorTokensProps> = ({
           <div
             key={token.name}
             className={`flex items-center gap-3 rounded-md border bg-surface px-3 py-2 text-xs ${
-              token.theme !== "kumo"
-                ? "border-2 border-info-border ring-1 ring-info-border/30"
+              token.tokenType === "global"
+                ? "border-2 border-info ring-1 ring-info/30"
                 : "border-color"
             }`}
           >
             <div className="flex flex-col gap-1">
-              <div className="font-mono text-xs font-medium">{token.name}</div>
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-xs font-medium">
+                  {token.name}
+                </span>
+                {token.tokenType === "global" && (
+                  <span className="rounded bg-info/20 px-1.5 py-0.5 text-[10px] font-medium text-info">
+                    global
+                  </span>
+                )}
+              </div>
               <ColorSwatch label="Light" value={token.light} />
               <ColorSwatch label="Dark" value={token.dark} />
             </div>

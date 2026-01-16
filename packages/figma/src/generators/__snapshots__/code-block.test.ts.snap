@@ -1,0 +1,76 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`CodeBlock Generator - Snapshot Tests (Intermediate Data) > should produce consistent base styles 1`] = `
+{
+  "container": {
+    "parsed": {
+      "borderRadius": 6,
+      "fillVariable": "color-surface",
+      "hasBorder": true,
+      "minWidth": 0,
+      "strokeVariable": "color-color",
+      "strokeWeight": 1,
+    },
+    "raw": "min-w-0 rounded-md border border-color bg-surface",
+  },
+  "innerPadding": 10,
+}
+`;
+
+exports[`CodeBlock Generator - Snapshot Tests (Intermediate Data) > should produce consistent container config 1`] = `
+{
+  "border": {
+    "hasBorder": true,
+    "strokeVariable": "color-color",
+    "strokeWeight": 1,
+  },
+  "borderRadius": 6,
+  "fill": {
+    "fillVariable": "color-surface",
+  },
+  "padding": 10,
+}
+`;
+
+exports[`CodeBlock Generator - Snapshot Tests (Intermediate Data) > should produce consistent intermediate data for all variants (golden path) 1`] = `
+{
+  "containerStyles": {
+    "parsed": {
+      "borderRadius": 6,
+      "fillVariable": "color-surface",
+      "hasBorder": true,
+      "minWidth": 0,
+      "strokeVariable": "color-color",
+      "strokeWeight": 1,
+    },
+    "raw": "min-w-0 rounded-md border border-color bg-surface",
+  },
+  "variants": [
+    {
+      "description": "TypeScript code",
+      "lang": "ts",
+      "placeholderText": "const hello = "world";",
+    },
+    {
+      "description": "TypeScript JSX code",
+      "lang": "tsx",
+      "placeholderText": "<Button>Click</Button>",
+    },
+    {
+      "description": "JSON with comments",
+      "lang": "jsonc",
+      "placeholderText": "{ "key": "value" }",
+    },
+    {
+      "description": "Shell/Bash commands",
+      "lang": "bash",
+      "placeholderText": "npm install @cloudflare/kumo",
+    },
+    {
+      "description": "CSS styles",
+      "lang": "css",
+      "placeholderText": ".class { color: blue; }",
+    },
+  ],
+}
+`;

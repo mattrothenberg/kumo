@@ -32,7 +32,7 @@ export const KUMO_SWITCH_VARIANTS = {
       description: "Default switch appearance",
     },
     error: {
-      classes: "ring-destructive",
+      classes: "ring-error",
       description: "Error state for validation failures",
     },
   },
@@ -214,15 +214,14 @@ const SwitchBase = forwardRef<HTMLButtonElement, SwitchProps>(
             "interactive flex items-center gap-2 rounded-full border border-transparent bg-surface-3 p-1 transition-colors",
             switchVariants({ size, variant }),
             {
-              "bg-selected": state.checked && !disabled && variant !== "error",
-              "bg-destructive":
-                state.checked && !disabled && variant === "error",
+              "bg-primary": state.checked && !disabled && variant !== "error",
+              "bg-error": state.checked && !disabled && variant === "error",
               "hover:bg-hover-selected":
                 state.checked &&
                 !transitioning &&
                 !disabled &&
                 variant !== "error",
-              "hover:bg-destructive/90":
+              "hover:bg-error/90":
                 state.checked &&
                 !transitioning &&
                 !disabled &&
@@ -343,16 +342,14 @@ const SwitchItem = forwardRef<HTMLButtonElement, SwitchItemProps>(
               "interactive flex items-center gap-2 rounded-full border border-transparent bg-surface-3 p-1 transition-colors",
               switchVariants({ size, variant }),
               {
-                "bg-selected":
-                  state.checked && !disabled && variant !== "error",
-                "bg-destructive":
-                  state.checked && !disabled && variant === "error",
+                "bg-primary": state.checked && !disabled && variant !== "error",
+                "bg-error": state.checked && !disabled && variant === "error",
                 "hover:bg-hover-selected":
                   state.checked &&
                   !transitioning &&
                   !disabled &&
                   variant !== "error",
-                "hover:bg-destructive/90":
+                "hover:bg-error/90":
                   state.checked &&
                   !transitioning &&
                   !disabled &&

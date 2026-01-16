@@ -1,0 +1,90 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Surface Generator - Snapshot Tests (Intermediate Data) > should produce consistent color bindings 1`] = `
+{
+  "background": "color-surface",
+  "border": "color-border",
+  "text": "text-color-surface",
+}
+`;
+
+exports[`Surface Generator - Snapshot Tests (Intermediate Data) > should produce consistent dimensions configuration 1`] = `
+{
+  "cornerRadius": 8,
+  "itemSpacing": 8,
+  "paddingBottom": 16,
+  "paddingLeft": 16,
+  "paddingRight": 16,
+  "paddingTop": 16,
+}
+`;
+
+exports[`Surface Generator - Snapshot Tests (Intermediate Data) > should produce consistent intermediate data (golden path) 1`] = `
+{
+  "baseStyles": {
+    "parsed": {
+      "hasBorder": true,
+      "strokeVariable": "color-border",
+    },
+    "raw": "shadow-xs ring ring-border",
+  },
+  "colorBindings": {
+    "background": "color-surface",
+    "border": "color-border",
+    "text": "text-color-surface",
+  },
+  "contentText": {
+    "fontSize": 14,
+    "fontWeight": 400,
+    "text": "Surface content",
+  },
+  "dimensions": {
+    "cornerRadius": 8,
+    "itemSpacing": 8,
+    "paddingBottom": 16,
+    "paddingLeft": 16,
+    "paddingRight": 16,
+    "paddingTop": 16,
+  },
+  "shadowConfig": {
+    "color": {
+      "a": 0.05,
+      "b": 0,
+      "g": 0,
+      "r": 0,
+    },
+    "offset": {
+      "x": 0,
+      "y": 1,
+    },
+    "radius": 2,
+    "spread": 0,
+    "type": "DROP_SHADOW",
+  },
+}
+`;
+
+exports[`Surface Generator - Snapshot Tests (Intermediate Data) > should produce consistent parsed base styles 1`] = `
+{
+  "hasBorder": true,
+  "strokeVariable": "color-border",
+}
+`;
+
+exports[`Surface Generator - Snapshot Tests (Intermediate Data) > should produce consistent shadow configuration 1`] = `
+{
+  "color": {
+    "a": 0.05,
+    "b": 0,
+    "g": 0,
+    "r": 0,
+  },
+  "offset": {
+    "x": 0,
+    "y": 1,
+  },
+  "radius": 2,
+  "spread": 0,
+  "type": "DROP_SHADOW",
+}
+`;

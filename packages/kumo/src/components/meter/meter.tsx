@@ -68,7 +68,7 @@ export function Meter({
       >
         <BaseMeter.Indicator
           className={cn(
-            "absolute inset-y-0 left-0 rounded-full bg-linear-to-r from-meter-500 via-meter-500 to-selected transition-[width] duration-300 ease-out",
+            "absolute inset-y-0 left-0 rounded-full bg-linear-to-r from-primary via-primary to-primary transition-[width] duration-300 ease-out",
             indicatorClassName,
           )}
         />
