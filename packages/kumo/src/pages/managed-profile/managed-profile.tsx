@@ -590,11 +590,13 @@ function DeleteUserWarningContent() {
       <div className="space-y-4 p-4">
         <Text variant="body" size="sm">
           <span className="font-semibold">Important:</span>{" "}
+          {/* stopPropagation prevents dashboard router from intercepting external link clicks */}
           <a
             href="https://developers.cloudflare.com/fundamentals/user-profiles/delete-account/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-info hover:underline"
+            onClick={(e) => e.stopPropagation()}
           >
             Follow these prerequisites <ExternalLinkIcon aria-hidden="true" />
             <span className="sr-only">(opens in new tab)</span>
@@ -607,11 +609,13 @@ function DeleteUserWarningContent() {
         </Text>
         <Text variant="body" size="sm">
           Learn more about{" "}
+          {/* stopPropagation prevents dashboard router from intercepting external link clicks */}
           <a
             href="https://developers.cloudflare.com/fundamentals/user-profiles/delete-account/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-info hover:underline"
+            onClick={(e) => e.stopPropagation()}
           >
             deleting your user account <ExternalLinkIcon aria-hidden="true" />
             <span className="sr-only">(opens in new tab)</span>
