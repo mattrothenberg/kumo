@@ -29,7 +29,9 @@ const EXCLUDED_COMPONENTS = new Set([
   // Permanently excluded - no visual representation needed in Figma
   "Field", // Form wrapper utility - provides label/description/error layout, no standalone visual
   "Icon", // Utility component - handled by icon-library.ts
+  "Label", // Simple text label - used within Field, not standalone visual component
   "PageHeader", // Complex composite component - too layout-specific for Figma generation
+  "Table", // Complex data component - requires dynamic data, too complex for static Figma generation
 ]);
 
 // Map registry component names to generator file names (if they differ)
