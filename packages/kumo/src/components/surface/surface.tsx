@@ -87,7 +87,7 @@ const SurfaceImpl = function Surface<
     <Component
       ref={ref}
       {...restProps}
-      className={cn("shadow-xs ring ring-border", className)}
+      className={cn("bg-surface shadow-xs ring ring-border", className)}
     >
       {children}
     </Component>
