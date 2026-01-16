@@ -58,6 +58,7 @@ export { Select } from "./components/select";
 export { Surface } from "./components/surface";
 export { Switch } from "./components/switch";
 export { Tabs, type TabsProps, type TabsItem } from "./components/tabs";
+export { Table } from "./components/table";
 export { Text } from "./components/text";
 export { Toasty, Toast } from "./components/toast";
 export { Tooltip, TooltipProvider } from "./components/tooltip";

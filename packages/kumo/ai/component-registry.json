@@ -2200,6 +2200,101 @@
         }
       }
     },
+    "Table": {
+      "name": "Table",
+      "description": "Table component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Other",
+      "props": {
+        "layout": {
+          "type": "enum",
+          "values": [
+            "auto",
+            "fixed"
+          ],
+          "default": "auto",
+          "descriptions": {
+            "auto": "Auto table layout - columns resize based on content",
+            "fixed": "Fixed table layout - columns have equal width, controlled via colgroup"
+          }
+        },
+        "variant": {
+          "type": "enum",
+          "values": [
+            "default",
+            "selected"
+          ],
+          "default": "default",
+          "descriptions": {
+            "default": "Default row variant",
+            "selected": "Selected row variant"
+          }
+        },
+        "className": {
+          "type": "string",
+          "description": "Additional CSS classes"
+        },
+        "children": {
+          "type": "ReactNode",
+          "description": "Child elements"
+        }
+      },
+      "examples": [],
+      "colors": [
+        "bg-accent",
+        "bg-active",
+        "bg-surface",
+        "border-color",
+        "text-surface"
+      ],
+      "subComponents": {
+        "Header": {
+          "name": "Header",
+          "description": "Header sub-component",
+          "props": {}
+        },
+        "Head": {
+          "name": "Head",
+          "description": "Head sub-component",
+          "props": {}
+        },
+        "Row": {
+          "name": "Row",
+          "description": "Row sub-component",
+          "props": {}
+        },
+        "Body": {
+          "name": "Body",
+          "description": "Body sub-component",
+          "props": {}
+        },
+        "Cell": {
+          "name": "Cell",
+          "description": "Cell sub-component",
+          "props": {}
+        },
+        "CheckCell": {
+          "name": "CheckCell",
+          "description": "CheckCell sub-component",
+          "props": {}
+        },
+        "CheckHead": {
+          "name": "CheckHead",
+          "description": "CheckHead sub-component",
+          "props": {}
+        },
+        "Footer": {
+          "name": "Footer",
+          "description": "Footer sub-component",
+          "props": {}
+        },
+        "ResizeHandle": {
+          "name": "ResizeHandle",
+          "description": "ResizeHandle sub-component",
+          "props": {}
+        }
+      }
+    },
     "Tabs": {
       "name": "Tabs",
       "description": "Tabs component",
@@ -2473,7 +2568,8 @@
       "Other": [
         "Label",
         "Radio",
-        "SensitiveInput"
+        "SensitiveInput",
+        "Table"
       ],
       "Navigation": [
         "MenuBar",
@@ -2512,6 +2608,7 @@
       "SensitiveInput",
       "Surface",
       "Switch",
+      "Table",
       "Tabs",
       "Text",
       "Toasty",

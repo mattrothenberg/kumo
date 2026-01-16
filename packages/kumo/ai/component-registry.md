@@ -48,7 +48,7 @@ Most frequently used tokens across Kumo components:
 
 | Category | Top Tokens |
 |----------|------------|
-| **Background** | `bg-surface`, `bg-secondary`, `bg-color-3`, `bg-color`, `bg-destructive` |
+| **Background** | `bg-surface`, `bg-secondary`, `bg-accent`, `bg-color-3`, `bg-color` |
 | **Text** | `text-surface`, `text-muted`, `text-label`, `text-error`, `text-info` |
 | **Border/Ring** | `ring-border`, `ring-active`, `ring-destructive`, `ring-color` |
 
@@ -2921,6 +2921,74 @@ Props:
 
 ---
 
+### Table
+
+Table component
+
+**Import:** `import { Table } from "@cloudflare/kumo";`
+
+**Category:** Other
+
+**Props:**
+
+- `layout`: enum [default: auto]
+  - `"auto"`: Auto table layout - columns resize based on content
+  - `"fixed"`: Fixed table layout - columns have equal width, controlled via colgroup
+- `variant`: enum [default: default]
+  - `"default"`: Default row variant
+  - `"selected"`: Selected row variant
+- `className`: string
+  Additional CSS classes
+- `children`: ReactNode
+  Child elements
+
+**Colors (kumo tokens used):**
+
+`bg-accent`, `bg-active`, `bg-surface`, `border-color`, `text-surface`
+
+**Sub-Components:**
+
+This is a compound component. Use these sub-components:
+
+#### Table.Header
+
+Header sub-component
+
+#### Table.Head
+
+Head sub-component
+
+#### Table.Row
+
+Row sub-component
+
+#### Table.Body
+
+Body sub-component
+
+#### Table.Cell
+
+Cell sub-component
+
+#### Table.CheckCell
+
+CheckCell sub-component
+
+#### Table.CheckHead
+
+CheckHead sub-component
+
+#### Table.Footer
+
+Footer sub-component
+
+#### Table.ResizeHandle
+
+ResizeHandle sub-component
+
+
+---
+
 ### Tabs
 
 Tabs component
@@ -3079,6 +3147,6 @@ Tooltip component
 - **Action:** Button, ClipboardText
 - **Input:** Checkbox, Combobox, DateRangePicker, Field, Input, Select, Switch
 - **Overlay:** Dialog, DropdownMenu, Tooltip
-- **Other:** Label, Radio, SensitiveInput
+- **Other:** Label, Radio, SensitiveInput, Table
 - **Navigation:** MenuBar, Pagination, Tabs
 - **Layout:** Surface
