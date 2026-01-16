@@ -1,0 +1,537 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Table Generator - Snapshot Tests (Intermediate Data) > should produce consistent all variant data (golden path) 1`] = `
+{
+  "bodyCellConfig": {
+    "fontSize": 14,
+    "fontWeight": 400,
+    "textVariable": "text-color-surface",
+  },
+  "cellConfig": {
+    "borderVariable": "color-border",
+    "borderWidth": 1,
+    "padding": 12,
+  },
+  "componentConfig": {
+    "colors": [
+      "bg-accent",
+      "bg-active",
+      "bg-surface",
+      "border-color",
+      "text-surface",
+    ],
+    "description": "Table component",
+    "name": "Table",
+    "props": {
+      "children": {
+        "description": "Child elements",
+        "type": "ReactNode",
+      },
+      "className": {
+        "description": "Additional CSS classes",
+        "type": "string",
+      },
+      "layout": {
+        "default": "auto",
+        "descriptions": {
+          "auto": "Auto table layout - columns resize based on content",
+          "fixed": "Fixed table layout - columns have equal width, controlled via colgroup",
+        },
+        "type": "enum",
+        "values": [
+          "auto",
+          "fixed",
+        ],
+      },
+      "variant": {
+        "default": "default",
+        "descriptions": {
+          "default": "Default row variant",
+          "selected": "Selected row variant",
+        },
+        "type": "enum",
+        "values": [
+          "default",
+          "selected",
+        ],
+      },
+    },
+    "subComponents": [
+      "Header",
+      "Head",
+      "Row",
+      "Body",
+      "Cell",
+      "CheckCell",
+      "CheckHead",
+      "Footer",
+      "ResizeHandle",
+    ],
+  },
+  "configs": [
+    {
+      "bodyCellConfig": {
+        "fontSize": 14,
+        "fontWeight": 400,
+        "textVariable": "text-color-surface",
+      },
+      "cellConfig": {
+        "borderVariable": "color-border",
+        "borderWidth": 1,
+        "padding": 12,
+      },
+      "hasSelectedRow": false,
+      "headerConfig": {
+        "bgVariable": "color-surface",
+        "fontSize": 14,
+        "fontWeight": 600,
+        "padding": 12,
+        "textVariable": "text-color-surface",
+      },
+      "layout": "auto",
+      "sampleData": {
+        "headers": [
+          "Name",
+          "Status",
+          "Type",
+        ],
+        "rows": [
+          [
+            "Resource 1",
+            "Active",
+            "File",
+          ],
+          [
+            "Resource 2",
+            "Pending",
+            "Folder",
+          ],
+          [
+            "Resource 3",
+            "Active",
+            "File",
+          ],
+        ],
+      },
+      "selectedRowConfig": null,
+    },
+    {
+      "bodyCellConfig": {
+        "fontSize": 14,
+        "fontWeight": 400,
+        "textVariable": "text-color-surface",
+      },
+      "cellConfig": {
+        "borderVariable": "color-border",
+        "borderWidth": 1,
+        "padding": 12,
+      },
+      "hasSelectedRow": true,
+      "headerConfig": {
+        "bgVariable": "color-surface",
+        "fontSize": 14,
+        "fontWeight": 600,
+        "padding": 12,
+        "textVariable": "text-color-surface",
+      },
+      "layout": "auto",
+      "sampleData": {
+        "headers": [
+          "Name",
+          "Status",
+          "Type",
+        ],
+        "rows": [
+          [
+            "Resource 1",
+            "Active",
+            "File",
+          ],
+          [
+            "Resource 2",
+            "Pending",
+            "Folder",
+          ],
+          [
+            "Resource 3",
+            "Active",
+            "File",
+          ],
+        ],
+      },
+      "selectedRowConfig": {
+        "bgVariable": "color-accent",
+      },
+    },
+    {
+      "bodyCellConfig": {
+        "fontSize": 14,
+        "fontWeight": 400,
+        "textVariable": "text-color-surface",
+      },
+      "cellConfig": {
+        "borderVariable": "color-border",
+        "borderWidth": 1,
+        "padding": 12,
+      },
+      "hasSelectedRow": false,
+      "headerConfig": {
+        "bgVariable": "color-surface",
+        "fontSize": 14,
+        "fontWeight": 600,
+        "padding": 12,
+        "textVariable": "text-color-surface",
+      },
+      "layout": "fixed",
+      "sampleData": {
+        "headers": [
+          "Name",
+          "Status",
+          "Type",
+        ],
+        "rows": [
+          [
+            "Resource 1",
+            "Active",
+            "File",
+          ],
+          [
+            "Resource 2",
+            "Pending",
+            "Folder",
+          ],
+          [
+            "Resource 3",
+            "Active",
+            "File",
+          ],
+        ],
+      },
+      "selectedRowConfig": null,
+    },
+    {
+      "bodyCellConfig": {
+        "fontSize": 14,
+        "fontWeight": 400,
+        "textVariable": "text-color-surface",
+      },
+      "cellConfig": {
+        "borderVariable": "color-border",
+        "borderWidth": 1,
+        "padding": 12,
+      },
+      "hasSelectedRow": true,
+      "headerConfig": {
+        "bgVariable": "color-surface",
+        "fontSize": 14,
+        "fontWeight": 600,
+        "padding": 12,
+        "textVariable": "text-color-surface",
+      },
+      "layout": "fixed",
+      "sampleData": {
+        "headers": [
+          "Name",
+          "Status",
+          "Type",
+        ],
+        "rows": [
+          [
+            "Resource 1",
+            "Active",
+            "File",
+          ],
+          [
+            "Resource 2",
+            "Pending",
+            "Folder",
+          ],
+          [
+            "Resource 3",
+            "Active",
+            "File",
+          ],
+        ],
+      },
+      "selectedRowConfig": {
+        "bgVariable": "color-accent",
+      },
+    },
+  ],
+  "headerConfig": {
+    "bgVariable": "color-surface",
+    "fontSize": 14,
+    "fontWeight": 600,
+    "padding": 12,
+    "textVariable": "text-color-surface",
+  },
+  "layoutConfig": {
+    "default": "auto",
+    "descriptions": {
+      "auto": "Auto table layout - columns resize based on content",
+      "fixed": "Fixed table layout - columns have equal width, controlled via colgroup",
+    },
+    "values": [
+      "auto",
+      "fixed",
+    ],
+  },
+  "rowVariantConfig": {
+    "default": "default",
+    "descriptions": {
+      "default": "Default row variant",
+      "selected": "Selected row variant",
+    },
+    "values": [
+      "default",
+      "selected",
+    ],
+  },
+  "sampleData": {
+    "headers": [
+      "Name",
+      "Status",
+      "Type",
+    ],
+    "rows": [
+      [
+        "Resource 1",
+        "Active",
+        "File",
+      ],
+      [
+        "Resource 2",
+        "Pending",
+        "Folder",
+      ],
+      [
+        "Resource 3",
+        "Active",
+        "File",
+      ],
+    ],
+  },
+  "selectedRowConfig": {
+    "bgVariable": "color-accent",
+  },
+}
+`;
+
+exports[`Table Generator - Snapshot Tests (Intermediate Data) > should produce consistent body cell config 1`] = `
+{
+  "fontSize": 14,
+  "fontWeight": 400,
+  "textVariable": "text-color-surface",
+}
+`;
+
+exports[`Table Generator - Snapshot Tests (Intermediate Data) > should produce consistent cell config 1`] = `
+{
+  "borderVariable": "color-border",
+  "borderWidth": 1,
+  "padding": 12,
+}
+`;
+
+exports[`Table Generator - Snapshot Tests (Intermediate Data) > should produce consistent complete config for auto layout 1`] = `
+{
+  "bodyCellConfig": {
+    "fontSize": 14,
+    "fontWeight": 400,
+    "textVariable": "text-color-surface",
+  },
+  "cellConfig": {
+    "borderVariable": "color-border",
+    "borderWidth": 1,
+    "padding": 12,
+  },
+  "hasSelectedRow": false,
+  "headerConfig": {
+    "bgVariable": "color-surface",
+    "fontSize": 14,
+    "fontWeight": 600,
+    "padding": 12,
+    "textVariable": "text-color-surface",
+  },
+  "layout": "auto",
+  "sampleData": {
+    "headers": [
+      "Name",
+      "Status",
+      "Type",
+    ],
+    "rows": [
+      [
+        "Resource 1",
+        "Active",
+        "File",
+      ],
+      [
+        "Resource 2",
+        "Pending",
+        "Folder",
+      ],
+      [
+        "Resource 3",
+        "Active",
+        "File",
+      ],
+    ],
+  },
+  "selectedRowConfig": null,
+}
+`;
+
+exports[`Table Generator - Snapshot Tests (Intermediate Data) > should produce consistent complete config for fixed layout with selection 1`] = `
+{
+  "bodyCellConfig": {
+    "fontSize": 14,
+    "fontWeight": 400,
+    "textVariable": "text-color-surface",
+  },
+  "cellConfig": {
+    "borderVariable": "color-border",
+    "borderWidth": 1,
+    "padding": 12,
+  },
+  "hasSelectedRow": true,
+  "headerConfig": {
+    "bgVariable": "color-surface",
+    "fontSize": 14,
+    "fontWeight": 600,
+    "padding": 12,
+    "textVariable": "text-color-surface",
+  },
+  "layout": "fixed",
+  "sampleData": {
+    "headers": [
+      "Name",
+      "Status",
+      "Type",
+    ],
+    "rows": [
+      [
+        "Resource 1",
+        "Active",
+        "File",
+      ],
+      [
+        "Resource 2",
+        "Pending",
+        "Folder",
+      ],
+      [
+        "Resource 3",
+        "Active",
+        "File",
+      ],
+    ],
+  },
+  "selectedRowConfig": {
+    "bgVariable": "color-accent",
+  },
+}
+`;
+
+exports[`Table Generator - Snapshot Tests (Intermediate Data) > should produce consistent component config 1`] = `
+{
+  "colors": [
+    "bg-accent",
+    "bg-active",
+    "bg-surface",
+    "border-color",
+    "text-surface",
+  ],
+  "description": "Table component",
+  "name": "Table",
+  "props": {
+    "children": {
+      "description": "Child elements",
+      "type": "ReactNode",
+    },
+    "className": {
+      "description": "Additional CSS classes",
+      "type": "string",
+    },
+    "layout": {
+      "default": "auto",
+      "descriptions": {
+        "auto": "Auto table layout - columns resize based on content",
+        "fixed": "Fixed table layout - columns have equal width, controlled via colgroup",
+      },
+      "type": "enum",
+      "values": [
+        "auto",
+        "fixed",
+      ],
+    },
+    "variant": {
+      "default": "default",
+      "descriptions": {
+        "default": "Default row variant",
+        "selected": "Selected row variant",
+      },
+      "type": "enum",
+      "values": [
+        "default",
+        "selected",
+      ],
+    },
+  },
+  "subComponents": [
+    "Header",
+    "Head",
+    "Row",
+    "Body",
+    "Cell",
+    "CheckCell",
+    "CheckHead",
+    "Footer",
+    "ResizeHandle",
+  ],
+}
+`;
+
+exports[`Table Generator - Snapshot Tests (Intermediate Data) > should produce consistent header config 1`] = `
+{
+  "bgVariable": "color-surface",
+  "fontSize": 14,
+  "fontWeight": 600,
+  "padding": 12,
+  "textVariable": "text-color-surface",
+}
+`;
+
+exports[`Table Generator - Snapshot Tests (Intermediate Data) > should produce consistent layout config 1`] = `
+{
+  "default": "auto",
+  "descriptions": {
+    "auto": "Auto table layout - columns resize based on content",
+    "fixed": "Fixed table layout - columns have equal width, controlled via colgroup",
+  },
+  "values": [
+    "auto",
+    "fixed",
+  ],
+}
+`;
+
+exports[`Table Generator - Snapshot Tests (Intermediate Data) > should produce consistent row variant config 1`] = `
+{
+  "default": "default",
+  "descriptions": {
+    "default": "Default row variant",
+    "selected": "Selected row variant",
+  },
+  "values": [
+    "default",
+    "selected",
+  ],
+}
+`;
+
+exports[`Table Generator - Snapshot Tests (Intermediate Data) > should produce consistent selected row config 1`] = `
+{
+  "bgVariable": "color-accent",
+}
+`;
