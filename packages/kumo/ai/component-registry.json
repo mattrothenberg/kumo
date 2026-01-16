@@ -2014,6 +2014,7 @@
         "<Surface  />"
       ],
       "colors": [
+        "bg-surface",
         "ring-border"
       ]
     },
@@ -2360,10 +2361,12 @@
         "bg-accent",
         "bg-primary",
         "bg-surface-elevated",
+        "border-accent",
         "border-border",
-        "outline-active",
+        "ring-active",
         "ring-color-2",
         "text-label",
+        "text-muted",
         "text-surface"
       ]
     },
