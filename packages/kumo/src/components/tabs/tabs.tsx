@@ -89,7 +89,7 @@ export function Tabs({
         className={cn(
           "scrollbar-hide relative flex min-w-0 shrink items-stretch",
           isSegmented && "h-8.5 rounded-lg bg-accent px-px",
-          isUnderline && "h-9 gap-4 border-b border-border",
+          isUnderline && "h-7 pb-2 gap-4 border-b border-border",
           listClassName,
         )}
       >
@@ -98,11 +98,11 @@ export function Tabs({
             key={tab.value}
             value={tab.value}
             className={cn(
-              "relative z-10 flex cursor-pointer items-center rounded bg-transparent text-base whitespace-nowrap transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-active",
+              "relative z-10 flex cursor-pointer items-center rounded bg-transparent text-base whitespace-nowrap hover:border-accent focus-visible:ring-active focus-visible:outline-offset-3 focus-visible:rounded-none",
               isSegmented &&
                 "my-px rounded-lg px-2.5 text-label aria-selected:text-surface",
               isUnderline &&
-                "pb-2 text-label aria-selected:font-medium aria-selected:text-surface",
+                "mb-2 text-label aria-selected:font-medium aria-selected:text-surface hover:text-muted",
               tab.className,
             )}
           >

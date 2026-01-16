@@ -180,7 +180,7 @@ const RadioItem = forwardRef<HTMLButtonElement, RadioItemProps>(
             "flex h-4 w-4 items-center justify-center rounded-full border-0 bg-surface ring",
             variant === "error" ? "ring-destructive" : "ring-border",
             !disabled && "group-hover:ring-active focus-visible:ring-active focus-visible:outline-offset-3",
-            "data-[checked]:bg-surface-inverse",
+            "data-checked:bg-surface-inverse",
           )}
         >
           <BaseRadio.Indicator className="flex items-center justify-center">
