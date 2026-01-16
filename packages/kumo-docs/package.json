@@ -17,6 +17,7 @@
     "@cloudflare/kumo": "workspace:*",
     "@codesandbox/sandpack-react": "^2.20.0",
     "@phosphor-icons/react": "catalog:",
+    "@tanstack/react-table": "^8.21.3",
     "@types/babel__standalone": "^7.1.9",
     "clsx": "catalog:",
     "isbot": "catalog:",

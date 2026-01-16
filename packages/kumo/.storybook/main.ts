@@ -6,7 +6,7 @@ const config: StorybookConfig = {
   addons: [
     "@storybook/addon-docs",
     "@storybook/addon-a11y",
-    "@storybook/addon-vitest"
+    "@storybook/addon-vitest",
   ],
   framework: {
     name: "@storybook/react-vite",
@@ -14,7 +14,7 @@ const config: StorybookConfig = {
   },
   async viteFinal(config) {
     config.plugins = config.plugins || [];
-    config.plugins.push(tailwindcss());
+    config.plugins.unshift(tailwindcss());
     return config;
   },
 };

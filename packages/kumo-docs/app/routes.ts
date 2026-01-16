@@ -32,6 +32,7 @@ export default [
   route("components/code", "routes/components.code.tsx"),
   route("components/layer-card", "routes/components.layer-card.tsx"),
   route("components/menubar", "routes/components.menubar.tsx"),
+  route("components/table", "routes/components.table.tsx"),
   route("blocks/breadcrumbs", "routes/blocks.breadcrumbs.tsx"),
   route("blocks/empty", "routes/blocks.empty.tsx"),
   route("blocks/page-header", "routes/blocks.page-header.tsx"),

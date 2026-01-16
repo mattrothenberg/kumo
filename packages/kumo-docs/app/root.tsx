@@ -506,6 +506,19 @@ export default function App() {
               </li>
               <li>
                 <Link
+                  to="/components/table"
+                  prefetch="intent"
+                  className={cn(
+                    LI_STYLE,
+                    location.pathname === "/components/table" &&
+                      LI_ACTIVE_STYLE,
+                  )}
+                >
+                  Table
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/components/tooltip"
                   prefetch="intent"
                   className={cn(

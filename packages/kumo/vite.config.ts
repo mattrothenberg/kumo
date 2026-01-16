@@ -138,6 +138,10 @@ export default defineConfig(({ mode }) => {
             __dirname,
             "src/components/switch/index.ts",
           ),
+          "components/table": resolve(
+            __dirname,
+            "src/components/table/index.ts",
+          ),
           "components/tabs": resolve(__dirname, "src/components/tabs/index.ts"),
           "components/text": resolve(__dirname, "src/components/text/index.ts"),
           "components/toast": resolve(
