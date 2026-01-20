@@ -140,6 +140,10 @@
       "types": "./dist/src/components/tooltip/index.d.ts",
       "import": "./dist/components/tooltip.js"
     },
+    "./components/popover": {
+      "types": "./dist/src/components/popover/index.d.ts",
+      "import": "./dist/components/popover.js"
+    },
     "./blocks/breadcrumbs": {
       "types": "./dist/src/blocks/breadcrumbs/index.d.ts",
       "import": "./dist/blocks/breadcrumbs.js"

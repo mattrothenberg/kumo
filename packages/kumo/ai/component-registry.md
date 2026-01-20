@@ -15,7 +15,7 @@
 | Error state background | `bg-error` | 4 components |
 | Selected/active state background | `bg-accent` | 4 components |
 | Primary text on surfaces | `text-surface` | 22 components |
-| Placeholder text and disabled states | `text-muted` | 14 components |
+| Placeholder text and disabled states | `text-muted` | 15 components |
 | Form labels and secondary headings | `text-label` | 10 components |
 | Error messages and validation | `text-error` | 9 components |
 | Border/divider color | `border-color` | 10 components |
@@ -40,8 +40,6 @@ Kumo uses CSS custom properties with `light-dark()` for automatic dark mode supp
 
 | Token | Purpose | Tailwind Classes |
 |-------|---------|------------------|
-| `tooltip-arrow-outer-stroke` | General styling | `bg-tooltip-arrow-outer-stroke` |
-| `tooltip-arrow-inner-stroke` | General styling | `bg-tooltip-arrow-inner-stroke` |
 | `surface` | Main page/card background | `bg-surface` |
 | `surface-2` | Secondary surface layer | `bg-surface-2` |
 | `surface-3` | Tertiary surface layer | `bg-surface-3` |
@@ -91,7 +89,6 @@ Kumo uses CSS custom properties with `light-dark()` for automatic dark mode supp
 
 | Token | Purpose | Border | Ring |
 |-------|---------|--------|------|
-| `tooltip-border` | General styling | `border-tooltip-border` | `ring-tooltip-border` |
 | `color` | Border/divider color | `border-color` | `ring-color` |
 | `color-2` | Border/divider color | `border-color-2` | `ring-color-2` |
 | `color-3` | Border/divider color | `border-color-3` | `ring-color-3` |
@@ -3024,6 +3021,188 @@ Pagination component
 
 ---
 
+### Popover
+
+Arrow SVG with three paths for proper border rendering in both light and dark modes. This approach matches Base UI's popover/tooltip implementation. The three paths are: 1. ArrowFill - The main arrow body, matches popover background 2. ArrowOuterStroke - Border visible in light mode only (transparent in dark) 3. ArrowInnerStroke - Border visible in dark mode only (transparent in light) This is necessary because the outer and inner stroke paths have different geometries, and using both ensures the arrow border aligns perfectly with the popover's outline in both color modes. / function ArrowSvg(props: React.ComponentProps<"svg">) { return ( <svg width="20" height="10" viewBox="0 0 20 10" fill="none" {...props}> <path d="M9.66437 2.60207L4.80758 6.97318C4.07308 7.63423 3.11989 8 2.13172 8H0V10H20V8H18.5349C17.5468 8 16.5936 7.63423 15.8591 6.97318L11.0023 2.60207C10.622 2.2598 10.0447 2.25979 9.66437 2.60207Z" className="fill-surface" /> <path d="M8.99542 1.85876C9.75604 1.17425 10.9106 1.17422 11.6713 1.85878L16.5281 6.22989C17.0789 6.72568 17.7938 7.00001 18.5349 7.00001L15.89 7L11.0023 2.60207C10.622 2.2598 10.0447 2.2598 9.66436 2.60207L4.77734 7L2.13171 7.00001C2.87284 7.00001 3.58774 6.72568 4.13861 6.22989L8.99542 1.85876Z" className="fill-tooltip-arrow-outer-stroke" /> <path d="M10.3333 3.34539L5.47654 7.71648C4.55842 8.54279 3.36693 9 2.13172 9H0V8H2.13172C3.11989 8 4.07308 7.63423 4.80758 6.97318L9.66437 2.60207C10.0447 2.25979 10.622 2.2598 11.0023 2.60207L15.8591 6.97318C16.5936 7.63423 17.5468 8 18.5349 8H20V9H18.5349C17.2998 9 16.1083 8.54278 15.1901 7.71648L10.3333 3.34539Z" className="fill-tooltip-arrow-inner-stroke" /> </svg> ); } // ============================================================================ // Compound Component Export // ============================================================================ /** Popover component for displaying accessible popup content anchored to a trigger. ```tsx <Popover> <Popover.Trigger asChild> <Button>Open</Button> </Popover.Trigger> <Popover.Content> <Popover.Title>Notifications</Popover.Title> <Popover.Description>You are all caught up!</Popover.Description> </Popover.Content> </Popover> ```
+
+**Type:** component
+
+**Import:** `import { Popover } from "@cloudflare/kumo";`
+
+**Category:** Other
+
+**Props:**
+
+- `side`: enum [default: bottom]
+  - `"top"`: Popover appears above the trigger
+  - `"bottom"`: Popover appears below the trigger
+  - `"left"`: Popover appears to the left of the trigger
+  - `"right"`: Popover appears to the right of the trigger
+
+**Colors (kumo tokens used):**
+
+`bg-surface`, `fill-surface`, `text-muted`, `text-surface`
+
+**Sub-Components:**
+
+This is a compound component. Use these sub-components:
+
+#### Popover.Trigger
+
+Trigger sub-component
+
+#### Popover.Content
+
+Content sub-component
+
+#### Popover.Title
+
+Title sub-component
+
+#### Popover.Description
+
+Description sub-component
+
+#### Popover.Close
+
+Close sub-component
+
+
+**Examples:**
+
+```tsx
+<Popover>
+      <Popover.Trigger asChild>
+        <Button>Open Popover</Button>
+      </Popover.Trigger>
+      <Popover.Content>
+        <Popover.Title>Notifications</Popover.Title>
+        <Popover.Description>
+          You are all caught up. Good job!
+        </Popover.Description>
+      </Popover.Content>
+    </Popover>
+```
+
+```tsx
+<Popover>
+      <Popover.Trigger asChild>
+        <Button>Open Popover</Button>
+      </Popover.Trigger>
+      <Popover.Content>
+        <Popover.Title>Settings</Popover.Title>
+        <Popover.Description>
+          Configure your preferences below.
+        </Popover.Description>
+        <div className="mt-3">
+          <Popover.Close asChild>
+            <Button variant="secondary" size="sm">
+              Close
+            </Button>
+          </Popover.Close>
+        </div>
+      </Popover.Content>
+    </Popover>
+```
+
+```tsx
+<div className="pt-32">
+      <Popover>
+        <Popover.Trigger asChild>
+          <Button>Open Above</Button>
+        </Popover.Trigger>
+        <Popover.Content side="top">
+          <Popover.Title>Top Popover</Popover.Title>
+          <Popover.Description>
+            This popover appears above the trigger.
+          </Popover.Description>
+        </Popover.Content>
+      </Popover>
+    </div>
+```
+
+```tsx
+<Popover>
+      <Popover.Trigger asChild>
+        <Button>Open Right</Button>
+      </Popover.Trigger>
+      <Popover.Content side="right">
+        <Popover.Title>Right Popover</Popover.Title>
+        <Popover.Description>
+          This popover appears to the right.
+        </Popover.Description>
+      </Popover.Content>
+    </Popover>
+```
+
+```tsx
+function ControlledPopover() {
+    const [open, setOpen] = React.useState(false);
+    return (
+      <div className="flex items-center gap-4">
+        <Popover open={open} onOpenChange={setOpen}>
+          <Popover.Trigger asChild>
+            <Button>Controlled Popover</Button>
+          </Popover.Trigger>
+          <Popover.Content>
+            <Popover.Title>Controlled State</Popover.Title>
+            <Popover.Description>
+              This popover is controlled externally.
+            </Popover.Description>
+          </Popover.Content>
+        </Popover>
+        <span className="text-sm text-muted">
+          Status: {open ? "Open" : "Closed"}
+        </span>
+      </div>
+    );
+  }
+```
+
+```tsx
+<Popover>
+      <Popover.Trigger openOnHover delay={300} asChild>
+        <Button>Hover to Open</Button>
+      </Popover.Trigger>
+      <Popover.Content>
+        <Popover.Title>Hover Trigger</Popover.Title>
+        <Popover.Description>
+          This popover opens on hover, similar to a tooltip.
+        </Popover.Description>
+      </Popover.Content>
+    </Popover>
+```
+
+```tsx
+<Popover>
+      <Popover.Trigger asChild>
+        <Button>User Profile</Button>
+      </Popover.Trigger>
+      <Popover.Content className="w-64">
+        <div className="flex items-center gap-3">
+          <div className="size-10 rounded-full bg-surface-3" />
+          <div>
+            <Popover.Title>Jane Doe</Popover.Title>
+            <p className="text-sm text-muted">jane@example.com</p>
+          </div>
+        </div>
+        <div className="mt-3 flex gap-2 border-t border-border pt-3">
+          <Button variant="secondary" size="sm" className="flex-1">
+            Profile
+          </Button>
+          <Popover.Close asChild>
+            <Button variant="ghost" size="sm" className="flex-1">
+              Sign Out
+            </Button>
+          </Popover.Close>
+        </div>
+      </Popover.Content>
+    </Popover>
+```
+
+
+---
+
 ### Radio
 
 Radio component
@@ -4263,7 +4442,7 @@ Tooltip component
 
 **Colors (kumo tokens used):**
 
-`bg-surface`, `fill-surface`, `fill-tooltip-arrow-inner-stroke`, `fill-tooltip-arrow-outer-stroke`, `outline-tooltip-border`, `text-surface`
+`bg-black-icon`, `fill-black-icon`, `fill-icon-path`
 
 **Examples:**
 
@@ -4306,6 +4485,6 @@ Multi-line textarea input with Input variants and InputArea-specific dimensions
 - **Action:** Button, ClipboardText
 - **Input:** Checkbox, Combobox, DateRangePicker, Field, Input, Select, Switch
 - **Overlay:** Dialog, DropdownMenu, Tooltip
-- **Other:** Icon, Label, Radio, SensitiveInput, Table
+- **Other:** Icon, Label, Popover, Radio, SensitiveInput, Table
 - **Navigation:** MenuBar, Pagination, Tabs
 - **Layout:** Surface

@@ -79,14 +79,14 @@
     transparent
   );
 
+  /* Popup border and arrow stroke tokens - used by Tooltip and Popover.
+     Matches Base UI's approach where outer stroke is visible in light mode only,
+     inner stroke in dark mode only.
+     See: https://base-ui.com/react/components/tooltip */
   --color-tooltip-border: light-dark(
     var(--color-gray-200, oklch(92.8% 0.006 264.531)),
     var(--color-neutral-800, oklch(26.9% 0 0))
   );
-
-  /* Arrow stroke tokens for tooltip - matches Base UI's approach where
-     outer stroke is visible in light mode only, inner stroke in dark mode only.
-     See: https://base-ui.com/react/components/tooltip */
   --color-tooltip-arrow-outer-stroke: light-dark(
     var(--color-gray-200, oklch(92.8% 0.006 264.531)),
     transparent
