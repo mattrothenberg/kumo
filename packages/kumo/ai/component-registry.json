@@ -5236,9 +5236,12 @@
         "<Tooltip content=\"This is a tooltip\" asChild>\n      <Button>Hover me</Button>\n    </Tooltip>"
       ],
       "colors": [
-        "bg-black-icon",
-        "fill-black-icon",
-        "fill-icon-path"
+        "bg-surface",
+        "fill-surface",
+        "fill-tooltip-arrow-inner-stroke",
+        "fill-tooltip-arrow-outer-stroke",
+        "outline-tooltip-border",
+        "text-surface"
       ]
     },
     "InputArea": {

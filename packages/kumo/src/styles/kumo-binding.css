@@ -127,3 +127,10 @@
     rgba(255, 255, 255, 0) 100%
   );
 }
+
+/* Tooltip outline offset - in dark mode, offset inward to align with inner stroke.
+   This compensates for the different geometry of inner vs outer stroke paths.
+   See: https://base-ui.com/react/components/tooltip */
+[data-mode="dark"] .kumo-tooltip-popup {
+  outline-offset: -1px;
+}

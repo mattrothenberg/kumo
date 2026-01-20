@@ -10,11 +10,11 @@
 
 | Purpose | Token | Usage |
 |---------|-------|-------|
-| Main page/card background | `bg-surface` | 11 components |
+| Main page/card background | `bg-surface` | 12 components |
 | Secondary/default button background | `bg-secondary` | 7 components |
 | Error state background | `bg-error` | 4 components |
 | Selected/active state background | `bg-accent` | 4 components |
-| Primary text on surfaces | `text-surface` | 21 components |
+| Primary text on surfaces | `text-surface` | 22 components |
 | Placeholder text and disabled states | `text-muted` | 14 components |
 | Form labels and secondary headings | `text-label` | 10 components |
 | Error messages and validation | `text-error` | 9 components |
@@ -40,6 +40,8 @@ Kumo uses CSS custom properties with `light-dark()` for automatic dark mode supp
 
 | Token | Purpose | Tailwind Classes |
 |-------|---------|------------------|
+| `tooltip-arrow-outer-stroke` | General styling | `bg-tooltip-arrow-outer-stroke` |
+| `tooltip-arrow-inner-stroke` | General styling | `bg-tooltip-arrow-inner-stroke` |
 | `surface` | Main page/card background | `bg-surface` |
 | `surface-2` | Secondary surface layer | `bg-surface-2` |
 | `surface-3` | Tertiary surface layer | `bg-surface-3` |
@@ -89,6 +91,7 @@ Kumo uses CSS custom properties with `light-dark()` for automatic dark mode supp
 
 | Token | Purpose | Border | Ring |
 |-------|---------|--------|------|
+| `tooltip-border` | General styling | `border-tooltip-border` | `ring-tooltip-border` |
 | `color` | Border/divider color | `border-color` | `ring-color` |
 | `color-2` | Border/divider color | `border-color-2` | `ring-color-2` |
 | `color-3` | Border/divider color | `border-color-3` | `ring-color-3` |
@@ -4260,7 +4263,7 @@ Tooltip component
 
 **Colors (kumo tokens used):**
 
-`bg-black-icon`, `fill-black-icon`, `fill-icon-path`
+`bg-surface`, `fill-surface`, `fill-tooltip-arrow-inner-stroke`, `fill-tooltip-arrow-outer-stroke`, `outline-tooltip-border`, `text-surface`
 
 **Examples:**
 

@@ -79,6 +79,23 @@
     transparent
   );
 
+  --color-tooltip-border: light-dark(
+    var(--color-gray-200, oklch(92.8% 0.006 264.531)),
+    var(--color-neutral-800, oklch(26.9% 0 0))
+  );
+
+  /* Arrow stroke tokens for tooltip - matches Base UI's approach where
+     outer stroke is visible in light mode only, inner stroke in dark mode only.
+     See: https://base-ui.com/react/components/tooltip */
+  --color-tooltip-arrow-outer-stroke: light-dark(
+    var(--color-gray-200, oklch(92.8% 0.006 264.531)),
+    transparent
+  );
+  --color-tooltip-arrow-inner-stroke: light-dark(
+    transparent,
+    var(--color-neutral-800, oklch(26.9% 0 0))
+  );
+
   --color-surface: light-dark(
     var(--color-white, #fff),
     var(--color-black, #000)
