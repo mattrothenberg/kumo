@@ -1,4 +1,4 @@
-import { expect, afterEach } from "vitest";
+import { expect } from "vitest";
 
 // Add custom matchers if needed
 expect.extend({

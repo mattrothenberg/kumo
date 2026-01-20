@@ -158,6 +158,7 @@ export default defineConfig(({ mode }) => {
             "src/components/sensitive-input/index.ts",
           ),
           'components/radio': resolve(__dirname, 'src/components/radio/index.ts'),
+        'components/command-palette': resolve(__dirname, 'src/components/command-palette/index.ts'),
         // PLOP_INJECT_COMPONENT_ENTRY
           // Block entry points
           "blocks/breadcrumbs": resolve(

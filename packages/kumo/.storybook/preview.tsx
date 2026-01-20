@@ -43,6 +43,7 @@ const preview: Preview = {
     (Story, context) => {
       // Determine if this is a component that uses portals (needs mode toggle)
       const isPortalComponent =
+        context.title.startsWith("Components/CommandPalette") ||
         context.title.startsWith("Components/Combobox") ||
         context.title.startsWith("Components/Dialog") ||
         context.title.startsWith("Components/Dropdown") ||

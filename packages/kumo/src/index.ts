@@ -91,6 +91,21 @@ export {
   type KumoIconSize,
   type KumoIconVariantsProps,
 } from "./components/icon";
+export {
+  CommandPalette,
+  KUMO_COMMAND_PALETTE_VARIANTS,
+  KUMO_COMMAND_PALETTE_DEFAULT_VARIANTS,
+  type CommandPaletteRootProps,
+  type CommandPaletteItemProps,
+  type CommandPaletteResultItemProps,
+  type CommandPaletteFooterProps,
+  type CommandPaletteListProps,
+  type CommandPaletteGroupProps,
+  type CommandPaletteGroupLabelProps,
+  type CommandPaletteEmptyProps,
+  type CommandPaletteLoadingProps,
+  type HighlightRange,
+} from "./components/command-palette";
 // PLOP_INJECT_EXPORT
 
 // Blocks
