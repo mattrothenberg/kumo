@@ -34,21 +34,6 @@ export interface KumoTooltipVariantsProps {
   side?: KumoTooltipSide;
 }
 
-export function tooltipVariants({
-  side = KUMO_TOOLTIP_DEFAULT_VARIANTS.side,
-}: KumoTooltipVariantsProps = {}) {
-  return cn(
-    // Base styles
-    "flex origin-[var(--transform-origin)] flex-col rounded-md bg-black-icon px-2.5 py-1.5 text-sm text-white",
-    "shadow-lg shadow-icon-path transition-[transform,scale,opacity]",
-    "data-[ending-style]:scale-90 data-[ending-style]:opacity-0",
-    "data-[instant]:duration-0",
-    "data-[starting-style]:scale-90 data-[starting-style]:opacity-0",
-    // Apply side-specific styles (currently none, but extensible)
-    KUMO_TOOLTIP_VARIANTS.side[side].classes,
-  );
-}
-
 export const TooltipProvider = TooltipBase.Provider;
 
 type BaseTooltipProps = ComponentPropsWithoutRef<typeof TooltipBase.Root>;
@@ -88,7 +73,7 @@ export function Tooltip({
           <TooltipBase.Popup
             className={cn(
               "flex origin-[var(--transform-origin)] flex-col rounded-md bg-surface px-2 py-1.5 text-sm text-surface",
-              "outline outline-1 outline-tooltip-border",
+              "shadow-lg shadow-icon-path outline outline-1 outline-tooltip-border",
               "transition-[transform,opacity] duration-150",
               "data-[starting-style]:scale-90 data-[starting-style]:opacity-0",
               "data-[ending-style]:scale-90 data-[ending-style]:opacity-0",
