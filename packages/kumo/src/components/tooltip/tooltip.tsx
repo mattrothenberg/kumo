@@ -72,7 +72,7 @@ export function Tooltip({
         <TooltipBase.Positioner align={align} side={side} sideOffset={10}>
           <TooltipBase.Popup
             className={cn(
-              "flex origin-[var(--transform-origin)] flex-col rounded-md bg-surface px-2 py-1.5 text-sm text-surface",
+              "flex origin-[var(--transform-origin)] flex-col rounded-md bg-surface px-2.5 py-1.5 text-sm text-surface",
               "shadow-lg shadow-icon-path outline outline-1 outline-tooltip-border",
               "transition-[transform,opacity] duration-150",
               "data-[starting-style]:scale-90 data-[starting-style]:opacity-0",
