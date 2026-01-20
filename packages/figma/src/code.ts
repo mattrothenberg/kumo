@@ -16,6 +16,7 @@ import { generateClipboardTextComponents } from "./generators/clipboard-text";
 import { generateCodeComponents } from "./generators/code";
 import { generateCodeBlockComponents } from "./generators/code-block";
 import { generateCollapsibleComponents } from "./generators/collapsible";
+import { generateCommandPaletteComponents } from "./generators/command-palette";
 import { generateComboboxComponents } from "./generators/combobox";
 import { generateDateRangePickerComponents } from "./generators/date-range-picker";
 import { generateDialogComponents } from "./generators/dialog";
@@ -226,6 +227,13 @@ figma.ui.onmessage = async (msg: { type: string }) => {
           name: "Combobox",
           execute: async (_page, y) => {
             const result = await generateComboboxComponents(y);
+            return { nextY: result };
+          },
+        },
+        {
+          name: "CommandPalette",
+          execute: async (page, y) => {
+            const result = await generateCommandPaletteComponents(page, y);
             return { nextY: result };
           },
         },

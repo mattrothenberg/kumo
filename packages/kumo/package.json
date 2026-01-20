@@ -160,6 +160,10 @@
       "types": "./dist/src/components/radio/index.d.ts",
       "import": "./dist/components/radio.js"
     },
+    "./components/command-palette": {
+      "types": "./dist/src/components/command-palette/index.d.ts",
+      "import": "./dist/components/command-palette.js"
+    },
     "./utils": {
       "types": "./dist/src/utils/index.d.ts",
       "import": "./dist/utils.js"
@@ -388,6 +392,8 @@
     "@phosphor-icons/core": "2.1.1",
     "@storybook/addon-a11y": "10.1.11",
     "@storybook/addon-docs": "10.1.11",
+    "@testing-library/react": "16.3.1",
+    "@testing-library/user-event": "14.6.1",
     "@storybook/addon-mcp": "0.1.4",
     "@storybook/addon-vitest": "10.1.11",
     "@storybook/react-vite": "10.1.11",

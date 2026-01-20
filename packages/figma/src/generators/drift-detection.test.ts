@@ -38,6 +38,7 @@ const EXCLUDED_COMPONENTS = new Set([
 const COMPONENT_NAME_MAPPING: Record<string, string> = {
   "Switch.Group": "switch", // Switch.Group is in switch.ts
   ClipboardText: "clipboard-text",
+  CommandPalette: "command-palette",
   DateRangePicker: "date-range-picker",
   DropdownMenu: "dropdown", // Registry name differs from file name
   InputArea: "input-area", // Synthetic component - uses Input's props but has own styling
