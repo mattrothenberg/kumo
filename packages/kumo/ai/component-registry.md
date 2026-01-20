@@ -10,16 +10,16 @@
 
 | Purpose | Token | Usage |
 |---------|-------|-------|
-| Main page/card background | `bg-surface` | 12 components |
+| Main page/card background | `bg-surface` | 13 components |
 | Secondary/default button background | `bg-secondary` | 7 components |
+| Border/divider color | `bg-color-3` | 5 components |
 | Error state background | `bg-error` | 4 components |
-| Selected/active state background | `bg-accent` | 4 components |
-| Primary text on surfaces | `text-surface` | 22 components |
-| Placeholder text and disabled states | `text-muted` | 15 components |
-| Form labels and secondary headings | `text-label` | 10 components |
+| Primary text on surfaces | `text-surface` | 24 components |
+| Placeholder text and disabled states | `text-muted` | 16 components |
+| Form labels and secondary headings | `text-label` | 11 components |
 | Error messages and validation | `text-error` | 9 components |
+| Default border color | `ring-border` | 11 components |
 | Border/divider color | `border-color` | 10 components |
-| Default border color | `ring-border` | 10 components |
 
 ### Dark Mode & Theming
 
@@ -40,6 +40,8 @@ Kumo uses CSS custom properties with `light-dark()` for automatic dark mode supp
 
 | Token | Purpose | Tailwind Classes |
 |-------|---------|------------------|
+| `tooltip-arrow-outer-stroke` | General styling | `bg-tooltip-arrow-outer-stroke` |
+| `tooltip-arrow-inner-stroke` | General styling | `bg-tooltip-arrow-inner-stroke` |
 | `surface` | Main page/card background | `bg-surface` |
 | `surface-2` | Secondary surface layer | `bg-surface-2` |
 | `surface-3` | Tertiary surface layer | `bg-surface-3` |
@@ -79,7 +81,7 @@ Kumo uses CSS custom properties with `light-dark()` for automatic dark mode supp
 |-------|---------|-------|
 | `active` | Active/focus ring color | `bg-active`, `ring-active` (1 uses) |
 | `muted` | Muted/disabled background | `bg-muted`, `ring-muted` (1 uses) |
-| `subtle` | Subtle hover background | `bg-subtle`, `ring-subtle` (1 uses) |
+| `subtle` | Subtle hover background | `bg-subtle`, `ring-subtle` (2 uses) |
 | `accent` | Selected/active state background | `bg-accent`, `ring-accent` (4 uses) |
 | `hover` | Hover state background | `bg-hover`, `ring-hover` (2 uses) |
 | `toast-button-hover` | Toast notification styling | `bg-toast-button-hover`, `ring-toast-button-hover` (1 uses) |
@@ -89,6 +91,7 @@ Kumo uses CSS custom properties with `light-dark()` for automatic dark mode supp
 
 | Token | Purpose | Border | Ring |
 |-------|---------|--------|------|
+| `tooltip-border` | General styling | `border-tooltip-border` | `ring-tooltip-border` |
 | `color` | Border/divider color | `border-color` | `ring-color` |
 | `color-2` | Border/divider color | `border-color-2` | `ring-color-2` |
 | `color-3` | Border/divider color | `border-color-3` | `ring-color-3` |
@@ -1297,6 +1300,356 @@ Usage:
           </Combobox.List>
         </Combobox.Content>
       </Combobox>
+```
+
+
+---
+
+### CommandPalette
+
+CommandPalette component
+
+**Type:** component
+
+**Import:** `import { CommandPalette } from "@cloudflare/kumo";`
+
+**Category:** Other
+
+**Props:**
+
+- `open`: boolean (required)
+  Whether the dialog is open
+- `children`: ReactNode
+  Child content - typically one or more Panel components
+
+**Colors (kumo tokens used):**
+
+`bg-alert`, `bg-color-3`, `bg-subtle`, `bg-surface-2`, `bg-surface-elevated`, `ring-border`, `text-label`, `text-muted`, `text-surface`
+
+**Examples:**
+
+```tsx
+<>
+        <Button onClick={() => setOpen(true)}>Open Command Palette</Button>
+        <CommandPalette.Root
+          open={open}
+          onOpenChange={setOpen}
+          items={sampleGroups}
+          value={search}
+          onValueChange={setSearch}
+          itemToStringValue={(group) => group.label}
+          getSelectableItems={(groups) => groups.flatMap((g) => g.items)}
+          onSelect={(item) => {
+            console.log("Selected:", item);
+            setOpen(false);
+          }}
+        >
+          <CommandPalette.Input
+            placeholder="Search..."
+            trailing={
+              <Button
+                className="m-0 h-5 p-0"
+                variant="ghost"
+                size="sm"
+                onClick={() => setOpen(!open)}
+              >
+                <Kbd>Esc</Kbd>
+              </Button>
+            }
+          />
+          <CommandPalette.List>
+            <CommandPalette.Results>
+              {(group: SearchGroup) => (
+                <CommandPalette.Group key={group.label} items={group.items}>
+                  <CommandPalette.GroupLabel>
+                    {group.label}
+                  </CommandPalette.GroupLabel>
+                  <CommandPalette.Items>
+                    {(item: SearchItem) => (
+                      <CommandPalette.ResultItem
+                        key={item.id}
+                        value={item}
+                        title={item.title}
+                        breadcrumbs={item.breadcrumbs}
+                        description={item.description}
+                        icon={item.icon}
+                        nonInteractive={item.nonInteractive}
+                        onClick={() => {
+                          console.log("Clicked:", item);
+                          setOpen(false);
+                        }}
+                      />
+                    )}
+                  </CommandPalette.Items>
+                </CommandPalette.Group>
+              )}
+            </CommandPalette.Results>
+            <CommandPalette.Empty>No results found</CommandPalette.Empty>
+          </CommandPalette.List>
+          <CommandPalette.Footer>
+            <div className="flex items-center gap-4">
+              <span className="flex items-center gap-1">
+                <Kbd>↑</Kbd>
+                <Kbd>↓</Kbd>
+                Navigate
+              </span>
+              <span className="flex items-center gap-1">
+                <Kbd>↵</Kbd>
+                Select
+              </span>
+            </div>
+          </CommandPalette.Footer>
+        </CommandPalette.Root>
+      </>
+```
+
+```tsx
+<>
+        <Button onClick={() => setOpen(true)}>Open Command Palette</Button>
+        <CommandPalette.Root
+          open={open}
+          onOpenChange={setOpen}
+          items={itemsWithHighlights}
+          itemToStringValue={(group) => group.label}
+        >
+          <CommandPalette.Input placeholder="Search..." />
+          <CommandPalette.List>
+            <CommandPalette.Results>
+              {(group: SearchGroup) => (
+                <CommandPalette.Group key={group.label} items={group.items}>
+                  <CommandPalette.GroupLabel>
+                    {group.label}
+                  </CommandPalette.GroupLabel>
+                  <CommandPalette.Items>
+                    {(item: SearchItem) => (
+                      <CommandPalette.ResultItem
+                        key={item.id}
+                        value={item}
+                        title={item.title}
+                        breadcrumbs={item.breadcrumbs}
+                        titleHighlights={[[0, 5]]}
+                        onClick={() => setOpen(false)}
+                      />
+                    )}
+                  </CommandPalette.Items>
+                </CommandPalette.Group>
+              )}
+            </CommandPalette.Results>
+          </CommandPalette.List>
+        </CommandPalette.Root>
+      </>
+```
+
+```tsx
+<>
+        <Button onClick={() => setOpen(true)}>Open Command Palette</Button>
+        <CommandPalette.Root
+          open={open}
+          onOpenChange={setOpen}
+          items={[]}
+          itemToStringValue={() => ""}
+        >
+          <CommandPalette.Input placeholder="Search..." />
+          <CommandPalette.List>
+            <CommandPalette.Loading />
+          </CommandPalette.List>
+        </CommandPalette.Root>
+      </>
+```
+
+```tsx
+<>
+        <Button onClick={() => setOpen(true)}>Open Command Palette</Button>
+        <CommandPalette.Root
+          open={open}
+          onOpenChange={setOpen}
+          items={groups}
+          itemToStringValue={(group) => group.label}
+        >
+          <CommandPalette.Input placeholder="Search..." />
+          <CommandPalette.List>
+            <CommandPalette.Results>
+              {(group: SearchGroup) => (
+                <CommandPalette.Group key={group.label} items={group.items}>
+                  <CommandPalette.GroupLabel>
+                    {group.label}
+                  </CommandPalette.GroupLabel>
+                  <CommandPalette.Items>
+                    {(item: SearchItem) => (
+                      <CommandPalette.ResultItem
+                        key={item.id}
+                        value={item}
+                        title={item.title}
+                        external={item.external}
+                        onClick={() => setOpen(false)}
+                      />
+                    )}
+                  </CommandPalette.Items>
+                </CommandPalette.Group>
+              )}
+            </CommandPalette.Results>
+          </CommandPalette.List>
+        </CommandPalette.Root>
+      </>
+```
+
+```tsx
+<>
+        <Button onClick={() => setOpen(true)}>Open Command Palette</Button>
+        <p className="mt-4 text-sm text-muted">
+          Click a zone feature to drill down into zone selection. Press
+          Backspace (when input is empty) to go back.
+        </p>
+
+        {/* Dialog stays mounted, Panel content swaps */}
+        <CommandPalette.Dialog open={open} onOpenChange={handleOpenChange}>
+          {isInDrillDown ? (
+            // Zone Picker Panel
+            <CommandPalette.Panel
+              items={zoneGroups}
+              value={search}
+              onValueChange={setSearch}
+              itemToStringValue={(group) => group.label}
+              open={open}
+              getSelectableItems={(groups) => groups.flatMap((g) => g.items)}
+              onSelect={(item) => handleZoneSelect(item)}
+            >
+              <CommandPalette.Input
+                placeholder="Search for a domain..."
+                onKeyDown={handleZoneKeyDown}
+                leading={
+                  <button
+                    onClick={handleBack}
+                    className="flex h-4 w-4 items-center justify-center rounded transition-colors hover:bg-accent"
+                    aria-label="Back"
+                  >
+                    <ArrowLeftIcon
+                      className="h-4 w-4 text-muted"
+                      weight="bold"
+                    />
+                  </button>
+                }
+                trailing={
+                  <Button
+                    className="m-0 h-5 p-0"
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleClose}
+                  >
+                    <Kbd>Esc</Kbd>
+                  </Button>
+                }
+              />
+              <CommandPalette.List>
+                <CommandPalette.Results>
+                  {(group: SearchGroup) => (
+                    <CommandPalette.Group key={group.label} items={group.items}>
+                      <CommandPalette.GroupLabel>
+                        {group.label}
+                      </CommandPalette.GroupLabel>
+                      <CommandPalette.Items>
+                        {(item: SearchItem) => (
+                          <CommandPalette.ResultItem
+                            key={item.id}
+                            value={item}
+                            title={item.title}
+                            icon={item.icon}
+                            onClick={() => handleZoneSelect(item)}
+                          />
+                        )}
+                      </CommandPalette.Items>
+                    </CommandPalette.Group>
+                  )}
+                </CommandPalette.Results>
+                <CommandPalette.Empty>No domains found</CommandPalette.Empty>
+              </CommandPalette.List>
+              <CommandPalette.Footer>
+                <div className="flex items-center gap-1.5 text-muted">
+                  <TreeStructureIcon className="h-4 w-4" />
+                  <span className="font-medium">{drillDown.featureTitle}</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <span className="flex items-center gap-1">
+                    <Kbd>⌫</Kbd>
+                    to go back
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Kbd>↑</Kbd>
+                    <Kbd>↓</Kbd>
+                    to navigate
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Kbd>↵</Kbd>
+                    to select
+                  </span>
+                </div>
+              </CommandPalette.Footer>
+            </CommandPalette.Panel>
+          ) : (
+            // Main Search Panel
+            <CommandPalette.Panel
+              items={mainGroups}
+              value={search}
+              onValueChange={setSearch}
+              itemToStringValue={(group) => group.label}
+              open={open}
+              getSelectableItems={(groups) => groups.flatMap((g) => g.items)}
+              onSelect={(item) => handleMainSelect(item)}
+            >
+              <CommandPalette.Input
+                placeholder="Search..."
+                trailing={
+                  <Button
+                    className="m-0 h-5 p-0"
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleClose}
+                  >
+                    <Kbd>Esc</Kbd>
+                  </Button>
+                }
+              />
+              <CommandPalette.List>
+                <CommandPalette.Results>
+                  {(group: SearchGroup) => (
+                    <CommandPalette.Group key={group.label} items={group.items}>
+                      <CommandPalette.GroupLabel>
+                        {group.label}
+                      </CommandPalette.GroupLabel>
+                      <CommandPalette.Items>
+                        {(item: SearchItem) => (
+                          <CommandPalette.ResultItem
+                            key={item.id}
+                            value={item}
+                            title={item.title}
+                            breadcrumbs={item.breadcrumbs}
+                            icon={item.icon}
+                            onClick={() => handleMainSelect(item)}
+                          />
+                        )}
+                      </CommandPalette.Items>
+                    </CommandPalette.Group>
+                  )}
+                </CommandPalette.Results>
+                <CommandPalette.Empty>No results found</CommandPalette.Empty>
+              </CommandPalette.List>
+              <CommandPalette.Footer>
+                <div className="flex items-center gap-4">
+                  <span className="flex items-center gap-1">
+                    <Kbd>↑</Kbd>
+                    <Kbd>↓</Kbd>
+                    to navigate
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Kbd>↵</Kbd>
+                    to select
+                  </span>
+                </div>
+              </CommandPalette.Footer>
+            </CommandPalette.Panel>
+          )}
+        </CommandPalette.Dialog>
+      </>
 ```
 
 
@@ -3041,7 +3394,7 @@ Arrow SVG with three paths for proper border rendering in both light and dark mo
 
 **Colors (kumo tokens used):**
 
-`bg-surface`, `fill-surface`, `text-muted`, `text-surface`
+`bg-surface`, `fill-surface`, `fill-tooltip-arrow-inner-stroke`, `fill-tooltip-arrow-outer-stroke`, `outline-tooltip-border`, `text-muted`, `text-surface`
 
 **Sub-Components:**
 
@@ -3178,26 +3531,143 @@ function ControlledPopover() {
       <Popover.Trigger asChild>
         <Button>User Profile</Button>
       </Popover.Trigger>
-      <Popover.Content className="w-64">
+      <Popover.Content className="w-64" align="start" sideOffset={16}>
         <div className="flex items-center gap-3">
-          <div className="size-10 rounded-full bg-surface-3" />
+          <div className="size-10 shrink-0 rounded-full bg-surface-3" />
           <div>
-            <Popover.Title>Jane Doe</Popover.Title>
-            <p className="text-sm text-muted">jane@example.com</p>
+            <Popover.Title>Matt Rothenberg</Popover.Title>
+            <p className="text-sm text-muted">mrothenberg@cloudflare.com</p>
           </div>
         </div>
-        <div className="mt-3 flex gap-2 border-t border-border pt-3">
-          <Button variant="secondary" size="sm" className="flex-1">
-            Profile
-          </Button>
-          <Popover.Close asChild>
-            <Button variant="ghost" size="sm" className="flex-1">
-              Sign Out
+        <div className="mt-3 flex gap-2 border-t border-border pt-3 justify-end">
+          <div>
+            <Popover.Close asChild>
+              <Button variant="ghost" size="sm" className="flex-1">
+                Close
+              </Button>
+            </Popover.Close>
+          </div>
+          <div>
+            <Button variant="primary" size="sm" className="flex-1">
+              View profile
             </Button>
-          </Popover.Close>
+          </div>
         </div>
       </Popover.Content>
     </Popover>
+```
+
+```tsx
+<div className="flex gap-8">
+      <Popover>
+        <Popover.Trigger asChild>
+          <Button>Default (8px)</Button>
+        </Popover.Trigger>
+        <Popover.Content>
+          <Popover.Title>Default Offset</Popover.Title>
+          <Popover.Description>sideOffset: 8px (default)</Popover.Description>
+        </Popover.Content>
+      </Popover>
+
+      <Popover>
+        <Popover.Trigger asChild>
+          <Button>Large Gap</Button>
+        </Popover.Trigger>
+        <Popover.Content sideOffset={16}>
+          <Popover.Title>Large Side Offset</Popover.Title>
+          <Popover.Description>sideOffset: 16px</Popover.Description>
+        </Popover.Content>
+      </Popover>
+
+      <Popover>
+        <Popover.Trigger asChild>
+          <Button>Shifted Right</Button>
+        </Popover.Trigger>
+        <Popover.Content align="start" alignOffset={20}>
+          <Popover.Title>Align Offset</Popover.Title>
+          <Popover.Description>
+            align: start, alignOffset: 20px
+          </Popover.Description>
+        </Popover.Content>
+      </Popover>
+    </div>
+```
+
+```tsx
+function FilterPanelExample() {
+    const [filters, setFilters] = React.useState({
+      status: "",
+      country: "",
+      path: "",
+    });
+    const activeCount = Object.values(filters).filter(Boolean).length;
+
+    return (
+      <Popover>
+        <Popover.Trigger asChild>
+          <Button variant="secondary" icon={FunnelIcon}>
+            Filters{activeCount > 0 && ` (${activeCount})`}
+          </Button>
+        </Popover.Trigger>
+        <Popover.Content className="w-80" align="start" sideOffset={16}>
+          <Popover.Title>Filter Requests</Popover.Title>
+          <div className="mt-3 space-y-3">
+            <div className="flex gap-3">
+              <Select
+                label="Status Code"
+                placeholder="Any status"
+                value={filters.status || undefined}
+                onValueChange={(value) =>
+                  setFilters((f) => ({ ...f, status: value ?? "" }))
+                }
+              >
+                <Select.Option value="2xx">2xx Success</Select.Option>
+                <Select.Option value="3xx">3xx Redirect</Select.Option>
+                <Select.Option value="4xx">4xx Client Error</Select.Option>
+                <Select.Option value="5xx">5xx Server Error</Select.Option>
+              </Select>
+              <Select
+                label="Country"
+                placeholder="Any country"
+                value={filters.country || undefined}
+                onValueChange={(value) =>
+                  setFilters((f) => ({ ...f, country: value ?? "" }))
+                }
+              >
+                <Select.Option value="US">United States</Select.Option>
+                <Select.Option value="GB">United Kingdom</Select.Option>
+                <Select.Option value="DE">Germany</Select.Option>
+                <Select.Option value="FR">France</Select.Option>
+                <Select.Option value="JP">Japan</Select.Option>
+              </Select>
+            </div>
+            <Input
+              label="Path contains"
+              placeholder="/api/"
+              value={filters.path}
+              onChange={(e) =>
+                setFilters((f) => ({ ...f, path: e.target.value }))
+              }
+            />
+          </div>
+          <div className="mt-4 flex justify-end gap-2 border-t border-border pt-3">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setFilters({ status: "", country: "", path: "" })}
+            >
+              Clear All
+            </Button>
+            <Popover.Close asChild>
+              <Button variant="primary" size="sm">
+                Apply Filters
+              </Button>
+            </Popover.Close>
+          </div>
+        </Popover.Content>
+      </Popover>
+    );
+  }
 ```
 
 
@@ -4442,7 +4912,7 @@ Tooltip component
 
 **Colors (kumo tokens used):**
 
-`bg-black-icon`, `fill-black-icon`, `fill-icon-path`
+`bg-surface`, `fill-surface`, `fill-tooltip-arrow-inner-stroke`, `fill-tooltip-arrow-outer-stroke`, `outline-tooltip-border`, `text-surface`
 
 **Examples:**
 
@@ -4484,7 +4954,7 @@ Multi-line textarea input with Input variants and InputArea-specific dimensions
 - **Block:** Breadcrumbs, Empty, PageHeader
 - **Action:** Button, ClipboardText
 - **Input:** Checkbox, Combobox, DateRangePicker, Field, Input, Select, Switch
+- **Other:** CommandPalette, Icon, Label, Popover, Radio, SensitiveInput, Table
 - **Overlay:** Dialog, DropdownMenu, Tooltip
-- **Other:** Icon, Label, Popover, Radio, SensitiveInput, Table
 - **Navigation:** MenuBar, Pagination, Tabs
 - **Layout:** Surface
