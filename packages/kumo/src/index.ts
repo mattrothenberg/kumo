@@ -63,6 +63,17 @@ export { Text } from "./components/text";
 export { Toasty, Toast } from "./components/toast";
 export { Tooltip, TooltipProvider } from "./components/tooltip";
 export {
+  Popover,
+  KUMO_POPOVER_VARIANTS,
+  KUMO_POPOVER_DEFAULT_VARIANTS,
+  type PopoverRootProps,
+  type PopoverTriggerProps,
+  type PopoverContentProps,
+  type PopoverTitleProps,
+  type PopoverDescriptionProps,
+  type PopoverCloseProps,
+} from "./components/popover";
+export {
   SensitiveInput,
   type SensitiveInputProps,
   KUMO_SENSITIVE_INPUT_VARIANTS,

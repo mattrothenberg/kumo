@@ -31,6 +31,7 @@ const EXCLUDED_COMPONENTS = new Set([
   "Icon", // Utility component - handled by icon-library.ts
   "Label", // Simple text label - used within Field, not standalone visual component
   "PageHeader", // Complex composite component - too layout-specific for Figma generation
+  "Popover", // Interactive popup - similar to Tooltip but click-triggered, will add generator later
   "Table", // Complex data component - requires dynamic data, too complex for static Figma generation
 ]);
 

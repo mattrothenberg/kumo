@@ -153,13 +153,23 @@ export default defineConfig(({ mode }) => {
             __dirname,
             "src/components/tooltip/index.ts",
           ),
+          "components/popover": resolve(
+            __dirname,
+            "src/components/popover/index.ts",
+          ),
           "components/sensitive-input": resolve(
             __dirname,
             "src/components/sensitive-input/index.ts",
           ),
-          'components/radio': resolve(__dirname, 'src/components/radio/index.ts'),
-        'components/command-palette': resolve(__dirname, 'src/components/command-palette/index.ts'),
-        // PLOP_INJECT_COMPONENT_ENTRY
+          "components/radio": resolve(
+            __dirname,
+            "src/components/radio/index.ts",
+          ),
+          "components/command-palette": resolve(
+            __dirname,
+            "src/components/command-palette/index.ts",
+          ),
+          // PLOP_INJECT_COMPONENT_ENTRY
           // Block entry points
           "blocks/breadcrumbs": resolve(
             __dirname,
