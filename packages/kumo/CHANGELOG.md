@@ -1,5 +1,29 @@
 # @cloudflare/kumo
 
+## 0.6.0
+
+### Minor Changes
+
+- 46236bd: Add Figma plugin for UI kit generation
+  - New plugin at `packages/figma/` (`@cloudflare/figma-plugin`)
+  - Generates 29 component types: Badge, Banner, Button, Checkbox, Code, CodeBlock, Collapsible, Combobox, DateRangePicker, Dialog, Dropdown, Icon Library, Input, InputArea, LayerCard, LinkButton, Loader, MenuBar, Meter, Pagination, RefreshButton, Select, SensitiveInput, Surface, Switch, Switch.Group, Tabs, Text, Toast
+  - Each component generated with light and dark mode sections
+  - Icon Library generator creates all Phosphor and Cloudflare brand icons
+  - Parses component-registry.json and source files for variant specs
+  - Extracts opacity modifiers from Tailwind classes (bg-primary/70 → opacity-primary-70)
+  - Binds fills/strokes to kumo-colors variables
+  - Includes progress UI and validation output
+
+- 4266f72: feat(kumo): add command-palette component
+- 4ac5fbe: semantic color changes and more consolidation for non-text colors
+- 009097d: feat(tooltip): Update tooltip to use bg-surface with proper light/dark mode support
+
+  Changes the tooltip background from a fixed dark color to a surface-aware background that adapts to light and dark modes. Implements Base UI's 3-path arrow SVG approach for pixel-perfect border alignment across color modes.
+
+### Patch Changes
+
+- 50dae6f: fix(kumo): updated version in package.json (unintentionally downgraded)
+
 ## 0.5.0
 
 ### Minor Changes
