@@ -1,5 +1,25 @@
 # @cloudflare/kumo
 
+## 0.7.0
+
+### Minor Changes
+
+- d04c91f: Ship component registry with @cloudflare/kumo module
+- 0e246bf: feat(popover): Add new Popover component
+
+  Adds a new Popover component based on Base UI's popover primitive. The Popover provides an accessible popup anchored to a trigger element, with support for:
+  - Compound component API: `Popover`, `Popover.Trigger`, `Popover.Content`, `Popover.Title`, `Popover.Description`, `Popover.Close`
+  - Positioning options: `side` (top, bottom, left, right), `align` (start, center, end), `sideOffset`
+  - Click-to-open by default, with optional `openOnHover` behavior
+  - Controlled mode via `open` and `onOpenChange` props
+  - Visual styling matching the updated Tooltip component (surface-aware background, proper light/dark mode support)
+
+### Patch Changes
+
+- d04c91f: Migrate documentation site from React Router (`kumo-docs`) to Astro (`kumo-docs-astro`) as the primary docs platform, consolidate CI/CD pipelines, and add version display features.
+
+  Bump node to v24.12.0
+
 ## 0.6.0
 
 ### Minor Changes
