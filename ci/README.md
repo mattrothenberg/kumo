@@ -23,13 +23,14 @@ On merge to main, both the documentation site and Storybook are automatically de
 
 | Package                     | Worker                   | URL                             |
 | --------------------------- | ------------------------ | ------------------------------- |
-| `packages/kumo-docs`        | `kumo-docs-staging`      | `staging.kumo-ui.com`           |
+| `packages/kumo-docs-astro`  | `kumo-docs-staging`      | `staging.kumo-ui.com`           |
 | `packages/kumo` (Storybook) | `kumo-storybook-staging` | `storybook.staging.kumo-ui.com` |
 
 ### Kumo Docs Staging
 
 ```bash
 # What happens on main merge:
+cd packages/kumo-docs-astro
 wrangler deploy --env staging
 ```
 
@@ -64,7 +65,7 @@ wrangler versions upload --message "Preview for <sha>"
 Preview URLs must be enabled in the Cloudflare dashboard for preview deployments to work:
 
 1. Go to **Workers & Pages** in the Cloudflare dashboard
-2. Select your Worker (`kumo-docs` or `kumo-storybook`)
+2. Select your Worker (`kumo-docs-astro`, `kumo-docs`, or `kumo-storybook`)
 3. Navigate to **Settings** > **Domains & Routes**
 4. Under **Preview URLs**, click **Enable**
 
@@ -195,17 +196,21 @@ ci/
 │   ├── index.ts                 # Reporter registry and exports
 │   ├── types.ts                 # Interfaces and utilities
 │   ├── npm-release.ts           # NPM release reporter
-│   └── storybook-preview.ts     # Storybook preview reporter
+│   ├── storybook-preview.ts     # Storybook preview reporter
+│   └── kumo-docs-preview.ts     # Kumo docs preview reporter
 ├── scripts/
 │   ├── post-mr-report.ts        # Collects artifacts and posts MR comment
 │   ├── write-npm-report.ts      # Writes NPM release artifact
 │   ├── write-storybook-report.ts # Writes Storybook artifact
+│   ├── write-kumo-docs-report.ts # Writes Kumo docs artifact
 │   └── create-release-mr.ts     # Creates production release MRs
 ├── utils/
 │   ├── gitlab-api.ts            # GitLab API utilities
 │   └── mr-reporter.ts           # MR comment building and posting
 └── versioning/
-    ├── deploy-storybook-preview.sh  # Preview deployment script
+    ├── deploy-storybook-preview.sh  # Storybook preview deployment script
+    ├── deploy-kumo-docs-preview.sh  # Kumo docs preview deployment script
+    ├── deploy-kumo-docs-staging.sh  # Kumo docs staging deployment script
     ├── publish-beta.sh              # Beta publish script
     └── release-production.sh        # Production release script
 ```

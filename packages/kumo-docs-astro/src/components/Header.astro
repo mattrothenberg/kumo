@@ -1,5 +1,8 @@
 ---
-// Static header component
+// Static header component with version info
+declare const __KUMO_VERSION__: string;
+
+const kumoVersion = typeof __KUMO_VERSION__ !== "undefined" ? __KUMO_VERSION__ : "dev";
 ---
 
 <header
@@ -8,6 +11,11 @@
   <div
     class="mx-auto flex h-12 items-center border-r border-border px-4"
   >
-    <p class="ml-auto font-mono text-base text-muted">@cloudflare/kumo</p>
+    <p class="ml-auto font-mono text-base text-muted">
+      @cloudflare/kumo
+      <span class="ml-1 rounded bg-secondary px-1.5 py-0.5 text-xs text-label">
+        v{kumoVersion}
+      </span>
+    </p>
   </div>
 </header>

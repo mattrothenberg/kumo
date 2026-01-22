@@ -160,6 +160,9 @@
       "types": "./dist/src/layouts/resource-list/index.d.ts",
       "import": "./dist/layouts/resource-list.js"
     },
+    "./ai/component-registry.json": {
+      "import": "./ai/component-registry.json"
+    },
     "./components/radio": {
       "types": "./dist/src/components/radio/index.d.ts",
       "import": "./dist/components/radio.js"

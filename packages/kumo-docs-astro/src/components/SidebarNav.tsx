@@ -18,29 +18,31 @@ const staticPages: NavItem[] = [
 ];
 
 const componentItems: NavItem[] = [
-  { label: "Text", href: "/components/text" },
-  { label: "Button", href: "/components/button" },
   { label: "Badge", href: "/components/badge" },
   { label: "Banner", href: "/components/banner" },
+  { label: "Button", href: "/components/button" },
   { label: "Checkbox", href: "/components/checkbox" },
   { label: "Clipboard Text", href: "/components/clipboard-text" },
   { label: "Code", href: "/components/code" },
+  { label: "Collapsible", href: "/components/collapsible" },
   { label: "Combobox", href: "/components/combobox" },
   { label: "Dialog", href: "/components/dialog" },
   { label: "Dropdown", href: "/components/dropdown" },
-  { label: "Collapsible", href: "/components/collapsible" },
   { label: "Input", href: "/components/input" },
   { label: "Label", href: "/components/label" },
-  { label: "Sensitive Input", href: "/components/sensitive-input" },
   { label: "Layer Card", href: "/components/layer-card" },
   { label: "Loader", href: "/components/loader" },
   { label: "MenuBar", href: "/components/menubar" },
   { label: "Popover", href: "/components/popover" },
   { label: "Radio", href: "/components/radio" },
   { label: "Select", href: "/components/select" },
+  { label: "Sensitive Input", href: "/components/sensitive-input" },
   { label: "Skeleton Line", href: "/components/skeleton-line" },
   { label: "Surface", href: "/components/surface" },
   { label: "Switch", href: "/components/switch" },
+  { label: "Table", href: "/components/table" },
+  { label: "Tabs", href: "/components/tabs" },
+  { label: "Text", href: "/components/text" },
   { label: "Tooltip", href: "/components/tooltip" },
 ];
 
@@ -53,6 +55,11 @@ const blockItems: NavItem[] = [
 const layoutItems: NavItem[] = [
   { label: "Resource List", href: "/layouts/resource-list" },
 ];
+
+// Build info injected via Vite define in astro.config.mjs
+declare const __DOCS_VERSION__: string;
+declare const __BUILD_COMMIT__: string;
+declare const __BUILD_DATE__: string;
 
 const LI_STYLE =
   "block rounded-lg text-label hover:text-surface hover:bg-subtle p-2 my-[.05rem] cursor-pointer transition-colors no-underline relative z-10";
@@ -285,7 +292,7 @@ export function SidebarNav({ currentPath }: SidebarNavProps) {
         {/* Version badge at bottom of sidebar */}
         <div className="flex-none border-t border-border p-3 text-xs text-muted">
           <span title={`Built: ${__BUILD_DATE__}`}>
-            v{__BUILD_VERSION__} ({__BUILD_COMMIT__})
+            docs v{__DOCS_VERSION__} ({__BUILD_COMMIT__})
           </span>
         </div>
       </aside>
