@@ -2,7 +2,6 @@
 import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
-import pagefind from "./integrations/pagefind";
 import { execSync } from "child_process";
 import { readFileSync } from "fs";
 import { resolve } from "path";
@@ -59,7 +58,7 @@ const buildInfo = getBuildInfo();
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [react(), pagefind()],
+  integrations: [react()],
   vite: {
     // @ts-expect-error - Vite version mismatch between Astro and @tailwindcss/vite
     plugins: [tailwindcss()],
