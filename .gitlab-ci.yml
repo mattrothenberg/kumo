@@ -34,23 +34,11 @@ include:
       runOnMR: true
       runOnBranches: "^main$"
 
-  # Build @cloudflare/kumo-docs
+  # Build @cloudflare/kumo-docs-astro (primary documentation site)
   - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/build@~latest
     inputs:
       stage: build
       jobPrefix: build-kumo-docs
-      PNPM_VERSION: *PNPM_VERSION
-      NODE_VERSION: *NODE_VERSION
-      workDir: "packages/kumo-docs"
-      artifactDir: "build"
-      runOnMR: true
-      runOnBranches: "^main$"
-
-  # Build @cloudflare/kumo-docs-astro
-  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/build@~latest
-    inputs:
-      stage: build
-      jobPrefix: build-kumo-docs-astro
       PNPM_VERSION: *PNPM_VERSION
       NODE_VERSION: *NODE_VERSION
       workDir: "packages/kumo-docs-astro"
@@ -164,7 +152,7 @@ include:
       PNPM_RUN_TARGET: "publish:beta"
       runOnMR: true
 
-  # ============= BETA PREVIEW STAGE (Deploys Storybook preview) =============
+  # ============= BETA PREVIEW STAGE (Deploys Storybook and Docs previews) =============
 
   # Storybook preview deployment
   - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
@@ -176,7 +164,7 @@ include:
       PNPM_RUN_TARGET: "deploy:storybook-preview"
       runOnMR: true
 
-  # Kumo docs preview deployment
+  # Kumo docs preview deployment (Astro)
   - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
     inputs:
       stage: beta-preview
@@ -184,16 +172,6 @@ include:
       PNPM_VERSION: *PNPM_VERSION
       NODE_VERSION: *NODE_VERSION
       PNPM_RUN_TARGET: "deploy:kumo-docs-preview"
-      runOnMR: true
-
-  # Kumo docs astro preview deployment
-  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
-    inputs:
-      stage: beta-preview
-      jobPrefix: deploy-kumo-docs-astro-preview
-      PNPM_VERSION: *PNPM_VERSION
-      NODE_VERSION: *NODE_VERSION
-      PNPM_RUN_TARGET: "deploy:kumo-docs-astro-preview"
       runOnMR: true
 
   # ============= MR REPORT STAGE (Posts consolidated MR comment) =============
@@ -221,7 +199,7 @@ include:
       runOnMR: false
       runOnBranches: "^main$"
 
-  # Kumo docs staging deployment
+  # Kumo docs staging deployment (Astro)
   - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
     inputs:
       stage: production-release
@@ -253,13 +231,8 @@ include:
 
 # ============= Job overrides for dependencies and additional configuration =============
 
-# kumo-docs depends on kumo being built first (imports from @cloudflare/kumo)
+# kumo-docs (Astro) depends on kumo being built first (imports from @cloudflare/kumo)
 build-kumo-docs-build:
-  needs:
-    - build-kumo-build
-
-# kumo-docs-astro depends on kumo being built first (imports from @cloudflare/kumo)
-build-kumo-docs-astro-build:
   needs:
     - build-kumo-build
 
@@ -355,31 +328,6 @@ deploy-kumo-docs-preview-run:
     - if: $CI_MERGE_REQUEST_IID
       changes:
         paths:
-          - packages/kumo-docs/**/*
-          - packages/kumo/**/*
-        compare_to: "refs/heads/main"
-      when: on_success
-    - when: never
-  artifacts:
-    paths:
-      - ci/reports/
-    expire_in: 1 day
-  secrets:
-    CLOUDFLARE_API_TOKEN:
-      vault: gitlab/cloudflare/fe/kumo/_dev/cloudflare_api_token/data@kv
-      file: false
-    CLOUDFLARE_ACCOUNT_ID:
-      vault: gitlab/cloudflare/fe/kumo/_dev/cloudflare_account_id/data@kv
-      file: false
-
-deploy-kumo-docs-astro-preview-run:
-  needs:
-    - job: build-kumo-build
-      artifacts: true
-  rules:
-    - if: $CI_MERGE_REQUEST_IID
-      changes:
-        paths:
           - packages/kumo-docs-astro/**/*
           - packages/kumo/**/*
         compare_to: "refs/heads/main"
@@ -408,15 +356,11 @@ post-mr-report-run:
     - job: deploy-kumo-docs-preview-run
       artifacts: true
       optional: true
-    - job: deploy-kumo-docs-astro-preview-run
-      artifacts: true
-      optional: true
   rules:
     - if: $CI_MERGE_REQUEST_IID
       changes:
         paths:
           - packages/kumo/**/*
-          - packages/kumo-docs/**/*
           - packages/kumo-docs-astro/**/*
         compare_to: "refs/heads/main"
       when: on_success

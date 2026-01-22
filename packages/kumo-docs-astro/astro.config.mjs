@@ -11,9 +11,14 @@ import { fileURLToPath } from "url";
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
 function getBuildInfo() {
-  // Read version from the main kumo package, not kumo-docs-astro
+  // Read version from the main kumo package
   const kumoPkg = JSON.parse(
     readFileSync(resolve(__dirname, "../kumo/package.json"), "utf-8"),
+  );
+
+  // Read version from the docs-astro package
+  const docsPkg = JSON.parse(
+    readFileSync(resolve(__dirname, "package.json"), "utf-8"),
   );
 
   let commitHash = "unknown";
@@ -41,7 +46,8 @@ function getBuildInfo() {
   }
 
   return {
-    version: kumoPkg.version,
+    kumoVersion: kumoPkg.version,
+    docsVersion: docsPkg.version,
     commitHash,
     commitDate,
     branch,
@@ -67,7 +73,9 @@ export default defineConfig({
       },
     },
     define: {
-      __BUILD_VERSION__: JSON.stringify(buildInfo.version),
+      __KUMO_VERSION__: JSON.stringify(buildInfo.kumoVersion),
+      __DOCS_VERSION__: JSON.stringify(buildInfo.docsVersion),
+      __BUILD_VERSION__: JSON.stringify(buildInfo.kumoVersion), // Alias for backwards compatibility
       __BUILD_COMMIT__: JSON.stringify(buildInfo.commitHash),
       __BUILD_COMMIT_DATE__: JSON.stringify(buildInfo.commitDate),
       __BUILD_BRANCH__: JSON.stringify(buildInfo.branch),

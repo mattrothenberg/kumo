@@ -62,8 +62,6 @@ export interface CIContext {
   storybookPreviewUrl?: string;
   /** Kumo docs preview URL (if deployed) */
   kumoDocsPreviewUrl?: string;
-  /** Kumo docs Astro preview URL (if deployed) */
-  kumoDocsAstroPreviewUrl?: string;
   /** Allow additional context to be passed */
   [key: string]: string | undefined;
 }
@@ -99,7 +97,6 @@ export function buildContextFromEnv(): CIContext {
     packageVersion: process.env.PACKAGE_VERSION ?? "",
     storybookPreviewUrl: process.env.STORYBOOK_PREVIEW_URL,
     kumoDocsPreviewUrl: process.env.KUMO_DOCS_PREVIEW_URL,
-    kumoDocsAstroPreviewUrl: process.env.KUMO_DOCS_ASTRO_PREVIEW_URL,
   };
 }
 

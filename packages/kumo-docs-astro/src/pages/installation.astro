@@ -4,6 +4,11 @@ import DocLayout from "../layouts/DocLayout.astro";
 import ComponentSection from "../components/docs/ComponentSection.astro";
 import CodeBlock from "../components/docs/CodeBlock.astro";
 import Callout from "../components/docs/Callout.astro";
+
+// Build info injected via Vite define in astro.config.mjs
+declare const __KUMO_VERSION__: string;
+
+const kumoVersion = typeof __KUMO_VERSION__ !== "undefined" ? __KUMO_VERSION__ : "latest";
 ---
 
 <DocLayout
@@ -47,26 +52,27 @@ import Callout from "../components/docs/Callout.astro";
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Install Package</h2>
     <p class="mb-4 text-label">
-      Install Kumo using your preferred package manager:
+      Install Kumo using your preferred package manager. The current version is{" "}
+      <code class="rounded bg-secondary px-1.5 py-0.5 text-sm font-semibold">v{kumoVersion}</code>.
     </p>
     <div class="space-y-4">
       <div>
         <p class="mb-2 text-sm font-medium text-surface">
           npm
         </p>
-        <CodeBlock code={`npm install @cloudflare/kumo`} lang="bash" />
+        <CodeBlock code={`npm install @cloudflare/kumo@${kumoVersion}`} lang="bash" />
       </div>
       <div>
         <p class="mb-2 text-sm font-medium text-surface">
           pnpm
         </p>
-        <CodeBlock code={`pnpm add @cloudflare/kumo`} lang="bash" />
+        <CodeBlock code={`pnpm add @cloudflare/kumo@${kumoVersion}`} lang="bash" />
       </div>
       <div>
         <p class="mb-2 text-sm font-medium text-surface">
           yarn
         </p>
-        <CodeBlock code={`yarn add @cloudflare/kumo`} lang="bash" />
+        <CodeBlock code={`yarn add @cloudflare/kumo@${kumoVersion}`} lang="bash" />
       </div>
     </div>
     <div class="mt-4">

@@ -21,10 +21,10 @@ echo "🔨 Building @cloudflare/kumo library..."
 pnpm --filter @cloudflare/kumo build
 
 echo "🔨 Building kumo-docs..."
-pnpm --filter @cloudflare/kumo-docs build
+pnpm --filter @cloudflare/kumo-docs-astro build
 
 echo "🚀 Uploading version to kumo-docs worker..."
-cd packages/kumo-docs
+cd packages/kumo-docs-astro
 echo "  Using wrangler version: $(npx wrangler --version)"
 
 # Upload version - capture output regardless of exit code

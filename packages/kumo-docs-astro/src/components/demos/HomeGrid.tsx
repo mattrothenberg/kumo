@@ -10,12 +10,14 @@ import {
   DropdownMenu,
   Tooltip,
   TooltipProvider,
+  MenuBar,
   Toasty,
   Toast,
   Collapsible,
   Combobox,
   CodeBlock,
   Banner,
+  DateRangePicker,
   Loader,
   Badge,
   SkeletonLine,
@@ -27,15 +29,12 @@ import {
 } from "@cloudflare/kumo";
 import {
   PlusIcon,
+  TextBolderIcon,
+  TextItalicIcon,
+  TranslateIcon,
   WarningIcon,
   WarningOctagonIcon,
 } from "@phosphor-icons/react";
-
-interface ComponentItem {
-  name: string;
-  id: string;
-  route: string | null;
-}
 
 const componentRoutes: Record<string, string> = {
   button: "/components/button",
@@ -55,6 +54,7 @@ const componentRoutes: Record<string, string> = {
   code: "/components/code",
   banner: "/components/banner",
   badge: "/components/badge",
+  menubar: "/components/menubar",
   tabs: "/components/tabs",
 };
 
@@ -204,6 +204,9 @@ export function HomeGrid() {
           <div className="flex gap-2">
             <Tooltip content="Add" asChild open>
               <Button shape="square" icon={PlusIcon} />
+            </Tooltip>
+            <Tooltip content="Change language" asChild>
+              <Button shape="square" icon={TranslateIcon} />
             </Tooltip>
           </div>
         </TooltipProvider>
@@ -359,6 +362,29 @@ export function HomeGrid() {
         <div className="w-full px-4">
           <Meter value={75} label="My meter" customValue="100 / 5,000" />
         </div>
+      ),
+    },
+    {
+      name: "MenuBar",
+      id: "menubar",
+      Component: (
+        <MenuBar
+          isActive={0}
+          options={[
+            { icon: <TextBolderIcon />, onClick: () => {}, tooltip: "Bold" },
+            { icon: <TextItalicIcon />, onClick: () => {}, tooltip: "Italic" },
+          ]}
+        />
+      ),
+    },
+    {
+      name: "DateRangePicker",
+      id: "date-range-picker",
+      Component: (
+        <DateRangePicker
+          onStartDateChange={() => {}}
+          onEndDateChange={() => {}}
+        />
       ),
     },
   ];

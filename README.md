@@ -20,12 +20,13 @@ kumo/
 │   │   ├── dist/                  # Build output
 │   │   ├── .storybook/            # Storybook configuration
 │   │   └── package.json
-│   └── kumo-docs/                 # Documentation site
-│       ├── app/                   # React Router application
-│       ├── workers/               # Cloudflare Workers
-│       ├── public/                # Static assets
+│   ├── kumo-docs-astro/           # Documentation site (Astro)
+│   │   ├── src/                   # Astro pages and components
+│   │   ├── dist/                  # Build output
+│   │   └── package.json
+│   └── figma/                     # Figma plugin package
 │       └── package.json
-├── _docs/                         # Migration documentation
+├── ci/                            # CI/CD scripts and versioning
 ├── pnpm-workspace.yaml
 └── package.json                   # Workspace root
 ```
@@ -242,7 +243,7 @@ pnpm build:all
 
 # Run command in specific package
 pnpm --filter @cloudflare/kumo build
-pnpm --filter @cloudflare/kumo-docs dev
+pnpm --filter @cloudflare/kumo-docs-astro dev
 
 # Add dependency to specific package
 pnpm --filter @cloudflare/kumo add react
@@ -262,25 +263,25 @@ The monorepo contains two packages with different development characteristics:
 - Outputs to `dist/` for consumption by docs site
 - Includes Storybook for component development
 
-**@cloudflare/kumo-docs** (`packages/kumo-docs/`)
+**@cloudflare/kumo-docs-astro** (`packages/kumo-docs-astro/`)
 
-- Documentation site built with React Router + Vite
-- Full HMR with React Fast Refresh
-- Runs at `http://localhost:5173`
+- Documentation site built with Astro
+- Full HMR with fast refresh
+- Runs at `http://localhost:4321`
 
 ### Running the Documentation Site
 
-Start the kumo-docs development server:
+Start the kumo-docs-astro development server:
 
 ```bash
 # From workspace root
 pnpm dev
 
 # Or target the specific package
-pnpm --filter @cloudflare/kumo-docs dev
+pnpm --filter @cloudflare/kumo-docs-astro dev
 ```
 
-The documentation site runs at `http://localhost:5173`.
+The documentation site runs at `http://localhost:4321`.
 
 ### Running Storybook
 
@@ -329,10 +330,10 @@ cd packages/kumo
 pnpm dev
 ```
 
-**Terminal 2: Start kumo-docs dev server**
+**Terminal 2: Start kumo-docs-astro dev server**
 
 ```bash
-cd packages/kumo-docs
+cd packages/kumo-docs-astro
 pnpm dev
 ```
 
@@ -358,9 +359,9 @@ For docs-only work (no component changes needed):
 pnpm dev
 ```
 
-- ✅ Full HMR with React Fast Refresh
+- ✅ Full HMR with fast refresh
 - ✅ Changes reflect instantly without page reload
-- ✅ Runs at `http://localhost:5173`
+- ✅ Runs at `http://localhost:4321`
 
 #### Testing Components
 

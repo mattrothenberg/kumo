@@ -9,6 +9,7 @@ import Callout from "../components/docs/Callout.astro";
   title="Contributing"
   description="Learn how to contribute to Kumo by adding new components and features."
 >
+  <!-- Overview -->
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Contributing to Kumo</h2>
     <p class="mb-4 text-label">
@@ -17,19 +18,14 @@ import Callout from "../components/docs/Callout.astro";
     </p>
   </ComponentSection>
 
+  <!-- Components vs Blocks vs Layouts -->
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Components vs Blocks vs Layouts</h2>
     <div class="mb-4 grid gap-6 md:grid-cols-3">
-      <div
-        class="rounded-lg border border-border bg-surface p-4"
-      >
+      <div class="rounded-lg border border-border bg-surface p-4">
         <h3 class="mb-2 text-lg font-semibold">Components</h3>
-        <p class="mb-3 text-sm text-label">
-          Atomic, reusable UI elements
-        </p>
-        <ul
-          class="list-inside list-disc space-y-1 text-sm text-surface"
-        >
+        <p class="mb-3 text-sm text-label">Atomic, reusable UI elements</p>
+        <ul class="list-inside list-disc space-y-1 text-sm text-surface">
           <li>Single responsibility</li>
           <li>Highly reusable</li>
           <li>Minimal dependencies</li>
@@ -39,16 +35,10 @@ import Callout from "../components/docs/Callout.astro";
           Examples: Button, Input, Badge, Tabs
         </p>
       </div>
-      <div
-        class="rounded-lg border border-border bg-surface p-4"
-      >
+      <div class="rounded-lg border border-border bg-surface p-4">
         <h3 class="mb-2 text-lg font-semibold">Blocks</h3>
-        <p class="mb-3 text-sm text-label">
-          Composed patterns for page layouts
-        </p>
-        <ul
-          class="list-inside list-disc space-y-1 text-sm text-surface"
-        >
+        <p class="mb-3 text-sm text-label">Composed patterns for page layouts</p>
+        <ul class="list-inside list-disc space-y-1 text-sm text-surface">
           <li>Compose multiple components</li>
           <li>Implement common patterns</li>
           <li>Layout-focused</li>
@@ -58,16 +48,10 @@ import Callout from "../components/docs/Callout.astro";
           Examples: Breadcrumbs, PageHeader, Empty
         </p>
       </div>
-      <div
-        class="rounded-lg border border-border bg-surface p-4"
-      >
+      <div class="rounded-lg border border-border bg-surface p-4">
         <h3 class="mb-2 text-lg font-semibold">Layouts</h3>
-        <p class="mb-3 text-sm text-label">
-          Page-level structure patterns
-        </p>
-        <ul
-          class="list-inside list-disc space-y-1 text-sm text-surface"
-        >
+        <p class="mb-3 text-sm text-label">Page-level structure patterns</p>
+        <ul class="list-inside list-disc space-y-1 text-sm text-surface">
           <li>Full-page composition</li>
           <li>Consistent structure</li>
           <li>Responsive patterns</li>
@@ -80,6 +64,7 @@ import Callout from "../components/docs/Callout.astro";
     </div>
   </ComponentSection>
 
+  <!-- Component Scaffolding -->
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Creating New Components</h2>
     <p class="mb-4 text-label">
@@ -89,27 +74,303 @@ import Callout from "../components/docs/Callout.astro";
     </p>
 
     <h3 class="mb-3 mt-6 text-xl font-semibold">Run the Scaffolding Tool</h3>
-    <p class="mb-4 text-label">
-      From the workspace root, run:
-    </p>
+    <p class="mb-4 text-label">From the workspace root, run:</p>
     <CodeBlock
       code={`pnpm --filter @cloudflare/kumo new-component`}
       lang="bash"
     />
-
-    <h3 class="mb-3 mt-6 text-xl font-semibold">For Blocks</h3>
-    <CodeBlock code={`pnpm --filter @cloudflare/kumo new-block`} lang="bash" />
-
-    <h3 class="mb-3 mt-6 text-xl font-semibold">For Layouts</h3>
-    <CodeBlock code={`pnpm --filter @cloudflare/kumo new-layout`} lang="bash" />
   </ComponentSection>
 
+  <!-- What It Does -->
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">What the Scaffolding Tool Does</h2>
+    <p class="mb-4 text-label">
+      The tool automatically creates and updates several files:
+    </p>
+    <ul class="mb-4 list-inside list-disc space-y-2 text-surface">
+      <li>
+        <strong>Component file</strong> - <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm"
+          >src/components/{"{name}"}/{"{name}"}.tsx</code
+        >
+      </li>
+      <li>
+        <strong>Index file</strong> - <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm"
+          >src/components/{"{name}"}/index.ts</code
+        >
+      </li>
+      <li>
+        <strong>Story file</strong> - <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm"
+          >src/components/{"{name}"}/{"{name}"}.stories.tsx</code
+        >
+      </li>
+      <li>
+        <strong>Test file</strong> - <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm"
+          >src/components/{"{name}"}/{"{name}"}.test.tsx</code
+        >
+      </li>
+      <li>
+        <strong>Main exports</strong> - Updates <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm">src/index.ts</code
+        >
+      </li>
+      <li>
+        <strong>Build config</strong> - Updates <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm">vite.config.ts</code
+        >
+      </li>
+      <li>
+        <strong>Package exports</strong> - Updates <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm">package.json</code
+        >
+      </li>
+    </ul>
+  </ComponentSection>
+
+  <!-- Example -->
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Example</h2>
+    <p class="mb-4 text-label">
+      Here's what the scaffolding process looks like:
+    </p>
+    <CodeBlock
+      code={`? Component name: Alert Banner
+
+✅ Component scaffolded successfully!
+
+📁 Files created:
+   - src/components/alert-banner/alert-banner.tsx
+   - src/components/alert-banner/index.ts
+   - src/components/alert-banner/alert-banner.stories.tsx
+   - src/components/alert-banner/alert-banner.test.tsx
+
+📝 Files updated:
+   - src/index.ts
+   - vite.config.ts
+   - package.json
+
+💡 Import examples:
+   import { AlertBanner } from "@cloudflare/kumo";
+   import { AlertBanner } from "@cloudflare/kumo/components/alert-banner";`}
+      lang="bash"
+    />
+  </ComponentSection>
+
+  <!-- Naming -->
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Component Naming</h2>
+    <p class="mb-4 text-label">
+      The scaffolding tool handles naming automatically. You can input the name
+      in any format:
+    </p>
+    <ul class="mb-4 list-inside list-disc space-y-2 text-surface">
+      <li>
+        <strong>Spaces</strong> - "Alert Banner" → <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm">alert-banner</code
+        > directory, <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+          >AlertBanner</code
+        > component
+      </li>
+      <li>
+        <strong>PascalCase</strong> - "AlertBanner" → <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm">alert-banner</code
+        > directory, <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+          >AlertBanner</code
+        > component
+      </li>
+      <li>
+        <strong>kebab-case</strong> - "alert-banner" → <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm">alert-banner</code
+        > directory, <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+          >AlertBanner</code
+        > component
+      </li>
+    </ul>
+  </ComponentSection>
+
+  <!-- Block Scaffolding -->
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Creating New Blocks</h2>
+    <p class="mb-4 text-label">
+      Blocks are higher-level components that compose multiple base components.
+      Use the block scaffolding tool to create them:
+    </p>
+
+    <h3 class="mb-3 mt-6 text-xl font-semibold">Run the Block Scaffolding Tool</h3>
+    <p class="mb-4 text-label">From the workspace root, run:</p>
+    <CodeBlock code={`pnpm --filter @cloudflare/kumo new-block`} lang="bash" />
+
+    <h3 class="mb-3 mt-6 text-xl font-semibold">What It Creates</h3>
+    <p class="mb-4 text-label">
+      The block scaffolding tool creates the same structure as components, but
+      in the <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+        >src/blocks</code
+      > directory:
+    </p>
+    <ul class="mb-4 list-inside list-disc space-y-2 text-surface">
+      <li>
+        <strong>Block file</strong> - <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm"
+          >src/blocks/{"{name}"}/{"{name}"}.tsx</code
+        >
+      </li>
+      <li>
+        <strong>Index file</strong> - <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm"
+          >src/blocks/{"{name}"}/index.ts</code
+        >
+      </li>
+      <li>
+        <strong>Story file</strong> - <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm"
+          >src/blocks/{"{name}"}/{"{name}"}.stories.tsx</code
+        >
+      </li>
+      <li>
+        <strong>Test file</strong> - <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm"
+          >src/blocks/{"{name}"}/{"{name}"}.test.tsx</code
+        >
+      </li>
+      <li>
+        <strong>Main exports</strong> - Updates <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm">src/index.ts</code
+        > (Blocks section)
+      </li>
+      <li>
+        <strong>Build config</strong> - Updates <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm">vite.config.ts</code
+        >
+      </li>
+      <li>
+        <strong>Package exports</strong> - Updates <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm">package.json</code
+        >
+      </li>
+    </ul>
+
+    <h3 class="mb-3 mt-6 text-xl font-semibold">Example</h3>
+    <CodeBlock
+      code={`? Block name: Navigation Bar
+
+✅ Block scaffolded successfully!
+
+📁 Files created:
+   - src/blocks/navigation-bar/navigation-bar.tsx
+   - src/blocks/navigation-bar/index.ts
+   - src/blocks/navigation-bar/navigation-bar.stories.tsx
+   - src/blocks/navigation-bar/navigation-bar.test.tsx
+
+📝 Files updated:
+   - src/index.ts
+   - vite.config.ts
+   - package.json
+
+💡 Import examples:
+   import { NavigationBar } from "@cloudflare/kumo";
+   import { NavigationBar } from "@cloudflare/kumo/blocks/navigation-bar";`}
+      lang="bash"
+    />
+  </ComponentSection>
+
+  <!-- Layout Scaffolding -->
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Creating New Layouts</h2>
+    <p class="mb-4 text-label">
+      Layouts are page-level components that provide consistent structure for
+      common page patterns. Use the layout scaffolding tool:
+    </p>
+
+    <h3 class="mb-3 mt-6 text-xl font-semibold">Run the Layout Scaffolding Tool</h3>
+    <p class="mb-4 text-label">From the workspace root, run:</p>
+    <CodeBlock code={`pnpm --filter @cloudflare/kumo new-layout`} lang="bash" />
+
+    <h3 class="mb-3 mt-6 text-xl font-semibold">What It Creates</h3>
+    <p class="mb-4 text-label">
+      The layout scaffolding tool creates the same structure as components and
+      blocks, but in the <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+        >src/layouts</code
+      > directory:
+    </p>
+    <ul class="mb-4 list-inside list-disc space-y-2 text-surface">
+      <li>
+        <strong>Layout file</strong> - <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm"
+          >src/layouts/{"{name}"}/{"{name}"}.tsx</code
+        >
+      </li>
+      <li>
+        <strong>Index file</strong> - <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm"
+          >src/layouts/{"{name}"}/index.ts</code
+        >
+      </li>
+      <li>
+        <strong>Story file</strong> - <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm"
+          >src/layouts/{"{name}"}/{"{name}"}.stories.tsx</code
+        >
+      </li>
+      <li>
+        <strong>Test file</strong> - <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm"
+          >src/layouts/{"{name}"}/{"{name}"}.test.tsx</code
+        >
+      </li>
+      <li>
+        <strong>Main exports</strong> - Updates <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm">src/index.ts</code
+        > (Layouts section)
+      </li>
+      <li>
+        <strong>Build config</strong> - Updates <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm">vite.config.ts</code
+        >
+      </li>
+      <li>
+        <strong>Package exports</strong> - Updates <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm">package.json</code
+        >
+      </li>
+    </ul>
+
+    <h3 class="mb-3 mt-6 text-xl font-semibold">Example</h3>
+    <CodeBlock
+      code={`? Layout name: Dashboard Page
+
+✅ Layout scaffolded successfully!
+
+📁 Files created:
+   - src/layouts/dashboard-page/dashboard-page.tsx
+   - src/layouts/dashboard-page/index.ts
+   - src/layouts/dashboard-page/dashboard-page.stories.tsx
+   - src/layouts/dashboard-page/dashboard-page.test.tsx
+
+📝 Files updated:
+   - src/index.ts
+   - vite.config.ts
+   - package.json
+
+💡 Import examples:
+   import { DashboardPage } from "@cloudflare/kumo";
+   import { DashboardPage } from "@cloudflare/kumo/layouts/dashboard-page";`}
+      lang="bash"
+    />
+  </ComponentSection>
+
+  <!-- Development Workflow -->
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Development Workflow</h2>
+    <p class="mb-4 text-label">
+      After scaffolding a component, block, or layout, choose your development
+      approach:
+    </p>
+
     <div class="mb-6 grid gap-6 md:grid-cols-2">
-      <div
-        class="rounded-lg border border-info-border bg-info-surface p-4"
-      >
+      <div class="rounded-lg border border-info-border bg-info-surface p-4">
         <h3 class="mb-2 text-lg font-semibold text-surface">
           Option 1: Storybook (Recommended)
         </h3>
@@ -117,9 +378,7 @@ import Callout from "../components/docs/Callout.astro";
           Best for isolated component development with instant feedback
         </p>
         <CodeBlock code={`pnpm storybook`} lang="bash" />
-        <ul
-          class="mt-3 list-inside list-disc space-y-1 text-sm text-surface"
-        >
+        <ul class="mt-3 list-inside list-disc space-y-1 text-sm text-surface">
           <li>Full HMR with React Fast Refresh</li>
           <li>Changes reflect instantly</li>
           <li>Interactive component testing</li>
@@ -127,9 +386,7 @@ import Callout from "../components/docs/Callout.astro";
         </ul>
       </div>
 
-      <div
-        class="rounded-lg border border-border bg-surface-2 p-4"
-      >
+      <div class="rounded-lg border border-border bg-surface-2 p-4">
         <h3 class="mb-2 text-lg font-semibold">Option 2: Watch Build</h3>
         <p class="mb-3 text-sm text-label">
           For testing components in the documentation site
@@ -142,57 +399,333 @@ pnpm --filter @cloudflare/kumo dev
 pnpm --filter @cloudflare/kumo-docs dev`}
           lang="bash"
         />
+        <ul class="mt-3 list-inside list-disc space-y-1 text-sm text-surface">
+          <li>Fast rebuild time</li>
+          <li>Validates bundle exports/imports</li>
+          <li>Tests actual build output</li>
+        </ul>
       </div>
     </div>
-  </ComponentSection>
 
-  <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Component Guidelines</h2>
-    <ul
-      class="list-inside list-disc space-y-2 text-surface"
-    >
+    <h3 class="mb-3 mt-6 text-xl font-semibold">Implementation Steps</h3>
+    <ol class="list-inside list-decimal space-y-3 text-surface">
       <li>
-        <strong>Accessibility</strong> - Include proper ARIA attributes and keyboard
-        navigation
+        <strong>Implement the component/block/layout</strong>
+        <p class="ml-6 mt-1 text-label">
+          Edit the generated <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+            >.tsx</code
+          > file. Start Storybook for rapid iteration with instant HMR.
+        </p>
       </li>
       <li>
-        <strong>TypeScript</strong> - Export prop types and use proper type annotations
+        <strong>Create stories</strong>
+        <p class="ml-6 mt-1 text-label">
+          Add a <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+            >.stories.tsx</code
+          > file to showcase component variants. Stories serve as living documentation.
+        </p>
+      </li>
+      <li>
+        <strong>Write tests</strong>
+        <p class="ml-6 mt-1 text-label">
+          Add tests to the generated <code
+            class="rounded bg-secondary px-1 py-0.5 text-sm">.test.tsx</code
+          > file. Run tests in watch mode while developing.
+        </p>
+        <div class="ml-6 mt-2">
+          <CodeBlock code={`pnpm --filter @cloudflare/kumo test`} lang="bash" />
+        </div>
+      </li>
+      <li>
+        <strong>Test in documentation site (optional)</strong>
+        <p class="ml-6 mt-1 text-label">
+          Use the two-terminal watch build setup to see your component in the
+          actual docs site. Validates production build output.
+        </p>
+      </li>
+      <li>
+        <strong>Build the package</strong>
+        <p class="ml-6 mt-1 text-label">
+          Before committing, do a full production build to ensure everything
+          works:
+        </p>
+        <div class="ml-6 mt-2">
+          <CodeBlock
+            code={`pnpm --filter @cloudflare/kumo build`}
+            lang="bash"
+          />
+        </div>
+      </li>
+      <li>
+        <strong>Add documentation</strong>
+        <p class="ml-6 mt-1 text-label">
+          Create a documentation page in <code
+            class="rounded bg-secondary px-1 py-0.5 text-sm"
+            >kumo-docs/app/routes/</code
+          > showing real-world usage examples.
+        </p>
+      </li>
+    </ol>
+  </ComponentSection>
+
+  <!-- Storybook Development -->
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Storybook Development (Recommended)</h2>
+    <p class="mb-4 text-label">
+      Storybook is the recommended way to develop components. It provides
+      instant feedback with full HMR and serves as interactive documentation.
+      Use this for 90% of your component development work.
+    </p>
+
+    <h3 class="mb-3 mt-6 text-xl font-semibold">Start Storybook</h3>
+    <CodeBlock code={`pnpm --filter @cloudflare/kumo storybook`} lang="bash" />
+    <p class="mb-4 mt-2 text-label">
+      Opens at <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+        >http://localhost:6006</code
+      > with hot module replacement enabled.
+    </p>
+
+    <h3 class="mb-3 mt-6 text-xl font-semibold">Why Storybook is Recommended</h3>
+    <ul class="mb-4 list-inside list-disc space-y-2 text-surface">
+      <li>
+        <strong>Instant HMR</strong> - Changes reflect immediately without page
+        reload
+      </li>
+      <li>
+        <strong>No build step</strong> - Components run directly from source
+      </li>
+      <li>
+        <strong>Isolated testing</strong> - Test components without running the
+        full app
+      </li>
+      <li>
+        <strong>Interactive playground</strong> - Test all variations and edge
+        cases
+      </li>
+      <li>
+        <strong>Auto-generated docs</strong> - Documentation from TypeScript types
+      </li>
+      <li>
+        <strong>Shared workflow</strong> - Same tool for designers and developers
+      </li>
+    </ul>
+
+    <h3 class="mb-3 mt-6 text-xl font-semibold">When to Use Watch Build Instead</h3>
+    <p class="mb-2 text-label">Only use the watch build mode when you need to:</p>
+    <ul class="mb-4 list-inside list-disc space-y-2 text-surface">
+      <li>
+        Test components in the actual documentation site with real content
+      </li>
+      <li>Validate production build configuration and exports</li>
+      <li>Debug issues specific to the build process</li>
+      <li>Test integration with other production features</li>
+    </ul>
+    <p class="mb-4 text-label">
+      <strong>Note:</strong> Watch build requires manual browser refresh and takes
+      ~400ms per rebuild. Use Storybook for faster iteration during component development.
+    </p>
+
+    <h3 class="mb-3 mt-6 text-xl font-semibold">Creating Stories</h3>
+    <p class="mb-4 text-label">
+      Story files live alongside components and follow the pattern <code
+        class="rounded bg-secondary px-1 py-0.5 text-sm"
+        >{"{name}"}.stories.tsx</code
+      >:
+    </p>
+    <CodeBlock
+      code={`import type { Meta, StoryObj } from '@storybook/react-vite';
+import { Button } from './button';
+
+const meta = {
+  title: 'Components/Button',
+  component: Button,
+  tags: ['autodocs'],
+} satisfies Meta<typeof Button>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Primary: Story = {
+  args: { children: 'Click me' },
+};`}
+      lang="tsx"
+    />
+
+    <h3 class="mb-3 mt-6 text-xl font-semibold">Story Organization</h3>
+    <ul class="mb-4 list-inside list-disc space-y-2 text-surface">
+      <li>
+        <strong>Components</strong> - <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm"
+          >src/components/{"{name}"}/{"{name}"}.stories.tsx</code
+        >
+      </li>
+      <li>
+        <strong>Blocks</strong> - <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm"
+          >src/blocks/{"{name}"}/{"{name}"}.stories.tsx</code
+        >
+      </li>
+      <li>
+        <strong>Layouts</strong> - <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm"
+          >src/layouts/{"{name}"}/{"{name}"}.stories.tsx</code
+        >
+      </li>
+    </ul>
+
+    <p class="mt-4 text-label">
+      <strong>Best Practice:</strong> Always create stories for new components,
+      blocks, and layouts. Stories serve as living documentation and make
+      development faster.
+    </p>
+
+    <p class="mt-4 text-label">
+      For comprehensive Storybook documentation, see <code
+        class="rounded bg-secondary px-1 py-0.5 text-sm"
+        >packages/kumo/STORYBOOK.md</code
+      >
+    </p>
+  </ComponentSection>
+
+  <!-- Testing -->
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Testing</h2>
+    <p class="mb-4 text-label">
+      The test suite automatically validates your component, block, or layout
+      configuration:
+    </p>
+    <ul class="list-inside list-disc space-y-2 text-surface">
+      <li>Main entry point exports the component/block/layout</li>
+      <li>
+        Deep import paths work correctly (<code
+          class="rounded bg-secondary px-1 py-0.5 text-sm"
+          >@cloudflare/kumo/components/*</code
+        >, <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+          >@cloudflare/kumo/blocks/*</code
+        >, or <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+          >@cloudflare/kumo/layouts/*</code
+        >)
+      </li>
+      <li>Package.json exports are properly configured</li>
+      <li>Build configuration is correct</li>
+      <li>All files exist in the correct locations</li>
+    </ul>
+    <p class="mt-4 text-label">
+      Run the test suite to ensure everything is configured correctly:
+    </p>
+    <CodeBlock code={`pnpm --filter @cloudflare/kumo test:run`} lang="bash" />
+    <p class="mt-4 text-label">
+      The tests will provide helpful error messages with exact code snippets if
+      any configuration is missing.
+    </p>
+  </ComponentSection>
+
+  <!-- Component Guidelines -->
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Component Guidelines</h2>
+    <p class="mb-4 text-label">
+      When implementing components, follow these guidelines:
+    </p>
+    <ul class="list-inside list-disc space-y-2 text-surface">
+      <li>
+        <strong>Accessibility</strong> - Include proper ARIA attributes and
+        keyboard navigation
+      </li>
+      <li>
+        <strong>TypeScript</strong> - Export prop types and use proper type
+        annotations
       </li>
       <li>
         <strong>Styling</strong> - Use Tailwind CSS classes and the <code
-          class="rounded bg-secondary px-1 py-0.5 text-sm"
-          >cn</code
+          class="rounded bg-secondary px-1 py-0.5 text-sm">cn</code
         > utility
       </li>
       <li>
-        <strong>Consistency</strong> - Follow existing component patterns and naming
-        conventions
+        <strong>Consistency</strong> - Follow existing component patterns and
+        naming conventions
       </li>
       <li>
-        <strong>Documentation</strong> - Add clear JSDoc comments and usage examples
+        <strong>Documentation</strong> - Add clear JSDoc comments and usage
+        examples
       </li>
       <li>
         <strong>Testing</strong> - Include unit tests for component behavior
       </li>
+      <li>
+        <strong>Single Responsibility</strong> - Keep components focused on one
+        task
+      </li>
     </ul>
   </ComponentSection>
 
+  <!-- Block Guidelines -->
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Block Guidelines</h2>
+    <p class="mb-4 text-label">
+      When implementing blocks, follow these additional guidelines:
+    </p>
+    <ul class="list-inside list-disc space-y-2 text-surface">
+      <li>
+        <strong>Composition</strong> - Compose existing components rather than
+        reimplementing functionality
+      </li>
+      <li>
+        <strong>Framework Agnostic</strong> - Use <code
+          class="rounded bg-secondary px-1 py-0.5 text-sm">LinkProvider</code
+        > for routing to remain framework-agnostic
+      </li>
+      <li>
+        <strong>Flexible Props</strong> - Accept both simple and complex props
+        to support various use cases
+      </li>
+      <li>
+        <strong>Common Patterns</strong> - Focus on patterns that appear in
+        multiple applications
+      </li>
+      <li>
+        <strong>Documentation</strong> - Include JSDoc explaining the block's
+        purpose and when to use it
+      </li>
+      <li>
+        <strong>Examples</strong> - Provide clear usage examples showing
+        composition
+      </li>
+    </ul>
+
+    <h3 class="mb-3 mt-6 text-xl font-semibold">When to Create a Block</h3>
+    <ul class="list-inside list-disc space-y-2 text-surface">
+      <li>Pattern appears in multiple places across applications</li>
+      <li>Combines 2+ base components</li>
+      <li>Implements a common layout or page structure</li>
+      <li>Has specific business logic or behavior</li>
+    </ul>
+
+    <h3 class="mb-3 mt-6 text-xl font-semibold">When NOT to Create a Block</h3>
+    <ul class="list-inside list-disc space-y-2 text-surface">
+      <li>
+        Single component with styling variations (use component variants
+        instead)
+      </li>
+      <li>Application-specific logic (keep in application code)</li>
+      <li>One-off patterns (wait for reuse before abstracting)</li>
+    </ul>
+  </ComponentSection>
+
+  <!-- Resources -->
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Additional Resources</h2>
-    <ul
-      class="list-inside list-disc space-y-2 text-surface"
-    >
+    <p class="mb-4 text-label">
+      For more detailed information, refer to:
+    </p>
+    <ul class="list-inside list-disc space-y-2 text-surface">
       <li>
         <a
           href="https://gitlab.cfdata.org/cloudflare/fe/kumo/"
-          class="text-info hover:underline"
-          >Gitlab Repository</a
+          class="text-info hover:underline">Gitlab Repository</a
         >
       </li>
       <li>
-        <a
-          href="https://base-ui.com/"
-          class="text-info hover:underline"
+        <a href="https://base-ui.com/" class="text-info hover:underline"
           >Base UI Documentation</a
         >
       </li>
