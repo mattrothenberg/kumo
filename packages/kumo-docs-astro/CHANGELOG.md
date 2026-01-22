@@ -1,5 +1,21 @@
 # @cloudflare/kumo-docs-astro
 
+## 0.5.0
+
+### Minor Changes
+
+- d04c91f: Ship component registry with @cloudflare/kumo module
+- d04c91f: Migrate documentation site from React Router (`kumo-docs`) to Astro (`kumo-docs-astro`) as the primary docs platform, consolidate CI/CD pipelines, and add version display features.
+
+  Bump node to v24.12.0
+
+### Patch Changes
+
+- Updated dependencies [d04c91f]
+- Updated dependencies [0e246bf]
+- Updated dependencies [d04c91f]
+  - @cloudflare/kumo@0.7.0
+
 ## 0.4.2
 
 ### Patch Changes
