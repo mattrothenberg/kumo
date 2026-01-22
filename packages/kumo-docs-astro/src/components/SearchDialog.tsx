@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { matchSorter } from "match-sorter";
-import { CommandPalette, Badge } from "@cloudflare/kumo";
+import { CommandPalette, Badge, type HighlightRange } from "@cloudflare/kumo";
 import { MagnifyingGlassIcon, CubeIcon, StackIcon, SquaresFourIcon } from "@phosphor-icons/react";
 
 /**
@@ -119,10 +119,10 @@ function getDescription(name: string, registryDescription: string): string {
 }
 
 /** Find all matching ranges in text for a query (for highlighting) */
-function findHighlightRanges(text: string, query: string): Array<{ start: number; end: number }> {
+function findHighlightRanges(text: string, query: string): HighlightRange[] {
   if (!query.trim()) return [];
   
-  const ranges: Array<{ start: number; end: number }> = [];
+  const ranges: HighlightRange[] = [];
   const textLower = text.toLowerCase();
   const queryLower = query.toLowerCase();
   
@@ -130,7 +130,8 @@ function findHighlightRanges(text: string, query: string): Array<{ start: number
   while (true) {
     const index = textLower.indexOf(queryLower, startIndex);
     if (index === -1) break;
-    ranges.push({ start: index, end: index + queryLower.length - 1 });
+    // HighlightRange is [start, end] tuple (end is inclusive)
+    ranges.push([index, index + queryLower.length - 1]);
     startIndex = index + 1;
   }
   
@@ -194,43 +195,7 @@ function getTypeBadge(type: "component" | "block" | "layout", isSearching: boole
   }
 }
 
-/** Render text with highlighted portions */
-function HighlightedText({ 
-  text, 
-  highlights,
-  className = "",
-}: { 
-  text: string; 
-  highlights?: Array<{ start: number; end: number }>;
-  className?: string;
-}) {
-  if (!highlights || highlights.length === 0) {
-    return <span className={className}>{text}</span>;
-  }
 
-  const parts: React.ReactNode[] = [];
-  let lastIndex = 0;
-
-  const sortedHighlights = [...highlights].sort((a, b) => a.start - b.start);
-
-  sortedHighlights.forEach((range, i) => {
-    if (range.start > lastIndex) {
-      parts.push(<span key={`text-${i}`}>{text.slice(lastIndex, range.start)}</span>);
-    }
-    parts.push(
-      <mark key={`highlight-${i}`} className="rounded-sm bg-alert/50 text-surface">
-        {text.slice(range.start, range.end + 1)}
-      </mark>
-    );
-    lastIndex = range.end + 1;
-  });
-
-  if (lastIndex < text.length) {
-    parts.push(<span key="text-end">{text.slice(lastIndex)}</span>);
-  }
-
-  return <span className={className}>{parts}</span>;
-}
 
 export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
   const [query, setQuery] = useState("");
@@ -375,14 +340,14 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                         </div>
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2">
-                            <HighlightedText
+                            <CommandPalette.HighlightedText
                               text={item.name}
                               highlights={findHighlightRanges(item.name, query)}
                               className="text-base font-medium text-surface"
                             />
                             {getTypeBadge(item.type, isSearching)}
                           </div>
-                          <HighlightedText
+                          <CommandPalette.HighlightedText
                             text={item.description}
                             highlights={findHighlightRanges(item.description, query)}
                             className="text-sm text-muted truncate block"
