@@ -267,7 +267,8 @@ validate-colors-run:
 # (e.g., new component added to main but no Figma generator exists)
 validate-figma-sync-run:
   needs:
-    - build-kumo-build
+    - job: build-kumo-build
+      optional: true
   rules:
     - if: $CI_MERGE_REQUEST_IID
       when: on_success
