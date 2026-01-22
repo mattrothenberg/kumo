@@ -38,9 +38,7 @@ const storybookUrl = storybookPath
 ---
 
 <MainLayout title={`${title} - Kumo`} description={description}>
-  <div class="flex min-h-screen flex-col" data-pagefind-body>
-    <!-- Pagefind metadata -->
-    <span data-pagefind-meta="title" class="hidden">{title}</span>
+  <div class="flex min-h-screen flex-col">
     
     <StickyDocHeader
       title={title}
@@ -48,14 +46,12 @@ const storybookUrl = storybookPath
       storybookUrl={storybookUrl}
       baseUIUrl={baseUIUrl}
       client:load
-      data-pagefind-ignore
     />
 
     <!-- Page Header -->
     <div
       id="page-header"
       class="border-b border-border bg-surface-secondary pr-12"
-      data-pagefind-ignore
     >
       <div
         class="mx-auto border-r border-border"
