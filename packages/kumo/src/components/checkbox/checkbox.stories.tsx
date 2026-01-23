@@ -10,6 +10,18 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+function VariantCheckbox({ variant }: { variant: string }) {
+  const [checked, setChecked] = React.useState(false);
+  return (
+    <Checkbox
+      label="Checkbox variant"
+      variant={variant as any}
+      checked={checked}
+      onCheckedChange={setChecked}
+    />
+  );
+}
+
 export const Variants: Story = {
   args: { label: "Checkbox" },
   render: () => (
@@ -22,7 +34,7 @@ export const Variants: Story = {
           <div className="mb-2 font-sans text-sm leading-5 font-light tracking-wide text-muted uppercase">
             {variant}
           </div>
-          <Checkbox label="Checkbox variant" variant={variant as any} />
+          <VariantCheckbox variant={variant} />
         </div>
       ))}
     </div>
@@ -30,16 +42,28 @@ export const Variants: Story = {
 };
 
 export const Checked: Story = {
-  args: {
-    label: "I'm checked",
-    checked: true,
+  render: () => {
+    const [checked, setChecked] = React.useState(true);
+    return (
+      <Checkbox
+        label="I'm checked"
+        checked={checked}
+        onCheckedChange={setChecked}
+      />
+    );
   },
 };
 
 export const Indeterminate: Story = {
-  args: {
-    label: "Indeterminate state",
-    indeterminate: true,
+  render: () => {
+    const [indeterminate, setIndeterminate] = React.useState(true);
+    return (
+      <Checkbox
+        label="Indeterminate state"
+        indeterminate={indeterminate}
+        onCheckedChange={() => setIndeterminate(false)}
+      />
+    );
   },
 };
 
@@ -83,7 +107,17 @@ export const Error: Story = {
 };
 
 export const LabelFirst: Story = {
-  args: { label: "Label first", controlFirst: false },
+  render: () => {
+    const [checked, setChecked] = React.useState(false);
+    return (
+      <Checkbox
+        label="Label first"
+        controlFirst={false}
+        checked={checked}
+        onCheckedChange={setChecked}
+      />
+    );
+  },
   parameters: {
     docs: {
       description: {
@@ -95,38 +129,64 @@ export const LabelFirst: Story = {
 };
 
 export const OptionalField: Story = {
-  args: {
-    label: "Subscribe to newsletter",
-    required: false,
+  render: () => {
+    const [checked, setChecked] = React.useState(false);
+    return (
+      <Checkbox
+        label="Subscribe to newsletter"
+        required={false}
+        checked={checked}
+        onCheckedChange={setChecked}
+      />
+    );
   },
 };
 
 export const WithLabelTooltip: Story = {
-  args: {
-    label: "Enable two-factor authentication",
-    labelTooltip: "Adds an extra layer of security to your account",
+  render: () => {
+    const [checked, setChecked] = React.useState(false);
+    return (
+      <Checkbox
+        label="Enable two-factor authentication"
+        labelTooltip="Adds an extra layer of security to your account"
+        checked={checked}
+        onCheckedChange={setChecked}
+      />
+    );
   },
 };
 
 export const OptionalWithTooltip: Story = {
-  args: {
-    label: "Remember my preferences",
-    required: false,
-    labelTooltip: "We'll save your settings for next time",
+  render: () => {
+    const [checked, setChecked] = React.useState(false);
+    return (
+      <Checkbox
+        label="Remember my preferences"
+        required={false}
+        labelTooltip="We'll save your settings for next time"
+        checked={checked}
+        onCheckedChange={setChecked}
+      />
+    );
   },
 };
 
 export const ReactNodeLabel: Story = {
-  render: () => (
-    <Checkbox
-      label={
-        <span>
-          I agree to the <strong>Terms of Service</strong> and{" "}
-          <strong>Privacy Policy</strong>
-        </span>
-      }
-    />
-  ),
+  render: () => {
+    const [checked, setChecked] = React.useState(false);
+    return (
+      <Checkbox
+        label={
+          <span>
+            I agree to the <strong>Terms of Service</strong> and{" "}
+            <strong>Privacy Policy</strong>
+          </span>
+        }
+        checked={checked}
+        onCheckedChange={setChecked}
+      />
+    );
+  },
 };
 
 export const Group: Story = {
