@@ -78,8 +78,8 @@ function ToastTriggerButton() {
 export function HomeGrid() {
   const [switchToggled, setSwitchToggled] = useState(true);
   const [checked, setChecked] = useState(true);
-  const [startDate, setStartDate] = useState<Date | null>(new Date());
-  const [endDate, setEndDate] = useState<Date | null>(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000));
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
 
   const formatDateRange = () => {
     if (!startDate && !endDate) return "Select date range";
