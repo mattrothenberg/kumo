@@ -1,19 +1,14 @@
-import {
-  forwardRef,
-  useRef,
-  useEffect,
-  useImperativeHandle,
-  createContext,
-  useContext,
-  type InputHTMLAttributes,
-  type ReactNode,
-} from "react";
+import { forwardRef, createContext, useContext, type ReactNode } from "react";
 import { CheckIcon, MinusIcon } from "@phosphor-icons/react";
 import { cn } from "../../utils/cn";
-import { Field } from "../field/field";
+import { Label } from "../label";
 import { Fieldset } from "@base-ui/react/fieldset";
+import { Field as FieldBase } from "@base-ui/react/field";
 import { CheckboxGroup as BaseCheckboxGroup } from "@base-ui/react/checkbox-group";
-import { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox";
+import {
+  Checkbox as BaseCheckbox,
+  type CheckboxRootChangeEventDetails,
+} from "@base-ui/react/checkbox";
 
 export const KUMO_CHECKBOX_VARIANTS = {
   variant: {
@@ -97,10 +92,7 @@ const CheckboxGroupContext = createContext<{ controlFirst: boolean }>({
  *   <Checkbox.Item value="sms" label="SMS notifications" />
  * </Checkbox.Group>
  */
-export type CheckboxProps = Omit<
-  InputHTMLAttributes<HTMLInputElement>,
-  "children"
-> & {
+export type CheckboxProps = {
   /** Visual variant: "default" or "error" for validation failures (visual only, no error text) */
   variant?: CheckboxVariant;
   /** Label content for the checkbox (enables built-in Field wrapper) - can be a string or any React node */
@@ -109,10 +101,30 @@ export type CheckboxProps = Omit<
   labelTooltip?: ReactNode;
   /** When true (default), checkbox appears before label. When false, label appears before checkbox. */
   controlFirst?: boolean;
+  /** Whether the checkbox is checked (controlled) */
   checked?: boolean;
+  /** Whether the checkbox is in indeterminate state */
   indeterminate?: boolean;
+  /** Whether the checkbox is disabled */
   disabled?: boolean;
+  /** Callback when the checked state changes */
+  onCheckedChange?: (checked: boolean) => void;
+  /** @deprecated Use onCheckedChange instead */
   onValueChange?: (checked: boolean) => void;
+  /** @deprecated Use onCheckedChange instead */
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  /** Click handler */
+  onClick?: (event: React.MouseEvent) => void;
+  /** Name for form submission */
+  name?: string;
+  /** Whether the field is required */
+  required?: boolean;
+  /** Additional class name */
+  className?: string;
+  /** Accessible label when no visible label is provided */
+  "aria-label"?: string;
+  /** ID of element that labels this checkbox */
+  "aria-labelledby"?: string;
 };
 
 /**
@@ -170,12 +182,15 @@ export type CheckboxItemProps = {
   checked?: boolean;
   indeterminate?: boolean;
   disabled?: boolean;
+  /** Callback when the checked state changes */
+  onCheckedChange?: (checked: boolean) => void;
+  /** @deprecated Use onCheckedChange instead */
   onValueChange?: (checked: boolean) => void;
   name?: string;
 };
 
 // Single checkbox with built-in Field
-const CheckboxBase = forwardRef<HTMLInputElement, CheckboxProps>(
+const CheckboxBase = forwardRef<HTMLButtonElement, CheckboxProps>(
   (
     {
       className,
@@ -186,24 +201,15 @@ const CheckboxBase = forwardRef<HTMLInputElement, CheckboxProps>(
       label,
       labelTooltip,
       controlFirst = true,
+      onCheckedChange,
       onValueChange,
       onChange,
       required,
+      name,
       ...props
     },
     ref,
   ) => {
-    const internalRef = useRef<HTMLInputElement>(null);
-    const Icon = indeterminate ? MinusIcon : checked ? CheckIcon : undefined;
-
-    useImperativeHandle(ref, () => internalRef.current!, []);
-
-    useEffect(() => {
-      if (internalRef.current) {
-        internalRef.current.indeterminate = indeterminate === true;
-      }
-    }, [internalRef, indeterminate]);
-
     // A11y enforcement: warn in dev if no accessible name provided
     if (process.env.NODE_ENV !== "production") {
       const hasLabel = Boolean(label);
@@ -221,60 +227,83 @@ const CheckboxBase = forwardRef<HTMLInputElement, CheckboxProps>(
       }
     }
 
+    // Handle onCheckedChange (preferred) and deprecated onValueChange/onChange
+    const handleCheckedChange = (
+      newChecked: boolean,
+      eventDetails: CheckboxRootChangeEventDetails,
+    ) => {
+      onCheckedChange?.(newChecked);
+      onValueChange?.(newChecked);
+      if (onChange) {
+        // Backwards compatibility: extend native event with target.checked
+        // so existing code using `e.target.checked` continues to work
+        const event = Object.assign(eventDetails.event, {
+          target: { checked: newChecked },
+        });
+        onChange(event as never);
+      }
+    };
+
     const checkboxControl = (
-      <div
+      <BaseCheckbox.Root
+        ref={ref}
+        name={name}
+        checked={checked}
+        indeterminate={indeterminate}
+        disabled={disabled}
+        onCheckedChange={handleCheckedChange}
         className={cn(
-          "relative inline-flex items-center",
-          disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer",
+          "flex h-4 w-4 items-center justify-center rounded-sm border-0 bg-surface ring",
+          variant === "error" ? "ring-error" : "ring-border",
+          !disabled && "hover:ring-active focus-visible:ring-active",
+          "data-[checked]:bg-surface-inverse data-[indeterminate]:bg-surface-inverse",
+          disabled && "cursor-not-allowed opacity-50",
           className,
         )}
+        {...props}
       >
-        <input
-          ref={internalRef}
-          type="checkbox"
-          className={cn(
-            "peer absolute top-0 left-0 h-4 w-4 opacity-0",
-            disabled ? "cursor-not-allowed" : "cursor-pointer",
-          )}
-          checked={checked}
-          disabled={disabled}
-          onChange={(e) => {
-            onValueChange?.(e.target.checked);
-            onChange?.(e);
+        <BaseCheckbox.Indicator
+          className="flex items-center justify-center text-surface-inverse"
+          render={(renderProps, state) => {
+            const Icon = state.indeterminate ? MinusIcon : CheckIcon;
+            return (
+              <span {...renderProps}>
+                {(state.checked || state.indeterminate) && (
+                  <Icon weight="bold" size={12} />
+                )}
+              </span>
+            );
           }}
-          {...props}
         />
-        <span
-          aria-hidden
-          className={cn(
-            "flex h-4 w-4 items-center justify-center rounded-sm border-0 bg-surface ring",
-            variant === "error" ? "ring-error" : "ring-border",
-            !disabled && "peer-hover:ring-active peer-focus:ring-active",
-            (checked || indeterminate) && "bg-surface-inverse",
-          )}
-        >
-          {Icon && (
-            <Icon className="text-surface-inverse" weight="bold" size="12" />
-          )}
-        </span>
-      </div>
+      </BaseCheckbox.Root>
     );
 
-    // Wrap in Field (built-in) - no description for single checkboxes
     // If no label provided, return bare checkbox (for use in other components like Dropdown)
     if (!label) {
       return checkboxControl;
     }
 
+    // Use Field.Root + Field.Label enclosing pattern for proper a11y association
+    // See: https://base-ui.com/react/components/field
     return (
-      <Field
-        label={label}
-        required={required}
-        labelTooltip={labelTooltip}
-        controlFirst={controlFirst}
-      >
-        {checkboxControl}
-      </Field>
+      <FieldBase.Root className="inline-flex">
+        <FieldBase.Label
+          className={cn(
+            "inline-flex items-center gap-2",
+            controlFirst ? "flex-row" : "flex-row-reverse justify-end",
+            disabled ? "cursor-not-allowed" : "cursor-pointer",
+          )}
+        >
+          {checkboxControl}
+          <Label
+            showOptional={required === false}
+            tooltip={labelTooltip}
+            asContent
+          >
+            {label}
+          </Label>
+        </FieldBase.Label>
+      </FieldBase.Root>
     );
   },
 );
@@ -292,12 +321,19 @@ const CheckboxItem = forwardRef<HTMLButtonElement, CheckboxItemProps>(
       variant = "default",
       label,
       value,
+      onCheckedChange,
       onValueChange,
       name,
     },
     ref,
   ) => {
     const { controlFirst } = useContext(CheckboxGroupContext);
+
+    // Handle onCheckedChange (preferred) and deprecated onValueChange
+    const handleCheckedChange = (newChecked: boolean) => {
+      onCheckedChange?.(newChecked);
+      onValueChange?.(newChecked);
+    };
 
     return (
       <label
@@ -317,12 +353,13 @@ const CheckboxItem = forwardRef<HTMLButtonElement, CheckboxItemProps>(
           checked={checked}
           indeterminate={indeterminate}
           disabled={disabled}
-          onCheckedChange={onValueChange}
+          onCheckedChange={handleCheckedChange}
           className={cn(
             "peer flex h-4 w-4 items-center justify-center rounded-sm border-0 bg-surface ring",
             variant === "error" ? "ring-error" : "ring-border",
-            !disabled && "hover:ring-active focus-visible:ring-active",
-            "data-[checked]:bg-surface-inverse",
+            !disabled &&
+              "group-hover:ring-active hover:ring-active focus-visible:ring-active",
+            "data-[checked]:bg-surface-inverse data-[indeterminate]:bg-surface-inverse",
           )}
         >
           <BaseCheckbox.Indicator

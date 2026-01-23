@@ -2060,9 +2060,13 @@ const ADDITIONAL_COMPONENT_PROPS: Record<string, Record<string, PropSchema>> = {
     },
   },
   Checkbox: {
+    onCheckedChange: {
+      type: "(checked: boolean) => void",
+      description: "Callback when checked state changes",
+    },
     onValueChange: {
       type: "(checked: boolean) => void",
-      description: "Callback when checkbox value changes",
+      description: "@deprecated Use onCheckedChange instead",
     },
   },
 };

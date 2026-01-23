@@ -85,7 +85,7 @@ Kumo uses CSS custom properties with `light-dark()` for automatic dark mode supp
 | `accent` | Selected/active state background | `bg-accent`, `ring-accent` (4 uses) |
 | `hover` | Hover state background | `bg-hover`, `ring-hover` (2 uses) |
 | `toast-button-hover` | Toast notification styling | `bg-toast-button-hover`, `ring-toast-button-hover` (1 uses) |
-| `hover-selected` | Hover on selected items | `bg-hover-selected`, `ring-hover-selected` (1 uses) |
+| `hover-selected` | Hover on selected items | `bg-hover-selected`, `ring-hover-selected` (2 uses) |
 
 ### Border & Ring Tokens
 
@@ -368,7 +368,8 @@ Button component
 
   **State Classes:**
   - `"primary"`:
-    - `hover`: `hover:bg-primary/70`
+    - `hover`: `hover:bg-hover-selected`
+    - `focus`: `focus:bg-hover-selected`
     - `disabled`: `disabled:bg-primary/50`
   - `"secondary"`:
     - `not-disabled`: `not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle`
@@ -437,7 +438,7 @@ Button component
 
 **Colors (kumo tokens used):**
 
-`bg-accent`, `bg-error`, `bg-primary`, `bg-secondary`, `bg-subtle`, `bg-surface`, `border-subtle`, `ring-active`, `ring-border`, `text-error`, `text-muted`, `text-surface`
+`bg-accent`, `bg-error`, `bg-hover-selected`, `bg-primary`, `bg-secondary`, `bg-subtle`, `bg-surface`, `border-subtle`, `ring-active`, `ring-border`, `text-error`, `text-muted`, `text-surface`
 
 **Examples:**
 
@@ -495,71 +496,24 @@ Checkbox component
 - `controlFirst`: boolean
   When true (default), checkbox appears before label. When false, label appears before checkbox.
 - `checked`: boolean
+  Whether the checkbox is checked (controlled)
 - `indeterminate`: boolean
+  Whether the checkbox is in indeterminate state
 - `disabled`: boolean
-- `alt`: string
-- `autoComplete`: React.HTMLInputAutoCompleteAttribute
-- `height`: number | string
-- `list`: string
+  Whether the checkbox is disabled
+- `onChange`: object
+- `onClick`: object
+  Click handler
 - `name`: string
-- `placeholder`: string
-- `readOnly`: boolean
+  Name for form submission
 - `required`: boolean
-- `size`: number
-- `type`: React.HTMLInputTypeAttribute
-- `value`: string | string[] | number
-- `width`: number | string
-- `onChange`: React.ChangeEventHandler<HTMLInputElement>
-- `defaultChecked`: boolean
-- `defaultValue`: string | number | string[]
-- `suppressContentEditableWarning`: boolean
-- `suppressHydrationWarning`: boolean
+  Whether the field is required
 - `className`: string
-- `contextMenu`: string
-- `enterKeyHint`: enum
-- `id`: string
-- `lang`: string
-- `nonce`: string
-- `slot`: string
-- `title`: string
-- `radioGroup`: string
-- `role`: React.AriaRole
-- `about`: string
-- `content`: string
-- `datatype`: string
-- `inlist`: unknown
-- `prefix`: string
-- `property`: string
-- `rel`: string
-- `resource`: string
-- `rev`: string
-- `typeof`: string
-- `vocab`: string
-- `autoCorrect`: string
-- `autoSave`: string
-- `color`: string
-- `itemProp`: string
-- `itemScope`: boolean
-- `itemType`: string
-- `itemID`: string
-- `itemRef`: string
-- `results`: number
-- `security`: string
-- `unselectable`: enum
-- `popover`: enum
-- `popoverTargetAction`: enum
-- `popoverTarget`: string
-- `inert`: boolean
-- `inputMode`: enum
-  Hints at the type of data that might be entered by the user while editing the element or its contents
-- `is`: string
-  Specify that a standard HTML element should behave like a defined custom built-in element
-- `exportparts`: string
-- `part`: string
-- `onSubmit`: React.FormEventHandler<HTMLInputElement>
-- `onClick`: React.MouseEventHandler<HTMLInputElement>
+  Additional class name
+- `onCheckedChange`: (checked: boolean) => void
+  Callback when checked state changes
 - `onValueChange`: (checked: boolean) => void
-  Callback when checkbox value changes
+  @deprecated Use onCheckedChange instead
 
 **Colors (kumo tokens used):**
 
@@ -618,18 +572,26 @@ Props:
           <div className="mb-2 font-sans text-sm leading-5 font-light tracking-wide text-muted uppercase">
             {variant}
           </div>
-          <Checkbox label="Checkbox variant" variant={variant as any} />
+          <VariantCheckbox variant={variant} />
         </div>
       ))}
     </div>
 ```
 
 ```tsx
-<Checkbox label="I'm checked" checked={true} />
+<Checkbox
+        label="I'm checked"
+        checked={checked}
+        onCheckedChange={setChecked}
+      />
 ```
 
 ```tsx
-<Checkbox label="Indeterminate state" indeterminate={true} />
+<Checkbox
+        label="Indeterminate state"
+        indeterminate={indeterminate}
+        onValueChange={() => setIndeterminate(false)}
+      />
 ```
 
 ```tsx
@@ -660,30 +622,40 @@ Props:
 ```
 
 ```tsx
-<Checkbox label="Label first" controlFirst={false} />
-```
-
-```tsx
-<Checkbox label="Subscribe to newsletter" required={false} />
-```
-
-```tsx
-<Checkbox label="Enable two-factor authentication" labelTooltip="Adds an extra layer of security to your account" />
-```
-
-```tsx
-<Checkbox label="Remember my preferences" required={false} labelTooltip="We'll save your settings for next time" />
+<Checkbox
+        label="Label first"
+        controlFirst={false}
+        checked={checked}
+        onCheckedChange={setChecked}
+      />
 ```
 
 ```tsx
 <Checkbox
-      label={
-        <span>
-          I agree to the <strong>Terms of Service</strong> and{" "}
-          <strong>Privacy Policy</strong>
-        </span>
-      }
-    />
+        label="Subscribe to newsletter"
+        required={false}
+        checked={checked}
+        onCheckedChange={setChecked}
+      />
+```
+
+```tsx
+<Checkbox
+        label="Enable two-factor authentication"
+        labelTooltip="Adds an extra layer of security to your account"
+        checked={checked}
+        onCheckedChange={setChecked}
+      />
+```
+
+```tsx
+<Checkbox
+        label="Remember my preferences"
+        required={false}
+        labelTooltip="We'll save your settings for next time"
+        checked={checked}
+        onCheckedChange={setChecked}
+      />
 ```
 
 ```tsx

@@ -7,7 +7,7 @@ export function CheckboxBasicDemo() {
     <Checkbox
       label="Accept terms and conditions"
       checked={checked}
-      onValueChange={setChecked}
+      onCheckedChange={setChecked}
     />
   );
 }
@@ -18,7 +18,7 @@ export function CheckboxDefaultDemo() {
     <Checkbox
       label="Enable notifications"
       checked={checked}
-      onValueChange={setChecked}
+      onCheckedChange={setChecked}
     />
   );
 }
@@ -26,7 +26,7 @@ export function CheckboxDefaultDemo() {
 export function CheckboxCheckedDemo() {
   const [checked, setChecked] = useState(true);
   return (
-    <Checkbox label="I agree" checked={checked} onValueChange={setChecked} />
+    <Checkbox label="I agree" checked={checked} onCheckedChange={setChecked} />
   );
 }
 
@@ -36,13 +36,21 @@ export function CheckboxIndeterminateDemo() {
     <Checkbox
       label="Select all"
       indeterminate={indeterminate}
-      onValueChange={setIndeterminate}
+      onCheckedChange={setIndeterminate}
     />
   );
 }
 
 export function CheckboxLabelFirstDemo() {
-  return <Checkbox label="Remember me" controlFirst={false} />;
+  const [checked, setChecked] = useState(false);
+  return (
+    <Checkbox
+      label="Remember me"
+      controlFirst={false}
+      checked={checked}
+      onCheckedChange={setChecked}
+    />
+  );
 }
 
 export function CheckboxDisabledDemo() {
