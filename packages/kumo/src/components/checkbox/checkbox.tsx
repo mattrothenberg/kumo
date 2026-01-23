@@ -10,7 +10,7 @@ import {
 } from "react";
 import { CheckIcon, MinusIcon } from "@phosphor-icons/react";
 import { cn } from "../../utils/cn";
-import { Field } from "../field/field";
+import { Label } from "../label";
 import { Fieldset } from "@base-ui/react/fieldset";
 import { CheckboxGroup as BaseCheckboxGroup } from "@base-ui/react/checkbox-group";
 import { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox";
@@ -260,21 +260,29 @@ const CheckboxBase = forwardRef<HTMLInputElement, CheckboxProps>(
       </div>
     );
 
-    // Wrap in Field (built-in) - no description for single checkboxes
     // If no label provided, return bare checkbox (for use in other components like Dropdown)
     if (!label) {
       return checkboxControl;
     }
 
+    // Wrap in native <label> for clickable label association
     return (
-      <Field
-        label={label}
-        required={required}
-        labelTooltip={labelTooltip}
-        controlFirst={controlFirst}
+      <label
+        className={cn(
+          "inline-flex items-center gap-2",
+          controlFirst ? "flex-row" : "flex-row-reverse justify-end",
+          disabled ? "cursor-not-allowed" : "cursor-pointer",
+        )}
       >
         {checkboxControl}
-      </Field>
+        <Label
+          showOptional={required === false}
+          tooltip={labelTooltip}
+          asContent
+        >
+          {label}
+        </Label>
+      </label>
     );
   },
 );
