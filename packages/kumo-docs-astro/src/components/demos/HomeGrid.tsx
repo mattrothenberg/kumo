@@ -78,6 +78,16 @@ function ToastTriggerButton() {
 export function HomeGrid() {
   const [switchToggled, setSwitchToggled] = useState(true);
   const [checked, setChecked] = useState(true);
+  const [startDate, setStartDate] = useState<Date | null>(new Date());
+  const [endDate, setEndDate] = useState<Date | null>(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000));
+
+  const formatDateRange = () => {
+    if (!startDate && !endDate) return "Select date range";
+    const fmt = (d: Date | null) => d?.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    if (startDate && endDate) return `${fmt(startDate)} – ${fmt(endDate)}`;
+    if (startDate) return `${fmt(startDate)} – ...`;
+    return "Select date range";
+  };
 
   const components: Array<{
     name: string;
@@ -384,13 +394,12 @@ export function HomeGrid() {
         Component: (
           <Popover>
             <Popover.Trigger asChild>
-              <Button variant="secondary">Select date range</Button>
+              <Button variant="secondary">{formatDateRange()}</Button>
             </Popover.Trigger>
             <Popover.Content>
-
               <DateRangePicker
-                onStartDateChange={() => { }}
-                onEndDateChange={() => { }}
+                onStartDateChange={setStartDate}
+                onEndDateChange={setEndDate}
               />
             </Popover.Content>
           </Popover>
