@@ -10,7 +10,7 @@ export function ResourceListDemo() {
         icon={<Database size={32} className="text-label" />}
       >
         <Surface className="rounded-lg p-6">
-          <p className="text-secondary">
+          <p className="text-label">
             Main content area - your resource list would go here
           </p>
         </Surface>
@@ -39,7 +39,7 @@ export function ResourceListWithUsageDemo() {
         }
       >
         <Surface className="rounded-lg p-6">
-          <p className="text-secondary">API keys list would appear here</p>
+          <p className="text-label">API keys list would appear here</p>
         </Surface>
       </ResourceListPage>
     </div>
