@@ -4,18 +4,22 @@ import { useState } from "react";
 export function CollapsibleHeroDemo() {
   const [isOpen, setIsOpen] = useState(true);
   return (
-    <Collapsible label="What is Kumo?" open={isOpen} onOpenChange={setIsOpen}>
-      Kumo is Cloudflare's new design system.
-    </Collapsible>
+    <div className="w-full">
+      <Collapsible label="What is Kumo?" open={isOpen} onOpenChange={setIsOpen}>
+        Kumo is Cloudflare's new design system.
+      </Collapsible>
+    </div>
   );
 }
 
 export function CollapsibleBasicDemo() {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <Collapsible label="What is Kumo?" open={isOpen} onOpenChange={setIsOpen}>
-      Kumo is Cloudflare's new design system.
-    </Collapsible>
+    <div className="w-full">
+      <Collapsible label="What is Kumo?" open={isOpen} onOpenChange={setIsOpen}>
+        Kumo is Cloudflare's new design system.
+      </Collapsible>
+    </div>
   );
 }
 
