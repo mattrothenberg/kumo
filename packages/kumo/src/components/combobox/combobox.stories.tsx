@@ -17,6 +17,11 @@ const meta: Meta<typeof Combobox> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+const MANY_ITEMS = Array.from({ length: 50 }, (_, i) => ({
+  value: `item-${i}`,
+  label: `Item ${i + 1}`,
+}));
+
 export const Single: Story = {
   render: () => {
     const items = useMemo(() => {
@@ -308,6 +313,31 @@ export const MultipleWithLabel: Story = {
                   <Text>{item.label}</Text>
                   <Text variant="secondary">{item.author}</Text>
                 </div>
+              </Combobox.Item>
+            )}
+          </Combobox.List>
+        </Combobox.Content>
+      </Combobox>
+    );
+  },
+};
+
+/** Tests that scrolling works out of the box without className overrides */
+export const ManyItems: Story = {
+  render: () => {
+    const [value, setValue] = useState<(typeof MANY_ITEMS)[number] | null>(
+      null,
+    );
+
+    return (
+      <Combobox items={MANY_ITEMS} value={value} onValueChange={setValue}>
+        <Combobox.TriggerInput placeholder="Select an item (50 options)" />
+        <Combobox.Content>
+          <Combobox.Empty />
+          <Combobox.List>
+            {(item: (typeof MANY_ITEMS)[number]) => (
+              <Combobox.Item key={item.value} value={item}>
+                {item.label}
               </Combobox.Item>
             )}
           </Combobox.List>
