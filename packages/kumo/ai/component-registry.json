@@ -713,7 +713,7 @@
       "examples": [
         "<div className=\"flex flex-col gap-4\">\n      {Object.keys(KUMO_CHECKBOX_VARIANTS.variant).map((variant) => (\n        <div\n          key={variant}\n          className=\"border border-dotted border-color bg-surface p-4\"\n        >\n          <div className=\"mb-2 font-sans text-sm leading-5 font-light tracking-wide text-muted uppercase\">\n            {variant}\n          </div>\n          <VariantCheckbox variant={variant} />\n        </div>\n      ))}\n    </div>",
         "<Checkbox\n        label=\"I'm checked\"\n        checked={checked}\n        onCheckedChange={setChecked}\n      />",
-        "<Checkbox\n        label=\"Indeterminate state\"\n        indeterminate={indeterminate}\n        onValueChange={() => setIndeterminate(false)}\n      />",
+        "<Checkbox\n        label=\"Indeterminate state\"\n        indeterminate={indeterminate}\n        onCheckedChange={() => setIndeterminate(false)}\n      />",
         "<div className=\"flex flex-col gap-4\">\n      {[false, true, \"indeterminate\"].map((state) => (\n        <Checkbox\n          key={String(state)}\n          label={`Disabled (${state === \"indeterminate\" ? \"indeterminate\" : state ? \"checked\" : \"unchecked\"})`}\n          checked={state === true}\n          indeterminate={state === \"indeterminate\"}\n          disabled\n        />\n      ))}\n    </div>",
         "<div className=\"flex flex-col gap-4\">\n      {[false, true].map((checked) => (\n        <Checkbox\n          key={String(checked)}\n          label={`Error (${checked ? \"checked\" : \"unchecked\"})`}\n          variant=\"error\"\n          checked={checked}\n        />\n      ))}\n    </div>",
         "<Checkbox\n        label=\"Label first\"\n        controlFirst={false}\n        checked={checked}\n        onCheckedChange={setChecked}\n      />",
@@ -1771,6 +1771,23 @@
         "CheckboxItem": {
           "name": "CheckboxItem",
           "description": "CheckboxItem sub-component",
+          "props": {}
+        },
+        "RadioGroup": {
+          "name": "RadioGroup",
+          "description": "RadioGroup sub-component (wraps DropdownMenuPrimitive)",
+          "props": {},
+          "isPassThrough": true,
+          "baseComponent": "DropdownMenuPrimitive.RadioGroup"
+        },
+        "RadioItem": {
+          "name": "RadioItem",
+          "description": "RadioItem sub-component",
+          "props": {}
+        },
+        "RadioItemIndicator": {
+          "name": "RadioItemIndicator",
+          "description": "RadioItemIndicator sub-component",
           "props": {}
         },
         "Label": {
@@ -4806,49 +4823,13 @@
       "importPath": "@cloudflare/kumo",
       "category": "Navigation",
       "props": {
-        "tabs": {
-          "type": "TabsItem[]",
-          "optional": true,
-          "description": "Array of tab items to render"
-        },
-        "value": {
-          "type": "string",
-          "optional": true,
-          "description": "Controlled value. When set, component becomes controlled."
-        },
-        "selectedValue": {
-          "type": "string",
-          "optional": true,
-          "description": "Default selected value for uncontrolled mode. Ignored when `value` is set."
-        },
-        "activateOnFocus": {
-          "type": "boolean",
-          "optional": true,
-          "description": "When true, tabs are activated immediately upon receiving focus via arrow keys. When false (default), tabs receive focus but require Enter/Space to activate. Set to true for better keyboard UX in most cases."
-        },
         "className": {
           "type": "string",
-          "optional": true,
-          "description": "Additional class name for the root element"
+          "description": "Additional CSS classes"
         },
-        "listClassName": {
-          "type": "string",
-          "optional": true,
-          "description": "Additional class name for the tab list element"
-        },
-        "indicatorClassName": {
-          "type": "string",
-          "optional": true,
-          "description": "Additional class name for the indicator element"
-        },
-        "variant": {
-          "type": "enum",
-          "optional": true,
-          "values": [
-            "segmented",
-            "underline"
-          ],
-          "default": "segmented"
+        "children": {
+          "type": "ReactNode",
+          "description": "Child elements"
         },
         "onValueChange": {
           "type": "(value: string) => void",
@@ -4859,7 +4840,8 @@
         "<Tabs tabs=\"defaultTabs\" selectedValue=\"tab1\" />",
         "<Tabs tabs=\"defaultTabs\" selectedValue=\"tab1\" variant=\"segmented\" />",
         "<Tabs tabs=\"defaultTabs\" selectedValue=\"tab1\" variant=\"underline\" />",
-        "<Tabs tabs={`[\n      { value: \"overview\", label: \"Overview\" },\n      { value: \"analytics\", label: \"Analytics\" },\n      { value: \"reports\", label: \"Reports\" },\n      { value: \"notifications\", label: \"Notifications\" },\n      { value: \"settings\", label: \"Settings\" },\n      { value: \"billing\", label: \"Billing\" },\n    ]`} selectedValue=\"overview\" variant=\"underline\" />"
+        "<Tabs tabs={`[\n      { value: \"overview\", label: \"Overview\" },\n      { value: \"analytics\", label: \"Analytics\" },\n      { value: \"reports\", label: \"Reports\" },\n      { value: \"notifications\", label: \"Notifications\" },\n      { value: \"settings\", label: \"Settings\" },\n      { value: \"billing\", label: \"Billing\" },\n    ]`} selectedValue=\"overview\" variant=\"underline\" />",
+        "<Tabs tabs={`[\n      {\n        value: \"tab1\",\n        label: \"Regular Tab\",\n      },\n      {\n        value: \"tab2\",\n        label: \"Custom Link\",\n        // oxlint-disable-next-line jsx-a11y/anchor-has-content\n        render: (props) => <a {...props} href=\"#tab2\" />,\n      },\n      {\n        value: \"tab3\",\n        label: \"Another Link\",\n        // oxlint-disable-next-line jsx-a11y/anchor-has-content\n        render: (props) => <a {...props} href=\"#tab3\" />,\n      },\n    ]`} selectedValue=\"tab1\" variant=\"segmented\" />"
       ],
       "colors": [
         "bg-accent",
