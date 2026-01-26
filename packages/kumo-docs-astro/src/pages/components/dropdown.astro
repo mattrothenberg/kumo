@@ -90,17 +90,19 @@ export default function Example() {
     <DropdownMenu.Sub>
       <DropdownMenu.SubTrigger>Language</DropdownMenu.SubTrigger>
       <DropdownMenu.SubContent>
-        <DropdownMenu.RadioGroup value="en">
-          <DropdownMenu.RadioItem value="en">
-            English
-            <DropdownMenu.RadioItemIndicator />
-          </DropdownMenu.RadioItem>
-          <DropdownMenu.RadioItem value="es">
-            Español
-            <DropdownMenu.RadioItemIndicator />
-          </DropdownMenu.RadioItem>
-          {/* ... more languages */}
-        </DropdownMenu.RadioGroup>
+        <DropdownMenu.Group>
+          <DropdownMenu.RadioGroup value="en">
+            <DropdownMenu.RadioItem value="en">
+              English
+              <DropdownMenu.RadioItemIndicator />
+            </DropdownMenu.RadioItem>
+            <DropdownMenu.RadioItem value="es">
+              Español
+              <DropdownMenu.RadioItemIndicator />
+            </DropdownMenu.RadioItem>
+            {/* ... more languages */}
+          </DropdownMenu.RadioGroup>
+        </DropdownMenu.Group>
       </DropdownMenu.SubContent>
     </DropdownMenu.Sub>
 
@@ -108,17 +110,19 @@ export default function Example() {
     <DropdownMenu.Sub>
       <DropdownMenu.SubTrigger>Set Timezone</DropdownMenu.SubTrigger>
       <DropdownMenu.SubContent>
-        <DropdownMenu.RadioGroup value="America/Los_Angeles">
-          <DropdownMenu.RadioItem value="America/Los_Angeles">
-            Pacific Time (PT)
-            <DropdownMenu.RadioItemIndicator />
-          </DropdownMenu.RadioItem>
-          <DropdownMenu.RadioItem value="America/New_York">
-            Eastern Time (ET)
-            <DropdownMenu.RadioItemIndicator />
-          </DropdownMenu.RadioItem>
-          {/* ... more timezones */}
-        </DropdownMenu.RadioGroup>
+        <DropdownMenu.Group>
+          <DropdownMenu.RadioGroup value="America/Los_Angeles">
+            <DropdownMenu.RadioItem value="America/Los_Angeles">
+              Pacific Time (PT)
+              <DropdownMenu.RadioItemIndicator />
+            </DropdownMenu.RadioItem>
+            <DropdownMenu.RadioItem value="America/New_York">
+              Eastern Time (ET)
+              <DropdownMenu.RadioItemIndicator />
+            </DropdownMenu.RadioItem>
+            {/* ... more timezones */}
+          </DropdownMenu.RadioGroup>
+        </DropdownMenu.Group>
       </DropdownMenu.SubContent>
     </DropdownMenu.Sub>
 

@@ -60,14 +60,16 @@ export function DropdownNestedDemo() {
         <DropdownMenu.Sub>
           <DropdownMenu.SubTrigger>Language</DropdownMenu.SubTrigger>
           <DropdownMenu.SubContent>
-            <DropdownMenu.RadioGroup value={language} onValueChange={setLanguage}>
-              {languages.map((lang) => (
-                <DropdownMenu.RadioItem key={lang.code} value={lang.code}>
-                  {lang.label}
-                  <DropdownMenu.RadioItemIndicator />
-                </DropdownMenu.RadioItem>
-              ))}
-            </DropdownMenu.RadioGroup>
+            <DropdownMenu.Group>
+              <DropdownMenu.RadioGroup value={language} onValueChange={setLanguage}>
+                {languages.map((lang) => (
+                  <DropdownMenu.RadioItem key={lang.code} value={lang.code}>
+                    {lang.label}
+                    <DropdownMenu.RadioItemIndicator />
+                  </DropdownMenu.RadioItem>
+                ))}
+              </DropdownMenu.RadioGroup>
+            </DropdownMenu.Group>
           </DropdownMenu.SubContent>
         </DropdownMenu.Sub>
 
@@ -75,14 +77,16 @@ export function DropdownNestedDemo() {
         <DropdownMenu.Sub>
           <DropdownMenu.SubTrigger>Set Timezone</DropdownMenu.SubTrigger>
           <DropdownMenu.SubContent>
-            <DropdownMenu.RadioGroup value={timezone} onValueChange={setTimezone}>
-              {timezones.map((tz) => (
-                <DropdownMenu.RadioItem key={tz.value} value={tz.value}>
-                  {tz.label}
-                  <DropdownMenu.RadioItemIndicator />
-                </DropdownMenu.RadioItem>
-              ))}
-            </DropdownMenu.RadioGroup>
+            <DropdownMenu.Group>
+              <DropdownMenu.RadioGroup value={timezone} onValueChange={setTimezone}>
+                {timezones.map((tz) => (
+                  <DropdownMenu.RadioItem key={tz.value} value={tz.value}>
+                    {tz.label}
+                    <DropdownMenu.RadioItemIndicator />
+                  </DropdownMenu.RadioItem>
+                ))}
+              </DropdownMenu.RadioGroup>
+            </DropdownMenu.Group>
           </DropdownMenu.SubContent>
         </DropdownMenu.Sub>
 

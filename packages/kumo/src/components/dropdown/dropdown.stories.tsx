@@ -372,28 +372,30 @@ export const WithRadioItems: Story = {
           <Button>Sort By</Button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
-          <DropdownMenu.Label>Sort Order</DropdownMenu.Label>
-          <DropdownMenu.RadioGroup
-            value={sortOrder}
-            onValueChange={setSortOrder}
-          >
-            <DropdownMenu.RadioItem value="date-desc">
-              Date (Newest first)
-              <DropdownMenu.RadioItemIndicator />
-            </DropdownMenu.RadioItem>
-            <DropdownMenu.RadioItem value="date-asc">
-              Date (Oldest first)
-              <DropdownMenu.RadioItemIndicator />
-            </DropdownMenu.RadioItem>
-            <DropdownMenu.RadioItem value="name-asc">
-              Name (A-Z)
-              <DropdownMenu.RadioItemIndicator />
-            </DropdownMenu.RadioItem>
-            <DropdownMenu.RadioItem value="name-desc">
-              Name (Z-A)
-              <DropdownMenu.RadioItemIndicator />
-            </DropdownMenu.RadioItem>
-          </DropdownMenu.RadioGroup>
+          <DropdownMenu.Group>
+            <DropdownMenu.Label>Sort Order</DropdownMenu.Label>
+            <DropdownMenu.RadioGroup
+              value={sortOrder}
+              onValueChange={setSortOrder}
+            >
+              <DropdownMenu.RadioItem value="date-desc">
+                Date (Newest first)
+                <DropdownMenu.RadioItemIndicator />
+              </DropdownMenu.RadioItem>
+              <DropdownMenu.RadioItem value="date-asc">
+                Date (Oldest first)
+                <DropdownMenu.RadioItemIndicator />
+              </DropdownMenu.RadioItem>
+              <DropdownMenu.RadioItem value="name-asc">
+                Name (A-Z)
+                <DropdownMenu.RadioItemIndicator />
+              </DropdownMenu.RadioItem>
+              <DropdownMenu.RadioItem value="name-desc">
+                Name (Z-A)
+                <DropdownMenu.RadioItemIndicator />
+              </DropdownMenu.RadioItem>
+            </DropdownMenu.RadioGroup>
+          </DropdownMenu.Group>
         </DropdownMenu.Content>
       </DropdownMenu>
     );
@@ -446,17 +448,19 @@ export const NestedMenuWithRadioItems: Story = {
           <DropdownMenu.Sub>
             <DropdownMenu.SubTrigger>Language</DropdownMenu.SubTrigger>
             <DropdownMenu.SubContent side="left">
-              <DropdownMenu.RadioGroup
-                value={language}
-                onValueChange={setLanguage}
-              >
-                {languages.map((lang) => (
-                  <DropdownMenu.RadioItem key={lang.code} value={lang.code}>
-                    {lang.label}
-                    <DropdownMenu.RadioItemIndicator />
-                  </DropdownMenu.RadioItem>
-                ))}
-              </DropdownMenu.RadioGroup>
+              <DropdownMenu.Group>
+                <DropdownMenu.RadioGroup
+                  value={language}
+                  onValueChange={setLanguage}
+                >
+                  {languages.map((lang) => (
+                    <DropdownMenu.RadioItem key={lang.code} value={lang.code}>
+                      {lang.label}
+                      <DropdownMenu.RadioItemIndicator />
+                    </DropdownMenu.RadioItem>
+                  ))}
+                </DropdownMenu.RadioGroup>
+              </DropdownMenu.Group>
             </DropdownMenu.SubContent>
           </DropdownMenu.Sub>
 
@@ -464,17 +468,19 @@ export const NestedMenuWithRadioItems: Story = {
           <DropdownMenu.Sub>
             <DropdownMenu.SubTrigger>Set Timezone</DropdownMenu.SubTrigger>
             <DropdownMenu.SubContent side="left">
-              <DropdownMenu.RadioGroup
-                value={timezone}
-                onValueChange={setTimezone}
-              >
-                {timezones.map((tz) => (
-                  <DropdownMenu.RadioItem key={tz.value} value={tz.value}>
-                    {tz.label}
-                    <DropdownMenu.RadioItemIndicator />
-                  </DropdownMenu.RadioItem>
-                ))}
-              </DropdownMenu.RadioGroup>
+              <DropdownMenu.Group>
+                <DropdownMenu.RadioGroup
+                  value={timezone}
+                  onValueChange={setTimezone}
+                >
+                  {timezones.map((tz) => (
+                    <DropdownMenu.RadioItem key={tz.value} value={tz.value}>
+                      {tz.label}
+                      <DropdownMenu.RadioItemIndicator />
+                    </DropdownMenu.RadioItem>
+                  ))}
+                </DropdownMenu.RadioGroup>
+              </DropdownMenu.Group>
             </DropdownMenu.SubContent>
           </DropdownMenu.Sub>
 
