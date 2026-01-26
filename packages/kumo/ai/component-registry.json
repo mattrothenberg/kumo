@@ -75,7 +75,12 @@
         },
         "text": {
           "type": "string",
-          "required": true
+          "optional": true,
+          "deprecated": "Use `children` instead. Will be removed in a future major version."
+        },
+        "children": {
+          "type": "ReactNode",
+          "optional": true
         },
         "variant": {
           "type": "enum",
@@ -103,9 +108,10 @@
         }
       },
       "examples": [
-        "<Banner variant=\"default\" text=\"This is a banner message\" icon={<InfoIcon size={16} />} />",
-        "<Banner variant=\"alert\" text=\"This is a banner message\" icon={<InfoIcon size={16} />} />",
-        "<Banner variant=\"error\" text=\"This is a banner message\" icon={<InfoIcon size={16} />} />"
+        "<Banner variant=\"default\" icon={<InfoIcon size={16} />}>This is a banner message</Banner>",
+        "<Banner variant=\"alert\" icon={<InfoIcon size={16} />}>This is a banner message</Banner>",
+        "<Banner variant=\"error\" icon={<InfoIcon size={16} />}>This is a banner message</Banner>",
+        "<Banner icon={<InfoIcon size={16} />}>\n      <Text DANGEROUS_className=\"text-inherit\">\n        This banner supports <strong>custom content</strong> in the text slot.\n      </Text>\n    </Banner>"
       ],
       "colors": [
         "bg-alert",

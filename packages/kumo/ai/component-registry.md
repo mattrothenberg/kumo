@@ -185,7 +185,8 @@ Banner component
 **Props:**
 
 - `icon`: ReactNode
-- `text`: string (required)
+- `text`: string
+- `children`: ReactNode
 - `variant`: enum [default: default]
   - `"default"`: Informational banner for general messages
   - `"alert"`: Warning banner for cautionary messages
@@ -199,7 +200,15 @@ Banner component
 **Examples:**
 
 ```tsx
-<Banner variant="default" text="This is a banner message" icon={<InfoIcon size={16} />} />
+<Banner variant="default" icon={<InfoIcon size={16} />}>This is a banner message</Banner>
+```
+
+```tsx
+<Banner icon={<InfoIcon size={16} />}>
+      <Text DANGEROUS_className="text-inherit">
+        This banner supports <strong>custom content</strong> in the text slot.
+      </Text>
+    </Banner>
 ```
 
 

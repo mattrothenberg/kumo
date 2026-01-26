@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { type ReactNode, isValidElement } from "react";
 import { cn } from "../../utils/cn";
 
 /**
@@ -58,21 +58,29 @@ export enum BannerVariant {
 
 export interface BannerProps {
   icon?: ReactNode;
-  text: string;
+  /** @deprecated Use `children` instead. Will be removed in a future major version. */
+  text?: string;
+  children?: ReactNode;
   variant?: KumoBannerVariant;
   className?: string;
 }
 
 export function Banner({
   icon,
+  children,
   text,
   variant = KUMO_BANNER_DEFAULT_VARIANTS.variant,
   className,
 }: BannerProps) {
+  // Prefer children over deprecated text prop
+  const value = children ?? text;
+
+  const content = isValidElement(value) ? value : <p>{value}</p>;
+
   return (
     <div className={cn(bannerVariants({ variant }), className)}>
       {icon}
-      <p>{text}</p>
+      {content}
     </div>
   );
 }

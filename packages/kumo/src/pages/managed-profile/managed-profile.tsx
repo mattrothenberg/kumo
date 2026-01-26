@@ -448,10 +448,10 @@ function InfoIcon() {
 
 function PendingEmailBanner({ newEmail }: { newEmail: string }) {
   return (
-    <Banner
-      icon={<InfoIcon />}
-      text={`You have requested to change your email address to ${newEmail}. Please verify your new email address to continue.`}
-    />
+    <Banner icon={<InfoIcon />}>
+      You have requested to change your email address to {newEmail}. Please
+      verify your new email address to continue.
+    </Banner>
   );
 }
 
@@ -704,10 +704,10 @@ function CheckCircleIcon() {
 function DeleteUserConfirmContent() {
   return (
     <div className="space-y-4 p-4">
-      <Banner
-        icon={<CheckCircleIcon />}
-        text="Cloudflare is committed to privacy. Our network and all of our products are built with protection in mind."
-      />
+      <Banner icon={<CheckCircleIcon />}>
+        Cloudflare is committed to privacy. Our network and all of our products
+        are built with protection in mind.
+      </Banner>
       <Text variant="body" size="sm" DANGEROUS_className="text-info">
         You will be logged out in 5 seconds.
       </Text>
