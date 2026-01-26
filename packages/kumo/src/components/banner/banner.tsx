@@ -58,21 +58,36 @@ export enum BannerVariant {
 
 export interface BannerProps {
   icon?: ReactNode;
-  text: string;
+  children?: ReactNode;
+  /**
+   * @deprecated Use `children` instead. Will be removed in a future major version.
+   */
+  text?: ReactNode;
   variant?: KumoBannerVariant;
   className?: string;
 }
 
 export function Banner({
   icon,
+  children,
   text,
   variant = KUMO_BANNER_DEFAULT_VARIANTS.variant,
   className,
 }: BannerProps) {
+  // Prefer children over deprecated text prop
+  const value = children ?? text;
+
+  const content =
+    typeof value === "string" || typeof value === "number" ? (
+      <p>{value}</p>
+    ) : (
+      value
+    );
+
   return (
     <div className={cn(bannerVariants({ variant }), className)}>
       {icon}
-      <p>{text}</p>
+      {content}
     </div>
   );
 }
