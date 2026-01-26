@@ -185,8 +185,8 @@ Banner component
 **Props:**
 
 - `icon`: ReactNode
+- `text`: string
 - `children`: ReactNode
-- `text`: ReactNode
 - `variant`: enum [default: default]
   - `"default"`: Informational banner for general messages
   - `"alert"`: Warning banner for cautionary messages

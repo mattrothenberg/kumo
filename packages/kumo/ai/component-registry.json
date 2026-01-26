@@ -73,11 +73,12 @@
           "type": "ReactNode",
           "optional": true
         },
-        "children": {
-          "type": "ReactNode",
-          "optional": true
-        },
         "text": {
+          "type": "string",
+          "optional": true,
+          "deprecated": "Use `children` instead. Will be removed in a future major version."
+        },
+        "children": {
           "type": "ReactNode",
           "optional": true
         },
