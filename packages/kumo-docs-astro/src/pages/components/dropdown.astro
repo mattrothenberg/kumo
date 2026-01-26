@@ -4,7 +4,7 @@ import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
 import PropsTable from "../../components/docs/PropsTable.astro";
-import { DropdownBasicDemo, DropdownNestedDemo } from "../../components/demos/DropdownDemo";
+import { DropdownBasicDemo, DropdownCheckboxDemo, DropdownNestedDemo } from "../../components/demos/DropdownDemo";
 ---
 
 <DocLayout
@@ -66,6 +66,36 @@ export default function Example() {
   </DropdownMenu.Content>
 </DropdownMenu>`}>
           <DropdownBasicDemo client:load />
+        </ComponentExample>
+      </div>
+
+      <div>
+        <h3 class="mb-4 text-xl font-semibold">Checkbox Items</h3>
+        <p class="mb-4 text-sm text-label">
+          Use <code class="rounded bg-color-3 px-1.5 py-0.5 font-mono text-xs">DropdownMenu.CheckboxItem</code> for 
+          toggleable options that can be independently checked or unchecked.
+        </p>
+        <ComponentExample code={`<DropdownMenu>
+  <DropdownMenu.Trigger render={<Button>View Options</Button>} />
+  <DropdownMenu.Content>
+    <DropdownMenu.Group>
+      <DropdownMenu.Label>Display</DropdownMenu.Label>
+      <DropdownMenu.CheckboxItem
+        checked={showSidebar}
+        onCheckedChange={setShowSidebar}
+      >
+        Show sidebar
+      </DropdownMenu.CheckboxItem>
+      <DropdownMenu.CheckboxItem
+        checked={showLineNumbers}
+        onCheckedChange={setShowLineNumbers}
+      >
+        Show line numbers
+      </DropdownMenu.CheckboxItem>
+    </DropdownMenu.Group>
+  </DropdownMenu.Content>
+</DropdownMenu>`}>
+          <DropdownCheckboxDemo client:load />
         </ComponentExample>
       </div>
 
@@ -164,6 +194,14 @@ export default function Example() {
           Individual menu item.
         </p>
         <PropsTable component="DropdownMenu.Item" />
+      </div>
+
+      <div>
+        <h3 class="mb-3 text-lg font-semibold font-mono">DropdownMenu.CheckboxItem</h3>
+        <p class="mb-3 text-sm text-label">
+          A menu item that can be toggled on or off. Use for independent boolean options.
+        </p>
+        <PropsTable component="DropdownMenu.CheckboxItem" />
       </div>
 
       <div>

@@ -140,27 +140,42 @@ export const WithLabelsAndGroups: Story = {
 };
 
 export const WithCheckboxItems: Story = {
-  render: () => (
-    <DropdownMenu defaultOpen>
-      <DropdownMenu.Trigger>
-        <Button>View Options</Button>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
-        <DropdownMenu.Group>
-          <DropdownMenu.Label>Display</DropdownMenu.Label>
-          <DropdownMenu.CheckboxItem checked>
-            Show sidebar
-          </DropdownMenu.CheckboxItem>
-          <DropdownMenu.CheckboxItem checked={false}>
-            Show line numbers
-          </DropdownMenu.CheckboxItem>
-          <DropdownMenu.CheckboxItem checked>
-            Word wrap
-          </DropdownMenu.CheckboxItem>
-        </DropdownMenu.Group>
-      </DropdownMenu.Content>
-    </DropdownMenu>
-  ),
+  render: function CheckboxItemsStory() {
+    const [showSidebar, setShowSidebar] = useState(true);
+    const [showLineNumbers, setShowLineNumbers] = useState(false);
+    const [wordWrap, setWordWrap] = useState(true);
+
+    return (
+      <DropdownMenu defaultOpen>
+        <DropdownMenu.Trigger>
+          <Button>View Options</Button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Group>
+            <DropdownMenu.Label>Display</DropdownMenu.Label>
+            <DropdownMenu.CheckboxItem
+              checked={showSidebar}
+              onCheckedChange={setShowSidebar}
+            >
+              Show sidebar
+            </DropdownMenu.CheckboxItem>
+            <DropdownMenu.CheckboxItem
+              checked={showLineNumbers}
+              onCheckedChange={setShowLineNumbers}
+            >
+              Show line numbers
+            </DropdownMenu.CheckboxItem>
+            <DropdownMenu.CheckboxItem
+              checked={wordWrap}
+              onCheckedChange={setWordWrap}
+            >
+              Word wrap
+            </DropdownMenu.CheckboxItem>
+          </DropdownMenu.Group>
+        </DropdownMenu.Content>
+      </DropdownMenu>
+    );
+  },
 };
 
 export const WithShortcuts: Story = {

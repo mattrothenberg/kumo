@@ -44,6 +44,41 @@ const timezones = [
   { value: "Asia/Tokyo", label: "Japan Standard Time (JST)" },
 ];
 
+export function DropdownCheckboxDemo() {
+  const [showSidebar, setShowSidebar] = useState(true);
+  const [showLineNumbers, setShowLineNumbers] = useState(false);
+  const [wordWrap, setWordWrap] = useState(true);
+
+  return (
+    <DropdownMenu>
+      <DropdownMenu.Trigger render={<Button>View Options</Button>} />
+      <DropdownMenu.Content>
+        <DropdownMenu.Group>
+          <DropdownMenu.Label>Display</DropdownMenu.Label>
+          <DropdownMenu.CheckboxItem
+            checked={showSidebar}
+            onCheckedChange={setShowSidebar}
+          >
+            Show sidebar
+          </DropdownMenu.CheckboxItem>
+          <DropdownMenu.CheckboxItem
+            checked={showLineNumbers}
+            onCheckedChange={setShowLineNumbers}
+          >
+            Show line numbers
+          </DropdownMenu.CheckboxItem>
+          <DropdownMenu.CheckboxItem
+            checked={wordWrap}
+            onCheckedChange={setWordWrap}
+          >
+            Word wrap
+          </DropdownMenu.CheckboxItem>
+        </DropdownMenu.Group>
+      </DropdownMenu.Content>
+    </DropdownMenu>
+  );
+}
+
 export function DropdownNestedDemo() {
   const [language, setLanguage] = useState("en");
   const [timezone, setTimezone] = useState("America/Los_Angeles");
