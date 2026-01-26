@@ -19,6 +19,8 @@ export interface PropSchema {
   descriptions?: Record<string, string>;
   default?: string;
   description?: string;
+  /** Deprecation message from @deprecated JSDoc tag */
+  deprecated?: string | boolean;
 }
 
 export interface SubComponentData {

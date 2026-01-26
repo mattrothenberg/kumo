@@ -1,6 +1,7 @@
 import { noTailwindDarkVariantRule } from "./no-tailwind-dark-variant.js";
 import { noPrimitiveColorsRule } from "./no-primitive-colors.js";
 import { enforceVariantStandardRule } from "./enforce-variant-standard.js";
+import { noDeprecatedPropsRule } from "./no-deprecated-props.js";
 
 const plugin = {
   meta: {
@@ -10,6 +11,7 @@ const plugin = {
     "no-tailwind-dark-variant": noTailwindDarkVariantRule,
     "no-primitive-colors": noPrimitiveColorsRule,
     "enforce-variant-standard": enforceVariantStandardRule,
+    "no-deprecated-props": noDeprecatedPropsRule,
   },
 };
 

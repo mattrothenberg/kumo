@@ -1181,6 +1181,8 @@ interface PropSchema {
   optional?: boolean;
   default?: string;
   description?: string;
+  /** Deprecation message from @deprecated JSDoc tag */
+  deprecated?: string | boolean;
   values?: readonly string[];
   descriptions?: Record<string, string>;
   /** Tailwind classes for each variant value (for Figma plugin) */
@@ -1422,6 +1424,13 @@ function convertToPropSchema(
 
   if (def.description) {
     prop.description = def.description;
+  }
+
+  // Capture @deprecated JSDoc tag (ts-json-schema-generator outputs this as a separate field)
+  // biome-ignore lint/suspicious/noExplicitAny: Definition type doesn't include deprecated but it's there
+  if ((def as any).deprecated) {
+    // biome-ignore lint/suspicious/noExplicitAny: Definition type doesn't include deprecated but it's there
+    prop.deprecated = (def as any).deprecated;
   }
 
   // Handle enums - check both original def and resolved def (for $ref cases)
