@@ -96,3 +96,27 @@ export function TabsManyDemo() {
     />
   );
 }
+
+export function TabsRenderPropDemo() {
+  return (
+    <Tabs
+      tabs={[
+        {
+          value: "tab1",
+          label: "Regular Tab",
+        },
+        {
+          value: "tab2",
+          label: "Link Tab",
+          render: (props) => <a {...props} href="#tab2" />,
+        },
+        {
+          value: "tab3",
+          label: "Another Link",
+          render: (props) => <a {...props} href="#tab3" />,
+        },
+      ]}
+      selectedValue="tab1"
+    />
+  );
+}
