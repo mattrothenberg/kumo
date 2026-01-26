@@ -10,6 +10,7 @@ import {
   PopoverWithCloseDemo,
   PopoverPositionDemo,
   PopoverCustomContentDemo,
+  PopoverOpenOnHoverDemo,
 } from "../../components/demos/PopoverDemo";
 ---
 
@@ -61,6 +62,54 @@ export default function Example() {
     </Popover>
   );
 }`} lang="tsx" />
+  </ComponentSection>
+
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Popover vs Tooltip</h2>
+    <p class="mb-4 text-sm text-label">
+      While popovers can be triggered on hover (using <code class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-xs">openOnHover</code>), they serve a different purpose than tooltips. Understanding when to use each is important for accessibility and user experience.
+    </p>
+    <div class="overflow-hidden rounded-lg border border-border">
+      <table class="w-full text-sm">
+        <thead class="bg-surface-2">
+          <tr>
+            <th class="px-4 py-3 text-left font-semibold"></th>
+            <th class="px-4 py-3 text-left font-semibold">Tooltip</th>
+            <th class="px-4 py-3 text-left font-semibold">Popover</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-border">
+          <tr>
+            <td class="px-4 py-3 font-medium">Purpose</td>
+            <td class="px-4 py-3 text-muted">Short, non-interactive text labels for identification</td>
+            <td class="px-4 py-3 text-muted">Rich, interactive content containers</td>
+          </tr>
+          <tr>
+            <td class="px-4 py-3 font-medium">Content</td>
+            <td class="px-4 py-3 text-muted">Plain text only</td>
+            <td class="px-4 py-3 text-muted">Any content: links, buttons, forms, images</td>
+          </tr>
+          <tr>
+            <td class="px-4 py-3 font-medium">Trigger</td>
+            <td class="px-4 py-3 text-muted">Hover or focus</td>
+            <td class="px-4 py-3 text-muted">Click (default) or hover</td>
+          </tr>
+          <tr>
+            <td class="px-4 py-3 font-medium">ARIA Role</td>
+            <td class="px-4 py-3"><code class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-xs">role="tooltip"</code></td>
+            <td class="px-4 py-3"><code class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-xs">aria-haspopup</code></td>
+          </tr>
+          <tr>
+            <td class="px-4 py-3 font-medium">Keyboard</td>
+            <td class="px-4 py-3 text-muted">Not focusable</td>
+            <td class="px-4 py-3 text-muted">Focus moves inside, traps when open</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="mt-4 text-sm text-label">
+      <strong>Use a Tooltip</strong> when you need to label an icon button or provide a brief explanation. <strong>Use a Popover</strong> when users need to interact with the content inside, such as clicking links, filling out forms, or dismissing with a button.
+    </p>
   </ComponentSection>
 
   <ComponentSection>
@@ -154,6 +203,34 @@ export default function Example() {
   </Popover.Content>
 </Popover>`}>
           <PopoverCustomContentDemo client:load />
+        </ComponentExample>
+      </div>
+
+      <div>
+        <h3 class="mb-4 text-xl font-semibold">Open on Hover</h3>
+        <p class="mb-4 text-sm text-label">
+          Use <code class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-xs">openOnHover</code> on the trigger to open the popover when the user hovers over it. You can also specify a <code class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-xs">delay</code> in milliseconds before the popover appears.
+        </p>
+        <ComponentExample code={`<Popover>
+  <Popover.Trigger openOnHover delay={200} asChild>
+    <Button variant="secondary">Hover Me</Button>
+  </Popover.Trigger>
+  <Popover.Content>
+    <Popover.Title>Hover Triggered</Popover.Title>
+    <Popover.Description>
+      This popover opens on hover with a 200ms delay. It can still contain
+      interactive content like buttons and links.
+    </Popover.Description>
+    <div className="mt-3">
+      <Popover.Close asChild>
+        <Button variant="secondary" size="sm">
+          Got it
+        </Button>
+      </Popover.Close>
+    </div>
+  </Popover.Content>
+</Popover>`}>
+          <PopoverOpenOnHoverDemo client:load />
         </ComponentExample>
       </div>
     </div>

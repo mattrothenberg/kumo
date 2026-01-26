@@ -132,3 +132,27 @@ export function PopoverCustomContentDemo() {
     </Popover>
   );
 }
+
+export function PopoverOpenOnHoverDemo() {
+  return (
+    <Popover>
+      <Popover.Trigger openOnHover delay={200} asChild>
+        <Button variant="secondary">Hover Me</Button>
+      </Popover.Trigger>
+      <Popover.Content>
+        <Popover.Title>Hover Triggered</Popover.Title>
+        <Popover.Description>
+          This popover opens on hover with a 200ms delay. It can still contain
+          interactive content like buttons and links.
+        </Popover.Description>
+        <div className="mt-3">
+          <Popover.Close asChild>
+            <Button variant="secondary" size="sm">
+              Got it
+            </Button>
+          </Popover.Close>
+        </div>
+      </Popover.Content>
+    </Popover>
+  );
+}
