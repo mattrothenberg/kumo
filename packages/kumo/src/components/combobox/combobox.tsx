@@ -140,7 +140,7 @@ function Content({
         <ComboboxBase.Popup
           className={cn(
             "max-h-[min(var(--available-height),24rem)] max-w-(--available-width) min-w-(--anchor-width) scroll-pt-2 scroll-pb-2 overflow-y-auto overscroll-contain p-1.5",
-            "z-50 overflow-hidden bg-secondary text-surface", // background
+            "z-50 bg-secondary text-surface", // background
             "rounded-lg shadow-lg ring ring-border", // border part
             className,
           )}
