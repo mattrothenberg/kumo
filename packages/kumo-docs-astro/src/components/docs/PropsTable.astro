@@ -56,16 +56,29 @@ const hasDescriptions =
         <tbody class="text-label">
           {props.map(([propName, prop]) => {
             const isRequired = prop.required === true || prop.optional === false;
+            const isDeprecated = !!prop.deprecated;
             const typeDisplay = formatPropType(prop);
             const defaultDisplay = formatDefault(prop);
 
-            // Build description: use prop.description, or for enums show variant descriptions
+            // Build description: prepend @deprecated if present, then use prop.description
             let description = prop.description || "";
+            if (isDeprecated) {
+              const deprecationMsg = typeof prop.deprecated === "string" 
+                ? prop.deprecated 
+                : "This prop is deprecated.";
+              description = description 
+                ? `@deprecated ${deprecationMsg}` 
+                : `@deprecated ${deprecationMsg}`;
+            }
 
             return (
               <tr class="border-b border-border">
                 <td class="px-4 py-3 font-mono text-xs">
-                  {propName}
+                  {isDeprecated ? (
+                    <span class="line-through opacity-60">{propName}</span>
+                  ) : (
+                    propName
+                  )}
                   {isRequired && <span class="text-error ml-0.5">*</span>}
                 </td>
                 <td class="px-4 py-3 font-mono text-xs max-w-xs">
@@ -75,7 +88,17 @@ const hasDescriptions =
                   {defaultDisplay !== "-" ? <code>{defaultDisplay}</code> : "-"}
                 </td>
                 {hasDescriptions && (
-                  <td class="px-4 py-3 text-xs max-w-md">{description || "-"}</td>
+                  <td class="px-4 py-3 text-xs max-w-md">
+                    {isDeprecated && (
+                      <span class="mr-1 rounded bg-alert/20 px-1.5 py-0.5 text-alert font-medium">
+                        @deprecated
+                      </span>
+                    )}
+                    {isDeprecated 
+                      ? (typeof prop.deprecated === "string" ? prop.deprecated : (prop.description || "-"))
+                      : (description || "-")
+                    }
+                  </td>
                 )}
               </tr>
             );

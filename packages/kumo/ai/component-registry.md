@@ -590,7 +590,7 @@ Props:
 <Checkbox
         label="Indeterminate state"
         indeterminate={indeterminate}
-        onValueChange={() => setIndeterminate(false)}
+        onCheckedChange={() => setIndeterminate(false)}
       />
 ```
 
@@ -3155,13 +3155,10 @@ PageHeader component
   - `"compact"`: Compact spacing between header elements
   - `"base"`: Default spacing between header elements
   - `"relaxed"`: Relaxed spacing for more prominent headers
-- `breadcrumbs`: ReactNode
-- `title`: string
-- `description`: string
-- `tabs`: TabsItem[]
-- `defaultTab`: string
 - `className`: string
+  Additional CSS classes
 - `children`: ReactNode
+  Child elements
 
 **Colors (kumo tokens used):**
 
@@ -4743,21 +4740,10 @@ Tabs component
 
 **Props:**
 
-- `tabs`: TabsItem[]
-  Array of tab items to render
-- `value`: string
-  Controlled value. When set, component becomes controlled.
-- `selectedValue`: string
-  Default selected value for uncontrolled mode. Ignored when `value` is set.
-- `activateOnFocus`: boolean
-  When true, tabs are activated immediately upon receiving focus via arrow keys. When false (default), tabs receive focus but require Enter/Space to activate. Set to true for better keyboard UX in most cases.
 - `className`: string
-  Additional class name for the root element
-- `listClassName`: string
-  Additional class name for the tab list element
-- `indicatorClassName`: string
-  Additional class name for the indicator element
-- `variant`: enum [default: segmented]
+  Additional CSS classes
+- `children`: ReactNode
+  Child elements
 - `onValueChange`: (value: string) => void
   Callback when active tab changes
 
@@ -4776,6 +4762,27 @@ Tabs component
 
 ```tsx
 <Tabs tabs="defaultTabs" selectedValue="tab1" variant="segmented" />
+```
+
+```tsx
+<Tabs tabs={[
+      {
+        value: "tab1",
+        label: "Regular Tab",
+      },
+      {
+        value: "tab2",
+        label: "Custom Link",
+        // oxlint-disable-next-line jsx-a11y/anchor-has-content
+        render: (props) => <a {...props} href="#tab2" />,
+      },
+      {
+        value: "tab3",
+        label: "Another Link",
+        // oxlint-disable-next-line jsx-a11y/anchor-has-content
+        render: (props) => <a {...props} href="#tab3" />,
+      },
+    ]} selectedValue="tab1" variant="segmented" />
 ```
 
 
