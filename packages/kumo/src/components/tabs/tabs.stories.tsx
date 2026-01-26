@@ -52,3 +52,28 @@ export const UnderlineMany: Story = {
     variant: "underline",
   },
 };
+
+export const WithRenderProp: Story = {
+  args: {
+    tabs: [
+      {
+        value: "tab1",
+        label: "Regular Tab",
+      },
+      {
+        value: "tab2",
+        label: "Custom Link",
+        // oxlint-disable-next-line jsx-a11y/anchor-has-content
+        render: (props) => <a {...props} href="#tab2" />,
+      },
+      {
+        value: "tab3",
+        label: "Another Link",
+        // oxlint-disable-next-line jsx-a11y/anchor-has-content
+        render: (props) => <a {...props} href="#tab3" />,
+      },
+    ],
+    selectedValue: "tab1",
+    variant: "segmented",
+  },
+};

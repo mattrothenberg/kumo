@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import { Tabs as TabsPrimitive } from "@base-ui/react/tabs";
 import { cn } from "../../utils/cn";
 
@@ -42,6 +42,8 @@ export interface KumoTabsVariantsProps {
 export type TabsItem = {
   value: string;
   label: ReactNode;
+  /** Custom render function for the tab. Allows rendering as a different element (e.g., a link). */
+  render?: ComponentProps<typeof TabsPrimitive.Tab>["render"];
   className?: string;
 };
 
@@ -111,9 +113,9 @@ export function Tabs({
       <TabsPrimitive.List
         activateOnFocus={activateOnFocus}
         className={cn(
-          "scrollbar-hide relative flex min-w-0 shrink items-stretch",
+          "no-scrollbar relative flex min-w-0 shrink items-stretch",
           isSegmented && "h-8.5 rounded-lg bg-accent px-px",
-          isUnderline && "h-7 pb-2 gap-4 border-b border-border",
+          isUnderline && "h-7 gap-4 border-b border-border pb-2",
           listClassName,
         )}
       >
@@ -121,12 +123,14 @@ export function Tabs({
           <TabsPrimitive.Tab
             key={tab.value}
             value={tab.value}
+            render={tab.render}
+            nativeButton={tab.render === undefined}
             className={cn(
-              "relative z-10 flex cursor-pointer items-center rounded bg-transparent text-base whitespace-nowrap hover:border-accent focus-visible:ring-active focus-visible:outline-offset-3 focus-visible:rounded-none",
+              "relative z-10 flex cursor-pointer items-center rounded bg-transparent text-base whitespace-nowrap hover:border-accent focus-visible:rounded-none focus-visible:ring-active focus-visible:outline-offset-3",
               isSegmented &&
                 "my-px rounded-lg px-2.5 text-label aria-selected:text-surface",
               isUnderline &&
-                "mb-2 text-label aria-selected:font-medium aria-selected:text-surface hover:text-muted",
+                "mb-2 text-label hover:text-muted aria-selected:font-medium aria-selected:text-surface",
               tab.className,
             )}
           >
