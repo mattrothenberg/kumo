@@ -52,11 +52,11 @@ const DropdownMenuSubTrigger = React.forwardRef<
   <DropdownMenuPrimitive.SubmenuTrigger
     ref={ref}
     className={cn(
-      "flex cursor-default items-center rounded-sm text-base outline-hidden select-none", // base styles
-      "px-2 py-1.5", // spacing
-      "focus:bg-accent", // focus state
-      "data-[state=open]:bg-accent", // open state
-      inset && "pl-8", // conditional inset
+      // Match DropdownMenuItem base styles
+      "relative flex cursor-default items-center rounded-md px-2 py-1.5 text-base outline-hidden select-none",
+      // Highlight and disabled states matching DropdownMenuItem
+      "data-disabled:pointer-events-none data-disabled:opacity-50 data-highlighted:bg-color-3",
+      inset && "pl-8",
       className,
     )}
     {...props}
@@ -82,7 +82,7 @@ const DropdownMenuContent = React.forwardRef<
     >
       <DropdownMenuPrimitive.Popup
         className={cn(
-          "z-50 overflow-hidden bg-secondary text-surface", // background
+          "z-50 overflow-hidden bg-secondary text-surface outline-hidden", // background
           "rounded-lg shadow-lg ring ring-border", // border part
           "min-w-36 p-1.5", // spacing
           "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95", // open animation
@@ -220,7 +220,8 @@ const DropdownMenuCheckboxItem = React.forwardRef<
   <DropdownMenuPrimitive.CheckboxItem
     ref={ref}
     className={cn(
-      "relative flex cursor-default items-center rounded-sm py-1.5 pr-2 pl-8 text-base outline-hidden transition-colors select-none focus:bg-accent focus:text-surface data-disabled:pointer-events-none data-disabled:opacity-50",
+      "relative flex cursor-default items-center rounded-md py-1.5 pr-2 pl-8 text-base outline-hidden select-none",
+      "data-disabled:pointer-events-none data-disabled:opacity-50 data-highlighted:bg-color-3",
       className,
     )}
     checked={checked}
@@ -259,7 +260,7 @@ const DropdownMenuSeparator = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DropdownMenuPrimitive.Separator
     ref={ref}
-    className={cn("-mx-1 my-1 h-px bg-muted", className)}
+    className={cn("-mx-1 my-1 h-px bg-border", className)}
     {...props}
   />
 ));
@@ -277,6 +278,45 @@ const DropdownMenuShortcut = ({
   );
 };
 DropdownMenuShortcut.displayName = "DropdownMenuShortcut";
+
+const DropdownMenuRadioItem = React.forwardRef<
+  React.ElementRef<typeof DropdownMenuPrimitive.RadioItem>,
+  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.RadioItem> & {
+    inset?: boolean;
+    icon?: Icon | React.ReactNode;
+  }
+>(({ className, children, inset, icon: IconComponent, ...props }, ref) => (
+  <DropdownMenuPrimitive.RadioItem
+    ref={ref}
+    className={cn(
+      "relative flex cursor-default items-center rounded-md px-2 py-1.5 text-base outline-hidden select-none",
+      "data-disabled:pointer-events-none data-disabled:opacity-50 data-highlighted:bg-color-3",
+      inset && "pl-8",
+      className,
+    )}
+    {...props}
+  >
+    {IconComponent && renderIconNode(IconComponent)}
+    {children}
+  </DropdownMenuPrimitive.RadioItem>
+));
+DropdownMenuRadioItem.displayName = "DropdownMenuRadioItem";
+
+const DropdownMenuRadioItemIndicator = React.forwardRef<
+  React.ElementRef<typeof DropdownMenuPrimitive.RadioItemIndicator>,
+  React.ComponentPropsWithoutRef<
+    typeof DropdownMenuPrimitive.RadioItemIndicator
+  >
+>(({ className, children, ...props }, ref) => (
+  <DropdownMenuPrimitive.RadioItemIndicator
+    ref={ref}
+    className={cn("ml-auto", className)}
+    {...props}
+  >
+    {children ?? <Check className="h-4 w-4" />}
+  </DropdownMenuPrimitive.RadioItemIndicator>
+));
+DropdownMenuRadioItemIndicator.displayName = "DropdownMenuRadioItemIndicator";
 
 /**
  * Custom Trigger that converts a single child element to the `render` prop
@@ -315,6 +355,9 @@ export const DropdownMenu = Object.assign(DropdownMenuPrimitive.Root, {
   Content: DropdownMenuContent,
   Item: DropdownMenuItem,
   CheckboxItem: DropdownMenuCheckboxItem,
+  RadioGroup: DropdownMenuPrimitive.RadioGroup,
+  RadioItem: DropdownMenuRadioItem,
+  RadioItemIndicator: DropdownMenuRadioItemIndicator,
   Label: DropdownMenuLabel,
   Separator: DropdownMenuSeparator,
   Shortcut: DropdownMenuShortcut,

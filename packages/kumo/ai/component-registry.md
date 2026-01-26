@@ -2161,6 +2161,18 @@ Item sub-component
 
 CheckboxItem sub-component
 
+#### DropdownMenu.RadioGroup
+
+RadioGroup sub-component (wraps DropdownMenuPrimitive)
+
+#### DropdownMenu.RadioItem
+
+RadioItem sub-component
+
+#### DropdownMenu.RadioItemIndicator
+
+RadioItemIndicator sub-component
+
 #### DropdownMenu.Label
 
 Label sub-component

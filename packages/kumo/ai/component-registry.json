@@ -1780,6 +1780,23 @@
           "description": "CheckboxItem sub-component",
           "props": {}
         },
+        "RadioGroup": {
+          "name": "RadioGroup",
+          "description": "RadioGroup sub-component (wraps DropdownMenuPrimitive)",
+          "props": {},
+          "isPassThrough": true,
+          "baseComponent": "DropdownMenuPrimitive.RadioGroup"
+        },
+        "RadioItem": {
+          "name": "RadioItem",
+          "description": "RadioItem sub-component",
+          "props": {}
+        },
+        "RadioItemIndicator": {
+          "name": "RadioItemIndicator",
+          "description": "RadioItemIndicator sub-component",
+          "props": {}
+        },
         "Label": {
           "name": "Label",
           "description": "Label sub-component",

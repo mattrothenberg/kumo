@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DropdownMenu, KUMO_DROPDOWN_VARIANTS } from "./dropdown";
 import { Button } from "../button/button";
@@ -11,6 +12,9 @@ import {
   GearIcon,
   UserIcon,
   SignOutIcon,
+  MoonIcon,
+  CreditCardIcon,
+  CheckIcon,
 } from "@phosphor-icons/react";
 
 const meta: Meta<typeof DropdownMenu> = {
@@ -136,27 +140,42 @@ export const WithLabelsAndGroups: Story = {
 };
 
 export const WithCheckboxItems: Story = {
-  render: () => (
-    <DropdownMenu defaultOpen>
-      <DropdownMenu.Trigger>
-        <Button>View Options</Button>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
-        <DropdownMenu.Group>
-          <DropdownMenu.Label>Display</DropdownMenu.Label>
-          <DropdownMenu.CheckboxItem checked>
-            Show sidebar
-          </DropdownMenu.CheckboxItem>
-          <DropdownMenu.CheckboxItem checked={false}>
-            Show line numbers
-          </DropdownMenu.CheckboxItem>
-          <DropdownMenu.CheckboxItem checked>
-            Word wrap
-          </DropdownMenu.CheckboxItem>
-        </DropdownMenu.Group>
-      </DropdownMenu.Content>
-    </DropdownMenu>
-  ),
+  render: function CheckboxItemsStory() {
+    const [showSidebar, setShowSidebar] = useState(true);
+    const [showLineNumbers, setShowLineNumbers] = useState(false);
+    const [wordWrap, setWordWrap] = useState(true);
+
+    return (
+      <DropdownMenu defaultOpen>
+        <DropdownMenu.Trigger>
+          <Button>View Options</Button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Group>
+            <DropdownMenu.Label>Display</DropdownMenu.Label>
+            <DropdownMenu.CheckboxItem
+              checked={showSidebar}
+              onCheckedChange={setShowSidebar}
+            >
+              Show sidebar
+            </DropdownMenu.CheckboxItem>
+            <DropdownMenu.CheckboxItem
+              checked={showLineNumbers}
+              onCheckedChange={setShowLineNumbers}
+            >
+              Show line numbers
+            </DropdownMenu.CheckboxItem>
+            <DropdownMenu.CheckboxItem
+              checked={wordWrap}
+              onCheckedChange={setWordWrap}
+            >
+              Word wrap
+            </DropdownMenu.CheckboxItem>
+          </DropdownMenu.Group>
+        </DropdownMenu.Content>
+      </DropdownMenu>
+    );
+  },
 };
 
 export const WithShortcuts: Story = {
@@ -231,4 +250,261 @@ export const MixedVariants: Story = {
       </DropdownMenu.Content>
     </DropdownMenu>
   ),
+};
+
+/**
+ * Nested menu example matching the Stratus user dropdown pattern.
+ * Demonstrates submenus for Language and Timezone selection.
+ */
+export const NestedMenu: Story = {
+  render: () => {
+    const languages = [
+      { code: "de", label: "Deutsch" },
+      { code: "en", label: "English" },
+      { code: "es", label: "Español" },
+      { code: "fr", label: "Français" },
+      { code: "it", label: "Italiano" },
+      { code: "pt", label: "Português" },
+      { code: "ko", label: "한국어" },
+      { code: "ja", label: "日本語" },
+      { code: "zh-CN", label: "简体中文" },
+      { code: "zh-TW", label: "繁體中文" },
+    ];
+
+    const timezones = [
+      { value: "America/Los_Angeles", label: "Pacific Time (PT)" },
+      { value: "America/Denver", label: "Mountain Time (MT)" },
+      { value: "America/Chicago", label: "Central Time (CT)" },
+      { value: "America/New_York", label: "Eastern Time (ET)" },
+      { value: "Europe/London", label: "Greenwich Mean Time (GMT)" },
+      { value: "Europe/Paris", label: "Central European Time (CET)" },
+      { value: "Asia/Tokyo", label: "Japan Standard Time (JST)" },
+    ];
+
+    const selectedLanguage = "en";
+    const selectedTimezone = "America/Los_Angeles";
+
+    return (
+      <DropdownMenu defaultOpen>
+        <DropdownMenu.Trigger>
+          <Button icon={UserIcon}>Account</Button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Item icon={UserIcon}>Profile</DropdownMenu.Item>
+          <DropdownMenu.Item icon={CreditCardIcon}>Billing</DropdownMenu.Item>
+          <DropdownMenu.Item icon={MoonIcon}>Dark mode</DropdownMenu.Item>
+
+          {/* Language submenu */}
+          <DropdownMenu.Sub>
+            <DropdownMenu.SubTrigger>Language</DropdownMenu.SubTrigger>
+            <DropdownMenu.SubContent side="left">
+              {languages.map((lang) => (
+                <DropdownMenu.Item
+                  key={lang.code}
+                  selected={lang.code === selectedLanguage}
+                >
+                  {lang.label}
+                  {lang.code === selectedLanguage && (
+                    <CheckIcon className="ml-auto h-4 w-4" />
+                  )}
+                </DropdownMenu.Item>
+              ))}
+            </DropdownMenu.SubContent>
+          </DropdownMenu.Sub>
+
+          {/* Timezone submenu */}
+          <DropdownMenu.Sub>
+            <DropdownMenu.SubTrigger>Set Timezone</DropdownMenu.SubTrigger>
+            <DropdownMenu.SubContent side="left">
+              {timezones.map((tz) => (
+                <DropdownMenu.Item
+                  key={tz.value}
+                  selected={tz.value === selectedTimezone}
+                >
+                  {tz.label}
+                  {tz.value === selectedTimezone && (
+                    <CheckIcon className="ml-auto h-4 w-4" />
+                  )}
+                </DropdownMenu.Item>
+              ))}
+            </DropdownMenu.SubContent>
+          </DropdownMenu.Sub>
+
+          <DropdownMenu.Separator />
+          <DropdownMenu.Item icon={SignOutIcon} variant="danger">
+            Log out
+          </DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu>
+    );
+  },
+};
+
+/**
+ * Simple nested menu example showing the basic submenu pattern.
+ */
+export const SimpleNestedMenu: Story = {
+  render: () => (
+    <DropdownMenu defaultOpen>
+      <DropdownMenu.Trigger>
+        <Button>Options</Button>
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content>
+        <DropdownMenu.Item icon={PencilIcon}>Edit</DropdownMenu.Item>
+        <DropdownMenu.Item icon={CopyIcon}>Copy</DropdownMenu.Item>
+
+        <DropdownMenu.Sub>
+          <DropdownMenu.SubTrigger icon={ShareIcon}>
+            Share
+          </DropdownMenu.SubTrigger>
+          <DropdownMenu.SubContent>
+            <DropdownMenu.Item>Copy link</DropdownMenu.Item>
+            <DropdownMenu.Item>Email</DropdownMenu.Item>
+            <DropdownMenu.Item>Slack</DropdownMenu.Item>
+          </DropdownMenu.SubContent>
+        </DropdownMenu.Sub>
+
+        <DropdownMenu.Separator />
+        <DropdownMenu.Item icon={TrashIcon} variant="danger">
+          Delete
+        </DropdownMenu.Item>
+      </DropdownMenu.Content>
+    </DropdownMenu>
+  ),
+};
+
+/**
+ * Radio items for single-selection scenarios.
+ * Use RadioGroup and RadioItem when only one option can be selected at a time.
+ */
+export const WithRadioItems: Story = {
+  render: function RadioItemsStory() {
+    const [sortOrder, setSortOrder] = useState("date-desc");
+
+    return (
+      <DropdownMenu defaultOpen>
+        <DropdownMenu.Trigger>
+          <Button>Sort By</Button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Group>
+            <DropdownMenu.Label>Sort Order</DropdownMenu.Label>
+            <DropdownMenu.RadioGroup
+              value={sortOrder}
+              onValueChange={setSortOrder}
+            >
+              <DropdownMenu.RadioItem value="date-desc">
+                Date (Newest first)
+                <DropdownMenu.RadioItemIndicator />
+              </DropdownMenu.RadioItem>
+              <DropdownMenu.RadioItem value="date-asc">
+                Date (Oldest first)
+                <DropdownMenu.RadioItemIndicator />
+              </DropdownMenu.RadioItem>
+              <DropdownMenu.RadioItem value="name-asc">
+                Name (A-Z)
+                <DropdownMenu.RadioItemIndicator />
+              </DropdownMenu.RadioItem>
+              <DropdownMenu.RadioItem value="name-desc">
+                Name (Z-A)
+                <DropdownMenu.RadioItemIndicator />
+              </DropdownMenu.RadioItem>
+            </DropdownMenu.RadioGroup>
+          </DropdownMenu.Group>
+        </DropdownMenu.Content>
+      </DropdownMenu>
+    );
+  },
+};
+
+const languages = [
+  { code: "de", label: "Deutsch" },
+  { code: "en", label: "English" },
+  { code: "es", label: "Español" },
+  { code: "fr", label: "Français" },
+  { code: "it", label: "Italiano" },
+  { code: "pt", label: "Português" },
+  { code: "ko", label: "한국어" },
+  { code: "ja", label: "日本語" },
+  { code: "zh-CN", label: "简体中文" },
+  { code: "zh-TW", label: "繁體中文" },
+];
+
+const timezones = [
+  { value: "America/Los_Angeles", label: "Pacific Time (PT)" },
+  { value: "America/Denver", label: "Mountain Time (MT)" },
+  { value: "America/Chicago", label: "Central Time (CT)" },
+  { value: "America/New_York", label: "Eastern Time (ET)" },
+  { value: "Europe/London", label: "Greenwich Mean Time (GMT)" },
+  { value: "Europe/Paris", label: "Central European Time (CET)" },
+  { value: "Asia/Tokyo", label: "Japan Standard Time (JST)" },
+];
+
+/**
+ * Nested menu with RadioGroup for proper single-selection semantics.
+ * This is the recommended pattern for language/timezone selectors.
+ */
+export const NestedMenuWithRadioItems: Story = {
+  render: function NestedMenuWithRadioItemsStory() {
+    const [language, setLanguage] = useState("en");
+    const [timezone, setTimezone] = useState("America/Los_Angeles");
+
+    return (
+      <DropdownMenu defaultOpen>
+        <DropdownMenu.Trigger>
+          <Button icon={UserIcon}>Account</Button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Item icon={UserIcon}>Profile</DropdownMenu.Item>
+          <DropdownMenu.Item icon={CreditCardIcon}>Billing</DropdownMenu.Item>
+          <DropdownMenu.Item icon={MoonIcon}>Dark mode</DropdownMenu.Item>
+
+          {/* Language submenu with RadioGroup */}
+          <DropdownMenu.Sub>
+            <DropdownMenu.SubTrigger>Language</DropdownMenu.SubTrigger>
+            <DropdownMenu.SubContent side="left">
+              <DropdownMenu.Group>
+                <DropdownMenu.RadioGroup
+                  value={language}
+                  onValueChange={setLanguage}
+                >
+                  {languages.map((lang) => (
+                    <DropdownMenu.RadioItem key={lang.code} value={lang.code}>
+                      {lang.label}
+                      <DropdownMenu.RadioItemIndicator />
+                    </DropdownMenu.RadioItem>
+                  ))}
+                </DropdownMenu.RadioGroup>
+              </DropdownMenu.Group>
+            </DropdownMenu.SubContent>
+          </DropdownMenu.Sub>
+
+          {/* Timezone submenu with RadioGroup */}
+          <DropdownMenu.Sub>
+            <DropdownMenu.SubTrigger>Set Timezone</DropdownMenu.SubTrigger>
+            <DropdownMenu.SubContent side="left">
+              <DropdownMenu.Group>
+                <DropdownMenu.RadioGroup
+                  value={timezone}
+                  onValueChange={setTimezone}
+                >
+                  {timezones.map((tz) => (
+                    <DropdownMenu.RadioItem key={tz.value} value={tz.value}>
+                      {tz.label}
+                      <DropdownMenu.RadioItemIndicator />
+                    </DropdownMenu.RadioItem>
+                  ))}
+                </DropdownMenu.RadioGroup>
+              </DropdownMenu.Group>
+            </DropdownMenu.SubContent>
+          </DropdownMenu.Sub>
+
+          <DropdownMenu.Separator />
+          <DropdownMenu.Item icon={SignOutIcon} variant="danger">
+            Log out
+          </DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu>
+    );
+  },
 };
