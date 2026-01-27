@@ -229,30 +229,14 @@
       "importPath": "@cloudflare/kumo",
       "category": "Action",
       "props": {
-        "children": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "className": {
-          "type": "string",
-          "optional": true
-        },
-        "icon": {
-          "type": "ReactNode",
-          "optional": true
-        },
-        "loading": {
-          "type": "boolean",
-          "optional": true
-        },
         "shape": {
           "type": "enum",
-          "optional": true,
           "values": [
             "base",
             "square",
             "circle"
           ],
+          "default": "base",
           "descriptions": {
             "base": "Default rectangular button shape",
             "square": "Square button for icon-only actions",
@@ -261,18 +245,17 @@
           "classes": {
             "square": "items-center justify-center p-0",
             "circle": "items-center justify-center p-0 rounded-full"
-          },
-          "default": "base"
+          }
         },
         "size": {
           "type": "enum",
-          "optional": true,
           "values": [
             "xs",
             "sm",
             "base",
             "lg"
           ],
+          "default": "base",
           "descriptions": {
             "xs": "Extra small button for compact UIs",
             "sm": "Small button for secondary actions",
@@ -284,12 +267,25 @@
             "sm": "h-6.5 gap-1 rounded-md px-2 text-xs",
             "base": "h-9 gap-1.5 rounded-lg px-3 text-base",
             "lg": "h-10 gap-2 rounded-lg px-4 text-base"
-          },
-          "default": "base"
+          }
+        },
+        "compactSize": {
+          "type": "enum",
+          "values": [
+            "xs",
+            "sm",
+            "base",
+            "lg"
+          ],
+          "classes": {
+            "xs": "size-3.5",
+            "sm": "size-6.5",
+            "base": "size-9",
+            "lg": "size-10"
+          }
         },
         "variant": {
           "type": "enum",
-          "optional": true,
           "values": [
             "primary",
             "secondary",
@@ -298,6 +294,7 @@
             "secondary-destructive",
             "outline"
           ],
+          "default": "secondary",
           "descriptions": {
             "primary": "High-emphasis button for primary actions",
             "secondary": "Default button style for most actions",
@@ -336,249 +333,15 @@
               "disabled": "disabled:bg-secondary/50 disabled:!text-error/70",
               "data-state": "data-[state=open]:bg-subtle"
             }
-          },
-          "default": "secondary"
+          }
         },
-        "onChange": {
-          "type": "React.FormEventHandler<HTMLButtonElement>",
-          "optional": true
-        },
-        "onSubmit": {
-          "type": "React.FormEventHandler<HTMLButtonElement>",
-          "optional": true
-        },
-        "onClick": {
-          "type": "React.MouseEventHandler<HTMLButtonElement>",
-          "optional": true
-        },
-        "defaultChecked": {
-          "type": "boolean",
-          "optional": true
-        },
-        "defaultValue": {
-          "type": "string | number | string[]",
-          "optional": true
-        },
-        "suppressContentEditableWarning": {
-          "type": "boolean",
-          "optional": true
-        },
-        "suppressHydrationWarning": {
-          "type": "boolean",
-          "optional": true
-        },
-        "contextMenu": {
+        "className": {
           "type": "string",
-          "optional": true
+          "description": "Additional CSS classes"
         },
-        "enterKeyHint": {
-          "type": "enum",
-          "optional": true,
-          "values": [
-            "enter",
-            "done",
-            "go",
-            "next",
-            "previous",
-            "search",
-            "send"
-          ]
-        },
-        "id": {
-          "type": "string",
-          "optional": true
-        },
-        "lang": {
-          "type": "string",
-          "optional": true
-        },
-        "nonce": {
-          "type": "string",
-          "optional": true
-        },
-        "slot": {
-          "type": "string",
-          "optional": true
-        },
-        "title": {
-          "type": "string",
-          "optional": true
-        },
-        "radioGroup": {
-          "type": "string",
-          "optional": true
-        },
-        "role": {
-          "type": "React.AriaRole",
-          "optional": true
-        },
-        "about": {
-          "type": "string",
-          "optional": true
-        },
-        "content": {
-          "type": "string",
-          "optional": true
-        },
-        "datatype": {
-          "type": "string",
-          "optional": true
-        },
-        "inlist": {
-          "type": "unknown",
-          "optional": true
-        },
-        "prefix": {
-          "type": "string",
-          "optional": true
-        },
-        "property": {
-          "type": "string",
-          "optional": true
-        },
-        "rel": {
-          "type": "string",
-          "optional": true
-        },
-        "resource": {
-          "type": "string",
-          "optional": true
-        },
-        "rev": {
-          "type": "string",
-          "optional": true
-        },
-        "typeof": {
-          "type": "string",
-          "optional": true
-        },
-        "vocab": {
-          "type": "string",
-          "optional": true
-        },
-        "autoCorrect": {
-          "type": "string",
-          "optional": true
-        },
-        "autoSave": {
-          "type": "string",
-          "optional": true
-        },
-        "color": {
-          "type": "string",
-          "optional": true
-        },
-        "itemProp": {
-          "type": "string",
-          "optional": true
-        },
-        "itemScope": {
-          "type": "boolean",
-          "optional": true
-        },
-        "itemType": {
-          "type": "string",
-          "optional": true
-        },
-        "itemID": {
-          "type": "string",
-          "optional": true
-        },
-        "itemRef": {
-          "type": "string",
-          "optional": true
-        },
-        "results": {
-          "type": "number",
-          "optional": true
-        },
-        "security": {
-          "type": "string",
-          "optional": true
-        },
-        "unselectable": {
-          "type": "enum",
-          "optional": true,
-          "values": [
-            "on",
-            "off"
-          ]
-        },
-        "popover": {
-          "type": "enum",
-          "optional": true,
-          "values": [
-            "",
-            "auto",
-            "manual",
-            "hint"
-          ]
-        },
-        "popoverTargetAction": {
-          "type": "enum",
-          "optional": true,
-          "values": [
-            "toggle",
-            "show",
-            "hide"
-          ]
-        },
-        "popoverTarget": {
-          "type": "string",
-          "optional": true
-        },
-        "inert": {
-          "type": "boolean",
-          "optional": true
-        },
-        "inputMode": {
-          "type": "enum",
-          "optional": true,
-          "description": "Hints at the type of data that might be entered by the user while editing the element or its contents",
-          "values": [
-            "none",
-            "text",
-            "tel",
-            "url",
-            "email",
-            "numeric",
-            "decimal",
-            "search"
-          ]
-        },
-        "is": {
-          "type": "string",
-          "optional": true,
-          "description": "Specify that a standard HTML element should behave like a defined custom built-in element"
-        },
-        "exportparts": {
-          "type": "string",
-          "optional": true
-        },
-        "part": {
-          "type": "string",
-          "optional": true
-        },
-        "disabled": {
-          "type": "boolean",
-          "optional": true
-        },
-        "name": {
-          "type": "string",
-          "optional": true
-        },
-        "type": {
-          "type": "enum",
-          "optional": true,
-          "values": [
-            "submit",
-            "reset",
-            "button"
-          ]
-        },
-        "value": {
-          "type": "string | string[] | number",
-          "optional": true
+        "children": {
+          "type": "ReactNode",
+          "description": "Child elements"
         }
       },
       "examples": [
@@ -1194,7 +957,8 @@
         "<Combobox\n        value={value}\n        onValueChange={setValue}\n        items={INITIAL_BOT_LIST}\n        isItemEqualToValue={(bot: BotType, selectedValue: BotType) =>\n          bot.value === selectedValue.value\n        }\n        multiple\n      >\n        <Combobox.TriggerMultipleWithInput\n          className=\"w-[400px]\"\n          placeholder=\"Select bot\"\n          value={value}\n          renderItem={(selected: BotType) => (\n            <Combobox.Chip key={selected.value}>{selected.label}</Combobox.Chip>\n          )}\n          inputSide=\"top\"\n        />\n        <Combobox.Content className=\"max-h-[200px] min-w-auto overflow-y-auto\">\n          <Combobox.Empty />\n          <Combobox.List>\n            {(item: BotType) => (\n              <Combobox.Item key={item.value} value={item}>\n                <div className=\"flex gap-2\">\n                  <Text>{item.label}</Text>\n                  <Text variant=\"secondary\">{item.author}</Text>\n                </div>\n              </Combobox.Item>\n            )}\n          </Combobox.List>\n        </Combobox.Content>\n      </Combobox>",
         "<Combobox\n        items={items}\n        value={value}\n        onValueChange={setValue}\n        label=\"Country\"\n      >\n        <Combobox.TriggerInput placeholder=\"Select country\" />\n        <Combobox.Content>\n          <Combobox.Empty />\n          <Combobox.List>\n            {(item: (typeof items)[number]) => {\n              return (\n                <Combobox.Item key={item.value} value={item}>\n                  {item.label}\n                </Combobox.Item>\n              );\n            }}\n          </Combobox.List>\n        </Combobox.Content>\n      </Combobox>",
         "<Combobox\n        items={items}\n        value={value}\n        onValueChange={setValue}\n        label=\"Subscription Plan\"\n        description=\"Choose a plan that fits your needs\"\n        error={{ message: \"Please select a plan to continue\", match: true }}\n      >\n        <Combobox.TriggerInput placeholder=\"Select plan\" />\n        <Combobox.Content>\n          <Combobox.Empty />\n          <Combobox.List>\n            {(item: (typeof items)[number]) => {\n              return (\n                <Combobox.Item key={item.value} value={item}>\n                  {item.label}\n                </Combobox.Item>\n              );\n            }}\n          </Combobox.List>\n        </Combobox.Content>\n      </Combobox>",
-        "<Combobox\n        value={value}\n        onValueChange={setValue}\n        items={botList}\n        isItemEqualToValue={(bot, selectedValue) =>\n          bot.value === selectedValue.value\n        }\n        multiple\n        label=\"Bot Management\"\n        description=\"Select which bots are allowed to crawl your site\"\n      >\n        <Combobox.TriggerMultipleWithInput\n          className=\"w-[400px]\"\n          placeholder=\"Select bots\"\n          renderItem={(selected: BotType) => (\n            <Combobox.Chip key={selected.value}>{selected.label}</Combobox.Chip>\n          )}\n          inputSide=\"right\"\n        />\n        <Combobox.Content className=\"max-h-[200px] min-w-auto overflow-y-auto\">\n          <Combobox.Empty />\n          <Combobox.List>\n            {(item: BotType) => (\n              <Combobox.Item key={item.value} value={item}>\n                <div className=\"flex gap-2\">\n                  <Text>{item.label}</Text>\n                  <Text variant=\"secondary\">{item.author}</Text>\n                </div>\n              </Combobox.Item>\n            )}\n          </Combobox.List>\n        </Combobox.Content>\n      </Combobox>"
+        "<Combobox\n        value={value}\n        onValueChange={setValue}\n        items={botList}\n        isItemEqualToValue={(bot, selectedValue) =>\n          bot.value === selectedValue.value\n        }\n        multiple\n        label=\"Bot Management\"\n        description=\"Select which bots are allowed to crawl your site\"\n      >\n        <Combobox.TriggerMultipleWithInput\n          className=\"w-[400px]\"\n          placeholder=\"Select bots\"\n          renderItem={(selected: BotType) => (\n            <Combobox.Chip key={selected.value}>{selected.label}</Combobox.Chip>\n          )}\n          inputSide=\"right\"\n        />\n        <Combobox.Content className=\"max-h-[200px] min-w-auto overflow-y-auto\">\n          <Combobox.Empty />\n          <Combobox.List>\n            {(item: BotType) => (\n              <Combobox.Item key={item.value} value={item}>\n                <div className=\"flex gap-2\">\n                  <Text>{item.label}</Text>\n                  <Text variant=\"secondary\">{item.author}</Text>\n                </div>\n              </Combobox.Item>\n            )}\n          </Combobox.List>\n        </Combobox.Content>\n      </Combobox>",
+        "<Combobox items={MANY_ITEMS} value={value} onValueChange={setValue}>\n        <Combobox.TriggerInput placeholder=\"Select an item (50 options)\" />\n        <Combobox.Content>\n          <Combobox.Empty />\n          <Combobox.List>\n            {(item: (typeof MANY_ITEMS)[number]) => (\n              <Combobox.Item key={item.value} value={item}>\n                {item.label}\n              </Combobox.Item>\n            )}\n          </Combobox.List>\n        </Combobox.Content>\n      </Combobox>"
       ],
       "colors": [
         "bg-color-2",
@@ -1726,10 +1490,9 @@
       },
       "examples": [],
       "colors": [
-        "bg-accent",
+        "bg-border",
         "bg-color-3",
         "bg-error-selection",
-        "bg-muted",
         "bg-secondary",
         "ring-border",
         "text-error",
@@ -3386,6 +3149,340 @@
         }
       }
     },
+    "Link": {
+      "name": "Link",
+      "type": "component",
+      "description": "Link component",
+      "importPath": "@cloudflare/kumo",
+      "category": "Other",
+      "props": {
+        "variant": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "inline",
+            "current",
+            "plain"
+          ],
+          "descriptions": {
+            "inline": "Inline text link that flows with content",
+            "current": "Link that inherits color from parent text",
+            "plain": "Link without underline decoration"
+          },
+          "classes": {
+            "inline": "text-primary underline underline-offset-[0.15em] decoration-[0.0625em] link-current transition-colors",
+            "current": "text-current underline underline-offset-[0.15em] decoration-[0.0625em] link-current transition-colors",
+            "plain": "text-primary hover:text-primary/70 transition-colors"
+          },
+          "stateClasses": {
+            "plain": {
+              "hover": "hover:text-primary/70"
+            }
+          },
+          "default": "inline"
+        },
+        "to": {
+          "type": "string",
+          "optional": true
+        },
+        "children": {
+          "type": "ReactNode",
+          "optional": true
+        },
+        "onChange": {
+          "type": "React.FormEventHandler<HTMLAnchorElement>",
+          "optional": true
+        },
+        "onSubmit": {
+          "type": "React.FormEventHandler<HTMLAnchorElement>",
+          "optional": true
+        },
+        "onClick": {
+          "type": "React.MouseEventHandler<HTMLAnchorElement>",
+          "optional": true
+        },
+        "defaultChecked": {
+          "type": "boolean",
+          "optional": true
+        },
+        "defaultValue": {
+          "type": "string | number | string[]",
+          "optional": true
+        },
+        "suppressContentEditableWarning": {
+          "type": "boolean",
+          "optional": true
+        },
+        "suppressHydrationWarning": {
+          "type": "boolean",
+          "optional": true
+        },
+        "className": {
+          "type": "string",
+          "optional": true
+        },
+        "contextMenu": {
+          "type": "string",
+          "optional": true
+        },
+        "enterKeyHint": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "enter",
+            "done",
+            "go",
+            "next",
+            "previous",
+            "search",
+            "send"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "optional": true
+        },
+        "lang": {
+          "type": "string",
+          "optional": true
+        },
+        "nonce": {
+          "type": "string",
+          "optional": true
+        },
+        "slot": {
+          "type": "string",
+          "optional": true
+        },
+        "title": {
+          "type": "string",
+          "optional": true
+        },
+        "radioGroup": {
+          "type": "string",
+          "optional": true
+        },
+        "role": {
+          "type": "React.AriaRole",
+          "optional": true
+        },
+        "about": {
+          "type": "string",
+          "optional": true
+        },
+        "content": {
+          "type": "string",
+          "optional": true
+        },
+        "datatype": {
+          "type": "string",
+          "optional": true
+        },
+        "inlist": {
+          "type": "unknown",
+          "optional": true
+        },
+        "prefix": {
+          "type": "string",
+          "optional": true
+        },
+        "property": {
+          "type": "string",
+          "optional": true
+        },
+        "rel": {
+          "type": "string",
+          "optional": true
+        },
+        "resource": {
+          "type": "string",
+          "optional": true
+        },
+        "rev": {
+          "type": "string",
+          "optional": true
+        },
+        "typeof": {
+          "type": "string",
+          "optional": true
+        },
+        "vocab": {
+          "type": "string",
+          "optional": true
+        },
+        "autoCorrect": {
+          "type": "string",
+          "optional": true
+        },
+        "autoSave": {
+          "type": "string",
+          "optional": true
+        },
+        "color": {
+          "type": "string",
+          "optional": true
+        },
+        "itemProp": {
+          "type": "string",
+          "optional": true
+        },
+        "itemScope": {
+          "type": "boolean",
+          "optional": true
+        },
+        "itemType": {
+          "type": "string",
+          "optional": true
+        },
+        "itemID": {
+          "type": "string",
+          "optional": true
+        },
+        "itemRef": {
+          "type": "string",
+          "optional": true
+        },
+        "results": {
+          "type": "number",
+          "optional": true
+        },
+        "security": {
+          "type": "string",
+          "optional": true
+        },
+        "unselectable": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "on",
+            "off"
+          ]
+        },
+        "popover": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "",
+            "auto",
+            "manual",
+            "hint"
+          ]
+        },
+        "popoverTargetAction": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "toggle",
+            "show",
+            "hide"
+          ]
+        },
+        "popoverTarget": {
+          "type": "string",
+          "optional": true
+        },
+        "inert": {
+          "type": "boolean",
+          "optional": true
+        },
+        "inputMode": {
+          "type": "enum",
+          "optional": true,
+          "description": "Hints at the type of data that might be entered by the user while editing the element or its contents",
+          "values": [
+            "none",
+            "text",
+            "tel",
+            "url",
+            "email",
+            "numeric",
+            "decimal",
+            "search"
+          ]
+        },
+        "is": {
+          "type": "string",
+          "optional": true,
+          "description": "Specify that a standard HTML element should behave like a defined custom built-in element"
+        },
+        "exportparts": {
+          "type": "string",
+          "optional": true
+        },
+        "part": {
+          "type": "string",
+          "optional": true
+        },
+        "download": {
+          "type": "unknown",
+          "optional": true
+        },
+        "href": {
+          "type": "string",
+          "optional": true
+        },
+        "hrefLang": {
+          "type": "string",
+          "optional": true
+        },
+        "media": {
+          "type": "string",
+          "optional": true
+        },
+        "ping": {
+          "type": "string",
+          "optional": true
+        },
+        "target": {
+          "type": "React.HTMLAttributeAnchorTarget",
+          "optional": true
+        },
+        "type": {
+          "type": "string",
+          "optional": true
+        },
+        "referrerPolicy": {
+          "type": "enum",
+          "optional": true,
+          "values": [
+            "",
+            "no-referrer",
+            "no-referrer-when-downgrade",
+            "origin",
+            "origin-when-cross-origin",
+            "same-origin",
+            "strict-origin",
+            "strict-origin-when-cross-origin",
+            "unsafe-url"
+          ]
+        },
+        "render": {
+          "type": "ReactNode",
+          "optional": true,
+          "description": "Allows you to replace the component’s HTML element with a different tag, or compose it with another component.\n\nAccepts a `ReactElement` or a function that returns the element to render."
+        }
+      },
+      "examples": [
+        "<Link >Learn more</Link>",
+        "<p className=\"text-surface\">\n      This is a paragraph with an <Link href=\"#\">inline link</Link> that flows\n      naturally with the surrounding text.\n    </p>",
+        "<Link\n      href=\"https://cloudflare.com\"\n      target=\"_blank\"\n      rel=\"noopener noreferrer\"\n    >\n      Visit Cloudflare <Link.ExternalIcon />\n    </Link>",
+        "<p className=\"text-error\">\n      This error message contains a{\" \"}\n      <Link href=\"#\" variant=\"current\">\n        link\n      </Link>{\" \"}\n      that inherits the red color from its parent.\n    </p>",
+        "<Link variant=\"plain\">Plain link</Link>",
+        "<Link render={<CustomRouterLink href=\"/dashboard\" />} variant=\"inline\">\n      Dashboard (via render)\n    </Link>",
+        "<Link\n      render={\n        <CustomRouterLink\n          href=\"https://developers.cloudflare.com\"\n          target=\"_blank\"\n          rel=\"noopener noreferrer\"\n        />\n      }\n      variant=\"inline\"\n    >\n      Cloudflare Docs <Link.ExternalIcon />\n    </Link>",
+        "<Link\n      render={\n        // oxlint-disable-next-line react-a11y/prefer-button-title\n        <button\n          type=\"button\"\n          onClick={() =>\n            alert(\"Why would you do this?! This is a LINK component!\")\n          }\n        />\n      }\n      variant=\"inline\"\n    >\n      I'm a \"Link\" but actually a button (please don't)\n    </Link>"
+      ],
+      "colors": [
+        "text-primary"
+      ],
+      "subComponents": {
+        "ExternalIcon": {
+          "name": "ExternalIcon",
+          "description": "ExternalIcon sub-component",
+          "props": {}
+        }
+      }
+    },
     "Loader": {
       "name": "Loader",
       "type": "component",
@@ -3534,6 +3631,11 @@
             "compact": "Compact spacing between header elements",
             "base": "Default spacing between header elements",
             "relaxed": "Relaxed spacing for more prominent headers"
+          },
+          "classes": {
+            "compact": "gap-1",
+            "base": "gap-2",
+            "relaxed": "gap-4"
           }
         },
         "className": {
@@ -4718,6 +4820,9 @@
           "descriptions": {
             "auto": "Auto table layout - columns resize based on content",
             "fixed": "Fixed table layout - columns have equal width, controlled via colgroup"
+          },
+          "classes": {
+            "fixed": "table-fixed"
           }
         },
         "variant": {
@@ -4730,6 +4835,9 @@
           "descriptions": {
             "default": "Default row variant",
             "selected": "Selected row variant"
+          },
+          "classes": {
+            "selected": "bg-accent"
           }
         },
         "className": {
@@ -5148,6 +5256,7 @@
         "CommandPalette",
         "Icon",
         "Label",
+        "Link",
         "Popover",
         "Radio",
         "SensitiveInput",
@@ -5187,6 +5296,7 @@
       "Input",
       "Label",
       "LayerCard",
+      "Link",
       "Loader",
       "MenuBar",
       "Meter",

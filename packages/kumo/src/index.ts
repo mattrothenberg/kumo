@@ -117,6 +117,15 @@ export {
   type CommandPaletteLoadingProps,
   type HighlightRange,
 } from "./components/command-palette";
+export {
+  Link,
+  linkVariants,
+  KUMO_LINK_VARIANTS,
+  KUMO_LINK_DEFAULT_VARIANTS,
+  type LinkProps,
+  type KumoLinkVariant,
+  type KumoLinkVariantsProps,
+} from "./components/link";
 // PLOP_INJECT_EXPORT
 
 // Blocks
