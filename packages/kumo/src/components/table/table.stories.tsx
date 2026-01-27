@@ -217,3 +217,86 @@ export const TableMultipleLines: Story = {
     );
   },
 };
+
+const disabledData = [
+  {
+    name: "Active User 1",
+    status: "Active",
+    canModify: true,
+    selected: false,
+  },
+  {
+    name: "Locked User",
+    status: "Locked",
+    canModify: false,
+    selected: false,
+  },
+  {
+    name: "Active User 2",
+    status: "Active",
+    canModify: true,
+    selected: true,
+  },
+  {
+    name: "System Account",
+    status: "System",
+    canModify: false,
+    selected: false,
+  },
+  {
+    name: "Active User 3",
+    status: "Active",
+    canModify: true,
+    selected: false,
+  },
+];
+
+export const TableWithDisabledCheckboxes: Story = {
+  render: () => {
+    return (
+      <LayerCard>
+        <LayerCard.Primary className="p-0">
+          <Table>
+            <colgroup>
+              <col className="w-12" />
+              <col className="w-auto" />
+              <col className="w-32" />
+            </colgroup>
+
+            <Table.Header>
+              <Table.Row>
+                <Table.CheckHead />
+                <Table.Head>User Name</Table.Head>
+                <Table.Head>Status</Table.Head>
+              </Table.Row>
+            </Table.Header>
+
+            <Table.Body>
+              {disabledData.map((row) => (
+                <Table.Row
+                  key={row.name}
+                  variant={row.selected ? "selected" : "default"}
+                >
+                  <Table.CheckCell
+                    checked={row.selected}
+                    disabled={!row.canModify}
+                  />
+                  <Table.Cell>{row.name}</Table.Cell>
+                  <Table.Cell>
+                    <Badge
+                      variant={
+                        row.status === "Active" ? "outline" : "secondary"
+                      }
+                    >
+                      {row.status}
+                    </Badge>
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+        </LayerCard.Primary>
+      </LayerCard>
+    );
+  },
+};
