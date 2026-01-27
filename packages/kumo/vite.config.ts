@@ -169,6 +169,10 @@ export default defineConfig(({ mode }) => {
             __dirname,
             "src/components/command-palette/index.ts",
           ),
+          "components/link": resolve(
+            __dirname,
+            "src/components/link/index.ts",
+          ),
           // PLOP_INJECT_COMPONENT_ENTRY
           // Block entry points
           "blocks/breadcrumbs": resolve(

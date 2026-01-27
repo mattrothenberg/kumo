@@ -30,6 +30,7 @@ const EXCLUDED_COMPONENTS = new Set([
   "Field", // Form wrapper utility - provides label/description/error layout, no standalone visual
   "Icon", // Utility component - handled by icon-library.ts
   "Label", // Simple text label - used within Field, not standalone visual component
+  "Link", // Simple text link - typography styling only, similar to Label
   "PageHeader", // Complex composite component - too layout-specific for Figma generation
   "Popover", // Interactive popup - similar to Tooltip but click-triggered, will add generator later
   "Table", // Complex data component - requires dynamic data, too complex for static Figma generation

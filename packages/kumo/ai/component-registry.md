@@ -80,9 +80,9 @@ Kumo uses CSS custom properties with `light-dark()` for automatic dark mode supp
 | Token | Purpose | Usage |
 |-------|---------|-------|
 | `active` | Active/focus ring color | `bg-active`, `ring-active` (1 uses) |
-| `muted` | Muted/disabled background | `bg-muted`, `ring-muted` (1 uses) |
+| `muted` | Muted/disabled background | `bg-muted`, `ring-muted` (0 uses) |
 | `subtle` | Subtle hover background | `bg-subtle`, `ring-subtle` (2 uses) |
-| `accent` | Selected/active state background | `bg-accent`, `ring-accent` (4 uses) |
+| `accent` | Selected/active state background | `bg-accent`, `ring-accent` (3 uses) |
 | `hover` | Hover state background | `bg-hover`, `ring-hover` (2 uses) |
 | `toast-button-hover` | Toast notification styling | `bg-toast-button-hover`, `ring-toast-button-hover` (1 uses) |
 | `hover-selected` | Hover on selected items | `bg-hover-selected`, `ring-hover-selected` (2 uses) |
@@ -354,10 +354,6 @@ Button component
 
 **Props:**
 
-- `children`: ReactNode
-- `className`: string
-- `icon`: ReactNode
-- `loading`: boolean
 - `shape`: enum [default: base]
   - `"base"`: Default rectangular button shape
   - `"square"`: Square button for icon-only actions
@@ -367,6 +363,7 @@ Button component
   - `"sm"`: Small button for secondary actions
   - `"base"`: Default button size
   - `"lg"`: Large button for primary CTAs
+- `compactSize`: enum
 - `variant`: enum [default: secondary]
   - `"primary"`: High-emphasis button for primary actions
   - `"secondary"`: Default button style for most actions
@@ -392,58 +389,10 @@ Button component
     - `not-disabled`: `not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle`
     - `disabled`: `disabled:bg-secondary/50 disabled:!text-error/70`
     - `data-state`: `data-[state=open]:bg-subtle`
-- `onChange`: React.FormEventHandler<HTMLButtonElement>
-- `onSubmit`: React.FormEventHandler<HTMLButtonElement>
-- `onClick`: React.MouseEventHandler<HTMLButtonElement>
-- `defaultChecked`: boolean
-- `defaultValue`: string | number | string[]
-- `suppressContentEditableWarning`: boolean
-- `suppressHydrationWarning`: boolean
-- `contextMenu`: string
-- `enterKeyHint`: enum
-- `id`: string
-- `lang`: string
-- `nonce`: string
-- `slot`: string
-- `title`: string
-- `radioGroup`: string
-- `role`: React.AriaRole
-- `about`: string
-- `content`: string
-- `datatype`: string
-- `inlist`: unknown
-- `prefix`: string
-- `property`: string
-- `rel`: string
-- `resource`: string
-- `rev`: string
-- `typeof`: string
-- `vocab`: string
-- `autoCorrect`: string
-- `autoSave`: string
-- `color`: string
-- `itemProp`: string
-- `itemScope`: boolean
-- `itemType`: string
-- `itemID`: string
-- `itemRef`: string
-- `results`: number
-- `security`: string
-- `unselectable`: enum
-- `popover`: enum
-- `popoverTargetAction`: enum
-- `popoverTarget`: string
-- `inert`: boolean
-- `inputMode`: enum
-  Hints at the type of data that might be entered by the user while editing the element or its contents
-- `is`: string
-  Specify that a standard HTML element should behave like a defined custom built-in element
-- `exportparts`: string
-- `part`: string
-- `disabled`: boolean
-- `name`: string
-- `type`: enum
-- `value`: string | string[] | number
+- `className`: string
+  Additional CSS classes
+- `children`: ReactNode
+  Child elements
 
 **Colors (kumo tokens used):**
 
@@ -2123,7 +2072,7 @@ DropdownMenu component
 
 **Colors (kumo tokens used):**
 
-`bg-accent`, `bg-color-3`, `bg-error-selection`, `bg-muted`, `bg-secondary`, `ring-border`, `text-error`, `text-surface`
+`bg-border`, `bg-color-3`, `bg-error-selection`, `bg-secondary`, `ring-border`, `text-error`, `text-surface`
 
 **Sub-Components:**
 
@@ -3056,6 +3005,181 @@ Secondary sub-component
         <Text>Get started with Kumo</Text>
       </LayerCard.Primary>
     </LayerCard>
+```
+
+
+---
+
+### Link
+
+Link component
+
+**Type:** component
+
+**Import:** `import { Link } from "@cloudflare/kumo";`
+
+**Category:** Other
+
+**Props:**
+
+- `variant`: enum [default: inline]
+  - `"inline"`: Inline text link that flows with content
+  - `"current"`: Link that inherits color from parent text
+  - `"plain"`: Link without underline decoration
+
+  **State Classes:**
+  - `"plain"`:
+    - `hover`: `hover:text-primary/70`
+- `to`: string
+- `children`: ReactNode
+- `onChange`: React.FormEventHandler<HTMLAnchorElement>
+- `onSubmit`: React.FormEventHandler<HTMLAnchorElement>
+- `onClick`: React.MouseEventHandler<HTMLAnchorElement>
+- `defaultChecked`: boolean
+- `defaultValue`: string | number | string[]
+- `suppressContentEditableWarning`: boolean
+- `suppressHydrationWarning`: boolean
+- `className`: string
+- `contextMenu`: string
+- `enterKeyHint`: enum
+- `id`: string
+- `lang`: string
+- `nonce`: string
+- `slot`: string
+- `title`: string
+- `radioGroup`: string
+- `role`: React.AriaRole
+- `about`: string
+- `content`: string
+- `datatype`: string
+- `inlist`: unknown
+- `prefix`: string
+- `property`: string
+- `rel`: string
+- `resource`: string
+- `rev`: string
+- `typeof`: string
+- `vocab`: string
+- `autoCorrect`: string
+- `autoSave`: string
+- `color`: string
+- `itemProp`: string
+- `itemScope`: boolean
+- `itemType`: string
+- `itemID`: string
+- `itemRef`: string
+- `results`: number
+- `security`: string
+- `unselectable`: enum
+- `popover`: enum
+- `popoverTargetAction`: enum
+- `popoverTarget`: string
+- `inert`: boolean
+- `inputMode`: enum
+  Hints at the type of data that might be entered by the user while editing the element or its contents
+- `is`: string
+  Specify that a standard HTML element should behave like a defined custom built-in element
+- `exportparts`: string
+- `part`: string
+- `download`: unknown
+- `href`: string
+- `hrefLang`: string
+- `media`: string
+- `ping`: string
+- `target`: React.HTMLAttributeAnchorTarget
+- `type`: string
+- `referrerPolicy`: enum
+- `render`: ReactNode
+  Allows you to replace the component’s HTML element with a different tag, or compose it with another component.
+
+Accepts a `ReactElement` or a function that returns the element to render.
+
+**Colors (kumo tokens used):**
+
+`text-primary`
+
+**Sub-Components:**
+
+This is a compound component. Use these sub-components:
+
+#### Link.ExternalIcon
+
+ExternalIcon sub-component
+
+
+**Examples:**
+
+```tsx
+<Link >Learn more</Link>
+```
+
+```tsx
+<p className="text-surface">
+      This is a paragraph with an <Link href="#">inline link</Link> that flows
+      naturally with the surrounding text.
+    </p>
+```
+
+```tsx
+<Link
+      href="https://cloudflare.com"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Visit Cloudflare <Link.ExternalIcon />
+    </Link>
+```
+
+```tsx
+<p className="text-error">
+      This error message contains a{" "}
+      <Link href="#" variant="current">
+        link
+      </Link>{" "}
+      that inherits the red color from its parent.
+    </p>
+```
+
+```tsx
+<Link variant="plain">Plain link</Link>
+```
+
+```tsx
+<Link render={<CustomRouterLink href="/dashboard" />} variant="inline">
+      Dashboard (via render)
+    </Link>
+```
+
+```tsx
+<Link
+      render={
+        <CustomRouterLink
+          href="https://developers.cloudflare.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        />
+      }
+      variant="inline"
+    >
+      Cloudflare Docs <Link.ExternalIcon />
+    </Link>
+```
+
+```tsx
+<Link
+      render={
+        // oxlint-disable-next-line react-a11y/prefer-button-title
+        <button
+          type="button"
+          onClick={() =>
+            alert("Why would you do this?! This is a LINK component!")
+          }
+        />
+      }
+      variant="inline"
+    >
+      I'm a "Link" but actually a button (please don't)
+    </Link>
 ```
 
 
@@ -4954,7 +5078,7 @@ Multi-line textarea input with Input variants and InputArea-specific dimensions
 - **Block:** Breadcrumbs, Empty, PageHeader
 - **Action:** Button, ClipboardText
 - **Input:** Checkbox, Combobox, DateRangePicker, Field, Input, Select, Switch
-- **Other:** CommandPalette, Icon, Label, Popover, Radio, SensitiveInput, Table
+- **Other:** CommandPalette, Icon, Label, Link, Popover, Radio, SensitiveInput, Table
 - **Overlay:** Dialog, DropdownMenu, Tooltip
 - **Navigation:** MenuBar, Pagination, Tabs
 - **Layout:** Surface
