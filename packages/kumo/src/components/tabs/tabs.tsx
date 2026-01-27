@@ -29,7 +29,7 @@ export const KUMO_TABS_STYLING = {
   indicator: {
     background: "color-surface-elevated",
     ring: "color-color-2",
-    borderRadius: 8,
+    borderRadius: 6,
     shadow: "shadow-sm",
   },
 } as const;
@@ -143,7 +143,7 @@ export function Tabs({
             "data-[rendered=false]:scale-90 data-[rendered=false]:opacity-0",
             "left-(--active-tab-left) w-(--active-tab-width)",
             isSegmented &&
-              "top-(--active-tab-top) h-(--active-tab-height) rounded-lg bg-surface-elevated shadow-sm ring ring-color-2",
+              "top-(--active-tab-top) h-(--active-tab-height) rounded-md bg-surface-elevated shadow-sm ring ring-color-2",
             isUnderline && "bottom-0 h-0.5 bg-primary",
             indicatorClassName,
           )}
