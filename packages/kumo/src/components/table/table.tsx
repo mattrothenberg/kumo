@@ -138,23 +138,31 @@ const TableCheckCell = forwardRef<
     checked?: boolean;
     onValueChange?: (checked: boolean) => void;
     label?: string;
+    disabled?: boolean;
   }
->(({ checked, onValueChange, label, ...props }, ref) => {
+>(({ checked, onValueChange, label, disabled, ...props }, ref) => {
   return (
     <TableCell
       ref={ref}
       {...props}
-      className={cn("cursor-pointer p-0 leading-none", props.className)}
+      className={cn(
+        "cursor-pointer p-0 leading-none",
+        disabled && "cursor-default",
+        props.className,
+      )}
       onClick={(e) => {
         e.stopPropagation();
-        onValueChange?.(!checked);
+        if (!disabled) {
+          onValueChange?.(!checked);
+        }
       }}
     >
       <Checkbox
         checked={checked}
         onClick={(e) => e.stopPropagation()}
-        onValueChange={onValueChange}
+        onCheckedChange={onValueChange}
         aria-label={label ?? "Select row"}
+        disabled={disabled}
       />
     </TableCell>
   );
@@ -166,23 +174,31 @@ const TableCheckHead = forwardRef<
     checked?: boolean;
     onValueChange?: (checked: boolean) => void;
     label?: string;
+    disabled?: boolean;
   }
->(({ checked, onValueChange, label, ...props }, ref) => {
+>(({ checked, onValueChange, label, disabled, ...props }, ref) => {
   return (
     <TableHead
       ref={ref}
       {...props}
-      className={cn("cursor-pointer p-0 leading-none", props.className)}
+      className={cn(
+        "cursor-pointer p-0 leading-none",
+        disabled && "cursor-default",
+        props.className,
+      )}
       onClick={(e) => {
         e.stopPropagation();
-        onValueChange?.(!checked);
+        if (!disabled) {
+          onValueChange?.(!checked);
+        }
       }}
     >
       <Checkbox
         checked={checked}
         onClick={(e) => e.stopPropagation()}
-        onValueChange={onValueChange}
+        onCheckedChange={onValueChange}
         aria-label={label ?? "Select all rows"}
+        disabled={disabled}
       />
     </TableHead>
   );
