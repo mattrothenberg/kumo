@@ -1470,7 +1470,7 @@
             "danger": "Destructive action item"
           },
           "classes": {
-            "danger": "text-kumo-danger data-highlighted:bg-kumo-danger-tint data-highlighted:text-kumo-danger"
+            "danger": "text-kumo-danger data-highlighted:bg-kumo-danger/5 data-highlighted:text-kumo-danger"
           },
           "default": "default"
         }
@@ -1478,7 +1478,7 @@
       "examples": [],
       "colors": [
         "bg-kumo-control",
-        "bg-kumo-danger-tint",
+        "bg-kumo-danger",
         "bg-kumo-line",
         "bg-kumo-overlay",
         "bg-kumo-tint",
@@ -3210,7 +3210,7 @@
         "indicator": {
           "background": "color-surface-secondary",
           "ring": "color-color-2",
-          "borderRadius": 8,
+          "borderRadius": 6,
           "shadow": "shadow-sm"
         }
       }
@@ -3552,7 +3552,7 @@
         "<PageHeader\n      breadcrumbs={\n        <Breadcrumbs>\n          <Breadcrumbs.Link href=\"#\">Home</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Link href=\"#\">Products</Breadcrumbs.Link>\n          <Breadcrumbs.Separator />\n          <Breadcrumbs.Current>Page title</Breadcrumbs.Current>\n        </Breadcrumbs>\n      }\n      title=\"Page title\"\n      description=\"Action-led, value-oriented description of what this page does.\"\n      tabs={[\n        { label: \"Overview\", value: \"overview\" },\n        { label: \"Analytics\", value: \"analytics\" },\n        { label: \"Settings\", value: \"settings\" },\n      ]}\n      defaultTab=\"overview\"\n    >\n      <Button variant=\"outline\" size=\"sm\">\n        Export\n      </Button>\n      <Button variant=\"primary\" size=\"sm\" icon={<PlusIcon size={16} />}>\n        New Item\n      </Button>\n    </PageHeader>"
       ],
       "colors": [
-        "border-kumo-fill",
+        "border-kumo-line",
         "text-kumo-default",
         "text-kumo-subtle"
       ],
