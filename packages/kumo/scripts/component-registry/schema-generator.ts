@@ -7,7 +7,11 @@
  * Output: catalog/schemas.ts
  */
 
-import type { ComponentRegistry, ComponentSchema, PropSchema } from "./types.js";
+import type {
+  ComponentRegistry,
+  ComponentSchema,
+  PropSchema,
+} from "./types.js";
 
 /**
  * Convert a PropSchema type to its Zod equivalent
@@ -31,7 +35,8 @@ function propTypeToZod(prop: PropSchema): string {
     zodType = "z.boolean()";
   } else if (type === "ReactNode") {
     // ReactNode can be string, number, boolean, null, or a dynamic path reference
-    zodType = "z.union([z.string(), z.number(), z.boolean(), z.null(), DynamicValueSchema])";
+    zodType =
+      "z.union([z.string(), z.number(), z.boolean(), z.null(), DynamicValueSchema])";
   } else if (type.endsWith("[]")) {
     // Array types
     const itemType = type.slice(0, -2);
@@ -68,7 +73,11 @@ function generateComponentPropsSchema(
 
   const propsLines = propsEntries.map(([propName, propSchema]) => {
     const zodType = propTypeToZod(propSchema);
-    const comment = propSchema.description ? ` // ${propSchema.description}` : "";
+    // Replace newlines with spaces to keep comments on a single line
+    const sanitizedDescription = propSchema.description
+      ?.replace(/\n+/g, " ")
+      .trim();
+    const comment = sanitizedDescription ? ` // ${sanitizedDescription}` : "";
     return `  ${propName}: ${zodType},${comment}`;
   });
 
@@ -99,14 +108,14 @@ export function generateSchemasFile(registry: ComponentRegistry): string {
     "",
     "/**",
     " * A value that can either be a literal or a reference to the data model.",
-    " * Example: \"Hello\" or { path: \"/user/name\" }",
+    ' * Example: "Hello" or { path: "/user/name" }',
     " */",
     "export const DynamicValueSchema = z.union([",
     "  z.string(),",
     "  z.number(),",
     "  z.boolean(),",
     "  z.null(),",
-    '  z.object({ path: z.string() }),',
+    "  z.object({ path: z.string() }),",
     "]);",
     "",
     "export type DynamicValue<T = unknown> = T | { path: string };",
@@ -123,16 +132,16 @@ export function generateSchemasFile(registry: ComponentRegistry): string {
     "// Forward declaration for recursive types",
     "// Note: Numeric comparisons use DynamicValue (not DynamicValue<number>) for Zod compatibility",
     "export type LogicExpression =",
-    '  | { and: LogicExpression[] }',
-    '  | { or: LogicExpression[] }',
-    '  | { not: LogicExpression }',
-    '  | { path: string }',
-    '  | { eq: [DynamicValue, DynamicValue] }',
-    '  | { neq: [DynamicValue, DynamicValue] }',
-    '  | { gt: [DynamicValue, DynamicValue] }',
-    '  | { gte: [DynamicValue, DynamicValue] }',
-    '  | { lt: [DynamicValue, DynamicValue] }',
-    '  | { lte: [DynamicValue, DynamicValue] };',
+    "  | { and: LogicExpression[] }",
+    "  | { or: LogicExpression[] }",
+    "  | { not: LogicExpression }",
+    "  | { path: string }",
+    "  | { eq: [DynamicValue, DynamicValue] }",
+    "  | { neq: [DynamicValue, DynamicValue] }",
+    "  | { gt: [DynamicValue, DynamicValue] }",
+    "  | { gte: [DynamicValue, DynamicValue] }",
+    "  | { lt: [DynamicValue, DynamicValue] }",
+    "  | { lte: [DynamicValue, DynamicValue] };",
     "",
     "// Lazy schema for recursive logic expressions",
     "const LogicExpressionSchema: z.ZodType<LogicExpression> = z.lazy(() =>",
@@ -152,7 +161,7 @@ export function generateSchemasFile(registry: ComponentRegistry): string {
     "",
     "export const VisibilityConditionSchema = z.union([",
     "  z.boolean(),",
-    '  z.object({ path: z.string() }),',
+    "  z.object({ path: z.string() }),",
     '  z.object({ auth: z.enum(["signedIn", "signedOut"]) }),',
     "  LogicExpressionSchema,",
     "]);",
@@ -201,9 +210,13 @@ export function generateSchemasFile(registry: ComponentRegistry): string {
   }
 
   // Generate the component type union
-  lines.push("// =============================================================================");
+  lines.push(
+    "// =============================================================================",
+  );
   lines.push("// Component Type Union");
-  lines.push("// =============================================================================");
+  lines.push(
+    "// =============================================================================",
+  );
   lines.push("");
   lines.push("/**");
   lines.push(" * All valid component type names");
@@ -230,9 +243,13 @@ export function generateSchemasFile(registry: ComponentRegistry): string {
   lines.push("");
 
   // Generate UIElement schema
-  lines.push("// =============================================================================");
+  lines.push(
+    "// =============================================================================",
+  );
   lines.push("// UI Element & Tree Schemas");
-  lines.push("// =============================================================================");
+  lines.push(
+    "// =============================================================================",
+  );
   lines.push("");
   lines.push("/**");
   lines.push(" * Base UI element structure");
@@ -261,17 +278,27 @@ export function generateSchemasFile(registry: ComponentRegistry): string {
   lines.push("");
 
   // Generate validation helpers
-  lines.push("// =============================================================================");
+  lines.push(
+    "// =============================================================================",
+  );
   lines.push("// Validation Helpers");
-  lines.push("// =============================================================================");
+  lines.push(
+    "// =============================================================================",
+  );
   lines.push("");
   lines.push("/**");
   lines.push(" * Validate an element's props against its component schema");
   lines.push(" */");
-  lines.push("export function validateElementProps(element: UIElement): z.SafeParseReturnType<unknown, unknown> {");
-  lines.push("  const schema = ComponentPropsSchemas[element.type as keyof typeof ComponentPropsSchemas];");
+  lines.push(
+    "export function validateElementProps(element: UIElement): z.SafeParseReturnType<unknown, unknown> {",
+  );
+  lines.push(
+    "  const schema = ComponentPropsSchemas[element.type as keyof typeof ComponentPropsSchemas];",
+  );
   lines.push("  if (!schema) {");
-  lines.push("    return { success: false, error: new z.ZodError([{ code: 'custom', message: `Unknown component type: ${element.type}`, path: ['type'] }]) };");
+  lines.push(
+    "    return { success: false, error: new z.ZodError([{ code: 'custom', message: `Unknown component type: ${element.type}`, path: ['type'] }]) };",
+  );
   lines.push("  }");
   lines.push("  return schema.safeParse(element.props);");
   lines.push("}");
@@ -279,7 +306,9 @@ export function generateSchemasFile(registry: ComponentRegistry): string {
   lines.push("/**");
   lines.push(" * Validate a complete UI tree");
   lines.push(" */");
-  lines.push("export function validateUITree(tree: unknown): z.SafeParseReturnType<unknown, UITree> {");
+  lines.push(
+    "export function validateUITree(tree: unknown): z.SafeParseReturnType<unknown, UITree> {",
+  );
   lines.push("  return UITreeSchema.safeParse(tree);");
   lines.push("}");
   lines.push("");
@@ -288,7 +317,9 @@ export function generateSchemasFile(registry: ComponentRegistry): string {
   lines.push("/**");
   lines.push(" * List of all component names (for catalog generation)");
   lines.push(" */");
-  lines.push(`export const KUMO_COMPONENT_NAMES = [${componentNames.map((n) => `"${n}"`).join(", ")}] as const;`);
+  lines.push(
+    `export const KUMO_COMPONENT_NAMES = [${componentNames.map((n) => `"${n}"`).join(", ")}] as const;`,
+  );
   lines.push("");
 
   return lines.join("\n");

@@ -1562,7 +1562,7 @@ DropdownMenu component
 
 **Colors (kumo tokens used):**
 
-`bg-kumo-control`, `bg-kumo-danger-tint`, `bg-kumo-line`, `bg-kumo-overlay`, `bg-kumo-tint`, `ring-kumo-line`, `text-kumo-danger`, `text-kumo-default`
+`bg-kumo-control`, `bg-kumo-danger`, `bg-kumo-line`, `bg-kumo-overlay`, `bg-kumo-tint`, `ring-kumo-line`, `text-kumo-danger`, `text-kumo-default`
 
 **Sub-Components:**
 

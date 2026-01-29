@@ -288,7 +288,7 @@ export const LinkPropsSchema = z.object({
   target: z.unknown().optional(),
   type: z.string().optional(),
   referrerPolicy: z.enum(["", "no-referrer", "no-referrer-when-downgrade", "origin", "origin-when-cross-origin", "same-origin", "strict-origin", "strict-origin-when-cross-origin", "unsafe-url"]).optional(),
-  render: z.union([z.string(), z.number(), z.boolean(), z.null(), DynamicValueSchema]).optional(), // Allows you to replace the component’s HTML element with a different tag, or compose it with another component.
+  render: z.union([z.string(), z.number(), z.boolean(), z.null(), DynamicValueSchema]).optional(), // Allows you to replace the component’s HTML element with a different tag, or compose it with another component. Accepts a `ReactElement` or a function that returns the element to render.
 });
 
 export const LoaderPropsSchema = z.object({
