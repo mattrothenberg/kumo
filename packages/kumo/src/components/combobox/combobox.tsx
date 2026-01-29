@@ -140,8 +140,8 @@ function Content({
         <ComboboxBase.Popup
           className={cn(
             "max-h-[min(var(--available-height),24rem)] max-w-(--available-width) min-w-(--anchor-width) scroll-pt-2 scroll-pb-2 overflow-y-auto overscroll-contain p-1.5",
-            "z-50 bg-secondary text-surface", // background
-            "rounded-lg shadow-lg ring ring-border", // border part
+            "z-50 overflow-hidden bg-kumo-control text-kumo-default", // background
+            "rounded-lg shadow-lg ring ring-kumo-line", // border part
             className,
           )}
         >
@@ -166,7 +166,7 @@ function TriggerValue({
     >
       <ComboboxBase.Value>{props.children}</ComboboxBase.Value>
       <ComboboxBase.Icon className="absolute top-1/2 right-2 -translate-y-1/2">
-        <CaretDownIcon className="fill-active" />
+        <CaretDownIcon className="fill-kumo-ring" />
       </ComboboxBase.Icon>
     </ComboboxBase.Trigger>
   );
@@ -188,7 +188,7 @@ function TriggerInput(props: ComboboxBase.Input.Props) {
 
       <ComboboxBase.Trigger className="p-0">
         <ComboboxBase.Icon className="absolute top-1/2 right-2 flex -translate-y-1/2 cursor-pointer">
-          <CaretDownIcon className="fill-active" />
+          <CaretDownIcon className="fill-kumo-ring" />
         </ComboboxBase.Icon>
       </ComboboxBase.Trigger>
     </div>
@@ -199,7 +199,7 @@ function Item({ children, ...props }: ComboboxBase.Item.Props) {
   return (
     <ComboboxBase.Item
       {...props}
-      className="group grid cursor-pointer grid-cols-[1fr_16px] gap-2 rounded px-2 py-1.5 text-base data-highlighted:bg-color-3"
+      className="group grid cursor-pointer grid-cols-[1fr_16px] gap-2 rounded px-2 py-1.5 text-base data-highlighted:bg-kumo-overlay"
     >
       <div className="col-start-1">{children}</div>
       <ComboboxBase.ItemIndicator className="col-start-2 flex items-center">
@@ -214,7 +214,7 @@ function Empty(props: ComboboxBase.Empty.Props) {
     <ComboboxBase.Empty
       {...props}
       className={cn(
-        "text-muted-2 px-4 py-2 text-[0.925rem] leading-4 empty:m-0 empty:p-0",
+        "px-4 py-2 text-[0.925rem] leading-4 text-kumo-subtle empty:m-0 empty:p-0",
       )}
       children={props.children ?? "No labels found."}
     />
@@ -247,10 +247,10 @@ function Chip(props: ComboboxBase.Chip.Props) {
   return (
     <ComboboxBase.Chip
       {...props}
-      className="flex items-center gap-1 rounded-md bg-color-3 px-2 py-1"
+      className="flex items-center gap-1 rounded-md bg-kumo-overlay px-2 py-1"
     >
       {props.children}
-      <ComboboxBase.ChipRemove className="cursor-pointer rounded-md p-1 hover:bg-color-2">
+      <ComboboxBase.ChipRemove className="cursor-pointer rounded-md p-1 hover:bg-kumo-fill-hover">
         <XIcon size={12} weight="bold" />
       </ComboboxBase.ChipRemove>
     </ComboboxBase.Chip>

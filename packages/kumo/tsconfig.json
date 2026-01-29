@@ -3,8 +3,9 @@
     "composite": true,
     "target": "ES2022",
     "module": "ES2022",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
     "jsx": "react-jsx",
     "strict": true,
     "skipLibCheck": true,
@@ -14,7 +15,7 @@
     "declarationMap": true,
     "noEmit": true
   },
-  "include": ["src/**/*", "scripts/**/*"],
+  "include": ["src/**/*", "scripts/**/*", ".storybook/**/*", "ai/**/*"],
   "exclude": [
     "node_modules",
     "dist",

@@ -12,16 +12,16 @@ import Header from "../components/Header.astro";
 
     <!-- Page Header -->
     <div
-      class="border-b border-border bg-surface-secondary pr-12"
+      class="border-b border-kumo-line pr-12"
     >
-      <div class="mx-auto border-r border-border">
+      <div class="mx-auto border-r border-kumo-line">
         <div class="mx-auto max-w-3xl px-6 py-16">
           <h1
-            class="mb-4 text-4xl font-semibold tracking-tight text-surface"
+            class="mb-4 text-4xl font-semibold tracking-tight text-kumo-default"
           >
             Accessibility
           </h1>
-          <p class="text-lg leading-relaxed text-label">
+          <p class="text-lg leading-relaxed text-kumo-strong">
             Learn how to make the most of Kumo's accessibility features and
             guidelines.
           </p>
@@ -30,12 +30,12 @@ import Header from "../components/Header.astro";
     </div>
 
     <!-- Content -->
-    <main class="flex grow flex-col bg-surface-secondary pr-12">
+    <main class="flex grow flex-col pr-12">
       <div
-        class="mx-auto w-full grow border-r border-border"
+        class="mx-auto w-full grow border-r border-kumo-line"
       >
         <div class="mx-auto max-w-3xl px-6 py-16">
-          <div class="space-y-12 text-surface">
+          <div class="space-y-12 text-kumo-default">
             <!-- Introduction -->
             <section class="space-y-4 leading-relaxed">
               <p class="text-[17px]">
@@ -43,7 +43,7 @@ import Header from "../components/Header.astro";
                   href="https://base-ui.com/react/overview/accessibility"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-info underline-offset-2 hover:underline"
+                  class="text-kumo-link underline-offset-2 hover:underline"
                   >Base UI</a
                 >, Kumo components handle many complex accessibility details
                 including ARIA attributes, role attributes, pointer
@@ -62,7 +62,7 @@ import Header from "../components/Header.astro";
             <!-- Keyboard Navigation -->
             <section class="space-y-4">
               <h2
-                class="text-2xl font-semibold tracking-tight text-surface"
+                class="text-2xl font-semibold tracking-tight text-kumo-default"
               >
                 Keyboard Navigation
               </h2>
@@ -71,7 +71,7 @@ import Header from "../components/Header.astro";
                   href="https://www.w3.org/WAI/ARIA/apg/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-info underline-offset-2 hover:underline"
+                  class="text-kumo-link underline-offset-2 hover:underline"
                   >WAI-ARIA Authoring Practices</a
                 > to provide basic keyboard accessibility out of the box. This is
                 critical for users who have difficulty using a pointer device, but
@@ -81,16 +81,16 @@ import Header from "../components/Header.astro";
               <p class="text-[17px] leading-relaxed">
                 Many components provide support for arrow keys, alphanumeric
                 keys, <kbd
-                  class="rounded border border-border bg-secondary px-1.5 py-0.5 font-mono text-sm"
+                  class="rounded border border-kumo-line bg-kumo-control px-1.5 py-0.5 font-mono text-sm"
                   >Home</kbd
                 >, <kbd
-                  class="rounded border border-border bg-secondary px-1.5 py-0.5 font-mono text-sm"
+                  class="rounded border border-kumo-line bg-kumo-control px-1.5 py-0.5 font-mono text-sm"
                   >End</kbd
                 >, <kbd
-                  class="rounded border border-border bg-secondary px-1.5 py-0.5 font-mono text-sm"
+                  class="rounded border border-kumo-line bg-kumo-control px-1.5 py-0.5 font-mono text-sm"
                   >Enter</kbd
                 >, and <kbd
-                  class="rounded border border-border bg-secondary px-1.5 py-0.5 font-mono text-sm"
+                  class="rounded border border-kumo-line bg-kumo-control px-1.5 py-0.5 font-mono text-sm"
                   >Esc</kbd
                 >.
               </p>
@@ -99,17 +99,17 @@ import Header from "../components/Header.astro";
             <!-- Focus Management -->
             <section class="space-y-4">
               <h2
-                class="text-2xl font-semibold tracking-tight text-surface"
+                class="text-2xl font-semibold tracking-tight text-kumo-default"
               >
                 Focus Management
               </h2>
               <p class="text-[17px] leading-relaxed">
                 Kumo components manage focus automatically following a user
                 interaction. Additionally, some components provide props like <code
-                  class="rounded bg-secondary px-1.5 py-0.5 font-mono text-sm"
+                  class="rounded bg-kumo-control px-1.5 py-0.5 font-mono text-sm"
                   >initialFocus</code
                 > and <code
-                  class="rounded bg-secondary px-1.5 py-0.5 font-mono text-sm"
+                  class="rounded bg-kumo-control px-1.5 py-0.5 font-mono text-sm"
                   >finalFocus</code
                 >, to configure focus management.
               </p>
@@ -117,16 +117,16 @@ import Header from "../components/Header.astro";
                 While Kumo components manage focus, it's the developer's
                 responsibility to visually indicate focus. This is typically
                 handled by styling the <code
-                  class="rounded bg-secondary px-1.5 py-0.5 font-mono text-sm"
+                  class="rounded bg-kumo-control px-1.5 py-0.5 font-mono text-sm"
                   >:focus</code
                 > or <code
-                  class="rounded bg-secondary px-1.5 py-0.5 font-mono text-sm"
+                  class="rounded bg-kumo-control px-1.5 py-0.5 font-mono text-sm"
                   >:focus-visible</code
                 > CSS pseudo-classes. <a
                   href="https://www.w3.org/WAI/WCAG21/Understanding/focus-visible.html"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-info underline-offset-2 hover:underline"
+                  class="text-kumo-link underline-offset-2 hover:underline"
                   >WCAG provides guidelines on focus appearance</a
                 >.
               </p>
@@ -135,7 +135,7 @@ import Header from "../components/Header.astro";
             <!-- Color Contrast -->
             <section class="space-y-4">
               <h2
-                class="text-2xl font-semibold tracking-tight text-surface"
+                class="text-2xl font-semibold tracking-tight text-kumo-default"
               >
                 Color Contrast
               </h2>
@@ -148,7 +148,7 @@ import Header from "../components/Header.astro";
                   href="https://www.myndex.com/APCA/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-info underline-offset-2 hover:underline"
+                  class="text-kumo-link underline-offset-2 hover:underline"
                   >APCA</a
                 >, which is slated to become the new standard in WCAG 3.
               </p>
@@ -157,42 +157,42 @@ import Header from "../components/Header.astro";
             <!-- Accessible Labels -->
             <section class="space-y-4">
               <h2
-                class="text-2xl font-semibold tracking-tight text-surface"
+                class="text-2xl font-semibold tracking-tight text-kumo-default"
               >
                 Accessible Labels
               </h2>
               <p class="text-[17px] leading-relaxed">
                 Kumo provides components like <code
-                  class="rounded bg-secondary px-1.5 py-0.5 font-mono text-sm"
+                  class="rounded bg-kumo-control px-1.5 py-0.5 font-mono text-sm"
                   >Field</code
                 >, <code
-                  class="rounded bg-secondary px-1.5 py-0.5 font-mono text-sm"
+                  class="rounded bg-kumo-control px-1.5 py-0.5 font-mono text-sm"
                   >Input</code
                 >, and <code
-                  class="rounded bg-secondary px-1.5 py-0.5 font-mono text-sm"
+                  class="rounded bg-kumo-control px-1.5 py-0.5 font-mono text-sm"
                   >Checkbox</code
                 > to automatically associate form controls. Additionally, you can
                 use the native HTML <code
-                  class="rounded bg-secondary px-1.5 py-0.5 font-mono text-sm"
+                  class="rounded bg-kumo-control px-1.5 py-0.5 font-mono text-sm"
                   >&lt;label&gt;</code
                 > element to provide context to corresponding inputs.
               </p>
               <p class="text-[17px] leading-relaxed">
                 Most applications will present custom controls that require
                 accessible names provided by markup features such as <code
-                  class="rounded bg-secondary px-1.5 py-0.5 font-mono text-sm"
+                  class="rounded bg-kumo-control px-1.5 py-0.5 font-mono text-sm"
                   >alt</code
                 >, <code
-                  class="rounded bg-secondary px-1.5 py-0.5 font-mono text-sm"
+                  class="rounded bg-kumo-control px-1.5 py-0.5 font-mono text-sm"
                   >aria-label</code
                 > or <code
-                  class="rounded bg-secondary px-1.5 py-0.5 font-mono text-sm"
+                  class="rounded bg-kumo-control px-1.5 py-0.5 font-mono text-sm"
                   >aria-labelledby</code
                 >. <a
                   href="https://www.w3.org/WAI/ARIA/apg/practices/names-and-descriptions/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-info underline-offset-2 hover:underline"
+                  class="text-kumo-link underline-offset-2 hover:underline"
                   >WAI-ARIA provides guidelines on providing accessible names to
                   custom controls</a
                 >.
@@ -202,7 +202,7 @@ import Header from "../components/Header.astro";
             <!-- Testing -->
             <section class="space-y-4">
               <h2
-                class="text-2xl font-semibold tracking-tight text-surface"
+                class="text-2xl font-semibold tracking-tight text-kumo-default"
               >
                 Testing
               </h2>
@@ -216,7 +216,7 @@ import Header from "../components/Header.astro";
 
             <!-- Learn More -->
             <section
-              class="border-t border-border pt-8"
+              class="border-t border-kumo-line pt-8"
             >
               <p class="mb-4 text-[17px] leading-relaxed">
                 For more detailed information about the accessibility features
@@ -224,7 +224,7 @@ import Header from "../components/Header.astro";
                   href="https://base-ui.com/react/overview/accessibility"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-info underline-offset-2 hover:underline"
+                  class="text-kumo-link underline-offset-2 hover:underline"
                   >official accessibility documentation</a
                 >.
               </p>

@@ -1,4 +1,9 @@
 // Kumo Component Library
+//
+// NOTE: Blocks (PageHeader, ResourceListPage, etc.) are NOT exported from this package.
+// Blocks must be installed via the Kumo CLI: `kumo add <block-name>`
+// Run `kumo blocks` to see all available blocks.
+//
 // Components
 export { Badge, type BadgeVariant } from "./components/badge";
 export { Banner, BannerVariant } from "./components/banner";
@@ -91,18 +96,6 @@ export {
   type RadioVariant,
 } from "./components/radio";
 export {
-  Icon,
-  iconVariants,
-  KUMO_ICON_VARIANTS,
-  KUMO_ICON_DEFAULT_VARIANTS,
-  type IconProps,
-  type IconGlyph,
-  type PhosphorIcon,
-  type BrandIcon,
-  type KumoIconSize,
-  type KumoIconVariantsProps,
-} from "./components/icon";
-export {
   CommandPalette,
   KUMO_COMMAND_PALETTE_VARIANTS,
   KUMO_COMMAND_PALETTE_DEFAULT_VARIANTS,
@@ -126,20 +119,21 @@ export {
   type KumoLinkVariant,
   type KumoLinkVariantsProps,
 } from "./components/link";
-// PLOP_INJECT_EXPORT
-
-// Blocks
-export { Breadcrumbs } from "./blocks/breadcrumbs";
-export { Empty, type EmptyProps } from "./blocks/empty";
-export { PageHeader, type PageHeaderProps } from "./blocks/page-header";
-// PLOP_INJECT_BLOCK_EXPORT
-
-// Layouts
+export { Breadcrumbs, type BreadcrumbsProps } from "./components/breadcrumbs";
+export { Empty, type EmptyProps } from "./components/empty";
 export {
-  ResourceListPage,
-  type ResourceListPageProps,
-} from "./layouts/resource-list";
-// PLOP_INJECT_LAYOUT_EXPORT
+  Grid,
+  GridItem,
+  gridVariants,
+  gridItemVariants,
+  KUMO_GRID_VARIANTS,
+  KUMO_GRID_DEFAULT_VARIANTS,
+  type GridProps,
+  type GridItemProps,
+  type KumoGridVariant,
+  type KumoGridGap,
+} from "./components/grid";
+// PLOP_INJECT_EXPORT
 
 // Utils
 export { cn, safeRandomId } from "./utils/cn";
@@ -148,3 +142,13 @@ export {
   useLinkComponent,
   type LinkComponentProps,
 } from "./utils/link-provider";
+
+// Registry types (for consuming packages to type registry JSON)
+export type {
+  ComponentRegistry,
+  ComponentSchema,
+  ComponentStyling,
+  ComponentType,
+  PropSchema,
+  SubComponentSchema,
+} from "./registry/types";

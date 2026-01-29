@@ -1,4 +1,4 @@
-import type { ComponentProps, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { Tabs as TabsPrimitive } from "@base-ui/react/tabs";
 import { cn } from "../../utils/cn";
 
@@ -27,7 +27,7 @@ export const KUMO_TABS_STYLING = {
     inactiveColor: "text-color-label",
   },
   indicator: {
-    background: "color-surface-elevated",
+    background: "color-surface-secondary",
     ring: "color-color-2",
     borderRadius: 6,
     shadow: "shadow-sm",
@@ -42,9 +42,9 @@ export interface KumoTabsVariantsProps {
 export type TabsItem = {
   value: string;
   label: ReactNode;
-  /** Custom render function for the tab. Allows rendering as a different element (e.g., a link). */
-  render?: ComponentProps<typeof TabsPrimitive.Tab>["render"];
   className?: string;
+  /** Optional render function to customize the tab element (e.g., for links) */
+  render?: (props: Record<string, unknown>) => React.ReactElement;
 };
 
 export type TabsProps = KumoTabsVariantsProps & {
@@ -108,14 +108,14 @@ export function Tabs({
     >
       {/* Background element for segmented variant */}
       {isSegmented && (
-        <div className="absolute inset-x-0 top-1/2 -z-10 h-8.5 -translate-y-1/2 rounded-lg bg-accent" />
+        <div className="absolute inset-x-0 top-1/2 -z-10 h-8.5 -translate-y-1/2 rounded-lg bg-kumo-tint" />
       )}
       <TabsPrimitive.List
         activateOnFocus={activateOnFocus}
         className={cn(
-          "no-scrollbar relative flex min-w-0 shrink items-stretch",
-          isSegmented && "h-8.5 rounded-lg bg-accent px-px",
-          isUnderline && "h-7 gap-4 border-b border-border pb-2",
+          "scrollbar-hide relative flex min-w-0 shrink items-stretch",
+          isSegmented && "h-8.5 rounded-lg bg-kumo-tint px-px",
+          isUnderline && "h-7 gap-4 border-b border-kumo-line pb-2",
           listClassName,
         )}
       >
@@ -123,14 +123,12 @@ export function Tabs({
           <TabsPrimitive.Tab
             key={tab.value}
             value={tab.value}
-            render={tab.render}
-            nativeButton={tab.render === undefined}
             className={cn(
-              "relative z-10 flex cursor-pointer items-center rounded bg-transparent text-base whitespace-nowrap hover:border-accent focus-visible:rounded-none focus-visible:ring-active focus-visible:outline-offset-3",
+              "relative z-10 flex cursor-pointer items-center rounded bg-transparent text-base whitespace-nowrap hover:border-kumo-tint focus-visible:rounded-none focus-visible:ring-kumo-ring focus-visible:outline-offset-3",
               isSegmented &&
-                "my-px rounded-lg px-2.5 text-label aria-selected:text-surface",
+                "my-px rounded-lg px-2.5 text-kumo-strong aria-selected:text-kumo-default",
               isUnderline &&
-                "mb-2 text-label hover:text-muted aria-selected:font-medium aria-selected:text-surface",
+                "mb-2 text-kumo-strong hover:text-kumo-subtle aria-selected:font-medium aria-selected:text-kumo-default",
               tab.className,
             )}
           >
@@ -143,8 +141,8 @@ export function Tabs({
             "data-[rendered=false]:scale-90 data-[rendered=false]:opacity-0",
             "left-(--active-tab-left) w-(--active-tab-width)",
             isSegmented &&
-              "top-(--active-tab-top) h-(--active-tab-height) rounded-md bg-surface-elevated shadow-sm ring ring-color-2",
-            isUnderline && "bottom-0 h-0.5 bg-primary",
+              "top-(--active-tab-top) h-(--active-tab-height) rounded-lg bg-kumo-overlay shadow-sm ring ring-kumo-fill-hover",
+            isUnderline && "bottom-0 h-0.5 bg-kumo-brand",
             indicatorClassName,
           )}
         />

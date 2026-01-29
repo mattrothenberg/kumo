@@ -11,7 +11,7 @@ export interface KumoCollapsibleVariantsProps {}
 export function collapsibleVariants(_props: KumoCollapsibleVariantsProps = {}) {
   return cn(
     // Base styles for the trigger
-    "flex cursor-pointer items-center gap-1 text-sm text-info select-none",
+    "flex cursor-pointer items-center gap-1 text-sm text-kumo-link select-none",
   );
 }
 
@@ -87,7 +87,7 @@ export const Collapsible = forwardRef<HTMLDivElement, CollapsibleProps>(
           <div
             id={contentId}
             className={cn(
-              "my-2 space-y-4 border-l-2 border-color pl-4",
+              "my-2 space-y-4 border-l-2 border-kumo-fill pl-4",
               className,
             )}
           >

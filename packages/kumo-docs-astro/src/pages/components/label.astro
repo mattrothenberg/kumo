@@ -17,7 +17,6 @@ import {
   title="Label"
   description="A label component for form fields with support for required/optional indicators and tooltips."
   sourceFile="components/label"
-  storybookPath="story/components-label"
 >
   <!-- Demo -->
   <ComponentSection>
@@ -50,14 +49,14 @@ import {
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Usage</h2>
     <h3 class="mb-2 text-lg font-semibold">With Form Components (Recommended)</h3>
-    <p class="mb-4 text-sm text-label">
+    <p class="mb-4 text-sm text-kumo-strong">
       Label features are automatically available through form components like{" "}
-      <code class="rounded bg-secondary px-1 py-0.5 text-sm">Input</code>,{" "}
-      <code class="rounded bg-secondary px-1 py-0.5 text-sm">Select</code>,{" "}
-      <code class="rounded bg-secondary px-1 py-0.5 text-sm">Checkbox</code>, and{" "}
-      <code class="rounded bg-secondary px-1 py-0.5 text-sm">Switch</code> via the{" "}
-      <code class="rounded bg-secondary px-1 py-0.5 text-sm">required</code> and{" "}
-      <code class="rounded bg-secondary px-1 py-0.5 text-sm">labelTooltip</code> props.
+      <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">Input</code>,{" "}
+      <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">Select</code>,{" "}
+      <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">Checkbox</code>, and{" "}
+      <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">Switch</code> via the{" "}
+      <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">required</code> and{" "}
+      <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">labelTooltip</code> props.
     </p>
     <CodeBlock
       code={`import { Input } from "@cloudflare/kumo";
@@ -80,9 +79,9 @@ export default function Example() {
     />
 
     <h3 class="mb-2 mt-6 text-lg font-semibold">Standalone Label</h3>
-    <p class="mb-4 text-sm text-label">
+    <p class="mb-4 text-sm text-kumo-strong">
       For custom form layouts, use the{" "}
-      <code class="rounded bg-secondary px-1 py-0.5 text-sm">Label</code> component
+      <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">Label</code> component
       directly.
     </p>
     <CodeBlock
@@ -106,9 +105,9 @@ export default function Example() {
     <div class="space-y-8">
       <div>
         <h3 class="mb-4 text-xl font-semibold">Optional Field</h3>
-        <p class="mb-4 text-sm text-label">
+        <p class="mb-4 text-sm text-kumo-strong">
           Shows gray "(optional)" text when{" "}
-          <code class="rounded bg-secondary px-1 py-0.5 text-sm">required={"{false}"}</code>.
+          <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">required={"{false}"}</code>.
         </p>
         <ComponentExample
           code={`<Input label="Phone Number" required={false} placeholder="+1 555-0000" />`}
@@ -119,7 +118,7 @@ export default function Example() {
 
       <div>
         <h3 class="mb-4 text-xl font-semibold">With Tooltip</h3>
-        <p class="mb-4 text-sm text-label">
+        <p class="mb-4 text-sm text-kumo-strong">
           Shows an info icon with a tooltip for additional context.
         </p>
         <ComponentExample
@@ -135,7 +134,7 @@ export default function Example() {
 
       <div>
         <h3 class="mb-4 text-xl font-semibold">ReactNode Label Content</h3>
-        <p class="mb-4 text-sm text-label">
+        <p class="mb-4 text-sm text-kumo-strong">
           Labels support ReactNode content for rich formatting.
         </p>
         <ComponentExample
@@ -153,7 +152,7 @@ export default function Example() {
 
       <div>
         <h3 class="mb-4 text-xl font-semibold">Form with Mixed Fields</h3>
-        <p class="mb-4 text-sm text-label">
+        <p class="mb-4 text-sm text-kumo-strong">
           Real-world example showing required and optional fields together.
         </p>
         <ComponentExample
@@ -183,7 +182,7 @@ export default function Example() {
 
       <div>
         <h3 class="mb-4 text-xl font-semibold">Standalone Label</h3>
-        <p class="mb-4 text-sm text-label">
+        <p class="mb-4 text-sm text-kumo-strong">
           Use Label directly for custom layouts or non-form contexts.
         </p>
         <ComponentExample
@@ -204,39 +203,39 @@ export default function Example() {
     <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
 
     <h3 class="mb-2 text-lg font-semibold">Label Props</h3>
-    <p class="mb-4 text-sm text-label">
+    <p class="mb-4 text-sm text-kumo-strong">
       Props for the standalone Label component:
     </p>
     <div class="overflow-x-auto">
       <table class="w-full text-sm">
         <thead>
-          <tr class="border-b border-border">
+          <tr class="border-b border-kumo-line">
             <th class="px-4 py-3 text-left font-semibold">Prop</th>
             <th class="px-4 py-3 text-left font-semibold">Type</th>
             <th class="px-4 py-3 text-left font-semibold">Default</th>
             <th class="px-4 py-3 text-left font-semibold">Description</th>
           </tr>
         </thead>
-        <tbody class="text-label">
-          <tr class="border-b border-border">
+        <tbody class="text-kumo-strong">
+          <tr class="border-b border-kumo-line">
             <td class="px-4 py-3 font-mono text-xs">children</td>
             <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
             <td class="px-4 py-3 font-mono text-xs">-</td>
             <td class="px-4 py-3 text-xs">Label content (required)</td>
           </tr>
-          <tr class="border-b border-border">
+          <tr class="border-b border-kumo-line">
             <td class="px-4 py-3 font-mono text-xs">showOptional</td>
             <td class="px-4 py-3 font-mono text-xs">boolean</td>
             <td class="px-4 py-3 font-mono text-xs">false</td>
             <td class="px-4 py-3 text-xs">Shows gray "(optional)" text (only when required is false)</td>
           </tr>
-          <tr class="border-b border-border">
+          <tr class="border-b border-kumo-line">
             <td class="px-4 py-3 font-mono text-xs">tooltip</td>
             <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
             <td class="px-4 py-3 font-mono text-xs">-</td>
             <td class="px-4 py-3 text-xs">Tooltip content shown via info icon</td>
           </tr>
-          <tr class="border-b border-border">
+          <tr class="border-b border-kumo-line">
             <td class="px-4 py-3 font-mono text-xs">className</td>
             <td class="px-4 py-3 font-mono text-xs">string</td>
             <td class="px-4 py-3 font-mono text-xs">-</td>
@@ -247,28 +246,28 @@ export default function Example() {
     </div>
 
     <h3 class="mb-2 mt-8 text-lg font-semibold">Form Component Label Props</h3>
-    <p class="mb-4 text-sm text-label">
+    <p class="mb-4 text-sm text-kumo-strong">
       These props are available on Input, InputArea, Select, Checkbox, Switch,
       SensitiveInput, and Combobox:
     </p>
     <div class="overflow-x-auto">
       <table class="w-full text-sm">
         <thead>
-          <tr class="border-b border-border">
+          <tr class="border-b border-kumo-line">
             <th class="px-4 py-3 text-left font-semibold">Prop</th>
             <th class="px-4 py-3 text-left font-semibold">Type</th>
             <th class="px-4 py-3 text-left font-semibold">Default</th>
             <th class="px-4 py-3 text-left font-semibold">Description</th>
           </tr>
         </thead>
-        <tbody class="text-label">
-          <tr class="border-b border-border">
+        <tbody class="text-kumo-strong">
+          <tr class="border-b border-kumo-line">
             <td class="px-4 py-3 font-mono text-xs">label</td>
             <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
             <td class="px-4 py-3 font-mono text-xs">-</td>
             <td class="px-4 py-3 text-xs">Label content (enables Field wrapper)</td>
           </tr>
-          <tr class="border-b border-border">
+          <tr class="border-b border-kumo-line">
             <td class="px-4 py-3 font-mono text-xs">required</td>
             <td class="px-4 py-3 font-mono text-xs">boolean</td>
             <td class="px-4 py-3 font-mono text-xs">-</td>
@@ -276,7 +275,7 @@ export default function Example() {
               When false: shows "(optional)" text. Also sets HTML required attribute.
             </td>
           </tr>
-          <tr class="border-b border-border">
+          <tr class="border-b border-kumo-line">
             <td class="px-4 py-3 font-mono text-xs">labelTooltip</td>
             <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
             <td class="px-4 py-3 font-mono text-xs">-</td>
@@ -295,7 +294,7 @@ export default function Example() {
     <div class="space-y-4 text-sm">
       <div>
         <h3 class="mb-2 font-semibold">When to Use Optional Indicators</h3>
-        <ul class="ml-4 list-disc space-y-1 text-label">
+        <ul class="ml-4 list-disc space-y-1 text-kumo-strong">
           <li>Use "(optional)" for optional fields when most fields are required</li>
           <li>Be consistent within a form</li>
           <li>Default fields (no indicator) are assumed required by users</li>
@@ -303,7 +302,7 @@ export default function Example() {
       </div>
       <div>
         <h3 class="mb-2 font-semibold">When to Use Tooltips</h3>
-        <ul class="ml-4 list-disc space-y-1 text-label">
+        <ul class="ml-4 list-disc space-y-1 text-kumo-strong">
           <li>Provide additional context that doesn't fit in the label</li>
           <li>Explain format requirements or validation rules</li>
           <li>Link to help documentation for complex fields</li>
@@ -312,10 +311,10 @@ export default function Example() {
       </div>
       <div>
         <h3 class="mb-2 font-semibold">Accessibility</h3>
-        <ul class="ml-4 list-disc space-y-1 text-label">
+        <ul class="ml-4 list-disc space-y-1 text-kumo-strong">
           <li>
             Optional indicators are purely visual - use the{" "}
-            <code class="rounded bg-secondary px-1 py-0.5 text-sm">required</code> attribute
+            <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">required</code> attribute
             for validation
           </li>
           <li>Tooltips are accessible via keyboard focus on the info icon</li>

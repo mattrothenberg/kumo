@@ -11,7 +11,6 @@ import { PageHeaderHeroDemo, PageHeaderBasicDemo, PageHeaderWithIconsDemo, PageH
   title="Page Header"
   description="A composite component that combines breadcrumbs and tabs for page navigation."
   sourceFile="blocks/page-header"
-  storybookPath="story/blocks-pageheader"
 >
   <ComponentSection>
     <ComponentExample code={`<PageHeader
@@ -45,14 +44,32 @@ import { PageHeaderHeroDemo, PageHeaderBasicDemo, PageHeaderWithIconsDemo, PageH
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Installation</h2>
-    <CodeBlock code={`import { PageHeader } from "@cloudflare/kumo";
-// or
-import { PageHeader } from "@cloudflare/kumo/blocks/page-header";`} lang="tsx" />
+    <p class="mb-4 text-kumo-strong">
+      PageHeader is a <strong>block</strong> - a CLI-installed component that you own and can customize.
+      Unlike regular components, blocks are copied into your project so you have full control over the code.
+    </p>
+    <div class="space-y-4">
+      <div>
+        <p class="mb-2 text-sm font-medium text-kumo-default">1. Initialize Kumo config (first time only)</p>
+        <CodeBlock code={`npx @cloudflare/kumo init`} lang="bash" />
+      </div>
+      <div>
+        <p class="mb-2 text-sm font-medium text-kumo-default">2. Install the block</p>
+        <CodeBlock code={`npx @cloudflare/kumo add PageHeader`} lang="bash" />
+      </div>
+      <div>
+        <p class="mb-2 text-sm font-medium text-kumo-default">3. Import from your local path</p>
+        <CodeBlock code={`// The path depends on your kumo.json blocksDir setting
+// Default: src/components/kumo/
+import { PageHeader } from "./components/kumo/page-header/page-header";`} lang="tsx" />
+      </div>
+    </div>
   </ComponentSection>
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Usage</h2>
-    <CodeBlock code={`import { PageHeader, Breadcrumbs } from "@cloudflare/kumo";
+    <CodeBlock code={`import { PageHeader } from "./components/kumo/page-header/page-header";
+import { Breadcrumbs } from "@cloudflare/kumo";
 
 export default function Example() {
   return (
@@ -202,7 +219,7 @@ export default function Example() {
 
     <div class="mb-12">
       <h3 class="mb-4 text-xl font-semibold">Complete Example</h3>
-      <p class="mb-4 text-label">Combining breadcrumbs, title, description, tabs, and actions.</p>
+      <p class="mb-4 text-kumo-strong">Combining breadcrumbs, title, description, tabs, and actions.</p>
       <ComponentExample code={`<PageHeader
   breadcrumbs={
     <Breadcrumbs>
@@ -238,17 +255,17 @@ export default function Example() {
     <div class="overflow-x-auto">
       <table class="w-full text-sm">
         <thead>
-          <tr class="border-b border-border">
+          <tr class="border-b border-kumo-line">
             <th class="px-4 py-3 text-left font-semibold">Property</th>
             <th class="px-4 py-3 text-left font-semibold">Type</th>
           </tr>
         </thead>
-        <tbody class="text-label">
-          <tr class="border-b border-border">
+        <tbody class="text-kumo-strong">
+          <tr class="border-b border-kumo-line">
             <td class="px-4 py-3 font-mono text-xs">label</td>
             <td class="px-4 py-3 font-mono text-xs">string</td>
           </tr>
-          <tr class="border-b border-border">
+          <tr class="border-b border-kumo-line">
             <td class="px-4 py-3 font-mono text-xs">value</td>
             <td class="px-4 py-3 font-mono text-xs">string</td>
           </tr>

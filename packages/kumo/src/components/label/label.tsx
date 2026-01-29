@@ -16,7 +16,7 @@ export function labelVariants(_props: KumoLabelVariantsProps = {}) {
   return cn(
     // Base styles - when used standalone, apply text styling
     // When used inside Field, the parent FieldBase.Label provides these styles
-    "text-base font-medium text-surface",
+    "text-base font-medium text-kumo-default",
   );
 }
 
@@ -81,12 +81,12 @@ export function Label({
     <>
       {children}
       {showOptional && (
-        <span className="font-normal text-label">(optional)</span>
+        <span className="font-normal text-kumo-strong">(optional)</span>
       )}
       {tooltip && (
         <Tooltip content={tooltip}>
           <Info
-            className="size-4 cursor-help text-label"
+            className="size-4 cursor-help text-kumo-strong"
             aria-label="More information"
           />
         </Tooltip>

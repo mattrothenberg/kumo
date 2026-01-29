@@ -1,0 +1,157 @@
+---
+import DocLayout from "../../layouts/DocLayout.astro";
+import ComponentSection from "../../components/docs/ComponentSection.astro";
+import ComponentExample from "../../components/docs/ComponentExample.astro";
+import CodeBlock from "../../components/docs/CodeBlock.astro";
+import PropsTable from "../../components/docs/PropsTable.astro";
+import {
+  PaginationBasicDemo,
+  PaginationSimpleDemo,
+  PaginationFullDemo,
+  PaginationMidPageDemo,
+  PaginationLargeDatasetDemo,
+} from "../../components/demos/PaginationDemo";
+---
+
+<DocLayout
+  title="Pagination"
+  description="A page navigation component for navigating through paginated content."
+  sourceFile="components/pagination"
+>
+  <!-- Demo -->
+  <ComponentSection>
+    <ComponentExample
+      code={`<Pagination
+  page={page}
+  setPage={setPage}
+  perPage={10}
+  totalCount={100}
+/>`}
+    >
+      <PaginationBasicDemo client:visible />
+    </ComponentExample>
+  </ComponentSection>
+
+  <!-- Installation -->
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
+    <h3 class="mb-2 text-lg font-semibold">Barrel</h3>
+    <CodeBlock
+      code={`import { Pagination } from "@cloudflare/kumo";`}
+      lang="tsx"
+    />
+    <h3 class="mb-2 mt-4 text-lg font-semibold">Granular</h3>
+    <CodeBlock
+      code={`import { Pagination } from "@cloudflare/kumo/components/pagination";`}
+      lang="tsx"
+    />
+  </ComponentSection>
+
+  <!-- Usage -->
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+    <CodeBlock
+      code={`import { useState } from "react";
+import { Pagination } from "@cloudflare/kumo";
+
+export default function Example() {
+  const [page, setPage] = useState(1);
+
+  return (
+    <Pagination
+      page={page}
+      setPage={setPage}
+      perPage={10}
+      totalCount={100}
+    />
+  );
+}`}
+      lang="tsx"
+    />
+  </ComponentSection>
+
+  <!-- Examples -->
+  <ComponentSection>
+    <h2 class="mb-6 text-2xl font-bold">Examples</h2>
+
+    <div class="space-y-8">
+      <div>
+        <h3 class="mb-4 text-xl font-semibold">Full Controls (Default)</h3>
+        <p class="mb-4 text-kumo-subtle">
+          The default pagination includes first, previous, page input, next, and
+          last buttons.
+        </p>
+        <ComponentExample
+          code={`<Pagination
+  page={page}
+  setPage={setPage}
+  perPage={10}
+  totalCount={100}
+  controls="full"
+/>`}
+        >
+          <PaginationFullDemo client:visible />
+        </ComponentExample>
+      </div>
+
+      <div>
+        <h3 class="mb-4 text-xl font-semibold">Simple Controls</h3>
+        <p class="mb-4 text-kumo-subtle">
+          Use <code class="text-kumo-default">controls="simple"</code> for a minimal
+          pagination with only previous and next buttons.
+        </p>
+        <ComponentExample
+          code={`<Pagination
+  page={page}
+  setPage={setPage}
+  perPage={10}
+  totalCount={100}
+  controls="simple"
+/>`}
+        >
+          <PaginationSimpleDemo client:visible />
+        </ComponentExample>
+      </div>
+
+      <div>
+        <h3 class="mb-4 text-xl font-semibold">Mid-Page State</h3>
+        <p class="mb-4 text-kumo-subtle">
+          Pagination in the middle of a dataset with all navigation enabled.
+        </p>
+        <ComponentExample
+          code={`<Pagination
+  page={5}
+  setPage={setPage}
+  perPage={10}
+  totalCount={100}
+/>`}
+        >
+          <PaginationMidPageDemo client:visible />
+        </ComponentExample>
+      </div>
+
+      <div>
+        <h3 class="mb-4 text-xl font-semibold">Large Dataset</h3>
+        <p class="mb-4 text-kumo-subtle">
+          Pagination handles large datasets with many pages.
+        </p>
+        <ComponentExample
+          code={`<Pagination
+  page={1}
+  setPage={setPage}
+  perPage={25}
+  totalCount={1250}
+/>`}
+        >
+          <PaginationLargeDatasetDemo client:visible />
+        </ComponentExample>
+      </div>
+    </div>
+  </ComponentSection>
+
+  <!-- API Reference -->
+  <ComponentSection>
+    <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
+    <PropsTable component="Pagination" />
+  </ComponentSection>
+</DocLayout>

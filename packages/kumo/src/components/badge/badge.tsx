@@ -11,23 +11,23 @@ export const KUMO_BADGE_BASE_STYLES =
 export const KUMO_BADGE_VARIANTS = {
   variant: {
     primary: {
-      classes: "bg-surface-inverse text-surface-inverse",
+      classes: "bg-kumo-contrast text-kumo-inverse",
       description: "Default high-emphasis badge for important labels",
     },
     secondary: {
-      classes: "bg-color text-surface",
+      classes: "bg-kumo-fill text-kumo-default",
       description: "Subtle badge for secondary information",
     },
     destructive: {
-      classes: "bg-error text-white",
+      classes: "bg-kumo-danger text-white",
       description: "Error or danger state indicator",
     },
     outline: {
-      classes: "border border-color bg-transparent text-surface",
+      classes: "border border-kumo-fill bg-transparent text-kumo-default",
       description: "Bordered badge with transparent background",
     },
     beta: {
-      classes: "border border-dashed border-primary bg-transparent text-info",
+      classes: "border border-dashed border-kumo-brand bg-transparent text-kumo-link",
       description: "Indicates beta or experimental features",
     },
   },

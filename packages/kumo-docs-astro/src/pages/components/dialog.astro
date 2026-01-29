@@ -11,7 +11,6 @@ import { DialogBasicDemo, DialogWithActionsDemo } from "../../components/demos/D
   title="Dialog"
   description="A window overlaid on either the primary window or another dialog window, rendering the content underneath inert."
   sourceFile="components/dialog"
-  storybookPath="story/components-dialog"
   baseUIComponent="dialog"
 >
   <ComponentSection>
@@ -34,7 +33,7 @@ import { DialogBasicDemo, DialogWithActionsDemo } from "../../components/demos/D
         )}
       />
     </div>
-    <Dialog.Description className="text-muted">
+    <Dialog.Description className="text-kumo-subtle">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit.
     </Dialog.Description>
     <div className="mt-8 flex justify-end gap-2">
@@ -114,7 +113,7 @@ export default function Example() {
         )}
       />
     </div>
-    <Dialog.Description className="text-muted">
+    <Dialog.Description className="text-kumo-subtle">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit.
     </Dialog.Description>
   </Dialog>
@@ -144,7 +143,7 @@ export default function Example() {
         )}
       />
     </div>
-    <Dialog.Description className="text-muted">
+    <Dialog.Description className="text-kumo-subtle">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit.
     </Dialog.Description>
     <div className="mt-8 flex justify-end gap-2">
@@ -171,7 +170,7 @@ export default function Example() {
     <div class="space-y-8">
       <div>
         <h3 class="mb-3 text-lg font-semibold font-mono">Dialog</h3>
-        <p class="mb-3 text-sm text-label">
+        <p class="mb-3 text-sm text-kumo-strong">
           The main dialog container that renders the modal overlay and popup.
         </p>
         <PropsTable component="Dialog" />
@@ -179,7 +178,7 @@ export default function Example() {
 
       <div>
         <h3 class="mb-3 text-lg font-semibold font-mono">Dialog.Root</h3>
-        <p class="mb-3 text-sm text-label">
+        <p class="mb-3 text-sm text-kumo-strong">
           Controls the open state of the dialog. Doesn't render its own HTML element.
         </p>
         <PropsTable component="Dialog.Root" />
@@ -187,7 +186,7 @@ export default function Example() {
 
       <div>
         <h3 class="mb-3 text-lg font-semibold font-mono">Dialog.Trigger</h3>
-        <p class="mb-3 text-sm text-label">
+        <p class="mb-3 text-sm text-kumo-strong">
           A button that opens the dialog when clicked.
         </p>
         <PropsTable component="Dialog.Trigger" />
@@ -195,7 +194,7 @@ export default function Example() {
 
       <div>
         <h3 class="mb-3 text-lg font-semibold font-mono">Dialog.Title</h3>
-        <p class="mb-3 text-sm text-label">
+        <p class="mb-3 text-sm text-kumo-strong">
           A heading that labels the dialog for accessibility.
         </p>
         <PropsTable component="Dialog.Title" />
@@ -203,7 +202,7 @@ export default function Example() {
 
       <div>
         <h3 class="mb-3 text-lg font-semibold font-mono">Dialog.Description</h3>
-        <p class="mb-3 text-sm text-label">
+        <p class="mb-3 text-sm text-kumo-strong">
           A paragraph providing additional context about the dialog.
         </p>
         <PropsTable component="Dialog.Description" />
@@ -211,7 +210,7 @@ export default function Example() {
 
       <div>
         <h3 class="mb-3 text-lg font-semibold font-mono">Dialog.Close</h3>
-        <p class="mb-3 text-sm text-label">
+        <p class="mb-3 text-sm text-kumo-strong">
           A button that closes the dialog when clicked.
         </p>
         <PropsTable component="Dialog.Close" />

@@ -70,7 +70,7 @@ export const KUMO_DIALOG_STYLING = {
     shadow: "shadow-m",
   },
   backdrop: {
-    background: "color-color-3",
+    background: "color-surface-secondary",
     opacity: 0.8,
   },
   header: {
@@ -99,7 +99,7 @@ export function dialogVariants({
 }: KumoDialogVariantsProps = {}) {
   return cn(
     // Base styles
-    "shadow-m z-modal fixed top-1/2 left-1/2 max-w-[calc(100vw-3rem)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl bg-surface text-surface duration-150 data-ending-style:scale-90 data-ending-style:opacity-0 data-starting-style:scale-90 data-starting-style:opacity-0",
+    "shadow-m z-modal fixed top-1/2 left-1/2 max-w-[calc(100vw-3rem)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl bg-kumo-base text-kumo-default duration-150 data-ending-style:scale-90 data-ending-style:opacity-0 data-starting-style:scale-90 data-starting-style:opacity-0",
     // Apply size from KUMO_DIALOG_VARIANTS
     KUMO_DIALOG_VARIANTS.size[size].classes,
   );
@@ -119,7 +119,7 @@ function DialogContent({
 }: DialogProps) {
   return (
     <DialogBase.Portal>
-      <DialogBase.Backdrop className="z-modal fixed inset-0 bg-color-3 opacity-80 transition-all duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0" />
+      <DialogBase.Backdrop className="z-modal fixed inset-0 bg-kumo-overlay opacity-80 transition-all duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0" />
       <Surface
         as={DialogBase.Popup}
         className={cn(dialogVariants({ size }), className)}

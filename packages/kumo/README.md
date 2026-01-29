@@ -26,7 +26,7 @@ npx @cloudflare/kumo doc Button # Get component documentation
 npx @cloudflare/kumo docs       # Get all component docs
 ```
 
-The CLI reads from `ai/component-registry.json` (generated from TypeScript types + Storybook examples).
+The CLI reads from `catalog/component-registry.json` (generated from TypeScript types + Storybook examples).
 
 ## Usage
 
@@ -132,7 +132,7 @@ This validates:
 
 ## Development
 
-**For comprehensive documentation including dynamic code analysis features (Figma plugin, token sync, custom linters, icon system, color analysis), see [AGENTS.md](../../AGENTS.md).**
+**For comprehensive contributor documentation, see [AGENTS.md](../../AGENTS.md).**
 
 ### Creating New Components
 
@@ -194,45 +194,7 @@ pnpm new-block
 - `vite.config.ts` - Adds build entry
 - `package.json` - Adds export configuration
 
-See [BLOCKS.md](./BLOCKS.md) for detailed documentation on blocks, including when to create them and best practices.
-
-### Creating New Layouts
-
-Layouts are page-level components that provide consistent structure for common page patterns like resource lists, dashboards, and settings. Use the layout scaffolding tool:
-
-```bash
-# Create a new layout
-pnpm new-layout
-```
-
-**What it creates:**
-
-- Layout file: `src/layouts/{name}/{name}.tsx`
-- Index file: `src/layouts/{name}/index.ts`
-- Test file: `src/layouts/{name}/{name}.test.tsx`
-
-**What it updates:**
-
-- `src/index.ts` - Adds layout export
-- `vite.config.ts` - Adds build entry
-- `package.json` - Adds export configuration
-
-**Example:**
-
-```bash
-? Layout name: Dashboard Page
-
-✅ Layout scaffolded successfully!
-
-📁 Files created:
-   - src/layouts/dashboard-page/dashboard-page.tsx
-   - src/layouts/dashboard-page/index.ts
-   - src/layouts/dashboard-page/dashboard-page.test.tsx
-
-💡 Import examples:
-   import { DashboardPage } from "@cloudflare/kumo";
-   import { DashboardPage } from "@cloudflare/kumo/layouts/dashboard-page";
-```
+Blocks are higher-level components that compose multiple base components. See [AGENTS.md](../../AGENTS.md) for detailed documentation on blocks.
 
 ### Development Workflows
 
@@ -265,9 +227,8 @@ Storybook runs at `http://localhost:6006` with hot module replacement enabled.
 
 - Components: `src/components/{name}/{name}.stories.tsx`
 - Blocks: `src/blocks/{name}/{name}.stories.tsx`
-- Layouts: `src/layouts/{name}/{name}.stories.tsx`
 
-**See [STORYBOOK.md](./STORYBOOK.md) for documentation** including:
+**Storybook documentation** includes:
 
 - Writing stories guide
 - Development workflow
@@ -343,13 +304,11 @@ pnpm test:coverage
 - All components importable via deep imports: `import { Component } from "@cloudflare/kumo/components/component-name"`
 - All blocks importable from main entry: `import { Block } from "@cloudflare/kumo"`
 - All blocks importable via deep imports: `import { Block } from "@cloudflare/kumo/blocks/block-name"`
-- All layouts importable from main entry: `import { Layout } from "@cloudflare/kumo"`
-- All layouts importable via deep imports: `import { Layout } from "@cloudflare/kumo/layouts/layout-name"`
-- Package.json exports sync with actual components, blocks, and layouts
+- Package.json exports sync with actual components and blocks
 - Export paths and formats are correct
 - Build configuration consistency
 
-**Zero maintenance:** Tests automatically discover components, blocks, and layouts from the filesystem and validate against package.json. When adding new items, tests will fail with exact code snippets to fix configuration.
+**Zero maintenance:** Tests automatically discover components and blocks from the filesystem and validate against package.json. When adding new items, tests will fail with exact code snippets to fix configuration.
 
 ## Beta Releases
 
@@ -455,7 +414,7 @@ This package uses [Changesets](https://github.com/changesets/changesets) for ver
 
 ### Release Workflow
 
-1. **Development**: Make changes to components, blocks, or layouts
+1. **Development**: Make changes to components or blocks
 2. **Changeset**: Create changeset describing the changes
 3. **Review**: Submit MR with changes and changeset
 4. **Beta Test**: Test the beta version published to the MR

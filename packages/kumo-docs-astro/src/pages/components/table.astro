@@ -17,7 +17,6 @@ import {
   title="Table"
   description="A table component for displaying tabular data with support for selection, row variants, and column sizing."
   sourceFile="components/table"
-  storybookPath="story/components-table"
 >
   <!-- Demo -->
   <ComponentSection>
@@ -96,10 +95,10 @@ export default function Example() {
     <div class="space-y-8">
       <div>
         <h3 class="mb-4 text-xl font-semibold">With Checkboxes</h3>
-        <p class="mb-4 text-sm text-label">
+        <p class="mb-4 text-sm text-kumo-strong">
           Add row selection with <code
-            class="rounded bg-secondary px-1 py-0.5 text-sm">Table.CheckHead</code
-          > and <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+            class="rounded bg-kumo-control px-1 py-0.5 text-sm">Table.CheckHead</code
+          > and <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
             >Table.CheckCell</code
           >.
         </p>
@@ -127,10 +126,10 @@ export default function Example() {
 
       <div>
         <h3 class="mb-4 text-xl font-semibold">Selected Row</h3>
-        <p class="mb-4 text-sm text-label">
-          Use <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+        <p class="mb-4 text-sm text-kumo-strong">
+          Use <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
             >variant="selected"</code
-          > on <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+          > on <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
             >Table.Row</code
           > to highlight selected rows.
         </p>
@@ -146,12 +145,12 @@ export default function Example() {
 
       <div>
         <h3 class="mb-4 text-xl font-semibold">Fixed Layout with Column Sizes</h3>
-        <p class="mb-4 text-sm text-label">
+        <p class="mb-4 text-sm text-kumo-strong">
           For precise control over column widths, set <code
-            class="rounded bg-secondary px-1 py-0.5 text-sm">layout="fixed"</code
-          > and use <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+            class="rounded bg-kumo-control px-1 py-0.5 text-sm">layout="fixed"</code
+          > and use <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
             >colgroup</code
-          > with <code class="rounded bg-secondary px-1 py-0.5 text-sm">col</code
+          > with <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">col</code
           > elements.
         </p>
         <ComponentExample
@@ -185,7 +184,7 @@ export default function Example() {
 
       <div>
         <h3 class="mb-4 text-xl font-semibold">Full Example</h3>
-        <p class="mb-4 text-sm text-label">
+        <p class="mb-4 text-sm text-kumo-strong">
           Complete table with checkboxes, badges, action buttons, and fixed
           column widths.
         </p>
@@ -243,9 +242,9 @@ export default function Example() {
     <div class="space-y-8">
       <div>
         <h3 class="mb-3 font-mono text-lg font-semibold">Table</h3>
-        <p class="mb-3 text-sm text-label">
+        <p class="mb-3 text-sm text-kumo-strong">
           Root table component. Renders a semantic <code
-            class="rounded bg-secondary px-1 py-0.5 text-sm">&lt;table&gt;</code
+            class="rounded bg-kumo-control px-1 py-0.5 text-sm">&lt;table&gt;</code
           > element.
         </p>
         <PropsTable component="Table" />
@@ -253,27 +252,27 @@ export default function Example() {
 
       <div>
         <h3 class="mb-3 font-mono text-lg font-semibold">Table.Header</h3>
-        <p class="mb-3 text-sm text-label">
+        <p class="mb-3 text-sm text-kumo-strong">
           Table header section. Renders <code
-            class="rounded bg-secondary px-1 py-0.5 text-sm">&lt;thead&gt;</code
+            class="rounded bg-kumo-control px-1 py-0.5 text-sm">&lt;thead&gt;</code
           >.
         </p>
       </div>
 
       <div>
         <h3 class="mb-3 font-mono text-lg font-semibold">Table.Body</h3>
-        <p class="mb-3 text-sm text-label">
+        <p class="mb-3 text-sm text-kumo-strong">
           Table body section. Renders <code
-            class="rounded bg-secondary px-1 py-0.5 text-sm">&lt;tbody&gt;</code
+            class="rounded bg-kumo-control px-1 py-0.5 text-sm">&lt;tbody&gt;</code
           >.
         </p>
       </div>
 
       <div>
         <h3 class="mb-3 font-mono text-lg font-semibold">Table.Row</h3>
-        <p class="mb-3 text-sm text-label">
+        <p class="mb-3 text-sm text-kumo-strong">
           Table row. Supports <code
-            class="rounded bg-secondary px-1 py-0.5 text-sm"
+            class="rounded bg-kumo-control px-1 py-0.5 text-sm"
             >variant="selected"</code
           > for highlighting.
         </p>
@@ -282,25 +281,25 @@ export default function Example() {
 
       <div>
         <h3 class="mb-3 font-mono text-lg font-semibold">Table.Head</h3>
-        <p class="mb-3 text-sm text-label">
+        <p class="mb-3 text-sm text-kumo-strong">
           Header cell. Renders <code
-            class="rounded bg-secondary px-1 py-0.5 text-sm">&lt;th&gt;</code
+            class="rounded bg-kumo-control px-1 py-0.5 text-sm">&lt;th&gt;</code
           >.
         </p>
       </div>
 
       <div>
         <h3 class="mb-3 font-mono text-lg font-semibold">Table.Cell</h3>
-        <p class="mb-3 text-sm text-label">
+        <p class="mb-3 text-sm text-kumo-strong">
           Body cell. Renders <code
-            class="rounded bg-secondary px-1 py-0.5 text-sm">&lt;td&gt;</code
+            class="rounded bg-kumo-control px-1 py-0.5 text-sm">&lt;td&gt;</code
           >.
         </p>
       </div>
 
       <div>
         <h3 class="mb-3 font-mono text-lg font-semibold">Table.CheckHead</h3>
-        <p class="mb-3 text-sm text-label">
+        <p class="mb-3 text-sm text-kumo-strong">
           Header cell with checkbox for "select all" functionality.
         </p>
         <PropsTable component="Table.CheckHead" />
@@ -308,7 +307,7 @@ export default function Example() {
 
       <div>
         <h3 class="mb-3 font-mono text-lg font-semibold">Table.CheckCell</h3>
-        <p class="mb-3 text-sm text-label">
+        <p class="mb-3 text-sm text-kumo-strong">
           Body cell with checkbox for row selection.
         </p>
         <PropsTable component="Table.CheckCell" />
@@ -316,7 +315,7 @@ export default function Example() {
 
       <div>
         <h3 class="mb-3 font-mono text-lg font-semibold">Table.ResizeHandle</h3>
-        <p class="mb-3 text-sm text-label">
+        <p class="mb-3 text-sm text-kumo-strong">
           Draggable handle for column resizing. Use with TanStack Table or
           custom resize logic.
         </p>
@@ -327,11 +326,11 @@ export default function Example() {
   <!-- TanStack Table Integration -->
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">TanStack Table Integration</h2>
-    <p class="mb-4 text-sm text-label">
+    <p class="mb-4 text-sm text-kumo-strong">
       For advanced features like sorting, filtering, and resizable columns,
       integrate with <a
         href="https://tanstack.com/table"
-        class="text-info hover:underline"
+        class="text-kumo-link hover:underline"
         target="_blank"
         rel="noopener noreferrer">TanStack Table</a
       >. The Table component is designed to work seamlessly with TanStack's
@@ -395,38 +394,38 @@ function DataTable({ data, columns }) {
     <div class="space-y-4 text-sm">
       <div>
         <h3 class="mb-2 font-semibold">Semantic HTML</h3>
-        <p class="text-label">
+        <p class="text-kumo-strong">
           Table uses semantic <code
-            class="rounded bg-secondary px-1 py-0.5 text-sm">&lt;table&gt;</code
-          >, <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+            class="rounded bg-kumo-control px-1 py-0.5 text-sm">&lt;table&gt;</code
+          >, <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
             >&lt;thead&gt;</code
-          >, <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+          >, <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
             >&lt;tbody&gt;</code
-          >, <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+          >, <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
             >&lt;th&gt;</code
-          >, and <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+          >, and <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
             >&lt;td&gt;</code
           > elements for proper screen reader navigation.
         </p>
       </div>
       <div>
         <h3 class="mb-2 font-semibold">Checkbox Labels</h3>
-        <p class="text-label">
-          Always provide <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+        <p class="text-kumo-strong">
+          Always provide <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
             >aria-label</code
-          > for <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+          > for <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
             >Table.CheckHead</code
-          > and <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+          > and <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
             >Table.CheckCell</code
           > to describe their purpose.
         </p>
       </div>
       <div>
         <h3 class="mb-2 font-semibold">Keyboard Navigation</h3>
-        <p class="text-label">
-          <kbd class="rounded bg-secondary px-1.5 py-0.5">Tab</kbd> moves focus through
+        <p class="text-kumo-strong">
+          <kbd class="rounded bg-kumo-control px-1.5 py-0.5">Tab</kbd> moves focus through
           interactive elements. Checkboxes respond to <kbd
-            class="rounded bg-secondary px-1.5 py-0.5">Space</kbd
+            class="rounded bg-kumo-control px-1.5 py-0.5">Space</kbd
           >.
         </p>
       </div>

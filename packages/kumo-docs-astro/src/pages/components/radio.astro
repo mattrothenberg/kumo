@@ -19,7 +19,6 @@ import {
   title="Radio"
   description="A control that allows the user to select one option from a set. Always used within a Radio.Group."
   sourceFile="components/radio"
-  storybookPath="story/components-radio"
   baseUIComponent="radio-group"
 >
   <!-- Demo -->
@@ -72,7 +71,7 @@ export default function Example() {
     <div class="space-y-8">
       <div>
         <h3 class="mb-4 text-xl font-semibold">Default (Vertical)</h3>
-        <p class="mb-4 text-sm text-label">
+        <p class="mb-4 text-sm text-kumo-strong">
           Radio groups display vertically by default. Each radio has a label
           displayed to its right.
         </p>
@@ -89,8 +88,8 @@ export default function Example() {
 
       <div>
         <h3 class="mb-4 text-xl font-semibold">Horizontal</h3>
-        <p class="mb-4 text-sm text-label">
-          Use <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+        <p class="mb-4 text-sm text-kumo-strong">
+          Use <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
             >orientation="horizontal"</code
           > for inline layouts. Items wrap when there isn't enough space.
         </p>
@@ -107,9 +106,9 @@ export default function Example() {
 
       <div>
         <h3 class="mb-4 text-xl font-semibold">With Description</h3>
-        <p class="mb-4 text-sm text-label">
+        <p class="mb-4 text-sm text-kumo-strong">
           Add helper text below the radio items using the <code
-            class="rounded bg-secondary px-1 py-0.5 text-sm">description</code
+            class="rounded bg-kumo-control px-1 py-0.5 text-sm">description</code
           > prop.
         </p>
         <ComponentExample
@@ -129,9 +128,9 @@ export default function Example() {
 
       <div>
         <h3 class="mb-4 text-xl font-semibold">With Error</h3>
-        <p class="mb-4 text-sm text-label">
+        <p class="mb-4 text-sm text-kumo-strong">
           Show validation errors at the group level using the <code
-            class="rounded bg-secondary px-1 py-0.5 text-sm">error</code
+            class="rounded bg-kumo-control px-1 py-0.5 text-sm">error</code
           > prop.
         </p>
         <ComponentExample
@@ -150,7 +149,7 @@ export default function Example() {
 
       <div>
         <h3 class="mb-4 text-xl font-semibold">Disabled</h3>
-        <p class="mb-4 text-sm text-label">
+        <p class="mb-4 text-sm text-kumo-strong">
           Disable the entire group or individual items.
         </p>
         <ComponentExample
@@ -170,8 +169,8 @@ export default function Example() {
 
       <div>
         <h3 class="mb-4 text-xl font-semibold">Control Position</h3>
-        <p class="mb-4 text-sm text-label">
-          Use <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+        <p class="mb-4 text-sm text-kumo-strong">
+          Use <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
             >controlPosition="end"</code
           > to place labels before radio buttons.
         </p>
@@ -194,7 +193,7 @@ export default function Example() {
     <div class="space-y-8">
       <div>
         <h3 class="mb-3 font-mono text-lg font-semibold">Radio.Group</h3>
-        <p class="mb-3 text-sm text-label">
+        <p class="mb-3 text-sm text-kumo-strong">
           Container for radio buttons with legend, description, and error
           support.
         </p>
@@ -203,7 +202,7 @@ export default function Example() {
 
       <div>
         <h3 class="mb-3 font-mono text-lg font-semibold">Radio.Item</h3>
-        <p class="mb-3 text-sm text-label">
+        <p class="mb-3 text-sm text-kumo-strong">
           Individual radio button within Radio.Group.
         </p>
         <PropsTable component="Radio.Item" />
@@ -217,29 +216,29 @@ export default function Example() {
     <div class="space-y-4 text-sm">
       <div>
         <h3 class="mb-2 font-semibold">Semantic HTML</h3>
-        <p class="text-label">
+        <p class="text-kumo-strong">
           Radio.Group uses semantic <code
-            class="rounded bg-secondary px-1 py-0.5 text-sm">&lt;fieldset&gt;</code
-          > and <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+            class="rounded bg-kumo-control px-1 py-0.5 text-sm">&lt;fieldset&gt;</code
+          > and <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
             >&lt;legend&gt;</code
           > elements for proper grouping and screen reader announcement.
         </p>
       </div>
       <div>
         <h3 class="mb-2 font-semibold">Keyboard Navigation</h3>
-        <p class="text-label">
-          <kbd class="rounded bg-secondary px-1.5 py-0.5">Arrow Up/Down</kbd> or
-          <kbd class="rounded bg-secondary px-1.5 py-0.5">Arrow Left/Right</kbd>
-          moves between options. <kbd class="rounded bg-secondary px-1.5 py-0.5"
+        <p class="text-kumo-strong">
+          <kbd class="rounded bg-kumo-control px-1.5 py-0.5">Arrow Up/Down</kbd> or
+          <kbd class="rounded bg-kumo-control px-1.5 py-0.5">Arrow Left/Right</kbd>
+          moves between options. <kbd class="rounded bg-kumo-control px-1.5 py-0.5"
             >Space</kbd
           > selects the focused option. <kbd
-            class="rounded bg-secondary px-1.5 py-0.5">Tab</kbd
+            class="rounded bg-kumo-control px-1.5 py-0.5">Tab</kbd
           > moves focus to and from the radio group.
         </p>
       </div>
       <div>
         <h3 class="mb-2 font-semibold">Screen Readers</h3>
-        <p class="text-label">
+        <p class="text-kumo-strong">
           Each radio is announced with its label and selection state. The group
           legend provides context for all options.
         </p>

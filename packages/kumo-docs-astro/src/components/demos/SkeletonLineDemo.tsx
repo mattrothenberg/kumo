@@ -22,7 +22,7 @@ export function SkeletonLineWidthDemo() {
 
 export function SkeletonLineCardDemo() {
   return (
-    <div className="w-64 rounded-lg p-4 ring ring-border">
+    <div className="w-64 rounded-lg p-4 ring ring-kumo-line">
       <div className="mb-4 h-4">
         <SkeletonLine minWidth={40} maxWidth={60} />
       </div>

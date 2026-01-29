@@ -20,7 +20,7 @@ export const KUMO_TABLE_VARIANTS = {
       description: "Default row variant",
     },
     selected: {
-      classes: "bg-accent",
+      classes: "bg-kumo-tint",
       description: "Selected row variant",
     },
   },
@@ -43,11 +43,11 @@ const TableRoot = forwardRef<
   const className = cn(
     "w-full",
     KUMO_TABLE_VARIANTS.layout[layout].classes,
-    "[&_tr_td]:border-b [&_tr_td]:border-color [&_tr:last-child_td]:border-b-0", // Row border
+    "[&_tr_td]:border-b [&_tr_td]:border-kumo-fill [&_tr:last-child_td]:border-b-0", // Row border
     "[&_tr_td]:p-3", // Cell padding
-    "[&_tr_th]:border-b [&_tr_th]:border-color [&_tr_th]:p-3 [&_tr_th]:font-semibold", // Header styles
-    "[&_tr_th]:bg-surface", // Header background color
-    "text-left text-surface",
+    "[&_tr_th]:border-b [&_tr_th]:border-kumo-fill [&_tr_th]:p-3 [&_tr_th]:font-semibold", // Header styles
+    "[&_tr_th]:bg-kumo-base", // Header background color
+    "text-left text-kumo-default",
     props.className,
   );
 
@@ -120,10 +120,10 @@ const TableResizeHandle = forwardRef<
         "flex items-center justify-center", // Center the handle
         "cursor-col-resize touch-none select-none", // Prevent selection and touch events
         "absolute top-0 right-0", // Position the handle
-        "m-0 bg-surface p-0", // Override the stratus button styles
+        "m-0 bg-kumo-base p-0", // Override the stratus button styles
       )}
     >
-      <span className="h-5 w-[2px] rounded bg-active" />
+      <span className="h-5 w-[2px] rounded bg-kumo-ring" />
     </button>
   );
 });

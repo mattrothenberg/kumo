@@ -44,7 +44,7 @@ const hasDescriptions =
     <div class="overflow-x-auto">
       <table class="w-full text-sm">
         <thead>
-          <tr class="border-b border-border">
+          <tr class="border-b border-kumo-line">
             <th class="px-4 py-3 text-left font-semibold">Prop</th>
             <th class="px-4 py-3 text-left font-semibold">Type</th>
             <th class="px-4 py-3 text-left font-semibold">Default</th>
@@ -53,33 +53,20 @@ const hasDescriptions =
             )}
           </tr>
         </thead>
-        <tbody class="text-label">
+        <tbody class="text-kumo-strong">
           {props.map(([propName, prop]) => {
             const isRequired = prop.required === true || prop.optional === false;
-            const isDeprecated = !!prop.deprecated;
             const typeDisplay = formatPropType(prop);
             const defaultDisplay = formatDefault(prop);
 
-            // Build description: prepend @deprecated if present, then use prop.description
+            // Build description: use prop.description, or for enums show variant descriptions
             let description = prop.description || "";
-            if (isDeprecated) {
-              const deprecationMsg = typeof prop.deprecated === "string" 
-                ? prop.deprecated 
-                : "This prop is deprecated.";
-              description = description 
-                ? `@deprecated ${deprecationMsg}` 
-                : `@deprecated ${deprecationMsg}`;
-            }
 
             return (
-              <tr class="border-b border-border">
+              <tr class="border-b border-kumo-line">
                 <td class="px-4 py-3 font-mono text-xs">
-                  {isDeprecated ? (
-                    <span class="line-through opacity-60">{propName}</span>
-                  ) : (
-                    propName
-                  )}
-                  {isRequired && <span class="text-error ml-0.5">*</span>}
+                  {propName}
+                  {isRequired && <span class="text-kumo-danger ml-0.5">*</span>}
                 </td>
                 <td class="px-4 py-3 font-mono text-xs max-w-xs">
                   <code class="text-wrap break-words">{typeDisplay}</code>
@@ -88,17 +75,7 @@ const hasDescriptions =
                   {defaultDisplay !== "-" ? <code>{defaultDisplay}</code> : "-"}
                 </td>
                 {hasDescriptions && (
-                  <td class="px-4 py-3 text-xs max-w-md">
-                    {isDeprecated && (
-                      <span class="mr-1 rounded bg-alert/20 px-1.5 py-0.5 text-alert font-medium">
-                        @deprecated
-                      </span>
-                    )}
-                    {isDeprecated 
-                      ? (typeof prop.deprecated === "string" ? prop.deprecated : (prop.description || "-"))
-                      : (description || "-")
-                    }
-                  </td>
+                  <td class="px-4 py-3 text-xs max-w-md">{description || "-"}</td>
                 )}
               </tr>
             );
@@ -106,14 +83,14 @@ const hasDescriptions =
         </tbody>
       </table>
       {props.length === 0 && (
-        <p class="px-4 py-3 text-sm text-muted">
+        <p class="px-4 py-3 text-sm text-kumo-subtle">
           No component-specific props. Accepts standard HTML attributes.
         </p>
       )}
     </div>
   ) : (
-    <div class="rounded-lg border border-error/20 bg-error/5 p-4">
-      <p class="text-sm text-error">
+    <div class="rounded-lg border border-kumo-danger/20 bg-kumo-danger/5 p-4">
+      <p class="text-sm text-kumo-danger">
         Component "{component}" not found in registry. Run{" "}
         <code>pnpm build:ai-metadata</code> to regenerate.
       </p>

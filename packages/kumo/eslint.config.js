@@ -1,6 +1,3 @@
-// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
-import storybook from "eslint-plugin-storybook";
-
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import tseslint from "typescript-eslint";
 
@@ -55,9 +52,9 @@ export default [
       // due to false positives (doesn't detect aria-label, aria-labelledby, etc.)
       "jsx-a11y/control-has-associated-label": "warn",
     },
-  }, // Ignore patterns
+  },
+  // Ignore patterns
   {
     ignores: ["dist/**", "node_modules/**", "*.config.*"],
   },
-  ...storybook.configs["flat/recommended"],
 ];

@@ -7,7 +7,7 @@ import { Radio as BaseRadio } from "@base-ui/react/radio";
 export const KUMO_RADIO_VARIANTS = {
   variant: {
     default: {
-      classes: "ring-border",
+      classes: "ring-kumo-line",
       description: "Default radio appearance",
     },
     error: {
@@ -164,7 +164,7 @@ const RadioItem = forwardRef<HTMLButtonElement, RadioItemProps>(
     return (
       <label
         className={cn(
-          "relative inline-flex items-center gap-2 group",
+          "group relative inline-flex items-center gap-2",
           // "start" (default): radio before label
           // "end": label before radio using flex-row-reverse
           controlPosition === "end" && "flex-row-reverse justify-end",
@@ -177,17 +177,18 @@ const RadioItem = forwardRef<HTMLButtonElement, RadioItemProps>(
           value={value}
           disabled={disabled}
           className={cn(
-            "flex h-4 w-4 items-center justify-center rounded-full border-0 bg-surface ring",
-            variant === "error" ? "ring-destructive" : "ring-border",
-            !disabled && "group-hover:ring-active focus-visible:ring-active focus-visible:outline-offset-3",
-            "data-checked:bg-surface-inverse",
+            "flex h-4 w-4 items-center justify-center rounded-full border-0 bg-kumo-base ring",
+            variant === "error" ? "ring-kumo-danger" : "ring-kumo-line",
+            !disabled &&
+              "group-hover:ring-kumo-ring focus-visible:ring-kumo-ring focus-visible:outline-offset-3",
+            "data-checked:bg-kumo-contrast",
           )}
         >
           <BaseRadio.Indicator className="flex items-center justify-center">
-            <span className="h-2 w-2 rounded-full bg-surface" />
+            <span className="h-2 w-2 rounded-full bg-kumo-base" />
           </BaseRadio.Indicator>
         </BaseRadio.Root>
-        <span className="text-base font-medium text-surface">{label}</span>
+        <span className="text-base font-medium text-kumo-default">{label}</span>
       </label>
     );
   },
@@ -221,11 +222,11 @@ function RadioGroup({
       >
         <Fieldset.Root
           className={cn(
-            "flex flex-col gap-4 rounded-lg border border-border p-4",
+            "flex flex-col gap-4 rounded-lg border border-kumo-line p-4",
             className,
           )}
         >
-          <Fieldset.Legend className="text-lg font-medium text-surface">
+          <Fieldset.Legend className="text-lg font-medium text-kumo-default">
             {legend}
           </Fieldset.Legend>
           <div
@@ -236,8 +237,8 @@ function RadioGroup({
           >
             {children}
           </div>
-          {error && <p className="text-sm text-error">{error}</p>}
-          {description && <p className="text-sm text-muted">{description}</p>}
+          {error && <p className="text-sm text-kumo-danger">{error}</p>}
+          {description && <p className="text-sm text-kumo-subtle">{description}</p>}
         </Fieldset.Root>
       </BaseRadioGroup>
     </RadioGroupContext.Provider>
@@ -246,7 +247,7 @@ function RadioGroup({
 
 RadioGroup.displayName = "Radio.Group";
 
-// Export RadioGroup directly for Storybook meta typing
+// Export RadioGroup directly for external usage
 export { RadioGroup };
 
 // Radio namespace object (not a component itself - use Radio.Group with Radio.Item)

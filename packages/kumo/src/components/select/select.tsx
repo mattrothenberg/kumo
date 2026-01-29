@@ -47,7 +47,7 @@ export const KUMO_SELECT_STYLING = {
     paddingY: 6, // py-1.5
     borderRadius: 4, // rounded
     fontSize: 16, // text-base
-    highlightBackground: "color-color-3",
+    highlightBackground: "color-surface-secondary",
   },
 } as const;
 
@@ -58,7 +58,7 @@ export function selectVariants(_props: KumoSelectVariantsProps = {}) {
   return cn(
     buttonVariants(),
     "justify-between font-normal",
-    "outline-none focus:opacity-100 focus-visible:ring-1 focus-visible:ring-active *:in-focus:opacity-100",
+    "outline-none focus:opacity-100 focus-visible:ring-1 focus-visible:ring-kumo-ring *:in-focus:opacity-100",
   );
 }
 
@@ -195,7 +195,7 @@ export function Select<T, Multiple extends boolean | undefined = false>({
         className={cn(
           buttonVariants(),
           "justify-between font-normal",
-          "outline-none focus:opacity-100 focus-visible:ring-1 focus-visible:ring-active *:in-focus:opacity-100",
+          "outline-none focus:opacity-100 focus-visible:ring-1 focus-visible:ring-kumo-ring *:in-focus:opacity-100",
           props.disabled && "cursor-not-allowed opacity-50",
           className,
         )}
@@ -215,8 +215,8 @@ export function Select<T, Multiple extends boolean | undefined = false>({
         <SelectBase.Positioner className="z-50">
           <SelectBase.Popup
             className={cn(
-              "z-50 overflow-hidden bg-secondary text-surface", // background
-              "rounded-lg shadow-lg ring ring-border", // border part
+              "z-50 overflow-hidden bg-kumo-control text-kumo-default", // background
+              "rounded-lg shadow-lg ring ring-kumo-line", // border part
               // 3px adjustment to account for padding + border differences
               "min-w-[calc(var(--anchor-width)+3px)] p-1.5", // spacing
             )}
@@ -271,7 +271,7 @@ function Option<T>({ children, value }: OptionProps<T>) {
   return (
     <SelectBase.Item
       value={value}
-      className="group flex cursor-pointer items-center justify-between gap-2 rounded px-2 py-1.5 text-base data-highlighted:bg-color-3"
+      className="group flex cursor-pointer items-center justify-between gap-2 rounded px-2 py-1.5 text-base data-highlighted:bg-kumo-overlay"
     >
       <SelectBase.ItemText>{children}</SelectBase.ItemText>
       <SelectBase.ItemIndicator>

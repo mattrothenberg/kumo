@@ -1,7 +1,8 @@
 {
   "tailwindCSS.experimental.configFile": {
-    "packages/kumo-docs/app/app.css": "packages/kumo-docs/app/**",
-    "packages/kumo/src/styles/kumo-standalone.css": "packages/kumo/src/**"
+    "packages/kumo-docs-astro/src/styles/global.css": "packages/kumo-docs-astro/src/**",
+    "packages/kumo/src/styles/kumo-standalone.css": "packages/kumo/src/**",
+    "packages/kumo/.storybook/preview.css": "packages/kumo/.storybook/**"
   },
   "tailwindCSS.classFunctions": ["cn"],
   "files.associations": {
@@ -15,5 +16,12 @@
     "typescriptreact": "html",
     "javascriptreact": "html",
     "mdx": "html"
+  },
+  "editor.formatOnSave": true,
+  "[tailwindcss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }

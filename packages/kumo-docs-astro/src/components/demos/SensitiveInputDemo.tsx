@@ -15,7 +15,7 @@ export function SensitiveInputSizesDemo() {
     <div className="flex flex-col gap-4">
       {sizes.map((size) => (
         <div key={size} className="flex items-center gap-2">
-          <span className="w-12 text-sm text-muted">{size}</span>
+          <span className="w-12 text-sm text-kumo-subtle">{size}</span>
           <SensitiveInput
             label={`${size} size`}
             size={size}
@@ -37,8 +37,8 @@ export function SensitiveInputControlledDemo() {
         value={value}
         onValueChange={setValue}
       />
-      <div className="text-sm text-muted">
-        Current value: <code className="text-surface">{value}</code>
+      <div className="text-sm text-kumo-subtle">
+        Current value: <code className="text-kumo-default">{value}</code>
       </div>
       <div className="flex gap-2">
         <Button

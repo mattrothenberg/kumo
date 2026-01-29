@@ -306,7 +306,7 @@ export const SensitiveInput = forwardRef<HTMLInputElement, SensitiveInputProps>(
           autoComplete={autoComplete}
           tabIndex={isMaskedWithValue ? -1 : 0}
           className={cn(
-            "w-full border-0 bg-transparent p-0 text-surface ring-0 outline-none placeholder:text-muted disabled:cursor-not-allowed disabled:text-muted",
+            "w-full border-0 bg-transparent p-0 text-kumo-default ring-0 outline-none placeholder:text-kumo-subtle disabled:cursor-not-allowed disabled:text-kumo-subtle",
             size === "xs" && "pr-5",
             size === "sm" && "pr-6",
             size === "base" && "pr-8",
@@ -335,8 +335,8 @@ export const SensitiveInput = forwardRef<HTMLInputElement, SensitiveInputProps>(
             !isMaskedWithValue && "invisible",
             // When masked: enable pointer events
             isMaskedWithValue && "pointer-events-auto",
-            // Text color - use text-surface to contrast with bg-secondary input background
-            "text-surface",
+            // Text color - use text-kumo-default to contrast with bg-kumo-control input background
+            "text-kumo-default",
             // Hover state - pure CSS, no React state (group for children)
             "group/mask",
           )}
@@ -354,7 +354,7 @@ export const SensitiveInput = forwardRef<HTMLInputElement, SensitiveInputProps>(
               ●●●●●●●●
             </span>
             {isMaskedWithValue && !disabled && (
-              <span className="invisible absolute inset-0 text-muted group-focus-within/container:visible group-hover/mask:visible">
+              <span className="invisible absolute inset-0 text-kumo-subtle group-focus-within/container:visible group-hover/mask:visible">
                 Click to reveal
               </span>
             )}
@@ -369,7 +369,7 @@ export const SensitiveInput = forwardRef<HTMLInputElement, SensitiveInputProps>(
           aria-label={mode === "revealed" ? "Hide value" : "Reveal value"}
           tabIndex={showEyeButton ? 0 : -1}
           className={cn(
-            "absolute top-1/2 right-0 -translate-y-1/2 cursor-pointer text-muted outline-none hover:text-surface focus:text-surface",
+            "absolute top-1/2 right-0 -translate-y-1/2 cursor-pointer text-kumo-subtle outline-none hover:text-kumo-default focus:text-kumo-default",
             // Match right padding from inputVariants
             size === "xs" && "right-1.5",
             size === "sm" && "right-2",
@@ -394,7 +394,7 @@ export const SensitiveInput = forwardRef<HTMLInputElement, SensitiveInputProps>(
             onKeyDown={(e) => e.stopPropagation()}
             aria-label={copied ? "Copied" : "Copy to clipboard"}
             className={cn(
-              "absolute -top-px right-2 -translate-y-full cursor-pointer rounded-t-md bg-primary px-2 py-0.5 text-xs text-white opacity-0 transition-opacity group-focus-within/container:opacity-100 group-hover/container:opacity-100 hover:brightness-120 focus-visible:outline focus-visible:outline-offset-1 focus-visible:outline-active",
+              "absolute -top-px right-2 -translate-y-full cursor-pointer rounded-t-md bg-kumo-brand px-2 py-0.5 text-xs text-white opacity-0 transition-opacity group-focus-within/container:opacity-100 group-hover/container:opacity-100 hover:brightness-120 focus-visible:outline focus-visible:outline-offset-1 focus-visible:outline-kumo-ring",
             )}
           >
             {copied ? "Copied" : "Copy"}

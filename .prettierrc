@@ -1,11 +1,17 @@
 {
   "plugins": ["prettier-plugin-tailwindcss"],
-  "tailwindStylesheet": "./packages/kumo-docs/app/app.css",
+  "tailwindStylesheet": "./packages/kumo-docs-astro/src/styles/global.css",
   "overrides": [
     {
       "files": "packages/kumo/src/**/*.{ts,tsx,js,jsx,md,mdx}",
       "options": {
         "tailwindStylesheet": "./packages/kumo/src/styles/kumo-standalone.css"
+      }
+    },
+    {
+      "files": "packages/kumo/.storybook/**/*.{ts,tsx,js,jsx}",
+      "options": {
+        "tailwindStylesheet": "./packages/kumo/.storybook/preview.css"
       }
     }
   ],

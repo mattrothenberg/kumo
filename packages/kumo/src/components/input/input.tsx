@@ -28,11 +28,11 @@ export const KUMO_INPUT_VARIANTS = {
   },
   variant: {
     default: {
-      classes: "focus:ring-active",
+      classes: "focus:ring-kumo-ring",
       description: "Default input appearance",
     },
     error: {
-      classes: "!ring-error focus:ring-error",
+      classes: "!ring-kumo-danger focus:ring-kumo-danger",
       description: "Error state for validation failures",
     },
   },
@@ -91,16 +91,16 @@ export function inputVariants({
 }: KumoInputVariantsProps = {}) {
   return cn(
     // Base styles
-    "border-0 bg-secondary text-surface ring ring-border",
+    "border-0 bg-kumo-control text-kumo-default ring ring-kumo-line",
     // Disabled state and placeholder styles
-    "outline-none placeholder:text-muted disabled:text-muted",
+    "outline-none placeholder:text-kumo-subtle disabled:text-kumo-subtle",
     // Apply size styles from KUMO_INPUT_VARIANTS
     KUMO_INPUT_VARIANTS.size[size].classes,
     // Apply variant styles from KUMO_INPUT_VARIANTS
     KUMO_INPUT_VARIANTS.variant[variant].classes,
     // Focus state handling
-    parentFocusIndicator && "[&:has(:focus-within)]:ring-active",
-    focusIndicator && "focus:ring-active",
+    parentFocusIndicator && "[&:has(:focus-within)]:ring-kumo-ring",
+    focusIndicator && "focus:ring-kumo-ring",
   );
 }
 

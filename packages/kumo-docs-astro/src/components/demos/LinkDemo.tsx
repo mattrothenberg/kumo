@@ -2,7 +2,7 @@ import { Link } from "@cloudflare/kumo";
 
 export function LinkBasicDemo() {
   return (
-    <div className="text-base grid md:grid-cols-3 gap-y-4 gap-x-6">
+    <div className="grid gap-x-6 gap-y-4 text-base md:grid-cols-3">
       <Link href="#">Default inline link</Link>
       <Link href="#" variant="current">
         Current color link
@@ -16,7 +16,7 @@ export function LinkBasicDemo() {
 
 export function LinkInParagraphDemo() {
   return (
-    <p className="text-surface text-base max-w-md mx-auto leading-relaxed">
+    <p className="mx-auto max-w-md text-base leading-relaxed text-kumo-default">
       This is a paragraph with an <Link href="#">inline link</Link> that flows
       naturally with the surrounding text. Links maintain proper underline
       offset for readability.
@@ -39,7 +39,7 @@ export function LinkExternalDemo() {
 
 export function LinkCurrentVariantDemo() {
   return (
-    <p className="text-error text-base">
+    <p className="text-base text-kumo-danger">
       This error message contains a{" "}
       <Link href="#" variant="current">
         link
@@ -61,7 +61,7 @@ const CustomRouterLink = ({
 
 export function LinkRenderDemo() {
   return (
-    <div className="flex flex-col md:flex-row gap-x-6 gap-y-4 text-base">
+    <div className="flex flex-col gap-x-6 gap-y-4 text-base md:flex-row">
       <Link render={<CustomRouterLink href="/dashboard" />} variant="inline">
         Dashboard (via render)
       </Link>
@@ -80,5 +80,3 @@ export function LinkRenderDemo() {
     </div>
   );
 }
-
-

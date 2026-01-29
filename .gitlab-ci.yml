@@ -103,18 +103,6 @@ include:
       workDir: "packages/kumo"
       runOnMR: true
 
-  # Color token validation for @cloudflare/kumo
-  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
-    inputs:
-      stage: checks
-      jobPrefix: validate-colors
-      PNPM_VERSION: *PNPM_VERSION
-      NODE_VERSION: *NODE_VERSION
-      PNPM_RUN_TARGET: "validate:colors"
-      workDir: "packages/kumo"
-      runOnMR: true
-      runOnBranches: "^main$"
-
   # Figma plugin drift detection for @cloudflare/figma
   - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
     inputs:
@@ -123,7 +111,7 @@ include:
       PNPM_VERSION: *PNPM_VERSION
       NODE_VERSION: *NODE_VERSION
       PNPM_RUN_TARGET: "validate"
-      workDir: "packages/figma"
+      workDir: "packages/kumo-figma"
       runOnMR: true
       runOnBranches: "^main$"
 
@@ -152,17 +140,7 @@ include:
       PNPM_RUN_TARGET: "publish:beta"
       runOnMR: true
 
-  # ============= BETA PREVIEW STAGE (Deploys Storybook and Docs previews) =============
-
-  # Storybook preview deployment
-  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
-    inputs:
-      stage: beta-preview
-      jobPrefix: deploy-storybook-preview
-      PNPM_VERSION: *PNPM_VERSION
-      NODE_VERSION: *NODE_VERSION
-      PNPM_RUN_TARGET: "deploy:storybook-preview"
-      runOnMR: true
+  # ============= BETA PREVIEW STAGE (Deploys Docs previews) =============
 
   # Kumo docs preview deployment (Astro)
   - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
@@ -186,18 +164,7 @@ include:
       PNPM_RUN_TARGET: "ci:post-mr-report"
       runOnMR: true
 
-  # ============= STAGING DEPLOYMENT (Deploys Storybook to staging on main merge) =============
-
-  # Storybook staging deployment
-  - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
-    inputs:
-      stage: production-release
-      jobPrefix: deploy-storybook-staging
-      PNPM_VERSION: *PNPM_VERSION
-      NODE_VERSION: *NODE_VERSION
-      PNPM_RUN_TARGET: "deploy:storybook-staging"
-      runOnMR: false
-      runOnBranches: "^main$"
+  # ============= STAGING DEPLOYMENT (Deploys Docs to staging on main merge) =============
 
   # Kumo docs staging deployment (Astro)
   - component: $CI_SERVER_FQDN/cloudflare/ci/pnpm/run@~latest
@@ -249,20 +216,6 @@ validate-build-run:
   needs:
     - build-kumo-build
 
-# Color validation runs when theme CSS or component files change
-validate-colors-run:
-  rules:
-    - if: $CI_MERGE_REQUEST_IID
-      changes:
-        paths:
-          - packages/kumo/src/styles/theme-*.css
-          - packages/kumo/src/**/*.tsx
-        compare_to: "refs/heads/main"
-      when: on_success
-    - if: '$CI_COMMIT_BRANCH == "main"'
-      when: on_success
-    - when: never
-
 # Figma sync validation - always runs on MRs to catch drift after rebases
 # (e.g., new component added to main but no Figma generator exists)
 validate-figma-sync-run:
@@ -297,28 +250,6 @@ publish-beta-run:
       vault: gitlab/_ci_components/_dev/npm/kv_token@kv
       file: false
 
-deploy-storybook-preview-run:
-  needs: []
-  rules:
-    - if: $CI_MERGE_REQUEST_IID
-      changes:
-        paths:
-          - packages/kumo/**/*
-        compare_to: "refs/heads/main"
-      when: on_success
-    - when: never
-  artifacts:
-    paths:
-      - ci/reports/
-    expire_in: 1 day
-  secrets:
-    CLOUDFLARE_API_TOKEN:
-      vault: gitlab/cloudflare/fe/kumo/_dev/cloudflare_api_token/data@kv
-      file: false
-    CLOUDFLARE_ACCOUNT_ID:
-      vault: gitlab/cloudflare/fe/kumo/_dev/cloudflare_account_id/data@kv
-      file: false
-
 deploy-kumo-docs-preview-run:
   needs:
     - job: build-kumo-build
@@ -351,9 +282,6 @@ post-mr-report-run:
     - job: publish-beta-run
       artifacts: true
       optional: true
-    - job: deploy-storybook-preview-run
-      artifacts: true
-      optional: true
     - job: deploy-kumo-docs-preview-run
       artifacts: true
       optional: true
@@ -369,15 +297,6 @@ post-mr-report-run:
   secrets:
     GITLAB_API_TOKEN:
       vault: gitlab/cloudflare/fe/kumo/_dev/kumo_preview_bot_v2/data@kv
-      file: false
-
-deploy-storybook-staging-run:
-  secrets:
-    CLOUDFLARE_API_TOKEN:
-      vault: gitlab/cloudflare/fe/kumo/_dev/cloudflare_api_token/data@kv
-      file: false
-    CLOUDFLARE_ACCOUNT_ID:
-      vault: gitlab/cloudflare/fe/kumo/_dev/cloudflare_account_id/data@kv
       file: false
 
 deploy-kumo-docs-staging-run:

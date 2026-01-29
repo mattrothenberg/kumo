@@ -112,13 +112,13 @@ export function PopoverCustomContentDemo() {
       </Popover.Trigger>
       <Popover.Content className="w-64">
         <div className="flex items-center gap-3">
-          <div className="size-10 rounded-full bg-surface-3" />
+          <div className="size-10 rounded-full bg-kumo-recessed" />
           <div>
             <Popover.Title>Jane Doe</Popover.Title>
-            <p className="text-sm text-muted">jane@example.com</p>
+            <p className="text-sm text-kumo-subtle">jane@example.com</p>
           </div>
         </div>
-        <div className="mt-3 flex gap-2 border-t border-border pt-3">
+        <div className="mt-3 flex gap-2 border-t border-kumo-line pt-3">
           <Button variant="secondary" size="sm" className="flex-1">
             Profile
           </Button>

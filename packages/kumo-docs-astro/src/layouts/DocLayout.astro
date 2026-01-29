@@ -2,7 +2,6 @@
 import MainLayout from "./MainLayout.astro";
 import { StickyDocHeader } from "../components/docs/StickyDocHeader";
 import { BaseUIIcon } from "../components/docs/icons/BaseUIIcon";
-import { StorybookIcon } from "../components/docs/icons/StorybookIcon";
 import { GitlabLogoSimple } from "@phosphor-icons/react";
 
 interface Props {
@@ -11,11 +10,9 @@ interface Props {
   baseUIComponent?: string;
   /** Path to the source file in the kumo package (e.g., "components/button") - will link to GitLab */
   sourceFile?: string;
-  /** Storybook path (e.g., "story/components-button" or "docs/components-button") - will link to Storybook */
-  storybookPath?: string;
 }
 
-const { title, description, baseUIComponent, sourceFile, storybookPath } =
+const { title, description, baseUIComponent, sourceFile } =
   Astro.props;
 
 const baseUIUrl = baseUIComponent
@@ -30,11 +27,6 @@ const gitlabSourceUrl = sourceFile
       return `https://gitlab.cfdata.org/cloudflare/fe/kumo/-/blob/main/packages/kumo/src/${sourceFile}/${componentName}.tsx`;
     })()
   : null;
-
-// Construct Storybook URL from storybookPath prop (e.g., "story/components-button" or "docs/components-button")
-const storybookUrl = storybookPath
-  ? `https://storybook.kumo-ui.com/?path=/${storybookPath}`
-  : null;
 ---
 
 <MainLayout title={`${title} - Kumo`} description={description}>
@@ -43,7 +35,6 @@ const storybookUrl = storybookPath
     <StickyDocHeader
       title={title}
       gitlabSourceUrl={gitlabSourceUrl}
-      storybookUrl={storybookUrl}
       baseUIUrl={baseUIUrl}
       client:load
     />
@@ -51,39 +42,25 @@ const storybookUrl = storybookPath
     <!-- Page Header -->
     <div
       id="page-header"
-      class="border-b border-border bg-surface-secondary pr-12"
+      class="border-b border-kumo-line pr-12"
     >
       <div
-        class="mx-auto border-r border-border"
+        class="mx-auto border-r border-kumo-line"
       >
         <div class="mx-auto max-w-5xl px-8 py-12">
           <div class="mb-3 flex items-center gap-3">
-            <h1 class="text-4xl font-bold text-surface">{title}</h1>
+            <h1 class="text-4xl font-bold text-kumo-default">{title}</h1>
             {
               gitlabSourceUrl && (
                 <a
                   href={gitlabSourceUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-muted transition-colors hover:text-label"
+                  class="text-kumo-subtle transition-colors hover:text-kumo-strong"
                   title="View source on GitLab"
                   aria-label="View source on GitLab"
                 >
                   <GitlabLogoSimple size={28} weight="fill" />
-                </a>
-              )
-            }
-            {
-              storybookUrl && (
-                <a
-                  href={storybookUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-muted transition-colors hover:text-label"
-                  title="View in Storybook"
-                  aria-label="View in Storybook"
-                >
-                  <StorybookIcon size={28} />
                 </a>
               )
             }
@@ -93,7 +70,7 @@ const storybookUrl = storybookPath
                   href={baseUIUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-muted transition-colors hover:text-label"
+                  class="text-kumo-subtle transition-colors hover:text-kumo-strong"
                   title="View Base UI documentation"
                   aria-label="View Base UI documentation"
                 >
@@ -102,7 +79,7 @@ const storybookUrl = storybookPath
               )
             }
           </div>
-          <p class="text-lg text-label">
+          <p class="text-lg text-kumo-strong">
             {description}
           </p>
         </div>
@@ -110,9 +87,9 @@ const storybookUrl = storybookPath
     </div>
 
     <!-- Content -->
-    <main class="flex grow flex-col bg-surface-secondary pr-12">
+    <main class="flex grow flex-col pr-12">
       <div
-        class="mx-auto w-full grow border-r border-border"
+        class="mx-auto w-full grow border-r border-kumo-line"
       >
         <div class="mx-auto max-w-5xl px-8 py-12">
           <div class="max-w-none">

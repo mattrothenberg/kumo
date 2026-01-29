@@ -1,6 +1,5 @@
-import { useState, useEffect, useMemo } from "react";
-import { Select, Text, Button } from "@cloudflare/kumo";
-import { ArrowsClockwise } from "@phosphor-icons/react";
+import { useState, useEffect } from "react";
+import { Select, Text } from "@cloudflare/kumo";
 
 export function SelectBasicDemo() {
   const [value, setValue] = useState("Apple");

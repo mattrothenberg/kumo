@@ -21,39 +21,13 @@ export function discoverComponents(): string[] {
   const entries = readdirSync(componentsDir);
 
   // Internal-only components that should not have package.json exports
-  const internalComponents = ["field"];
+  const internalComponents: string[] = [];
 
   return entries.filter((entry: string) => {
     const fullPath = join(componentsDir, entry);
     return (
       statSync(fullPath).isDirectory() && !internalComponents.includes(entry)
     );
-  });
-}
-
-/**
- * Discover all block directories in src/blocks
- */
-export function discoverBlocks(): string[] {
-  const blocksDir = join(__dirname, "../../src/blocks");
-  const entries = readdirSync(blocksDir);
-
-  return entries.filter((entry: string) => {
-    const fullPath = join(blocksDir, entry);
-    return statSync(fullPath).isDirectory();
-  });
-}
-
-/**
- * Discover all layout directories in src/layouts
- */
-export function discoverLayouts(): string[] {
-  const layoutsDir = join(__dirname, "../../src/layouts");
-  const entries = readdirSync(layoutsDir);
-
-  return entries.filter((entry: string) => {
-    const fullPath = join(layoutsDir, entry);
-    return statSync(fullPath).isDirectory();
   });
 }
 
@@ -78,52 +52,6 @@ export function getComponentsWithExports(): string[] {
   }
 
   return componentExports.sort();
-}
-
-/**
- * Get the list of blocks that have exports configured in package.json
- * Dynamically reads from package.json exports field
- */
-export function getBlocksWithExports(): string[] {
-  const packageJsonPath = join(__dirname, "../../package.json");
-  const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
-
-  const blockExports: string[] = [];
-
-  if (packageJson.exports) {
-    for (const exportPath of Object.keys(packageJson.exports)) {
-      // Match patterns like "./blocks/breadcrumbs"
-      const match = exportPath.match(/^\.\/blocks\/(.+)$/);
-      if (match) {
-        blockExports.push(match[1]);
-      }
-    }
-  }
-
-  return blockExports.sort();
-}
-
-/**
- * Get the list of layouts that have exports configured in package.json
- * Dynamically reads from package.json exports field
- */
-export function getLayoutsWithExports(): string[] {
-  const packageJsonPath = join(__dirname, "../../package.json");
-  const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
-
-  const layoutExports: string[] = [];
-
-  if (packageJson.exports) {
-    for (const exportPath of Object.keys(packageJson.exports)) {
-      // Match patterns like "./layouts/resource-list"
-      const match = exportPath.match(/^\.\/layouts\/(.+)$/);
-      if (match) {
-        layoutExports.push(match[1]);
-      }
-    }
-  }
-
-  return layoutExports.sort();
 }
 
 /**
