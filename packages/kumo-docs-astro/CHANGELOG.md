@@ -1,5 +1,125 @@
 # @cloudflare/kumo-docs-astro
 
+## 1.0.0
+
+### Major Changes
+
+- 11e62a2: # Kumo 1.0.0 Release
+
+  The first stable release of Kumo, Cloudflare's component library.
+
+  ## Breaking Changes
+
+  ### Blocks Distribution via CLI
+
+  Blocks (`PageHeader`, `ResourceListPage`) are no longer exported from `@cloudflare/kumo`. They must now be installed via the CLI:
+
+  ```bash
+  npx @cloudflare/kumo init        # Initialize kumo.json
+  npx @cloudflare/kumo add PageHeader
+  ```
+
+  Blocks are copied to your project for full customization with imports automatically transformed to `@cloudflare/kumo`.
+
+  ### Checkbox API Changes
+  - **Ref type changed**: `HTMLInputElement` → `HTMLButtonElement`
+  - **Props changed**: No longer extends `InputHTMLAttributes` (explicit props only)
+  - **Handler renamed**: `onChange`/`onValueChange` → `onCheckedChange` (deprecated handlers still work)
+
+  ### Banner API Deprecation
+
+  The `text` prop is deprecated in favor of `children`:
+
+  ```tsx
+  // Before (deprecated)
+  <Banner text="Your message" />
+
+  // After (preferred)
+  <Banner>Your message</Banner>
+  ```
+
+  ## New Features
+  - **Link component**: Inline text links with Base UI composition API and `render` prop for framework routing
+  - **DropdownMenu enhancements**: Nested submenus (`Sub`, `SubTrigger`, `SubContent`) and radio items (`RadioGroup`, `RadioItem`)
+  - **Grid component**: New layout primitive
+  - **Theme generator**: Config-driven token definitions with consolidated semantic color system
+  - **Component catalog**: Visibility controls for documentation
+  - **Deprecated props lint rule**: `kumo/no-deprecated-props` detects `@deprecated` JSDoc tags
+
+  ## Fixes
+  - Dropdown danger variant color contrast
+  - Tabs segmented indicator border radius
+  - Combobox dropdown scrolling
+  - Primary button hover/focus contrast
+
+  ## Migration Guide
+
+  ### Blocks
+
+  If you were using blocks (note: they were never officially exported):
+
+  ```bash
+  # 1. Initialize configuration
+  npx @cloudflare/kumo init
+
+  # 2. Install blocks
+  npx @cloudflare/kumo add PageHeader
+  npx @cloudflare/kumo add ResourceListPage
+
+  # 3. Update imports to the local path shown after installation
+  ```
+
+  ### Checkbox
+
+  ```tsx
+  // Before
+  <Checkbox onChange={(e) => setValue(e.target.checked)} />;
+  const ref = useRef<HTMLInputElement>(null);
+
+  // After
+  <Checkbox onCheckedChange={(checked) => setValue(checked)} />;
+  const ref = useRef<HTMLButtonElement>(null);
+  ```
+
+  ### Banner
+
+  ```tsx
+  // Before (still works, but deprecated)
+  <Banner text="Your message" />
+
+  // After
+  <Banner>Your message</Banner>
+  ```
+
+### Minor Changes
+
+- 2de0c7b: feat: theme generator, color token consolidation, component catalog
+  - New theme generator system with config-driven token definitions
+  - Consolidated semantic color tokens with config.ts as single source of truth
+  - New component catalog system with visibility controls
+  - Added Grid component
+  - Updated Figma plugin generators for new semantic tokens
+  - Migrated documentation from Storybook to Astro
+
+### Patch Changes
+
+- Updated dependencies [3a28186]
+- Updated dependencies [2de0c7b]
+- Updated dependencies [08c4426]
+- Updated dependencies [2de0c7b]
+- Updated dependencies [604fa9a]
+- Updated dependencies [8cf48b7]
+- Updated dependencies [11e62a2]
+- Updated dependencies [98116b2]
+- Updated dependencies [d071bc8]
+- Updated dependencies [80c6470]
+- Updated dependencies [2c7f957]
+- Updated dependencies [3a2e265]
+- Updated dependencies [2de0c7b]
+- Updated dependencies [e9fe499]
+- Updated dependencies [7d4a4e0]
+  - @cloudflare/kumo@1.0.0
+
 ## 0.5.0
 
 ### Minor Changes

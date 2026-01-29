@@ -1,5 +1,182 @@
 # @cloudflare/kumo
 
+## 1.0.0
+
+### Major Changes
+
+- 11e62a2: # Kumo 1.0.0 Release
+
+  The first stable release of Kumo, Cloudflare's component library.
+
+  ## Breaking Changes
+
+  ### Blocks Distribution via CLI
+
+  Blocks (`PageHeader`, `ResourceListPage`) are no longer exported from `@cloudflare/kumo`. They must now be installed via the CLI:
+
+  ```bash
+  npx @cloudflare/kumo init        # Initialize kumo.json
+  npx @cloudflare/kumo add PageHeader
+  ```
+
+  Blocks are copied to your project for full customization with imports automatically transformed to `@cloudflare/kumo`.
+
+  ### Checkbox API Changes
+  - **Ref type changed**: `HTMLInputElement` → `HTMLButtonElement`
+  - **Props changed**: No longer extends `InputHTMLAttributes` (explicit props only)
+  - **Handler renamed**: `onChange`/`onValueChange` → `onCheckedChange` (deprecated handlers still work)
+
+  ### Banner API Deprecation
+
+  The `text` prop is deprecated in favor of `children`:
+
+  ```tsx
+  // Before (deprecated)
+  <Banner text="Your message" />
+
+  // After (preferred)
+  <Banner>Your message</Banner>
+  ```
+
+  ## New Features
+  - **Link component**: Inline text links with Base UI composition API and `render` prop for framework routing
+  - **DropdownMenu enhancements**: Nested submenus (`Sub`, `SubTrigger`, `SubContent`) and radio items (`RadioGroup`, `RadioItem`)
+  - **Grid component**: New layout primitive
+  - **Theme generator**: Config-driven token definitions with consolidated semantic color system
+  - **Component catalog**: Visibility controls for documentation
+  - **Deprecated props lint rule**: `kumo/no-deprecated-props` detects `@deprecated` JSDoc tags
+
+  ## Fixes
+  - Dropdown danger variant color contrast
+  - Tabs segmented indicator border radius
+  - Combobox dropdown scrolling
+  - Primary button hover/focus contrast
+
+  ## Migration Guide
+
+  ### Blocks
+
+  If you were using blocks (note: they were never officially exported):
+
+  ```bash
+  # 1. Initialize configuration
+  npx @cloudflare/kumo init
+
+  # 2. Install blocks
+  npx @cloudflare/kumo add PageHeader
+  npx @cloudflare/kumo add ResourceListPage
+
+  # 3. Update imports to the local path shown after installation
+  ```
+
+  ### Checkbox
+
+  ```tsx
+  // Before
+  <Checkbox onChange={(e) => setValue(e.target.checked)} />;
+  const ref = useRef<HTMLInputElement>(null);
+
+  // After
+  <Checkbox onCheckedChange={(checked) => setValue(checked)} />;
+  const ref = useRef<HTMLButtonElement>(null);
+  ```
+
+  ### Banner
+
+  ```tsx
+  // Before (still works, but deprecated)
+  <Banner text="Your message" />
+
+  // After
+  <Banner>Your message</Banner>
+  ```
+
+### Minor Changes
+
+- 3a28186: feat(banner): add children prop, deprecate text prop
+
+  Banner now supports `children` for content, which is the preferred API. The `text` prop is deprecated but still works for backwards compatibility.
+
+  ```tsx
+  // Preferred (new)
+  <Banner>Your message</Banner>
+  <Banner icon={<Icon />}>Your message</Banner>
+
+  // Deprecated (still works)
+  <Banner text="Your message" />
+  ```
+
+  The `text` prop will be removed in a future major version.
+
+- 2de0c7b: feat(cli): blocks are now distributed via CLI instead of npm exports
+
+  New CLI commands for block management:
+  - `kumo init` - Initialize kumo.json configuration file
+  - `kumo blocks` - List all available blocks for CLI installation
+  - `kumo add <block-name>` - Install a block to your project with transformed imports
+
+  Blocks are copied to your project for full customization, with relative imports automatically converted to `@cloudflare/kumo`.
+
+- 08c4426: Add lint rule to detect usage of deprecated props on Kumo components.
+  - New `kumo/no-deprecated-props` lint rule automatically detects deprecated props from `@deprecated` JSDoc tags
+  - Component registry now includes `deprecated` field for props with `@deprecated` annotations
+  - Docs site shows strikethrough and `@deprecated` badge for deprecated props in API reference tables
+
+  To deprecate a prop, add a JSDoc comment:
+
+  ```tsx
+  interface MyComponentProps {
+    /** @deprecated Use `newProp` instead */
+    oldProp?: string;
+  }
+  ```
+
+  The lint rule will flag usage and show a helpful message:
+
+  ```
+  The `oldProp` prop on <MyComponent> is deprecated. Use `newProp` instead.
+  ```
+
+- 604fa9a: Add nested menu (submenu) and RadioGroup/RadioItem support to DropdownMenu
+  - Add `DropdownMenu.Sub`, `DropdownMenu.SubTrigger`, and `DropdownMenu.SubContent` for nested submenus
+  - Add `DropdownMenu.RadioGroup`, `DropdownMenu.RadioItem`, and `DropdownMenu.RadioItemIndicator` for single-selection menus
+  - Fix `SubTrigger` styling to match `Item` component
+  - Fix focus ring on dropdown popup
+  - Add Storybook stories demonstrating nested menus and radio items
+  - Update Astro docs with examples and API reference
+
+- 98116b2: fix(checkbox): make label clickable, add new `onCheckedChange` API
+  - Clicking the label now toggles the checkbox
+  - New `onCheckedChange` callback (preferred over deprecated `onChange`/`onValueChange`)
+  - Ref type is now `HTMLButtonElement` (aligns with Base UI implementation)
+
+- 2c7f957: Add Link component with Base UI composition API
+  - New `Link` component for consistent inline text links
+  - Supports `render` prop for composition with framework-specific links (e.g., React Router)
+  - Uses Base UI's `useRender` hook for proper ref/event merging
+  - Three variants: `inline` (default), `current`, and `plain`
+  - `Link.ExternalIcon` subcomponent for external link indicators
+  - Integrates with `LinkProvider` for framework-agnostic routing
+
+- 2de0c7b: feat: theme generator, color token consolidation, component catalog
+  - New theme generator system with config-driven token definitions
+  - Consolidated semantic color tokens with config.ts as single source of truth
+  - New component catalog system with visibility controls
+  - Added Grid component
+  - Updated Figma plugin generators for new semantic tokens
+  - Migrated documentation from Storybook to Astro
+
+- 7d4a4e0: run component-registry when starting docs site
+
+### Patch Changes
+
+- 2de0c7b: Fix color contrast issue in Dropdown danger variant by using subtle bg-kumo-danger/5 background instead of bg-kumo-danger-tint, improving readability while maintaining the visual "danger" cue
+- 8cf48b7: Add render prop for Tabs component
+- d071bc8: Fix Combobox dropdown not scrolling when it has many items. The `overflow-hidden` class was overriding `overflow-y-auto`, causing content to be clipped instead of scrollable.
+- 80c6470: fix: improve primary button hover/focus contrast by using bg-hover-selected instead of bg-primary/70
+- 3a2e265: Adds disabled prop for table cell checkboxes
+- e9fe499: fix(tabs): adjust segmented indicator border radius for proper visual nesting
+
 ## 0.7.0
 
 ### Minor Changes
