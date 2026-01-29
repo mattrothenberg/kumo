@@ -39,6 +39,6 @@
     "tsx": "catalog:",
     "typescript": "catalog:",
     "wrangler": "catalog:",
-    "oxlint": "1.28.0"
+    "oxlint": "catalog:"
   }
 }
