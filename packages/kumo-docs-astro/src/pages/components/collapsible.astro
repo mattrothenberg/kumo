@@ -1,5 +1,6 @@
 ---
 import DocLayout from "../../layouts/DocLayout.astro";
+import Heading from "../../components/docs/Heading.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
@@ -22,15 +23,15 @@ import { CollapsibleHeroDemo, CollapsibleBasicDemo, CollapsibleMultipleDemo } fr
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
-    <h3 class="mb-2 text-lg font-semibold">Barrel</h3>
+    <Heading level={2}>Installation</Heading>
+    <Heading level={3} class="mb-2 text-lg">Barrel</Heading>
     <CodeBlock code={`import { Collapsible } from "@cloudflare/kumo";`} lang="tsx" />
     <h3 class="mt-4 mb-2 text-lg font-semibold">Granular</h3>
     <CodeBlock code={`import { Collapsible } from "@cloudflare/kumo/components/collapsible";`} lang="tsx" />
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+    <Heading level={2}>Usage</Heading>
     <CodeBlock code={`import { Collapsible } from "@cloudflare/kumo";
 
 export default function Example() {
@@ -43,11 +44,11 @@ export default function Example() {
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-6 text-2xl font-bold">Examples</h2>
+    <Heading level={2} class="mb-6">Examples</Heading>
 
     <div class="space-y-8">
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Single Item</h3>
+        <Heading level={3}>Single Item</Heading>
         <ComponentExample code={`<Collapsible label="What is Kumo?">
   Kumo is Cloudflare's new design system.
 </Collapsible>`}>
@@ -56,7 +57,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Multiple Items</h3>
+        <Heading level={3}>Multiple Items</Heading>
         <ComponentExample code={`<div className="space-y-2">
   <Collapsible label="What is Kumo?">
     Kumo is Cloudflare's new design system.
@@ -75,7 +76,7 @@ export default function Example() {
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
+    <Heading level={2}>API Reference</Heading>
     <PropsTable component="Collapsible" />
   </ComponentSection>
 </DocLayout>

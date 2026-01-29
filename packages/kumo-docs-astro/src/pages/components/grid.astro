@@ -1,5 +1,6 @@
 ---
 import DocLayout from "../../layouts/DocLayout.astro";
+import Heading from "../../components/docs/Heading.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
@@ -32,12 +33,12 @@ import { GridDemo, GridVariantsDemo, GridAsymmetricDemo, GridGapDemo, GridMobile
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
+    <Heading level={2}>Installation</Heading>
     <CodeBlock code={`import { Grid, GridItem } from "@cloudflare/kumo";`} lang="tsx" />
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Grid Variants</h2>
+    <Heading level={2}>Grid Variants</Heading>
     <p class="text-kumo-strong mb-4">
       The Grid component supports multiple column layouts that adapt responsively across breakpoints.
     </p>
@@ -54,7 +55,7 @@ import { GridDemo, GridVariantsDemo, GridAsymmetricDemo, GridGapDemo, GridMobile
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Asymmetric Layouts</h2>
+    <Heading level={2}>Asymmetric Layouts</Heading>
     <p class="text-kumo-strong mb-4">
       Use asymmetric variants for sidebar/main content layouts.
     </p>
@@ -74,7 +75,7 @@ import { GridDemo, GridVariantsDemo, GridAsymmetricDemo, GridGapDemo, GridMobile
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Gap Sizes</h2>
+    <Heading level={2}>Gap Sizes</Heading>
     <p class="text-kumo-strong mb-4">
       Control the spacing between grid items with the gap prop.
     </p>
@@ -87,7 +88,7 @@ import { GridDemo, GridVariantsDemo, GridAsymmetricDemo, GridGapDemo, GridMobile
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Mobile Dividers</h2>
+    <Heading level={2}>Mobile Dividers</Heading>
     <p class="text-kumo-strong mb-4">
       Add dividers between items on mobile with the mobileDivider prop (only works with the 4up variant).
     </p>
@@ -102,7 +103,7 @@ import { GridDemo, GridVariantsDemo, GridAsymmetricDemo, GridGapDemo, GridMobile
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">All Variants</h2>
+    <Heading level={2}>All Variants</Heading>
     <p class="text-kumo-strong mb-4">
       Reference for all available grid variants:
     </p>
@@ -157,11 +158,11 @@ import { GridDemo, GridVariantsDemo, GridAsymmetricDemo, GridGapDemo, GridMobile
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
-    <h3 class="mb-3 text-lg font-semibold">Grid</h3>
+    <Heading level={2}>API Reference</Heading>
+    <Heading level={3} class="mb-3 text-lg">Grid</Heading>
     <PropsTable component="Grid" />
     
-    <h3 class="mb-3 mt-8 text-lg font-semibold">GridItem</h3>
+    <Heading level={3} class="mb-3 mt-8 text-lg">GridItem</Heading>
     <p class="text-kumo-strong mb-4">
       GridItem is a wrapper component for grid children. It accepts standard div props including <code class="rounded bg-kumo-control px-1.5 py-0.5 text-xs">className</code> and <code class="rounded bg-kumo-control px-1.5 py-0.5 text-xs">children</code>.
     </p>

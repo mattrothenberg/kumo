@@ -1,5 +1,6 @@
 ---
 import DocLayout from "../../layouts/DocLayout.astro";
+import Heading from "../../components/docs/Heading.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
@@ -38,10 +39,10 @@ import {
 
   <!-- Installation -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
-    <h3 class="mb-2 text-lg font-semibold">Barrel</h3>
+    <Heading level={2}>Installation</Heading>
+    <Heading level={3} class="mb-2 text-lg">Barrel</Heading>
     <CodeBlock code={`import { Checkbox } from "@cloudflare/kumo";`} lang="tsx" />
-    <h3 class="mb-2 mt-4 text-lg font-semibold">Granular</h3>
+    <Heading level={3} class="mb-2 mt-4 text-lg">Granular</Heading>
     <CodeBlock
       code={`import { Checkbox } from "@cloudflare/kumo/components/checkbox";`}
       lang="tsx"
@@ -50,7 +51,7 @@ import {
 
   <!-- Usage -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+    <Heading level={2}>Usage</Heading>
     <CodeBlock
       code={`import { Checkbox } from "@cloudflare/kumo";
 
@@ -63,11 +64,11 @@ export default function Example() {
 
   <!-- Examples -->
   <ComponentSection>
-    <h2 class="mb-6 text-2xl font-bold">Examples</h2>
+    <Heading level={2} class="mb-6">Examples</Heading>
 
     <div class="space-y-8">
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Default</h3>
+        <Heading level={3}>Default</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Checkbox with built-in label. The label automatically displays in a
           horizontal layout (checkbox before label).
@@ -84,7 +85,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Checked</h3>
+        <Heading level={3}>Checked</Heading>
         <ComponentExample code={`const [checked, setChecked] = useState(true);
 
 <Checkbox
@@ -97,7 +98,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Indeterminate</h3>
+        <Heading level={3}>Indeterminate</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Used for "select all" patterns when some but not all items are
           selected.
@@ -114,7 +115,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Label First Layout</h3>
+        <Heading level={3}>Label First Layout</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Use <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
             >controlFirst={"{false}"}</code
@@ -135,14 +136,14 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Disabled</h3>
+        <Heading level={3}>Disabled</Heading>
         <ComponentExample code={`<Checkbox label="Disabled option" disabled />`}>
           <CheckboxDisabledDemo client:visible />
         </ComponentExample>
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Error</h3>
+        <Heading level={3}>Error</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Error variant provides visual styling (red ring). For error messages,
           use Checkbox.Group.
@@ -155,7 +156,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Checkbox Group</h3>
+        <Heading level={3}>Checkbox Group</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Group multiple checkboxes with a legend, description, and shared error
           messages. Uses Checkbox.Group and Checkbox.Item.
@@ -177,7 +178,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Checkbox Group with Error</h3>
+        <Heading level={3}>Checkbox Group with Error</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Show validation errors at the group level. Error replaces description
           when present.
@@ -201,7 +202,7 @@ export default function Example() {
 
   <!-- API Reference -->
   <ComponentSection>
-    <h2 class="mb-6 text-2xl font-bold">API Reference</h2>
+    <Heading level={2} class="mb-6">API Reference</Heading>
 
     <div class="space-y-8">
       <div>
@@ -232,7 +233,7 @@ export default function Example() {
 
   <!-- Accessibility -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Accessibility</h2>
+    <Heading level={2}>Accessibility</Heading>
     <div class="space-y-4 text-sm">
       <div>
         <h3 class="mb-2 font-semibold">Label Requirement</h3>

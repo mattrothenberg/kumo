@@ -1,5 +1,6 @@
 ---
 import DocLayout from "../../layouts/DocLayout.astro";
+import Heading from "../../components/docs/Heading.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
@@ -53,15 +54,15 @@ import { DialogBasicDemo, DialogWithActionsDemo } from "../../components/demos/D
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
-    <h3 class="mb-2 text-lg font-semibold">Barrel</h3>
+    <Heading level={2}>Installation</Heading>
+    <Heading level={3} class="mb-2 text-lg">Barrel</Heading>
     <CodeBlock code={`import { Dialog } from "@cloudflare/kumo";`} lang="tsx" />
     <h3 class="mt-4 mb-2 text-lg font-semibold">Granular</h3>
     <CodeBlock code={`import { Dialog } from "@cloudflare/kumo/components/dialog";`} lang="tsx" />
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+    <Heading level={2}>Usage</Heading>
     <CodeBlock code={`import { Dialog, Button } from "@cloudflare/kumo";
 
 export default function Example() {
@@ -89,11 +90,11 @@ export default function Example() {
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-6 text-2xl font-bold">Examples</h2>
+    <Heading level={2} class="mb-6">Examples</Heading>
 
     <div class="space-y-8">
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Basic Dialog</h3>
+        <Heading level={3}>Basic Dialog</Heading>
         <ComponentExample code={`<Dialog.Root>
   <Dialog.Trigger render={(p) => <Button {...p}>Click me</Button>} />
   <Dialog className="p-8">
@@ -123,7 +124,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">With Actions</h3>
+        <Heading level={3}>With Actions</Heading>
         <ComponentExample code={`<Dialog.Root>
   <Dialog.Trigger render={(p) => <Button {...p}>Delete</Button>} />
   <Dialog className="p-8">
@@ -165,7 +166,7 @@ export default function Example() {
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-6 text-2xl font-bold">API Reference</h2>
+    <Heading level={2} class="mb-6">API Reference</Heading>
 
     <div class="space-y-8">
       <div>

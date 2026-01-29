@@ -1,5 +1,6 @@
 ---
 import DocLayout from "../../layouts/DocLayout.astro";
+import Heading from "../../components/docs/Heading.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
@@ -35,15 +36,15 @@ import {
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
-    <h3 class="mb-2 text-lg font-semibold">Barrel</h3>
+    <Heading level={2}>Installation</Heading>
+    <Heading level={3} class="mb-2 text-lg">Barrel</Heading>
     <CodeBlock code={`import { Popover } from "@cloudflare/kumo";`} lang="tsx" />
     <h3 class="mt-4 mb-2 text-lg font-semibold">Granular</h3>
     <CodeBlock code={`import { Popover } from "@cloudflare/kumo/components/popover";`} lang="tsx" />
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+    <Heading level={2}>Usage</Heading>
     <CodeBlock code={`import { Popover, Button } from "@cloudflare/kumo";
 
 export default function Example() {
@@ -64,7 +65,7 @@ export default function Example() {
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Popover vs Tooltip</h2>
+    <Heading level={2}>Popover vs Tooltip</Heading>
     <p class="mb-4 text-sm text-label">
       While popovers can be triggered on hover (using <code class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-xs">openOnHover</code>), they serve a different purpose than tooltips. Understanding when to use each is important for accessibility and user experience.
     </p>
@@ -112,11 +113,11 @@ export default function Example() {
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-6 text-2xl font-bold">Examples</h2>
+    <Heading level={2} class="mb-6">Examples</Heading>
 
     <div class="space-y-8">
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Basic Popover</h3>
+        <Heading level={3}>Basic Popover</Heading>
         <ComponentExample code={`<Popover>
   <Popover.Trigger asChild>
     <Button>Open Popover</Button>
@@ -133,7 +134,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">With Close Button</h3>
+        <Heading level={3}>With Close Button</Heading>
         <ComponentExample code={`<Popover>
   <Popover.Trigger asChild>
     <Button>Open Settings</Button>
@@ -155,7 +156,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Positioning</h3>
+        <Heading level={3}>Positioning</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Use the <code class="rounded bg-kumo-elevated px-1.5 py-0.5 font-mono text-xs">side</code> prop to control where the popover appears relative to the trigger.
         </p>
@@ -173,7 +174,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Custom Content</h3>
+        <Heading level={3}>Custom Content</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Popovers can contain any content, including custom layouts with avatars, buttons, and more.
         </p>
@@ -206,7 +207,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Open on Hover</h3>
+        <Heading level={3}>Open on Hover</Heading>
         <p class="mb-4 text-sm text-label">
           Use <code class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-xs">openOnHover</code> on the trigger to open the popover when the user hovers over it. You can also specify a <code class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-xs">delay</code> in milliseconds before the popover appears.
         </p>
@@ -236,7 +237,7 @@ export default function Example() {
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-6 text-2xl font-bold">API Reference</h2>
+    <Heading level={2} class="mb-6">API Reference</Heading>
 
     <div class="space-y-8">
       <div>

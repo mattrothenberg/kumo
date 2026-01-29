@@ -1,5 +1,6 @@
 ---
 import DocLayout from "../../layouts/DocLayout.astro";
+import Heading from "../../components/docs/Heading.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
@@ -25,10 +26,10 @@ import {
 
   <!-- Installation -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
-    <h3 class="mb-2 text-lg font-semibold">Barrel</h3>
+    <Heading level={2}>Installation</Heading>
+    <Heading level={3} class="mb-2 text-lg">Barrel</Heading>
     <CodeBlock code={`import { Loader } from "@cloudflare/kumo";`} lang="tsx" />
-    <h3 class="mb-2 mt-4 text-lg font-semibold">Granular</h3>
+    <Heading level={3} class="mb-2 mt-4 text-lg">Granular</Heading>
     <CodeBlock
       code={`import { Loader } from "@cloudflare/kumo/components/loader";`}
       lang="tsx"
@@ -37,7 +38,7 @@ import {
 
   <!-- Usage -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+    <Heading level={2}>Usage</Heading>
     <CodeBlock
       code={`import { Loader } from "@cloudflare/kumo";
 
@@ -50,18 +51,18 @@ export default function Example() {
 
   <!-- Examples -->
   <ComponentSection>
-    <h2 class="mb-6 text-2xl font-bold">Examples</h2>
+    <Heading level={2} class="mb-6">Examples</Heading>
 
     <div class="space-y-8">
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Default Size</h3>
+        <Heading level={3}>Default Size</Heading>
         <ComponentExample code={`<Loader />`}>
           <LoaderBasicDemo client:visible />
         </ComponentExample>
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Custom Size</h3>
+        <Heading level={3}>Custom Size</Heading>
         <ComponentExample code={`<Loader size={24} />`}>
           <LoaderCustomSizeDemo client:visible />
         </ComponentExample>
@@ -71,7 +72,7 @@ export default function Example() {
 
   <!-- API Reference -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
+    <Heading level={2}>API Reference</Heading>
     <PropsTable component="Loader" />
   </ComponentSection>
 </DocLayout>

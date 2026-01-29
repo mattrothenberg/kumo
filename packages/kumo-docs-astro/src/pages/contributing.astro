@@ -1,5 +1,6 @@
 ---
 import DocLayout from "../layouts/DocLayout.astro";
+import Heading from "../components/docs/Heading.astro";
 import ComponentSection from "../components/docs/ComponentSection.astro";
 import CodeBlock from "../components/docs/CodeBlock.astro";
 import Callout from "../components/docs/Callout.astro";
@@ -11,7 +12,7 @@ import Callout from "../components/docs/Callout.astro";
 >
   <!-- Overview -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Contributing to Kumo</h2>
+    <Heading level={2}>Contributing to Kumo</Heading>
     <p class="mb-4 text-kumo-strong">
       We welcome contributions to Kumo! This guide will help you get started
       with adding new components and blocks to the library.
@@ -20,10 +21,10 @@ import Callout from "../components/docs/Callout.astro";
 
   <!-- Components vs Blocks vs Layouts -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Components vs Blocks vs Layouts</h2>
+    <Heading level={2}>Components vs Blocks vs Layouts</Heading>
     <div class="mb-4 grid gap-6 md:grid-cols-3">
       <div class="rounded-lg border border-kumo-line bg-kumo-base p-4">
-        <h3 class="mb-2 text-lg font-semibold">Components</h3>
+        <Heading level={3} class="mb-2 text-lg">Components</Heading>
         <p class="mb-3 text-sm text-kumo-strong">Atomic, reusable UI elements</p>
         <ul class="list-inside list-disc space-y-1 text-sm text-kumo-default">
           <li>Single responsibility</li>
@@ -36,7 +37,7 @@ import Callout from "../components/docs/Callout.astro";
         </p>
       </div>
       <div class="rounded-lg border border-kumo-line bg-kumo-base p-4">
-        <h3 class="mb-2 text-lg font-semibold">Blocks</h3>
+        <Heading level={3} class="mb-2 text-lg">Blocks</Heading>
         <p class="mb-3 text-sm text-kumo-strong">Composed patterns for page layouts</p>
         <ul class="list-inside list-disc space-y-1 text-sm text-kumo-default">
           <li>Compose multiple components</li>
@@ -49,7 +50,7 @@ import Callout from "../components/docs/Callout.astro";
         </p>
       </div>
       <div class="rounded-lg border border-kumo-line bg-kumo-base p-4">
-        <h3 class="mb-2 text-lg font-semibold">Layouts</h3>
+        <Heading level={3} class="mb-2 text-lg">Layouts</Heading>
         <p class="mb-3 text-sm text-kumo-strong">Page-level structure patterns</p>
         <ul class="list-inside list-disc space-y-1 text-sm text-kumo-default">
           <li>Full-page composition</li>
@@ -66,7 +67,7 @@ import Callout from "../components/docs/Callout.astro";
 
   <!-- Component Scaffolding -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Creating New Components</h2>
+    <Heading level={2}>Creating New Components</Heading>
     <p class="mb-4 text-kumo-strong">
       Kumo includes a scaffolding tool that automates component creation. This
       ensures all components follow the same structure and are properly
@@ -83,7 +84,7 @@ import Callout from "../components/docs/Callout.astro";
 
   <!-- What It Does -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">What the Scaffolding Tool Does</h2>
+    <Heading level={2}>What the Scaffolding Tool Does</Heading>
     <p class="mb-4 text-kumo-strong">
       The tool automatically creates and updates several files:
     </p>
@@ -132,7 +133,7 @@ import Callout from "../components/docs/Callout.astro";
 
   <!-- Example -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Example</h2>
+    <Heading level={2}>Example</Heading>
     <p class="mb-4 text-kumo-strong">
       Here's what the scaffolding process looks like:
     </p>
@@ -161,7 +162,7 @@ import Callout from "../components/docs/Callout.astro";
 
   <!-- Naming -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Component Naming</h2>
+    <Heading level={2}>Component Naming</Heading>
     <p class="mb-4 text-kumo-strong">
       The scaffolding tool handles naming automatically. You can input the name
       in any format:
@@ -193,7 +194,7 @@ import Callout from "../components/docs/Callout.astro";
 
   <!-- Block Scaffolding -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Creating New Blocks</h2>
+    <Heading level={2}>Creating New Blocks</Heading>
     <p class="mb-4 text-kumo-strong">
       Blocks are higher-level components that compose multiple base components.
       Use the block scaffolding tool to create them:
@@ -278,7 +279,7 @@ import Callout from "../components/docs/Callout.astro";
 
   <!-- Layout Scaffolding -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Creating New Layouts</h2>
+    <Heading level={2}>Creating New Layouts</Heading>
     <p class="mb-4 text-kumo-strong">
       Layouts are page-level components that provide consistent structure for
       common page patterns. Use the layout scaffolding tool:
@@ -363,14 +364,14 @@ import Callout from "../components/docs/Callout.astro";
 
   <!-- Development Workflow -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Development Workflow</h2>
+    <Heading level={2}>Development Workflow</Heading>
     <p class="mb-4 text-kumo-strong">
       After scaffolding a component, block, or layout, use the watch build setup
       to develop with the documentation site:
     </p>
 
     <div class="mb-6 rounded-lg border border-kumo-line bg-kumo-elevated p-4">
-      <h3 class="mb-2 text-lg font-semibold">Watch Build Setup</h3>
+      <Heading level={3} class="mb-2 text-lg">Watch Build Setup</Heading>
       <p class="mb-3 text-sm text-kumo-strong">
         Run these commands in separate terminals for development with HMR:
       </p>
@@ -460,7 +461,7 @@ pnpm dev`}
 
   <!-- Testing -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Testing</h2>
+    <Heading level={2}>Testing</Heading>
     <p class="mb-4 text-kumo-strong">
       The test suite automatically validates your component, block, or layout
       configuration:
@@ -493,7 +494,7 @@ pnpm dev`}
 
   <!-- Component Guidelines -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Component Guidelines</h2>
+    <Heading level={2}>Component Guidelines</Heading>
     <p class="mb-4 text-kumo-strong">
       When implementing components, follow these guidelines:
     </p>
@@ -531,7 +532,7 @@ pnpm dev`}
 
   <!-- Block Guidelines -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Block Guidelines</h2>
+    <Heading level={2}>Block Guidelines</Heading>
     <p class="mb-4 text-kumo-strong">
       When implementing blocks, follow these additional guidelines:
     </p>
@@ -584,7 +585,7 @@ pnpm dev`}
 
   <!-- Resources -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Additional Resources</h2>
+    <Heading level={2}>Additional Resources</Heading>
     <p class="mb-4 text-kumo-strong">
       For more detailed information, refer to:
     </p>

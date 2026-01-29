@@ -1,5 +1,6 @@
 ---
 import DocLayout from "../../layouts/DocLayout.astro";
+import Heading from "../../components/docs/Heading.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
@@ -35,10 +36,10 @@ import {
 
   <!-- Installation -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
-    <h3 class="mb-2 text-lg font-semibold">Barrel</h3>
+    <Heading level={2}>Installation</Heading>
+    <Heading level={3} class="mb-2 text-lg">Barrel</Heading>
     <CodeBlock code={`import { Label } from "@cloudflare/kumo";`} lang="tsx" />
-    <h3 class="mb-2 mt-4 text-lg font-semibold">Granular</h3>
+    <Heading level={3} class="mb-2 mt-4 text-lg">Granular</Heading>
     <CodeBlock
       code={`import { Label } from "@cloudflare/kumo/components/label";`}
       lang="tsx"
@@ -47,8 +48,8 @@ import {
 
   <!-- Usage -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
-    <h3 class="mb-2 text-lg font-semibold">With Form Components (Recommended)</h3>
+    <Heading level={2}>Usage</Heading>
+    <Heading level={3} class="mb-2 text-lg">With Form Components (Recommended)</Heading>
     <p class="mb-4 text-sm text-kumo-strong">
       Label features are automatically available through form components like{" "}
       <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">Input</code>,{" "}
@@ -100,11 +101,11 @@ export default function Example() {
 
   <!-- Examples -->
   <ComponentSection>
-    <h2 class="mb-6 text-2xl font-bold">Examples</h2>
+    <Heading level={2} class="mb-6">Examples</Heading>
 
     <div class="space-y-8">
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Optional Field</h3>
+        <Heading level={3}>Optional Field</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Shows gray "(optional)" text when{" "}
           <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">required={"{false}"}</code>.
@@ -117,7 +118,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">With Tooltip</h3>
+        <Heading level={3}>With Tooltip</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Shows an info icon with a tooltip for additional context.
         </p>
@@ -133,7 +134,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">ReactNode Label Content</h3>
+        <Heading level={3}>ReactNode Label Content</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Labels support ReactNode content for rich formatting.
         </p>
@@ -151,7 +152,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Form with Mixed Fields</h3>
+        <Heading level={3}>Form with Mixed Fields</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Real-world example showing required and optional fields together.
         </p>
@@ -181,7 +182,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Standalone Label</h3>
+        <Heading level={3}>Standalone Label</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Use Label directly for custom layouts or non-form contexts.
         </p>
@@ -200,9 +201,9 @@ export default function Example() {
 
   <!-- API Reference -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
+    <Heading level={2}>API Reference</Heading>
 
-    <h3 class="mb-2 text-lg font-semibold">Label Props</h3>
+    <Heading level={3} class="mb-2 text-lg">Label Props</Heading>
     <p class="mb-4 text-sm text-kumo-strong">
       Props for the standalone Label component:
     </p>
@@ -290,7 +291,7 @@ export default function Example() {
 
   <!-- Design Guidelines -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Design Guidelines</h2>
+    <Heading level={2}>Design Guidelines</Heading>
     <div class="space-y-4 text-sm">
       <div>
         <h3 class="mb-2 font-semibold">When to Use Optional Indicators</h3>

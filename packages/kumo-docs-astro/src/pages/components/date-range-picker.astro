@@ -1,5 +1,6 @@
 ---
 import DocLayout from "../../layouts/DocLayout.astro";
+import Heading from "../../components/docs/Heading.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
@@ -32,13 +33,13 @@ import {
 
   <!-- Installation -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
-    <h3 class="mb-2 text-lg font-semibold">Barrel</h3>
+    <Heading level={2}>Installation</Heading>
+    <Heading level={3} class="mb-2 text-lg">Barrel</Heading>
     <CodeBlock
       code={`import { DateRangePicker } from "@cloudflare/kumo";`}
       lang="tsx"
     />
-    <h3 class="mb-2 mt-4 text-lg font-semibold">Granular</h3>
+    <Heading level={3} class="mb-2 mt-4 text-lg">Granular</Heading>
     <CodeBlock
       code={`import { DateRangePicker } from "@cloudflare/kumo/components/date-range-picker";`}
       lang="tsx"
@@ -47,7 +48,7 @@ import {
 
   <!-- Usage -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+    <Heading level={2}>Usage</Heading>
     <p class="mb-4 text-sm text-kumo-strong">
       DateRangePicker displays two side-by-side calendars for selecting a date
       range. Click a date to set the start, then click another date to set the
@@ -75,11 +76,11 @@ export default function Example() {
 
   <!-- Examples -->
   <ComponentSection>
-    <h2 class="mb-6 text-2xl font-bold">Examples</h2>
+    <Heading level={2} class="mb-6">Examples</Heading>
 
     <div class="space-y-8">
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Sizes</h3>
+        <Heading level={3}>Sizes</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Three sizes available: <code
             class="rounded bg-kumo-control px-1 py-0.5 text-sm">sm</code
@@ -101,7 +102,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Variants</h3>
+        <Heading level={3}>Variants</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Two visual variants: <code
             class="rounded bg-kumo-control px-1 py-0.5 text-sm">default</code
@@ -120,7 +121,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Custom Timezone</h3>
+        <Heading level={3}>Custom Timezone</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Display a custom timezone in the footer using the <code
             class="rounded bg-kumo-control px-1 py-0.5 text-sm">timezone</code
@@ -138,7 +139,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Controlled with State Display</h3>
+        <Heading level={3}>Controlled with State Display</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Track and display the selected date range using the callback props.
         </p>
@@ -164,7 +165,7 @@ const [endDate, setEndDate] = useState<Date | null>(null);
 
   <!-- API Reference -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
+    <Heading level={2}>API Reference</Heading>
 
     <h3 class="mb-2 mt-6 text-lg font-semibold">Props</h3>
     <div class="overflow-x-auto">
@@ -261,7 +262,7 @@ const [endDate, setEndDate] = useState<Date | null>(null);
 
   <!-- Behavior -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Behavior</h2>
+    <Heading level={2}>Behavior</Heading>
     <div class="space-y-4 text-sm">
       <div>
         <h3 class="mb-2 font-semibold">Date Selection</h3>
@@ -296,7 +297,7 @@ const [endDate, setEndDate] = useState<Date | null>(null);
 
   <!-- Accessibility -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Accessibility</h2>
+    <Heading level={2}>Accessibility</Heading>
     <div class="space-y-4 text-sm">
       <div>
         <h3 class="mb-2 font-semibold">Keyboard Navigation</h3>

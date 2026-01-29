@@ -1,6 +1,7 @@
 ---
 import { Code } from "astro:components";
 import DocLayout from "../layouts/DocLayout.astro";
+import Heading from "../components/docs/Heading.astro";
 import ComponentSection from "../components/docs/ComponentSection.astro";
 import CodeBlock from "../components/docs/CodeBlock.astro";
 import Callout from "../components/docs/Callout.astro";
@@ -16,7 +17,7 @@ const kumoVersion = typeof __KUMO_VERSION__ !== "undefined" ? __KUMO_VERSION__ :
   description="Get started with Kumo by installing the package and importing components."
 >
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">NPM Registry Configuration</h2>
+    <Heading level={2}>NPM Registry Configuration</Heading>
     <p class="mb-4 text-kumo-strong">
       Follow the steps at <a
         href="https://wiki.cfdata.org/display/FE/Getting+started+with+the+private+NPM+registry"
@@ -50,7 +51,7 @@ const kumoVersion = typeof __KUMO_VERSION__ !== "undefined" ? __KUMO_VERSION__ :
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Install Package</h2>
+    <Heading level={2}>Install Package</Heading>
     <p class="mb-4 text-kumo-strong">
       Install Kumo using your preferred package manager. The current version is{" "}
       <code class="rounded bg-kumo-control px-1.5 py-0.5 text-sm font-semibold">v{kumoVersion}</code>.
@@ -92,7 +93,7 @@ pnpm add react react-dom @phosphor-icons/react`}
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Import Components</h2>
+    <Heading level={2}>Import Components</Heading>
     <p class="mb-4 text-kumo-strong">
       Import components from the main package or use granular imports for better
       tree-shaking:
@@ -121,7 +122,7 @@ import { Input } from "@cloudflare/kumo/components/input";`}
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Base UI Primitives</h2>
+    <Heading level={2}>Base UI Primitives</Heading>
     <p class="mb-4 text-kumo-strong">
       Kumo is built on top of <a
         href="https://base-ui.com"
@@ -193,7 +194,7 @@ import { Accordion } from "@cloudflare/kumo/primitives/accordion";`}
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Import Styles</h2>
+    <Heading level={2}>Import Styles</Heading>
     <p class="mb-4 text-kumo-strong">
       Kumo provides two CSS distribution options depending on your setup:
     </p>
@@ -250,7 +251,7 @@ import "@cloudflare/kumo/styles/standalone";`}
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Usage Example</h2>
+    <Heading level={2}>Usage Example</Heading>
     <p class="mb-4 text-kumo-strong">
       Here's a complete example of using Kumo components with Tailwind CSS:
     </p>
@@ -289,14 +290,14 @@ export default function App() {
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Blocks vs Components</h2>
+    <Heading level={2}>Blocks vs Components</Heading>
     <p class="mb-4 text-kumo-strong">
       Kumo provides two types of building blocks for your application:
     </p>
     
     <div class="space-y-6">
       <div>
-        <h3 class="mb-3 text-lg font-semibold">Components (NPM Exports)</h3>
+        <Heading level={3} class="mb-3 text-lg">Components (NPM Exports)</Heading>
         <p class="mb-3 text-kumo-strong">
           Components are published as NPM exports and can be imported directly from the package.
           These are the core UI primitives like <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">Button</code>,
@@ -315,7 +316,7 @@ export default function App() {
       </div>
 
       <div>
-        <h3 class="mb-3 text-lg font-semibold">Blocks (CLI Installation)</h3>
+        <Heading level={3} class="mb-3 text-lg">Blocks (CLI Installation)</Heading>
         <p class="mb-3 text-kumo-strong">
           Blocks are higher-level compositions (like <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">PageHeader</code>
           and <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">ResourceListPage</code>)
@@ -359,7 +360,7 @@ npx @cloudflare/kumo add PageHeader`}
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Utilities</h2>
+    <Heading level={2}>Utilities</Heading>
     <p class="mb-4 text-kumo-strong">
       Kumo also exports utility functions for common tasks:
     </p>

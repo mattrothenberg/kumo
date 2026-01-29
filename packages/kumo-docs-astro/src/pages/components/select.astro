@@ -1,5 +1,6 @@
 ---
 import DocLayout from "../../layouts/DocLayout.astro";
+import Heading from "../../components/docs/Heading.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
@@ -377,11 +378,11 @@ function App() {
 
   <!-- API Reference -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
-    <h3 class="mb-3 text-lg font-semibold">Select</h3>
+    <Heading level={2}>API Reference</Heading>
+    <Heading level={3} class="mb-3 text-lg">Select</Heading>
     <PropsTable component="Select" />
 
-    <h3 class="mb-3 mt-8 text-lg font-semibold">Select.Option</h3>
+    <Heading level={3} class="mb-3 mt-8 text-lg">Select.Option</Heading>
     <PropsTable component="Select.Option" />
   </ComponentSection>
 </DocLayout>
