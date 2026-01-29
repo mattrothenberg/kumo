@@ -1,5 +1,6 @@
 ---
 import DocLayout from "../../layouts/DocLayout.astro";
+import Heading from "../../components/docs/Heading.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
@@ -27,12 +28,12 @@ import { BreadcrumbsDemo, BreadcrumbsWithIconsDemo, BreadcrumbsWithClipboardDemo
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
+    <Heading level={2}>Installation</Heading>
     <CodeBlock code={`import { Breadcrumbs } from "@cloudflare/kumo";`} lang="tsx" />
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+    <Heading level={2}>Usage</Heading>
     <CodeBlock code={`import { Breadcrumbs } from "@cloudflare/kumo";
 
 export default function Example() {
@@ -49,10 +50,10 @@ export default function Example() {
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-6 text-2xl font-bold">Examples</h2>
+    <Heading level={2} class="mb-6">Examples</Heading>
 
     <div class="mb-12">
-      <h3 class="mb-4 text-xl font-semibold">Basic</h3>
+      <Heading level={3}>Basic</Heading>
       <ComponentExample code={`<Breadcrumbs>
   <Breadcrumbs.Link href="#">Home</Breadcrumbs.Link>
   <Breadcrumbs.Separator />
@@ -67,7 +68,7 @@ export default function Example() {
 
   <ComponentSection>
     <div class="mb-12">
-      <h3 class="mb-4 text-xl font-semibold">Loading</h3>
+      <Heading level={3}>Loading</Heading>
       <ComponentExample code={`<Breadcrumbs>
   <Breadcrumbs.Link href="#" icon={<HouseIcon size={16} />}>
     Home
@@ -84,7 +85,7 @@ export default function Example() {
 
   <ComponentSection>
     <div class="mb-12">
-      <h3 class="mb-4 text-xl font-semibold">Root</h3>
+      <Heading level={3}>Root</Heading>
       <ComponentExample code={`<Breadcrumbs>
   <Breadcrumbs.Current icon={<HouseIcon size={16} />}>
     Worker Analytics
@@ -97,7 +98,7 @@ export default function Example() {
 
   <ComponentSection>
     <div class="mb-12">
-      <h3 class="mb-4 text-xl font-semibold">Clipboard</h3>
+      <Heading level={3}>Clipboard</Heading>
       <ComponentExample code={`<Breadcrumbs>
   <Breadcrumbs.Link href="#">Home</Breadcrumbs.Link>
   <Breadcrumbs.Separator />
@@ -110,31 +111,31 @@ export default function Example() {
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
+    <Heading level={2}>API Reference</Heading>
     
     <div class="space-y-8">
       <div>
-        <h3 class="mb-3 text-lg font-semibold">Breadcrumbs</h3>
+        <Heading level={3} class="mb-3 text-lg">Breadcrumbs</Heading>
         <PropsTable component="Breadcrumbs" />
       </div>
 
       <div>
-        <h3 class="mb-3 text-lg font-semibold">Breadcrumbs.Link</h3>
+        <Heading level={3} class="mb-3 text-lg">Breadcrumbs.Link</Heading>
         <PropsTable component="Breadcrumbs.Link" />
       </div>
 
       <div>
-        <h3 class="mb-3 text-lg font-semibold">Breadcrumbs.Current</h3>
+        <Heading level={3} class="mb-3 text-lg">Breadcrumbs.Current</Heading>
         <PropsTable component="Breadcrumbs.Current" />
       </div>
 
       <div>
-        <h3 class="mb-3 text-lg font-semibold">Breadcrumbs.Separator</h3>
+        <Heading level={3} class="mb-3 text-lg">Breadcrumbs.Separator</Heading>
         <PropsTable component="Breadcrumbs.Separator" />
       </div>
 
       <div>
-        <h3 class="mb-3 text-lg font-semibold">Breadcrumbs.Clipboard</h3>
+        <Heading level={3} class="mb-3 text-lg">Breadcrumbs.Clipboard</Heading>
         <PropsTable component="Breadcrumbs.Clipboard" />
       </div>
     </div>

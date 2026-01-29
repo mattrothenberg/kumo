@@ -1,5 +1,6 @@
 ---
 import DocLayout from "../../layouts/DocLayout.astro";
+import Heading from "../../components/docs/Heading.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
@@ -51,15 +52,15 @@ const fruits = [
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
-    <h3 class="mb-2 text-lg font-semibold">Barrel</h3>
+    <Heading level={2}>Installation</Heading>
+    <Heading level={3} class="mb-2 text-lg">Barrel</Heading>
     <CodeBlock code={`import { Combobox } from "@cloudflare/kumo";`} lang="tsx" />
     <h3 class="mt-4 mb-2 text-lg font-semibold">Granular</h3>
     <CodeBlock code={`import { Combobox } from "@cloudflare/kumo/components/combobox";`} lang="tsx" />
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Searchable Item (Inside)</h2>
+    <Heading level={2}>Searchable Item (Inside)</Heading>
     <p class="text-kumo-strong mb-4">A searchable select component inside popup that allows users to filter and select.</p>
     <ComponentExample code={`function App() {
   const [value, setValue] = useState<Language | null>(languages[0]);
@@ -105,7 +106,7 @@ const languages: Language[] = [
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Grouped</h2>
+    <Heading level={2}>Grouped</Heading>
     <p class="text-kumo-strong mb-4">Group items into categories using the Group and GroupLabel components.</p>
     <ComponentExample code={`function App() {
   const [value, setValue] = useState<string | null>("singapore");
@@ -169,7 +170,7 @@ interface ServerLocationGroup {
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Multiple</h2>
+    <Heading level={2}>Multiple</Heading>
     <p class="text-kumo-strong mb-4">Allow users to select multiple options from the list.</p>
     <ComponentExample code={`<Combobox
   value={value}
@@ -205,7 +206,7 @@ interface ServerLocationGroup {
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">With Field</h2>
+    <Heading level={2}>With Field</Heading>
     <p class="text-kumo-strong mb-4">Add label and description using the built-in Field wrapper.</p>
     <ComponentExample code={`<Combobox
   items={items}
@@ -231,7 +232,7 @@ interface ServerLocationGroup {
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Error State</h2>
+    <Heading level={2}>Error State</Heading>
     <p class="text-kumo-strong mb-4">Display validation errors with the error prop.</p>
     <ComponentExample code={`<Combobox
   items={items}
@@ -257,7 +258,7 @@ interface ServerLocationGroup {
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Customizing Dropdown Height</h2>
+    <Heading level={2}>Customizing Dropdown Height</Heading>
     <p class="text-label mb-4">
       By default, <code class="text-surface">Combobox.Content</code> has a max height of <code class="text-surface">24rem</code> (384px) or the available viewport space, whichever is smaller. The dropdown scrolls automatically when content exceeds this height.
     </p>
@@ -276,7 +277,7 @@ interface ServerLocationGroup {
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-6 text-2xl font-bold">API Reference</h2>
+    <Heading level={2} class="mb-6">API Reference</Heading>
     
     <div class="space-y-8">
       <div>

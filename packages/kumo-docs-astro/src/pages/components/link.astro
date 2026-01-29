@@ -1,5 +1,6 @@
 ---
 import DocLayout from "../../layouts/DocLayout.astro";
+import Heading from "../../components/docs/Heading.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
@@ -30,10 +31,10 @@ import {
 
   <!-- Installation -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
-    <h3 class="mb-2 text-lg font-semibold">Barrel</h3>
+    <Heading level={2}>Installation</Heading>
+    <Heading level={3} class="mb-2 text-lg">Barrel</Heading>
     <CodeBlock code={`import { Link } from "@cloudflare/kumo";`} lang="tsx" />
-    <h3 class="mb-2 mt-4 text-lg font-semibold">Granular</h3>
+    <Heading level={3} class="mb-2 mt-4 text-lg">Granular</Heading>
     <CodeBlock
       code={`import { Link } from "@cloudflare/kumo/components/link";`}
       lang="tsx"
@@ -42,8 +43,8 @@ import {
 
   <!-- Usage -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
-    <h3 class="mb-2 text-lg font-semibold">Basic Link</h3>
+    <Heading level={2}>Usage</Heading>
+    <Heading level={3} class="mb-2 text-lg">Basic Link</Heading>
     <p class="mb-4 text-sm text-label">
       The default Link component renders an underlined anchor with primary color styling.
     </p>
@@ -104,11 +105,11 @@ export default function Example() {
 
   <!-- Examples -->
   <ComponentSection>
-    <h2 class="mb-6 text-2xl font-bold">Examples</h2>
+    <Heading level={2} class="mb-6">Examples</Heading>
 
     <div class="space-y-8">
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Inline in Paragraph</h3>
+        <Heading level={3}>Inline in Paragraph</Heading>
         <p class="mb-4 text-sm text-label">
           Links flow naturally within paragraph text with proper underline offset.
         </p>
@@ -123,7 +124,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">External Link with Icon</h3>
+        <Heading level={3}>External Link with Icon</Heading>
         <p class="mb-4 text-sm text-label">
           Use <code class="rounded bg-secondary px-1 py-0.5 text-sm">Link.ExternalIcon</code> to 
           visually indicate links that navigate away from your site.
@@ -142,7 +143,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Current Variant (Color Inheritance)</h3>
+        <Heading level={3}>Current Variant (Color Inheritance)</Heading>
         <p class="mb-4 text-sm text-label">
           The <code class="rounded bg-secondary px-1 py-0.5 text-sm">current</code> variant 
           inherits color from its parent, useful for links within colored contexts like alerts.
@@ -159,7 +160,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Composition with render prop</h3>
+        <Heading level={3}>Composition with render prop</Heading>
         <p class="mb-4 text-sm text-label">
           The <code class="rounded bg-secondary px-1 py-0.5 text-sm">render</code> prop lets you 
           compose Link styling onto any element, enabling integration with framework routing components.
@@ -189,9 +190,9 @@ export default function Example() {
 
   <!-- API Reference -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
+    <Heading level={2}>API Reference</Heading>
 
-    <h3 class="mb-2 text-lg font-semibold">Link Props</h3>
+    <Heading level={3} class="mb-2 text-lg">Link Props</Heading>
     <p class="mb-4 text-sm text-label">
       Extends all native anchor element attributes.
     </p>
@@ -284,7 +285,7 @@ export default function Example() {
 
   <!-- Design Guidelines -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Design Guidelines</h2>
+    <Heading level={2}>Design Guidelines</Heading>
     <div class="space-y-4 text-sm">
       <div>
         <h3 class="mb-2 font-semibold">When to Use Each Variant</h3>

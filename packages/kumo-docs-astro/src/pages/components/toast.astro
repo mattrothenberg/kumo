@@ -1,5 +1,6 @@
 ---
 import DocLayout from "../../layouts/DocLayout.astro";
+import Heading from "../../components/docs/Heading.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
@@ -36,13 +37,13 @@ import {
 
   <!-- Installation -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
-    <h3 class="mb-2 text-lg font-semibold">Barrel</h3>
+    <Heading level={2}>Installation</Heading>
+    <Heading level={3} class="mb-2 text-lg">Barrel</Heading>
     <CodeBlock
       code={`import { Toasty, Toast } from "@cloudflare/kumo";`}
       lang="tsx"
     />
-    <h3 class="mb-2 mt-4 text-lg font-semibold">Granular</h3>
+    <Heading level={3} class="mb-2 mt-4 text-lg">Granular</Heading>
     <CodeBlock
       code={`import { Toasty, Toast } from "@cloudflare/kumo/components/toast";`}
       lang="tsx"
@@ -51,7 +52,7 @@ import {
 
   <!-- Usage -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+    <Heading level={2}>Usage</Heading>
     <p class="mb-4 text-kumo-subtle">
       The toast system consists of two parts: the <code class="text-kumo-default"
         >Toasty</code
@@ -93,7 +94,7 @@ export default function App() {
 
   <!-- Setup -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Setup</h2>
+    <Heading level={2}>Setup</Heading>
     <p class="mb-4 text-kumo-subtle">
       Wrap your application (or a section of it) with the <code
         class="text-kumo-default">Toasty</code
@@ -116,11 +117,11 @@ export function Layout({ children }) {
 
   <!-- Examples -->
   <ComponentSection>
-    <h2 class="mb-6 text-2xl font-bold">Examples</h2>
+    <Heading level={2} class="mb-6">Examples</Heading>
 
     <div class="space-y-8">
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Title and Description</h3>
+        <Heading level={3}>Title and Description</Heading>
         <p class="mb-4 text-kumo-subtle">
           A complete toast with both title and description.
         </p>
@@ -135,7 +136,7 @@ export function Layout({ children }) {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Title Only</h3>
+        <Heading level={3}>Title Only</Heading>
         <p class="mb-4 text-kumo-subtle">
           A simple toast with just a title for brief messages.
         </p>
@@ -149,7 +150,7 @@ export function Layout({ children }) {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Description Only</h3>
+        <Heading level={3}>Description Only</Heading>
         <p class="mb-4 text-kumo-subtle">
           A toast with only a description for more detailed messages.
         </p>
@@ -163,7 +164,7 @@ export function Layout({ children }) {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Success Action</h3>
+        <Heading level={3}>Success Action</Heading>
         <p class="mb-4 text-kumo-subtle">
           Toasts work well for confirming user actions.
         </p>
@@ -178,7 +179,7 @@ export function Layout({ children }) {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Multiple Toasts</h3>
+        <Heading level={3}>Multiple Toasts</Heading>
         <p class="mb-4 text-kumo-subtle">
           Multiple toasts stack and animate smoothly. Hover over the stack to
           expand them.
@@ -196,10 +197,10 @@ toastManager.add({ title: "Third toast" });`}
 
   <!-- API Reference -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
+    <Heading level={2}>API Reference</Heading>
 
     <div class="mb-8">
-      <h3 class="mb-4 text-xl font-semibold">Toasty</h3>
+      <Heading level={3}>Toasty</Heading>
       <p class="mb-4 text-kumo-subtle">
         The provider component that wraps your app and manages the toast system.
       </p>
@@ -207,7 +208,7 @@ toastManager.add({ title: "Third toast" });`}
     </div>
 
     <div>
-      <h3 class="mb-4 text-xl font-semibold">Toast.useToastManager()</h3>
+      <Heading level={3}>Toast.useToastManager()</Heading>
       <p class="mb-4 text-kumo-subtle">
         A hook that returns the toast manager for creating toasts.
       </p>

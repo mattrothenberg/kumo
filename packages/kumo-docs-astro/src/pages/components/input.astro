@@ -1,5 +1,6 @@
 ---
 import DocLayout from "../../layouts/DocLayout.astro";
+import Heading from "../../components/docs/Heading.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
@@ -40,10 +41,10 @@ import {
 
   <!-- Installation -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
-    <h3 class="mb-2 text-lg font-semibold">Barrel</h3>
+    <Heading level={2}>Installation</Heading>
+    <Heading level={3} class="mb-2 text-lg">Barrel</Heading>
     <CodeBlock code={`import { Input } from "@cloudflare/kumo";`} lang="tsx" />
-    <h3 class="mb-2 mt-4 text-lg font-semibold">Granular</h3>
+    <Heading level={3} class="mb-2 mt-4 text-lg">Granular</Heading>
     <CodeBlock
       code={`import { Input } from "@cloudflare/kumo/components/input";`}
       lang="tsx"
@@ -52,8 +53,8 @@ import {
 
   <!-- Usage -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
-    <h3 class="mb-2 text-lg font-semibold">With Built-in Field (Recommended)</h3>
+    <Heading level={2}>Usage</Heading>
+    <Heading level={3} class="mb-2 text-lg">With Built-in Field (Recommended)</Heading>
     <p class="mb-4 text-sm text-kumo-strong">
       Use the <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">label</code> prop
       to enable the built-in Field wrapper with label, description, and error support.
@@ -94,11 +95,11 @@ export default function Example() {
 
   <!-- Examples -->
   <ComponentSection>
-    <h2 class="mb-6 text-2xl font-bold">Examples</h2>
+    <Heading level={2} class="mb-6">Examples</Heading>
 
     <div class="space-y-8">
       <div>
-        <h3 class="mb-4 text-xl font-semibold">With Label and Description</h3>
+        <Heading level={3}>With Label and Description</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           The <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">label</code> prop
           enables the built-in Field wrapper with automatic vertical layout (label
@@ -116,7 +117,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">With Error (String)</h3>
+        <Heading level={3}>With Error (String)</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Pass <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">error</code> as
           a string for simple error messages. Error replaces description when present.
@@ -135,7 +136,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">With Error (Validation Object)</h3>
+        <Heading level={3}>With Error (Validation Object)</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Pass <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">error</code> as
           an object with <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
@@ -161,7 +162,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Input Sizes</h3>
+        <Heading level={3}>Input Sizes</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Four sizes available: <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
             >xs</code
@@ -183,7 +184,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Disabled</h3>
+        <Heading level={3}>Disabled</Heading>
         <ComponentExample
           code={`<Input 
   label="Disabled field" 
@@ -196,7 +197,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Optional Field</h3>
+        <Heading level={3}>Optional Field</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Set <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
             >required={"{false}"}</code
@@ -214,7 +215,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">With Label Tooltip</h3>
+        <Heading level={3}>With Label Tooltip</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Use <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
             >labelTooltip</code
@@ -232,7 +233,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">ReactNode Label</h3>
+        <Heading level={3}>ReactNode Label</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           The <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">label</code>
           prop accepts ReactNode for rich formatting.
@@ -250,7 +251,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Bare Input (No Label)</h3>
+        <Heading level={3}>Bare Input (No Label)</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Input without <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
             >label</code
@@ -266,7 +267,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Input Types</h3>
+        <Heading level={3}>Input Types</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Supports all HTML input types: <code
             class="rounded bg-kumo-control px-1 py-0.5 text-sm">text</code
@@ -293,7 +294,7 @@ export default function Example() {
 
   <!-- API Reference -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
+    <Heading level={2}>API Reference</Heading>
     <p class="mb-4 text-sm text-kumo-strong">
       Input accepts all standard HTML input attributes plus the following:
     </p>
@@ -353,7 +354,7 @@ export default function Example() {
 
   <!-- Accessibility -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Accessibility</h2>
+    <Heading level={2}>Accessibility</Heading>
     <div class="space-y-4 text-sm">
       <div>
         <h3 class="mb-2 font-semibold">Label Requirement</h3>

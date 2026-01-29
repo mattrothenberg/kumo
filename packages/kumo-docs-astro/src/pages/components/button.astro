@@ -1,5 +1,6 @@
 ---
 import DocLayout from "../../layouts/DocLayout.astro";
+import Heading from "../../components/docs/Heading.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
@@ -37,10 +38,10 @@ import {
 
   <!-- Installation -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
-    <h3 class="mb-2 text-lg font-semibold">Barrel</h3>
+    <Heading level={2}>Installation</Heading>
+    <Heading level={3} class="mb-2 text-lg">Barrel</Heading>
     <CodeBlock code={`import { Button } from "@cloudflare/kumo";`} lang="tsx" />
-    <h3 class="mb-2 mt-4 text-lg font-semibold">Granular</h3>
+    <Heading level={3} class="mb-2 mt-4 text-lg">Granular</Heading>
     <CodeBlock
       code={`import { Button } from "@cloudflare/kumo/components/button";`}
       lang="tsx"
@@ -49,7 +50,7 @@ import {
 
   <!-- Usage -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+    <Heading level={2}>Usage</Heading>
     <CodeBlock
       code={`import { Button } from "@cloudflare/kumo";
 
@@ -62,11 +63,11 @@ export default function Example() {
 
   <!-- Examples -->
   <ComponentSection>
-    <h2 class="mb-6 text-2xl font-bold">Examples</h2>
+    <Heading level={2} class="mb-6">Examples</Heading>
 
     <!-- Variants -->
     <div class="mb-12">
-      <h3 class="mb-4 text-xl font-semibold">Variants</h3>
+      <Heading level={3}>Variants</Heading>
 
       <div class="space-y-8">
         <div>
@@ -121,7 +122,7 @@ export default function Example() {
 
     <!-- Sizes -->
     <div class="mb-12">
-      <h3 class="mb-4 text-xl font-semibold">Sizes</h3>
+      <Heading level={3}>Sizes</Heading>
       <ComponentExample
         code={`<Button size="xs" variant="secondary">Extra Small</Button>
 <Button size="sm" variant="secondary">Small</Button>
@@ -134,7 +135,7 @@ export default function Example() {
 
     <!-- With Icon -->
     <div class="mb-12">
-      <h3 class="mb-4 text-xl font-semibold">With Icon</h3>
+      <Heading level={3}>With Icon</Heading>
       <ComponentExample
         code={`<Button variant="secondary" icon={PlusIcon}>
   Create Worker
@@ -146,7 +147,7 @@ export default function Example() {
 
     <!-- Icon Only -->
     <div class="mb-12">
-      <h3 class="mb-4 text-xl font-semibold">Icon Only</h3>
+      <Heading level={3}>Icon Only</Heading>
       <ComponentExample
         code={`<Button variant="secondary" shape="square" icon={PlusIcon} />
 <Button variant="secondary" shape="circle" icon={PlusIcon} />`}
@@ -157,7 +158,7 @@ export default function Example() {
 
     <!-- Loading State -->
     <div class="mb-12">
-      <h3 class="mb-4 text-xl font-semibold">Loading State</h3>
+      <Heading level={3}>Loading State</Heading>
       <ComponentExample
         code={`<Button variant="primary" loading>
   Loading...
@@ -169,7 +170,7 @@ export default function Example() {
 
     <!-- Disabled State -->
     <div class="mb-12">
-      <h3 class="mb-4 text-xl font-semibold">Disabled State</h3>
+      <Heading level={3}>Disabled State</Heading>
       <ComponentExample
         code={`<Button variant="secondary" disabled>
   Disabled
@@ -182,7 +183,7 @@ export default function Example() {
 
   <!-- API Reference -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
+    <Heading level={2}>API Reference</Heading>
     <PropsTable component="Button" />
   </ComponentSection>
 </DocLayout>

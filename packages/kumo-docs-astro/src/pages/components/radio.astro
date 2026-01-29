@@ -1,5 +1,6 @@
 ---
 import DocLayout from "../../layouts/DocLayout.astro";
+import Heading from "../../components/docs/Heading.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
@@ -36,10 +37,10 @@ import {
 
   <!-- Installation -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
-    <h3 class="mb-2 text-lg font-semibold">Barrel</h3>
+    <Heading level={2}>Installation</Heading>
+    <Heading level={3} class="mb-2 text-lg">Barrel</Heading>
     <CodeBlock code={`import { Radio } from "@cloudflare/kumo";`} lang="tsx" />
-    <h3 class="mb-2 mt-4 text-lg font-semibold">Granular</h3>
+    <Heading level={3} class="mb-2 mt-4 text-lg">Granular</Heading>
     <CodeBlock
       code={`import { Radio } from "@cloudflare/kumo/components/radio";`}
       lang="tsx"
@@ -48,7 +49,7 @@ import {
 
   <!-- Usage -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+    <Heading level={2}>Usage</Heading>
     <CodeBlock
       code={`import { Radio } from "@cloudflare/kumo";
 
@@ -66,11 +67,11 @@ export default function Example() {
 
   <!-- Examples -->
   <ComponentSection>
-    <h2 class="mb-6 text-2xl font-bold">Examples</h2>
+    <Heading level={2} class="mb-6">Examples</Heading>
 
     <div class="space-y-8">
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Default (Vertical)</h3>
+        <Heading level={3}>Default (Vertical)</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Radio groups display vertically by default. Each radio has a label
           displayed to its right.
@@ -87,7 +88,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Horizontal</h3>
+        <Heading level={3}>Horizontal</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Use <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
             >orientation="horizontal"</code
@@ -105,7 +106,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">With Description</h3>
+        <Heading level={3}>With Description</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Add helper text below the radio items using the <code
             class="rounded bg-kumo-control px-1 py-0.5 text-sm">description</code
@@ -127,7 +128,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">With Error</h3>
+        <Heading level={3}>With Error</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Show validation errors at the group level using the <code
             class="rounded bg-kumo-control px-1 py-0.5 text-sm">error</code
@@ -148,7 +149,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Disabled</h3>
+        <Heading level={3}>Disabled</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Disable the entire group or individual items.
         </p>
@@ -168,7 +169,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Control Position</h3>
+        <Heading level={3}>Control Position</Heading>
         <p class="mb-4 text-sm text-kumo-strong">
           Use <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
             >controlPosition="end"</code
@@ -188,7 +189,7 @@ export default function Example() {
 
   <!-- API Reference -->
   <ComponentSection>
-    <h2 class="mb-6 text-2xl font-bold">API Reference</h2>
+    <Heading level={2} class="mb-6">API Reference</Heading>
 
     <div class="space-y-8">
       <div>
@@ -212,7 +213,7 @@ export default function Example() {
 
   <!-- Accessibility -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Accessibility</h2>
+    <Heading level={2}>Accessibility</Heading>
     <div class="space-y-4 text-sm">
       <div>
         <h3 class="mb-2 font-semibold">Semantic HTML</h3>

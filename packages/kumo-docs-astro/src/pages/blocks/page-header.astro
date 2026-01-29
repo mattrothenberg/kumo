@@ -1,5 +1,6 @@
 ---
 import DocLayout from "../../layouts/DocLayout.astro";
+import Heading from "../../components/docs/Heading.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
@@ -43,7 +44,7 @@ import { PageHeaderHeroDemo, PageHeaderBasicDemo, PageHeaderWithIconsDemo, PageH
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
+    <Heading level={2}>Installation</Heading>
     <p class="mb-4 text-kumo-strong">
       PageHeader is a <strong>block</strong> - a CLI-installed component that you own and can customize.
       Unlike regular components, blocks are copied into your project so you have full control over the code.
@@ -67,7 +68,7 @@ import { PageHeader } from "./components/kumo/page-header/page-header";`} lang="
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+    <Heading level={2}>Usage</Heading>
     <CodeBlock code={`import { PageHeader } from "./components/kumo/page-header/page-header";
 import { Breadcrumbs } from "@cloudflare/kumo";
 
@@ -97,10 +98,10 @@ export default function Example() {
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-6 text-2xl font-bold">Examples</h2>
+    <Heading level={2} class="mb-6">Examples</Heading>
 
     <div class="mb-12">
-      <h3 class="mb-4 text-xl font-semibold">Basic</h3>
+      <Heading level={3}>Basic</Heading>
       <ComponentExample code={`<PageHeader
   breadcrumbs={
     <Breadcrumbs>
@@ -115,7 +116,7 @@ export default function Example() {
     </div>
 
     <div class="mb-12">
-      <h3 class="mb-4 text-xl font-semibold">With Icons</h3>
+      <Heading level={3}>With Icons</Heading>
       <ComponentExample code={`<PageHeader
   breadcrumbs={
     <Breadcrumbs>
@@ -134,7 +135,7 @@ export default function Example() {
     </div>
 
     <div class="mb-12">
-      <h3 class="mb-4 text-xl font-semibold">With Tabs</h3>
+      <Heading level={3}>With Tabs</Heading>
       <ComponentExample code={`<PageHeader
   breadcrumbs={
     <Breadcrumbs>
@@ -155,7 +156,7 @@ export default function Example() {
     </div>
 
     <div class="mb-12">
-      <h3 class="mb-4 text-xl font-semibold">With Actions</h3>
+      <Heading level={3}>With Actions</Heading>
       <ComponentExample code={`<PageHeader
   breadcrumbs={
     <Breadcrumbs>
@@ -181,7 +182,7 @@ export default function Example() {
     </div>
 
     <div class="mb-12">
-      <h3 class="mb-4 text-xl font-semibold">With Title</h3>
+      <Heading level={3}>With Title</Heading>
       <ComponentExample code={`<PageHeader
   breadcrumbs={
     <Breadcrumbs>
@@ -199,7 +200,7 @@ export default function Example() {
     </div>
 
     <div class="mb-12">
-      <h3 class="mb-4 text-xl font-semibold">With Title and Description</h3>
+      <Heading level={3}>With Title and Description</Heading>
       <ComponentExample code={`<PageHeader
   breadcrumbs={
     <Breadcrumbs>
@@ -218,7 +219,7 @@ export default function Example() {
     </div>
 
     <div class="mb-12">
-      <h3 class="mb-4 text-xl font-semibold">Complete Example</h3>
+      <Heading level={3}>Complete Example</Heading>
       <p class="mb-4 text-kumo-strong">Combining breadcrumbs, title, description, tabs, and actions.</p>
       <ComponentExample code={`<PageHeader
   breadcrumbs={
@@ -248,7 +249,7 @@ export default function Example() {
   </ComponentSection>
 
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
+    <Heading level={2}>API Reference</Heading>
     <PropsTable component="PageHeader" />
 
     <h3 class="mb-2 text-lg font-semibold mt-6">TabsItem</h3>

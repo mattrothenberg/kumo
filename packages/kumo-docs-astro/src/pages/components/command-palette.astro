@@ -1,5 +1,6 @@
 ---
 import DocLayout from "../../layouts/DocLayout.astro";
+import Heading from "../../components/docs/Heading.astro";
 import ComponentSection from "../../components/docs/ComponentSection.astro";
 import ComponentExample from "../../components/docs/ComponentExample.astro";
 import CodeBlock from "../../components/docs/CodeBlock.astro";
@@ -54,13 +55,13 @@ import {
 
   <!-- Installation -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Installation</h2>
-    <h3 class="mb-2 text-lg font-semibold">Barrel</h3>
+    <Heading level={2}>Installation</Heading>
+    <Heading level={3} class="mb-2 text-lg">Barrel</Heading>
     <CodeBlock
       code={`import { CommandPalette } from "@cloudflare/kumo";`}
       lang="tsx"
     />
-    <h3 class="mb-2 mt-4 text-lg font-semibold">Granular</h3>
+    <Heading level={3} class="mb-2 mt-4 text-lg">Granular</Heading>
     <CodeBlock
       code={`import { CommandPalette } from "@cloudflare/kumo/components/command-palette";`}
       lang="tsx"
@@ -69,7 +70,7 @@ import {
 
   <!-- Usage -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+    <Heading level={2}>Usage</Heading>
     <p class="mb-4 text-kumo-subtle">
       CommandPalette is a compound component built on Base UI's Autocomplete
       primitive. It provides accessible keyboard navigation and customizable
@@ -130,7 +131,7 @@ export default function Example() {
 
   <!-- Keyboard Navigation -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Keyboard Navigation</h2>
+    <Heading level={2}>Keyboard Navigation</Heading>
     <p class="mb-4 text-kumo-subtle">
       Built-in keyboard navigation is provided automatically:
     </p>
@@ -168,11 +169,11 @@ export default function Example() {
 
   <!-- Examples -->
   <ComponentSection>
-    <h2 class="mb-6 text-2xl font-bold">Examples</h2>
+    <Heading level={2} class="mb-6">Examples</Heading>
 
     <div class="space-y-8">
       <div>
-        <h3 class="mb-4 text-xl font-semibold">With Grouped Items</h3>
+        <Heading level={3}>With Grouped Items</Heading>
         <p class="mb-4 text-kumo-subtle">
           Group related commands together with labels.
         </p>
@@ -202,7 +203,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Simple Flat List</h3>
+        <Heading level={3}>Simple Flat List</Heading>
         <p class="mb-4 text-kumo-subtle">
           For simpler use cases, use a flat array of items without grouping.
         </p>
@@ -229,7 +230,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">Loading State</h3>
+        <Heading level={3}>Loading State</Heading>
         <p class="mb-4 text-kumo-subtle">
           Show a loading spinner while fetching results.
         </p>
@@ -249,7 +250,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-4 text-xl font-semibold">ResultItem with Breadcrumbs</h3>
+        <Heading level={3}>ResultItem with Breadcrumbs</Heading>
         <p class="mb-4 text-kumo-subtle">
           Use <code class="text-kumo-default">ResultItem</code> for rich items with
           breadcrumbs, icons, and optional text highlighting.
@@ -271,11 +272,11 @@ export default function Example() {
 
   <!-- Component Parts -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">Component Parts</h2>
+    <Heading level={2}>Component Parts</Heading>
 
     <div class="space-y-6">
       <div>
-        <h3 class="mb-2 text-lg font-semibold">CommandPalette.Root</h3>
+        <Heading level={3} class="mb-2 text-lg">CommandPalette.Root</Heading>
         <p class="text-kumo-subtle">
           The main wrapper that combines Dialog + Panel. Manages open state and
           Autocomplete functionality.
@@ -283,7 +284,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-2 text-lg font-semibold">CommandPalette.Dialog</h3>
+        <Heading level={3} class="mb-2 text-lg">CommandPalette.Dialog</Heading>
         <p class="text-kumo-subtle">
           Modal dialog wrapper. Use with Panel for swappable content (e.g.,
           drill-down navigation).
@@ -291,7 +292,7 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-2 text-lg font-semibold">CommandPalette.Panel</h3>
+        <Heading level={3} class="mb-2 text-lg">CommandPalette.Panel</Heading>
         <p class="text-kumo-subtle">
           Autocomplete panel without dialog. Use inside Dialog for content that
           can swap without re-mounting.
@@ -299,84 +300,84 @@ export default function Example() {
       </div>
 
       <div>
-        <h3 class="mb-2 text-lg font-semibold">CommandPalette.Input</h3>
+        <Heading level={3} class="mb-2 text-lg">CommandPalette.Input</Heading>
         <p class="text-kumo-subtle">
           Search input field with auto-focus and keyboard handling.
         </p>
       </div>
 
       <div>
-        <h3 class="mb-2 text-lg font-semibold">CommandPalette.List</h3>
+        <Heading level={3} class="mb-2 text-lg">CommandPalette.List</Heading>
         <p class="text-kumo-subtle">
           Scrollable container for results.
         </p>
       </div>
 
       <div>
-        <h3 class="mb-2 text-lg font-semibold">CommandPalette.Results</h3>
+        <Heading level={3} class="mb-2 text-lg">CommandPalette.Results</Heading>
         <p class="text-kumo-subtle">
           Render prop iterator for items/groups.
         </p>
       </div>
 
       <div>
-        <h3 class="mb-2 text-lg font-semibold">CommandPalette.Group</h3>
+        <Heading level={3} class="mb-2 text-lg">CommandPalette.Group</Heading>
         <p class="text-kumo-subtle">
           Category grouping container.
         </p>
       </div>
 
       <div>
-        <h3 class="mb-2 text-lg font-semibold">CommandPalette.GroupLabel</h3>
+        <Heading level={3} class="mb-2 text-lg">CommandPalette.GroupLabel</Heading>
         <p class="text-kumo-subtle">
           Section header text within a group.
         </p>
       </div>
 
       <div>
-        <h3 class="mb-2 text-lg font-semibold">CommandPalette.Items</h3>
+        <Heading level={3} class="mb-2 text-lg">CommandPalette.Items</Heading>
         <p class="text-kumo-subtle">
           Render prop iterator for items within a group.
         </p>
       </div>
 
       <div>
-        <h3 class="mb-2 text-lg font-semibold">CommandPalette.Item</h3>
+        <Heading level={3} class="mb-2 text-lg">CommandPalette.Item</Heading>
         <p class="text-kumo-subtle">
           Basic selectable item.
         </p>
       </div>
 
       <div>
-        <h3 class="mb-2 text-lg font-semibold">CommandPalette.ResultItem</h3>
+        <Heading level={3} class="mb-2 text-lg">CommandPalette.ResultItem</Heading>
         <p class="text-kumo-subtle">
           Rich item with breadcrumbs, icons, and text highlighting.
         </p>
       </div>
 
       <div>
-        <h3 class="mb-2 text-lg font-semibold">CommandPalette.HighlightedText</h3>
+        <Heading level={3} class="mb-2 text-lg">CommandPalette.HighlightedText</Heading>
         <p class="text-kumo-subtle">
           Renders text with highlighted portions based on match indices.
         </p>
       </div>
 
       <div>
-        <h3 class="mb-2 text-lg font-semibold">CommandPalette.Empty</h3>
+        <Heading level={3} class="mb-2 text-lg">CommandPalette.Empty</Heading>
         <p class="text-kumo-subtle">
           Empty state when no results match.
         </p>
       </div>
 
       <div>
-        <h3 class="mb-2 text-lg font-semibold">CommandPalette.Loading</h3>
+        <Heading level={3} class="mb-2 text-lg">CommandPalette.Loading</Heading>
         <p class="text-kumo-subtle">
           Loading spinner state.
         </p>
       </div>
 
       <div>
-        <h3 class="mb-2 text-lg font-semibold">CommandPalette.Footer</h3>
+        <Heading level={3} class="mb-2 text-lg">CommandPalette.Footer</Heading>
         <p class="text-kumo-subtle">
           Footer for keyboard hints or other content.
         </p>
@@ -386,10 +387,10 @@ export default function Example() {
 
   <!-- API Reference -->
   <ComponentSection>
-    <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
+    <Heading level={2}>API Reference</Heading>
 
     <div class="mb-8">
-      <h3 class="mb-4 text-xl font-semibold">CommandPalette.Root Props</h3>
+      <Heading level={3}>CommandPalette.Root Props</Heading>
       <CodeBlock
         code={`interface CommandPaletteRootProps<TGroup, TItem> {
   // Dialog state
@@ -416,7 +417,7 @@ export default function Example() {
     </div>
 
     <div class="mb-8">
-      <h3 class="mb-4 text-xl font-semibold">CommandPalette.ResultItem Props</h3>
+      <Heading level={3}>CommandPalette.ResultItem Props</Heading>
       <CodeBlock
         code={`interface CommandPaletteResultItemProps<T> {
   value: T;
