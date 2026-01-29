@@ -41,7 +41,7 @@ export function clipboardTextVariants({
 }: KumoClipboardTextVariantsProps = {}) {
   return cn(
     // Base styles
-    "flex items-center overflow-hidden bg-surface px-0 font-mono",
+    "flex items-center overflow-hidden bg-kumo-base px-0 font-mono",
     // Apply size styles from KUMO_CLIPBOARD_TEXT_VARIANTS
     KUMO_CLIPBOARD_TEXT_VARIANTS.size[size].classes,
   );
@@ -139,7 +139,7 @@ export const ClipboardText = forwardRef<HTMLDivElement, ClipboardTextProps>(
         <Button
           size={sizeConfig.buttonSize}
           variant="ghost"
-          className="rounded-none border-l! border-color! px-3"
+          className="rounded-none border-l! border-kumo-line! px-3"
           onClick={copyToClipboard}
           aria-label={copied ? "Copied" : "Copy to clipboard"}
           aria-pressed={copied}

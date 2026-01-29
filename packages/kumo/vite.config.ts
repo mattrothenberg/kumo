@@ -98,7 +98,7 @@ export default defineConfig(({ mode }) => {
             __dirname,
             "src/components/field/index.ts",
           ),
-          "components/icon": resolve(__dirname, "src/components/icon/index.ts"),
+
           "components/input": resolve(
             __dirname,
             "src/components/input/index.ts",
@@ -173,28 +173,24 @@ export default defineConfig(({ mode }) => {
             __dirname,
             "src/components/link/index.ts",
           ),
+          "components/breadcrumbs": resolve(
+            __dirname,
+            "src/components/breadcrumbs/index.ts",
+          ),
+          "components/empty": resolve(
+            __dirname,
+            "src/components/empty/index.ts",
+          ),
+          "components/grid": resolve(__dirname, "src/components/grid/index.ts"),
           // PLOP_INJECT_COMPONENT_ENTRY
-          // Block entry points
-          "blocks/breadcrumbs": resolve(
-            __dirname,
-            "src/blocks/breadcrumbs/index.ts",
-          ),
-          "blocks/empty": resolve(__dirname, "src/blocks/empty/index.ts"),
-          "blocks/page-header": resolve(
-            __dirname,
-            "src/blocks/page-header/index.ts",
-          ),
-          // PLOP_INJECT_BLOCK_ENTRY
-          // Layout entry points
-          "layouts/resource-list": resolve(
-            __dirname,
-            "src/layouts/resource-list/index.ts",
-          ),
-          // PLOP_INJECT_LAYOUT_ENTRY
           // Utils entry point
           utils: resolve(__dirname, "src/utils/index.ts"),
           // Primitives entry point (base-ui re-exports)
           primitives: resolve(__dirname, "src/primitives/index.ts"),
+          // Registry entry point (component metadata types)
+          registry: resolve(__dirname, "src/registry/index.ts"),
+          // Catalog module entry point (runtime validation, JSON UI rendering)
+          catalog: resolve(__dirname, "src/catalog/index.ts"),
         },
         formats: ["es"],
         fileName: (format, entryName) => {

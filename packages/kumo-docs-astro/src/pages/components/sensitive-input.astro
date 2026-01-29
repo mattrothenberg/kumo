@@ -11,7 +11,6 @@ import { SensitiveInputDemo, SensitiveInputSizesDemo, SensitiveInputControlledDe
   title="Sensitive Input"
   description="A masked input for sensitive values like API keys and passwords. Click to reveal."
   sourceFile="components/sensitive-input"
-  storybookPath="story/components-sensitiveinput"
 >
   <ComponentSection>
     <ComponentExample code={`<SensitiveInput 
@@ -43,7 +42,7 @@ export default function Example() {
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Sizes</h2>
-    <p class="text-label mb-4">SensitiveInput supports multiple sizes to fit different contexts.</p>
+    <p class="text-kumo-strong mb-4">SensitiveInput supports multiple sizes to fit different contexts.</p>
     <ComponentExample code={`<SensitiveInput label="xs size" size="xs" defaultValue="secret-key" />
 <SensitiveInput label="sm size" size="sm" defaultValue="secret-key" />
 <SensitiveInput label="base size" size="base" defaultValue="secret-key" />
@@ -54,7 +53,7 @@ export default function Example() {
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Controlled</h2>
-    <p class="text-label mb-4">Use controlled mode for full control over the input value.</p>
+    <p class="text-kumo-strong mb-4">Use controlled mode for full control over the input value.</p>
     <ComponentExample code={`const [value, setValue] = useState("my-secret-value");
 
 <SensitiveInput
@@ -68,7 +67,7 @@ export default function Example() {
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">States</h2>
-    <p class="text-label mb-4">Various input states including error, disabled, read-only, and with description.</p>
+    <p class="text-kumo-strong mb-4">Various input states including error, disabled, read-only, and with description.</p>
     <ComponentExample code={`<SensitiveInput
   label="Error State"
   variant="error"

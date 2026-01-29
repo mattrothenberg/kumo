@@ -30,13 +30,13 @@
   - Each component generated with light and dark mode sections
   - Icon Library generator creates all Phosphor and Cloudflare brand icons
   - Parses component-registry.json and source files for variant specs
-  - Extracts opacity modifiers from Tailwind classes (bg-primary/70 → opacity-primary-70)
+  - Extracts opacity modifiers from Tailwind classes (bg-kumo-brand/70 → opacity-primary-70)
   - Binds fills/strokes to kumo-colors variables
   - Includes progress UI and validation output
 
 - 4266f72: feat(kumo): add command-palette component
 - 4ac5fbe: semantic color changes and more consolidation for non-text colors
-- 009097d: feat(tooltip): Update tooltip to use bg-surface with proper light/dark mode support
+- 009097d: feat(tooltip): Update tooltip to use bg-kumo-base with proper light/dark mode support
 
   Changes the tooltip background from a fixed dark color to a surface-aware background that adapts to light and dark modes. Implements Base UI's 3-path arrow SVG approach for pixel-perfect border alignment across color modes.
 
@@ -120,7 +120,7 @@
 - 356d1e6: Modernize Active Sessions page with updated Kumo design patterns
 - 5b256bd: - Align border color with sidebar
   - Center arrow icon in select component
-- d998518: Add `bg-surface` as default background for Surface component
+- d998518: Add `bg-kumo-base` as default background for Surface component
 
 ## 0.4.0
 

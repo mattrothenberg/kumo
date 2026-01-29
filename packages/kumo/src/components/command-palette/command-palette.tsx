@@ -146,7 +146,7 @@ function Dialog({
     <DialogBase.Root open={open} onOpenChange={onOpenChange} modal>
       <DialogBase.Portal>
         <DialogBase.Backdrop
-          className="fixed inset-0 bg-color-3 opacity-80 transition-all duration-150 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0"
+          className="fixed inset-0 bg-kumo-overlay opacity-80 transition-all duration-150 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0"
           onClick={handleBackdropClick}
         />
         <Surface
@@ -235,9 +235,9 @@ function InputHeader({
   trailing?: React.ReactNode;
 }) {
   return (
-    <div className="flex items-center gap-3 bg-surface-elevated px-4 py-3">
+    <div className="flex items-center gap-3 bg-kumo-base px-4 py-3">
       {leading ?? (
-        <MagnifyingGlassIcon className="h-4 w-4 text-muted" weight="bold" />
+        <MagnifyingGlassIcon className="h-4 w-4 text-kumo-subtle" weight="bold" />
       )}
       {children}
       {trailing}
@@ -259,7 +259,7 @@ const List = forwardRef<
     <div
       ref={ref}
       className={cn(
-        "z-10 min-h-0 flex-1 overflow-y-auto rounded-b-lg bg-surface-elevated px-2 py-2 ring-1 ring-border",
+        "z-10 min-h-0 flex-1 overflow-y-auto rounded-b-lg bg-kumo-base px-2 py-2 ring-1 ring-kumo-line",
         className,
       )}
     >
@@ -302,7 +302,7 @@ function GroupLabel({
   return (
     <Autocomplete.GroupLabel
       className={cn(
-        "mb-2 px-2 pt-1 text-xs font-semibold text-label",
+        "mb-2 px-2 pt-1 text-xs font-semibold text-kumo-strong",
         className,
       )}
     >
@@ -333,7 +333,7 @@ function Item<T>({
       onClick={onClick}
       className={cn(
         "group flex w-full items-center gap-3 px-2 py-1.5 text-left transition-colors",
-        "cursor-pointer data-[highlighted]:bg-subtle",
+        "cursor-pointer data-[highlighted]:bg-kumo-overlay",
         "rounded-lg",
         disabled && "cursor-default opacity-50",
         className,
@@ -353,7 +353,7 @@ function Empty({ children }: CommandPaletteEmptyProps) {
   return (
     <Autocomplete.Empty>
       <div className="p-8 text-center">
-        <p className="text-label">{children ?? "No results found"}</p>
+        <p className="text-kumo-strong">{children ?? "No results found"}</p>
       </div>
     </Autocomplete.Empty>
   );
@@ -380,7 +380,7 @@ function Loading({ children }: CommandPaletteLoadingProps) {
  */
 function Footer({ children }: CommandPaletteFooterProps) {
   return (
-    <div className="flex items-center justify-between rounded-b-lg bg-surface-2 px-4 py-3 text-xs text-label">
+    <div className="flex items-center justify-between rounded-b-lg bg-kumo-elevated px-4 py-3 text-xs text-kumo-strong">
       {children}
     </div>
   );
@@ -404,7 +404,7 @@ function HighlightedText({
   }
 
   // Sort highlights by start index and merge overlapping ranges
-  const sortedHighlights = [...highlights].sort((a, b) => a[0] - b[0]);
+  const sortedHighlights = [...highlights].toSorted((a, b) => a[0] - b[0]);
   const mergedHighlights: HighlightRange[] = [];
 
   for (const range of sortedHighlights) {
@@ -432,7 +432,7 @@ function HighlightedText({
     parts.push(
       <mark
         key={`highlight-${i}`}
-        className="rounded-sm bg-alert/50 text-surface"
+        className="rounded-sm bg-kumo-warning/50 text-kumo-default"
       >
         {text.slice(start, end + 1)}
       </mark>,
@@ -476,11 +476,11 @@ function ResultItem<T>({
         "group flex w-full items-center gap-3 rounded-lg px-2 py-1.5 text-left transition-colors",
         nonInteractive
           ? "cursor-default"
-          : "cursor-pointer data-[highlighted]:bg-subtle",
+          : "cursor-pointer data-[highlighted]:bg-kumo-overlay",
       )}
     >
       {icon && (
-        <div className="flex flex-shrink-0 items-center text-muted">{icon}</div>
+        <div className="flex flex-shrink-0 items-center text-kumo-subtle">{icon}</div>
       )}
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2 truncate">
@@ -489,10 +489,10 @@ function ResultItem<T>({
               <HighlightedText
                 text={crumb}
                 highlights={breadcrumbHighlights?.[index]}
-                className="text-base text-surface"
+                className="text-base text-kumo-default"
               />
               <CaretRightIcon
-                className="h-3 w-3 flex-shrink-0 text-muted"
+                className="h-3 w-3 flex-shrink-0 text-kumo-subtle"
                 weight="bold"
               />
             </span>
@@ -500,21 +500,21 @@ function ResultItem<T>({
           <HighlightedText
             text={title}
             highlights={titleHighlights}
-            className="text-base text-surface"
+            className="text-base text-kumo-default"
           />
           {external && (
-            <ArrowSquareOutIcon className="h-3.5 w-3.5 flex-shrink-0 text-muted" />
+            <ArrowSquareOutIcon className="h-3.5 w-3.5 flex-shrink-0 text-kumo-subtle" />
           )}
           {description && (
             <>
-              <span className="text-label">—</span>
-              <span className="truncate text-sm text-label">{description}</span>
+              <span className="text-kumo-strong">—</span>
+              <span className="truncate text-sm text-kumo-strong">{description}</span>
             </>
           )}
         </div>
       </div>
       {showArrow && !external && !nonInteractive && (
-        <ArrowRightIcon className="h-4 w-4 flex-shrink-0 text-muted opacity-0 transition-opacity group-data-[highlighted]:opacity-100" />
+        <ArrowRightIcon className="h-4 w-4 flex-shrink-0 text-kumo-subtle opacity-0 transition-opacity group-data-[highlighted]:opacity-100" />
       )}
     </Autocomplete.Item>
   );
@@ -533,7 +533,7 @@ function Container({
   return (
     <div
       className={cn(
-        "flex max-h-[60vh] flex-col overflow-hidden rounded-lg bg-surface-2",
+        "flex max-h-[60vh] flex-col overflow-hidden rounded-lg bg-kumo-elevated",
         className,
       )}
     >
@@ -743,7 +743,7 @@ function PanelInput({
       <Autocomplete.Input
         placeholder={placeholder}
         className={cn(
-          "flex-1 border-none bg-transparent text-base placeholder:text-muted",
+          "flex-1 border-none bg-transparent text-base placeholder:text-kumo-subtle",
           "outline-none focus-visible:outline-none",
           className,
         )}

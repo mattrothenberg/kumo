@@ -13,11 +13,11 @@ import {
 export const KUMO_CHECKBOX_VARIANTS = {
   variant: {
     default: {
-      classes: "[&:focus-within>span]:ring-active [&:hover>span]:ring-active",
+      classes: "[&:focus-within>span]:ring-kumo-ring [&:hover>span]:ring-kumo-ring",
       description: "Default checkbox appearance",
     },
     error: {
-      classes: "[&>span]:ring-error",
+      classes: "[&>span]:ring-kumo-danger",
       description: "Error state for validation failures",
     },
   },
@@ -253,17 +253,17 @@ const CheckboxBase = forwardRef<HTMLButtonElement, CheckboxProps>(
         disabled={disabled}
         onCheckedChange={handleCheckedChange}
         className={cn(
-          "flex h-4 w-4 items-center justify-center rounded-sm border-0 bg-surface ring",
-          variant === "error" ? "ring-error" : "ring-border",
-          !disabled && "hover:ring-active focus-visible:ring-active",
-          "data-[checked]:bg-surface-inverse data-[indeterminate]:bg-surface-inverse",
+          "flex h-4 w-4 items-center justify-center rounded-sm border-0 bg-kumo-base ring",
+          variant === "error" ? "ring-kumo-danger" : "ring-kumo-line",
+          !disabled && "hover:ring-kumo-ring focus-visible:ring-kumo-ring",
+          "data-[checked]:bg-kumo-contrast data-[indeterminate]:bg-kumo-contrast",
           disabled && "cursor-not-allowed opacity-50",
           className,
         )}
         {...props}
       >
         <BaseCheckbox.Indicator
-          className="flex items-center justify-center text-surface-inverse"
+          className="flex items-center justify-center text-kumo-inverse"
           render={(renderProps, state) => {
             const Icon = state.indeterminate ? MinusIcon : CheckIcon;
             return (
@@ -355,15 +355,15 @@ const CheckboxItem = forwardRef<HTMLButtonElement, CheckboxItemProps>(
           disabled={disabled}
           onCheckedChange={handleCheckedChange}
           className={cn(
-            "peer flex h-4 w-4 items-center justify-center rounded-sm border-0 bg-surface ring",
-            variant === "error" ? "ring-error" : "ring-border",
+            "peer flex h-4 w-4 items-center justify-center rounded-sm border-0 bg-kumo-base ring",
+            variant === "error" ? "ring-kumo-danger" : "ring-kumo-line",
             !disabled &&
-              "group-hover:ring-active hover:ring-active focus-visible:ring-active",
-            "data-[checked]:bg-surface-inverse data-[indeterminate]:bg-surface-inverse",
+              "group-hover:ring-kumo-ring hover:ring-kumo-ring focus-visible:ring-kumo-ring",
+            "data-[checked]:bg-kumo-contrast data-[indeterminate]:bg-kumo-contrast",
           )}
         >
           <BaseCheckbox.Indicator
-            className="flex items-center justify-center text-surface-inverse"
+            className="flex items-center justify-center text-kumo-inverse"
             render={(props, state) => {
               const Icon = state.indeterminate ? MinusIcon : CheckIcon;
               return (
@@ -376,7 +376,7 @@ const CheckboxItem = forwardRef<HTMLButtonElement, CheckboxItemProps>(
             }}
           />
         </BaseCheckbox.Root>
-        <span className="text-base font-medium text-surface">{label}</span>
+        <span className="text-base font-medium text-kumo-default">{label}</span>
       </label>
     );
   },
@@ -409,16 +409,16 @@ function CheckboxGroup({
       >
         <Fieldset.Root
           className={cn(
-            "flex flex-col gap-4 rounded-lg border border-border p-4",
+            "flex flex-col gap-4 rounded-lg border border-kumo-line p-4",
             className,
           )}
         >
-          <Fieldset.Legend className="text-lg font-medium text-surface">
+          <Fieldset.Legend className="text-lg font-medium text-kumo-default">
             {legend}
           </Fieldset.Legend>
           <div className="flex flex-col gap-2">{children}</div>
-          {error && <p className="text-sm text-error">{error}</p>}
-          {description && <p className="text-sm text-muted">{description}</p>}
+          {error && <p className="text-sm text-kumo-danger">{error}</p>}
+          {description && <p className="text-sm text-kumo-subtle">{description}</p>}
         </Fieldset.Root>
       </BaseCheckboxGroup>
     </CheckboxGroupContext.Provider>

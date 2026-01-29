@@ -20,14 +20,13 @@ import {
   title="Select"
   description="Displays a list of options for the user to pick from—triggered by a button."
   sourceFile="components/select"
-  storybookPath="story/components-select"
   baseUIComponent="select"
 >
   <!-- Basic Usage -->
   <ComponentSection>
     <p class="mb-4 flex flex-col gap-4">
       <span class="text-xl font-semibold">Basic Usage</span>
-      <span class="text-label">
+      <span class="text-kumo-strong">
         A simple select component where the display value matches the option
         value. Perfect for basic dropdown menus with string-based options.
       </span>
@@ -56,7 +55,7 @@ function App() {
   <ComponentSection>
     <p class="mb-4 flex flex-col gap-4">
       <span class="text-xl font-semibold">Basic Label and Value</span>
-      <span class="text-label">
+      <span class="text-kumo-strong">
         A select component where the internal value differs from the displayed
         text. Useful when you need to store identifiers while showing
         user-friendly labels.
@@ -118,7 +117,7 @@ function App() {
   <ComponentSection>
     <p class="mb-4 flex flex-col gap-4">
       <span class="text-xl font-semibold">Placeholder</span>
-      <span class="text-label">
+      <span class="text-kumo-strong">
         A select component with a placeholder option. The empty value must be <strong
           >null</strong
         >, not an empty string or undefined. Using undefined will cause the
@@ -160,7 +159,7 @@ function App() {
   <ComponentSection>
     <p class="mb-4 flex flex-col gap-4">
       <span class="text-xl font-semibold">Custom Rendering</span>
-      <span class="text-label">
+      <span class="text-kumo-strong">
         A select component that demonstrates custom rendering capabilities for
         both the trigger button and dropdown options, allowing you to work with
         complex object data structures instead of simple string values.
@@ -204,7 +203,7 @@ function App() {
     </ComponentExample>
 
     <div class="my-4">
-      <p class="text-label">
+      <p class="text-kumo-strong">
         Select compares value with items to find which one is selected. For
         object items, it will compare if the object is the same reference not by
         value by default. If you want to compare object items by value, you can
@@ -251,9 +250,9 @@ function App() {
   <ComponentSection>
     <p class="mb-4 flex flex-col gap-4">
       <span class="text-xl font-semibold">Loading</span>
-      <span class="text-label">
+      <span class="text-kumo-strong">
         A select component with loading state. The loading state is passed to
-        the component via the <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+        the component via the <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
           >loading</code
         > prop.
       </span>
@@ -277,9 +276,9 @@ function App() {
 }`}
     >
       <div class="flex flex-col gap-4">
-        <p class="text-label">Loading State</p>
+        <p class="text-kumo-strong">Loading State</p>
         <SelectLoadingDemo client:load />
-        <p class="text-label">Loading From Server (simulated 2s delay)</p>
+        <p class="text-kumo-strong">Loading From Server (simulated 2s delay)</p>
         <SelectLoadingDataDemo client:load />
       </div>
     </ComponentExample>
@@ -289,7 +288,7 @@ function App() {
   <ComponentSection>
     <p class="mb-4 flex flex-col gap-4">
       <span class="text-xl font-semibold">Multiple Item</span>
-      <span class="text-label">
+      <span class="text-kumo-strong">
         A select component with multiple selection enabled. The value is an
         array of selected items.
       </span>

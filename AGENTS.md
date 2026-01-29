@@ -12,7 +12,7 @@ pnpm add @cloudflare/kumo
 import { Button } from "@cloudflare/kumo";
 ```
 
-**CRITICAL:** Only use semantic tokens (`bg-surface`, `text-surface`). Never raw Tailwind colors (`bg-blue-500`).
+**CRITICAL:** Only use semantic tokens (`bg-kumo-base`, `text-kumo-default`). Never raw Tailwind colors (`bg-blue-500`).
 
 ```bash
 pnpm --filter @cloudflare/kumo codegen:registry  # Generate component-registry.{json,md}
@@ -26,40 +26,47 @@ pnpm --filter @cloudflare/kumo codegen:registry  # Generate component-registry.{
 
 Kumo provides extensive automated tooling (`packages/kumo/scripts/`):
 
-**1. Component Registry + CLI** (`scripts/ai/`) - AI-readable metadata & CLI
+**1. Component Registry + CLI** (`scripts/component-registry/`, `src/command-line/`) - AI-readable metadata & CLI
 
-- Auto-generates `ai/component-registry.{json,md}` from TypeScript types + Storybook
+- Auto-generates `ai/component-registry.{json,md}` from TypeScript types + demo files
+- **Demo examples** are extracted from `kumo-docs-astro/src/components/demos/` (not kumo)
 - Includes: props, variants, examples, semantic tokens, sub-components
 - **Exported CLI:** `npx @cloudflare/kumo {ls|doc|docs}` - Quick component reference
 
-**2. Figma Plugin** (`packages/figma/`) - React → Figma components
+**Build Pipeline:**
 
-- Separate package: `@cloudflare/figma-plugin`
+```
+kumo-docs-astro/src/components/demos/*.tsx
+    ↓ (pnpm codegen:demos)
+kumo-docs-astro/dist/demo-metadata.json
+    ↓ (pnpm codegen:registry)
+kumo/ai/component-registry.{json,md}
+```
+
+**2. Figma Plugin** (`packages/kumo-figma/`) - React → Figma components
+
+- Separate package: `@cloudflare/kumo-figma`
 - 30+ generators (Button, Dialog, Tabs, Toast, etc.)
 - Parses Tailwind → Figma auto-layout, binds semantic tokens to variables
 - Icon library generation, loader variants, opacity modifiers
-- **IMPORTANT:** After modifying any generator in `packages/figma/src/generators/`, you must rebuild the plugin with `pnpm --filter @cloudflare/figma-plugin build` before testing in Figma
+- **IMPORTANT:** After modifying any generator in `packages/kumo-figma/src/generators/`, you must rebuild the plugin with `pnpm --filter @cloudflare/kumo-figma build` before testing in Figma
 
-**3. Figma Token Sync** (`packages/kumo/scripts/figma/`) - CSS → Figma Variables API
+**3. Figma Token Sync** (`packages/kumo-figma/scripts/`) - CSS → Figma Variables API
 
-- Syncs semantic tokens (`kumo-binding.css`) to Figma
+- Syncs semantic tokens from kumo theme CSS to Figma
 - Parses `light-dark()`, converts colors (oklch/hex → Figma RGB)
+- Run with `pnpm --filter @cloudflare/kumo-figma figma:sync`
 
-**4. Custom Lint Rules** (`scripts/linting/`) - Design system enforcement
+**4. Custom Lint Rules** (`lint/`) - Design system enforcement
 
 - `no-primitive-colors`: Blocks `bg-blue-500`, enforces semantic tokens
 - `no-tailwind-dark-variant`: Prevents `dark:` (auto via tokens)
 
-**5. Icon System** (`scripts/icon/`) - SVG sprite + type generation
+**5. Color Analysis** (`scripts/color/`) - Token extraction & usage stats
 
-- CLI: `pnpm add:icon` (auto-normalizes viewBox, currentColor, SVGO)
-- Generates sprite.svg + TypeScript types for `<Icon name="..." />`
+- Analyzes semantic token usage, generates color docs
 
-**6. Color Analysis** (`scripts/color/`) - Token extraction & usage stats
-
-- Analyzes semantic token usage, generates color docs for Storybook
-
-**7. Primitives Generator** (`scripts/generate-primitives.ts`) - Base UI exports
+**6. Primitives Generator** (`scripts/generate-primitives.ts`) - Base UI exports
 
 - Auto-generates tree-shakeable primitive exports, updates package.json
 
@@ -69,8 +76,8 @@ Kumo provides extensive automated tooling (`packages/kumo/scripts/`):
 pnpm --filter @cloudflare/kumo codegen:registry  # Component registry
 pnpm --filter @cloudflare/kumo codegen           # All codegen (primitives + registry)
 npx @cloudflare/kumo doc                         # CLI docs (works in any project)
-pnpm --filter @cloudflare/figma-plugin build     # Build Figma plugin
-pnpm --filter @cloudflare/kumo icons:add         # Add icon with normalization
+pnpm --filter @cloudflare/kumo-figma build       # Build Figma plugin
+pnpm --filter @cloudflare/kumo-figma figma:sync  # Sync tokens to Figma
 pnpm lint                                        # Custom rules + oxlint
 ```
 
@@ -83,20 +90,31 @@ kumo/
 │   │   ├── src/
 │   │   │   ├── components/        # UI components (button, dialog, input, etc.)
 │   │   │   ├── blocks/            # Composite components (breadcrumbs, page-header)
-│   │   │   ├── layouts/           # Page layouts (resource-list)
 │   │   │   ├── pages/             # Full page components
 │   │   │   ├── styles/            # CSS including kumo-binding.css
 │   │   │   ├── utils/             # Utilities (cn, link-provider)
 │   │   │   └── index.ts           # Main exports
-│   │   ├── ai/                    # Component registry for AI agents
-│   │   ├── .storybook/            # Storybook configuration
+│   │   ├── ai/                    # Component registry and JSON UI catalog
 │   │   ├── scripts/               # Build and linting scripts
 │   │   └── package.json
-│   └── kumo-docs/                 # Documentation site (@cloudflare/kumo-docs)
-│       ├── app/                   # React Router application
-│       ├── workers/               # Cloudflare Workers
+│   ├── kumo-docs-astro/           # Documentation site (Astro)
+│   │   ├── src/
+│   │   │   ├── components/demos/  # Interactive component demos
+│   │   │   ├── pages/             # File-based routing
+│   │   │   └── layouts/           # Page layouts
+│   │   └── package.json
+│   └── kumo-figma/                # Figma plugin (@cloudflare/kumo-figma)
+│       ├── src/
+│       │   ├── generators/        # 30+ component generators
+│       │   ├── parsers/           # Tailwind → Figma conversion
+│       │   └── code.ts            # Plugin entry point
+│       ├── scripts/               # Token sync to Figma
 │       └── package.json
 ├── ci/                            # CI/CD scripts and versioning
+│   ├── reporters/                 # MR report generation
+│   ├── scripts/                   # Deployment scripts
+│   └── versioning/                # Beta/production release scripts
+├── lint/                          # Custom ESLint rules
 ├── .changeset/                    # Changeset files for versioning
 └── package.json                   # Workspace root
 ```
@@ -110,11 +128,12 @@ kumo/
 - **Styling**: `cn()` utility combining `clsx` + `tailwind-merge`
 - **Build**: Vite in library mode with tree-shakeable exports
 
-### Documentation Site (`packages/kumo-docs`)
+### Documentation Site (`packages/kumo-docs-astro`)
 
-- **Framework**: React Router v7 + Vite
+- **Framework**: Astro + React
 - **Deployment**: Cloudflare Workers
-- **Dev server**: `http://localhost:5173`
+- **Dev server**: `http://localhost:4321`
+- **Routes**: `/cli`, `/colors`, `/registry` for internal tools
 
 ## Component Registry (Source of Truth)
 
@@ -157,7 +176,7 @@ jq '.search.byCategory.Action' component-registry.json
 jq '.search.byName' component-registry.json
 
 # Find components using a specific token
-grep "bg-surface" component-registry.md
+grep "bg-kumo-base" component-registry.md
 ```
 
 **Registry contains:**
@@ -179,7 +198,7 @@ grep "bg-surface" component-registry.md
 
 ### ✅ ALWAYS
 
-- **Semantic tokens:** `bg-surface`, `text-surface`, `border-border`, `ring-active`
+- **Semantic tokens:** `bg-kumo-base`, `text-kumo-default`, `border-kumo-line`, `ring-kumo-ring`
 - **Query registry first:** Props, variants, and examples are always current
 - **Use `cn()` utility:** For className composition (`cn("base", conditional && "extra", className)`)
 - **Forward refs:** Components wrapping DOM elements must use `forwardRef`
@@ -198,11 +217,11 @@ The color system is defined in `packages/kumo/src/styles/kumo-binding.css`. Colo
 
 ```tsx
 // ✅ CORRECT - Using Kumo semantic tokens
-<div className="bg-surface border border-border rounded-lg">        // Card
-<button className="bg-primary text-white">Primary</button>          // Primary button
-<button className="bg-secondary text-surface ring ring-border">    // Secondary button
-<input className="bg-secondary text-surface ring ring-border" />   // Form input
-<div className="bg-error/20 border-error text-error">Error</div>   // Error state
+<div className="bg-kumo-base border border-kumo-line rounded-lg">        // Card
+<button className="bg-kumo-brand text-white">Primary</button>          // Primary button
+<button className="bg-kumo-control text-kumo-default ring ring-kumo-line">    // Secondary button
+<input className="bg-kumo-control text-kumo-default ring ring-kumo-line" />   // Form input
+<div className="bg-kumo-danger/20 border-kumo-danger text-kumo-danger">Error</div>   // Error state
 
 // ❌ WRONG - Raw Tailwind colors break theming
 <button className="bg-blue-500 text-white">Submit</button>
@@ -218,7 +237,7 @@ The color system is defined in `packages/kumo/src/styles/kumo-binding.css`. Colo
 <div className="bg-white dark:bg-black" />
 
 // ✅ CORRECT
-<div className="bg-surface text-surface" />
+<div className="bg-kumo-base text-kumo-default" />
 ```
 
 ### Dark Mode
@@ -232,7 +251,7 @@ All semantic tokens use `light-dark()` internally. **Never use `dark:` variant.*
 <div className="bg-white dark:bg-black text-black dark:text-white" />
 
 // ✅ CORRECT - Automatic dark mode via semantic tokens
-<div className="bg-surface text-surface" />
+<div className="bg-kumo-base text-kumo-default" />
 ```
 
 ### Surface Hierarchy
@@ -240,7 +259,7 @@ All semantic tokens use `light-dark()` internally. **Never use `dark:` variant.*
 Use layered surfaces for visual depth:
 
 ```
-bg-surface → bg-surface-2 → bg-surface-3
+bg-kumo-base → bg-kumo-elevated → bg-kumo-recessed
 ```
 
 ### Mode & Theme System
@@ -323,9 +342,10 @@ Each component follows this file structure:
 components/
 └── button/
     ├── button.tsx           # Component implementation
-    ├── button.stories.tsx   # Storybook stories
     └── index.ts             # Re-exports
 ```
+
+Demo files for documentation live in `packages/kumo-docs-astro/src/components/demos/`.
 
 ### Component Implementation Pattern
 
@@ -348,9 +368,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           // Base styles
           "flex items-center font-medium",
           // Variant styles using Kumo tokens
-          variant === "primary" && "bg-primary text-white",
+          variant === "primary" && "bg-kumo-brand text-white",
           variant === "secondary" &&
-            "bg-secondary text-secondary ring ring-border",
+            "text-secondary bg-kumo-control ring ring-kumo-line",
           // Size styles
           size === "base" && "h-9 px-3 text-base",
           className,
@@ -374,8 +394,8 @@ import { Dialog as DialogBase } from "@base-ui/react/dialog";
 function DialogContent({ children }) {
   return (
     <DialogBase.Portal>
-      <DialogBase.Backdrop className="bg-color-3 opacity-80" />
-      <DialogBase.Popup className="rounded-xl bg-surface">
+      <DialogBase.Backdrop className="bg-kumo-overlay opacity-80" />
+      <DialogBase.Popup className="rounded-xl bg-kumo-base">
         {children}
       </DialogBase.Popup>
     </DialogBase.Portal>
@@ -461,7 +481,7 @@ All components must:
    - Use `forwardRef` when wrapping DOM elements
    - Set `displayName` for React DevTools
 
-3. **Write Storybook stories** showing all variants and states
+3. **Write demo files** in `packages/kumo-docs-astro/src/components/demos/{Name}Demo.tsx`
 
 4. **Regenerate the component registry:**
    ```bash
@@ -471,7 +491,6 @@ All components must:
 ### What Gets Scaffolded
 
 - `src/components/{name}/{name}.tsx` - Component implementation
-- `src/components/{name}/{name}.stories.tsx` - Storybook stories
 - `src/components/{name}/index.ts` - Re-exports
 - Updates `src/index.ts` exports
 - Updates `vite.config.ts` build entries
@@ -492,7 +511,6 @@ pnpm --filter @cloudflare/kumo-docs dev   # Run docs dev server
 ```bash
 # From workspace root
 pnpm dev           # Start docs dev server
-pnpm storybook     # Start Storybook (component development)
 pnpm build         # Build docs site
 pnpm lint          # Run linting
 pnpm typecheck     # Type check all packages
@@ -519,9 +537,6 @@ pnpm --filter @cloudflare/kumo lint       # oxlint with:
 # Build
 pnpm --filter @cloudflare/kumo build      # Full build with CSS
 pnpm --filter @cloudflare/kumo codegen:registry  # Regenerate component-registry
-
-# Storybook
-pnpm storybook                            # Dev server (http://localhost:6006)
 ```
 
 ### Linting (`oxlint`)
@@ -534,18 +549,32 @@ pnpm --filter @cloudflare/kumo lint
 
 #### Custom Lint Rules
 
-1. **`no-primitive-colors`** (`scripts/linting/no-primitive-colors.js`)
+1. **`no-primitive-colors`** (`lint/no-primitive-colors.js`)
    - Disallows Tailwind primitive colors (e.g., `bg-blue-500`, `text-gray-900`)
-   - Enforces use of Kumo semantic tokens (e.g., `bg-surface`, `text-muted`)
+   - Validates that semantic tokens exist in theme CSS files
+   - Enforces use of Kumo semantic tokens (e.g., `bg-kumo-base`, `text-kumo-subtle`)
 
-2. **`no-tailwind-dark-variant`** (`scripts/linting/no-tailwind-dark-variant.js`)
+2. **`no-tailwind-dark-variant`** (`lint/no-tailwind-dark-variant.js`)
    - Disallows `dark:` variant in class names
    - Dark mode is handled automatically by Kumo tokens
 
-3. **`enforce-variant-standard`** (`scripts/linting/enforce-variant-standard.js`)
+3. **`enforce-variant-standard`** (`lint/enforce-variant-standard.js`)
    - Enforces the KUMO\_\*\_VARIANTS naming convention for component exports
    - Only applies to files matching `src/components/{name}/{name}.tsx`
    - Extracts component name from path (e.g., `button.tsx` → `BUTTON`, `clipboard-text.tsx` → `CLIPBOARD_TEXT`)
+
+4. **`no-cross-package-imports`** (`lint/no-cross-package-imports.js`)
+   - Disallows relative imports that reach into sibling packages in the monorepo
+   - Catches patterns like `../../kumo/src/...` from other packages
+   - Enforces using proper package imports (e.g., `@cloudflare/kumo`) instead
+
+   ```tsx
+   // ❌ WRONG - Cross-package relative import
+   import { Button } from "../../kumo/src/components/button";
+
+   // ✅ CORRECT - Use the package export
+   import { Button } from "@cloudflare/kumo";
+   ```
 
    **Required Exports:**
    - `KUMO_{COMPONENT}_VARIANTS` - Variant configuration object
@@ -625,142 +654,48 @@ pnpm --filter @cloudflare/kumo test:run   # Single run
 pnpm --filter @cloudflare/kumo test:ui    # UI mode
 ```
 
-### Storybook
-
-Component development and documentation:
-
-```bash
-pnpm storybook  # Runs at http://localhost:6006
-```
-
-Stories follow this pattern:
-
-```tsx
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Button } from "./button";
-
-const meta: Meta<typeof Button> = {
-  title: "Components/Button",
-  component: Button,
-  tags: ["autodocs"],
-};
-
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Primary: Story = {
-  args: { variant: "primary", children: "Button" },
-};
-```
-
 ## Icon System
 
-Kumo uses an SVG sprite system for icons, combining Phosphor icons and Cloudflare brand icons.
+Kumo uses [Phosphor Icons](https://phosphoricons.com/) directly via `@phosphor-icons/react`. This is a peer dependency that consumers must install.
 
-### Philosophy: Code as Source of Truth
+### Installation
 
-**Icons live in the codebase, not in Figma.** This ensures:
-
-1. **Version control** - Icons are tracked in git with full history
-2. **Type safety** - TypeScript types are auto-generated from the sprite
-3. **Consistency** - One source of truth for both code and design
-4. **Review process** - Icon changes go through PR review like any code change
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                        ICON WORKFLOW                            │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                 │
-│   Designer provides SVG                                         │
-│            ↓                                                    │
-│   pnpm add:icon icon.svg --name cf-feature-outline              │
-│            ↓                                                    │
-│   Icon normalized + added to src/assets/icons/brand/            │
-│            ↓                                                    │
-│   pnpm build:icons → sprite.svg + TypeScript types              │
-│            ↓                                                    │
-│   Commit + PR review                                            │
-│            ↓                                                    │
-│   Figma plugin syncs icons to Figma (Icon Library page)         │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
+```bash
+pnpm add @phosphor-icons/react
 ```
 
 ### Using Icons
 
 ```tsx
-import { Icon } from "@cloudflare/kumo";
+import { Check, ArrowRight, X } from "@phosphor-icons/react";
 
-// Phosphor icons (ph-* prefix)
-<Icon name="ph-check" />
-<Icon name="ph-arrow-right" size="lg" />
+// Basic usage
+<Check />
+<ArrowRight size={24} />
 
-// Cloudflare brand icons (cf-* prefix)
-<Icon name="cf-workers-outline" />
-<Icon name="cf-pages-solid" className="text-active" />
+// With Kumo semantic colors
+<X className="text-kumo-subtle" />
+<Check className="text-success" />
+
+// Different weights
+import { CheckBold, CheckLight } from "@phosphor-icons/react";
 ```
 
-### Adding Icons (REQUIRED: Use the CLI)
+### Size Guidelines
 
-**Always use the CLI to add icons.** This ensures proper normalization and prevents issues.
+| Context          | Size | Phosphor prop |
+| ---------------- | ---- | ------------- |
+| Inline with text | 16px | `size={16}`   |
+| Buttons (sm)     | 16px | `size={16}`   |
+| Buttons (base)   | 20px | `size={20}`   |
+| Buttons (lg)     | 24px | `size={24}`   |
+| Empty states     | 48px | `size={48}`   |
 
-```bash
-# Add single icon
-pnpm add:icon path/to/icon.svg
+### Figma Plugin
 
-# Add with custom name
-pnpm add:icon icon.svg --name cf-my-feature-outline
+The Figma plugin embeds a subset of Phosphor icons needed for component generation. Icons are created on-demand using `figma.createNodeFromSvg()`.
 
-# Add all SVGs from folder
-pnpm add:icon path/to/folder/
-
-# Preview without writing
-pnpm add:icon icon.svg --dry-run
-```
-
-**DO NOT** manually drop SVGs into the icons folder without running the CLI - they won't be normalized.
-
-### Naming Conventions
-
-- **`cf-*`** - Cloudflare brand icons (e.g., `cf-workers-outline`, `cf-pages-solid`)
-- **`ph-*`** - Custom Phosphor-style icons (rare, most come from `@phosphor-icons/core`)
-- **Variants** - Use `-outline` or `-solid` suffix for consistency
-
-### Normalization
-
-The CLI automatically normalizes icons:
-
-- viewBox preserved (required for scaling)
-- Hardcoded fills converted to `currentColor` (enables `text-*` color classes)
-- Width/height attributes removed (use CSS sizing)
-- Inline styles stripped
-- SVGO optimization applied
-
-### Figma Sync
-
-The Figma plugin generates an **Icon Library** page with all icons from the codebase:
-
-```bash
-# Build and run the Figma plugin
-pnpm --filter @cloudflare/figma-plugin build
-# Then run in Figma: Plugins > Development > Kumo UI Kit Generator
-```
-
-The Icon Library page includes:
-
-- All icons as Figma components (`Icon/ph-check`, `Icon/cf-workers-outline`)
-- Grid layout with 20 icons per row
-- Size examples (16px, 20px, 24px)
-- Fill color bound to semantic token (`text-color-surface`)
-
-**Designers should use icons from the Icon Library page**, not import their own SVGs. This keeps design and code in sync.
-
-### Build Commands
-
-```bash
-pnpm add:icon       # Add new icons with normalization (REQUIRED)
-pnpm build:icons    # Rebuild sprite + types after adding icons
-```
+To add new icons to the Figma plugin, update `packages/kumo-figma/src/build-phosphor-icons.ts`.
 
 ## Changesets & Version Management
 
@@ -875,7 +810,7 @@ git push --follow-tags
 
 ## Figma Token Sync
 
-Kumo provides scripts to sync semantic color tokens from CSS to Figma design variables, ensuring design tokens stay in sync between code and design.
+The `kumo-figma` package provides scripts to sync semantic color tokens from CSS to Figma design variables, ensuring design tokens stay in sync between code and design.
 
 ### Purpose
 
@@ -902,25 +837,24 @@ This enables:
 2. **Copy `.env.example` to `.env`:**
 
    ```bash
-   cp packages/kumo/scripts/figma/.env.example packages/kumo/scripts/figma/.env
+   cp packages/kumo-figma/scripts/.env.example packages/kumo-figma/scripts/.env
    ```
 
 3. **Add your token to `.env`:**
    ```bash
    FIGMA_TOKEN=your-token-here
    FIGMA_FILE_KEY=sKKZc6pC6W1TtzWBLxDGSU
-   FIGMA_COLLECTION_NAME=kumo-semantic-tokens
    ```
 
 ### Running the Sync
 
 ```bash
 # With environment variable
-FIGMA_TOKEN="your-token" npx tsx packages/kumo/scripts/figma/sync-tokens-to-figma.ts
+FIGMA_TOKEN="your-token" pnpm --filter @cloudflare/kumo-figma figma:sync
 
 # Or load from .env
-source packages/kumo/scripts/figma/.env
-npx tsx packages/kumo/scripts/figma/sync-tokens-to-figma.ts
+source packages/kumo-figma/scripts/.env
+pnpm --filter @cloudflare/kumo-figma figma:sync
 ```
 
 ### Security Warning
@@ -931,12 +865,7 @@ npx tsx packages/kumo/scripts/figma/sync-tokens-to-figma.ts
 - Always use environment variables for tokens
 - Rotate tokens if accidentally exposed
 
-### Future Support
-
-- **FedRAMP Theme**: Will support syncing `theme-fedramp.css` to a separate collection
-- **Custom Themes**: Support for syncing additional theme variants
-
-For detailed documentation, see `packages/kumo/scripts/figma/README.md`.
+For detailed documentation, see the Figma Plugin section below.
 
 ## Code Review Guidelines
 
@@ -944,7 +873,7 @@ When reviewing code, focus on:
 
 ### Styling
 
-- **Verify Kumo tokens**: Ensure `bg-*`, `text-*`, `border-*` semantic classes are used (e.g., `bg-surface`, `text-muted`, `border-border`)
+- **Verify Kumo tokens**: Ensure `bg-*`, `text-*`, `border-*` semantic classes are used (e.g., `bg-kumo-base`, `text-kumo-subtle`, `border-kumo-line`)
 - **No raw Tailwind colors**: Flag any `bg-blue-500`, `text-gray-*`, etc.
 - **No `dark:` variants**: Dark mode should be automatic via tokens
 - **Use `cn()` utility**: For conditional class composition
@@ -964,7 +893,7 @@ When reviewing code, focus on:
 
 ### Testing
 
-- **Stories**: Every component needs Storybook stories
+- **Demo files**: Components should have demo files in the docs site for documentation
 - **Edge cases**: Consider loading, error, empty, and disabled states
 
 ## Workflow Best Practices
@@ -986,15 +915,15 @@ When working with this codebase as an AI agent:
 
 1. **Read files** to examine component implementations before modifying them
 2. **Use `jq`** to query the component registry (`packages/kumo/ai/component-registry.json`)
-3. **Use search tools** for complex searches across the codebase (e.g., "find all components using bg-surface")
+3. **Use search tools** for complex searches across the codebase (e.g., "find all components using bg-kumo-base")
 4. **Run commands** for scaffolding, build, test, and lint operations
 
 ### When Modifying Components
 
-1. **Read the component and its stories first**
+1. **Read the component first**
 2. **Verify semantic tokens** - Ensure no raw Tailwind colors exist
 3. **Run linting** - Custom rules will catch color and dark mode violations
-4. **Update stories** - Ensure Storybook examples reflect changes
+4. **Update demos** - Ensure demo files in docs site reflect changes
 5. **Regenerate registry** - Run `pnpm --filter @cloudflare/kumo codegen:registry` after changes
 
 ## Important Notes
@@ -1005,19 +934,81 @@ When working with this codebase as an AI agent:
 
 ### Common Mistakes to Avoid
 
-- Using raw Tailwind colors (`bg-blue-500`) instead of semantic tokens (`bg-surface`)
+- Using raw Tailwind colors (`bg-blue-500`) instead of semantic tokens (`bg-kumo-base`)
 - Using `dark:` variants instead of letting semantic tokens handle dark mode
 - Forgetting to set `displayName` on `forwardRef` components
 - Not checking the component registry before using a component
 - Creating new components without running the scaffolding tool
 - Forgetting to regenerate the component registry after changes
 
+## CI/CD Pipeline
+
+### Pipeline Stages
+
+| Stage                | Purpose                                    |
+| -------------------- | ------------------------------------------ |
+| `build`              | Build packages                             |
+| `checks`             | Linting, typechecking, validation          |
+| `test`               | Run tests                                  |
+| `review`             | AI-powered code review                     |
+| `beta-release`       | Publish beta npm packages                  |
+| `beta-preview`       | Deploy docs previews                       |
+| `mr-report`          | Post consolidated MR comment               |
+| `production-release` | Deploy staging, manual production releases |
+
+### Deployment Environments
+
+| Package         | Staging               | Production    |
+| --------------- | --------------------- | ------------- |
+| kumo-docs-astro | `staging.kumo-ui.com` | `kumo-ui.com` |
+
+### MR Reporter System
+
+The MR reporter collects artifacts from CI jobs and posts a consolidated comment:
+
+```
+ci/
+├── reporters/           # NPM, docs reporters
+├── scripts/             # post-mr-report.ts, write-*-report.ts
+├── utils/               # GitLab API, MR comment utilities
+└── versioning/          # deploy-*.sh, publish-beta.sh
+```
+
+## Figma Plugin (`packages/kumo-figma`)
+
+### Quick Start
+
+```bash
+# Build the plugin
+pnpm --filter @cloudflare/kumo-figma build
+
+# Run in Figma: Plugins > Development > Import plugin from manifest...
+# Select: packages/kumo-figma/src/manifest.json
+```
+
+### Workflow
+
+1. **Sync tokens first**: `pnpm --filter @cloudflare/kumo-figma figma:sync`
+2. **Build plugin**: `pnpm --filter @cloudflare/kumo-figma build`
+3. **Run in Figma**: Plugins > Development > Kumo UI Kit Generator
+
+### Adding New Component Generators
+
+1. Create `generators/yourcomponent.ts`
+2. Register in `code.ts` GENERATORS array
+3. Run `pnpm --filter @cloudflare/kumo-figma validate` (drift detection)
+
+### Drift Prevention
+
+- `drift-detection.test.ts` validates generators match `component-registry.json`
+- CI enforces on MRs touching `component-registry.json` or generators
+- Excluded components: Add to `EXCLUDED_COMPONENTS` in drift-detection.test.ts
+
 ## Resources
 
 - **Component Registry** - `packages/kumo/ai/component-registry.{json,md}` - Always-current component metadata
-- **Storybook** - `pnpm storybook` - Live component playground with all variants
+- **Docs Site** - `pnpm dev` - Documentation at `http://localhost:4321`
 - **Source** - `packages/kumo/src/` - Component source code organized by type:
   - `components/` - UI primitives (Button, Input, Dialog)
   - `blocks/` - Composite components (Breadcrumbs, PageHeader, Empty)
-  - `layouts/` - Page layouts (ResourceList)
   - `styles/` - CSS including `kumo-binding.css` (semantic token definitions)

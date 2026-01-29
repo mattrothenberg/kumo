@@ -5,7 +5,7 @@ export function TabsDefaultDemo() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <p className="mb-2 text-sm text-muted">Segmented (default)</p>
+        <p className="mb-2 text-sm text-kumo-subtle">Segmented (default)</p>
         <Tabs
           variant="segmented"
           tabs={[
@@ -17,7 +17,7 @@ export function TabsDefaultDemo() {
         />
       </div>
       <div>
-        <p className="mb-2 text-sm text-muted">Underline</p>
+        <p className="mb-2 text-sm text-kumo-subtle">Underline</p>
         <Tabs
           variant="underline"
           tabs={[
@@ -74,7 +74,7 @@ export function TabsControlledDemo() {
         value={activeTab}
         onValueChange={setActiveTab}
       />
-      <p className="text-sm text-secondary">
+      <p className="text-sm text-kumo-subtle">
         Active tab: <code className="text-sm">{activeTab}</code>
       </p>
     </div>

@@ -69,7 +69,7 @@ function Root({
           "flex w-full gap-0 border-0 px-0",
           isIndividualFocus
             ? "overflow-visible"
-            : "overflow-hidden shadow-xs ring ring-border focus-within:ring-active",
+            : "overflow-hidden shadow-xs ring ring-kumo-line focus-within:ring-kumo-ring",
           className,
         )}
       >
@@ -87,7 +87,7 @@ function Label({ children }: PropsWithChildren<{}>) {
     <label
       htmlFor={context?.inputId}
       className={cn(
-        "flex h-full items-center p-0 px-2 text-muted",
+        "flex h-full items-center p-0 px-2 text-kumo-subtle",
         isIndividualFocus &&
           "first:rounded-l-[inherit] last:rounded-r-[inherit]",
       )}
@@ -108,11 +108,11 @@ function Input(props: InputProps) {
       size={context?.size}
       {...props}
       className={cn(
-        "flex h-full items-center rounded-none border-0 bg-surface font-sans",
+        "flex h-full items-center rounded-none border-0 bg-kumo-base font-sans",
         "grow px-2",
         isIndividualFocus
-          ? "relative ring ring-border first:rounded-l-[inherit] last:rounded-r-[inherit] focus:z-10 focus:outline"
-          : "focus:border-color",
+          ? "relative ring ring-kumo-line first:rounded-l-[inherit] last:rounded-r-[inherit] focus:z-10 focus:outline"
+          : "focus:border-kumo-fill",
         props.className,
       )}
     />
@@ -127,7 +127,7 @@ function Description({ children }: PropsWithChildren<{}>) {
     <span
       id={context?.descriptionId}
       className={cn(
-        "flex h-full items-center p-0 px-2 text-muted",
+        "flex h-full items-center p-0 px-2 text-kumo-subtle",
         isIndividualFocus &&
           "first:rounded-l-[inherit] last:rounded-r-[inherit]",
       )}
@@ -150,9 +150,9 @@ function Button({
       {...props}
       size={context?.size}
       className={cn(
-        "h-full! rounded-none disabled:bg-surface-secondary disabled:text-disabled!",
+        "h-full! rounded-none disabled:bg-kumo-overlay disabled:text-kumo-inactive!",
         isIndividualFocus &&
-          "relative ring ring-border first:rounded-l-[inherit] last:rounded-r-[inherit] focus:z-10 focus:outline",
+          "relative ring ring-kumo-line first:rounded-l-[inherit] last:rounded-r-[inherit] focus:z-10 focus:outline",
         className,
       )}
     >

@@ -3,14 +3,14 @@ import { Code } from "astro:components";
 
 interface Props {
   code: string;
-  lang?: "tsx" | "ts" | "jsx" | "js" | "bash" | "css";
+  lang?: "tsx" | "ts" | "jsx" | "js" | "bash" | "css" | "json";
 }
 
 const { code, lang = "tsx" } = Astro.props;
 ---
 
 <div
-  class="code-block overflow-hidden rounded-lg border border-border"
+  class="code-block overflow-hidden rounded-lg border border-kumo-line"
 >
   <Code 
     code={code} 

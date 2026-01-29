@@ -46,30 +46,30 @@ export const KUMO_BUTTON_VARIANTS = {
   variant: {
     primary: {
       classes:
-        "bg-primary !text-white hover:bg-hover-selected focus:bg-hover-selected disabled:bg-primary/50",
+        "bg-kumo-brand !text-white hover:bg-kumo-brand-hover focus:bg-kumo-brand-hover disabled:bg-kumo-brand/50",
       description: "High-emphasis button for primary actions",
     },
     secondary: {
       classes:
-        "bg-secondary !text-surface ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-surface/70 ring-border data-[state=open]:bg-subtle",
+        "bg-kumo-control !text-kumo-default ring not-disabled:hover:border-secondary! not-disabled:hover:bg-kumo-control disabled:bg-kumo-control/50 disabled:!text-kumo-default/70 ring-kumo-line data-[state=open]:bg-kumo-control",
       description: "Default button style for most actions",
     },
     ghost: {
-      classes: "text-surface hover:bg-accent shadow-none bg-inherit",
+      classes: "text-kumo-default hover:bg-kumo-tint shadow-none bg-inherit",
       description: "Minimal button with no background",
     },
     destructive: {
-      classes: "bg-error !text-white hover:bg-error/70",
+      classes: "bg-kumo-danger !text-white hover:bg-kumo-danger/70",
       description: "Danger button for destructive actions like delete",
     },
     "secondary-destructive": {
       classes:
-        "bg-secondary !text-error ring not-disabled:hover:border-subtle! not-disabled:hover:bg-subtle disabled:bg-secondary/50 disabled:!text-error/70 ring-border data-[state=open]:bg-subtle",
+        "bg-kumo-control !text-kumo-danger ring not-disabled:hover:border-secondary! not-disabled:hover:bg-kumo-control disabled:bg-kumo-control/50 disabled:!text-kumo-danger/70 ring-kumo-line data-[state=open]:bg-kumo-control",
       description:
         "Secondary button with destructive text for less prominent dangerous actions",
     },
     outline: {
-      classes: "bg-surface text-surface ring ring-border",
+      classes: "bg-kumo-base text-kumo-default ring ring-kumo-line",
       description: "Bordered button with transparent background",
     },
   },
@@ -105,7 +105,7 @@ export function buttonVariants({
     "border-0 shadow-xs",
     "cursor-pointer",
     // Disabled state
-    "disabled:cursor-not-allowed disabled:text-muted",
+    "disabled:cursor-not-allowed disabled:text-kumo-subtle",
     // Apply variant, size, shape styles from KUMO_BUTTON_VARIANTS
     KUMO_BUTTON_VARIANTS.variant[variant].classes,
     KUMO_BUTTON_VARIANTS.size[size].classes,
@@ -160,7 +160,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         className={cn(
           buttonVariants({ variant, size, shape }),
-          "outline-none focus:opacity-100 focus-visible:ring-1 focus-visible:ring-active *:in-focus:opacity-100", // Focus styles
+          "outline-none focus:opacity-100 focus-visible:ring-1 focus-visible:ring-kumo-ring *:in-focus:opacity-100", // Focus styles
           disabled && "cursor-not-allowed opacity-50",
           className,
         )}

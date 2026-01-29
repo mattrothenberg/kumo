@@ -35,7 +35,7 @@ export const KUMO_CODE_DEFAULT_VARIANTS = {
  */
 export const KUMO_CODE_STYLING = {
   /** Base semantic tokens used */
-  baseTokens: ["text-label"],
+  baseTokens: ["text-kumo-strong"],
   /** Typography and layout */
   typography: {
     fontFamily: "font-mono",
@@ -61,13 +61,13 @@ export const KUMO_CODE_STYLING = {
  */
 export const KUMO_CODEBLOCK_STYLING = {
   /** Base semantic tokens used */
-  baseTokens: ["bg-surface", "border-color"],
+  baseTokens: ["bg-kumo-base", "border-kumo-fill"],
   /** Container styling */
   container: {
     minWidth: "min-w-0",
     borderRadius: "rounded-md",
-    border: "border border-color",
-    background: "bg-surface",
+    border: "border border-kumo-fill",
+    background: "bg-kumo-base",
   },
   /** Inner code element padding */
   innerPadding: "[&>pre]:p-2.5",
@@ -90,7 +90,7 @@ export function codeVariants({
 }: KumoCodeVariantsProps = {}) {
   return cn(
     // Base styles
-    "m-0 w-auto rounded-none border-none bg-transparent p-0 font-mono text-sm leading-[20px] text-label",
+    "m-0 w-auto rounded-none border-none bg-transparent p-0 font-mono text-sm leading-[20px] text-kumo-strong",
     // Apply lang-specific styles (currently none, but extensible)
     KUMO_CODE_VARIANTS.lang[lang].classes,
   );
@@ -127,7 +127,7 @@ export interface CodeProps extends KumoCodeVariantsProps {
  *
  * **Styling:**
  * - Typography: `font-mono text-sm leading-[20px]`
- * - Colors: `text-label` with `bg-transparent`
+ * - Colors: `text-kumo-strong` with `bg-transparent`
  * - No borders or padding (use CodeBlock for styled container)
  * - Supports all semantic tokens via className prop
  */
@@ -160,13 +160,13 @@ export interface CodeBlockProps {
  * Useful for displaying code snippets with visual separation from surrounding content.
  *
  * **Styling:**
- * - Container: `min-w-0 rounded-md border border-color bg-surface`
+ * - Container: `min-w-0 rounded-md border border-kumo-fill bg-kumo-base`
  * - Inner padding: `p-2.5` (10px)
- * - Uses semantic tokens: `bg-surface`, `border-color`
+ * - Uses semantic tokens: `bg-kumo-base`, `border-kumo-fill`
  */
 function CodeBlockComponent({ code, lang }: CodeBlockProps) {
   return (
-    <div className="min-w-0 rounded-md border border-color bg-surface [&>pre]:p-2.5!">
+    <div className="min-w-0 rounded-md border border-kumo-fill bg-kumo-base [&>pre]:p-2.5!">
       <CodeComponent lang={lang} code={code} />
     </div>
   );

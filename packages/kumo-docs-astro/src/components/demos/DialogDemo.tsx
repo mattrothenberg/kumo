@@ -22,7 +22,7 @@ export function DialogBasicDemo() {
             )}
           />
         </div>
-        <Dialog.Description className="text-muted">
+        <Dialog.Description className="text-kumo-subtle">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </Dialog.Description>
@@ -52,7 +52,7 @@ export function DialogWithActionsDemo() {
             )}
           />
         </div>
-        <Dialog.Description className="text-muted">
+        <Dialog.Description className="text-kumo-subtle">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </Dialog.Description>

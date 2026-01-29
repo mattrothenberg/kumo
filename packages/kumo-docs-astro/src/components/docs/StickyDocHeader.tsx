@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { cn } from "@cloudflare/kumo";
 import { GitlabLogoSimple } from "@phosphor-icons/react";
-import { StorybookIcon } from "./icons/StorybookIcon";
 import { BaseUIIcon } from "./icons/BaseUIIcon";
 
 /** Height of the sticky header in pixels - matches h-12 Tailwind class (3rem) */
@@ -10,14 +9,12 @@ const STICKY_HEADER_HEIGHT = 48;
 interface StickyDocHeaderProps {
   title: string;
   gitlabSourceUrl?: string | null;
-  storybookUrl?: string | null;
   baseUIUrl?: string | null;
 }
 
 export function StickyDocHeader({
   title,
   gitlabSourceUrl,
-  storybookUrl,
   baseUIUrl,
 }: StickyDocHeaderProps) {
   const [showStickyTitle, setShowStickyTitle] = useState(false);
@@ -78,14 +75,14 @@ export function StickyDocHeader({
           style={{ paddingLeft: "4.25rem" }} // Position after "Kumo" text (px-4 + "Kumo" width)
         >
           <span className="pointer-events-auto flex items-center gap-2 text-base">
-            <span className="text-muted">/ </span>
+            <span className="text-kumo-subtle">/ </span>
             <span className="font-semibold">{title}</span>
             {gitlabSourceUrl && (
               <a
                 href={gitlabSourceUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted transition-colors hover:text-label"
+                className="text-kumo-subtle transition-colors hover:text-kumo-strong"
                 title="View source on GitLab"
                 aria-label="View source on GitLab"
                 tabIndex={showStickyTitle ? 0 : -1}
@@ -93,25 +90,12 @@ export function StickyDocHeader({
                 <GitlabLogoSimple size={18} weight="fill" />
               </a>
             )}
-            {storybookUrl && (
-              <a
-                href={storybookUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted transition-colors hover:text-label"
-                title="View in Storybook"
-                aria-label="View in Storybook"
-                tabIndex={showStickyTitle ? 0 : -1}
-              >
-                <StorybookIcon size={18} />
-              </a>
-            )}
             {baseUIUrl && (
               <a
                 href={baseUIUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted transition-colors hover:text-label"
+                className="text-kumo-subtle transition-colors hover:text-kumo-strong"
                 title="View Base UI documentation"
                 aria-label="View Base UI documentation"
                 tabIndex={showStickyTitle ? 0 : -1}
@@ -124,8 +108,8 @@ export function StickyDocHeader({
       )}
 
       {/* Sticky header bar */}
-      <header className="sticky top-0 z-10 border-b border-border bg-surface-secondary pr-12">
-        <div className="mx-auto flex h-12 items-center justify-between border-r border-border px-4">
+      <header className="sticky top-0 z-10 border-b border-kumo-line bg-kumo-elevated pr-12">
+        <div className="mx-auto flex h-12 items-center justify-between border-r border-kumo-line px-4">
           <div
             className={cn(
               "flex items-center gap-2 transition-opacity duration-200",
@@ -134,13 +118,15 @@ export function StickyDocHeader({
                 : "pointer-events-none opacity-0",
             )}
           >
-            <span className="text-lg font-semibold text-surface">{title}</span>
+            <span className="text-lg font-semibold text-kumo-default">
+              {title}
+            </span>
             {gitlabSourceUrl && (
               <a
                 href={gitlabSourceUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted transition-colors hover:text-label"
+                className="text-kumo-subtle transition-colors hover:text-kumo-strong"
                 title="View source on GitLab"
                 aria-label="View source on GitLab"
                 tabIndex={showStickyTitle && sidebarOpen ? 0 : -1}
@@ -148,25 +134,12 @@ export function StickyDocHeader({
                 <GitlabLogoSimple size={20} weight="fill" />
               </a>
             )}
-            {storybookUrl && (
-              <a
-                href={storybookUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted transition-colors hover:text-label"
-                title="View in Storybook"
-                aria-label="View in Storybook"
-                tabIndex={showStickyTitle && sidebarOpen ? 0 : -1}
-              >
-                <StorybookIcon size={20} />
-              </a>
-            )}
             {baseUIUrl && (
               <a
                 href={baseUIUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted transition-colors hover:text-label"
+                className="text-kumo-subtle transition-colors hover:text-kumo-strong"
                 title="View Base UI documentation"
                 aria-label="View Base UI documentation"
                 tabIndex={showStickyTitle && sidebarOpen ? 0 : -1}
@@ -179,7 +152,7 @@ export function StickyDocHeader({
             href="https://gitlab.cfdata.org/cloudflare/fe/kumo"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-mono text-base text-muted transition-colors hover:text-label"
+            className="font-mono text-base text-kumo-subtle transition-colors hover:text-kumo-strong"
           >
             @cloudflare/kumo
           </a>

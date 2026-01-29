@@ -32,7 +32,7 @@ export const KUMO_SWITCH_VARIANTS = {
       description: "Default switch appearance",
     },
     error: {
-      classes: "ring-error",
+      classes: "ring-kumo-danger",
       description: "Error state for validation failures",
     },
   },
@@ -211,22 +211,22 @@ const SwitchBase = forwardRef<HTMLButtonElement, SwitchProps>(
           };
 
           const mergedClassName = cn(
-            "interactive flex items-center gap-2 rounded-full border border-transparent bg-surface-3 p-1 transition-colors",
+            "interactive flex items-center gap-2 rounded-full border border-transparent bg-kumo-recessed p-1 transition-colors",
             switchVariants({ size, variant }),
             {
-              "bg-primary": state.checked && !disabled && variant !== "error",
-              "bg-error": state.checked && !disabled && variant === "error",
-              "hover:bg-hover-selected":
+              "bg-kumo-brand": state.checked && !disabled && variant !== "error",
+              "bg-kumo-danger": state.checked && !disabled && variant === "error",
+              "hover:bg-kumo-brand-hover":
                 state.checked &&
                 !transitioning &&
                 !disabled &&
                 variant !== "error",
-              "hover:bg-error/90":
+              "hover:bg-kumo-danger/90":
                 state.checked &&
                 !transitioning &&
                 !disabled &&
                 variant === "error",
-              "hover:bg-hover": !state.checked && !transitioning && !disabled,
+              "hover:bg-kumo-interact": !state.checked && !transitioning && !disabled,
               "cursor-not-allowed opacity-50": disabled,
             },
             transitioning ? "cursor-wait" : !disabled ? "cursor-pointer" : "",
@@ -339,22 +339,22 @@ const SwitchItem = forwardRef<HTMLButtonElement, SwitchItemProps>(
             };
 
             const mergedClassName = cn(
-              "interactive flex items-center gap-2 rounded-full border border-transparent bg-surface-3 p-1 transition-colors",
+              "interactive flex items-center gap-2 rounded-full border border-transparent bg-kumo-recessed p-1 transition-colors",
               switchVariants({ size, variant }),
               {
-                "bg-primary": state.checked && !disabled && variant !== "error",
-                "bg-error": state.checked && !disabled && variant === "error",
-                "hover:bg-hover-selected":
+                "bg-kumo-brand": state.checked && !disabled && variant !== "error",
+                "bg-kumo-danger": state.checked && !disabled && variant === "error",
+                "hover:bg-kumo-brand-hover":
                   state.checked &&
                   !transitioning &&
                   !disabled &&
                   variant !== "error",
-                "hover:bg-error/90":
+                "hover:bg-kumo-danger/90":
                   state.checked &&
                   !transitioning &&
                   !disabled &&
                   variant === "error",
-                "hover:bg-hover": !state.checked && !transitioning && !disabled,
+                "hover:bg-kumo-interact": !state.checked && !transitioning && !disabled,
                 "cursor-not-allowed opacity-50": disabled,
               },
               transitioning ? "cursor-wait" : !disabled ? "cursor-pointer" : "",
@@ -389,7 +389,7 @@ const SwitchItem = forwardRef<HTMLButtonElement, SwitchItemProps>(
             );
           }}
         />
-        <span className="text-base font-medium text-surface">{label}</span>
+        <span className="text-base font-medium text-kumo-default">{label}</span>
       </label>
     );
   },
@@ -411,17 +411,17 @@ function SwitchGroup({
     <SwitchGroupContext.Provider value={{ controlFirst }}>
       <Fieldset.Root
         className={cn(
-          "flex flex-col gap-4 rounded-lg border border-border p-4",
+          "flex flex-col gap-4 rounded-lg border border-kumo-line p-4",
           className,
         )}
         disabled={disabled}
       >
-        <Fieldset.Legend className="text-lg font-medium text-surface">
+        <Fieldset.Legend className="text-lg font-medium text-kumo-default">
           {legend}
         </Fieldset.Legend>
         <div className="flex flex-col gap-2">{children}</div>
-        {error && <p className="text-sm text-error">{error}</p>}
-        {description && <p className="text-sm text-muted">{description}</p>}
+        {error && <p className="text-sm text-kumo-danger">{error}</p>}
+        {description && <p className="text-sm text-kumo-subtle">{description}</p>}
       </Fieldset.Root>
     </SwitchGroupContext.Provider>
   );

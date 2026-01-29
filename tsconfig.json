@@ -1,9 +1,6 @@
 {
   "files": [],
-  "references": [
-    { "path": "./packages/kumo" },
-    { "path": "./packages/kumo-docs" }
-  ],
+  "references": [{ "path": "./packages/kumo" }],
   "compilerOptions": {
     "composite": true,
     "skipLibCheck": true

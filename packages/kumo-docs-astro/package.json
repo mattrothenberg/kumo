@@ -3,12 +3,19 @@
   "version": "0.5.0",
   "private": true,
   "type": "module",
+  "exports": {
+    "./demo-metadata.json": "./dist/demo-metadata.json"
+  },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "pnpm run codegen:demos && astro build",
+    "codegen:demos": "tsx scripts/extract-demo-examples.ts",
     "preview": "astro preview",
     "astro": "astro",
-    "typecheck": "astro check"
+    "typecheck": "astro check",
+    "lint": "oxlint src/ && node ../../lint/lint-astro-colors.js src/",
+    "lint:oxlint": "oxlint src/",
+    "lint:astro": "node ../../lint/lint-astro-colors.js src/"
   },
   "dependencies": {
     "@cloudflare/kumo": "workspace:*",
@@ -16,6 +23,8 @@
     "astro": "^5.16.7",
     "clsx": "catalog:",
     "match-sorter": "^8.2.0",
+    "react-markdown": "10.1.0",
+    "remark-gfm": "4.0.1",
     "tailwind-merge": "catalog:"
   },
   "devDependencies": {
@@ -27,7 +36,9 @@
     "react": "catalog:",
     "react-dom": "catalog:",
     "tailwindcss": "catalog:",
+    "tsx": "catalog:",
     "typescript": "catalog:",
-    "wrangler": "catalog:"
+    "wrangler": "catalog:",
+    "oxlint": "1.28.0"
   }
 }

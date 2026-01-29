@@ -11,7 +11,6 @@ import { ComboboxDemo, ComboboxSearchableInsideDemo, ComboboxGroupedDemo, Combob
   title="Combobox"
   description="A searchable select component that allows users to filter and select from a list of options."
   sourceFile="components/combobox"
-  storybookPath="story/components-combobox"
   baseUIComponent="combobox"
 >
   <ComponentSection>
@@ -61,7 +60,7 @@ const fruits = [
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Searchable Item (Inside)</h2>
-    <p class="text-label mb-4">A searchable select component inside popup that allows users to filter and select.</p>
+    <p class="text-kumo-strong mb-4">A searchable select component inside popup that allows users to filter and select.</p>
     <ComponentExample code={`function App() {
   const [value, setValue] = useState<Language | null>(languages[0]);
 
@@ -107,7 +106,7 @@ const languages: Language[] = [
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Grouped</h2>
-    <p class="text-label mb-4">Group items into categories using the Group and GroupLabel components.</p>
+    <p class="text-kumo-strong mb-4">Group items into categories using the Group and GroupLabel components.</p>
     <ComponentExample code={`function App() {
   const [value, setValue] = useState<string | null>("singapore");
 
@@ -171,7 +170,7 @@ interface ServerLocationGroup {
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Multiple</h2>
-    <p class="text-label mb-4">Allow users to select multiple options from the list.</p>
+    <p class="text-kumo-strong mb-4">Allow users to select multiple options from the list.</p>
     <ComponentExample code={`<Combobox
   value={value}
   onValueChange={setValue}
@@ -207,7 +206,7 @@ interface ServerLocationGroup {
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">With Field</h2>
-    <p class="text-label mb-4">Add label and description using the built-in Field wrapper.</p>
+    <p class="text-kumo-strong mb-4">Add label and description using the built-in Field wrapper.</p>
     <ComponentExample code={`<Combobox
   items={items}
   value={value}
@@ -233,7 +232,7 @@ interface ServerLocationGroup {
 
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Error State</h2>
-    <p class="text-label mb-4">Display validation errors with the error prop.</p>
+    <p class="text-kumo-strong mb-4">Display validation errors with the error prop.</p>
     <ComponentExample code={`<Combobox
   items={items}
   value={value}
@@ -282,7 +281,7 @@ interface ServerLocationGroup {
     <div class="space-y-8">
       <div>
         <h3 class="mb-3 text-lg font-semibold font-mono">Combobox</h3>
-        <p class="mb-3 text-sm text-label">
+        <p class="mb-3 text-sm text-kumo-strong">
           Root component for the searchable select.
         </p>
         <PropsTable component="Combobox" />
@@ -290,7 +289,7 @@ interface ServerLocationGroup {
 
       <div>
         <h3 class="mb-3 text-lg font-semibold font-mono">Combobox.Content</h3>
-        <p class="mb-3 text-sm text-label">
+        <p class="mb-3 text-sm text-kumo-strong">
           Dropdown container for the list.
         </p>
         <PropsTable component="Combobox.Content" />
@@ -298,7 +297,7 @@ interface ServerLocationGroup {
 
       <div>
         <h3 class="mb-3 text-lg font-semibold font-mono">Combobox.Item</h3>
-        <p class="mb-3 text-sm text-label">
+        <p class="mb-3 text-sm text-kumo-strong">
           Individual selectable option.
         </p>
         <PropsTable component="Combobox.Item" />
@@ -306,17 +305,17 @@ interface ServerLocationGroup {
     </div>
 
     <h3 class="mb-2 text-lg font-semibold mt-6">Additional Sub-components</h3>
-    <ul class="list-disc list-inside text-label space-y-1">
-      <li><code class="text-surface">Combobox.TriggerInput</code> - Single-select input trigger</li>
-      <li><code class="text-surface">Combobox.TriggerValue</code> - Button trigger showing selected value</li>
-      <li><code class="text-surface">Combobox.TriggerMultipleWithInput</code> - Multi-select with chips</li>
-      <li><code class="text-surface">Combobox.Input</code> - Search input inside dropdown</li>
-      <li><code class="text-surface">Combobox.List</code> - List container with render prop</li>
-      <li><code class="text-surface">Combobox.Group</code> - Group container for categorized items</li>
-      <li><code class="text-surface">Combobox.GroupLabel</code> - Header label for a group</li>
-      <li><code class="text-surface">Combobox.Collection</code> - Items container within a group</li>
-      <li><code class="text-surface">Combobox.Chip</code> - Selected item chip</li>
-      <li><code class="text-surface">Combobox.Empty</code> - Empty state message</li>
+    <ul class="list-disc list-inside text-kumo-strong space-y-1">
+      <li><code class="text-kumo-default">Combobox.TriggerInput</code> - Single-select input trigger</li>
+      <li><code class="text-kumo-default">Combobox.TriggerValue</code> - Button trigger showing selected value</li>
+      <li><code class="text-kumo-default">Combobox.TriggerMultipleWithInput</code> - Multi-select with chips</li>
+      <li><code class="text-kumo-default">Combobox.Input</code> - Search input inside dropdown</li>
+      <li><code class="text-kumo-default">Combobox.List</code> - List container with render prop</li>
+      <li><code class="text-kumo-default">Combobox.Group</code> - Group container for categorized items</li>
+      <li><code class="text-kumo-default">Combobox.GroupLabel</code> - Header label for a group</li>
+      <li><code class="text-kumo-default">Combobox.Collection</code> - Items container within a group</li>
+      <li><code class="text-kumo-default">Combobox.Chip</code> - Selected item chip</li>
+      <li><code class="text-kumo-default">Combobox.Empty</code> - Empty state message</li>
     </ul>
   </ComponentSection>
 </DocLayout>

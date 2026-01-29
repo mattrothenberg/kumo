@@ -6,6 +6,8 @@ import { execSync } from "child_process";
 import { readFileSync } from "fs";
 import { resolve } from "path";
 import { fileURLToPath } from "url";
+import { kumoColorsPlugin } from "./src/lib/vite-plugin-kumo-colors.js";
+import { kumoRegistryPlugin } from "./src/lib/vite-plugin-kumo-registry.js";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
@@ -61,16 +63,8 @@ export default defineConfig({
   integrations: [react()],
   vite: {
     // @ts-expect-error - Vite version mismatch between Astro and @tailwindcss/vite
-    plugins: [tailwindcss()],
-    resolve: {
-      alias: {
-        // Workspace-internal alias for component registry (not published to npm)
-        "@kumo-internal/component-registry": resolve(
-          __dirname,
-          "../kumo/ai/component-registry.json",
-        ),
-      },
-    },
+    plugins: [tailwindcss(), kumoColorsPlugin(), kumoRegistryPlugin()],
+
     define: {
       __KUMO_VERSION__: JSON.stringify(buildInfo.kumoVersion),
       __DOCS_VERSION__: JSON.stringify(buildInfo.docsVersion),

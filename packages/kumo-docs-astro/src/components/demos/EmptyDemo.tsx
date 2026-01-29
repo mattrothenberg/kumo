@@ -31,28 +31,28 @@ export function EmptySizesDemo() {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <p className="mb-2 text-sm text-muted">Small</p>
+        <p className="mb-2 text-sm text-kumo-subtle">Small</p>
         <Empty
           size="sm"
-          icon={<Database size={32} className="text-disabled" />}
+          icon={<Database size={32} className="text-kumo-inactive" />}
           title="No data available"
           description="There is no data to display."
         />
       </div>
       <div>
-        <p className="mb-2 text-sm text-muted">Base</p>
+        <p className="mb-2 text-sm text-kumo-subtle">Base</p>
         <Empty
           size="base"
-          icon={<Database size={48} className="text-disabled" />}
+          icon={<Database size={48} className="text-kumo-inactive" />}
           title="No data available"
           description="There is no data to display."
         />
       </div>
       <div>
-        <p className="mb-2 text-sm text-muted">Large</p>
+        <p className="mb-2 text-sm text-kumo-subtle">Large</p>
         <Empty
           size="lg"
-          icon={<Database size={64} className="text-disabled" />}
+          icon={<Database size={64} className="text-kumo-inactive" />}
           title="No data available"
           description="There is no data to display."
         />
@@ -64,7 +64,7 @@ export function EmptySizesDemo() {
 export function EmptyWithCommandDemo() {
   return (
     <Empty
-      icon={<FolderOpen size={48} className="text-disabled" />}
+      icon={<FolderOpen size={48} className="text-kumo-inactive" />}
       title="No projects found"
       description="Get started by creating your first project using the command below."
       commandLine="npm create kumo-project"
@@ -75,7 +75,7 @@ export function EmptyWithCommandDemo() {
 export function EmptyWithActionsDemo() {
   return (
     <Empty
-      icon={<CloudSlash size={48} className="text-disabled" />}
+      icon={<CloudSlash size={48} className="text-kumo-inactive" />}
       title="No connection"
       description="Unable to connect to the server. Please check your connection and try again."
       contents={

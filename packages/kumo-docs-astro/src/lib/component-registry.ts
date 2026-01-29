@@ -1,55 +1,28 @@
 /**
  * Utility to load and query component registry data for documentation.
  * Reads from the auto-generated component-registry.json in the kumo package.
- *
- * Note: We use a Vite alias instead of an npm export to keep the component
- * registry internal (not published to npm). The alias is configured in
- * astro.config.mjs to point to ../kumo/ai/component-registry.json
  */
 
-// Import the registry JSON via Vite alias (configured in astro.config.mjs)
-// @ts-expect-error - Vite alias, not a real npm package
-import registry from "@kumo-internal/component-registry";
+// Import the registry JSON from the kumo package export
+import registry from "@cloudflare/kumo/ai/component-registry.json";
 
-export interface PropSchema {
-  type: string;
-  optional?: boolean;
-  required?: boolean;
-  values?: string[];
-  descriptions?: Record<string, string>;
-  default?: string;
-  description?: string;
-  /** Deprecation message from @deprecated JSDoc tag */
-  deprecated?: string | boolean;
-}
+// Import shared types from @cloudflare/kumo
+import type {
+  ComponentRegistry,
+  ComponentSchema,
+  PropSchema,
+  SubComponentSchema,
+} from "@cloudflare/kumo";
 
-export interface SubComponentData {
-  name: string;
-  description: string;
-  props: Record<string, PropSchema>;
-  isPassThrough?: boolean;
-  baseComponent?: string;
-  usageExamples?: string[];
-  renderElement?: string;
-}
+// Re-export types for convenience
+export type { PropSchema, SubComponentSchema as SubComponentData };
 
-export interface ComponentData {
-  name: string;
-  description: string;
-  importPath: string;
-  category: string;
-  props: Record<string, PropSchema>;
-  examples?: string[];
-  colors?: string[];
-  subComponents?: Record<string, SubComponentData>;
-}
+// Alias for backwards compatibility
+export type ComponentData = ComponentSchema;
+export type { ComponentRegistry };
 
-export interface ComponentRegistry {
-  version: string;
-  components: Record<string, ComponentData>;
-}
-
-const typedRegistry = registry as ComponentRegistry;
+// Cast through unknown since the JSON structure may have extra fields
+const typedRegistry = registry as unknown as ComponentRegistry;
 
 /**
  * Get data for a component, including support for sub-component notation.

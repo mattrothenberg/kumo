@@ -10,7 +10,6 @@ import {
   TabsUnderlineDemo,
   TabsControlledDemo,
   TabsManyDemo,
-  TabsRenderPropDemo,
 } from "../../components/demos/TabsDemo";
 ---
 
@@ -18,7 +17,6 @@ import {
   title="Tabs"
   description="A set of layered sections of content, known as tab panels, displayed one at a time."
   sourceFile="components/tabs"
-  storybookPath="story/components-tabs"
 >
   <!-- Demo -->
   <ComponentSection>
@@ -86,7 +84,7 @@ export default function Example() {
       <div class="space-y-8">
         <div>
           <h4 class="mb-3 text-base font-medium">Segmented (Default)</h4>
-          <p class="text-secondary mb-4">
+          <p class="text-kumo-subtle mb-4">
             A pill-shaped indicator slides between tabs on a subtle background.
           </p>
           <ComponentExample
@@ -106,7 +104,7 @@ export default function Example() {
 
         <div>
           <h4 class="mb-3 text-base font-medium">Underline</h4>
-          <p class="text-secondary mb-4">
+          <p class="text-kumo-subtle mb-4">
             A bottom border with a primary-colored indicator. The active tab
             has bolder text for emphasis.
           </p>
@@ -130,7 +128,7 @@ export default function Example() {
     <!-- Controlled -->
     <div class="mb-12">
       <h3 class="mb-4 text-xl font-semibold">Controlled</h3>
-      <p class="text-secondary mb-4">
+      <p class="text-kumo-subtle mb-4">
         Use the <code class="text-sm">value</code> and
         <code class="text-sm">onValueChange</code> props for controlled state.
       </p>
@@ -154,7 +152,7 @@ export default function Example() {
     <!-- Many Tabs -->
     <div class="mb-12">
       <h3 class="mb-4 text-xl font-semibold">Many Tabs</h3>
-      <p class="text-secondary mb-4">
+      <p class="text-kumo-subtle mb-4">
         Tabs automatically scroll horizontally when there are many items.
       </p>
       <ComponentExample
@@ -173,37 +171,6 @@ export default function Example() {
         <TabsManyDemo client:visible />
       </ComponentExample>
     </div>
-
-    <!-- Custom Rendering -->
-    <div class="mb-12">
-      <h3 class="mb-4 text-xl font-semibold">Custom Rendering with Render Prop</h3>
-      <p class="text-secondary mb-4">
-        Use the <code class="text-sm">render</code> prop on individual tab items to customize the underlying element. This is useful for rendering tabs as links or other interactive elements.
-      </p>
-      <ComponentExample
-        code={`<Tabs
-  tabs={[
-    {
-      value: "tab1",
-      label: "Regular Tab",
-    },
-    {
-      value: "tab2",
-      label: "Link Tab",
-      render: (props) => <a {...props} href="#tab2" />,
-    },
-    {
-      value: "tab3",
-      label: "Another Link",
-      render: (props) => <a {...props} href="#tab3" />,
-    },
-  ]}
-  selectedValue="tab1"
-/>`}
-      >
-        <TabsRenderPropDemo client:visible />
-      </ComponentExample>
-    </div>
   </ComponentSection>
 
   <!-- API Reference -->
@@ -215,29 +182,24 @@ export default function Example() {
     <div class="overflow-x-auto">
       <table class="w-full text-sm">
         <thead>
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+          <tr class="border-b border-kumo-line">
             <th class="px-4 py-3 text-left font-semibold">Property</th>
             <th class="px-4 py-3 text-left font-semibold">Type</th>
             <th class="px-4 py-3 text-left font-semibold">Required</th>
           </tr>
         </thead>
-        <tbody class="text-neutral-600 dark:text-neutral-400">
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+        <tbody class="text-kumo-subtle">
+          <tr class="border-b border-kumo-line">
             <td class="px-4 py-3 font-mono text-xs">value</td>
             <td class="px-4 py-3 font-mono text-xs">string</td>
             <td class="px-4 py-3 font-mono text-xs">Yes</td>
           </tr>
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+          <tr class="border-b border-kumo-line">
             <td class="px-4 py-3 font-mono text-xs">label</td>
             <td class="px-4 py-3 font-mono text-xs">ReactNode</td>
             <td class="px-4 py-3 font-mono text-xs">Yes</td>
           </tr>
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
-            <td class="px-4 py-3 font-mono text-xs">render</td>
-            <td class="px-4 py-3 font-mono text-xs">(props) =&gt; ReactElement</td>
-            <td class="px-4 py-3 font-mono text-xs">No</td>
-          </tr>
-          <tr class="border-b border-neutral-200 dark:border-neutral-800">
+          <tr class="border-b border-kumo-line">
             <td class="px-4 py-3 font-mono text-xs">className</td>
             <td class="px-4 py-3 font-mono text-xs">string</td>
             <td class="px-4 py-3 font-mono text-xs">No</td>
@@ -245,8 +207,5 @@ export default function Example() {
         </tbody>
       </table>
     </div>
-    <p class="mt-4 text-sm text-secondary">
-      The <code class="text-sm">render</code> prop allows you to customize the underlying element that each tab renders as. It receives the tab props and should return a React element (e.g., <code class="text-sm">&lt;a&gt;</code> for links).
-    </p>
   </ComponentSection>
 </DocLayout>

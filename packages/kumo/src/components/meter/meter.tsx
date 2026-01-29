@@ -45,30 +45,30 @@ export function Meter({
       className={cn("flex w-full flex-col gap-2", className)}
     >
       <div className="flex items-center justify-between gap-4">
-        <BaseMeter.Label className="text-xs text-label">
+        <BaseMeter.Label className="text-xs text-kumo-strong">
           {label}
         </BaseMeter.Label>
         {customValue ? (
-          <span className="text-sm font-medium text-surface tabular-nums">
+          <span className="text-sm font-medium text-kumo-default tabular-nums">
             {customValue}
           </span>
         ) : (
           <>
             {showValue && (
-              <BaseMeter.Value className="text-sm font-medium text-surface tabular-nums" />
+              <BaseMeter.Value className="text-sm font-medium text-kumo-default tabular-nums" />
             )}
           </>
         )}
       </div>
       <BaseMeter.Track
         className={cn(
-          "relative h-2 w-full overflow-hidden rounded-full bg-color",
+          "relative h-2 w-full overflow-hidden rounded-full bg-kumo-fill",
           trackClassName,
         )}
       >
         <BaseMeter.Indicator
           className={cn(
-            "absolute inset-y-0 left-0 rounded-full bg-linear-to-r from-primary via-primary to-primary transition-[width] duration-300 ease-out",
+            "absolute inset-y-0 left-0 rounded-full bg-linear-to-r from-kumo-brand via-kumo-brand to-kumo-brand transition-[width] duration-300 ease-out",
             indicatorClassName,
           )}
         />

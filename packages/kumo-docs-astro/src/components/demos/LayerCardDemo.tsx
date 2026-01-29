@@ -21,7 +21,7 @@ export function LayerCardBasicDemo() {
     <LayerCard className="w-[250px]">
       <LayerCard.Secondary>Getting Started</LayerCard.Secondary>
       <LayerCard.Primary>
-        <p className="text-sm">
+        <p className="text-sm text-kumo-subtle">
           Quick start guide for new users
         </p>
       </LayerCard.Primary>

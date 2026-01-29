@@ -35,7 +35,7 @@ export function SurfaceNestedDemo() {
   return (
     <Surface className="rounded-lg p-6">
       <Text bold>Outer Surface</Text>
-      <Surface className="mt-4 rounded-md bg-surface-2 p-4">
+      <Surface className="mt-4 rounded-md bg-kumo-elevated p-4">
         <Text variant="secondary">Nested Surface</Text>
       </Surface>
     </Surface>

@@ -22,14 +22,14 @@ export const REPORTS_DIR = "ci/reports";
  * A single item to be included in the MR comment
  */
 export interface ReportItem {
-  /** Unique identifier for this report type (e.g., "npm-release", "storybook-preview") */
+  /** Unique identifier for this report type (e.g., "npm-release", "kumo-docs-preview") */
   id: string;
   /** Section title displayed in the comment */
   title: string;
   /**
    * Sort order - lower numbers appear first in comment
    * 10-19: release info (npm)
-   * 20-29: previews (storybook)
+   * 20-29: previews (docs)
    */
   priority: number;
   /** Markdown content for this section */
@@ -58,8 +58,6 @@ export interface CIContext {
   packageName: string;
   /** Package version being released */
   packageVersion: string;
-  /** Storybook preview URL (if deployed) */
-  storybookPreviewUrl?: string;
   /** Kumo docs preview URL (if deployed) */
   kumoDocsPreviewUrl?: string;
   /** Allow additional context to be passed */
@@ -95,7 +93,6 @@ export function buildContextFromEnv(): CIContext {
     apiToken: process.env.GITLAB_API_TOKEN ?? "",
     packageName: process.env.PACKAGE_NAME ?? "@cloudflare/kumo",
     packageVersion: process.env.PACKAGE_VERSION ?? "",
-    storybookPreviewUrl: process.env.STORYBOOK_PREVIEW_URL,
     kumoDocsPreviewUrl: process.env.KUMO_DOCS_PREVIEW_URL,
   };
 }

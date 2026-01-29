@@ -23,7 +23,6 @@ import {
   title="Input"
   description="A text input field for user input with built-in label, description, and error support."
   sourceFile="components/input"
-  storybookPath="story/components-input"
   baseUIComponent="input"
 >
   <!-- Demo -->
@@ -55,8 +54,8 @@ import {
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">Usage</h2>
     <h3 class="mb-2 text-lg font-semibold">With Built-in Field (Recommended)</h3>
-    <p class="mb-4 text-sm text-label">
-      Use the <code class="rounded bg-secondary px-1 py-0.5 text-sm">label</code> prop
+    <p class="mb-4 text-sm text-kumo-strong">
+      Use the <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">label</code> prop
       to enable the built-in Field wrapper with label, description, and error support.
     </p>
     <CodeBlock
@@ -75,12 +74,12 @@ export default function Example() {
     />
 
     <h3 class="mb-2 mt-6 text-lg font-semibold">Bare Input (Custom Layouts)</h3>
-    <p class="mb-4 text-sm text-label">
+    <p class="mb-4 text-sm text-kumo-strong">
       For custom form layouts, use Input without <code
-        class="rounded bg-secondary px-1 py-0.5 text-sm">label</code
-      >. Must provide <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+        class="rounded bg-kumo-control px-1 py-0.5 text-sm">label</code
+      >. Must provide <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
         >aria-label</code
-      > or <code class="rounded bg-secondary px-1 py-0.5 text-sm">aria-labelledby</code
+      > or <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">aria-labelledby</code
       > for accessibility.
     </p>
     <CodeBlock
@@ -100,8 +99,8 @@ export default function Example() {
     <div class="space-y-8">
       <div>
         <h3 class="mb-4 text-xl font-semibold">With Label and Description</h3>
-        <p class="mb-4 text-sm text-label">
-          The <code class="rounded bg-secondary px-1 py-0.5 text-sm">label</code> prop
+        <p class="mb-4 text-sm text-kumo-strong">
+          The <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">label</code> prop
           enables the built-in Field wrapper with automatic vertical layout (label
           above input).
         </p>
@@ -118,8 +117,8 @@ export default function Example() {
 
       <div>
         <h3 class="mb-4 text-xl font-semibold">With Error (String)</h3>
-        <p class="mb-4 text-sm text-label">
-          Pass <code class="rounded bg-secondary px-1 py-0.5 text-sm">error</code> as
+        <p class="mb-4 text-sm text-kumo-strong">
+          Pass <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">error</code> as
           a string for simple error messages. Error replaces description when present.
         </p>
         <ComponentExample
@@ -137,11 +136,11 @@ export default function Example() {
 
       <div>
         <h3 class="mb-4 text-xl font-semibold">With Error (Validation Object)</h3>
-        <p class="mb-4 text-sm text-label">
-          Pass <code class="rounded bg-secondary px-1 py-0.5 text-sm">error</code> as
-          an object with <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+        <p class="mb-4 text-sm text-kumo-strong">
+          Pass <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">error</code> as
+          an object with <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
             >message</code
-          > and <code class="rounded bg-secondary px-1 py-0.5 text-sm">match</code> for
+          > and <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">match</code> for
           HTML5 validation. Error shows when field validity matches.
         </p>
         <ComponentExample
@@ -163,12 +162,12 @@ export default function Example() {
 
       <div>
         <h3 class="mb-4 text-xl font-semibold">Input Sizes</h3>
-        <p class="mb-4 text-sm text-label">
-          Four sizes available: <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+        <p class="mb-4 text-sm text-kumo-strong">
+          Four sizes available: <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
             >xs</code
-          >, <code class="rounded bg-secondary px-1 py-0.5 text-sm">sm</code>, <code
-            class="rounded bg-secondary px-1 py-0.5 text-sm">base</code
-          > (default), <code class="rounded bg-secondary px-1 py-0.5 text-sm">lg</code
+          >, <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">sm</code>, <code
+            class="rounded bg-kumo-control px-1 py-0.5 text-sm">base</code
+          > (default), <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">lg</code
           >.
         </p>
         <ComponentExample
@@ -198,8 +197,8 @@ export default function Example() {
 
       <div>
         <h3 class="mb-4 text-xl font-semibold">Optional Field</h3>
-        <p class="mb-4 text-sm text-label">
-          Set <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+        <p class="mb-4 text-sm text-kumo-strong">
+          Set <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
             >required={"{false}"}</code
           > to show "(optional)" text after the label.
         </p>
@@ -216,8 +215,8 @@ export default function Example() {
 
       <div>
         <h3 class="mb-4 text-xl font-semibold">With Label Tooltip</h3>
-        <p class="mb-4 text-sm text-label">
-          Use <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+        <p class="mb-4 text-sm text-kumo-strong">
+          Use <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
             >labelTooltip</code
           > to add an info icon with additional context on hover.
         </p>
@@ -234,8 +233,8 @@ export default function Example() {
 
       <div>
         <h3 class="mb-4 text-xl font-semibold">ReactNode Label</h3>
-        <p class="mb-4 text-sm text-label">
-          The <code class="rounded bg-secondary px-1 py-0.5 text-sm">label</code>
+        <p class="mb-4 text-sm text-kumo-strong">
+          The <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">label</code>
           prop accepts ReactNode for rich formatting.
         </p>
         <ComponentExample
@@ -252,11 +251,11 @@ export default function Example() {
 
       <div>
         <h3 class="mb-4 text-xl font-semibold">Bare Input (No Label)</h3>
-        <p class="mb-4 text-sm text-label">
-          Input without <code class="rounded bg-secondary px-1 py-0.5 text-sm"
+        <p class="mb-4 text-sm text-kumo-strong">
+          Input without <code class="rounded bg-kumo-control px-1 py-0.5 text-sm"
             >label</code
           > renders as a bare input. Must provide <code
-            class="rounded bg-secondary px-1 py-0.5 text-sm">aria-label</code
+            class="rounded bg-kumo-control px-1 py-0.5 text-sm">aria-label</code
           > for accessibility.
         </p>
         <ComponentExample
@@ -268,14 +267,14 @@ export default function Example() {
 
       <div>
         <h3 class="mb-4 text-xl font-semibold">Input Types</h3>
-        <p class="mb-4 text-sm text-label">
+        <p class="mb-4 text-sm text-kumo-strong">
           Supports all HTML input types: <code
-            class="rounded bg-secondary px-1 py-0.5 text-sm">text</code
-          >, <code class="rounded bg-secondary px-1 py-0.5 text-sm">email</code>, <code
-            class="rounded bg-secondary px-1 py-0.5 text-sm">password</code
-          >, <code class="rounded bg-secondary px-1 py-0.5 text-sm">number</code
-          >, <code class="rounded bg-secondary px-1 py-0.5 text-sm">tel</code>, <code
-            class="rounded bg-secondary px-1 py-0.5 text-sm">url</code
+            class="rounded bg-kumo-control px-1 py-0.5 text-sm">text</code
+          >, <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">email</code>, <code
+            class="rounded bg-kumo-control px-1 py-0.5 text-sm">password</code
+          >, <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">number</code
+          >, <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">tel</code>, <code
+            class="rounded bg-kumo-control px-1 py-0.5 text-sm">url</code
           >, etc.
         </p>
         <ComponentExample
@@ -295,55 +294,55 @@ export default function Example() {
   <!-- API Reference -->
   <ComponentSection>
     <h2 class="mb-4 text-2xl font-bold">API Reference</h2>
-    <p class="mb-4 text-sm text-label">
+    <p class="mb-4 text-sm text-kumo-strong">
       Input accepts all standard HTML input attributes plus the following:
     </p>
     <PropsTable component="Input" />
 
     <h3 class="mb-2 mt-6 text-lg font-semibold">Validation Error Types</h3>
-    <p class="mb-4 text-sm text-label">
-      When using <code class="rounded bg-secondary px-1 py-0.5 text-sm">error</code> as
-      an object, the <code class="rounded bg-secondary px-1 py-0.5 text-sm">match</code>
+    <p class="mb-4 text-sm text-kumo-strong">
+      When using <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">error</code> as
+      an object, the <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">match</code>
       property corresponds to HTML5 ValidityState values:
     </p>
     <div class="overflow-x-auto">
       <table class="w-full text-sm">
         <thead>
-          <tr class="border-b border-border">
+          <tr class="border-b border-kumo-line">
             <th class="px-4 py-3 text-left font-semibold">Match</th>
             <th class="px-4 py-3 text-left font-semibold">Description</th>
           </tr>
         </thead>
-        <tbody class="text-label">
-          <tr class="border-b border-border">
+        <tbody class="text-kumo-strong">
+          <tr class="border-b border-kumo-line">
             <td class="px-4 py-3 font-mono text-xs">valueMissing</td>
             <td class="px-4 py-3 text-xs">Required field is empty</td>
           </tr>
-          <tr class="border-b border-border">
+          <tr class="border-b border-kumo-line">
             <td class="px-4 py-3 font-mono text-xs">typeMismatch</td>
             <td class="px-4 py-3 text-xs">Value doesn't match type (e.g., invalid email)</td>
           </tr>
-          <tr class="border-b border-border">
+          <tr class="border-b border-kumo-line">
             <td class="px-4 py-3 font-mono text-xs">patternMismatch</td>
             <td class="px-4 py-3 text-xs">Value doesn't match pattern attribute</td>
           </tr>
-          <tr class="border-b border-border">
+          <tr class="border-b border-kumo-line">
             <td class="px-4 py-3 font-mono text-xs">tooShort</td>
             <td class="px-4 py-3 text-xs">Value shorter than minLength</td>
           </tr>
-          <tr class="border-b border-border">
+          <tr class="border-b border-kumo-line">
             <td class="px-4 py-3 font-mono text-xs">tooLong</td>
             <td class="px-4 py-3 text-xs">Value longer than maxLength</td>
           </tr>
-          <tr class="border-b border-border">
+          <tr class="border-b border-kumo-line">
             <td class="px-4 py-3 font-mono text-xs">rangeUnderflow</td>
             <td class="px-4 py-3 text-xs">Value less than min</td>
           </tr>
-          <tr class="border-b border-border">
+          <tr class="border-b border-kumo-line">
             <td class="px-4 py-3 font-mono text-xs">rangeOverflow</td>
             <td class="px-4 py-3 text-xs">Value greater than max</td>
           </tr>
-          <tr class="border-b border-border">
+          <tr class="border-b border-kumo-line">
             <td class="px-4 py-3 font-mono text-xs">true</td>
             <td class="px-4 py-3 text-xs">Always show error (for server-side validation)</td>
           </tr>
@@ -358,28 +357,28 @@ export default function Example() {
     <div class="space-y-4 text-sm">
       <div>
         <h3 class="mb-2 font-semibold">Label Requirement</h3>
-        <p class="text-label">Inputs require an accessible name via one of:</p>
-        <ul class="mt-2 ml-4 list-disc space-y-1 text-label">
+        <p class="text-kumo-strong">Inputs require an accessible name via one of:</p>
+        <ul class="mt-2 ml-4 list-disc space-y-1 text-kumo-strong">
           <li>
-            <code class="rounded bg-secondary px-1 py-0.5 text-sm">label</code> prop (recommended)
+            <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">label</code> prop (recommended)
           </li>
           <li>
-            <code class="rounded bg-secondary px-1 py-0.5 text-sm">placeholder</code> + <code
-              class="rounded bg-secondary px-1 py-0.5 text-sm">aria-label</code
+            <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">placeholder</code> + <code
+              class="rounded bg-kumo-control px-1 py-0.5 text-sm">aria-label</code
             > for bare inputs
           </li>
           <li>
-            <code class="rounded bg-secondary px-1 py-0.5 text-sm">aria-labelledby</code> for
+            <code class="rounded bg-kumo-control px-1 py-0.5 text-sm">aria-labelledby</code> for
             custom label association
           </li>
         </ul>
-        <p class="mt-2 text-label">
+        <p class="mt-2 text-kumo-strong">
           Missing accessible names trigger console warnings in development.
         </p>
       </div>
       <div>
         <h3 class="mb-2 font-semibold">Error Association</h3>
-        <p class="text-label">
+        <p class="text-kumo-strong">
           Error messages are automatically associated with the input via ARIA attributes
           for screen reader announcement.
         </p>

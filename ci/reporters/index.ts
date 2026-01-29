@@ -7,7 +7,6 @@
 
 import type { Reporter } from "./types";
 import { npmReleaseReporter } from "./npm-release";
-import { storybookPreviewReporter } from "./storybook-preview";
 import { kumoDocsPreviewReporter } from "./kumo-docs-preview";
 
 /**
@@ -15,7 +14,6 @@ import { kumoDocsPreviewReporter } from "./kumo-docs-preview";
  */
 export const reporters: Reporter[] = [
   npmReleaseReporter,
-  storybookPreviewReporter,
   kumoDocsPreviewReporter,
 ];
 
@@ -27,5 +25,4 @@ export {
   buildContextFromEnv,
 } from "./types";
 export { npmReleaseReporter } from "./npm-release";
-export { storybookPreviewReporter } from "./storybook-preview";
 export { kumoDocsPreviewReporter } from "./kumo-docs-preview";

@@ -63,23 +63,25 @@ export function PageHeader({
 }: PageHeaderProps) {
   return (
     <div className={cn(pageHeaderVariants({ spacing }), className)}>
-      <div className="border-b border-color">{breadcrumbs}</div>
+      <div className="border-b border-kumo-line">{breadcrumbs}</div>
 
       {(title || description) && (
         <div className="flex flex-col gap-2 py-3 pl-3">
           {title && (
-            <h1 className="font-heading text-3xl font-semibold text-surface">
+            <h1 className="font-heading text-3xl font-semibold text-kumo-default">
               {title}
             </h1>
           )}
           {description && (
-            <p className="max-w-prose text-base text-muted">{description}</p>
+            <p className="max-w-prose text-base text-kumo-subtle">
+              {description}
+            </p>
           )}
         </div>
       )}
 
       {tabs && (
-        <div className="flex w-full items-center justify-between border-b border-color pt-1 pb-3 pl-3">
+        <div className="flex w-full items-center justify-between border-b border-kumo-line pt-1 pb-3 pl-3">
           <Tabs
             tabs={tabs}
             selectedValue={defaultTab}

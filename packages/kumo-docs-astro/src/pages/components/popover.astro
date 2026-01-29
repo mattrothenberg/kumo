@@ -18,7 +18,6 @@ import {
   title="Popover"
   description="An accessible popup anchored to a trigger element, used for displaying rich content like menus, forms, or additional information."
   sourceFile="components/popover"
-  storybookPath="story/components-popover"
   baseUIComponent="popover"
 >
   <ComponentSection>
@@ -157,8 +156,8 @@ export default function Example() {
 
       <div>
         <h3 class="mb-4 text-xl font-semibold">Positioning</h3>
-        <p class="mb-4 text-sm text-label">
-          Use the <code class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-xs">side</code> prop to control where the popover appears relative to the trigger.
+        <p class="mb-4 text-sm text-kumo-strong">
+          Use the <code class="rounded bg-kumo-elevated px-1.5 py-0.5 font-mono text-xs">side</code> prop to control where the popover appears relative to the trigger.
         </p>
         <ComponentExample code={`<Popover>
   <Popover.Trigger asChild>
@@ -175,7 +174,7 @@ export default function Example() {
 
       <div>
         <h3 class="mb-4 text-xl font-semibold">Custom Content</h3>
-        <p class="mb-4 text-sm text-label">
+        <p class="mb-4 text-sm text-kumo-strong">
           Popovers can contain any content, including custom layouts with avatars, buttons, and more.
         </p>
         <ComponentExample code={`<Popover>
@@ -184,13 +183,13 @@ export default function Example() {
   </Popover.Trigger>
   <Popover.Content className="w-64">
     <div className="flex items-center gap-3">
-      <div className="size-10 rounded-full bg-surface-3" />
+      <div className="size-10 rounded-full bg-kumo-recessed" />
       <div>
         <Popover.Title>Jane Doe</Popover.Title>
-        <p className="text-sm text-muted">jane@example.com</p>
+        <p className="text-sm text-kumo-subtle">jane@example.com</p>
       </div>
     </div>
-    <div className="mt-3 flex gap-2 border-t border-border pt-3">
+    <div className="mt-3 flex gap-2 border-t border-kumo-line pt-3">
       <Button variant="secondary" size="sm" className="flex-1">
         Profile
       </Button>
@@ -242,7 +241,7 @@ export default function Example() {
     <div class="space-y-8">
       <div>
         <h3 class="mb-3 text-lg font-semibold font-mono">Popover</h3>
-        <p class="mb-3 text-sm text-label">
+        <p class="mb-3 text-sm text-kumo-strong">
           The root component that manages the popover's open state.
         </p>
         <PropsTable component="Popover" />
@@ -250,23 +249,23 @@ export default function Example() {
 
       <div>
         <h3 class="mb-3 text-lg font-semibold font-mono">Popover.Trigger</h3>
-        <p class="mb-3 text-sm text-label">
-          A button that opens the popover when clicked. Use <code class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-xs">asChild</code> to render your own element.
+        <p class="mb-3 text-sm text-kumo-strong">
+          A button that opens the popover when clicked. Use <code class="rounded bg-kumo-elevated px-1.5 py-0.5 font-mono text-xs">asChild</code> to render your own element.
         </p>
         <PropsTable component="Popover.Trigger" />
       </div>
 
       <div>
         <h3 class="mb-3 text-lg font-semibold font-mono">Popover.Content</h3>
-        <p class="mb-3 text-sm text-label">
-          The container for popover content. Controls positioning via <code class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-xs">side</code>, <code class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-xs">align</code>, <code class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-xs">sideOffset</code>, and <code class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-xs">alignOffset</code> props.
+        <p class="mb-3 text-sm text-kumo-strong">
+          The container for popover content. Controls positioning via <code class="rounded bg-kumo-elevated px-1.5 py-0.5 font-mono text-xs">side</code>, <code class="rounded bg-kumo-elevated px-1.5 py-0.5 font-mono text-xs">align</code>, <code class="rounded bg-kumo-elevated px-1.5 py-0.5 font-mono text-xs">sideOffset</code>, and <code class="rounded bg-kumo-elevated px-1.5 py-0.5 font-mono text-xs">alignOffset</code> props.
         </p>
         <PropsTable component="Popover.Content" />
       </div>
 
       <div>
         <h3 class="mb-3 text-lg font-semibold font-mono">Popover.Title</h3>
-        <p class="mb-3 text-sm text-label">
+        <p class="mb-3 text-sm text-kumo-strong">
           A heading that labels the popover for accessibility.
         </p>
         <PropsTable component="Popover.Title" />
@@ -274,7 +273,7 @@ export default function Example() {
 
       <div>
         <h3 class="mb-3 text-lg font-semibold font-mono">Popover.Description</h3>
-        <p class="mb-3 text-sm text-label">
+        <p class="mb-3 text-sm text-kumo-strong">
           A paragraph providing additional context about the popover content.
         </p>
         <PropsTable component="Popover.Description" />
@@ -282,8 +281,8 @@ export default function Example() {
 
       <div>
         <h3 class="mb-3 text-lg font-semibold font-mono">Popover.Close</h3>
-        <p class="mb-3 text-sm text-label">
-          A button that closes the popover when clicked. Use <code class="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-xs">asChild</code> to render your own element.
+        <p class="mb-3 text-sm text-kumo-strong">
+          A button that closes the popover when clicked. Use <code class="rounded bg-kumo-elevated px-1.5 py-0.5 font-mono text-xs">asChild</code> to render your own element.
         </p>
         <PropsTable component="Popover.Close" />
       </div>

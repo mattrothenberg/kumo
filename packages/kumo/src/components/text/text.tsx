@@ -24,19 +24,19 @@ export const KUMO_TEXT_VARIANTS = {
       description: "Small heading for subsections",
     },
     body: {
-      classes: "text-surface",
+      classes: "text-kumo-default",
       description: "Default body text",
     },
     secondary: {
-      classes: "text-muted",
+      classes: "text-kumo-subtle",
       description: "Muted text for secondary information",
     },
     success: {
-      classes: "text-info",
+      classes: "text-kumo-link",
       description: "Success state text",
     },
     error: {
-      classes: "text-error",
+      classes: "text-kumo-danger",
       description: "Error state text",
     },
     mono: {
@@ -44,7 +44,7 @@ export const KUMO_TEXT_VARIANTS = {
       description: "Monospace text for code",
     },
     "mono-secondary": {
-      classes: "font-mono text-muted",
+      classes: "font-mono text-kumo-subtle",
       description: "Muted monospace text",
     },
   },
@@ -98,14 +98,14 @@ export const KUMO_TEXT_STYLING = {
     medium: 500,
     semibold: 600,
   },
-  baseColor: "text-surface",
+  baseColor: "text-kumo-default",
   variantColors: {
-    body: "text-surface",
-    secondary: "text-muted",
-    success: "text-info",
-    error: "text-error",
-    mono: "text-surface",
-    "mono-secondary": "text-muted",
+    body: "text-kumo-default",
+    secondary: "text-kumo-subtle",
+    success: "text-kumo-link",
+    error: "text-kumo-danger",
+    mono: "text-kumo-default",
+    "mono-secondary": "text-kumo-subtle",
   },
   fontFamilies: {
     default: "sans-serif",
@@ -215,7 +215,7 @@ function _Text<Variant extends TextVariant = "body">(
     <Component
       ref={ref}
       className={cn(
-        "text-surface",
+        "text-kumo-default",
         KUMO_TEXT_VARIANTS.variant[variant].classes,
         isCopy ? KUMO_TEXT_VARIANTS.size[size].classes : "",
         isCopy && bold ? "font-medium" : "",

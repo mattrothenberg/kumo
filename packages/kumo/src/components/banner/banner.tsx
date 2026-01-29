@@ -11,17 +11,17 @@ export const KUMO_BANNER_BASE_STYLES =
 export const KUMO_BANNER_VARIANTS = {
   variant: {
     default: {
-      classes: "bg-info/20 border-info text-info selection:bg-info-selection",
+      classes: "bg-kumo-info/20 border-kumo-info text-kumo-link selection:bg-kumo-info-tint",
       description: "Informational banner for general messages",
     },
     alert: {
       classes:
-        "bg-alert/20 border-alert text-alert selection:bg-alert-selection",
+        "bg-kumo-warning/20 border-kumo-warning text-kumo-warning selection:bg-kumo-warning-tint",
       description: "Warning banner for cautionary messages",
     },
     error: {
       classes:
-        "bg-error/20 border-error text-error selection:bg-error-selection",
+        "bg-kumo-danger/20 border-kumo-danger text-kumo-danger selection:bg-kumo-danger-tint",
       description: "Error banner for critical issues",
     },
   },

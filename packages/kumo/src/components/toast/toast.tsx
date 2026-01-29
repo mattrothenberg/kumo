@@ -7,47 +7,21 @@ import { cn } from "../../utils/cn";
  * Toast has no user-facing variants but documents the styling structure.
  */
 export const KUMO_TOAST_VARIANTS = {
-  /**
-   * Toast root container styling
-   * - bg-toast: Toast background color
-   * - border-color: Border color
-   * - rounded-lg: 8px border radius
-   * - p-4: 16px padding
-   * - shadow-lg: Large shadow for elevation
-   */
   root: {
-    classes: "rounded-lg border border-color bg-toast p-4 shadow-lg",
+    classes: "rounded-lg border border-kumo-fill bg-kumo-control p-4 shadow-lg",
     description: "Toast container with background, border, and shadow",
   },
-  /**
-   * Toast title styling
-   * - text-surface: Primary text color
-   * - font-medium: 500 font weight
-   * - text-[0.975rem]: ~15.6px font size
-   */
   title: {
-    classes: "text-[0.975rem] leading-5 font-medium text-surface",
+    classes: "text-[0.975rem] leading-5 font-medium text-kumo-default",
     description: "Toast title with primary text color",
   },
-  /**
-   * Toast description styling
-   * - text-muted: Secondary text color
-   * - text-[0.925rem]: ~14.8px font size
-   */
   description: {
-    classes: "text-[0.925rem] leading-5 text-muted",
+    classes: "text-[0.925rem] leading-5 text-kumo-subtle",
     description: "Toast description with muted text color",
   },
-  /**
-   * Toast close button styling
-   * - h-5 w-5: 20x20px size
-   * - text-muted: Icon color
-   * - hover:bg-toast-button-hover: Hover background
-   * - hover:text-label: Hover icon color
-   */
   close: {
     classes:
-      "absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded border-none bg-transparent text-muted hover:bg-toast-button-hover hover:text-label",
+      "absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded border-none bg-transparent text-kumo-subtle hover:bg-kumo-fill-hover hover:text-kumo-strong",
     description: "Close button with X icon",
   },
 } as const;
@@ -63,7 +37,7 @@ export const KUMO_TOAST_STYLING = {
     width: 300,
     padding: 16,
     borderRadius: 8,
-    background: "color-toast",
+    background: "color-secondary",
     border: "color-color",
     shadow: "shadow-lg",
     gap: 4,
@@ -83,7 +57,7 @@ export const KUMO_TOAST_STYLING = {
     iconSize: 16,
     iconName: "ph-x",
     iconColor: "text-color-muted",
-    hoverBackground: "color-toast-button-hover",
+    hoverBackground: "color-color-2",
     hoverColor: "text-color-label",
     borderRadius: 4,
   },
@@ -95,7 +69,7 @@ export interface KumoToastVariantsProps {}
 export function toastVariants(_props: KumoToastVariantsProps = {}) {
   return cn(
     // Base styles for toast root
-    "absolute right-0 bottom-0 left-auto z-[calc(1000-var(--toast-index))] mr-0 h-[var(--height)] w-full origin-bottom rounded-lg border border-color bg-toast bg-clip-padding p-4 shadow-lg select-none",
+    "absolute right-0 bottom-0 left-auto z-[calc(1000-var(--toast-index))] mr-0 h-[var(--height)] w-full origin-bottom rounded-lg border border-kumo-fill bg-kumo-control bg-clip-padding p-4 shadow-lg select-none",
   );
 }
 
@@ -123,7 +97,7 @@ function ToastList() {
       key={toast.id}
       toast={toast}
       className={cn(
-        "absolute right-0 bottom-0 left-auto z-[calc(1000-var(--toast-index))] mr-0 h-[var(--height)] w-full origin-bottom rounded-lg border border-color bg-toast bg-clip-padding p-4 shadow-lg select-none",
+        "absolute right-0 bottom-0 left-auto z-[calc(1000-var(--toast-index))] mr-0 h-[var(--height)] w-full origin-bottom rounded-lg border border-kumo-fill bg-kumo-control bg-clip-padding p-4 shadow-lg select-none",
         "[--gap:0.75rem] [--height:var(--toast-frontmost-height,var(--toast-height))] [--offset-y:calc(var(--toast-offset-y)*-1+calc(var(--toast-index)*var(--gap)*-1)+var(--toast-swipe-movement-y))] [--peek:0.75rem] [--scale:calc(max(0,1-(var(--toast-index)*0.1)))] [--shrink:calc(1-var(--scale))]",
         "[transform:translateX(var(--toast-swipe-movement-x))_translateY(calc(var(--toast-swipe-movement-y)-(var(--toast-index)*var(--peek))-(var(--shrink)*var(--height))))_scale(var(--scale))] [transition:transform_0.5s_cubic-bezier(0.22,1,0.36,1),opacity_0.5s,height_0.15s]",
         "after:absolute after:top-full after:left-0 after:h-[calc(var(--gap)+1px)] after:w-full after:content-['']",
@@ -136,10 +110,10 @@ function ToastList() {
       )}
     >
       <Toast.Content className="overflow-hidden transition-opacity [transition-duration:250ms] data-[behind]:pointer-events-none data-[behind]:opacity-0 data-[expanded]:pointer-events-auto data-[expanded]:opacity-100">
-        <Toast.Title className="text-[0.975rem] leading-5 font-medium text-surface" />
-        <Toast.Description className="text-[0.925rem] leading-5 text-muted" />
+        <Toast.Title className="text-[0.975rem] leading-5 font-medium text-kumo-default" />
+        <Toast.Description className="text-[0.925rem] leading-5 text-kumo-subtle" />
         <Toast.Close
-          className="absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded border-none bg-transparent text-muted hover:bg-toast-button-hover hover:text-label"
+          className="absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded border-none bg-transparent text-kumo-subtle hover:bg-kumo-fill-hover hover:text-kumo-strong"
           aria-label="Close"
         >
           <XIcon className="h-4 w-4" />
